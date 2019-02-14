@@ -1,0 +1,143 @@
+source("data-work.R")
+
+#########################################
+
+ui <- fluidPage(
+  
+  tags[["head"]](
+    tags[["style"]](HTML("
+                         
+                         span { 
+                         display: block;
+                         max-width: 100%;
+                         word-wrap: break-word;
+                         }
+                         
+                         "))
+    ),
+  
+  
+  titlePanel("Protein data analysis"),
+  
+  tabsetPanel(
+    tabPanel("Start",
+             br(),
+             h3("Welcome!"),
+             h4("Please, upload your file. Otherwise you will see example data."),
+             fileInput(
+               inputId = "data_file",
+               label = "Choose file:",
+               multiple = FALSE,
+               accept = c(".csv"),
+               placeholder = "No .csv file selected"),
+             h4("In order for program to behave correctly, please make sure supplied file fulfills following requirements:"),
+             tableOutput("file_req")
+    ),
+    tabPanel("General data",
+             br(),
+             h3('Protein name'),
+             h4(textOutput("protein_name")),
+             h3('Reconstructed sequence'),
+             htmlOutput("sequenceName"),
+             br(),
+             wellPanel(
+               sidebarLayout(
+                 sidebarPanel(
+                   tableOutput("protein_stats"),
+                   br(),
+                   checkboxGroupInput(
+                     inputId = "hydro_prop",
+                     label = "Hydro-",
+                     choices = c(
+                       "Hydrophilic" = "philic",
+                       "Hydrophobic" = "phobic"
+                     ),
+                     selected = c("philic", "phobic")
+                   )
+                 ),
+                 mainPanel(plotOutput('aminoDist'))
+               )
+              )
+    ),
+    tabPanel("Overlapping", 
+             br(),
+             sidebarPanel(
+               radioButtons(
+                 inputId = 'chosen_state',
+                 label = 'Choose state :',
+                 choices = c('BETA', 'BETA_gamma', 'BETA_gamma_alpha'),
+                 selected = 'BETA'
+               ),
+               sliderInput(
+                 inputId = 'plot_range',
+                 label = 'Choose range :',
+                 min = 0,
+                 max = 300,
+                 value = c(0, 300),
+                 ticks = seq(0, 300, 1)
+               )
+             ),
+             mainPanel(
+               plotOutput("stateOverlapDist"),
+               br(),
+               plotOutput("stateOverlap")
+             )
+    ),
+    tabPanel("Woods\'s plot",
+             br(),
+             h4("Double plot after small modifications  - for comparison"),
+             br(),
+             sidebarPanel(
+               h3("Please, select parameters for the plot."),
+               checkboxInput(inputId = "theory",
+                             label = "Theoretical calculations",
+                             value = FALSE
+               ),
+               h4("Time points parameters: "),
+               selectInput(inputId = "chosen_time",
+                           label = "Time point CHOSEN",
+                           choices = c("0", "1", "5", "25", "1440"),
+                           width = "40%"),
+               selectInput(inputId = "in_time",
+                           label = "Time point IN",
+                           choices = c("0", "1", "5", "25", "1440"),
+                           width = "40%"),
+               selectInput(inputId = "out_time",
+                           label = "Time point OUT",
+                           choices = c("0", "1", "5", "25", "1440"),
+                           width = "40%"),
+               h4("State paramters"),
+               selectInput(inputId = "state_first",
+                           label = "First state",
+                           choices = c("ALPHA", "BETA"),
+                           width = "50%"),
+               selectInput(inputId = "state_second",
+                           label = "Second state", 
+                           choices = c("ALPHA", "BETA"),
+                           width = "50%")
+             ),
+             mainPanel(
+               h4("Comparison plot: "),
+               plotOutput("comparisonPlot"),
+               h4("Wood\'s plot: "),
+               plotOutput("differentialPlot")
+             )
+    ),
+    tabPanel("Cosik",
+             br(),
+             h4("Double plot the way Krzysiu plots it - for comparison"),
+             br(),
+             sidebarPanel(
+               h3("Parameters are the same, see:"),
+               tableOutput("plotParametersKrzys")
+             ),
+             mainPanel(
+               h4("Comparison plot: "),
+               plotOutput("comparisonPlotKrzys"),
+               h4("Wood\'s plot: "),
+               plotOutput("differentailPlotKrzys")
+             )
+             
+    )
+  )
+)
