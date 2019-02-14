@@ -8,7 +8,8 @@ Authors@R: c(person("Weronika", "Puchala",
            email = "michalburdukiewicz@gmail.com", 
            comment = c(ORCID = "0000-0001-8926-582X"),
            role = c("aut")))
-Description: What the package does (one paragraph).
+Description: Hydrogen/Deuterium eXchange Mass Spectrometry (HDX-MS) is a staple technology in structural proteomics. 
+             We provide a complete analytic workflow for HDX-MS data, which is also available as a Shiny app.
 Depends: R (>= 3.0)
 License: GPL-3
 Encoding: UTF-8
