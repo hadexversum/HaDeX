@@ -1,3 +1,4 @@
+library(HaDeX)
 library(shiny)
 library(reshape2)
 library(gsubfn)
