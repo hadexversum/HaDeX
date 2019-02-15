@@ -1,0 +1,24 @@
+---
+title: "HaDeX package"
+author: "Weronika Pucha&#322a, Micha&#322; Burdukiewicz"
+date: "15.02.2019"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{HaDeX package - an overview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo = FALSE, message = FALSE, results='asis'}
+library(HaDeX)
+```
+
+# Hydrogen/Deuterium Exchange Mass Spectrometry Data 
+
+Words, words, words 
+
+$\frac{1}{2}$
+
+
