@@ -24,148 +24,36 @@ server <- function(input, output, session) {
   
   ##
   
-  times_from_file <- reactive({
-    
-    round(unique(dat()["Exposure"]), 3)
-    
-  })
-  
-  ##
-  
-  states_from_file <- reactive({
-    
-    unique(dat()["State"])
-    
-  })
-  
-  ##
-  
   observe({
+    
+    times_from_file <- round(unique(dat()["Exposure"]), 3)
+    
+    states_from_file <- unique(dat()["State"])
     
     updateSelectInput(session, 
                       inputId = "chosen_time",
-                      choices = times_from_file(),
-                      selected = min(times_from_file()[times_from_file()["Exposure"] >= 1, ]))
+                      choices = times_from_file,
+                      selected = min(times_from_file[times_from_file["Exposure"] >= 1, ]))
     
     updateSelectInput(session, 
                       inputId = "in_time",
-                      choices = times_from_file(),
-                      selected = min(times_from_file()[times_from_file()["Exposure"] > 0, ]))
+                      choices = times_from_file,
+                      selected = min(times_from_file[times_from_file["Exposure"] > 0, ]))
     
     updateSelectInput(session, 
                       inputId = "out_time",
-                      choices = times_from_file(),
-                      selected = max(times_from_file()))
+                      choices = times_from_file,
+                      selected = max(times_from_file))
     
     updateSelectInput(session,
                       inputId = "state_first",
-                      choices = states_from_file(),
-                      selected = states_from_file()[1,])
+                      choices = states_from_file,
+                      selected = states_from_file[1,])
     
     updateSelectInput(session,
                       inputId = "state_second",
-                      choices = states_from_file(),
-                      selected = states_from_file()[2,])
-    
-  })
-  
-  ##
-  
-  chosen_time <- reactive({
-    
-    input[["chosen_time"]]
-    
-  })
-  
-  ##
-  
-  in_time <- reactive({
-    
-    input[["in_time"]]
-    
-  })
-  
-  ##
-  
-  out_time <- reactive({
-    
-    input[["out_time"]]
-    
-  })
-  
-  ## 
-  
-  first_state <- reactive({
-    
-    input[["state_first"]]
-    
-  })
-  
-  ##
-  
-  second_state <- reactive({
-    
-    input[["state_second"]]
-    
-  })
-  
-  ##
-  
-  in_state_first <- reactive({
-    
-    paste0(first_state(), "_", in_time())
-    
-  })
-  
-  ##
-
-  chosen_state_first <- reactive({
-    
-    paste0(first_state(), "_", chosen_time())
-    
-  })
-  
-  ##
-  
-  out_state_first <- reactive({
-    
-    paste0(first_state(), "_", out_time())
-    
-  })
-  
-  ##
-  
-  in_state_second <- reactive({
-    
-    paste0(second_state(), "_", in_time())
-    
-  })
-  
-  ##
-
-  chosen_state_second <- reactive({
-    
-    paste0(second_state(), "_", chosen_time())
-    
-  })
-  
-  ##
-  
-  out_state_second <- reactive({
-    
-    paste0(second_state(), "_", out_time())
-    
-  })
-  
-  ##
-  
-  plot_parameters_table <- reactive({
-    
-    data.frame(
-      Name = c("Theoretical?", "First state", "Second state", "Time in", "Chosen time", "Time out"),
-      Value = c(input[["theory"]], first_state(), second_state(), in_time(), chosen_time(), out_time()),
-      stringsAsFactors = TRUE
-    )
+                      choices = states_from_file,
+                      selected = states_from_file[2,])
     
   })
   
@@ -173,14 +61,26 @@ server <- function(input, output, session) {
   
   output[["plotParametersKrzys"]] <- renderTable({
     
-    plot_parameters_table()
+    data.frame(
+      Name = c("Theoretical?", "First state", "Second state", "Time in", "Chosen time", "Time out"),
+      Value = c(input[["theory"]], input[["state_first"]], input[["state_second"]], input[["in_time"]], input[["chosen_time"]], input[["out_time"]]),
+      stringsAsFactors = TRUE
+    )
     
   })
   
   ##
   # TODO : change name for better one
+  # Krzysiowe
   dat_1 <- reactive({
     
+    chosen_state_first <- paste0(input[["state_first"]], "_", input[["chosen_time"]])
+    chosen_state_second <- paste0(input[["state_second"]], "_", input[["chosen_time"]])
+    
+    in_state_first <- paste0(input[["state_first"]], "_", input[["in_time"]])
+    out_state_first <- paste0(input[["state_first"]], "_", input[["out_time"]])
+    zero_state_first <- paste0(input[["state_first"]], "_0")
+      
     dat() %>%
       mutate(exp_mass = Center*z - z,
              Exposure = round(Exposure, 3)) %>%
@@ -191,37 +91,32 @@ server <- function(input, output, session) {
       unite(State_Exposure, State, Exposure) %>%
       spread(key = State_Exposure, value = avg_exp_mass) %>%
       group_by(Sequence, Start, End) %>%
-      mutate(in_time_mean = mean(.[.[["Sequence"]] == Sequence, ][[in_state_first()]], na.rm = TRUE),
-             out_time_mean = mean(.[.[["Sequence"]] == Sequence, ][[out_state_first()]], na.rm = TRUE)) %>%
+      mutate(in_time_mean = mean(.[.[["Sequence"]] == Sequence, ][[in_state_first]], na.rm = TRUE),
+             out_time_mean = mean(.[.[["Sequence"]] == Sequence, ][[out_state_first]], na.rm = TRUE),
+             zero_time_mean = mean(.[.[["Sequence"]] == Sequence, ][[zero_state_first]], na.rm = TRUE),
+             theo_deut = MaxUptake*deuteration_mass) %>%
       ungroup(.) %>%
-      mutate(frac_exch_state_1 = (.[[chosen_state_first()]] - in_time_mean)/(out_time_mean - in_time_mean),
-             frac_exch_state_2 = (.[[chosen_state_second()]] - in_time_mean)/(out_time_mean - in_time_mean)) %>%
+      mutate(frac_exch_state_1 = (.[[chosen_state_first]] - in_time_mean)/(out_time_mean - in_time_mean),
+             frac_exch_state_2 = (.[[chosen_state_second]] - in_time_mean)/(out_time_mean - in_time_mean),
+             theo_frac_exch_state_1 = (.[[chosen_state_first]] - zero_time_mean)/theo_deut,
+             theo_frac_exch_state_2 = (.[[chosen_state_second]] - zero_time_mean)/theo_deut) %>%
       group_by(Sequence, Start, End, MaxUptake) %>%
       summarize(avg_frac_exch_state_1 = mean(frac_exch_state_1, na.rm = TRUE),
                 sd_frac_exch_state_1 = sd(frac_exch_state_1, na.rm = TRUE),
                 avg_frac_exch_state_2 = mean(frac_exch_state_2, na.rm = TRUE),
-                sd_frac_exch_state_2 = sd(frac_exch_state_2, na.rm = TRUE)) %>%
+                sd_frac_exch_state_2 = sd(frac_exch_state_2, na.rm = TRUE),
+                avg_theo_frac_exch_state_1 = mean(theo_frac_exch_state_1, na.rm = TRUE),
+                sd_theo_frac_exch_state_1 = sd(theo_frac_exch_state_1, na.rm = TRUE),
+                avg_theo_frac_exch_state_2 = mean(theo_frac_exch_state_2, na.rm = TRUE),
+                sd_theo_frac_exch_state_2 = sd(theo_frac_exch_state_2, na.rm = TRUE)) %>%
       ungroup(.) %>%
       select(-Sequence, - MaxUptake) %>%
       mutate(Med_Sequence = Start + (End - Start)/2,
              diff_frac_exch = avg_frac_exch_state_1 - avg_frac_exch_state_2,
-             err_frac_exch = sqrt(sd_frac_exch_state_1^2 + sd_frac_exch_state_2^2)) %>%
+             err_frac_exch = sqrt(sd_frac_exch_state_1^2 + sd_frac_exch_state_2^2),
+             diff_theo_frac_exch = avg_theo_frac_exch_state_1 - avg_theo_frac_exch_state_2,
+             err_theo_frac_exch = sqrt(sd_theo_frac_exch_state_1^2 + sd_theo_frac_exch_state_2^2)) %>%
       arrange(Start, End)
-    
-  })
-  
-  ##
-  
-  p1 <- reactive({
-    
-    ggplot() +
-      geom_segment(data = dat_1(), aes(x = Start, y = avg_frac_exch_state_1, xend = End, yend = avg_frac_exch_state_1, color = "state_1")) +
-      geom_segment(data = dat_1(), aes(x = Start, y = avg_frac_exch_state_2, xend = End, yend = avg_frac_exch_state_2, color = "state_2")) +
-      geom_errorbar(data = dat_1(), aes(x = Med_Sequence, ymin = avg_frac_exch_state_1 - sd_frac_exch_state_1, ymax = avg_frac_exch_state_1 + sd_frac_exch_state_1, color = "state_1")) + 
-      geom_errorbar(data = dat_1(), aes(x = Med_Sequence, ymin = avg_frac_exch_state_2 - sd_frac_exch_state_2, ymax = avg_frac_exch_state_2 + sd_frac_exch_state_2, color = "state_2")) + 
-      labs(x = "Position in sequence", y = "Fraction Exchanged", title = paste0("Fraction exchanged in state comparison in ", chosen_time()," min")) +
-      theme(legend.position="bottom") +
-      scale_y_continuous(breaks = seq(0, 1.2, 0.2), expand = c(0, 0), limits = c(0, 1.2)) 
     
   })
   
@@ -229,34 +124,71 @@ server <- function(input, output, session) {
   
   output[["comparisonPlotKrzys"]] <- renderPlot({
     
-    p1()
+    if (input[["theory"]]) {
+
+      ggplot() +
+        geom_segment(data = dat_1(), aes(x = Start, y = avg_theo_frac_exch_state_1, xend = End, yend = avg_theo_frac_exch_state_1, color = "state_1")) +
+        geom_segment(data = dat_1(), aes(x = Start, y = avg_theo_frac_exch_state_2, xend = End, yend = avg_theo_frac_exch_state_2, color = "state_2")) +
+        geom_errorbar(data = dat_1(), aes(x = Med_Sequence, ymin = avg_theo_frac_exch_state_1 - sd_theo_frac_exch_state_1, ymax = avg_theo_frac_exch_state_1 + sd_theo_frac_exch_state_1, color = "state_1")) + 
+        geom_errorbar(data = dat_1(), aes(x = Med_Sequence, ymin = avg_theo_frac_exch_state_2 - sd_theo_frac_exch_state_2, ymax = avg_theo_frac_exch_state_2 + sd_theo_frac_exch_state_2, color = "state_2")) + 
+        labs(x = "Position in sequence", y = "Theoretical fraction Exchanged", title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min")) +
+        theme(legend.position="bottom") + 
+        scale_y_continuous(breaks = seq(0, 1.2, 0.2), expand = c(0, 0), limits = c(0, 1.2)) 
+
+      } else {
+
+        ggplot() +
+          geom_segment(data = dat_1(), aes(x = Start, y = avg_frac_exch_state_1, xend = End, yend = avg_frac_exch_state_1, color = "state_1")) +
+          geom_segment(data = dat_1(), aes(x = Start, y = avg_frac_exch_state_2, xend = End, yend = avg_frac_exch_state_2, color = "state_2")) +
+          geom_errorbar(data = dat_1(), aes(x = Med_Sequence, ymin = avg_frac_exch_state_1 - sd_frac_exch_state_1, ymax = avg_frac_exch_state_1 + sd_frac_exch_state_1, color = "state_1")) + 
+          geom_errorbar(data = dat_1(), aes(x = Med_Sequence, ymin = avg_frac_exch_state_2 - sd_frac_exch_state_2, ymax = avg_frac_exch_state_2 + sd_frac_exch_state_2, color = "state_2")) + 
+          labs(x = "Position in sequence", y = "Theoretical fraction Exchanged", title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]]," min")) +
+          theme(legend.position="bottom") +
+          scale_y_continuous(breaks = seq(0, 1.2, 0.2), expand = c(0, 0), limits = c(0, 1.2)) 
+
+      }
     
-  })
-  
-  ##
-  
-  p2 <- reactive({
-
-    ggplot() + 
-      geom_segment(data = dat_1(), aes(x = Start, y = diff_frac_exch, xend = End, yend = diff_frac_exch)) +
-      geom_errorbar(data = dat_1(), aes(x = Med_Sequence, ymin = diff_frac_exch - err_frac_exch, ymax = diff_frac_exch + err_frac_exch)) +
-      scale_y_continuous(breaks = seq(-1, 1, 0.2), expand = c(0, 0), limits = c(-1, 1)) + 
-      geom_hline(yintercept = 0, linetype = "dotted", color = "red", size = .5) +
-      labs(x = "Position in sequence", y = TeX("$\\Delta$ Fraction Exchanged"), title = expression(paste(Delta, " Fraction exchanged between states in chosen time")))
-
   })
   
   ##
   
   output[["differentailPlotKrzys"]] <- renderPlot({
-    
-    p2()
-    
+
+    if (input[["theory"]]) {
+
+      ggplot() + 
+        geom_segment(data = dat_1(), aes(x = Start, y = diff_theo_frac_exch, xend = End, yend = diff_theo_frac_exch)) +
+        geom_errorbar(data = dat_1(), aes(x = Med_Sequence, ymin = diff_theo_frac_exch - err_theo_frac_exch, ymax = diff_theo_frac_exch + err_theo_frac_exch)) +
+        scale_y_continuous(breaks = seq(-1, 1, 0.2), expand = c(0, 0), limits = c(-1, 1)) + 
+        geom_hline(yintercept = 0, linetype = "dotted", color = "red", size = .5) +
+        labs(x = "Position in sequence", y = TeX("$\\Delta$ Fraction Exchanged"), title = TeX("$\\Delta$ Fraction exchanged between states in 1 min")) 
+
+    } else {
+
+      ggplot() + 
+        geom_segment(data = dat_1(), aes(x = Start, y = diff_frac_exch, xend = End, yend = diff_frac_exch)) +
+        geom_errorbar(data = dat_1(), aes(x = Med_Sequence, ymin = diff_frac_exch - err_frac_exch, ymax = diff_frac_exch + err_frac_exch)) +
+        scale_y_continuous(breaks = seq(-1, 1, 0.2), expand = c(0, 0), limits = c(-1, 1)) + 
+        geom_hline(yintercept = 0, linetype = "dotted", color = "red", size = .5) +
+        labs(x = "Position in sequence", y = TeX("$\\Delta$ Fraction Exchanged"), title = expression(paste(Delta, " Fraction exchanged between states in chosen time")))
+
+    }
+
+
   })
+  
   
   ##
   # TODO : change name for more informative one
   dat_new <- reactive({
+    
+    chosen_state_first <- paste0(input[["state_first"]], "_", input[["chosen_time"]])
+    chosen_state_second <- paste0(input[["state_second"]], "_", input[["chosen_time"]])
+    
+    in_state_first <- paste0(input[["state_first"]], "_", input[["in_time"]])
+    out_state_first <- paste0(input[["state_first"]], "_", input[["out_time"]])
+    in_state_second <- paste0(input[["state_second"]], "_", input[["in_time"]])
+    out_state_second <- paste0(input[["state_second"]], "_", input[["out_time"]])
     
     dat() %>%
       mutate(exp_mass = Center*z - z*proton_mass,
@@ -267,21 +199,21 @@ server <- function(input, output, session) {
       ungroup(.) %>%
       unite(State_Exposure, State, Exposure) %>%
       spread(key = State_Exposure, value = avg_exp_mass) %>%
-      mutate(theo_in_time_first = (.[[chosen_state_first()]] - MHP)/ (MaxUptake * proton_mass),
-             theo_in_time_second = (.[[chosen_state_second()]] - MHP)/(MaxUptake * proton_mass)) %>%
+      mutate(theo_in_time_first = (.[[chosen_state_first]] - MHP)/ (MaxUptake * proton_mass),
+             theo_in_time_second = (.[[chosen_state_second]] - MHP)/(MaxUptake * proton_mass)) %>%
       group_by(Sequence, Start, End) %>%
-      summarize(in_time_mean_first = mean(.[.[["Sequence"]] == Sequence, ][[in_state_first()]], na.rm = TRUE),
-                err_in_time_mean_first = coalesce(sd(.[.[["Sequence"]] == Sequence, ][[in_state_first()]], na.rm = TRUE), 0),
-                chosen_time_mean_first = mean(.[.[["Sequence"]] == Sequence, ][[chosen_state_first()]], na.rm = TRUE),
-                err_chosen_time_mean_first = sd(.[.[["Sequence"]] == Sequence, ][[chosen_state_first()]], na.rm = TRUE),
-                out_time_mean_first = mean(.[.[["Sequence"]] == Sequence, ][[out_state_first()]], na.rm = TRUE),
-                err_out_time_mean_first = sd(.[.[["Sequence"]] == Sequence, ][[out_state_first()]], na.rm = TRUE),
-                in_time_mean_second = mean(.[.[["Sequence"]] == Sequence, ][[in_state_second()]], na.rm = TRUE),
-                err_in_time_mean_second = coalesce(sd(.[.[["Sequence"]] == Sequence, ][[in_state_second()]], na.rm = TRUE), 0),
-                chosen_time_mean_second = mean(.[.[["Sequence"]] == Sequence, ][[chosen_state_second()]], na.rm = TRUE),
-                err_chosen_time_mean_second = sd(.[.[["Sequence"]] == Sequence, ][[chosen_state_second()]], na.rm = TRUE),
-                out_time_mean_second = mean(.[.[["Sequence"]] == Sequence, ][[out_state_second()]], na.rm = TRUE),
-                err_out_time_mean_second = sd(.[.[["Sequence"]] == Sequence, ][[out_state_second()]], na.rm = TRUE),
+      summarize(in_time_mean_first = mean(.[.[["Sequence"]] == Sequence, ][[in_state_first]], na.rm = TRUE),
+                err_in_time_mean_first = coalesce(sd(.[.[["Sequence"]] == Sequence, ][[in_state_first]], na.rm = TRUE), 0),
+                chosen_time_mean_first = mean(.[.[["Sequence"]] == Sequence, ][[chosen_state_first]], na.rm = TRUE),
+                err_chosen_time_mean_first = sd(.[.[["Sequence"]] == Sequence, ][[chosen_state_first]], na.rm = TRUE),
+                out_time_mean_first = mean(.[.[["Sequence"]] == Sequence, ][[out_state_first]], na.rm = TRUE),
+                err_out_time_mean_first = sd(.[.[["Sequence"]] == Sequence, ][[out_state_first]], na.rm = TRUE),
+                in_time_mean_second = mean(.[.[["Sequence"]] == Sequence, ][[in_state_second]], na.rm = TRUE),
+                err_in_time_mean_second = coalesce(sd(.[.[["Sequence"]] == Sequence, ][[in_state_second]], na.rm = TRUE), 0),
+                chosen_time_mean_second = mean(.[.[["Sequence"]] == Sequence, ][[chosen_state_second]], na.rm = TRUE),
+                err_chosen_time_mean_second = sd(.[.[["Sequence"]] == Sequence, ][[chosen_state_second]], na.rm = TRUE),
+                out_time_mean_second = mean(.[.[["Sequence"]] == Sequence, ][[out_state_second]], na.rm = TRUE),
+                err_out_time_mean_second = sd(.[.[["Sequence"]] == Sequence, ][[out_state_second]], na.rm = TRUE),
                 avg_theo_in_time_first = mean(theo_in_time_first, na.rm = TRUE),
                 err_avg_theo_in_time_first = sd(theo_in_time_first, na.rm = TRUE),
                 avg_theo_in_time_second = mean(theo_in_time_second, na.rm = TRUE),
@@ -302,7 +234,7 @@ server <- function(input, output, session) {
   
   ##
   
-  p1_new <- reactive({
+  output[["comparisonPlot"]] <- renderPlot({
 
     if (input[["theory"]]) {
       
@@ -311,7 +243,7 @@ server <- function(input, output, session) {
         geom_segment(data = dat_new(), aes(x = Start, y = avg_theo_in_time_second, xend = End, yend = avg_theo_in_time_second, color = "state_2")) +
         geom_errorbar(data = dat_new(), aes(x = Med_Sequence, ymin = avg_theo_in_time_first - err_avg_theo_in_time_first, ymax = avg_theo_in_time_first + err_avg_theo_in_time_first, color = "state_1")) + 
         geom_errorbar(data = dat_new(), aes(x = Med_Sequence, ymin = avg_theo_in_time_second - err_avg_theo_in_time_second, ymax = avg_theo_in_time_second + err_avg_theo_in_time_second, color = "state_2")) + 
-        labs(x = "Position in sequence", y = "Theoretical fraction Exchanged", title = paste0("Theoretical fraction exchanged in state comparison in ", chosen_time(), " min")) +
+        labs(x = "Position in sequence", y = "Theoretical fraction Exchanged", title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min")) +
         theme(legend.position = "bottom") +
         scale_y_continuous(breaks = seq(0, 1.2, 0.2), expand = c(0, 0), limits = c(0, 1.2))
   
@@ -322,7 +254,7 @@ server <- function(input, output, session) {
           geom_segment(data = dat_new(), aes(x = Start, y = frac_exch_state_2, xend = End, yend = frac_exch_state_2, color = "state_2")) +
           geom_errorbar(data = dat_new(), aes(x = Med_Sequence, ymin = frac_exch_state_1 - err_frac_exch_state_1, ymax = frac_exch_state_1 + err_frac_exch_state_1, color = "state_1")) + 
           geom_errorbar(data = dat_new(), aes(x = Med_Sequence, ymin = frac_exch_state_2 - err_frac_exch_state_2, ymax = frac_exch_state_2 + err_frac_exch_state_2, color = "state_2")) + 
-          labs(x = "Position in sequence", y = "Fraction Exchanged", title = paste0("Fraction exchanged in state comparison in ", chosen_time(), " min")) +
+          labs(x = "Position in sequence", y = "Fraction Exchanged", title = paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min")) +
           theme(legend.position = "bottom") + 
           scale_y_continuous(breaks = seq(0, 1.2, 0.2), expand = c(0, 0), limits = c(0, 1.2)) 
   
@@ -332,15 +264,7 @@ server <- function(input, output, session) {
   
   ##
   
-  output[["comparisonPlot"]] <- renderPlot({
-    
-    p1_new()
-    
-  })
-  
-  ##
-  
-  p2_new <- reactive({
+  output[["differentialPlot"]] <- renderPlot({
     
     if (input[["theory"]]) {
       
@@ -363,27 +287,19 @@ server <- function(input, output, session) {
       }
     
   })
-  
+
   ##
-  
-  output[["differentialPlot"]] <- renderPlot({
-    
-    p2_new()
-    
-  })
-  
-  ##
+  # left as reactive, used more than once
   
   max_range <- reactive({
-    
+
     max(dat()[['End']])
-    
+
   })
   
   ##
   
   output[["protein_length"]] <- renderText({
-    
     
     max_range()
     
@@ -399,23 +315,16 @@ server <- function(input, output, session) {
                       value = c(0, max_range()))
     
   })
-  
-  ##
-  
-  possibe_states <- reactive({
-    
-    unique(dat()[["State"]])
-    
-  })
-  
+
   ##
   
   observe({
     
+    possible_states <- unique(dat()[["State"]])
+    
     updateRadioButtons(session,
                        inputId = "chosen_state",
-                       choices = possibe_states()
-    )
+                       choices = possible_states)
     
   })
   
@@ -460,8 +369,8 @@ server <- function(input, output, session) {
   })
   
   ##
-  
-  protein_stats <- reactive({
+
+  output[["protein_stats"]] <- renderTable({
     
     data.frame(
       Name = c("Length", "Uncovered", "Cys"),
@@ -471,14 +380,6 @@ server <- function(input, output, session) {
       ),
       stringsAsFactors = FALSE
     )
-    
-  })
-  
-  ##
-  
-  output[["protein_stats"]] <- renderTable({
-    
-    protein_stats()
     
   })
   
@@ -495,7 +396,6 @@ server <- function(input, output, session) {
   ##
   
   output[["aminoDist"]] <- renderPlot({
-    
     
     if (length(input[["hydro_prop"]]) == 0) {
       position_in_sequence() %>%

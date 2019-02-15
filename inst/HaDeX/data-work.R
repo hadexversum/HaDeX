@@ -21,3 +21,5 @@ file_req <- data.frame(
 )
 
 proton_mass <- 1.00727647
+
+deuteration_mass <- 2.0141 - 1.008
