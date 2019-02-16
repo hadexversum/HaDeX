@@ -189,18 +189,18 @@ server <- function(input, output, session) {
     out_state_first <- paste0(input[["state_first"]], "_", input[["out_time"]])
     in_state_second <- paste0(input[["state_second"]], "_", input[["in_time"]])
     out_state_second <- paste0(input[["state_second"]], "_", input[["out_time"]])
-    
+
     dat() %>%
       mutate(exp_mass = Center*z - z*proton_mass,
            Exposure = round(Exposure, 3)) %>%
       select(-Center, -z, -Protein) %>%
       group_by(Sequence, Start, End, MHP, MaxUptake, State, Exposure, File) %>%
       summarize(avg_exp_mass = weighted.mean(exp_mass, Inten, na.rm = TRUE)) %>%
-      ungroup(.) %>%
+      ungroup() %>%
       unite(State_Exposure, State, Exposure) %>%
       spread(key = State_Exposure, value = avg_exp_mass) %>%
-      mutate(theo_in_time_first = (.[[chosen_state_first]] - MHP)/ (MaxUptake * proton_mass),
-             theo_in_time_second = (.[[chosen_state_second]] - MHP)/(MaxUptake * proton_mass)) %>%
+      mutate(theo_in_time_first = (!!sym(chosen_state_first) - MHP)/ (MaxUptake * proton_mass),
+             theo_in_time_second = (!!sym(chosen_state_second) - MHP)/(MaxUptake * proton_mass)) %>%
       group_by(Sequence, Start, End) %>%
       summarize(in_time_mean_first = mean(.[.[["Sequence"]] == Sequence, ][[in_state_first]], na.rm = TRUE),
                 err_in_time_mean_first = coalesce(sd(.[.[["Sequence"]] == Sequence, ][[in_state_first]], na.rm = TRUE), 0),
