@@ -1,11 +1,16 @@
-#' get_reconstruced_sequence
+#' reconstruct_sequence
 #'
-#' Reconstructs sequence from DynamiX file. If a position is not covered by experiment, x is shown.
+#' Reconstructs protein sequence from DynamiX file. If a position is not covered by experiment data, x is shown.
 #'
-#' @export get_reconstructed_sequence
-#' @import dplyr
+#' @importFrom magrittr %>%
+#' 
+#' @param dat data frame with data from Dynamix file
+#' 
+#' @return reconstructed sequence (character)
+#' 
+#' @export reconstruct_sequence
 
-get_reconstructed_sequence <- function(dat) {
+reconstruct_sequence <- function(dat) {
   
   position_in_sequence_tmp <- dat %>%
     select(Start, End, Sequence) %>%

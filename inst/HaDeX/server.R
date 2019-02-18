@@ -356,7 +356,7 @@ server <- function(input, output, session) {
   
   protein_sequence <- reactive({
     
-    get_reconstructed_sequence(dat())
+    reconstruct_sequence(dat())
     
   })
   
