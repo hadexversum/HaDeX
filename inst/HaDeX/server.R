@@ -346,7 +346,7 @@ server <- function(input, output, session) {
     dat() %>%
       select(Start, End, Sequence) %>%
       unique(.) %>%
-      apply(1, function(x) data.frame(position = x[1]:x[2], amino = strsplit(x[3], '')[[1]])) %>%
+      apply(1, function(x) data.frame(position = x[1]:x[2], amino = strsplit(x[3], '')[[1]], stringsAsFactors = FALSE)) %>%
       bind_rows() %>%
       unique(.) 
     
