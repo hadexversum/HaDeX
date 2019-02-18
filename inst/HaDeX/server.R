@@ -356,9 +356,7 @@ server <- function(input, output, session) {
   
   protein_sequence <- reactive({
     
-    protein_sequence_template <- rep('x', max(dat()[["End"]])) # 285
-    protein_sequence_template[position_in_sequence_tmp()[["position"]]] <- position_in_sequence_tmp()[["amino"]]
-    paste(protein_sequence_template, collapse = "")
+    get_reconstructed_sequence(dat())
     
   })
   
