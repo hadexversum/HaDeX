@@ -2,7 +2,7 @@
 #'
 #' Reconstructs protein sequence from DynamiX file. If a position is not covered by experiment data, x is shown.
 #'
-#' @importFrom magrittr %>%
+#' @importFrom dplyr %>% bind_rows
 #' 
 #' @param dat data frame with data from Dynamix file
 #' 

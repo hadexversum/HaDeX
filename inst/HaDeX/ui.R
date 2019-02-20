@@ -2,7 +2,7 @@ source("data-work.R")
 
 #########################################
 
-ui <- fluidPage(
+ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
   
   tags[["head"]](
     tags[["style"]](HTML("

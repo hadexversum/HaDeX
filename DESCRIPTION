@@ -24,5 +24,7 @@ Imports:
 		shiny,
 		stringr,
 		tidyr
-Suggests: knitr
+Suggests: 
+    knitr,
+    shinythemes
 VignetteBuilder: knitr
