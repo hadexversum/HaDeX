@@ -17,6 +17,7 @@ LazyData: true
 RoxygenNote: 6.1.1
 Imports: 
 		dplyr,
+		DT,
 		ggplot2,
 		gsubfn,
 		latex2exp,

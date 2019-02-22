@@ -7,6 +7,7 @@ library(ggplot2)
 library(stringr)
 library(tidyr)
 library(latex2exp)
+library(DT)
 
 #########################################
 
@@ -23,3 +24,14 @@ file_req <- data.frame(
 proton_mass <- 1.00727647
 
 deuteration_mass <- 2.0141 - 1.008
+
+dt_format <- function(dat) {
+  
+  datatable(data = dat,
+            class = "table-bordered table-condensed",
+            extensions = "Buttons",
+            options = list(pageLength = 10, dom = "tBip", autoWidth = TRUE, buttons = c("excel", "pdf")),
+            filter = "bottom",
+            rownames = FALSE)
+  
+}

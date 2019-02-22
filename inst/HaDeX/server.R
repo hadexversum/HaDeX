@@ -110,13 +110,40 @@ server <- function(input, output, session) {
                 avg_theo_frac_exch_state_2 = mean(theo_frac_exch_state_2, na.rm = TRUE),
                 sd_theo_frac_exch_state_2 = sd(theo_frac_exch_state_2, na.rm = TRUE)) %>%
       ungroup(.) %>%
-      select(-Sequence, - MaxUptake) %>%
       mutate(Med_Sequence = Start + (End - Start)/2,
              diff_frac_exch = avg_frac_exch_state_1 - avg_frac_exch_state_2,
              err_frac_exch = sqrt(sd_frac_exch_state_1^2 + sd_frac_exch_state_2^2),
              diff_theo_frac_exch = avg_theo_frac_exch_state_1 - avg_theo_frac_exch_state_2,
              err_theo_frac_exch = sqrt(sd_theo_frac_exch_state_1^2 + sd_theo_frac_exch_state_2^2)) %>%
       arrange(Start, End)
+    
+  })
+  
+  ##
+  
+  output[["comparisonPlotKrzys_data"]] <- DT::renderDataTable({
+    
+    if (input[["theory"]]) {
+      
+      dat_1() %>%
+        select(Sequence, Start, End, avg_theo_frac_exch_state_1, sd_theo_frac_exch_state_1, avg_theo_frac_exch_state_2, sd_theo_frac_exch_state_2) %>%
+        mutate(avg_theo_frac_exch_state_1 = round(avg_theo_frac_exch_state_1, 4),
+               sd_theo_frac_exch_state_1 = round(sd_theo_frac_exch_state_1, 4),
+               avg_theo_frac_exch_state_2 = round(avg_theo_frac_exch_state_2, 4),
+               sd_theo_frac_exch_state_2 = round(sd_theo_frac_exch_state_2, 4)) %>%
+        dt_format()
+      
+    } else {
+      
+      dat_1() %>%
+        select(Sequence, Start, End, avg_frac_exch_state_1, sd_frac_exch_state_1, avg_frac_exch_state_2, sd_frac_exch_state_2) %>%
+        mutate(avg_frac_exch_state_1 = round(avg_frac_exch_state_1, 4),
+               sd_frac_exch_state_1 = round(sd_frac_exch_state_1, 4),
+               avg_frac_exch_state_2 = round(avg_frac_exch_state_2, 4),
+               sd_frac_exch_state_2 = round(sd_frac_exch_state_2, 4)) %>%
+        dt_format()
+      
+    }
     
   })
   
@@ -147,6 +174,30 @@ server <- function(input, output, session) {
           scale_y_continuous(breaks = seq(0, 1.2, 0.2), expand = c(0, 0), limits = c(0, 1.2)) 
 
       }
+    
+  })
+  
+  ##
+  
+  output[["differentailPlotKrzys_data"]] <- DT::renderDataTable({
+    
+    if (input[["theory"]]) {
+      
+      dat_1() %>%
+        select(Sequence, Start, End, diff_theo_frac_exch, err_theo_frac_exch) %>%
+        mutate(diff_theo_frac_exch = round(diff_theo_frac_exch, 4),
+               err_theo_frac_exch = round(err_theo_frac_exch, 4)) %>%
+        dt_format()
+    
+    } else {
+      
+      dat_1() %>%
+        select(Sequence, Start, End, diff_frac_exch, err_frac_exch) %>%
+        mutate(diff_frac_exch = round(diff_frac_exch, 4),
+               err_frac_exch = round(err_frac_exch, 4)) %>%
+        dt_format()
+      
+    }
     
   })
   
@@ -237,6 +288,35 @@ server <- function(input, output, session) {
   
   ##
   
+  output[["comparisonPlot_data"]] <- DT::renderDataTable({
+    
+    if (input[["theory"]]) {
+      
+      dat_new() %>%
+        select(Sequence, Start, End, avg_theo_in_time_first, err_avg_theo_in_time_first, avg_theo_in_time_second, err_avg_theo_in_time_second) %>%
+        mutate(avg_theo_in_time_first = round(avg_theo_in_time_first, 4),
+               err_avg_theo_in_time_first = round(err_avg_theo_in_time_first, 4),
+               avg_theo_in_time_second = round(avg_theo_in_time_second, 4),
+               err_avg_theo_in_time_second = round(err_avg_theo_in_time_second, 4)) %>%
+        dt_format()
+      
+    } else {
+      
+      dat_new() %>%
+        select(Sequence, Start, End, frac_exch_state_1, err_frac_exch_state_1, frac_exch_state_2, err_frac_exch_state_2) %>%
+        mutate(frac_exch_state_1 = round(frac_exch_state_1, 4),
+               err_frac_exch_state_1 = round(err_frac_exch_state_1, 4),
+               frac_exch_state_2 = round(frac_exch_state_2, 4),
+               err_frac_exch_state_2 = round(err_frac_exch_state_2, 4)) %>%
+        dt_format()
+      
+    }
+    
+    
+  })
+  
+  ##
+  
   output[["comparisonPlot"]] <- renderPlot({
 
     if (input[["theory"]]) {
@@ -263,6 +343,30 @@ server <- function(input, output, session) {
   
       }
 
+  })
+  
+  ##
+  
+  output[["differentialPlot_data"]] <- DT::renderDataTable({
+    
+    if (input[["theory"]]) {
+      
+      dat_new() %>%
+        select(Sequence, Start, End, diff_theo_frac_exch, err_diff_theo_frac_exch) %>%
+        mutate(diff_theo_frac_exch = round(diff_theo_frac_exch, 4),
+               err_diff_theo_frac_exch = round(err_diff_theo_frac_exch, 4)) %>%
+        dt_format()
+      
+    } else {
+      
+      dat_new() %>%
+        select(Sequence, Start, End, diff_frac_exch, err_frac_exch) %>%
+        mutate(diff_frac_exch = round(diff_frac_exch, 4),
+               err_frac_exch = round(err_frac_exch, 4)) %>%
+        dt_format()
+      
+    }
+    
   })
   
   ##

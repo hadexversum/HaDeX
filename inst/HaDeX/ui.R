@@ -117,10 +117,23 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                            width = "50%")
              ),
              mainPanel(
-               h4("Comparison plot: "),
-               plotOutput("comparisonPlot"),
-               h4("Wood\'s plot: "),
-               plotOutput("differentialPlot")
+               tabsetPanel(
+                 tabPanel("Comparison plot", 
+                          br(),
+                          plotOutput("comparisonPlot")),
+                 tabPanel("Data",
+                          br(),
+                          DT::dataTableOutput("comparisonPlot_data"))
+               ),
+               tabsetPanel(
+                 tabPanel("Wood\'s plot",
+                          br(),
+                          plotOutput("differentialPlot")),
+                 tabPanel("Data",
+                          br(),
+                          DT::dataTableOutput("differentialPlot_data"))
+               )
+               
              )
     ),
     tabPanel("Cosik",
@@ -132,10 +145,22 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                tableOutput("plotParametersKrzys")
              ),
              mainPanel(
-               h4("Comparison plot: "),
-               plotOutput("comparisonPlotKrzys"),
-               h4("Wood\'s plot: "),
-               plotOutput("differentailPlotKrzys")
+               tabsetPanel(
+                 tabPanel("Comparison plot",
+                          br(),
+                          plotOutput("comparisonPlotKrzys")),
+                 tabPanel("Data",
+                          br(),
+                          DT::dataTableOutput("comparisonPlotKrzys_data"))
+               ),
+               tabsetPanel(
+                 tabPanel("Wood\'s plot",
+                          br(),
+                          plotOutput("differentailPlotKrzys")),
+                 tabPanel("Data",
+                          br(),
+                          DT::dataTableOutput("differentailPlotKrzys_data"))
+               )
              )
              
     )
