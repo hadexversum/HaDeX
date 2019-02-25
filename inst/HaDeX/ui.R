@@ -78,9 +78,25 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                )
              ),
              mainPanel(
-               plotOutput("stateOverlapDist"),
+               tabsetPanel(
+                 tabPanel("Overlap Distribution",
+                          br(),
+                          plotOutput("stateOverlapDist")),
+                 br(),
+                 tabPanel("Data",
+                          br(),
+                          DT::dataTableOutput("stateOverlapDist_data"))
+               ),
                br(),
-               plotOutput("stateOverlap")
+               tabsetPanel(
+                 tabPanel("Overlap Graphically",
+                          br(),
+                          plotOutput("stateOverlap")),
+                 br(),
+                 tabPanel("Data",
+                          br(),
+                          DT::dataTableOutput("stateOverlap_data"))
+               )
              )
     ),
     tabPanel("Woods\'s plot",
@@ -108,11 +124,11 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                            width = "40%"),
                h4("State paramters"),
                selectInput(inputId = "state_first",
-                           label = "First state",
+                           label = "State 1",
                            choices = c("ALPHA", "BETA"),
                            width = "50%"),
                selectInput(inputId = "state_second",
-                           label = "Second state", 
+                           label = "State 2", 
                            choices = c("ALPHA", "BETA"),
                            width = "50%")
              ),
@@ -121,14 +137,17 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                  tabPanel("Comparison plot", 
                           br(),
                           plotOutput("comparisonPlot")),
+                 br(),
                  tabPanel("Data",
                           br(),
                           DT::dataTableOutput("comparisonPlot_data"))
                ),
+               br(),
                tabsetPanel(
                  tabPanel("Wood\'s plot",
                           br(),
                           plotOutput("differentialPlot")),
+                 br(),
                  tabPanel("Data",
                           br(),
                           DT::dataTableOutput("differentialPlot_data"))

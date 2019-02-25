@@ -25,9 +25,10 @@ proton_mass <- 1.00727647
 
 deuteration_mass <- 2.0141 - 1.008
 
-dt_format <- function(dat) {
+dt_format <- function(dat, cols = colnames(dat)) {
   
   datatable(data = dat,
+            colnames = cols,
             class = "table-bordered table-condensed",
             extensions = "Buttons",
             options = list(pageLength = 10, dom = "tBip", autoWidth = TRUE, buttons = c("excel", "pdf")),

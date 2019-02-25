@@ -131,7 +131,7 @@ server <- function(input, output, session) {
                sd_theo_frac_exch_state_1 = round(sd_theo_frac_exch_state_1, 4),
                avg_theo_frac_exch_state_2 = round(avg_theo_frac_exch_state_2, 4),
                sd_theo_frac_exch_state_2 = round(sd_theo_frac_exch_state_2, 4)) %>%
-        dt_format()
+        dt_format(cols = c("Sequence", "Start", "End", "Theo Frac Exch 1", "Err Theo Frac Exch 1", "Theo Frac Exch 2", "Err Theo Frac Exch 2"))
       
     } else {
       
@@ -141,7 +141,7 @@ server <- function(input, output, session) {
                sd_frac_exch_state_1 = round(sd_frac_exch_state_1, 4),
                avg_frac_exch_state_2 = round(avg_frac_exch_state_2, 4),
                sd_frac_exch_state_2 = round(sd_frac_exch_state_2, 4)) %>%
-        dt_format()
+        dt_format(cols = c("Sequence", "Start", "End", "Frac Exch 1", "Err Frac Exch 1", "Frac Exch 2", "Err Frac Exch 2"))
       
     }
     
@@ -187,7 +187,7 @@ server <- function(input, output, session) {
         select(Sequence, Start, End, diff_theo_frac_exch, err_theo_frac_exch) %>%
         mutate(diff_theo_frac_exch = round(diff_theo_frac_exch, 4),
                err_theo_frac_exch = round(err_theo_frac_exch, 4)) %>%
-        dt_format()
+        dt_format(cols = c("Sequence", "Start", "End", "Theo Diff Frac Exch", "Err Theo Diff Frac Exch"))
     
     } else {
       
@@ -195,7 +195,7 @@ server <- function(input, output, session) {
         select(Sequence, Start, End, diff_frac_exch, err_frac_exch) %>%
         mutate(diff_frac_exch = round(diff_frac_exch, 4),
                err_frac_exch = round(err_frac_exch, 4)) %>%
-        dt_format()
+        dt_format(cols = c("Sequence", "Start", "End", "Diff Frac Exch", "Err Diff Frac Exch"))
       
     }
     
@@ -212,7 +212,7 @@ server <- function(input, output, session) {
         geom_errorbar(data = dat_1(), aes(x = Med_Sequence, ymin = diff_theo_frac_exch - err_theo_frac_exch, ymax = diff_theo_frac_exch + err_theo_frac_exch)) +
         scale_y_continuous(breaks = seq(-1, 1, 0.2), expand = c(0, 0), limits = c(-1, 1)) + 
         geom_hline(yintercept = 0, linetype = "dotted", color = "red", size = .5) +
-        labs(x = "Position in sequence", y = TeX("$\\Delta$ Fraction Exchanged"), title = TeX("$\\Delta$ Fraction exchanged between states in 1 min")) 
+        labs(x = "Position in sequence", y = TeX("$\\Delta$ Fraction Exchanged"), title = TeX("$\\Delta$ Theoretical fraction exchanged between states in 1 min")) 
 
     } else {
 
@@ -298,7 +298,7 @@ server <- function(input, output, session) {
                err_avg_theo_in_time_first = round(err_avg_theo_in_time_first, 4),
                avg_theo_in_time_second = round(avg_theo_in_time_second, 4),
                err_avg_theo_in_time_second = round(err_avg_theo_in_time_second, 4)) %>%
-        dt_format()
+        dt_format(cols = c("Sequence", "Start", "End", "Theo Frac Exch 1", "Err Theo Frac Exch 1", "Theo Frac Exch 2", "Err Theo Frac Exch 2"))
       
     } else {
       
@@ -308,7 +308,7 @@ server <- function(input, output, session) {
                err_frac_exch_state_1 = round(err_frac_exch_state_1, 4),
                frac_exch_state_2 = round(frac_exch_state_2, 4),
                err_frac_exch_state_2 = round(err_frac_exch_state_2, 4)) %>%
-        dt_format()
+        dt_format(cols = c("Sequence", "Start", "End", "Frac Exch 1", "Err Frac Exch 1", "Frac Exch 2", "Err Frac Exch 2"))
       
     }
     
@@ -355,7 +355,7 @@ server <- function(input, output, session) {
         select(Sequence, Start, End, diff_theo_frac_exch, err_diff_theo_frac_exch) %>%
         mutate(diff_theo_frac_exch = round(diff_theo_frac_exch, 4),
                err_diff_theo_frac_exch = round(err_diff_theo_frac_exch, 4)) %>%
-        dt_format()
+        dt_format(cols = c("Sequence", "Start", "End", "Theo Diff Frac Exch", "Err Theo Diff Frac Exch"))
       
     } else {
       
@@ -363,7 +363,7 @@ server <- function(input, output, session) {
         select(Sequence, Start, End, diff_frac_exch, err_frac_exch) %>%
         mutate(diff_frac_exch = round(diff_frac_exch, 4),
                err_frac_exch = round(err_frac_exch, 4)) %>%
-        dt_format()
+        dt_format(cols = c("Sequence", "Start", "End", "Diff Frac Exch", "Err Diff Frac Exch"))
       
     }
     
@@ -478,11 +478,10 @@ server <- function(input, output, session) {
   output[["protein_stats"]] <- renderTable({
     
     data.frame(
-      Name = c("Length", "Uncovered", "Cys"),
+      Name = c("Length", "Covered", "Cys"),
       Value = as.character(c(max_range(), 
-                             paste0(round(100*str_count(protein_sequence(), 'x')/max_range(), 2), '%'),
-                             str_count(protein_sequence(), 'C'))
-      ),
+                             paste0(round(100-100*str_count(protein_sequence(), 'x')/max_range(), 2), '%'),
+                             str_count(protein_sequence(), 'C'))),
       stringsAsFactors = FALSE
     )
     
@@ -537,6 +536,20 @@ server <- function(input, output, session) {
   
   ##
   
+  output[["stateOverlap_data"]] <- DT::renderDataTable({
+    
+    dat() %>%
+      select(Sequence, Start, End, State) %>% 
+      filter(State == input[["chosen_state"]]) %>%
+      filter(Start >= input[["plot_range"]][[1]], End <= input[["plot_range"]][[2]]) %>%
+      filter(!duplicated(.)) %>%
+      select(-State) %>%
+      dt_format(cols = c("Sequence", "Start", "End"))
+    
+  })
+  
+  ##
+  
   output[["stateOverlap"]] <- renderPlot({
     
     dat() %>%
@@ -554,6 +567,27 @@ server <- function(input, output, session) {
            y = '') +
       theme(axis.ticks.y = element_blank(),
             axis.text.y = element_blank())
+    
+  })
+  
+  ##
+  
+  output[["stateOverlapDist_data"]] <- DT::renderDataTable({
+    
+    dat() %>%
+      select(Start, End, State, Sequence) %>%
+      filter(State == input[["chosen_state"]]) %>%
+      filter(Start >= input[["plot_range"]][[1]], End <= input[["plot_range"]][[2]]) %>%
+      filter(!duplicated(.)) %>%
+      select(-State) %>%
+      apply(1, function(i) i[1]:i[2]) %>%
+      unlist %>%
+      data.frame(pos = .) %>%
+      group_by(pos) %>%
+      summarise(coverage = length(pos)) %>%
+      right_join(data.frame(pos = seq(from = input[["plot_range"]][[1]], to = input[["plot_range"]][[2]]))) %>%
+      replace_na(list(coverage = 0)) %>%
+      dt_format(cols = c("Position", "Times Covered"))
     
   })
   
