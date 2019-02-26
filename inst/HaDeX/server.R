@@ -15,7 +15,7 @@ server <- function(input, output, session) {
     inFile <- input[["data_file"]]
     
     if (is.null(inFile)){
-      read.csv('./data/161114_BETA_alpha_gamma.csv')
+      read.csv('./data/KD_180110_CD160_HVEM.csv')
     } else {
       read.csv(inFile[["datapath"]])
     }
