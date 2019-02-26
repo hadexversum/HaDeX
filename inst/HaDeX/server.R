@@ -278,25 +278,15 @@ server <- function(input, output, session) {
 
     if (input[["theory"]]) {
       
-      ggplot()+
-        geom_segment(data = dat_new(), aes(x = Start, y = avg_theo_in_time_1, xend = End, yend = avg_theo_in_time_1, color = "state_1")) +
-        geom_segment(data = dat_new(), aes(x = Start, y = avg_theo_in_time_2, xend = End, yend = avg_theo_in_time_2, color = "state_2")) +
-        geom_errorbar(data = dat_new(), aes(x = Med_Sequence, ymin = avg_theo_in_time_1 - err_avg_theo_in_time_1, ymax = avg_theo_in_time_1 + err_avg_theo_in_time_1, color = "state_1")) + 
-        geom_errorbar(data = dat_new(), aes(x = Med_Sequence, ymin = avg_theo_in_time_2 - err_avg_theo_in_time_2, ymax = avg_theo_in_time_2 + err_avg_theo_in_time_2, color = "state_2")) + 
-        labs(x = "Position in sequence", y = "Theoretical fraction Exchanged", title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min")) +
-        theme(legend.position = "bottom") +
-        scale_y_continuous(breaks = seq(0, 1.2, 0.2), expand = c(0, 0), limits = c(0, 1.2))
+      comparison_plot(calc_dat = dat_new(),
+                      plot_title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min"),
+                      theoretical = TRUE)
   
       } else {   
-  
-        ggplot() +
-          geom_segment(data = dat_new(), aes(x = Start, y = frac_exch_state_1, xend = End, yend = frac_exch_state_1, color = "state_1")) +
-          geom_segment(data = dat_new(), aes(x = Start, y = frac_exch_state_2, xend = End, yend = frac_exch_state_2, color = "state_2")) +
-          geom_errorbar(data = dat_new(), aes(x = Med_Sequence, ymin = frac_exch_state_1 - err_frac_exch_state_1, ymax = frac_exch_state_1 + err_frac_exch_state_1, color = "state_1")) + 
-          geom_errorbar(data = dat_new(), aes(x = Med_Sequence, ymin = frac_exch_state_2 - err_frac_exch_state_2, ymax = frac_exch_state_2 + err_frac_exch_state_2, color = "state_2")) + 
-          labs(x = "Position in sequence", y = "Fraction Exchanged", title = paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min")) +
-          theme(legend.position = "bottom") + 
-          scale_y_continuous(breaks = seq(0, 1.2, 0.2), expand = c(0, 0), limits = c(0, 1.2)) 
+        
+        comparison_plot(calc_dat = dat_new(),
+                        plot_title = paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min"),
+                        theoretical = FALSE)
   
       }
 
@@ -332,21 +322,13 @@ server <- function(input, output, session) {
     
     if (input[["theory"]]) {
       
-      ggplot() + 
-        geom_segment(data = dat_new(), aes(x = Start, y = diff_theo_frac_exch, xend = End, yend = diff_theo_frac_exch)) +
-        geom_errorbar(data = dat_new(), aes(x = Med_Sequence, ymin = diff_theo_frac_exch - err_diff_theo_frac_exch, ymax = diff_theo_frac_exch + err_diff_theo_frac_exch)) +
-        scale_y_continuous(breaks = seq(-1, 1, 0.2), expand = c(0, 0), limits = c(-1, 1)) + 
-        geom_hline(yintercept = 0, linetype = "dotted", color = "red", size = .5) +
-        labs(x = "Position in sequence", y = TeX("$\\Delta$ Theoretical fraction Exchanged"), title = expression(paste(Delta, " Theoretical fraction exchanged between states in chosen time"))) 
+      woods_plot(calc_dat = dat_new(),
+                 theoretical = TRUE)
 
       } else {
         
-        ggplot() + 
-          geom_segment(data = dat_new(), aes(x = Start, y = diff_frac_exch, xend = End, yend = diff_frac_exch)) +
-          geom_errorbar(data = dat_new(), aes(x = Med_Sequence, ymin = diff_frac_exch - err_frac_exch, ymax = diff_frac_exch + err_frac_exch)) +
-          scale_y_continuous(breaks = seq(-1, 1, 0.2), expand = c(0, 0), limits = c(-1, 1)) + 
-          geom_hline(yintercept = 0, linetype = "dotted", color = "red", size = .5) +
-          labs(x = "Position in sequence", y = TeX("$\\Delta$ Fraction Exchanged"), title = expression(paste(Delta, " Fraction exchanged between states in chosen time"))) 
+        woods_plot(calc_dat = dat_new(),
+                   theoretical = FALSE)
         
       }
     
