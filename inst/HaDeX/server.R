@@ -232,57 +232,14 @@ server <- function(input, output, session) {
   ##
   # TODO : change name for more informative one
   dat_new <- reactive({
-    
-    chosen_state_first <- paste0(input[["state_first"]], "_", input[["chosen_time"]])
-    chosen_state_second <- paste0(input[["state_second"]], "_", input[["chosen_time"]])
-    
-    in_state_first <- paste0(input[["state_first"]], "_", input[["in_time"]])
-    out_state_first <- paste0(input[["state_first"]], "_", input[["out_time"]])
-    in_state_second <- paste0(input[["state_second"]], "_", input[["in_time"]])
-    out_state_second <- paste0(input[["state_second"]], "_", input[["out_time"]])
 
-    dat() %>%
-      mutate(exp_mass = Center*z - z*proton_mass,
-             Exposure = round(Exposure, 3)) %>%
-      select(-Center, -z, -Protein) %>%
-      group_by(Sequence, Start, End, MHP, MaxUptake, State, Exposure, File) %>%
-      summarize(avg_exp_mass = weighted.mean(exp_mass, Inten, na.rm = TRUE)) %>%
-      ungroup() %>%
-      unite(State_Exposure, State, Exposure) %>%
-      spread(key = State_Exposure, value = avg_exp_mass) %>%
-      mutate(theo_in_time_first = (!!sym(chosen_state_first) - MHP)/ (MaxUptake * proton_mass),
-             theo_in_time_second = (!!sym(chosen_state_second) - MHP)/(MaxUptake * proton_mass)) %>%
-      group_by(Sequence, Start, End) %>%
-      summarize(in_time_mean_first = mean(!!sym(in_state_first), na.rm = TRUE),
-                err_in_time_mean_first = coalesce(sd(!!sym(in_state_first), na.rm = TRUE), 0),
-                chosen_time_mean_first = mean(!!sym(chosen_state_first), na.rm = TRUE),
-                err_chosen_time_mean_first = sd(!!sym(chosen_state_first), na.rm = TRUE),
-                out_time_mean_first = mean(!!sym(out_state_first), na.rm = TRUE),
-                err_out_time_mean_first = sd(!!sym(out_state_first), na.rm = TRUE),
-                in_time_mean_second = mean(!!sym(in_state_second), na.rm = TRUE),
-                err_in_time_mean_second = coalesce(sd(!!sym(in_state_second), na.rm = TRUE), 0),
-                chosen_time_mean_second = mean(!!sym(chosen_state_second), na.rm = TRUE),
-                err_chosen_time_mean_second = sd(!!sym(chosen_state_second), na.rm = TRUE),
-                out_time_mean_second = mean(!!sym(out_state_second), na.rm = TRUE),
-                err_out_time_mean_second = sd(!!sym(out_state_second), na.rm = TRUE),
-                avg_theo_in_time_first = mean(theo_in_time_first, na.rm = TRUE),
-                err_avg_theo_in_time_first = sd(theo_in_time_first, na.rm = TRUE),
-                avg_theo_in_time_second = mean(theo_in_time_second, na.rm = TRUE),
-                err_avg_theo_in_time_second = sd(theo_in_time_second, na.rm = TRUE))  %>%
-      mutate(frac_exch_state_1 = (chosen_time_mean_first - in_time_mean_first)/(out_time_mean_first - in_time_mean_first),
-             err_frac_exch_state_1 = sqrt(err_chosen_time_mean_first^2 + 2*err_in_time_mean_first^2 + err_in_time_mean_first^2), 
-             frac_exch_state_2 = (chosen_time_mean_second - in_time_mean_second)/(out_time_mean_second - in_time_mean_second),
-             err_frac_exch_state_2 = sqrt(err_chosen_time_mean_second^2 + 2*err_in_time_mean_second^2 + err_in_time_mean_second^2),
-             diff_frac_exch = frac_exch_state_1 - frac_exch_state_2,
-             err_frac_exch = sqrt(err_frac_exch_state_1^2 + err_frac_exch_state_2^2),
-             diff_theo_frac_exch = avg_theo_in_time_first - avg_theo_in_time_second, 
-             err_diff_theo_frac_exch = sqrt(err_avg_theo_in_time_first^2 + err_avg_theo_in_time_second^2),
-             Med_Sequence = Start + (End - Start)/2) %>%
-      select(Sequence, Start, End, Med_Sequence, frac_exch_state_1, err_frac_exch_state_1, frac_exch_state_2, 
-             err_frac_exch_state_2, diff_frac_exch, err_frac_exch, diff_theo_frac_exch, err_diff_theo_frac_exch, 
-             avg_theo_in_time_first, avg_theo_in_time_second, err_avg_theo_in_time_first, err_avg_theo_in_time_second) %>%
-      arrange(Start, End)
-    
+    prepare_dataset(dat = dat(),
+                    in_state_first = paste0(input[["state_first"]], "_", input[["in_time"]]),
+                    chosen_state_first = paste0(input[["state_first"]], "_", input[["chosen_time"]]),
+                    out_state_first = paste0(input[["state_first"]], "_", input[["out_time"]]),
+                    in_state_second = paste0(input[["state_second"]], "_", input[["in_time"]]),
+                    chosen_state_second = paste0(input[["state_second"]], "_", input[["chosen_time"]]),
+                    out_state_second = paste0(input[["state_second"]], "_", input[["out_time"]]))
     
   })
   
@@ -293,11 +250,11 @@ server <- function(input, output, session) {
     if (input[["theory"]]) {
       
       dat_new() %>%
-        select(Sequence, Start, End, avg_theo_in_time_first, err_avg_theo_in_time_first, avg_theo_in_time_second, err_avg_theo_in_time_second) %>%
-        mutate(avg_theo_in_time_first = round(avg_theo_in_time_first, 4),
-               err_avg_theo_in_time_first = round(err_avg_theo_in_time_first, 4),
-               avg_theo_in_time_second = round(avg_theo_in_time_second, 4),
-               err_avg_theo_in_time_second = round(err_avg_theo_in_time_second, 4)) %>%
+        select(Sequence, Start, End, avg_theo_in_time_1, err_avg_theo_in_time_1, avg_theo_in_time_2, err_avg_theo_in_time_2) %>%
+        mutate(avg_theo_in_time_1 = round(avg_theo_in_time_1, 4),
+               err_avg_theo_in_time_1 = round(err_avg_theo_in_time_1, 4),
+               avg_theo_in_time_2 = round(avg_theo_in_time_2, 4),
+               err_avg_theo_in_time_2 = round(err_avg_theo_in_time_2, 4)) %>%
         dt_format(cols = c("Sequence", "Start", "End", "Theo Frac Exch 1", "Err Theo Frac Exch 1", "Theo Frac Exch 2", "Err Theo Frac Exch 2"))
       
     } else {
@@ -322,10 +279,10 @@ server <- function(input, output, session) {
     if (input[["theory"]]) {
       
       ggplot()+
-        geom_segment(data = dat_new(), aes(x = Start, y = avg_theo_in_time_first, xend = End, yend = avg_theo_in_time_first, color = "state_1")) +
-        geom_segment(data = dat_new(), aes(x = Start, y = avg_theo_in_time_second, xend = End, yend = avg_theo_in_time_second, color = "state_2")) +
-        geom_errorbar(data = dat_new(), aes(x = Med_Sequence, ymin = avg_theo_in_time_first - err_avg_theo_in_time_first, ymax = avg_theo_in_time_first + err_avg_theo_in_time_first, color = "state_1")) + 
-        geom_errorbar(data = dat_new(), aes(x = Med_Sequence, ymin = avg_theo_in_time_second - err_avg_theo_in_time_second, ymax = avg_theo_in_time_second + err_avg_theo_in_time_second, color = "state_2")) + 
+        geom_segment(data = dat_new(), aes(x = Start, y = avg_theo_in_time_1, xend = End, yend = avg_theo_in_time_1, color = "state_1")) +
+        geom_segment(data = dat_new(), aes(x = Start, y = avg_theo_in_time_2, xend = End, yend = avg_theo_in_time_2, color = "state_2")) +
+        geom_errorbar(data = dat_new(), aes(x = Med_Sequence, ymin = avg_theo_in_time_1 - err_avg_theo_in_time_1, ymax = avg_theo_in_time_1 + err_avg_theo_in_time_1, color = "state_1")) + 
+        geom_errorbar(data = dat_new(), aes(x = Med_Sequence, ymin = avg_theo_in_time_2 - err_avg_theo_in_time_2, ymax = avg_theo_in_time_2 + err_avg_theo_in_time_2, color = "state_2")) + 
         labs(x = "Position in sequence", y = "Theoretical fraction Exchanged", title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min")) +
         theme(legend.position = "bottom") +
         scale_y_continuous(breaks = seq(0, 1.2, 0.2), expand = c(0, 0), limits = c(0, 1.2))
