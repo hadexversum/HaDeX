@@ -3,7 +3,14 @@ title: "hadexReport"
 author: ""
 date: ""
 output:
-  html_document
+  html_document:
+  theme: united
+  code_folding: hide
+  highlight: textmate
+  toc: true
+  toc_float: true
+  number_sections: true
+  df_print: paged
 toc: true
 ---
   
