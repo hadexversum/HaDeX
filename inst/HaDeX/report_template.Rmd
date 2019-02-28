@@ -12,7 +12,15 @@ output:
     number_sections: true
     df_print: paged
 ---
-  
+
+<style type="text/css">
+span { 
+      display: block;
+      max-width: 100%;
+      word-wrap: break-word;
+    }
+</style>
+
 Report generated on `r Sys.time()` using the [HaDeX](http://github.com/michbur/HaDeX) R package.  
 
 Detected input file: `r ifelse(is.null(input[["input_file"]][["name"]]), "none", input[["input_file"]][["name"]])`.  
@@ -21,7 +29,7 @@ Detected input file: `r ifelse(is.null(input[["input_file"]][["name"]]), "none",
 
 Protein name : `r as.character(unique(dat()[["Protein"]]))`
 
-Protein sequence : `r protein_sequece_colored()`
+Protein sequence : <span>`r protein_sequece_colored()`</span>
 
 Length : `r max_range()`
 
