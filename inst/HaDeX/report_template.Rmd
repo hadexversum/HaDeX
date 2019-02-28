@@ -1,0 +1,57 @@
+---
+title: "hadexReport"
+author: ""
+date: ""
+output:
+  html_document
+toc: true
+---
+  
+Report generated on `r Sys.time()` using [HaDeX](http://github.com/michbur/HaDeX) R package.  
+
+Detected input file: `r ifelse(is.null(input[["input_file"]][["name"]]), "none", input[["input_file"]][["name"]])`.  
+
+# Data description
+
+Protein name : `r as.character(unique(dat()[["Protein"]]))`
+
+Protein sequence : `r protein_sequece_colored()`
+
+Length : `r max_range()`
+
+Coverage : `r paste0(round(100-100*str_count(protein_sequence(), 'x')/max_range(), 2), '%')`
+
+<!--- OVERLAP DISTRIBUTION -->
+
+```{r echo = FALSE}
+
+if (input[["export_overlap_dist"]]){
+  
+  cat("## Overlap Distribution    \n\n")
+  
+  stateOverlapDist()
+
+}
+
+```
+
+<!--- OVERLAP DISTRIBUTION DATA -->
+
+```{r echo = FALSE}
+
+if (input[["export_overlap_dist_data"]]){
+  
+  stateOverlapDist_data()
+  
+}
+
+```
+
+
+# R Session
+
+```{r, results='markup'}
+
+sessionInfo()
+
+```

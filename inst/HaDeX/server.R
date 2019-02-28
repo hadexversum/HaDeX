@@ -427,12 +427,20 @@ server <- function(input, output, session) {
   })
   
   ##
-  
-  output[["sequenceName"]] <- renderText({
+  # rmarkdown doesnt accept output variables
+  protein_sequece_colored <- reactive({
     
     paste0("<span>", 
            gsubfn(pattern = 'C', replacement = function(x) paste0('<font color = "red">', x, "</font>"), x = protein_sequence()),
            "</span>")
+    
+  })
+  
+  ##
+  
+  output[["sequenceName"]] <- renderText({
+    
+    protein_sequece_colored()
     
   })
   
@@ -489,7 +497,7 @@ server <- function(input, output, session) {
   
   ##
   
-  output[["stateOverlap"]] <- renderPlot({
+  stateOverlapDist <- reactive({
     
     dat() %>%
       select(Start, End, State) %>%
@@ -511,7 +519,15 @@ server <- function(input, output, session) {
   
   ##
   
-  output[["stateOverlapDist_data"]] <- DT::renderDataTable({
+  output[["stateOverlap"]] <- renderPlot({
+    
+    stateOverlapDist()
+    
+  })
+  
+  ##
+  
+  stateOverlapDist_data <- reactive({
     
     dat() %>%
       select(Start, End, State, Sequence) %>%
@@ -527,6 +543,14 @@ server <- function(input, output, session) {
       right_join(data.frame(pos = seq(from = input[["plot_range"]][[1]], to = input[["plot_range"]][[2]]))) %>%
       replace_na(list(coverage = 0)) %>%
       dt_format(cols = c("Position", "Times Covered"))
+    
+  })
+  
+  ##
+  
+  output[["stateOverlapDist_data"]] <- DT::renderDataTable({
+    
+    stateOverlapDist_data()
     
   })
   
@@ -561,6 +585,24 @@ server <- function(input, output, session) {
            y = 'Coverage') +
       theme(legend.position = "none")
     
+  })
+  
+  ##
+  
+  output[["export_action"]] <- downloadHandler(
+    
+    filename <- "HaDeX_Report.html",
+    
+    content <- function(file) {
+      
+      knitr::knit(input = "report_template.Rmd", 
+                  output = "HaDeX_Report.md", quiet = TRUE)
+      
+      on.exit(unlink(c("HaDeX_Report.md", "figure"), recursive = TRUE))
+      
+      markdown::markdownToHTML("HaDeX_Report.md", file, #stylesheet = "report.css", 
+                               options = c('toc', markdown::markdownHTMLOptions(TRUE)))
+      
   })
   
   ##
