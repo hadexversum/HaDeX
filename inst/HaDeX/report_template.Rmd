@@ -4,14 +4,13 @@ author: ""
 date: ""
 output:
   html_document:
-  theme: united
-  code_folding: hide
-  highlight: textmate
-  toc: true
-  toc_float: true
-  number_sections: true
-  df_print: paged
-toc: true
+    theme: united
+    code_folding: hide
+    highlight: textmate
+    toc: true
+    toc_float: true
+    number_sections: true
+    df_print: paged
 ---
   
 Report generated on `r Sys.time()` using the [HaDeX](http://github.com/michbur/HaDeX) R package.  

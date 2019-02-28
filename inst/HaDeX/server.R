@@ -595,14 +595,10 @@ server <- function(input, output, session) {
     
     content <- function(file) {
       
-      knitr::knit(input = "report_template.Rmd", 
-                  output = "HaDeX_Report.md", quiet = TRUE)
+      rmarkdown::render(input = "report_template.Rmd", 
+                        output_file = file, quiet = TRUE)
       
-      on.exit(unlink(c("HaDeX_Report.md", "figure"), recursive = TRUE))
-      
-      markdown::markdownToHTML("HaDeX_Report.md", file, #stylesheet = "report.css", 
-                               options = c('toc', markdown::markdownHTMLOptions(TRUE)))
-      
+
   })
   
   ##
