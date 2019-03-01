@@ -245,30 +245,62 @@ server <- function(input, output, session) {
   
   ##
   
+  comparison_plot_data_theo <- reactive({
+    
+    dat_new() %>%
+      select(Sequence, Start, End, avg_theo_in_time_1, err_avg_theo_in_time_1, avg_theo_in_time_2, err_avg_theo_in_time_2) %>%
+      mutate(avg_theo_in_time_1 = round(avg_theo_in_time_1, 4),
+             err_avg_theo_in_time_1 = round(err_avg_theo_in_time_1, 4),
+             avg_theo_in_time_2 = round(avg_theo_in_time_2, 4),
+             err_avg_theo_in_time_2 = round(err_avg_theo_in_time_2, 4)) %>%
+      dt_format(cols = c("Sequence", "Start", "End", "Theo Frac Exch 1", "Err Theo Frac Exch 1", "Theo Frac Exch 2", "Err Theo Frac Exch 2"))
+    
+  })
+  
+  ##
+  
+  comparison_plot_data_exp <- reactive({
+    
+    dat_new() %>%
+      select(Sequence, Start, End, frac_exch_state_1, err_frac_exch_state_1, frac_exch_state_2, err_frac_exch_state_2) %>%
+      mutate(frac_exch_state_1 = round(frac_exch_state_1, 4),
+             err_frac_exch_state_1 = round(err_frac_exch_state_1, 4),
+             frac_exch_state_2 = round(frac_exch_state_2, 4),
+             err_frac_exch_state_2 = round(err_frac_exch_state_2, 4)) %>%
+      dt_format(cols = c("Sequence", "Start", "End", "Frac Exch 1", "Err Frac Exch 1", "Frac Exch 2", "Err Frac Exch 2"))
+    
+  })
+  
+  ##
+  
   output[["comparisonPlot_data"]] <- DT::renderDataTable({
     
     if (input[["theory"]]) {
-      
-      dat_new() %>%
-        select(Sequence, Start, End, avg_theo_in_time_1, err_avg_theo_in_time_1, avg_theo_in_time_2, err_avg_theo_in_time_2) %>%
-        mutate(avg_theo_in_time_1 = round(avg_theo_in_time_1, 4),
-               err_avg_theo_in_time_1 = round(err_avg_theo_in_time_1, 4),
-               avg_theo_in_time_2 = round(avg_theo_in_time_2, 4),
-               err_avg_theo_in_time_2 = round(err_avg_theo_in_time_2, 4)) %>%
-        dt_format(cols = c("Sequence", "Start", "End", "Theo Frac Exch 1", "Err Theo Frac Exch 1", "Theo Frac Exch 2", "Err Theo Frac Exch 2"))
-      
+      comparison_plot_data_theo()
     } else {
-      
-      dat_new() %>%
-        select(Sequence, Start, End, frac_exch_state_1, err_frac_exch_state_1, frac_exch_state_2, err_frac_exch_state_2) %>%
-        mutate(frac_exch_state_1 = round(frac_exch_state_1, 4),
-               err_frac_exch_state_1 = round(err_frac_exch_state_1, 4),
-               frac_exch_state_2 = round(frac_exch_state_2, 4),
-               err_frac_exch_state_2 = round(err_frac_exch_state_2, 4)) %>%
-        dt_format(cols = c("Sequence", "Start", "End", "Frac Exch 1", "Err Frac Exch 1", "Frac Exch 2", "Err Frac Exch 2"))
-      
+      comparison_plot_data_exp()
     }
     
+    
+  })
+  
+  ##
+  
+  comparison_plot_theo <- reactive({
+    
+    comparison_plot(calc_dat = dat_new(),
+                    plot_title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min"),
+                    theoretical = TRUE)
+    
+  })
+  
+  ##
+  
+  comparison_plot_exp <- reactive({
+    
+    comparison_plot(calc_dat = dat_new(),
+                    plot_title = paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min"),
+                    theoretical = FALSE)
     
   })
   
@@ -277,19 +309,35 @@ server <- function(input, output, session) {
   output[["comparisonPlot"]] <- renderPlot({
 
     if (input[["theory"]]) {
-      
-      comparison_plot(calc_dat = dat_new(),
-                      plot_title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min"),
-                      theoretical = TRUE)
-  
+      comparison_plot_theo()
       } else {   
-        
-        comparison_plot(calc_dat = dat_new(),
-                        plot_title = paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min"),
-                        theoretical = FALSE)
-  
+        comparison_plot_exp()
       }
 
+  })
+  
+  ##
+  
+  differential_plot_data_theo <- reactive({
+    
+    dat_new() %>%
+      select(Sequence, Start, End, diff_theo_frac_exch, err_diff_theo_frac_exch) %>%
+      mutate(diff_theo_frac_exch = round(diff_theo_frac_exch, 4),
+             err_diff_theo_frac_exch = round(err_diff_theo_frac_exch, 4)) %>%
+      dt_format(cols = c("Sequence", "Start", "End", "Theo Diff Frac Exch", "Err Theo Diff Frac Exch"))
+    
+  })
+  
+  ##
+  
+  differential_plot_data_exp <- reactive({
+    
+    dat_new() %>%
+      select(Sequence, Start, End, diff_frac_exch, err_frac_exch) %>%
+      mutate(diff_frac_exch = round(diff_frac_exch, 4),
+             err_frac_exch = round(err_frac_exch, 4)) %>%
+      dt_format(cols = c("Sequence", "Start", "End", "Diff Frac Exch", "Err Diff Frac Exch"))
+    
   })
   
   ##
@@ -297,22 +345,28 @@ server <- function(input, output, session) {
   output[["differentialPlot_data"]] <- DT::renderDataTable({
     
     if (input[["theory"]]) {
-      
-      dat_new() %>%
-        select(Sequence, Start, End, diff_theo_frac_exch, err_diff_theo_frac_exch) %>%
-        mutate(diff_theo_frac_exch = round(diff_theo_frac_exch, 4),
-               err_diff_theo_frac_exch = round(err_diff_theo_frac_exch, 4)) %>%
-        dt_format(cols = c("Sequence", "Start", "End", "Theo Diff Frac Exch", "Err Theo Diff Frac Exch"))
-      
+      differential_plot_data_theo()
     } else {
-      
-      dat_new() %>%
-        select(Sequence, Start, End, diff_frac_exch, err_frac_exch) %>%
-        mutate(diff_frac_exch = round(diff_frac_exch, 4),
-               err_frac_exch = round(err_frac_exch, 4)) %>%
-        dt_format(cols = c("Sequence", "Start", "End", "Diff Frac Exch", "Err Diff Frac Exch"))
-      
+      differential_plot_data_exp()
     }
+    
+  })
+  
+  ##
+  
+  differential_plot_theo <- reactive({
+    
+    woods_plot(calc_dat = dat_new(),
+               theoretical = TRUE)
+    
+  })
+  
+  ##
+  
+  differential_plot_exp <- reactive({
+    
+    woods_plot(calc_dat = dat_new(),
+               theoretical = FALSE)
     
   })
   
@@ -321,15 +375,9 @@ server <- function(input, output, session) {
   output[["differentialPlot"]] <- renderPlot({
     
     if (input[["theory"]]) {
-      
-      woods_plot(calc_dat = dat_new(),
-                 theoretical = TRUE)
-
+      differential_plot_theo()
       } else {
-        
-        woods_plot(calc_dat = dat_new(),
-                   theoretical = FALSE)
-        
+        differential_plot_exp()
       }
     
   })
@@ -427,7 +475,7 @@ server <- function(input, output, session) {
   })
   
   ##
-  # rmarkdown doesnt accept output variables
+
   protein_sequece_colored <- reactive({
     
     paste0("<span>", 
@@ -483,7 +531,11 @@ server <- function(input, output, session) {
   
   ##
   
-  output[["stateOverlap_data"]] <- DT::renderDataTable({
+  ### TAB: OVERLAPPING ###
+  
+  ##
+  
+  stateOverlap_data <- reactive({
     
     dat() %>%
       select(Sequence, Start, End, State) %>% 
@@ -495,9 +547,15 @@ server <- function(input, output, session) {
     
   })
   
+  output[["stateOverlap_data"]] <- DT::renderDataTable({
+    
+    stateOverlap_data()
+    
+  })
+  
   ##
   
-  stateOverlapDist <- reactive({
+  stateOverlap <- reactive({
     
     dat() %>%
       select(Start, End, State) %>%
@@ -521,7 +579,7 @@ server <- function(input, output, session) {
   
   output[["stateOverlap"]] <- renderPlot({
     
-    stateOverlapDist()
+    stateOverlap()
     
   })
   
@@ -556,7 +614,7 @@ server <- function(input, output, session) {
   
   ##
   
-  output[["stateOverlapDist"]] <- renderPlot({
+  stateOverlapDist <- reactive({
     
     tmp <- dat() %>%
       select(Start, End, State) %>% 
@@ -584,6 +642,14 @@ server <- function(input, output, session) {
            x = 'Position in amino',
            y = 'Coverage') +
       theme(legend.position = "none")
+    
+  })
+  
+  ##
+  
+  output[["stateOverlapDist"]] <- renderPlot({
+    
+    stateOverlapDist()
     
   })
   

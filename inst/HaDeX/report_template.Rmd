@@ -9,7 +9,7 @@ output:
     highlight: textmate
     toc: true
     toc_float: true
-    number_sections: true
+    number_sections: false
     df_print: paged
 ---
 
@@ -37,11 +37,11 @@ Coverage : `r paste0(round(100-100*str_count(protein_sequence(), 'x')/max_range(
 
 <!--- OVERLAP DISTRIBUTION -->
 
-```{r echo = FALSE,results='asis'}
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
 
 if (input[["export_overlap_dist"]]){
   
-  cat("## Overlap Distribution    \n\n")
+  cat("## Overlap Distribution \n")
   
   stateOverlapDist()
 
@@ -51,9 +51,11 @@ if (input[["export_overlap_dist"]]){
 
 <!--- OVERLAP DISTRIBUTION DATA -->
 
-```{r echo = FALSE,results='asis'}
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
 
 if (input[["export_overlap_dist_data"]]){
+
+  cat("## Overlap Distribution Data \n")
   
   stateOverlapDist_data()
   
@@ -61,10 +63,157 @@ if (input[["export_overlap_dist_data"]]){
 
 ```
 
+<!--- OVERLAP GRAPHICALLY -->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_overlap_graph"]]){
+    
+  cat("## Overlap Graphically \n")
+    
+  stateOverlap()
+  
+}
+
+
+```
+
+<!--- OVERLAP GRAPHICALLY DATA -->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_overlap_graph_data"]]){
+    
+  cat("## Overlap Graphically Data \n")  
+    
+  stateOverlap_data()
+  
+}
+
+
+```
+
+<!--- COMPARISON PLOT --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_comparison_plot"]]){
+    
+  cat("## Comparison Plot \n")
+  
+  comparison_plot_exp()
+    
+}
+
+
+```
+
+<!--- COMPARISON PLOT DATA --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_comparison_plot_data"]]){
+    
+  cat("## Comparison Plot Data \n")
+  
+  comparison_plot_data_exp()
+    
+}
+
+
+```
+
+<!--- THEORETICAL COMPARISON PLOT --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_theo_comparison_plot"]]){
+    
+  cat("## Theoretical Comparison Plot \n")
+  
+  comparison_plot_theo()
+    
+}
+
+
+```
+
+<!--- THEORETICAL COMPARISON PLOT DATA --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_theo_comparison_plot_data"]]){
+    
+  cat("## Theoretical Comparison Plot Data \n")
+  
+  comparison_plot_data_theo()
+    
+}
+
+
+```
+
+<!--- WOODS PLOT --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_woods_plot"]]){
+    
+  cat("## Woods Plot \n")  
+  
+  differential_plot_exp()
+    
+}
+
+
+```
+
+<!--- WOODS PLOT DATA --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_woods_plot_data"]]){
+    
+  cat("## Woods Plot Data \n")
+  
+  differential_plot_data_exp()
+    
+}
+
+
+```
+
+<!--- THEORETICAL WOODS PLOT --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_theo_woods_plot"]]){
+    
+  cat("## Theoretical Woods Plot \n")  
+  
+  differential_plot_theo()
+    
+}
+
+
+```
+
+<!--- THEORETICAL WOODS PLOT DATA --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_theo_woods_plot_data"]]){
+    
+  cat("## Theoretical Woods Plot Data \n")
+  
+  differential_plot_data_theo()
+    
+}
+```
 
 # R Session
 
-```{r, results='markup'}
+```{r, results = "markup"}
 
 sessionInfo()
 
