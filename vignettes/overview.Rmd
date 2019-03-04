@@ -1,6 +1,6 @@
 ---
 title: "HaDeX package"
-author: "Weronika Pucha&#322a, Micha&#322; Burdukiewicz"
+author: "Weronika Pucha&#322;a, Micha&#322; Burdukiewicz"
 date: "15.02.2019"
 output: 
   rmarkdown::html_vignette:
@@ -17,39 +17,39 @@ library(HaDeX)
 
 # Hydrogen/Deuterium Exchange Mass Spectrometry Data 
 
-
 # Overall data manipulation
 
 ## Agreggated data from file
+
 
 ## Transformation of data and measurement uncertainty
 
 Deuteration level:
 
-$ D = \frac{D_{t} - D_{0}}{D_{100} - D_{0}} $
+$D = \frac{D_{t} - D_{0}}{D_{100} - D_{0}}$
 
 where:
-$ D $ - deuteration 
-$ D_{0} $ - deuteration in in time (0 or close to 0, measured)
-$ D_{100} $ - deuteration in out time (possibly big, at least 1440)
-$ D_{t} $ - deuteration measured in chosen time
+$D$ - deuteration 
+$D_{0}$ - deuteration in in time (0 or close to 0, measured)
+$D_{100}$ - deuteration in out time (possibly big, at least 1440)
+$D_{t}$ - deuteration measured in chosen time
 
 Law of propagation of uncertainty:
 
-$ u_{c}(y) = \sqrt{\sum_{k} \bigg[ \frac{\partial y}{\partial x_{k}} u(x_{k}) \bigg]^2} $
+$u_{c}(y) = \sqrt{\sum_{k} \bigg[ \frac{\partial y}{\partial x_{k}} u(x_{k}) \bigg]^2}$
 
 Uncorrelatedness is assumed.
 
 Translated with eqution 1:
 
-$ u_{c}(D) = \sqrt{\sum_{k} \bigg[ \frac{\partial D}{\partial D_{k}} u(D_{k}) \bigg]^2 } $
+$u_{c}(D) = \sqrt{\sum_{k} \bigg[ \frac{\partial D}{\partial D_{k}} u(D_{k}) \bigg]^2 }$
 
 where:
-$ k \in {0, t, 100} $
-$ D_{k} $ - deuteration in k time
-$ u(D_{k}) $ - uncertainty associated with $ D_{k} $
+$k \in {0, t, 100}$
+$D_{k}$ - deuteration in k time
+$u(D_{k})$ - uncertainty associated with $D_{k}$
 
 Then, expanding the equation:
 
-$ u_{c}(D) = \sqrt{ \bigg[ \frac{1}{D_{100}-D_{0}} u(D_{t}) \bigg]^2 + \bigg[ \frac{D_{t} - D_{100}}{(D_{100}-D_{0})^2} u(D_{0}) \bigg]^2 + \bigg[ \frac{D_{0} - D_{t}}{(D_{100}-D_{0})^2} u(D_{100}) \bigg]^2} $
+$u_{c}(D) = \sqrt{ \bigg[ \frac{1}{D_{100}-D_{0}} u(D_{t}) \bigg]^2 + \bigg[ \frac{D_{t} - D_{100}}{(D_{100}-D_{0})^2} u(D_{0}) \bigg]^2 + \bigg[ \frac{D_{0} - D_{t}}{(D_{100}-D_{0})^2} u(D_{100}) \bigg]^2}$
 
