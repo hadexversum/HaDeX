@@ -3,3 +3,4 @@
 .RData
 .Ruserdata
 HaDeX-package.Rproj
+vignettes/overview.R
