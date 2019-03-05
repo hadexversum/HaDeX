@@ -24,15 +24,19 @@ library(HaDeX)
 
 ## Transformation of data and measurement uncertainty
 
-Deuteration level:
+Experimental deuteration level (function of three variables):
 
 $D = \frac{D_{t} - D_{0}}{D_{100} - D_{0}}$
 
 where:
-$D$ - deuteration 
-$D_{0}$ - deuteration in in time (0 or close to 0, measured)
-$D_{100}$ - deuteration in out time (possibly big, at least 1440)
-$D_{t}$ - deuteration measured in chosen time
+
+- $D$ - deuteration level
+
+- $D_{0}$ - deuteration in in time (0 or close to 0, measured)
+
+- $D_{100}$ - deuteration in out time (possibly big, at least 1440)
+
+- $D_{t}$ - deuteration measured in chosen time
 
 Law of propagation of uncertainty:
 
@@ -45,11 +49,35 @@ Translated with eqution 1:
 $u_{c}(D) = \sqrt{\sum_{k} \bigg[ \frac{\partial D}{\partial D_{k}} u(D_{k}) \bigg]^2 }$
 
 where:
-$k \in {0, t, 100}$
-$D_{k}$ - deuteration in k time
-$u(D_{k})$ - uncertainty associated with $D_{k}$
+
+- $k \in {0, t, 100}$
+
+- $D_{k}$ - deuteration in k time
+
+- $u(D_{k})$ - uncertainty associated with $D_{k}$
 
 Then, expanding the equation:
 
 $u_{c}(D) = \sqrt{ \bigg[ \frac{1}{D_{100}-D_{0}} u(D_{t}) \bigg]^2 + \bigg[ \frac{D_{t} - D_{100}}{(D_{100}-D_{0})^2} u(D_{0}) \bigg]^2 + \bigg[ \frac{D_{0} - D_{t}}{(D_{100}-D_{0})^2} u(D_{100}) \bigg]^2}$
 
+For theoretical calculation (function of one variable), deuteration:
+
+$D = \frac{D_{t}-MHP}{MaxUptake*protonMass}$
+
+where:
+
+- $D_{t}$ - deuteration measured in chosen time
+
+- $MHP$ - theoretical mass for peptide (constant)
+
+- $MaxUptake$ - max proton uptake for peptide (constant)
+
+- $protonMass$ - mass of a proton (constant)
+
+and the uncertainty for function of one variable looks like:
+
+$u(y) = \arrowvert \frac{dy}{dx} u(x) \arrowvert$
+
+and in our case:
+
+$u(D) = \arrowvert \frac{1}{MaxUptake*protonMass} u(d_{t}) \arrowvert$

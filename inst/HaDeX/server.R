@@ -169,7 +169,7 @@ server <- function(input, output, session) {
           geom_segment(data = dat_1(), aes(x = Start, y = avg_frac_exch_state_2, xend = End, yend = avg_frac_exch_state_2, color = "state_2")) +
           geom_errorbar(data = dat_1(), aes(x = Med_Sequence, ymin = avg_frac_exch_state_1 - sd_frac_exch_state_1, ymax = avg_frac_exch_state_1 + sd_frac_exch_state_1, color = "state_1")) + 
           geom_errorbar(data = dat_1(), aes(x = Med_Sequence, ymin = avg_frac_exch_state_2 - sd_frac_exch_state_2, ymax = avg_frac_exch_state_2 + sd_frac_exch_state_2, color = "state_2")) + 
-          labs(x = "Position in sequence", y = "Theoretical fraction Exchanged", title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]]," min")) +
+          labs(x = "Position in sequence", y = "Fraction Exchanged", title = paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]]," min")) +
           theme(legend.position="bottom") +
           scale_y_continuous(breaks = seq(0, 1.2, 0.2), expand = c(0, 0), limits = c(0, 1.2)) 
 
