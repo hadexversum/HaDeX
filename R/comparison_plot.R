@@ -2,7 +2,7 @@
 #' 
 #' Produces comparison_plot based on previously processed data - theoretical or experimental. User can change labels if needed.
 #' 
-#' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 ggplot geom_segment aes geom_errorbar labs theme scale_y_continuous
 #' 
 #' @param calc_dat processed data from DynamiX file - using prepare_dataset
 #' @param x_lab x label chosen by user. If unused, default label is chosen
