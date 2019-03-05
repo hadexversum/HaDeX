@@ -2,7 +2,7 @@ source("data-work.R")
 
 #########################################
 
-ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
+ui <- fluidPage(theme = "hadex6.css",
   
   tags[["head"]](
     tags[["style"]](HTML("
@@ -82,7 +82,6 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                  tabPanel("Overlap Distribution",
                           br(),
                           plotOutput("stateOverlapDist")),
-                 br(),
                  tabPanel("Data",
                           br(),
                           DT::dataTableOutput("stateOverlapDist_data"))
@@ -92,7 +91,6 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                  tabPanel("Overlap Graphically",
                           br(),
                           plotOutput("stateOverlap")),
-                 br(),
                  tabPanel("Data",
                           br(),
                           DT::dataTableOutput("stateOverlap_data"))
@@ -137,7 +135,6 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                  tabPanel("Comparison plot", 
                           br(),
                           plotOutput("comparisonPlot")),
-                 br(),
                  tabPanel("Data",
                           br(),
                           DT::dataTableOutput("comparisonPlot_data"))
@@ -147,7 +144,6 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                  tabPanel("Wood\'s plot",
                           br(),
                           plotOutput("differentialPlot")),
-                 br(),
                  tabPanel("Data",
                           br(),
                           DT::dataTableOutput("differentialPlot_data"))
