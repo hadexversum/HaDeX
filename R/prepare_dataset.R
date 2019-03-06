@@ -4,6 +4,7 @@
 #' 
 #' @importFrom dplyr %>% mutate select group_by summarize ungroup sym coalesce arrange
 #' @importFrom tidyr unite spread
+#' @importFrom stats sd weighted.mean
 #' 
 #' @param dat data frame with data from Dynamix file
 #' @param in_state_first string in form "state_time" for first state in in time
@@ -37,17 +38,17 @@ prepare_dataset <- function(dat,
     spread(key = State_Exposure, value = avg_exp_mass) %>%
     group_by(Sequence, Start, End, MaxUptake, MHP) %>%
     summarize(in_time_mean_1 = mean(!!sym(in_state_first), na.rm = TRUE),
-              err_in_time_mean_1 = coalesce(sd(!!sym(in_state_first), na.rm = TRUE), 0),
+              err_in_time_mean_1 = coalesce(sd(!!sym(in_state_first), na.rm = TRUE)/sqrt(length(in_state_first)), 0),
               chosen_time_mean_1 = mean(!!sym(chosen_state_first), na.rm = TRUE),
-              err_chosen_time_mean_1 = sd(!!sym(chosen_state_first), na.rm = TRUE),
+              err_chosen_time_mean_1 = sd(!!sym(chosen_state_first), na.rm = TRUE)/sqrt(length(chosen_state_first)),
               out_time_mean_1 = mean(!!sym(out_state_first), na.rm = TRUE),
-              err_out_time_mean_1 = sd(!!sym(out_state_first), na.rm = TRUE),
+              err_out_time_mean_1 = sd(!!sym(out_state_first), na.rm = TRUE)/sqrt(length(out_state_first)),
               in_time_mean_2 = mean(!!sym(in_state_second), na.rm = TRUE),
-              err_in_time_mean_2 = coalesce(sd(!!sym(in_state_second), na.rm = TRUE), 0),
+              err_in_time_mean_2 = coalesce(sd(!!sym(in_state_second), na.rm = TRUE)/sqrt(length(in_state_second)), 0),
               chosen_time_mean_2 = mean(!!sym(chosen_state_second), na.rm = TRUE),
-              err_chosen_time_mean_2 = sd(!!sym(chosen_state_second), na.rm = TRUE),
+              err_chosen_time_mean_2 = sd(!!sym(chosen_state_second), na.rm = TRUE)/sqrt(length(chosen_state_second)),
               out_time_mean_2 = mean(!!sym(out_state_second), na.rm = TRUE),
-              err_out_time_mean_2 = sd(!!sym(out_state_second), na.rm = TRUE)) %>%
+              err_out_time_mean_2 = sd(!!sym(out_state_second), na.rm = TRUE)/sqrt(length(out_state_second))) %>%
     mutate(frac_exch_state_1 = (chosen_time_mean_1 - in_time_mean_1)/(out_time_mean_1 - in_time_mean_1),
            # err_frac_exch_state_1 = sqrt(err_chosen_time_mean_first^2 + 2*err_in_time_mean_first^2 + err_in_time_mean_first^2), 
            err_frac_exch_state_1 = sqrt((err_chosen_time_mean_1*(1/(out_time_mean_1 - in_time_mean_1)))^2 + (err_in_time_mean_1*((chosen_time_mean_1 - out_time_mean_1 )/((out_time_mean_1 - in_time_mean_1)^2)))^2 + (err_out_time_mean_1*((in_time_mean_1-chosen_time_mean_1)/((out_time_mean_1 - in_time_mean_1)^2)))^2),
