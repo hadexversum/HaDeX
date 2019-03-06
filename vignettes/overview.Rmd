@@ -81,3 +81,11 @@ $u(y) = \arrowvert \frac{dy}{dx} u(x) \arrowvert$
 and in our case:
 
 $u(D) = \arrowvert \frac{1}{MaxUptake*protonMass} u(d_{t}) \arrowvert$
+
+For differential plot in Woods format, deueration level in one state $(D_{2})$ is simply subtracted from deuteration level in other state $(D_{1})$:
+
+$diff = D_{1} - D_{2}$
+
+and the uncertainty of function of two variables (based on previous equation):
+
+$u_{c}(diff) = \sqrt{u(D_{1})^2 + u(D_{2})^2}$

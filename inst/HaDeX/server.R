@@ -212,7 +212,7 @@ server <- function(input, output, session) {
         geom_errorbar(data = dat_1(), aes(x = Med_Sequence, ymin = diff_theo_frac_exch - err_theo_frac_exch, ymax = diff_theo_frac_exch + err_theo_frac_exch)) +
         scale_y_continuous(breaks = seq(-1, 1, 0.2), expand = c(0, 0), limits = c(-1, 1)) + 
         geom_hline(yintercept = 0, linetype = "dotted", color = "red", size = .5) +
-        labs(x = "Position in sequence", y = TeX("$\\Delta$ Fraction Exchanged"), title = TeX("$\\Delta$ Theoretical fraction exchanged between states in 1 min")) 
+        labs(x = "Position in sequence", y = TeX("$\\Delta$ Fraction Exchanged"), title = TeX(paste0("$\\Delta$ Theoretical fraction exchanged between states in", input[["chosen_time"]], " min"))) 
 
     } else {
 
@@ -221,7 +221,7 @@ server <- function(input, output, session) {
         geom_errorbar(data = dat_1(), aes(x = Med_Sequence, ymin = diff_frac_exch - err_frac_exch, ymax = diff_frac_exch + err_frac_exch)) +
         scale_y_continuous(breaks = seq(-1, 1, 0.2), expand = c(0, 0), limits = c(-1, 1)) + 
         geom_hline(yintercept = 0, linetype = "dotted", color = "red", size = .5) +
-        labs(x = "Position in sequence", y = TeX("$\\Delta$ Fraction Exchanged"), title = expression(paste(Delta, " Fraction exchanged between states in chosen time")))
+        labs(x = "Position in sequence", y = TeX("$\\Delta$ Fraction Exchanged"), title = TeX(paste0("$\\Delta$ Fraction exchanged between states in", input[["chosen_time"]], " min")))
 
     }
 
@@ -357,6 +357,7 @@ server <- function(input, output, session) {
   differential_plot_theo <- reactive({
     
     woods_plot(calc_dat = dat_new(),
+               plot_title = TeX(paste0("$\\Delta$ Theoretical fraction exchanged between states in ", input[["chosen_time"]], " min")),
                theoretical = TRUE)
     
   })
@@ -366,6 +367,7 @@ server <- function(input, output, session) {
   differential_plot_exp <- reactive({
     
     woods_plot(calc_dat = dat_new(),
+               plot_title = TeX(paste0("$\\Delta$ Fraction exchanged between states in ", input[["chosen_time"]], " min")),
                theoretical = FALSE)
     
   })
