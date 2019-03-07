@@ -5,6 +5,8 @@ date: "15.02.2019"
 output: 
   rmarkdown::html_vignette:
     toc: true
+    header-includes:
+      -\usepackage{amsmath}
 vignette: >
   %\VignetteIndexEntry{HaDeX package - an overview}
   %\VignetteEngine{knitr::rmarkdown}
@@ -38,13 +40,14 @@ where:
 
 - $D_{t}$ - deuteration measured in chosen time
 
-Law of propagation of uncertainty:
+Law of propagation of uncertainty.
 
-$u_{c}(y) = \sqrt{\sum_{k} \bigg[ \frac{\partial y}{\partial x_{k}} u(x_{k}) \bigg]^2}$
+$$u_{c}(y) = \sqrt{\sum_{k} \bigg[ \frac{\partial y}{\partial x_{k}} u(x_{k}) \bigg]^2}\tag{1}$$
+
 
 Uncorrelatedness is assumed.
 
-Translated with eqution 1:
+Translated with equation 1:
 
 $u_{c}(D) = \sqrt{\sum_{k} \bigg[ \frac{\partial D}{\partial D_{k}} u(D_{k}) \bigg]^2 }$
 
