@@ -21,51 +21,83 @@ library(HaDeX)
 
 # Overall data manipulation
 
+## Input file format 
+
 ## Agreggated data from file
 
 
 ## Transformation of data and measurement uncertainty
 
+$$expMass = z*(Center-protonMass)\tag{1}$$
+where:
+
+- $expMass$ - experimentally obtained mass, calculated
+
+- $z$ - charge
+
+- $Center$ - data from experiment
+
+Data from file containing repeated measurement is aggregated into one result using formula: 
+
+$$expMass = \frac{Inten*expMass}{N}\tag{2}$$
+where:
+
+- $Inten$ - Intensivity
+
+- $N$ - number of repetitions
+
+In input file is data from more than one measurement. The mean value for each time in each state is treated as a result. This means that the uncertainty is calculated using the standard deviation of the mean:
+
+$$u(x) = \sqrt{\frac{ \sum_{i=1}^n \left( x_{i} - \overline{x} \right)^2}{n}}\tag{3}$$
+where:
+
+- $x_{i}$ - measurement
+ 
+- $\overline{x}$ - mean value
+
+- $n$ - number of measurements
+
 Experimental deuteration level (function of three variables):
 
-$D = \frac{D_{t} - D_{0}}{D_{100} - D_{0}}$
+$$D = \frac{D_{t} - D_{0}}{D_{100} - D_{0}}\tag{4}$$
 
 where:
 
 - $D$ - deuteration level
 
-- $D_{0}$ - deuteration in in time (0 or close to 0, measured)
+- $D_{0}$ - deuteration in in time (0 or close to 0, measured) - mean value obtained as explained before
 
-- $D_{100}$ - deuteration in out time (possibly big, at least 1440)
+- $D_{100}$ - deuteration in out time (possibly big, at least 1440) - mean value obtainted as explained before
 
-- $D_{t}$ - deuteration measured in chosen time
+- $D_{t}$ - deuteration measured in chosen time - mean value obtainted as explained before
+
 
 Law of propagation of uncertainty.
 
-$$u_{c}(y) = \sqrt{\sum_{k} \bigg[ \frac{\partial y}{\partial x_{k}} u(x_{k}) \bigg]^2}\tag{1}$$
+$$u_{c}(y) = \sqrt{\sum_{k} \left[ \frac{\partial y}{\partial x_{k}} u(x_{k}) \right]^2}\tag{5}$$
 
 
 Uncorrelatedness is assumed.
 
 Translated with equation 1:
 
-$u_{c}(D) = \sqrt{\sum_{k} \bigg[ \frac{\partial D}{\partial D_{k}} u(D_{k}) \bigg]^2 }$
+$$u_{c}(D) = \sqrt{\sum_{k} \left[ \frac{\partial D}{\partial D_{k}} u(D_{k}) \right]^2 }\tag{6}$$
 
 where:
 
 - $k \in {0, t, 100}$
 
-- $D_{k}$ - deuteration in k time
+- $D_{k}$ - deuteration in k time as standard deviation of the mean value 
 
 - $u(D_{k})$ - uncertainty associated with $D_{k}$
 
 Then, expanding the equation:
 
-$u_{c}(D) = \sqrt{ \bigg[ \frac{1}{D_{100}-D_{0}} u(D_{t}) \bigg]^2 + \bigg[ \frac{D_{t} - D_{100}}{(D_{100}-D_{0})^2} u(D_{0}) \bigg]^2 + \bigg[ \frac{D_{0} - D_{t}}{(D_{100}-D_{0})^2} u(D_{100}) \bigg]^2}$
+$$u_{c}(D) = \sqrt{ \left[ \frac{1}{D_{100}-D_{0}} u(D_{t}) \right]^2 + \left[ \frac{D_{t} - D_{100}}{(D_{100}-D_{0})^2} u(D_{0}) \right]^2 + \left[ \frac{D_{0} - D_{t}}{(D_{100}-D_{0})^2} u(D_{100}) \right]^2}\tag{7}$$
 
 For theoretical calculation (function of one variable), deuteration:
 
-$D = \frac{D_{t}-MHP}{MaxUptake*protonMass}$
+$$D = \frac{D_{t}-MHP}{MaxUptake*protonMass}\tag{8}$$
 
 where:
 
@@ -79,16 +111,17 @@ where:
 
 and the uncertainty for function of one variable looks like:
 
-$u(y) = \arrowvert \frac{dy}{dx} u(x) \arrowvert$
+$$u(y) = \left| \frac{dy}{dx} u(x) \right|\tag{9}$$
 
 and in our case:
 
-$u(D) = \arrowvert \frac{1}{MaxUptake*protonMass} u(d_{t}) \arrowvert$
+$$u(D) = \left|\frac{1}{MaxUptake*protonMass} u(d_{t}) \right|\tag{10}$$
 
 For differential plot in Woods format, deueration level in one state $(D_{2})$ is simply subtracted from deuteration level in other state $(D_{1})$:
 
-$diff = D_{1} - D_{2}$
+$$diff = D_{1} - D_{2}\tag{11}$$
 
 and the uncertainty of function of two variables (based on previous equation):
 
-$u_{c}(diff) = \sqrt{u(D_{1})^2 + u(D_{2})^2}$
+$$u_{c}(diff) = \sqrt{u(D_{1})^2 + u(D_{2})^2}\tag{12}$$
+
