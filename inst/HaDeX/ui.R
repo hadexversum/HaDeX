@@ -2,7 +2,7 @@ source("data-work.R")
 
 #########################################
 
-ui <- fluidPage(theme = "hadex6.css",
+ui <- fluidPage(theme = "theme.css",
   
   tags[["head"]](
     tags[["style"]](HTML("

@@ -1401,7 +1401,7 @@ th {
 * {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
-	box-sizing: border-box
+	box-sizing: border-box;
 }
 
 *:before,
@@ -1815,7 +1815,7 @@ a.bg-danger:focus {
 ul,
 ol {
 	margin-top: 0;
-	margin-bottom: 10px
+	margin-bottom: 10px;
 }
 
 ul ul,
@@ -3162,7 +3162,7 @@ input[type="file"]:focus,
 input[type="radio"]:focus,
 input[type="checkbox"]:focus {
 	outline: 5px auto -webkit-focus-ring-color;
-	outline-offset: -2px
+	outline-offset: -2px;
 }
 
 output {
@@ -3220,7 +3220,7 @@ output {
 .form-control[disabled],
 .form-control[readonly],
 fieldset[disabled] .form-control {
-	background-color: #eeeeee;
+	background-color: #faf3dd;
 	opacity: 1
 }
 
@@ -3301,8 +3301,7 @@ input[type="search"] {
 .checkbox-inline input[type="checkbox"] {
 	position: absolute;
 	margin-left: -20px;
-	margin-top: 4px \9
-}
+	margin-top: 0.45px;}
 
 .radio+.radio,
 .checkbox+.checkbox {
@@ -3766,9 +3765,10 @@ fieldset[disabled] a.btn {
 }
 
 .btn-default {
-	color: #ffffff;
-	background-color: #aea79f;
-	border-color: #aea79f
+	background-color: #c4daff;
+	box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.05);
+	color: rgb(51, 51, 51);
+	border-color: #aea79f;
 }
 
 .btn-default:focus,
@@ -4833,19 +4833,13 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
 
 .nav {
 	margin-bottom: 0;
-	padding-left: 0;
-	list-style: none;
 	background-color: #456990;
 	border-radius: 10px;
-	height: 60px;
-	padding: 10px;
-	display: flex;
-	justify-content: center;
+	height: auto;
+	padding: 5px;
 }
 
 .nav>li {
-	position: relative;
-	float: left;
 	background-color: #c4daff;
 	margin-left: 5px;
 	margin-right: 5px;
@@ -4853,12 +4847,16 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
 	text-align: center;
 	border-radius: 5px;
 	box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.05);
+	float: none;
+	margin-bottom: 5px;
+	margin-top:  5px;
 }
 
 .nav>li>a {
 	position: relative;
 	display: block;
 	padding: 10px 15px;
+	display: block;
 }
 
 .nav>li>a:hover,
@@ -4897,13 +4895,16 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
 }
 
 .nav-tabs {
-	border-bottom: 1px solid #dddddd;
 	max-width: 1620px;
 	margin-left: auto;
 	margin-right: auto;
+	list-style: none;
+	overflow: hidden;
+	text-align: center;
 }
 
 .nav-tabs>li {
+	display: inline-block;
 }
 
 .nav-tabs>li>a {
@@ -5069,6 +5070,7 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
 }
 
 .tab-content> .active {
+	display:  flow-root;
 }
 
 .nav-tabs .dropdown-menu {
@@ -8128,6 +8130,82 @@ button.close {
   margin-bottom: 10px;
 }
 
-.tabbable {
-  //align-items: center;
+.irs-bar {
+  height: 30px;
+  top: 20px;
+  background: #c05746;
+  border: none;
+}
+
+.irs-grid {
+  
+}
+
+.irs-line {
+  
+	background: #FFF;
+	border-radius: 5px;
+	height: 30px;
+	top: 20px;
+}
+
+.irs-line-left {
+  
+}
+
+.irs-line-right {
+  
+}
+
+.irs-line-mid {
+  
+}
+
+.irs {
+  
+}
+
+.irs-shadow {
+  
+}
+
+.irs-slider {
+  
+	height: 40px;
+	top: 15px;
+	border-radius: 5px;
+	width: 15px;
+	background-color: #c4daff;
+	box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.irs-slider.to {
+  
+}
+
+.irs-slider.from {
+  
+}
+
+.irs-slider.type_last {
+  
+}
+
+.irs-min, .irs-max {
+  
+	font-size: small;
+	padding: 0;
+	background: transparent;
+	border: 0;
+	margin: 0;
+}
+
+.irs-from, .irs-to, .irs-single {
+  
+	font-size: small;
+	padding: 0;
+	background: transparent;
+	border: 0;
+	margin: 0;
+	color: black;
 }
