@@ -17,7 +17,7 @@ ui <- fluidPage(theme = "theme.css",
     ),
   
   
-  titlePanel("Protein data analysis"),
+  titlePanel("HaDeX: analysis of data from hydrogen deuterium exchange-mass spectrometry"),
   
   tabsetPanel(
     tabPanel("Start",
