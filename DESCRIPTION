@@ -25,6 +25,7 @@ Imports:
 		gsubfn,
 		latex2exp,
 		reshape2,
+		readxl,
 		shiny,
 		stringr,
 		tidyr
