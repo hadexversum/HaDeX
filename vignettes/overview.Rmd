@@ -125,3 +125,9 @@ and the uncertainty of function of two variables (based on previous equation):
 
 $$u_{c}(diff) = \sqrt{u(D_{1})^2 + u(D_{2})^2}\tag{12}$$
 
+# Example workflow
+
+1. File import
+2. Sequence reconstruction
+3. Woods plots.
+
