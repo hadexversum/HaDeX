@@ -28,8 +28,7 @@ prepare_dataset <- function(dat,
   proton_mass <- 1.00727647
   
   dat %>%
-    mutate(exp_mass = Center*z - z*proton_mass,
-           Exposure = round(Exposure, 3)) %>%
+    mutate(exp_mass = Center*z - z*proton_mass) %>%
     select(-Center, -z, -Protein) %>%
     group_by(Sequence, Start, End, MHP, MaxUptake, State, Exposure, File) %>%
     summarize(avg_exp_mass = weighted.mean(exp_mass, Inten, na.rm = TRUE)) %>%
@@ -64,6 +63,7 @@ prepare_dataset <- function(dat,
            diff_theo_frac_exch = avg_theo_in_time_1 - avg_theo_in_time_2, 
            err_diff_theo_frac_exch = sqrt(err_avg_theo_in_time_1^2 + err_avg_theo_in_time_2^2),
            Med_Sequence = Start + (End - Start)/2) %>%
+    ungroup(.) %>%
     select(Sequence, Start, End, Med_Sequence, 
            frac_exch_state_1, err_frac_exch_state_1, frac_exch_state_2, err_frac_exch_state_2, diff_frac_exch, err_frac_exch, 
            avg_theo_in_time_1, err_avg_theo_in_time_1, avg_theo_in_time_2, err_avg_theo_in_time_2, diff_theo_frac_exch, err_diff_theo_frac_exch) %>%

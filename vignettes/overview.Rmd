@@ -19,7 +19,7 @@ library(HaDeX)
 
 # Hydrogen/Deuterium Exchange Mass Spectrometry Data 
 
-# Overall data manipulation
+# General data manipulation
 
 ## Input file format 
 
@@ -117,7 +117,7 @@ and in our case:
 
 $$u(D) = \left|\frac{1}{MaxUptake*protonMass} u(d_{t}) \right|\tag{10}$$
 
-For differential plot in Woods format, deueration level in one state $(D_{2})$ is simply subtracted from deuteration level in other state $(D_{1})$:
+For differential plot in Woods format, deueration level in one state $(D_{2})$ is subtracted from deuteration level in other state $(D_{1})$:
 
 $$diff = D_{1} - D_{2}\tag{11}$$
 

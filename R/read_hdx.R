@@ -33,7 +33,7 @@ read_hdx <- function(filename){
                   MaxUptake = parse_double(MaxUptake),
                   MHP = parse_double(MHP),
                   State = parse_character(State),
-                  Exposure = parse_double(Exposure),
+                  Exposure = round(parse_double(Exposure),3),
                   File = parse_character(File),
                   z = parse_integer(z),
                   RT = parse_double(RT),

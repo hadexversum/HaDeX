@@ -3,6 +3,7 @@
 export(HaDeX_gui)
 export(comparison_plot)
 export(prepare_dataset)
+export(quality_control)
 export(read_hdx)
 export(reconstruct_sequence)
 export(woods_plot)
