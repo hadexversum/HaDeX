@@ -22,9 +22,11 @@ data.frame with values - time, value, uncertainty
 }
 \description{
 Checks uncertainty level (mean for all peptides in sequence) depending on chosen out value.
+Visualization for results is provided in examples.
 }
 \examples{
-result <- quality_control(dat,
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+result <- quality_control(dat = dat,
                           first_state = "CD160",
                           second_state = "CD160_HVEM", 
                           chosen_time = 1, 

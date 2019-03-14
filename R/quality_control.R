@@ -14,6 +14,7 @@
 #' @return data.frame with values - time, value, uncertainty
 #' 
 #' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' result <- quality_control(dat = dat,
 #'                           first_state = "CD160",
 #'                           second_state = "CD160_HVEM", 
