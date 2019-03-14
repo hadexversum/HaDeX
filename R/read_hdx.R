@@ -17,9 +17,9 @@
 read_hdx <- function(filename){
   
   dat <- if (grepl(".csv", filename)){
-    read.table(filename, sep = ",", header = TRUE)
+    read.table(filename, sep = ",", header = TRUE, stringsAsFactors = FALSE)
   } else if (grepl(".tsv", filename)) {
-    read.table(filename, sep = "\t", header = TRUE)
+    read.table(filename, sep = "\t", header = TRUE, stringsAsFactors = FALSE)
   } else if(grepl(".xls", filename)) {
     read_excel(filename)
   }
@@ -31,8 +31,8 @@ read_hdx <- function(filename){
                   Start = parse_integer(Start),
                   End = parse_integer(End),
                   Sequence = parse_character(Sequence),
-                  Modification = parse_character(Modification),
-                  Fragment = parse_character(Fragment),
+                  # Modification = parse_character(Modification),
+                  # Fragment = parse_character(Fragment),
                   MaxUptake = parse_double(MaxUptake),
                   MHP = parse_double(MHP),
                   State = parse_character(State),
