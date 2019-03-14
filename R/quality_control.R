@@ -16,13 +16,13 @@
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' result <- quality_control(dat = dat,
-#'                           first_state = "CD160",
-#'                           second_state = "CD160_HVEM", 
+#'                           state_first = "CD160",
+#'                           state_second = "CD160_HVEM", 
 #'                           chosen_time = 1, 
 #'                           in_time = 0.001)
-#' 
+#' library(ggplot2)
 #' ggplot(result) + 
-#' geom_line(aes(x = time, y = avg_err_state_first, color = "avg_err_state_first")) +
+#'   geom_line(aes(x = time, y = avg_err_state_first, color = "avg_err_state_first")) +
 #'   geom_line(aes(x = time, y = avg_err_state_second, color = "avg_err_state_second")) +
 #'   geom_line(aes(x = time, y = avg_err_theo_state_first, color = "avg_err_theo_state_first")) +
 #'   geom_line(aes(x = time, y = avg_err_theo_state_second, color = "avg_err_theo_state_second")) +
@@ -35,8 +35,8 @@
 #' @export quality_control
 
 quality_control <- function(dat,
-                            first_state,
-                            second_state, 
+                            state_first,
+                            state_second, 
                             chosen_time, 
                             in_time){
   

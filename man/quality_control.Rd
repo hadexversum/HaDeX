@@ -4,18 +4,18 @@
 \alias{quality_control}
 \title{quality_control}
 \usage{
-quality_control(dat, first_state, second_state, chosen_time, in_time)
+quality_control(dat, state_first, state_second, chosen_time, in_time)
 }
 \arguments{
 \item{dat}{file supplied by user using read_hdx()}
 
-\item{first_state}{first state}
-
-\item{second_state}{second state}
-
 \item{chosen_time}{chosen time}
 
 \item{in_time}{in time}
+
+\item{first_state}{first state}
+
+\item{second_state}{second state}
 }
 \value{
 data.frame with values - time, value, uncertainty
@@ -27,13 +27,13 @@ Visualization for results is provided in examples.
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 result <- quality_control(dat = dat,
-                          first_state = "CD160",
-                          second_state = "CD160_HVEM", 
+                          state_first = "CD160",
+                          state_second = "CD160_HVEM", 
                           chosen_time = 1, 
                           in_time = 0.001)
-
+library(ggplot2)
 ggplot(result) + 
-geom_line(aes(x = time, y = avg_err_state_first, color = "avg_err_state_first")) +
+  geom_line(aes(x = time, y = avg_err_state_first, color = "avg_err_state_first")) +
   geom_line(aes(x = time, y = avg_err_state_second, color = "avg_err_state_second")) +
   geom_line(aes(x = time, y = avg_err_theo_state_first, color = "avg_err_theo_state_first")) +
   geom_line(aes(x = time, y = avg_err_theo_state_second, color = "avg_err_theo_state_second")) +
