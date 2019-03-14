@@ -9,6 +9,9 @@
 #' 
 #' @return data frame for further modifications
 #' 
+#' @examples
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' 
 #' @export read_hdx
 
 read_hdx <- function(filename){

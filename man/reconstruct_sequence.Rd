@@ -15,3 +15,8 @@ reconstructed sequence (character)
 \description{
 Reconstructs protein sequence from DynamiX file. If a position is not covered by experiment data, x is shown.
 }
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+rec_seq <- reconstruct_sequence(dat)
+
+}

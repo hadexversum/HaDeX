@@ -8,6 +8,10 @@
 #' 
 #' @return reconstructed sequence (character)
 #' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' rec_seq <- reconstruct_sequence(dat)
+#' 
 #' @export reconstruct_sequence
 
 reconstruct_sequence <- function(dat) {
