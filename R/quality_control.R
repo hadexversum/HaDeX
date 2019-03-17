@@ -6,8 +6,8 @@
 #' @importFrom dplyr bind_rows
 #' 
 #' @param dat file supplied by user using read_hdx()
-#' @param first_state first state
-#' @param second_state second state
+#' @param state_first first state
+#' @param state_second second state
 #' @param chosen_time chosen time 
 #' @param in_time in time
 #' 

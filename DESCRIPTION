@@ -32,5 +32,6 @@ Imports:
 		tidyr
 Suggests: 
     knitr,
-    shinythemes
+    shinythemes,
+    testthat
 VignetteBuilder: knitr

@@ -9,13 +9,13 @@ quality_control(dat, state_first, state_second, chosen_time, in_time)
 \arguments{
 \item{dat}{file supplied by user using read_hdx()}
 
+\item{state_first}{first state}
+
+\item{state_second}{second state}
+
 \item{chosen_time}{chosen time}
 
 \item{in_time}{in time}
-
-\item{first_state}{first state}
-
-\item{second_state}{second state}
 }
 \value{
 data.frame with values - time, value, uncertainty
