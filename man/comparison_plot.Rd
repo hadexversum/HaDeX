@@ -5,7 +5,8 @@
 \title{comparison_plot}
 \usage{
 comparison_plot(calc_dat, x_lab = NA, y_lab = NA, plot_title = NA,
-  theoretical = FALSE)
+  theoretical = FALSE, state_first = "state_first",
+  state_second = "state_second")
 }
 \arguments{
 \item{calc_dat}{processed data from DynamiX file - using prepare_dataset}
@@ -17,6 +18,10 @@ comparison_plot(calc_dat, x_lab = NA, y_lab = NA, plot_title = NA,
 \item{plot_title}{title label chosen by user. If unused, default label is chosen}
 
 \item{theoretical}{logical value to determine if plot is theoretical or not. default : false}
+
+\item{state_first}{first state name}
+
+\item{state_second}{second state name}
 }
 \description{
 Produces comparison_plot based on previously processed data - theoretical or experimental. User can change labels if needed.
@@ -31,7 +36,11 @@ calc_dat <- prepare_dataset(dat,
                             chosen_state_second = "CD160_HVEM_1",
                             out_state_second = "CD160_HVEM_1440")                             
 comparison_plot(calc_dat = calc_dat,
-                theoretical = TRUE)
-comparison_plot(calc_dat = calc_dat)                
+                theoretical = TRUE,
+                state_first = "CD160",
+                state_second = "CD160_HVEM")
+comparison_plot(calc_dat = calc_dat,
+                state_first = "CD160",
+                state_second = "CD160_HVEM")                
 
 }
