@@ -290,7 +290,9 @@ server <- function(input, output, session) {
     
     comparison_plot(calc_dat = dat_new(),
                     plot_title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min"),
-                    theoretical = TRUE)
+                    theoretical = TRUE,
+                    state_first = input[["state_first"]],
+                    state_second = input[["state_second"]])
     
   })
   
@@ -300,7 +302,9 @@ server <- function(input, output, session) {
     
     comparison_plot(calc_dat = dat_new(),
                     plot_title = paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min"),
-                    theoretical = FALSE)
+                    theoretical = FALSE,
+                    state_first = input[["state_first"]],
+                    state_second = input[["state_second"]])
     
   })
   

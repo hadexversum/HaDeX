@@ -2,8 +2,8 @@ source("data-work.R")
 
 #########################################
 
-ui <- fluidPage(theme = "theme.css",
-                
+ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
+                #theme = "theme.css",
                 tags[["head"]](
                   tags[["style"]](HTML("
                          
@@ -97,7 +97,7 @@ ui <- fluidPage(theme = "theme.css",
                              )
                            )
                   ),
-                  tabPanel("Woods\'s plot",
+                  tabPanel("Woods plot",
                            br(),
                            h4("Double plot after small modifications  - for comparison"),
                            br(),
@@ -151,72 +151,72 @@ ui <- fluidPage(theme = "theme.css",
                              
                            )
                   ),
-                  tabPanel("Cosik",
-                           br(),
-                           h4("Double plot the way Krzysiu plots it - for comparison"),
-                           br(),
-                           sidebarPanel(
-                             h3("Parameters are the same, see:"),
-                             tableOutput("plotParametersKrzys")
-                           ),
-                           mainPanel(
-                             tabsetPanel(
-                               tabPanel("Comparison plot",
-                                        br(),
-                                        plotOutput("comparisonPlotKrzys")),
-                               tabPanel("Data",
-                                        br(),
-                                        DT::dataTableOutput("comparisonPlotKrzys_data"))
-                             ),
-                             tabsetPanel(
-                               tabPanel("Wood\'s plot",
-                                        br(),
-                                        plotOutput("differentailPlotKrzys")),
-                               tabPanel("Data",
-                                        br(),
-                                        DT::dataTableOutput("differentailPlotKrzys_data"))
-                             )
-                           )
-                           
-                  ),
+                  # tabPanel("Cosik",
+                  #          br(),
+                  #          h4("Double plot the way Krzysiu plots it - for comparison"),
+                  #          br(),
+                  #          sidebarPanel(
+                  #            h3("Parameters are the same, see:"),
+                  #            tableOutput("plotParametersKrzys")
+                  #          ),
+                  #          mainPanel(
+                  #            tabsetPanel(
+                  #              tabPanel("Comparison plot",
+                  #                       br(),
+                  #                       plotOutput("comparisonPlotKrzys")),
+                  #              tabPanel("Data",
+                  #                       br(),
+                  #                       DT::dataTableOutput("comparisonPlotKrzys_data"))
+                  #            ),
+                  #            tabsetPanel(
+                  #              tabPanel("Wood\'s plot",
+                  #                       br(),
+                  #                       plotOutput("differentailPlotKrzys")),
+                  #              tabPanel("Data",
+                  #                       br(),
+                  #                       DT::dataTableOutput("differentailPlotKrzys_data"))
+                  #            )
+                  #          )
+                  #          
+                  # ),
                   tabPanel("Report",
                            br(),
-                           sidebarPanel(h4("Please, choose items for raport."),
-                                        checkboxInput(inputId = "export_overlap_dist",
-                                                      label = "Overlap Distribution",
-                                                      value = TRUE),
-                                        checkboxInput(inputId = "export_overlap_dist_data",
-                                                      label = "Overlap Distribution Data"),
-                                        checkboxInput(inputId = "export_overlap_graph",
-                                                      label = "Overlap Graphically",
-                                                      value = TRUE),
-                                        checkboxInput(inputId = "export_overlap_graph_data",
-                                                      label = "Overlap Graphically Data"),
-                                        checkboxInput(inputId = "export_comparison_plot",
-                                                      label = "Comparison Plot",
-                                                      value = TRUE),
-                                        checkboxInput(inputId = "export_comparison_plot_data",
-                                                      label = "Comparison Plot Data"),
-                                        checkboxInput(inputId = "export_theo_comparison_plot",
-                                                      label = "Theoretical Comparison Plot",
-                                                      value = TRUE),
-                                        checkboxInput(inputId = "export_theo_comparison_plot_data",
-                                                      label = "Theoretical Comparison Plot Data"),
-                                        checkboxInput(inputId = "export_woods_plot",
-                                                      label = "Woods Plot",
-                                                      value = TRUE),
-                                        checkboxInput(inputId = "export_woods_plot_data",
-                                                      label = "Woods Plot Data"),
-                                        checkboxInput(inputId = "export_theo_woods_plot",
-                                                      label = "Theoretical Woods Plot",
-                                                      value = TRUE),
-                                        checkboxInput(inputId = "export_theo_woods_plot_data",
-                                                      label = "Theoretical Woods Plot Data"),
-                                        # br(),
-                                        # actionButton(inputId = "preview_action",
-                                        #              label = "  Show preview!",
-                                        #              icon = icon("fas fa-eye")),
-                                        br(),
+                           sidebarPanel(width = 8,
+                                        h4("Please, choose items for report."),
+                                        fluidRow(
+                                          column(6,
+                                                 checkboxInput(inputId = "export_overlap_dist",
+                                                               label = "Overlap Distribution",
+                                                               value = TRUE),
+                                                 checkboxInput(inputId = "export_overlap_graph",
+                                                               label = "Overlap Graphically",
+                                                               value = TRUE),
+                                                 checkboxInput(inputId = "export_comparison_plot",
+                                                               label = "Comparison Plot",
+                                                               value = TRUE),
+                                                 checkboxInput(inputId = "export_theo_comparison_plot",
+                                                               label = "Theoretical Comparison Plot",
+                                                               value = TRUE),
+                                                 checkboxInput(inputId = "export_woods_plot",
+                                                               label = "Woods Plot",
+                                                               value = TRUE),
+                                                 checkboxInput(inputId = "export_theo_woods_plot",
+                                                               label = "Theoretical Woods Plot",
+                                                               value = TRUE)),
+                                          column(6, 
+                                                 checkboxInput(inputId = "export_overlap_dist_data",
+                                                               label = "Overlap Distribution Data"),
+                                                 checkboxInput(inputId = "export_overlap_graph_data",
+                                                               label = "Overlap Graphically Data"),
+                                                 checkboxInput(inputId = "export_comparison_plot_data",
+                                                               label = "Comparison Plot Data"),
+                                                 checkboxInput(inputId = "export_theo_comparison_plot_data",
+                                                               label = "Theoretical Comparison Plot Data"),
+                                                 checkboxInput(inputId = "export_woods_plot_data",
+                                                               label = "Woods Plot Data"),
+                                                 checkboxInput(inputId = "export_theo_woods_plot_data",
+                                                               label = "Theoretical Woods Plot Data"))
+                                        ),
                                         br(),
                                         downloadButton(outputId = "export_action",
                                                        label = "  Create report!",
