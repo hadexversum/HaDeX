@@ -15,18 +15,24 @@ vignette: >
 
 ```{r, echo = FALSE, message = FALSE, results='asis'}
 library(HaDeX)
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_190304_Nucb2_EDTA_CaCl2_test02_clusterdata.csv"))
 ```
 
 # Hydrogen/Deuterium Exchange Mass Spectrometry Data 
+
+Hydrogen-deuterium mass spectrometry (HDX-MS) is a staple tool for monitoring dynamics and interactions of proteins. Due to the sheer size of the HDX-MS results, the data analysis require a dedicated software suite. However, the majority of existing tools provides only point-and-click interfaces to black-box models or does not offer a complete workflow. We propose \textbf{HaDeX}, a novel tool for processing, analysis and visualisation of HDX-MS experiments. \textbf{HaDeX} covers the whole analytic process, including preliminary data exploration, quality control and generation of publication-quality figures. The reproducibility of the whole procedure is ensured with advanced reporting functions.
 
 # General data manipulation
 
 ## Input file format 
 
-## Agreggated data from file
-
+The \textbf{HaDeX} web server relies only on a single data format: DynamiX datafile. An user can customize each step of the analysis with his own input parameters.
 
 ## Transformation of data and measurement uncertainty
+
+### Protein coverage
+
+### Data preparation for plots
 
 $$expMass = z*(Center-protonMass)\tag{1}$$
 where:
@@ -124,6 +130,61 @@ $$diff = D_{1} - D_{2}\tag{11}$$
 and the uncertainty of function of two variables (based on previous equation):
 
 $$u_{c}(diff) = \sqrt{u(D_{1})^2 + u(D_{2})^2}\tag{12}$$
+All of the previous calculations are done by function prepare_dataset(). Example of use:
+
+```{r warning=FALSE}
+calc_dat <- prepare_dataset(dat,
+                            in_state_first = "gg_Nucb2_EDTA_0.001",
+                            chosen_state_first = "gg_Nucb2_EDTA_25",
+                            out_state_first = "gg_Nucb2_EDTA_1440",
+                            in_state_second = "gg_Nucb2_CaCl2_0.001",
+                            chosen_state_second = "gg_Nucb2_CaCl2_25",
+                            out_state_second = "gg_Nucb2_CaCl2_1440") 
+```
+
+### Comparison plot
+
+The levels of deuteration along with uncertainty intervals are shown on comparison plot. \textbf{HaDeX} provides both experimental and theroetical levels of deuteration. Example of use:
+
+- theoretical:
+
+```{r warning=FALSE}
+comparison_plot(calc_dat = calc_dat,
+                plot_title = "Theoretical fraction exchanged in \nstate comparison in 25 min time",
+                theoretical = TRUE,
+                state_first = "Nucb2 Factor 1",
+                state_second = "Nucb2 Factor 2")
+```
+
+- experimental:
+
+```{r warning=FALSE}
+comparison_plot(calc_dat = calc_dat,
+                plot_title = "Fraction exchanged in state comparison \nin 25 min time",
+                theoretical = FALSE,
+                state_first = "Nucb2 Factor 1",
+                state_second = "Nucb2 Factor 2")
+```
+
+### Woods plot
+
+Woods plot format shows diference between results of two different states as described by equation 11. \textbf{HaDeX} provides both experimental i theoretical calculations. Example of use:
+
+- theoretical:
+
+```{r warning=FALSE}
+woods_plot(calc_dat = calc_dat,
+           plot_title = "Theoretical fraction exchanged between \nstates in 25 min time",
+           theoretical = TRUE)
+```
+
+- experimental:
+
+```{r warning=FALSE }
+woods_plot(calc_dat = calc_dat,
+           plot_title = "Theoretical fraction exchanged between \nstates in 25 min time",
+           theoretical = FALSE)
+```
 
 # Example workflow
 
