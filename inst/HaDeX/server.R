@@ -28,7 +28,7 @@ server <- function(input, output, session) {
     
     times_from_file <- round(unique(dat()["Exposure"]), 3)
     
-    states_from_file <- unique(dat()["State"])
+    states_from_file <- unique(dat()[["State"]])
     
     updateSelectInput(session, 
                       inputId = "chosen_time",
@@ -48,12 +48,12 @@ server <- function(input, output, session) {
     updateSelectInput(session,
                       inputId = "state_first",
                       choices = states_from_file,
-                      selected = states_from_file[1,])
+                      selected = states_from_file[1])
     
     updateSelectInput(session,
                       inputId = "state_second",
                       choices = states_from_file,
-                      selected = states_from_file[2,])
+                      selected = states_from_file[length(states_from_file)])
     
   })
   
