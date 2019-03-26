@@ -15,6 +15,7 @@ vignette: >
 
 ```{r, echo = FALSE, message = FALSE, results='asis'}
 library(HaDeX)
+library(ggplot2)
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_190304_Nucb2_EDTA_CaCl2_test02_clusterdata.csv"))
 ```
 
@@ -144,7 +145,7 @@ calc_dat <- prepare_dataset(dat,
 
 ### Comparison plot
 
-The levels of deuteration along with uncertainty intervals are shown on comparison plot. \textbf{HaDeX} provides both experimental and theroetical levels of deuteration. Example of use:
+The levels of deuteration along with uncertainty intervals are shown on comparison plot. HaDeX provides both experimental and theroetical levels of deuteration. Example of use:
 
 - theoretical:
 
@@ -168,7 +169,7 @@ comparison_plot(calc_dat = calc_dat,
 
 ### Woods plot
 
-Woods plot format shows diference between results of two different states as described by equation 11. \textbf{HaDeX} provides both experimental i theoretical calculations. Example of use:
+Woods plot format shows diference between results of two different states as described by equation 11. HaDeX provides both experimental i theoretical calculations. Example of use:
 
 - theoretical:
 
@@ -184,6 +185,36 @@ woods_plot(calc_dat = calc_dat,
 woods_plot(calc_dat = calc_dat,
            plot_title = "Theoretical fraction exchanged between \nstates in 25 min time",
            theoretical = FALSE)
+```
+
+## Additional tools
+
+HaDeX provides additional tools for assement of experiments. 
+
+### Quality control 
+
+Function quality_control() shows how the mean uncertainty per peptide changes with time points of an experiment. Example of use:
+
+```{r warning=FALSE}
+result <- quality_control(dat = dat,
+                          state_first = "gg_Nucb2_EDTA",
+                          state_second = "gg_Nucb2_CaCl2", 
+                          chosen_time = 25, 
+                          in_time = 0.001)
+
+```
+
+As the function returns data.frame with calculated value, here is an example of result visualization:
+
+```{r warning=FALSE}
+ggplot(result[result["time"]>=1,]) + 
+  geom_line(aes(x = time, y = avg_err_state_first, color = "Average error (first state)")) +
+  geom_line(aes(x = time, y = avg_err_state_second, color = "Average error (second state)")) +
+  scale_x_log10() +
+  labs(x = "log(time) [min]", y = "Average uncertainty", title = "Uncertainty change") + 
+  theme_bw(base_size = 11) +
+  theme(legend.position = "bottom",
+        legend.title = element_blank())
 ```
 
 # Example workflow
