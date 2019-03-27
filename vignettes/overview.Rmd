@@ -16,6 +16,8 @@ vignette: >
 ```{r, echo = FALSE, message = FALSE, results='asis'}
 library(HaDeX)
 library(ggplot2)
+library(knitr)
+opts_chunk$set(fig.width = 7, fig.height = 5)
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_190304_Nucb2_EDTA_CaCl2_test02_clusterdata.csv"))
 ```
 
@@ -223,3 +225,124 @@ ggplot(result[result["time"]>=1,]) +
 2. Sequence reconstruction
 3. Woods plots.
 
+## Example workflow 1
+
+```{r}
+library(HaDeX)
+
+# file import
+dat_1 <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+
+# protein sequence reconstruction
+reconstruct_sequence(dat_1)
+
+# calculate data
+calc_dat_1 <- prepare_dataset(dat = dat_1,
+                              in_state_first = "CD160_0.001",
+                              chosen_state_first = "CD160_1",
+                              out_state_first = "CD160_1440",
+                              in_state_second = "CD160_HVEM_0.001",
+                              chosen_state_second = "CD160_HVEM_1",
+                              out_state_second = "CD160_HVEM_1440")                             
+
+# theoretical comparison plot
+comparison_plot(calc_dat = calc_dat_1,
+                theoretical = TRUE,
+                state_first = "CD160",
+                state_second = "CD160_HVEM")
+
+# experimental comparison plot
+comparison_plot(calc_dat = calc_dat_1,
+                theoretical = FALSE,
+                state_first = "CD160",
+                state_second = "CD160_HVEM")
+
+# theoretical Woods plot
+woods_plot(calc_dat = calc_dat_1,
+           theoretical = TRUE)
+
+# experimental Woods plot
+woods_plot(calc_dat = calc_dat_1,
+           theoretical = FALSE)
+
+# quality control
+(result <- quality_control(dat = dat_1,
+                state_first = "CD160",
+                state_second = "CD160_HVEM", 
+                chosen_time = 1, 
+                in_time = 0.001))
+
+# example quality control visualisation
+library(ggplot2)
+ggplot(result) + 
+  geom_line(aes(x = time, y = avg_err_state_first, color = "Average error (first state)")) +
+  geom_line(aes(x = time, y = avg_err_state_second, color = "Average error (second state)")) +
+  scale_x_log10() +
+  ylim(0, 0.05) + 
+  labs(x = "log(time) [min]", y = "Average uncertainty", title = "Uncertainty change in out time") +
+  theme(legend.title = element_blank(),
+        legend.position = "bottom")
+
+```
+
+## Example workflow 2
+
+```{r}
+library(HaDeX)
+
+# file import
+dat_2 <-  read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_190304_Nucb2_EDTA_CaCl2_test02_clusterdata.csv"))
+
+# protein sequence reconstruction
+reconstruct_sequence(dat_2)
+
+# calculate data
+calc_dat_2 <- prepare_dataset(dat = dat_2,
+                              in_state_first = "gg_Nucb2_EDTA_0.001",
+                              chosen_state_first = "gg_Nucb2_EDTA_25",
+                              out_state_first = "gg_Nucb2_EDTA_1440",
+                              in_state_second = "gg_Nucb2_CaCl2_0.001",
+                              chosen_state_second = "gg_Nucb2_CaCl2_25",
+                              out_state_second = "gg_Nucb2_CaCl2_1440")                             
+
+# theoretical comparison plot
+comparison_plot(calc_dat = calc_dat_2,
+                plot_title = "Theoretical fraction exchanged in \nstate comparison in 25 min time",
+                theoretical = TRUE,
+                state_first = "Nucb2 Factor 1",
+                state_second = "Nucb2 Factor 2")
+
+# experimental comparison plot
+comparison_plot(calc_dat = calc_dat_2,
+                plot_title = "Fraction exchanged in \nstate comparison in 25 min time",
+                theoretical = FALSE,
+                state_first = "Nucb2 Factor 1",
+                state_second = "Nucb2 Factor 2")
+
+# theoretical Woods plot
+woods_plot(calc_dat = calc_dat_2,
+           plot_title = "Theoretical fraction exchanged between \nstates in 25 min time",
+           theoretical = TRUE)
+
+# experimental Woods plot
+woods_plot(calc_dat = calc_dat_2,
+           plot_title = "Fraction exchanged between \nstates in 25 min time",
+           theoretical = FALSE)
+
+# quality control
+(result <- quality_control(dat = dat_2,
+                           state_first = "gg_Nucb2_EDTA",
+                           state_second = "gg_Nucb2_CaCl2", 
+                           chosen_time = 25, 
+                           in_time = 0.001))
+
+# example quality control visualisation
+library(ggplot2)
+ggplot(result[result["time"]>=1,]) + 
+  geom_line(aes(x = time, y = avg_err_state_first, color = "Average error (first state)")) +
+  geom_line(aes(x = time, y = avg_err_state_second, color = "Average error (second state)")) +
+  scale_x_log10() +
+  labs(x = "log(time) [min]", y = "Average uncertainty", title = "Uncertainty change") + 
+  theme(legend.position = "bottom",
+        legend.title = element_blank())
+```
