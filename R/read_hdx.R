@@ -22,7 +22,7 @@ read_hdx <- function(filename){
                 "tsv" = read_tsv(filename, col_names = TRUE),
                 "xls" = read_excel(filename))
   
-  if (all.equal(colnames(dat), c("Protein", "Start", "End", "Sequence", "Modification", "Fragment", "MaxUptake", "MHP", "State", "Exposure", "File", "z", "RT", "Inten", "Center"))) {
+  if (isTRUE(all.equal(colnames(dat), c("Protein", "Start", "End", "Sequence", "Modification", "Fragment", "MaxUptake", "MHP", "State", "Exposure", "File", "z", "RT", "Inten", "Center")))) {
     
     dat[["Exposure"]] <- round(dat[["Exposure"]], 3)
     
