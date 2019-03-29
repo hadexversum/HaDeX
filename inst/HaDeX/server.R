@@ -522,7 +522,7 @@ server <- function(input, output, session) {
       position_in_sequence() %>%
         ggplot(aes(x = amino, fill = charge)) + 
         geom_bar() +
-        ylim(0, 30) + 
+        ylim(0, NA) + 
         labs(title = 'Amino distribution',
              x = 'Amino',
              y = 'Count')
@@ -531,7 +531,7 @@ server <- function(input, output, session) {
         filter(is_hydrophobic) %>%
         ggplot(aes(x = amino, fill = charge)) + 
         geom_bar() +
-        ylim(0, 30) + 
+        ylim(0, NA) + 
         labs(title = 'Amino distribution',
              x = 'Amino',
              y = 'Count')
@@ -540,7 +540,7 @@ server <- function(input, output, session) {
         filter(!is_hydrophobic) %>%
         ggplot(aes(x = amino, fill = charge)) + 
         geom_bar() +
-        ylim(0, 30) + 
+        ylim(0, NA) + 
         labs(title = 'Amino distribution',
              x = 'Amino',
              y = 'Count')
