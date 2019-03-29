@@ -313,9 +313,13 @@ server <- function(input, output, session) {
   output[["comparisonPlot"]] <- renderPlot({
 
     if (input[["theory"]]) {
-      comparison_plot_theo()
+      comparison_plot_theo() +
+        xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
+        ylim(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]) 
       } else {   
-        comparison_plot_exp()
+        comparison_plot_exp() +
+          xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
+          ylim(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]) 
       }
 
   })
@@ -381,9 +385,13 @@ server <- function(input, output, session) {
   output[["differentialPlot"]] <- renderPlot({
     
     if (input[["theory"]]) {
-      differential_plot_theo()
+      differential_plot_theo()+
+        xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
+        ylim(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]) 
       } else {
-        differential_plot_exp()
+        differential_plot_exp()+
+          xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
+          ylim(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]) 
       }
     
   })
@@ -411,6 +419,11 @@ server <- function(input, output, session) {
     
     updateSliderInput(session, 
                       inputId = "plot_range",
+                      max = max_range(),
+                      value = c(0, max_range()))
+    
+    updateSliderInput(session, 
+                      inputId = "woods_plot_x_range",
                       max = max_range(),
                       value = c(0, max_range()))
     

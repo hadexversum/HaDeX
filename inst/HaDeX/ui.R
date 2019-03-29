@@ -128,7 +128,32 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                              selectInput(inputId = "state_second",
                                          label = "State 2", 
                                          choices = c("ALPHA", "BETA"),
-                                         width = "50%")
+                                         width = "50%"),
+                             h4("Adjust plot"),
+                             sliderInput(
+                               inputId = 'woods_plot_x_range',
+                               label = 'Choose x range :',
+                               min = 0,
+                               max = 300,
+                               value = c(0, 300),
+                               ticks = seq(0, 300, 1)
+                             ),
+                             sliderInput(
+                               inputId = 'comp_plot_y_range',
+                               label = 'Choose y range for comparison plot :',
+                               min = -2,
+                               max = 2,
+                               value = c(0, 1.2),
+                               step = 0.2
+                             ),
+                             sliderInput(
+                               inputId = 'woods_plot_y_range',
+                               label = 'Choose y range for Woods plot :',
+                               min = -2,
+                               max = 2,
+                               value = c(-1, 1),
+                               step = 0.2
+                             )
                            ),
                            mainPanel(
                              tabsetPanel(
@@ -141,7 +166,7 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                              ),
                              br(),
                              tabsetPanel(
-                               tabPanel("Wood\'s plot",
+                               tabPanel("Woods plot",
                                         br(),
                                         plotOutput("differentialPlot")),
                                tabPanel("Data",
