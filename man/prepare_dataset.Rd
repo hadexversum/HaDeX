@@ -23,7 +23,7 @@ prepare_dataset(dat, in_state_first, chosen_state_first, out_state_first,
 \item{out_state_second}{string in form "state_time" for second state in out time}
 }
 \value{
-data frame with caluclated values
+data frame with calculated values
 }
 \description{
 Calculates values for visualization  from input data file - both experimental and theoretical. All parameters are needed.

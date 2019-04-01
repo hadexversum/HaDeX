@@ -5,7 +5,7 @@
 \title{comparison_plot}
 \usage{
 comparison_plot(calc_dat, x_lab = NA, y_lab = NA, plot_title = NA,
-  theoretical = FALSE, state_first = "state_first",
+  theoretical = FALSE, relative = TRUE, state_first = "state_first",
   state_second = "state_second")
 }
 \arguments{
@@ -18,6 +18,8 @@ comparison_plot(calc_dat, x_lab = NA, y_lab = NA, plot_title = NA,
 \item{plot_title}{title label chosen by user. If unused, default label is chosen}
 
 \item{theoretical}{logical value to determine if plot is theoretical or not. default : false}
+
+\item{relative}{logical value to determine if values are relative or absolute. default : true}
 
 \item{state_first}{first state name}
 

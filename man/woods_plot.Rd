@@ -5,7 +5,7 @@
 \title{woods_plot}
 \usage{
 woods_plot(calc_dat, x_lab = NA, y_lab = NA, plot_title = NA,
-  theoretical = FALSE)
+  theoretical = FALSE, relative = TRUE)
 }
 \arguments{
 \item{calc_dat}{processed data from DynamiX file - using prepare_dataset}
@@ -17,6 +17,8 @@ woods_plot(calc_dat, x_lab = NA, y_lab = NA, plot_title = NA,
 \item{plot_title}{title label chosen by user. If unused, default label is chosen}
 
 \item{theoretical}{logical value to determine if plot is theoretical or not. default : false}
+
+\item{relative}{logical value to determine if values are relative or absolute. default : true}
 }
 \description{
 Produces Woods' plot based on previously processed data - theoretical or experimental. User can change labels if needed.
