@@ -153,20 +153,20 @@ The levels of deuteration along with uncertainty intervals are shown on comparis
 
 ```{r warning=FALSE}
 comparison_plot(calc_dat = calc_dat,
-                plot_title = "Theoretical fraction exchanged in \nstate comparison in 25 min time",
                 theoretical = TRUE,
                 state_first = "Nucb2 Factor 1",
-                state_second = "Nucb2 Factor 2")
+                state_second = "Nucb2 Factor 2") +
+  labs(plot_title = "Theoretical fraction exchanged in \nstate comparison in 25 min time")
 ```
 
 - experimental:
 
 ```{r warning=FALSE}
 comparison_plot(calc_dat = calc_dat,
-                plot_title = "Fraction exchanged in state comparison \nin 25 min time",
                 theoretical = FALSE,
                 state_first = "Nucb2 Factor 1",
-                state_second = "Nucb2 Factor 2")
+                state_second = "Nucb2 Factor 2") +
+  labs(plot_title = "Fraction exchanged in state comparison \nin 25 min time")
 ```
 
 ### Woods plot
@@ -307,17 +307,17 @@ calc_dat_2 <- prepare_dataset(dat = dat_2,
 
 # theoretical comparison plot
 comparison_plot(calc_dat = calc_dat_2,
-                plot_title = "Theoretical fraction exchanged in \nstate comparison in 25 min time",
                 theoretical = TRUE,
                 state_first = "Nucb2 Factor 1",
-                state_second = "Nucb2 Factor 2")
+                state_second = "Nucb2 Factor 2") +
+  labs(plot_title = "Theoretical fraction exchanged in \nstate comparison in 25 min time")
 
 # experimental comparison plot
 comparison_plot(calc_dat = calc_dat_2,
-                plot_title = "Fraction exchanged in \nstate comparison in 25 min time",
                 theoretical = FALSE,
                 state_first = "Nucb2 Factor 1",
-                state_second = "Nucb2 Factor 2")
+                state_second = "Nucb2 Factor 2") +
+  labs(plot_title = "Fraction exchanged in \nstate comparison in 25 min time")
 
 # theoretical Woods plot
 woods_plot(calc_dat = calc_dat_2,

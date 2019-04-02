@@ -4,18 +4,11 @@
 \alias{comparison_plot}
 \title{comparison_plot}
 \usage{
-comparison_plot(calc_dat, x_lab = NA, y_lab = NA, plot_title = NA,
-  theoretical = FALSE, relative = TRUE, state_first = "state_first",
-  state_second = "state_second")
+comparison_plot(calc_dat, theoretical = FALSE, relative = TRUE,
+  state_first = "state_first", state_second = "state_second")
 }
 \arguments{
 \item{calc_dat}{processed data from DynamiX file - using prepare_dataset}
-
-\item{x_lab}{x label chosen by user. If unused, default label is chosen}
-
-\item{y_lab}{y label chosen by user. If unused, default label is chosen}
-
-\item{plot_title}{title label chosen by user. If unused, default label is chosen}
 
 \item{theoretical}{logical value to determine if plot is theoretical or not. default : false}
 
