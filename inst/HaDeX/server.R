@@ -365,8 +365,8 @@ server <- function(input, output, session) {
   differential_plot_theo <- reactive({
     
     woods_plot(calc_dat = dat_new(),
-               plot_title = TeX(paste0("$\\Delta$ Theoretical fraction exchanged between states in ", input[["chosen_time"]], " min")),
-               theoretical = TRUE)
+               theoretical = TRUE) +
+      labs(plot_title = TeX(paste0("$\\Delta$ Theoretical fraction exchanged between states in ", input[["chosen_time"]], " min")))
     
   })
   
@@ -375,8 +375,8 @@ server <- function(input, output, session) {
   differential_plot_exp <- reactive({
     
     woods_plot(calc_dat = dat_new(),
-               plot_title = TeX(paste0("$\\Delta$ Fraction exchanged between states in ", input[["chosen_time"]], " min")),
-               theoretical = FALSE)
+               theoretical = FALSE) +
+      labs(plot_title = TeX(paste0("$\\Delta$ Fraction exchanged between states in ", input[["chosen_time"]], " min")))
     
   })
   

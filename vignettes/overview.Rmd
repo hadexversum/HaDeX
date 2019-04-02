@@ -177,16 +177,16 @@ Woods plot format shows diference between results of two different states as des
 
 ```{r warning=FALSE}
 woods_plot(calc_dat = calc_dat,
-           plot_title = "Theoretical fraction exchanged between \nstates in 25 min time",
-           theoretical = TRUE)
+           theoretical = TRUE) +
+  labs(plot_title = "Theoretical fraction exchanged between \nstates in 25 min time")
 ```
 
 - experimental:
 
 ```{r warning=FALSE }
 woods_plot(calc_dat = calc_dat,
-           plot_title = "Theoretical fraction exchanged between \nstates in 25 min time",
-           theoretical = FALSE)
+           theoretical = FALSE) +
+  labs(plot_title = "Theoretical fraction exchanged between \nstates in 25 min time")
 ```
 
 ## Additional tools
@@ -321,13 +321,13 @@ comparison_plot(calc_dat = calc_dat_2,
 
 # theoretical Woods plot
 woods_plot(calc_dat = calc_dat_2,
-           plot_title = "Theoretical fraction exchanged between \nstates in 25 min time",
-           theoretical = TRUE)
+           theoretical = TRUE) + 
+  labs(plot_title = "Theoretical fraction exchanged between \nstates in 25 min time")
 
 # experimental Woods plot
 woods_plot(calc_dat = calc_dat_2,
-           plot_title = "Fraction exchanged between \nstates in 25 min time",
-           theoretical = FALSE)
+           theoretical = FALSE) +
+  labs(plot_title = "Fraction exchanged between \nstates in 25 min time")
 
 # quality control
 (result <- quality_control(dat = dat_2,
