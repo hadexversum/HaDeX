@@ -176,34 +176,6 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                              
                            )
                   ),
-                  # tabPanel("Cosik",
-                  #          br(),
-                  #          h4("Double plot the way Krzysiu plots it - for comparison"),
-                  #          br(),
-                  #          sidebarPanel(
-                  #            h3("Parameters are the same, see:"),
-                  #            tableOutput("plotParametersKrzys")
-                  #          ),
-                  #          mainPanel(
-                  #            tabsetPanel(
-                  #              tabPanel("Comparison plot",
-                  #                       br(),
-                  #                       plotOutput("comparisonPlotKrzys")),
-                  #              tabPanel("Data",
-                  #                       br(),
-                  #                       DT::dataTableOutput("comparisonPlotKrzys_data"))
-                  #            ),
-                  #            tabsetPanel(
-                  #              tabPanel("Wood\'s plot",
-                  #                       br(),
-                  #                       plotOutput("differentailPlotKrzys")),
-                  #              tabPanel("Data",
-                  #                       br(),
-                  #                       DT::dataTableOutput("differentailPlotKrzys_data"))
-                  #            )
-                  #          )
-                  #          
-                  # ),
                   tabPanel("Report",
                            br(),
                            sidebarPanel(width = 8,
