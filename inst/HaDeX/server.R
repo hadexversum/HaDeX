@@ -87,6 +87,19 @@ server <- function(input, output, session) {
   
   ##
   
+  comparison_plot_data_theo_abs <- reactive({
+    
+    dat_new() %>%
+      select(Sequence, Start, End, abs_avg_theo_in_time_1, err_abs_avg_theo_in_time_1, abs_avg_theo_in_time_2, err_abs_avg_theo_in_time_2) %>%
+      mutate(abs_avg_theo_in_time_1 = round(abs_avg_theo_in_time_1, 4),
+             err_abs_avg_theo_in_time_1 = round(err_abs_avg_theo_in_time_1, 4),
+             abs_avg_theo_in_time_2 = round(abs_avg_theo_in_time_2, 4),
+             err_abs_avg_theo_in_time_2 = round(abs_avg_theo_in_time_2, 4)) %>%
+      dt_format(cols = c("Sequence", "Start", "End", "Theo Abs Val Exch 1", "Err Theo Abs Val Exch 1", "Theo Abs Val Exch 2", "Err Theo Abs Val Exch 2"))
+  })
+  
+  ## 
+  
   comparison_plot_data_exp <- reactive({
     
     dat_new() %>%
@@ -101,14 +114,38 @@ server <- function(input, output, session) {
   
   ##
   
+  comparison_plot_data_exp_abs <- reactive({
+    
+    dat_new() %>%
+      select(Sequence, Start, End, abs_frac_exch_state_1, err_abs_frac_exch_state_1, abs_frac_exch_state_2, err_abs_frac_exch_state_2) %>%
+      mutate(abs_frac_exch_state_1 = round(abs_frac_exch_state_1, 4),
+             err_abs_frac_exch_state_1 = round(err_abs_frac_exch_state_1, 4),
+             abs_frac_exch_state_2 = round(abs_frac_exch_state_2, 4),
+             err_abs_frac_exch_state_2 = round(abs_frac_exch_state_2, 4)) %>%
+      dt_format(cols = c("Sequence", "Start", "End", "Abs Val Exch 1", "Err Abs Val Exch 1", "Abs Val Exch 2", "Err Abs Val Exch 2"))
+  })
+  
+  ##
+  
   output[["comparisonPlot_data"]] <- DT::renderDataTable({
-    
+
     if (input[["theory"]]) {
-      comparison_plot_data_theo()
+      
+      if (input[["calc_type"]] == "relative") {
+        comparison_plot_data_theo()  
+      } else {
+        comparison_plot_data_theo_abs()
+      }
+      
     } else {
-      comparison_plot_data_exp()
+      
+      if (input[["calc_type"]] == "absolute") {
+        comparison_plot_data_exp()
+      } else {
+        comparison_plot_data_exp_abs()
+      }
+      
     }
-    
     
   })
   
@@ -118,9 +155,23 @@ server <- function(input, output, session) {
     
     comparison_plot(calc_dat = dat_new(),
                     theoretical = TRUE,
+                    relative = TRUE,
                     state_first = input[["state_first"]],
                     state_second = input[["state_second"]]) +
-      labs(plot_title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min"))
+      labs(title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min"))
+    
+  })
+  
+  ##
+  
+  comparison_plot_theo_abs <- reactive({
+    
+    comparison_plot(calc_dat = dat_new(),
+                    theoretical = TRUE,
+                    relative = FALSE,
+                    state_first = input[["state_first"]],
+                    state_second = input[["state_second"]]) +
+      labs(title = paste0("Theoretical absolute value exchanged in state comparison in ", input[["chosen_time"]], " min"))
     
   })
   
@@ -130,9 +181,23 @@ server <- function(input, output, session) {
     
     comparison_plot(calc_dat = dat_new(),
                     theoretical = FALSE,
+                    relative = TRUE,
                     state_first = input[["state_first"]],
                     state_second = input[["state_second"]]) +
-      labs(plot_title = paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min"))
+      labs(title = paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min"))
+    
+  })
+  
+  ##
+  
+  comparison_plot_exp_abs <- reactive({
+    
+    comparison_plot(calc_dat = dat_new(),
+                    theoretical = FALSE,
+                    relative = FALSE,
+                    state_first = input[["state_first"]],
+                    state_second = input[["state_second"]]) +
+      labs(title = paste0("Absolute value exchanged in state comparison in ", input[["chosen_time"]], " min"))
     
   })
   
@@ -141,14 +206,30 @@ server <- function(input, output, session) {
   output[["comparisonPlot"]] <- renderPlot({
 
     if (input[["theory"]]) {
-      comparison_plot_theo() +
-        xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
-        ylim(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]) 
-      } else {   
-        comparison_plot_exp() +
+      
+      if (input[["calc_type"]] == "relative") {
+        comparison_plot_theo() +
+          xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
+          ylim(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]) 
+      } else {
+        comparison_plot_theo_abs() +
           xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
           ylim(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]) 
       }
+      
+    } else {
+        
+      if (input[["calc_type"]] == "relative") {
+        comparison_plot_exp() +
+          xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
+          ylim(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]) 
+      } else {
+        comparison_plot_exp_abs() +
+          xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
+          ylim(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]) 
+      }
+      
+    }
 
   })
   
@@ -166,6 +247,18 @@ server <- function(input, output, session) {
   
   ##
   
+  differential_plot_data_theo_abs <- reactive({
+    
+    dat_new() %>%
+      select(Sequence, Start, End, abs_diff_theo_frac_exch, err_abs_diff_theo_frac_exch) %>%
+      mutate(abs_diff_theo_frac_exch = round(abs_diff_theo_frac_exch, 4),
+             err_abs_diff_theo_frac_exch = round(err_abs_diff_theo_frac_exch, 4)) %>%
+      dt_format(cols = c("Sequence", "Start", "End", "Theo Abs Value Diff", "Err Theo Abs Value Diff"))
+    
+  })
+  
+  ##
+  
   differential_plot_data_exp <- reactive({
     
     dat_new() %>%
@@ -178,12 +271,35 @@ server <- function(input, output, session) {
   
   ##
   
+  differential_plot_data_exp_abs <- reactive({
+    
+    dat_new() %>%
+      select(Sequence, Start, End, abs_diff_frac_exch, err_abs_diff_frac_exch) %>%
+      mutate(abs_diff_frac_exch = round(abs_diff_frac_exch, 4),
+             err_abs_diff_frac_exch = round(err_abs_diff_frac_exch, 4)) %>%
+      dt_format(cols = c("Sequence", "Start", "End", "Diff Abs Value Exch", "Err Diff Abs Value Exch"))
+  })
+  
+  ##
+  
   output[["differentialPlot_data"]] <- DT::renderDataTable({
     
     if (input[["theory"]]) {
-      differential_plot_data_theo()
+      
+      if(input[["calc_type"]] == "relative") {
+        differential_plot_data_theo()  
+      } else {
+        differential_plot_data_theo_abs()
+      }
+      
     } else {
-      differential_plot_data_exp()
+      
+      if (input[["calc_type"]] == "relative") {
+        differential_plot_data_exp()  
+      } else {
+        differential_plot_data_exp_abs()
+      }
+      
     }
     
   })
@@ -193,18 +309,43 @@ server <- function(input, output, session) {
   differential_plot_theo <- reactive({
     
     woods_plot(calc_dat = dat_new(),
-               theoretical = TRUE) +
-      labs(plot_title = TeX(paste0("$\\Delta$ Theoretical fraction exchanged between states in ", input[["chosen_time"]], " min")))
+               theoretical = TRUE,
+               relative = TRUE) +
+      labs(title = TeX(paste0("$\\Delta$ theoretical fraction exchanged between states in ", input[["chosen_time"]], " min")))
     
   })
+  
+  ##
+  
+  differential_plot_theo_abs <- reactive({
+    
+    woods_plot(calc_dat = dat_new(),
+               theoretical = TRUE,
+               relative = FALSE) +
+      labs(title = TeX(paste0("$\\Delta$ theoretical absolute value exchanged between states in ", input[["chosen_time"]], " min")))
+    
+  })
+  
   
   ##
   
   differential_plot_exp <- reactive({
     
     woods_plot(calc_dat = dat_new(),
-               theoretical = FALSE) +
-      labs(plot_title = TeX(paste0("$\\Delta$ Fraction exchanged between states in ", input[["chosen_time"]], " min")))
+               theoretical = FALSE, 
+               relative = TRUE) +
+      labs(title = TeX(paste0("$\\Delta$ fraction exchanged between states in ", input[["chosen_time"]], " min")))
+    
+  })
+  
+  ##
+  
+  differential_plot_exp_abs <- reactive({
+    
+    woods_plot(calc_dat = dat_new(),
+               theoretical = FALSE,
+               relative = FALSE) +
+      labs(title = TeX(paste0("$\\Delta$ absolute value exchanged between states in ", input[["chosen_time"]], " min")))
     
   })
   
@@ -213,14 +354,37 @@ server <- function(input, output, session) {
   output[["differentialPlot"]] <- renderPlot({
     
     if (input[["theory"]]) {
-      differential_plot_theo()+
-        xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
-        ylim(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]) 
+      
+      if (input[["calc_type"]] == "relative") {
+        
+        differential_plot_theo()+
+          xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
+          ylim(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])   
+        
       } else {
-        differential_plot_exp()+
+        
+        differential_plot_theo_abs()+
           xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
           ylim(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]) 
       }
+      
+    } else {
+      
+      if (input[["calc_type"]] == "relative") {
+        
+        differential_plot_exp()+
+          xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
+          ylim(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]) 
+        
+      } else {
+        
+        differential_plot_exp_abs()+
+          xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
+          ylim(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]) 
+        
+      }
+        
+    }
     
   })
 

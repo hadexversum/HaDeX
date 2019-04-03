@@ -156,7 +156,7 @@ comparison_plot(calc_dat = calc_dat,
                 theoretical = TRUE,
                 state_first = "Nucb2 Factor 1",
                 state_second = "Nucb2 Factor 2") +
-  labs(plot_title = "Theoretical fraction exchanged in \nstate comparison in 25 min time")
+  labs(title = "Theoretical fraction exchanged in \nstate comparison in 25 min time")
 ```
 
 - experimental:
@@ -166,7 +166,7 @@ comparison_plot(calc_dat = calc_dat,
                 theoretical = FALSE,
                 state_first = "Nucb2 Factor 1",
                 state_second = "Nucb2 Factor 2") +
-  labs(plot_title = "Fraction exchanged in state comparison \nin 25 min time")
+  labs(title = "Fraction exchanged in state comparison \nin 25 min time")
 ```
 
 ### Woods plot
@@ -178,7 +178,7 @@ Woods plot format shows diference between results of two different states as des
 ```{r warning=FALSE}
 woods_plot(calc_dat = calc_dat,
            theoretical = TRUE) +
-  labs(plot_title = "Theoretical fraction exchanged between \nstates in 25 min time")
+  labs(title = "Theoretical fraction exchanged between \nstates in 25 min time")
 ```
 
 - experimental:
@@ -186,7 +186,7 @@ woods_plot(calc_dat = calc_dat,
 ```{r warning=FALSE }
 woods_plot(calc_dat = calc_dat,
            theoretical = FALSE) +
-  labs(plot_title = "Theoretical fraction exchanged between \nstates in 25 min time")
+  labs(title = "Theoretical fraction exchanged between \nstates in 25 min time")
 ```
 
 ## Additional tools
@@ -310,24 +310,24 @@ comparison_plot(calc_dat = calc_dat_2,
                 theoretical = TRUE,
                 state_first = "Nucb2 Factor 1",
                 state_second = "Nucb2 Factor 2") +
-  labs(plot_title = "Theoretical fraction exchanged in \nstate comparison in 25 min time")
+  labs(title = "Theoretical fraction exchanged in \nstate comparison in 25 min time")
 
 # experimental comparison plot
 comparison_plot(calc_dat = calc_dat_2,
                 theoretical = FALSE,
                 state_first = "Nucb2 Factor 1",
                 state_second = "Nucb2 Factor 2") +
-  labs(plot_title = "Fraction exchanged in \nstate comparison in 25 min time")
+  labs(title = "Fraction exchanged in \nstate comparison in 25 min time")
 
 # theoretical Woods plot
 woods_plot(calc_dat = calc_dat_2,
            theoretical = TRUE) + 
-  labs(plot_title = "Theoretical fraction exchanged between \nstates in 25 min time")
+  labs(title = "Theoretical fraction exchanged between \nstates in 25 min time")
 
 # experimental Woods plot
 woods_plot(calc_dat = calc_dat_2,
            theoretical = FALSE) +
-  labs(plot_title = "Fraction exchanged between \nstates in 25 min time")
+  labs(title = "Fraction exchanged between \nstates in 25 min time")
 
 # quality control
 (result <- quality_control(dat = dat_2,
