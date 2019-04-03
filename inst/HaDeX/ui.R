@@ -146,7 +146,7 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                                inputId = 'comp_plot_y_range',
                                label = 'Choose y range for comparison plot :',
                                min = -2,
-                               max = 20,
+                               max = 2,
                                value = c(0, 1.5),
                                step = 0.5
                              ),

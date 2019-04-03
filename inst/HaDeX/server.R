@@ -425,6 +425,32 @@ server <- function(input, output, session) {
   
   observe({
     
+    if (input[["calc_type"]] == "absolute") {
+      
+      updateSliderInput(session,
+                        inputId = "comp_plot_y_range",
+                        min = -10,
+                        max = 50,
+                        value = c(0, 20))
+    } else {
+      
+      updateSliderInput(session,
+                        inputId = "comp_plot_y_range",
+                        min = -2,
+                        max = 2,
+                        value = c(0, 1.5))
+      
+    }
+    
+  })
+  ##
+  
+  ### TAB : GENERAL DATA ###
+  
+  ##
+  
+  observe({
+    
     possible_states <- unique(dat()[["State"]])
     
     updateRadioButtons(session,
@@ -664,6 +690,10 @@ server <- function(input, output, session) {
     
   })
   
+  ##
+  
+  ### TAB : REPORT ###
+
   ##
   
   output[["export_action"]] <- downloadHandler(
