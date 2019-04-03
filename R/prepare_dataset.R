@@ -85,7 +85,7 @@ prepare_dataset <- function(dat,
       abs_avg_theo_in_time_2 = chosen_time_mean_2 - MHP,
       err_abs_avg_theo_in_time_2 = err_chosen_time_mean_2,
       abs_diff_theo_frac_exch = abs_avg_theo_in_time_1 - abs_avg_theo_in_time_2,
-      err_abs_diff_theo_frac_exch = sqrt(abs_avg_theo_in_time_1^2 + abs_avg_theo_in_time_2^2),
+      err_abs_diff_theo_frac_exch = sqrt(err_abs_avg_theo_in_time_1^2 + err_abs_avg_theo_in_time_2^2),
       # helper values
       Med_Sequence = Start + (End - Start)/2) %>%
     ungroup(.) %>%

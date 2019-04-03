@@ -26,7 +26,16 @@ calc_dat <- prepare_dataset(dat,
                             chosen_state_second = "CD160_HVEM_1",
                             out_state_second = "CD160_HVEM_1440") 
 woods_plot(calc_dat = calc_dat,
-           theoretical = TRUE)
-woods_plot(calc_dat = calc_dat)
-
+           theoretical = TRUE,
+           relative = TRUE)
+woods_plot(calc_dat = calc_dat,
+           theoretical = FALSE,
+           relative = TRUE)
+woods_plot(calc_dat = calc_dat,
+           theoretical = TRUE,
+           relative = FALSE)
+woods_plot(calc_dat = calc_dat,
+           theoretical = FALSE,
+           relative = FALSE)
+            
 }

@@ -32,9 +32,22 @@ calc_dat <- prepare_dataset(dat,
                             out_state_second = "CD160_HVEM_1440")                             
 comparison_plot(calc_dat = calc_dat,
                 theoretical = TRUE,
+                relative = TRUE,
                 state_first = "CD160",
                 state_second = "CD160_HVEM")
 comparison_plot(calc_dat = calc_dat,
+                theoretical = FALSE,
+                relative = TRUE,
+                state_first = "CD160",
+                state_second = "CD160_HVEM")  
+comparison_plot(calc_dat = calc_dat,
+                theoretical = TRUE,
+                relative = FALSE,
+                state_first = "CD160",
+                state_second = "CD160_HVEM")
+comparison_plot(calc_dat = calc_dat,
+                theoretical = FALSE,
+                relative = FALSE,
                 state_first = "CD160",
                 state_second = "CD160_HVEM")                
 

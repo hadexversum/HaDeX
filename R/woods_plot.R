@@ -18,9 +18,18 @@
 #'                             chosen_state_second = "CD160_HVEM_1",
 #'                             out_state_second = "CD160_HVEM_1440") 
 #' woods_plot(calc_dat = calc_dat,
-#'            theoretical = TRUE)
-#' woods_plot(calc_dat = calc_dat)
-#' 
+#'            theoretical = TRUE,
+#'            relative = TRUE)
+#' woods_plot(calc_dat = calc_dat,
+#'            theoretical = FALSE,
+#'            relative = TRUE)
+#' woods_plot(calc_dat = calc_dat,
+#'            theoretical = TRUE,
+#'            relative = FALSE)
+#' woods_plot(calc_dat = calc_dat,
+#'            theoretical = FALSE,
+#'            relative = FALSE)
+#'             
 #' @export woods_plot
 
 woods_plot <- function(calc_dat,
@@ -51,7 +60,7 @@ absolute_woods_plot <- function(calc_dat,
       scale_y_continuous(expand = c(0, 0)) +
       geom_hline(yintercept = 0, linetype = "dotted", color = "red", size = .5) +
       labs(x = "Position in sequence", 
-           y = TeX("$\\Delta$ theoretical absolute value Exchanged"), 
+           y = TeX("$\\Delta$ theoretical absolute value exchanged [Da]"), 
            title = expression(paste(Delta, " Theoretical absoute value exchanged between states in chosen time")))
     
   } else {
@@ -62,7 +71,7 @@ absolute_woods_plot <- function(calc_dat,
       scale_y_continuous(expand = c(0, 0)) +
       geom_hline(yintercept = 0, linetype = "dotted", color = "red", size = .5) +
       labs(x = "Position in sequence", 
-           y = TeX("$\\Delta$ absolute value exchanged"), 
+           y = TeX("$\\Delta$ absolute value exchanged [Da]"), 
            title = expression(paste(Delta, " Absolute value exchanged between states in chosen time")))
     
   }
@@ -80,7 +89,7 @@ relative_woods_plot <- function(calc_dat,
       scale_y_continuous(breaks = seq(-1, 1, 0.2), expand = c(0, 0), limits = c(-1, 1)) +
       geom_hline(yintercept = 0, linetype = "dotted", color = "red", size = .5) +
       labs(x = "Position in sequence", 
-           y = TeX("$\\Delta$ Theoretical fraction Exchanged"), 
+           y = TeX("$\\Delta$ theoretical fraction exchanged"), 
            title = expression(paste(Delta, " Theoretical fraction exchanged between states in chosen time")))
     
   } else {
@@ -91,7 +100,7 @@ relative_woods_plot <- function(calc_dat,
       scale_y_continuous(breaks = seq(-1, 1, 0.2), expand = c(0, 0), limits = c(-1, 1)) +
       geom_hline(yintercept = 0, linetype = "dotted", color = "red", size = .5) +
       labs(x = "Position in sequence",
-           y = TeX("$\\Delta$ Fraction Exchanged"), 
+           y = TeX("$\\Delta$ fraction exchanged"), 
            title = expression(paste(Delta, " Fraction exchanged between states in chosen time")))
     
   }

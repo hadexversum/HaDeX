@@ -22,9 +22,22 @@
 #'                             out_state_second = "CD160_HVEM_1440")                             
 #' comparison_plot(calc_dat = calc_dat,
 #'                 theoretical = TRUE,
+#'                 relative = TRUE,
 #'                 state_first = "CD160",
 #'                 state_second = "CD160_HVEM")
 #' comparison_plot(calc_dat = calc_dat,
+#'                 theoretical = FALSE,
+#'                 relative = TRUE,
+#'                 state_first = "CD160",
+#'                 state_second = "CD160_HVEM")  
+#' comparison_plot(calc_dat = calc_dat,
+#'                 theoretical = TRUE,
+#'                 relative = FALSE,
+#'                 state_first = "CD160",
+#'                 state_second = "CD160_HVEM")
+#' comparison_plot(calc_dat = calc_dat,
+#'                 theoretical = FALSE,
+#'                 relative = FALSE,
 #'                 state_first = "CD160",
 #'                 state_second = "CD160_HVEM")                
 #' 
@@ -117,7 +130,7 @@ relative_comparison_plot <- function(calc_dat,
       geom_errorbar(data = calc_dat, aes(x = Med_Sequence, ymin = frac_exch_state_1 - err_frac_exch_state_1, ymax = frac_exch_state_1 + err_frac_exch_state_1, color = state_first)) +
       geom_errorbar(data = calc_dat, aes(x = Med_Sequence, ymin = frac_exch_state_2 - err_frac_exch_state_2, ymax = frac_exch_state_2 + err_frac_exch_state_2, color = state_second)) +
       labs(x = "Position in sequence", 
-           y = "Fraction Exchanged", 
+           y = "Fraction exchanged", 
            title = "Fraction exchanged in state comparison in chosen time") +
       theme(legend.position = "bottom",
             legend.title = element_blank()) +
