@@ -53,15 +53,15 @@ comparison_plot <- function(calc_dat,
     
     relative_comparison_plot(calc_dat,
                              theoretical = theoretical,
-                             state_first = "state_first",
-                             state_second = "state_second")
+                             state_first = state_first,
+                             state_second = state_second)
     
   } else {
     
     absolute_comparison_plot(calc_dat,
                              theoretical = theoretical,
-                             state_first = "state_first",
-                             state_second = "state_second")
+                             state_first = state_first,
+                             state_second = state_second)
     
   }
   
@@ -69,9 +69,9 @@ comparison_plot <- function(calc_dat,
 
 
 absolute_comparison_plot <- function(calc_dat,
-                                     theoretical = FALSE,
-                                     state_first = "state_first",
-                                     state_second = "state_second"){
+                                     theoretical,
+                                     state_first,
+                                     state_second){
   if (theoretical) {
     
     ggplot()+
@@ -105,9 +105,9 @@ absolute_comparison_plot <- function(calc_dat,
 }
 
 relative_comparison_plot <- function(calc_dat,
-                                     theoretical = FALSE,
-                                     state_first = "state_first",
-                                     state_second = "state_second"){
+                                     theoretical,
+                                     state_first,
+                                     state_second){
   if (theoretical) {
     
     ggplot()+

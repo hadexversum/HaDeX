@@ -21,7 +21,6 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                 
                 tabsetPanel(
                   tabPanel("Start",
-                           br(),
                            h3("Welcome!"),
                            h4("Please, upload your file. Otherwise you will see example data."),
                            fileInput(
@@ -34,7 +33,6 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                            tableOutput("file_req")
                   ),
                   tabPanel("General data",
-                           br(),
                            h3('Protein name'),
                            h4(textOutput("protein_name")),
                            h3('Reconstructed sequence'),
