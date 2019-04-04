@@ -99,8 +99,6 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                   ),
                   tabPanel("Woods plot",
                            br(),
-                           h4("Double plot after small modifications  - for comparison"),
-                           br(),
                            sidebarPanel(
                              h3("Please, select parameters for the plot."),
                              checkboxInput(inputId = "theory",
@@ -135,7 +133,7 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                                          width = "50%"),
                              h4("Adjust plot:"),
                              sliderInput(
-                               inputId = 'woods_plot_x_range',
+                               inputId = 'plot_x_range',
                                label = 'Choose x range :',
                                min = 0,
                                max = 300,
@@ -147,16 +145,16 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                                label = 'Choose y range for comparison plot :',
                                min = -2,
                                max = 2,
-                               value = c(0, 1.5),
-                               step = 0.5
+                               value = c(0, 1.2),
+                               step = 0.1
                              ),
                              sliderInput(
                                inputId = 'woods_plot_y_range',
                                label = 'Choose y range for Woods plot :',
-                               min = -4,
-                               max = 4,
+                               min = -2,
+                               max = 2,
                                value = c(-1, 1),
-                               step = 0.5
+                               step = 0.1
                              )
                            ),
                            mainPanel(

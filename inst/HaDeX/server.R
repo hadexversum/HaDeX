@@ -209,11 +209,11 @@ server <- function(input, output, session) {
       
       if (input[["calc_type"]] == "relative") {
         comparison_plot_theo() +
-          xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
+          xlim(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]) +
           ylim(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]) 
       } else {
         comparison_plot_theo_abs() +
-          xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
+          xlim(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]) +
           ylim(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]) 
       }
       
@@ -221,11 +221,11 @@ server <- function(input, output, session) {
         
       if (input[["calc_type"]] == "relative") {
         comparison_plot_exp() +
-          xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
+          xlim(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]) +
           ylim(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]) 
       } else {
         comparison_plot_exp_abs() +
-          xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
+          xlim(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]) +
           ylim(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]) 
       }
       
@@ -358,13 +358,13 @@ server <- function(input, output, session) {
       if (input[["calc_type"]] == "relative") {
         
         differential_plot_theo()+
-          xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
+          xlim(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]) +
           ylim(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])   
         
       } else {
         
         differential_plot_theo_abs()+
-          xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
+          xlim(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]) +
           ylim(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]) 
       }
       
@@ -373,13 +373,13 @@ server <- function(input, output, session) {
       if (input[["calc_type"]] == "relative") {
         
         differential_plot_exp()+
-          xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
+          xlim(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]) +
           ylim(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]) 
         
       } else {
         
         differential_plot_exp_abs()+
-          xlim(input[["woods_plot_x_range"]][[1]], input[["woods_plot_x_range"]][[2]]) +
+          xlim(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]) +
           ylim(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]) 
         
       }
@@ -415,7 +415,7 @@ server <- function(input, output, session) {
                       value = c(0, max_range()))
     
     updateSliderInput(session, 
-                      inputId = "woods_plot_x_range",
+                      inputId = "plot_x_range",
                       max = max_range(),
                       value = c(0, max_range()))
     
@@ -427,22 +427,45 @@ server <- function(input, output, session) {
     
     if (input[["calc_type"]] == "absolute") {
       
+      min_comparison_abs <- round_any(min(dat_new()[c("abs_frac_exch_state_1", "abs_frac_exch_state_2", "abs_avg_theo_in_time_1", "abs_avg_theo_in_time_2")]), 5, floor)
+      max_comparison_abs <- round_any(max(dat_new()[c("abs_frac_exch_state_1", "abs_frac_exch_state_2", "abs_avg_theo_in_time_1", "abs_avg_theo_in_time_2")]), 5, ceiling)
+      
       updateSliderInput(session,
                         inputId = "comp_plot_y_range",
-                        min = -10,
-                        max = 50,
-                        value = c(0, 20))
+                        min = min_comparison_abs,
+                        max = max_comparison_abs,
+                        value = c(min_comparison_abs, max_comparison_abs),
+                        step = 1)
+      
+      min_woods_abs <- round_any(min(dat_new()[c("abs_diff_frac_exch", "abs_diff_theo_frac_exch")]), 2, floor)
+      max_woods_abs <- round_any(max(dat_new()[c("abs_diff_frac_exch", "abs_diff_theo_frac_exch")]), 2, ceiling)
+      
+      updateSliderInput(session,
+                        inputId = "woods_plot_y_range",
+                        min = min_woods_abs, 
+                        max = max_woods_abs, 
+                        value = c(min_woods_abs, max_woods_abs),
+                        step = 0.5)
+      
     } else {
       
       updateSliderInput(session,
                         inputId = "comp_plot_y_range",
                         min = -2,
                         max = 2,
-                        value = c(0, 1.5))
+                        value = c(0, 1.2),
+                        step = 0.1)
       
+      updateSliderInput(session,
+                        inputId = "woods_plot_y_range",
+                        min = -2, 
+                        max = 2, 
+                        value = c(-1, 1),
+                        step = 0.1)
     }
     
   })
+  
   ##
   
   ### TAB : GENERAL DATA ###

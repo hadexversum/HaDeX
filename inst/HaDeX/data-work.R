@@ -36,3 +36,5 @@ dt_format <- function(dat, cols = colnames(dat)) {
             rownames = FALSE)
   
 }
+
+round_any <- function(x, accuracy, f = round){f(x/accuracy) * accuracy}
