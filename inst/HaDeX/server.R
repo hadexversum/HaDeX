@@ -208,25 +208,29 @@ server <- function(input, output, session) {
     if (input[["theory"]]) {
       
       if (input[["calc_type"]] == "relative") {
+        
         comparison_plot_theo() +
-          xlim(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]) +
-          ylim(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]) 
+          coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
+                          ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]))
       } else {
+        
         comparison_plot_theo_abs() +
-          xlim(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]) +
-          ylim(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]) 
+          coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
+                          ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]))
       }
       
     } else {
         
       if (input[["calc_type"]] == "relative") {
+        
         comparison_plot_exp() +
-          xlim(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]) +
-          ylim(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]) 
+          coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
+                          ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]))
       } else {
+        
         comparison_plot_exp_abs() +
-          xlim(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]) +
-          ylim(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]) 
+          coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
+                          ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]))
       }
       
     }
@@ -357,31 +361,30 @@ server <- function(input, output, session) {
       
       if (input[["calc_type"]] == "relative") {
         
-        differential_plot_theo()+
-          xlim(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]) +
-          ylim(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])   
+        differential_plot_theo() +
+          coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
+                          ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]))
         
       } else {
         
-        differential_plot_theo_abs()+
-          xlim(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]) +
-          ylim(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]) 
+        differential_plot_theo_abs() +
+          coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
+                          ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]))
       }
       
     } else {
       
       if (input[["calc_type"]] == "relative") {
         
-        differential_plot_exp()+
-          xlim(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]) +
-          ylim(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]) 
+        differential_plot_exp() +
+          coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
+                          ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]))
         
       } else {
         
-        differential_plot_exp_abs()+
-          xlim(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]) +
-          ylim(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]) 
-        
+        differential_plot_exp_abs() +
+          coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
+                          ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]))
       }
         
     }
