@@ -528,7 +528,7 @@ server <- function(input, output, session) {
   output[["protein_stats"]] <- renderTable({
     
     data.frame(
-      Name = c("Length", "Covered", "Cys"),
+      Name = c("Length", "Coverage", "Cys"),
       Value = as.character(c(max_range(), 
                              paste0(round(100-100*str_count(protein_sequence(), 'x')/max_range(), 2), '%'),
                              str_count(protein_sequence(), 'C'))),
@@ -630,7 +630,7 @@ server <- function(input, output, session) {
       melt(id.vars = "ID") %>%
       ggplot(aes(x = value, y = ID, group = ID)) +
       geom_line() +
-      labs(title = 'Peptyds positions compared to whole protein sequence',
+      labs(title = 'Peptides positions compared to whole protein sequence',
            x = 'Position in sequence',
            y = '') +
       theme(axis.ticks.y = element_blank(),
@@ -702,7 +702,7 @@ server <- function(input, output, session) {
       geom_text(aes(x = display_position, y = mean_coverage, label = 'Average', color = 'red', vjust = -.5)) +
       geom_text(aes(x = display_position, y = mean_coverage, label = mean_coverage, color = 'red', vjust = 1.5)) +
       labs(title = 'How much a position in sequence is covered?',
-           x = 'Position in amino',
+           x = 'Position in sequence',
            y = 'Coverage') +
       theme(legend.position = "none")
     

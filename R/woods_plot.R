@@ -60,7 +60,7 @@ absolute_woods_plot <- function(calc_dat,
       scale_y_continuous(expand = c(0, 0)) +
       geom_hline(yintercept = 0, linetype = "dotted", color = "red", size = .5) +
       labs(x = "Position in sequence", 
-           y = TeX("$\\Delta$ theoretical absolute value exchanged [Da]"), 
+           y = expression(paste(Delta, " theoretical absolute value exchanged [Da]")), 
            title = expression(paste(Delta, " Theoretical absoute value exchanged between states in chosen time")))
     
   } else {
@@ -71,7 +71,7 @@ absolute_woods_plot <- function(calc_dat,
       scale_y_continuous(expand = c(0, 0)) +
       geom_hline(yintercept = 0, linetype = "dotted", color = "red", size = .5) +
       labs(x = "Position in sequence", 
-           y = TeX("$\\Delta$ absolute value exchanged [Da]"), 
+           y = expression(paste(Delta, " absolute value exchanged [Da]")), 
            title = expression(paste(Delta, " Absolute value exchanged between states in chosen time")))
     
   }
@@ -89,7 +89,7 @@ relative_woods_plot <- function(calc_dat,
       scale_y_continuous(breaks = seq(-1, 1, 0.2), expand = c(0, 0), limits = c(-1, 1)) +
       geom_hline(yintercept = 0, linetype = "dotted", color = "red", size = .5) +
       labs(x = "Position in sequence", 
-           y = TeX("$\\Delta$ theoretical fraction exchanged"), 
+           y = expression(paste(Delta, " theoretical fraction exchanged [%]")), 
            title = expression(paste(Delta, " Theoretical fraction exchanged between states in chosen time")))
     
   } else {
@@ -100,7 +100,7 @@ relative_woods_plot <- function(calc_dat,
       scale_y_continuous(breaks = seq(-1, 1, 0.2), expand = c(0, 0), limits = c(-1, 1)) +
       geom_hline(yintercept = 0, linetype = "dotted", color = "red", size = .5) +
       labs(x = "Position in sequence",
-           y = TeX("$\\Delta$ fraction exchanged"), 
+           y = expression(paste(Delta, " fraction exchanged [%]")), 
            title = expression(paste(Delta, " Fraction exchanged between states in chosen time")))
     
   }

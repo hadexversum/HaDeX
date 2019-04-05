@@ -74,7 +74,7 @@ absolute_comparison_plot <- function(calc_dat,
                                      state_second){
   if (theoretical) {
     
-    ggplot()+
+    ggplot() +
       geom_segment(data = calc_dat, aes(x = Start, y = abs_avg_theo_in_time_1, xend = End, yend = abs_avg_theo_in_time_1, color = state_first)) +
       geom_segment(data = calc_dat, aes(x = Start, y = abs_avg_theo_in_time_2, xend = End, yend = abs_avg_theo_in_time_2, color = state_second)) +
       geom_errorbar(data = calc_dat, aes(x = Med_Sequence, ymin = abs_avg_theo_in_time_1 - err_abs_avg_theo_in_time_1, ymax = abs_avg_theo_in_time_1 + err_abs_avg_theo_in_time_1, color = state_first)) +
@@ -110,13 +110,13 @@ relative_comparison_plot <- function(calc_dat,
                                      state_second){
   if (theoretical) {
     
-    ggplot()+
+    ggplot() +
       geom_segment(data = calc_dat, aes(x = Start, y = avg_theo_in_time_1, xend = End, yend = avg_theo_in_time_1, color = state_first)) +
       geom_segment(data = calc_dat, aes(x = Start, y = avg_theo_in_time_2, xend = End, yend = avg_theo_in_time_2, color = state_second)) +
       geom_errorbar(data = calc_dat, aes(x = Med_Sequence, ymin = avg_theo_in_time_1 - err_avg_theo_in_time_1, ymax = avg_theo_in_time_1 + err_avg_theo_in_time_1, color = state_first)) +
       geom_errorbar(data = calc_dat, aes(x = Med_Sequence, ymin = avg_theo_in_time_2 - err_avg_theo_in_time_2, ymax = avg_theo_in_time_2 + err_avg_theo_in_time_2, color = state_second)) +
       labs(x = "Position in sequence", 
-           y = "Theoretical fraction exchanged", 
+           y = "Theoretical fraction exchanged [%]", 
            title = "Theoretical fraction exchanged in state comparison in chosen time") +
       theme(legend.position = "bottom",
             legend.title = element_blank()) +
@@ -130,7 +130,7 @@ relative_comparison_plot <- function(calc_dat,
       geom_errorbar(data = calc_dat, aes(x = Med_Sequence, ymin = frac_exch_state_1 - err_frac_exch_state_1, ymax = frac_exch_state_1 + err_frac_exch_state_1, color = state_first)) +
       geom_errorbar(data = calc_dat, aes(x = Med_Sequence, ymin = frac_exch_state_2 - err_frac_exch_state_2, ymax = frac_exch_state_2 + err_frac_exch_state_2, color = state_second)) +
       labs(x = "Position in sequence", 
-           y = "Fraction exchanged", 
+           y = "Fraction exchanged [%]", 
            title = "Fraction exchanged in state comparison in chosen time") +
       theme(legend.position = "bottom",
             legend.title = element_blank()) +
