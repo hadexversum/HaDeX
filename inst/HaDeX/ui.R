@@ -22,7 +22,7 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                 tabsetPanel(
                   tabPanel("Start",
                            h3("Welcome!"),
-                           h4("Please, upload your file. Otherwise you will see example data."),
+                           h4("Upload your file. Otherwise you will see example data."),
                            fileInput(
                              inputId = "data_file",
                              label = "Choose file:",
@@ -32,7 +32,7 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                            h4("In order for program to behave correctly, please make sure supplied file fulfills following requirements:"),
                            tableOutput("file_req")
                   ),
-                  tabPanel("General data",
+                  tabPanel("Sequence data",
                            h3('Protein name'),
                            h4(textOutput("protein_name")),
                            h3('Reconstructed sequence'),
@@ -98,7 +98,7 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                   tabPanel("Woods plot",
                            br(),
                            sidebarPanel(
-                             h3("Please, select parameters for the plot."),
+                             h3("Select parameters for the plot."),
                              checkboxInput(inputId = "theory",
                                            label = "Theoretical calculations",
                                            value = FALSE
@@ -144,7 +144,8 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                                min = -2,
                                max = 2,
                                value = c(0, 1.2),
-                               step = 0.1
+                               step = 0.1,
+                               width = "100%"
                              ),
                              sliderInput(
                                inputId = 'woods_plot_y_range',
@@ -179,7 +180,7 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                   tabPanel("Report",
                            br(),
                            sidebarPanel(width = 8,
-                                        h4("Please, choose items for report:"),
+                                        h4("Choose items for report:"),
                                         fluidRow(
                                           column(6,
                                                  checkboxInput(inputId = "export_overlap_dist",

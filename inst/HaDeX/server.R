@@ -76,12 +76,14 @@ server <- function(input, output, session) {
   comparison_plot_data_theo <- reactive({
     
     dat_new() %>%
-      select(Sequence, Start, End, avg_theo_in_time_1, err_avg_theo_in_time_1, avg_theo_in_time_2, err_avg_theo_in_time_2) %>%
+      select(Sequence, Start, End, avg_theo_in_time_1, err_avg_theo_in_time_1, 
+             avg_theo_in_time_2, err_avg_theo_in_time_2) %>%
       mutate(avg_theo_in_time_1 = round(avg_theo_in_time_1, 4),
              err_avg_theo_in_time_1 = round(err_avg_theo_in_time_1, 4),
              avg_theo_in_time_2 = round(avg_theo_in_time_2, 4),
              err_avg_theo_in_time_2 = round(err_avg_theo_in_time_2, 4)) %>%
-      dt_format(cols = c("Sequence", "Start", "End", "Theo Frac Exch 1", "Err Theo Frac Exch 1", "Theo Frac Exch 2", "Err Theo Frac Exch 2"))
+      dt_format(cols = c("Sequence", "Start", "End", "Theo Frac Exch 1", "Err Theo Frac Exch 1", 
+                         "Theo Frac Exch 2", "Err Theo Frac Exch 2"))
     
   })
   
@@ -90,12 +92,14 @@ server <- function(input, output, session) {
   comparison_plot_data_theo_abs <- reactive({
     
     dat_new() %>%
-      select(Sequence, Start, End, abs_avg_theo_in_time_1, err_abs_avg_theo_in_time_1, abs_avg_theo_in_time_2, err_abs_avg_theo_in_time_2) %>%
+      select(Sequence, Start, End, abs_avg_theo_in_time_1, err_abs_avg_theo_in_time_1, 
+             abs_avg_theo_in_time_2, err_abs_avg_theo_in_time_2) %>%
       mutate(abs_avg_theo_in_time_1 = round(abs_avg_theo_in_time_1, 4),
              err_abs_avg_theo_in_time_1 = round(err_abs_avg_theo_in_time_1, 4),
              abs_avg_theo_in_time_2 = round(abs_avg_theo_in_time_2, 4),
              err_abs_avg_theo_in_time_2 = round(abs_avg_theo_in_time_2, 4)) %>%
-      dt_format(cols = c("Sequence", "Start", "End", "Theo Abs Val Exch 1", "Err Theo Abs Val Exch 1", "Theo Abs Val Exch 2", "Err Theo Abs Val Exch 2"))
+      dt_format(cols = c("Sequence", "Start", "End", "Theo Abs Val Exch 1", "Err Theo Abs Val Exch 1", 
+                         "Theo Abs Val Exch 2", "Err Theo Abs Val Exch 2"))
   })
   
   ## 
@@ -430,8 +434,10 @@ server <- function(input, output, session) {
     
     if (input[["calc_type"]] == "absolute") {
       
-      min_comparison_abs <- round_any(min(dat_new()[c("abs_frac_exch_state_1", "abs_frac_exch_state_2", "abs_avg_theo_in_time_1", "abs_avg_theo_in_time_2")], na.rm = TRUE), 5, floor)
-      max_comparison_abs <- round_any(max(dat_new()[c("abs_frac_exch_state_1", "abs_frac_exch_state_2", "abs_avg_theo_in_time_1", "abs_avg_theo_in_time_2")], na.rm = TRUE), 5, ceiling)
+      min_comparison_abs <- round_any(min(dat_new()[c("abs_frac_exch_state_1", "abs_frac_exch_state_2", 
+                                                      "abs_avg_theo_in_time_1", "abs_avg_theo_in_time_2")], na.rm = TRUE), 5, floor)
+      max_comparison_abs <- round_any(max(dat_new()[c("abs_frac_exch_state_1", "abs_frac_exch_state_2", 
+                                                      "abs_avg_theo_in_time_1", "abs_avg_theo_in_time_2")], na.rm = TRUE), 5, ceiling)
       
       updateSliderInput(session,
                         inputId = "comp_plot_y_range",
@@ -558,38 +564,18 @@ server <- function(input, output, session) {
   ##
   
   output[["aminoDist"]] <- renderPlot({
-    
-    if (length(input[["hydro_prop"]]) == 0) {
-      position_in_sequence() %>%
-        ggplot(aes(x = amino, col = charge)) 
-    } else if (length(input[["hydro_prop"]]) == 2){
-      position_in_sequence() %>%
-        ggplot(aes(x = amino, fill = charge)) + 
-        geom_bar() +
-        ylim(0, NA) + 
-        labs(title = 'Amino distribution',
-             x = 'Amino',
-             y = 'Count')
-    } else if (length(input[["hydro_prop"]]) == 1 & input[["hydro_prop"]] == "phobic") {
-      position_in_sequence() %>%
-        filter(is_hydrophobic) %>%
-        ggplot(aes(x = amino, fill = charge)) + 
-        geom_bar() +
-        ylim(0, NA) + 
-        labs(title = 'Amino distribution',
-             x = 'Amino',
-             y = 'Count')
-    } else if (length(input[["hydro_prop"]]) == 1 & input[["hydro_prop"]] == "philic"){
-      position_in_sequence() %>%
-        filter(!is_hydrophobic) %>%
-        ggplot(aes(x = amino, fill = charge)) + 
-        geom_bar() +
-        ylim(0, NA) + 
-        labs(title = 'Amino distribution',
-             x = 'Amino',
-             y = 'Count')
-    } 
-    
+    charge_colors <- c("-1" = "#E41A1C", "0" = "#377EB8", "1" = "#4DAF4A")
+
+    position_in_sequence() %>%
+      mutate(affinity = ifelse(is_hydrophobic, "phobic", "philic")) %>% 
+      filter(affinity %in% input[["hydro_prop"]]) %>% 
+      ggplot(aes(x = amino, fill = charge)) + 
+      geom_bar() +
+      scale_fill_manual("Charge", values = charge_colors) + 
+      #ylim(0, NA) + 
+      labs(title = 'Amino acid composition',
+           x = 'Amino acid',
+           y = 'Count')
   })
   
   ##
