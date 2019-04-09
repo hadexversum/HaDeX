@@ -10,11 +10,11 @@ calculate_confidence_limit_values(calc_dat, confidence_limit = 0.98,
 \arguments{
 \item{calc_dat}{processed data from DynamiX file - using prepare_dataset}
 
-\item{confidence_limit}{confidence limit chosen by user - from range [0, 1]. default : 0.98}
+\item{confidence_limit}{confidence limit chosen by user - from range [0, 1].}
 
-\item{theoretical}{logical value to determine if plot is theoretical or not. default : false}
+\item{theoretical}{logical value to determine if plot is theoretical or not.}
 
-\item{relative}{logical value to determine if values are relative or absolute. default : true}
+\item{relative}{logical value to determine if values are relative or absolute.}
 }
 \value{
 range of confidence limit interval
@@ -36,4 +36,9 @@ calculate_confidence_limit_values(calc_dat = calc_dat,
                                   theoretical = FALSE, 
                                   relative = TRUE)                          
                               
+}
+\references{
+Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). 
+The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in 
+Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
 }

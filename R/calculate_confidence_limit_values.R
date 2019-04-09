@@ -3,10 +3,13 @@
 #' Calculates confidence limit values for prepared datased, based on chosen parameters.
 #' 
 #' @param calc_dat processed data from DynamiX file - using prepare_dataset
-#' @param confidence_limit confidence limit chosen by user - from range [0, 1]. default : 0.98
-#' @param theoretical logical value to determine if plot is theoretical or not. default : false
-#' @param relative logical value to determine if values are relative or absolute. default : true
-#'
+#' @param confidence_limit confidence limit chosen by user - from range [0, 1]. 
+#' @param theoretical logical value to determine if plot is theoretical or not. 
+#' @param relative logical value to determine if values are relative or absolute. 
+#' @references Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). 
+#' The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in 
+#' Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
+
 #' @return range of confidence limit interval 
 #'  
 #' @examples 
