@@ -316,10 +316,16 @@ server <- function(input, output, session) {
   
   differential_plot_theo <- reactive({
     
+    interval <- calculate_confidence_limit_values(calc_dat = dat_new(),
+                                                  confidence_limit = as.double(input[["confidence_limit"]]),
+                                                  theoretical = TRUE,
+                                                  relative = TRUE)
     woods_plot(calc_dat = dat_new(),
                theoretical = TRUE,
                relative = TRUE) +
-      labs(title = TeX(paste0("$\\Delta$ theoretical fraction exchanged between states in ", input[["chosen_time"]], " min")))
+      labs(title = TeX(paste0("$\\Delta$ theoretical fraction exchanged between states in ", input[["chosen_time"]], " min"))) +
+      geom_hline(yintercept = interval[1], linetype = "dashed", color = "blue", size = .7) + 
+      geom_hline(yintercept = interval[2], linetype = "dashed", color = "blue", size = .7) 
     
   })
   
@@ -327,10 +333,17 @@ server <- function(input, output, session) {
   
   differential_plot_theo_abs <- reactive({
     
+    interval <- calculate_confidence_limit_values(calc_dat = dat_new(),
+                                                  confidence_limit = as.double(input[["confidence_limit"]]),
+                                                  theoretical = TRUE,
+                                                  relative = FALSE)
+    
     woods_plot(calc_dat = dat_new(),
                theoretical = TRUE,
                relative = FALSE) +
-      labs(title = TeX(paste0("$\\Delta$ theoretical absolute value exchanged between states in ", input[["chosen_time"]], " min")))
+      labs(title = TeX(paste0("$\\Delta$ theoretical absolute value exchanged between states in ", input[["chosen_time"]], " min"))) +
+      geom_hline(yintercept = interval[1], linetype = "dashed", color = "blue", size = .7) + 
+      geom_hline(yintercept = interval[2], linetype = "dashed", color = "blue", size = .7)
     
   })
   
@@ -339,10 +352,17 @@ server <- function(input, output, session) {
   
   differential_plot_exp <- reactive({
     
+    interval <- calculate_confidence_limit_values(calc_dat = dat_new(),
+                                                  confidence_limit = as.double(input[["confidence_limit"]]),
+                                                  theoretical = FALSE,
+                                                  relative = TRUE)
+    
     woods_plot(calc_dat = dat_new(),
                theoretical = FALSE, 
                relative = TRUE) +
-      labs(title = TeX(paste0("$\\Delta$ fraction exchanged between states in ", input[["chosen_time"]], " min")))
+      labs(title = TeX(paste0("$\\Delta$ fraction exchanged between states in ", input[["chosen_time"]], " min"))) +
+      geom_hline(yintercept = interval[1], linetype = "dashed", color = "blue", size = .7) + 
+      geom_hline(yintercept = interval[2], linetype = "dashed", color = "blue", size = .7)
     
   })
   
@@ -350,10 +370,17 @@ server <- function(input, output, session) {
   
   differential_plot_exp_abs <- reactive({
     
+    interval <- calculate_confidence_limit_values(calc_dat = dat_new(),
+                                                  confidence_limit = as.double(input[["confidence_limit"]]),
+                                                  theoretical = FALSE,
+                                                  relative = FALSE)
+    
     woods_plot(calc_dat = dat_new(),
                theoretical = FALSE,
                relative = FALSE) +
-      labs(title = TeX(paste0("$\\Delta$ absolute value exchanged between states in ", input[["chosen_time"]], " min")))
+      labs(title = TeX(paste0("$\\Delta$ absolute value exchanged between states in ", input[["chosen_time"]], " min"))) +
+      geom_hline(yintercept = interval[1], linetype = "dashed", color = "blue", size = .7) + 
+      geom_hline(yintercept = interval[2], linetype = "dashed", color = "blue", size = .7)
     
   })
   
