@@ -2,6 +2,8 @@
 #' 
 #' Calculates confidence limit values for prepared datased, based on chosen parameters.
 #' 
+#' @importFrom dplyr case_when
+#' 
 #' @param calc_dat processed data from DynamiX file - using prepare_dataset
 #' @param confidence_limit confidence limit chosen by user - from range [0, 1]. 
 #' @param theoretical logical value to determine if plot is theoretical or not. 
