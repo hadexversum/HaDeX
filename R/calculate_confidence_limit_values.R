@@ -33,7 +33,7 @@ calculate_confidence_limit_values <- function(calc_dat,
                                               theoretical = FALSE,
                                               relative = TRUE) {
   
-  alpha <- 1- confidence_limit
+  alpha <- 1 - confidence_limit
   t_value <- qt(c(alpha/2, 1-alpha/2), df = 2)[2]
   
   err_column <- case_when(

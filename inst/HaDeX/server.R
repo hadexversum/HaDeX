@@ -324,8 +324,11 @@ server <- function(input, output, session) {
                theoretical = TRUE,
                relative = TRUE) +
       labs(title = TeX(paste0("$\\Delta$ theoretical fraction exchanged between states in ", input[["chosen_time"]], " min"))) +
-      geom_hline(yintercept = interval[1], linetype = "dashed", color = "blue", size = .7) + 
-      geom_hline(yintercept = interval[2], linetype = "dashed", color = "blue", size = .7) 
+      geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit"]])*100, "% : ", round(interval[2], 4))), color = "blue", size = .7, show.legend = TRUE) + 
+      geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit"]])*100, "% : ", round(interval[2], 4))), color = "blue", size = .7, show.legend = TRUE) +
+      scale_linetype_manual(values = c("dashed")) + 
+      theme(legend.title = element_blank(),
+            legend.position = "bottom")
     
   })
   
@@ -342,8 +345,11 @@ server <- function(input, output, session) {
                theoretical = TRUE,
                relative = FALSE) +
       labs(title = TeX(paste0("$\\Delta$ theoretical absolute value exchanged between states in ", input[["chosen_time"]], " min"))) +
-      geom_hline(yintercept = interval[1], linetype = "dashed", color = "blue", size = .7) + 
-      geom_hline(yintercept = interval[2], linetype = "dashed", color = "blue", size = .7)
+      geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit"]])*100, "% : ", round(interval[2], 4), " Da")), color = "blue", size = .7, show.legend = TRUE) + 
+      geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit"]])*100, "% : ", round(interval[2], 4), " Da")), color = "blue", size = .7, show.legend = TRUE) +
+      scale_linetype_manual(values = c("dashed")) + 
+      theme(legend.title = element_blank(),
+            legend.position = "bottom")
     
   })
   
@@ -361,8 +367,11 @@ server <- function(input, output, session) {
                theoretical = FALSE, 
                relative = TRUE) +
       labs(title = TeX(paste0("$\\Delta$ fraction exchanged between states in ", input[["chosen_time"]], " min"))) +
-      geom_hline(yintercept = interval[1], linetype = "dashed", color = "blue", size = .7) + 
-      geom_hline(yintercept = interval[2], linetype = "dashed", color = "blue", size = .7)
+      geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit"]])*100, "% : ", round(interval[2], 4))), color = "blue", size = .7, show.legend = TRUE) + 
+      geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit"]])*100, "% : ", round(interval[2], 4))), color = "blue", size = .7, show.legend = TRUE) +
+      scale_linetype_manual(values = c("dashed")) + 
+      theme(legend.title = element_blank(),
+            legend.position = "bottom")
     
   })
   
@@ -379,8 +388,11 @@ server <- function(input, output, session) {
                theoretical = FALSE,
                relative = FALSE) +
       labs(title = TeX(paste0("$\\Delta$ absolute value exchanged between states in ", input[["chosen_time"]], " min"))) +
-      geom_hline(yintercept = interval[1], linetype = "dashed", color = "blue", size = .7) + 
-      geom_hline(yintercept = interval[2], linetype = "dashed", color = "blue", size = .7)
+      geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit"]])*100, "% : ", round(interval[2], 4), " Da")), color = "blue", size = .7, show.legend = TRUE) + 
+      geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit"]])*100, "% : ", round(interval[2], 4), " Da")), color = "blue", size = .7, show.legend = TRUE) +
+      scale_linetype_manual(values = c("dashed")) + 
+      theme(legend.title = element_blank(),
+            legend.position = "bottom")
     
   })
   
@@ -496,7 +508,7 @@ server <- function(input, output, session) {
                         inputId = "woods_plot_y_range",
                         min = -2, 
                         max = 2, 
-                        value = c(-1, 1),
+                        value = c(-.5, .5),
                         step = 0.1)
     }
     

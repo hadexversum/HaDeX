@@ -136,14 +136,6 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                                          width = "60%"),
                              h4("Adjust plot:"),
                              sliderInput(
-                               inputId = 'plot_x_range',
-                               label = 'Choose x range for both plots:',
-                               min = 0,
-                               max = 300,
-                               value = c(0, 300),
-                               ticks = seq(0, 300, 1)
-                             ),
-                             sliderInput(
                                inputId = 'comp_plot_y_range',
                                label = 'Choose y range for comparison plot:',
                                min = -2,
@@ -157,8 +149,16 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                                label = 'Choose y range for Woods plot:',
                                min = -2,
                                max = 2,
-                               value = c(-1, 1),
+                               value = c(-.5, .5),
                                step = 0.1
+                             ),
+                             sliderInput(
+                               inputId = 'plot_x_range',
+                               label = 'Choose x range for both plots:',
+                               min = 0,
+                               max = 300,
+                               value = c(0, 300),
+                               ticks = seq(0, 300, 1)
                              )
                            ),
                            mainPanel(
