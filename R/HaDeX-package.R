@@ -1,3 +1,13 @@
+#' HaDeX
+#'
+#' @description The \code{HaDeX} package is a toolbox for the analysis of ...
+#' 
+#' words words
+#' @author Weronika Puchala, Michal Burdukiewicz.
+#' @docType package
+#' @name HaDeX-package
+#' @aliases HaDeX
+
 if(getRversion() >= "2.15.1")  
   utils::globalVariables(c('.', 'Center', 'End', 'Exposure', 'File', 'Inten', 'MHP', 'MaxUptake', 
                            'Med_Sequence', 'Protein', 'Sequence', 'Start', 'State', 'State_Exposure', 
