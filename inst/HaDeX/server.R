@@ -315,28 +315,13 @@ server <- function(input, output, session) {
   ##
   
   differential_plot_theo <- reactive({
-    
-    interval <- calculate_confidence_limit_values(calc_dat = dat_new(),
-                                                  confidence_limit = as.double(input[["confidence_limit"]]),
-                                                  theoretical = TRUE,
-                                                  relative = TRUE)
-    
-    interval_2 <- calculate_confidence_limit_values(calc_dat = dat_new(),
-                                                    confidence_limit = as.double(input[["confidence_limit_2"]]),
-                                                    theoretical = TRUE,
-                                                    relative = TRUE)
+
     woods_plot(calc_dat = dat_new(),
                theoretical = TRUE,
-               relative = TRUE) +
-      labs(title = TeX(paste0("$\\Delta$ theoretical fraction exchanged between states in ", input[["chosen_time"]], " min"))) +
-      geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit"]])*100, "% : ", round(interval[2], 4))), color = "blue", size = .7, show.legend = TRUE) + 
-      geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit"]])*100, "% : ", round(interval[2], 4))), color = "blue", size = .7, show.legend = TRUE) +
-      geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit_2"]])*100, "% : ", round(interval_2[2], 4))), color = "darkviolet", size = .7, show.legend = TRUE) +
-      geom_hline(aes(yintercept = interval_2[1], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit_2"]])*100, "% : ", round(interval_2[2], 4))), color = "darkviolet", size = .7, show.legend = TRUE) + 
-      scale_linetype_manual(values = c("dashed", "dotdash")) + 
-      theme(legend.title = element_blank(),
-            legend.position = "bottom",
-            legend.direction = "vertical")
+               relative = TRUE,
+               confidence_limit = as.double(input[["confidence_limit"]]),
+               confidence_limit_2 = as.double(input[["confidence_limit_2"]])) +
+      labs(title = TeX(paste0("$\\Delta$ theoretical fraction exchanged between states in ", input[["chosen_time"]], " min"))) 
     
   })
   
@@ -344,28 +329,12 @@ server <- function(input, output, session) {
   
   differential_plot_theo_abs <- reactive({
     
-    interval <- calculate_confidence_limit_values(calc_dat = dat_new(),
-                                                  confidence_limit = as.double(input[["confidence_limit"]]),
-                                                  theoretical = TRUE,
-                                                  relative = FALSE)
-    
-    interval_2 <- calculate_confidence_limit_values(calc_dat = dat_new(),
-                                                    confidence_limit = as.double(input[["confidence_limit_2"]]),
-                                                    theoretical = TRUE,
-                                                    relative = FALSE)
     woods_plot(calc_dat = dat_new(),
                theoretical = TRUE,
-               relative = FALSE) +
-      labs(title = TeX(paste0("$\\Delta$ theoretical absolute value exchanged between states in ", input[["chosen_time"]], " min"))) +
-      geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit"]])*100, "% : ", round(interval[2], 4))), color = "blue", size = .7, show.legend = TRUE) + 
-      geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit"]])*100, "% : ", round(interval[2], 4))), color = "blue", size = .7, show.legend = TRUE) +
-      geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit_2"]])*100, "% : ", round(interval_2[2], 4))), color = "darkviolet", size = .7, show.legend = TRUE) +
-      geom_hline(aes(yintercept = interval_2[1], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit_2"]])*100, "% : ", round(interval_2[2], 4))), color = "darkviolet", size = .7, show.legend = TRUE) + 
-      scale_linetype_manual(values = c("dashed", "dotdash")) + 
-      theme(legend.title = element_blank(),
-            legend.position = "bottom",
-            legend.direction = "vertical")
-    
+               relative = FALSE,
+               confidence_limit = as.double(input[["confidence_limit"]]),
+               confidence_limit_2 = as.double(input[["confidence_limit_2"]])) +
+      labs(title = TeX(paste0("$\\Delta$ theoretical absolute value exchanged between states in ", input[["chosen_time"]], " min"))) 
   })
   
   
@@ -373,28 +342,12 @@ server <- function(input, output, session) {
   
   differential_plot_exp <- reactive({
     
-    interval <- calculate_confidence_limit_values(calc_dat = dat_new(),
-                                                  confidence_limit = as.double(input[["confidence_limit"]]),
-                                                  theoretical = FALSE,
-                                                  relative = TRUE)
-    
-    interval_2 <- calculate_confidence_limit_values(calc_dat = dat_new(),
-                                                    confidence_limit = as.double(input[["confidence_limit_2"]]),
-                                                    theoretical = FALSE,
-                                                    relative = TRUE)
-    
     woods_plot(calc_dat = dat_new(),
                theoretical = FALSE, 
-               relative = TRUE) +
-      labs(title = TeX(paste0("$\\Delta$ fraction exchanged between states in ", input[["chosen_time"]], " min"))) +
-      geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit"]])*100, "% : ", round(interval[2], 4))), color = "blue", size = .7, show.legend = TRUE) + 
-      geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit"]])*100, "% : ", round(interval[2], 4))), color = "blue", size = .7, show.legend = TRUE) +
-      geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit_2"]])*100, "% : ", round(interval_2[2], 4))), color = "darkviolet", size = .7, show.legend = TRUE) +
-      geom_hline(aes(yintercept = interval_2[1], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit_2"]])*100, "% : ", round(interval_2[2], 4))), color = "darkviolet", size = .7, show.legend = TRUE) + 
-      scale_linetype_manual(values = c("dashed", "dotdash")) + 
-      theme(legend.title = element_blank(),
-            legend.position = "bottom",
-            legend.direction = "vertical")
+               relative = TRUE,
+               confidence_limit = as.double(input[["confidence_limit"]]),
+               confidence_limit_2 = as.double(input[["confidence_limit_2"]])) +
+      labs(title = TeX(paste0("$\\Delta$ fraction exchanged between states in ", input[["chosen_time"]], " min")))
     
   })
   
@@ -402,28 +355,12 @@ server <- function(input, output, session) {
   
   differential_plot_exp_abs <- reactive({
     
-    interval <- calculate_confidence_limit_values(calc_dat = dat_new(),
-                                                  confidence_limit = as.double(input[["confidence_limit"]]),
-                                                  theoretical = FALSE,
-                                                  relative = FALSE)
-    
-    interval_2 <- calculate_confidence_limit_values(calc_dat = dat_new(),
-                                                    confidence_limit = as.double(input[["confidence_limit_2"]]),
-                                                    theoretical = FALSE,
-                                                    relative = FALSE)
-    
     woods_plot(calc_dat = dat_new(),
                theoretical = FALSE,
-               relative = FALSE) +
-      labs(title = TeX(paste0("$\\Delta$ absolute value exchanged between states in ", input[["chosen_time"]], " min"))) +
-      geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit"]])*100, "% : ", round(interval[2], 4))), color = "blue", size = .7, show.legend = TRUE) + 
-      geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit"]])*100, "% : ", round(interval[2], 4))), color = "blue", size = .7, show.legend = TRUE) +
-      geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit_2"]])*100, "% : ", round(interval_2[2], 4))), color = "darkviolet", size = .7, show.legend = TRUE) +
-      geom_hline(aes(yintercept = interval_2[1], linetype = paste0(" Confidence interval ", as.double(input[["confidence_limit_2"]])*100, "% : ", round(interval_2[2], 4))), color = "darkviolet", size = .7, show.legend = TRUE) + 
-      scale_linetype_manual(values = c("dashed", "dotdash")) + 
-      theme(legend.title = element_blank(),
-            legend.position = "bottom",
-            legend.direction = "vertical")
+               relative = FALSE,
+               confidence_limit = as.double(input[["confidence_limit"]]),
+               confidence_limit_2 = as.double(input[["confidence_limit_2"]])) +
+      labs(title = TeX(paste0("$\\Delta$ absolute value exchanged between states in ", input[["chosen_time"]], " min"))) 
     
   })
   
@@ -511,8 +448,8 @@ server <- function(input, output, session) {
       
       updateSliderInput(session,
                         inputId = "comp_plot_y_range",
-                        min = min_comparison_abs,
-                        max = max_comparison_abs,
+                        min = min_comparison_abs - 5,
+                        max = max_comparison_abs + 5,
                         value = c(min_comparison_abs, max_comparison_abs),
                         step = 1)
       
@@ -521,8 +458,8 @@ server <- function(input, output, session) {
       
       updateSliderInput(session,
                         inputId = "woods_plot_y_range",
-                        min = min_woods_abs, 
-                        max = max_woods_abs, 
+                        min = min_woods_abs - 2, 
+                        max = max_woods_abs + 2, 
                         value = c(min_woods_abs, max_woods_abs),
                         step = 0.5)
       
@@ -542,6 +479,17 @@ server <- function(input, output, session) {
                         value = c(-.5, .5),
                         step = 0.1)
     }
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    updateSelectInput(session,
+                      inputId = "confidence_limit_2",
+                      choices = confidence_limit_choices[confidence_limit_choices > input[["confidence_limit"]]],
+                      selected = confidence_limit_choices[confidence_limit_choices > input[["confidence_limit"]]][1])
     
   })
   

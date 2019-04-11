@@ -38,3 +38,5 @@ dt_format <- function(dat, cols = colnames(dat)) {
 }
 
 round_any <- function(x, accuracy, f = round){f(x/accuracy) * accuracy}
+
+confidence_limit_choices <- c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999)
