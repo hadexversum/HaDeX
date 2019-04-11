@@ -4,7 +4,8 @@
 \alias{woods_plot}
 \title{woods_plot}
 \usage{
-woods_plot(calc_dat, theoretical = FALSE, relative = TRUE)
+woods_plot(calc_dat, theoretical = FALSE, relative = TRUE,
+  confidence_limit = 0.98, confidence_limit_2 = 0.99)
 }
 \arguments{
 \item{calc_dat}{processed data from DynamiX file - using prepare_dataset}
@@ -12,6 +13,10 @@ woods_plot(calc_dat, theoretical = FALSE, relative = TRUE)
 \item{theoretical}{logical value to determine if plot is theoretical or not. default : false}
 
 \item{relative}{logical value to determine if values are relative or absolute. default : true}
+
+\item{confidence_limit}{confidence limit}
+
+\item{confidence_limit_2}{confidence limit 2}
 }
 \description{
 Produces Woods' plot based on previously processed data - theoretical or experimental. User can change labels if needed.
@@ -27,15 +32,23 @@ calc_dat <- prepare_dataset(dat,
                             out_state_second = "CD160_HVEM_1440") 
 woods_plot(calc_dat = calc_dat,
            theoretical = TRUE,
-           relative = TRUE)
+           relative = TRUE,
+           confidence_limit = 0.98,
+           confidence_limit_2 = 0.99)
 woods_plot(calc_dat = calc_dat,
            theoretical = FALSE,
-           relative = TRUE)
+           relative = TRUE,
+           confidence_limit = 0.98,
+           confidence_limit_2 = 0.99)
 woods_plot(calc_dat = calc_dat,
            theoretical = TRUE,
-           relative = FALSE)
+           relative = FALSE,
+           confidence_limit = 0.98,
+           confidence_limit_2 = 0.99)
 woods_plot(calc_dat = calc_dat,
            theoretical = FALSE,
-           relative = FALSE)
+           relative = FALSE,
+           confidence_limit = 0.98,
+           confidence_limit_2 = 0.99)
             
 }
