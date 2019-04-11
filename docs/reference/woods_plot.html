@@ -118,7 +118,8 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>woods_plot</span>(<span class='no'>calc_dat</span>, <span class='kw'>theoretical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>woods_plot</span>(<span class='no'>calc_dat</span>, <span class='kw'>theoretical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>confidence_limit</span> <span class='kw'>=</span> <span class='fl'>0.98</span>, <span class='kw'>confidence_limit_2</span> <span class='kw'>=</span> <span class='fl'>0.99</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -134,6 +135,14 @@
     <tr>
       <th>relative</th>
       <td><p>logical value to determine if values are relative or absolute. default : true</p></td>
+    </tr>
+    <tr>
+      <th>confidence_limit</th>
+      <td><p>confidence limit</p></td>
+    </tr>
+    <tr>
+      <th>confidence_limit_2</th>
+      <td><p>confidence limit 2</p></td>
     </tr>
     </table>
     
@@ -165,13 +174,21 @@
                             <span class='kw'>out_state_second</span> <span class='kw'>=</span> <span class='st'>"CD160_HVEM_1440"</span>)
 <span class='fu'>woods_plot</span>(<span class='kw'>calc_dat</span> <span class='kw'>=</span> <span class='no'>calc_dat</span>,
            <span class='kw'>theoretical</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-           <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='woods_plot-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>woods_plot</span>(<span class='kw'>calc_dat</span> <span class='kw'>=</span> <span class='no'>calc_dat</span>,
+           <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+           <span class='kw'>confidence_limit</span> <span class='kw'>=</span> <span class='fl'>0.98</span>,
+           <span class='kw'>confidence_limit_2</span> <span class='kw'>=</span> <span class='fl'>0.99</span>)</div><div class='img'><img src='woods_plot-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>woods_plot</span>(<span class='kw'>calc_dat</span> <span class='kw'>=</span> <span class='no'>calc_dat</span>,
            <span class='kw'>theoretical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-           <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='woods_plot-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>woods_plot</span>(<span class='kw'>calc_dat</span> <span class='kw'>=</span> <span class='no'>calc_dat</span>,
+           <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+           <span class='kw'>confidence_limit</span> <span class='kw'>=</span> <span class='fl'>0.98</span>,
+           <span class='kw'>confidence_limit_2</span> <span class='kw'>=</span> <span class='fl'>0.99</span>)</div><div class='img'><img src='woods_plot-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>woods_plot</span>(<span class='kw'>calc_dat</span> <span class='kw'>=</span> <span class='no'>calc_dat</span>,
            <span class='kw'>theoretical</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-           <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='img'><img src='woods_plot-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>woods_plot</span>(<span class='kw'>calc_dat</span> <span class='kw'>=</span> <span class='no'>calc_dat</span>,
+           <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+           <span class='kw'>confidence_limit</span> <span class='kw'>=</span> <span class='fl'>0.98</span>,
+           <span class='kw'>confidence_limit_2</span> <span class='kw'>=</span> <span class='fl'>0.99</span>)</div><div class='img'><img src='woods_plot-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>woods_plot</span>(<span class='kw'>calc_dat</span> <span class='kw'>=</span> <span class='no'>calc_dat</span>,
            <span class='kw'>theoretical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-           <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='img'><img src='woods_plot-4.png' alt='' width='700' height='433' /></div><div class='input'>            
+           <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+           <span class='kw'>confidence_limit</span> <span class='kw'>=</span> <span class='fl'>0.98</span>,
+           <span class='kw'>confidence_limit_2</span> <span class='kw'>=</span> <span class='fl'>0.99</span>)</div><div class='img'><img src='woods_plot-4.png' alt='' width='700' height='433' /></div><div class='input'>            
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
