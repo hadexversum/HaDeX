@@ -1,17 +1,19 @@
-#' read_hdx
+#' Read HDX-MS data file
 #' 
-#' Imports data from file and validates its content.
+#' Imports data from a HDX-MS file (as provided by Waters DynamX software) 
+#' and validates its content.
 #' 
 #' @importFrom tools file_ext
 #' @importFrom readxl read_excel
 #' @importFrom readr read_csv read_tsv parse_logical parse_integer parse_double parse_character
 #' 
-#' @param filename file supplied by user
+#' @param filename a file supplied by a user. Formats allowed: .csv, .tsv and .xls.
 #' 
-#' @return data frame for further modifications
+#' @return a \code{data.frame}.
 #' 
 #' @examples
-#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' dat <- read_hdx(system.file(package = "HaDeX", 
+#'                             "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' 
 #' @export read_hdx
 
@@ -22,16 +24,23 @@ read_hdx <- function(filename){
                 "tsv" = read_tsv(filename, col_names = TRUE),
                 "xls" = read_excel(filename))
   
-  if (isTRUE(all.equal(colnames(dat), c("Protein", "Start", "End", "Sequence", "Modification", "Fragment", "MaxUptake", "MHP", "State", "Exposure", "File", "z", "RT", "Inten", "Center")))) {
-    
-    dat[["Exposure"]] <- round(dat[["Exposure"]], 3)
-    
-    dat
-      
-  } else {
-    
-    stop("Your file doesn\'t meet criteria.")
-    
+  colnames_v <- c("Protein", "Start", "End", "Sequence", 
+                  "Modification", "Fragment", "MaxUptake", 
+                  "MHP", "State", "Exposure", "File", "z", 
+                  "RT", "Inten", "Center") 
+  
+  colnames_presence <- colnames_v %in% colnames(dat)
+  
+  if(!all(colnames_presence)) {
+    err_message <- paste0("A supplied file does not have a following column", 
+                          ifelse(sum(!colnames_presence) > 0, "s", ""), ": ",
+                          paste0(colnames_v[!colnames_presence], collapse = ", "), ".")
+    stop(err_message)
   }
+  
+  
+  dat[["Exposure"]] <- round(dat[["Exposure"]], 3)
+  
+  dat
   
 }

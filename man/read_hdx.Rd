@@ -2,20 +2,22 @@
 % Please edit documentation in R/read_hdx.R
 \name{read_hdx}
 \alias{read_hdx}
-\title{read_hdx}
+\title{Read HDX-MS data file}
 \usage{
 read_hdx(filename)
 }
 \arguments{
-\item{filename}{file supplied by user}
+\item{filename}{a file supplied by a user. Formats allowed: .csv, .tsv and .xls.}
 }
 \value{
-data frame for further modifications
+a \code{data.frame}.
 }
 \description{
-Imports data from file and validates its content.
+Imports data from a HDX-MS file (as provided by Waters DynamX software) 
+and validates its content.
 }
 \examples{
-dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+dat <- read_hdx(system.file(package = "HaDeX", 
+                            "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 
 }
