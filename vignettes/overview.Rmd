@@ -245,27 +245,60 @@ calc_dat_1 <- prepare_dataset(dat = dat_1,
                               chosen_state_second = "CD160_HVEM_1",
                               out_state_second = "CD160_HVEM_1440")                             
 
-# theoretical comparison plot
+# theoretical comparison plot - relative values
 comparison_plot(calc_dat = calc_dat_1,
                 theoretical = TRUE,
+                relative = TRUE, 
                 state_first = "CD160",
                 state_second = "CD160_HVEM")
 
-# experimental comparison plot
+# experimental comparison plot - relative values
 comparison_plot(calc_dat = calc_dat_1,
                 theoretical = FALSE,
+                relative = TRUE,
                 state_first = "CD160",
                 state_second = "CD160_HVEM")
 
-# theoretical Woods plot
-woods_plot(calc_dat = calc_dat_1,
-           theoretical = TRUE)
+# theoretical comparison plot - absolute values
+comparison_plot(calc_dat = calc_dat_1,
+                theoretical = TRUE,
+                relative = FALSE, 
+                state_first = "CD160",
+                state_second = "CD160_HVEM")
 
-# experimental Woods plot
-woods_plot(calc_dat = calc_dat_1,
-           theoretical = FALSE)
+# experimental comparison plot - absolute values
+comparison_plot(calc_dat = calc_dat_1,
+                theoretical = FALSE,
+                relative = FALSE,
+                state_first = "CD160",
+                state_second = "CD160_HVEM")
+  
 
-# quality control
+# theoretical Woods plot - relative values
+woods_plot(calc_dat = calc_dat_1,
+           theoretical = TRUE, 
+           relative = TRUE) +
+  coord_cartesian(ylim = c(-.2, .2))
+
+# experimental Woods plot - relative values
+woods_plot(calc_dat = calc_dat_1,
+           theoretical = FALSE,
+           relative = TRUE) +
+  coord_cartesian(ylim = c(-.2, .2))
+
+# theoretical Woods plot - absolute values
+woods_plot(calc_dat = calc_dat_1,
+           theoretical = TRUE, 
+           relative = FALSE) +
+  labs(title = "Theoretical fraction exchanged between states in 1 min time") 
+
+# experimental Woods plot - absolute values
+woods_plot(calc_dat = calc_dat_1,
+           theoretical = FALSE,
+           relative = FALSE) +
+  labs(title = "Fraction exchanged between states in 1 min time") 
+
+# quality control - relative values 
 (result <- quality_control(dat = dat_1,
                 state_first = "CD160",
                 state_second = "CD160_HVEM", 
@@ -305,29 +338,63 @@ calc_dat_2 <- prepare_dataset(dat = dat_2,
                               chosen_state_second = "gg_Nucb2_CaCl2_25",
                               out_state_second = "gg_Nucb2_CaCl2_1440")                             
 
-# theoretical comparison plot
+# theoretical comparison plot - relative values
 comparison_plot(calc_dat = calc_dat_2,
                 theoretical = TRUE,
+                relative = TRUE,
                 state_first = "Nucb2 Factor 1",
                 state_second = "Nucb2 Factor 2") +
   labs(title = "Theoretical fraction exchanged in \nstate comparison in 25 min time")
 
-# experimental comparison plot
+# experimental comparison plot - relative values 
 comparison_plot(calc_dat = calc_dat_2,
                 theoretical = FALSE,
+                relative = TRUE,
                 state_first = "Nucb2 Factor 1",
                 state_second = "Nucb2 Factor 2") +
   labs(title = "Fraction exchanged in \nstate comparison in 25 min time")
 
-# theoretical Woods plot
-woods_plot(calc_dat = calc_dat_2,
-           theoretical = TRUE) + 
-  labs(title = "Theoretical fraction exchanged between \nstates in 25 min time")
+# theoretical comparison plot - absolute values
+comparison_plot(calc_dat = calc_dat_2,
+                theoretical = TRUE,
+                relative = FALSE,
+                state_first = "Nucb2 Factor 1",
+                state_second = "Nucb2 Factor 2") +
+  labs(title = "Theoretical fraction exchanged in \nstate comparison in 25 min time")
 
-# experimental Woods plot
+# experimental comparison plot - absolute values 
+comparison_plot(calc_dat = calc_dat_2,
+                theoretical = FALSE,
+                relative = FALSE,
+                state_first = "Nucb2 Factor 1",
+                state_second = "Nucb2 Factor 2") +
+  labs(title = "Fraction exchanged in \nstate comparison in 25 min time")
+
+# theoretical Woods plot - relative values
 woods_plot(calc_dat = calc_dat_2,
-           theoretical = FALSE) +
-  labs(title = "Fraction exchanged between \nstates in 25 min time")
+           theoretical = TRUE,
+           relative = TRUE) + 
+  labs(title = "Theoretical fraction exchanged between states in 25 min time") +
+  coord_cartesian(ylim = c(-.5, .7))
+
+# experimental Woods plot - relative values
+woods_plot(calc_dat = calc_dat_2,
+           theoretical = FALSE,
+           relative = TRUE) +
+  labs(title = "Fraction exchanged between states in 25 min time") +
+  coord_cartesian(ylim = c(-.5, .7))
+
+# theoretical Woods plot - absolute values
+woods_plot(calc_dat = calc_dat_2,
+           theoretical = TRUE,
+           relative = FALSE) + 
+  labs(title = "Theoretical fraction exchanged between states in 25 min time") 
+
+# experimental Woods plot - absolute values
+woods_plot(calc_dat = calc_dat_2,
+           theoretical = FALSE,
+           relative = FALSE) +
+  labs(title = "Fraction exchanged between states in 25 min time") 
 
 # quality control
 (result <- quality_control(dat = dat_2,
@@ -336,7 +403,7 @@ woods_plot(calc_dat = calc_dat_2,
                            chosen_time = 25, 
                            in_time = 0.001))
 
-# example quality control visualisation
+# example quality control visualisation - relative values
 library(ggplot2)
 ggplot(result[result["time"]>=1,]) + 
   geom_line(aes(x = time, y = avg_err_state_first, color = "Average error (first state)")) +
