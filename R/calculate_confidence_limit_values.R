@@ -3,6 +3,7 @@
 #' Calculates confidence limit values for prepared datased, based on chosen parameters.
 #' 
 #' @importFrom dplyr case_when
+#' @importFrom stats qt
 #' 
 #' @param calc_dat processed data from DynamiX file - using prepare_dataset
 #' @param confidence_limit confidence limit chosen by user - from range [0, 1]. 

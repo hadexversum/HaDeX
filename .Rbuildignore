@@ -1,6 +1,7 @@
 ^codecov\.yml$
 ^Meta$
 ^doc$
+^docs$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^README\.Rmd$

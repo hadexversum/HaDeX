@@ -18,4 +18,8 @@ if(getRversion() >= "2.15.1")
                            'err_frac_exch_state_1', 'err_frac_exch_state_2', 'err_in_time_mean_1', 
                            'err_in_time_mean_2', 'err_out_time_mean_1', 'err_out_time_mean_2', 
                            'exp_mass', 'frac_exch_state_1', 'frac_exch_state_2', 
-                           'in_time_mean_1', 'in_time_mean_2', 'out_time_mean_1', 'out_time_mean_2', 'z'))
+                           'in_time_mean_1', 'in_time_mean_2', 'out_time_mean_1', 'out_time_mean_2', 'z',
+                           'abs_avg_theo_in_time_1', 'abs_avg_theo_in_time_2', 'abs_diff_frac_exch', 'abs_diff_theo_frac_exch', 
+                           'abs_frac_exch_state_1', 'abs_frac_exch_state_2', 'colour', 'err_abs_avg_theo_in_time_1', 
+                           'err_abs_avg_theo_in_time_2', 'err_abs_diff_frac_exch', 'err_abs_diff_theo_frac_exch', 
+                           'err_abs_frac_exch_state_1', 'err_abs_frac_exch_state_2'))
