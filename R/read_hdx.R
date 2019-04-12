@@ -32,8 +32,9 @@ read_hdx <- function(filename){
   colnames_presence <- colnames_v %in% colnames(dat)
   
   if(!all(colnames_presence)) {
-    err_message <- paste0("A supplied file does not have a following column", 
-                          ifelse(sum(!colnames_presence) > 0, "s", ""), ": ",
+    err_message <- paste0(ifelse(sum(!colnames_presence) > 0, 
+                                 "A supplied file does not have required columns: ", 
+                                 "A supplied file does not have the required column "),
                           paste0(colnames_v[!colnames_presence], collapse = ", "), ".")
     stop(err_message)
   }
