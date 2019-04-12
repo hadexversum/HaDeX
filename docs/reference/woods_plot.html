@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>woods_plot — woods_plot • HaDeX</title>
+<title>Plot Woods' plot — woods_plot • HaDeX</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -31,9 +31,9 @@
 
 
 
-<meta property="og:title" content="woods_plot — woods_plot" />
+<meta property="og:title" content="Plot Woods' plot — woods_plot" />
 
-<meta property="og:description" content="Produces Woods' plot based on previously processed data - theoretical or experimental. User can change labels if needed." />
+<meta property="og:description" content="Produces Woods' plot based on theoretical or experimental HDX-MS data." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -107,14 +107,14 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>woods_plot</h1>
+    <h1>Plot Woods' plot</h1>
     
     <div class="hidden name"><code>woods_plot.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Produces Woods' plot based on previously processed data - theoretical or experimental. User can change labels if needed.</p>
+    <p>Produces Woods' plot based on theoretical or experimental HDX-MS data.</p>
     
     </div>
 
@@ -126,29 +126,37 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>calc_dat</th>
-      <td><p>processed data from DynamiX file - using prepare_dataset</p></td>
+      <td><p>processed data as imported by the <code><a href='read_hdx.html'>read_hdx</a></code> function.</p></td>
     </tr>
     <tr>
       <th>theoretical</th>
-      <td><p>logical value to determine if plot is theoretical or not. default : false</p></td>
+      <td><p><code>logical</code>, determines if plot shows theoretical values.</p></td>
     </tr>
     <tr>
       <th>relative</th>
-      <td><p>logical value to determine if values are relative or absolute. default : true</p></td>
+      <td><p>logical value to determine if values are relative or absolute.</p></td>
     </tr>
     <tr>
       <th>confidence_limit</th>
-      <td><p>confidence limit</p></td>
+      <td><p>confidence limit.</p></td>
     </tr>
     <tr>
       <th>confidence_limit_2</th>
-      <td><p>confidence limit 2</p></td>
+      <td><p>confidence limit 2.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Woods, V.L., and Hamuro, Y. (2001). High resolution, 
+high-throughput amide deuterium exchange-mass spectrometry (DXMS) 
+determination of protein binding site structure and dynamics: utility 
+in pharmaceutical design. J. Cell. Biochem. Suppl. Suppl 37, 89–98.</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_hdx.html'>read_hdx</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"HaDeX"</span>, <span class='st'>"HaDeX/data/KD_180110_CD160_HVEM.csv"</span>))</div><div class='output co'>#&gt; <span class='message'>Parsed with column specification:</span>
+    <pre class="examples"><div class='input'><span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_hdx.html'>read_hdx</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"HaDeX"</span>,
+                            <span class='st'>"HaDeX/data/KD_180110_CD160_HVEM.csv"</span>))</div><div class='output co'>#&gt; <span class='message'>Parsed with column specification:</span>
 #&gt; <span class='message'>cols(</span>
 #&gt; <span class='message'>  Protein = <span style='color: #BB0000;'>col_character()</span><span>,</span>
 #&gt; <span class='message'>  Start = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
@@ -195,7 +203,9 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#references">References</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

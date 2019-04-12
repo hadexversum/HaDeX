@@ -1,17 +1,21 @@
-#' woods_plot
+#' Plot Woods' plot
 #' 
-#' Produces Woods' plot based on previously processed data - theoretical or experimental. User can change labels if needed.
+#' Produces Woods' plot based on theoretical or experimental HDX-MS data. 
 #' 
 #' @importFrom ggplot2 ggplot scale_linetype_manual scale_colour_identity
 #' 
-#' @param calc_dat processed data from DynamiX file - using prepare_dataset
-#' @param theoretical logical value to determine if plot is theoretical or not. default : false
-#' @param relative logical value to determine if values are relative or absolute. default : true
-#' @param confidence_limit confidence limit
-#' @param confidence_limit_2 confidence limit 2
-#' 
+#' @param calc_dat processed data as imported by the \code{\link{read_hdx}} function.
+#' @param theoretical \code{logical}, determines if plot shows theoretical values. 
+#' @param relative logical value to determine if values are relative or absolute. 
+#' @param confidence_limit confidence limit.
+#' @param confidence_limit_2 confidence limit 2.
+#' @references Woods, V.L., and Hamuro, Y. (2001). High resolution, 
+#' high-throughput amide deuterium exchange-mass spectrometry (DXMS) 
+#' determination of protein binding site structure and dynamics: utility 
+#' in pharmaceutical design. J. Cell. Biochem. Suppl. Suppl 37, 89–98.
 #' @examples
-#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' dat <- read_hdx(system.file(package = "HaDeX", 
+#'                             "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' calc_dat <- prepare_dataset(dat,
 #'                             in_state_first = "CD160_0.001",
 #'                             chosen_state_first = "CD160_1",

@@ -2,27 +2,28 @@
 % Please edit documentation in R/woods_plot.R
 \name{woods_plot}
 \alias{woods_plot}
-\title{woods_plot}
+\title{Plot Woods' plot}
 \usage{
 woods_plot(calc_dat, theoretical = FALSE, relative = TRUE,
   confidence_limit = 0.98, confidence_limit_2 = 0.99)
 }
 \arguments{
-\item{calc_dat}{processed data from DynamiX file - using prepare_dataset}
+\item{calc_dat}{processed data as imported by the \code{\link{read_hdx}} function.}
 
-\item{theoretical}{logical value to determine if plot is theoretical or not. default : false}
+\item{theoretical}{\code{logical}, determines if plot shows theoretical values.}
 
-\item{relative}{logical value to determine if values are relative or absolute. default : true}
+\item{relative}{logical value to determine if values are relative or absolute.}
 
-\item{confidence_limit}{confidence limit}
+\item{confidence_limit}{confidence limit.}
 
-\item{confidence_limit_2}{confidence limit 2}
+\item{confidence_limit_2}{confidence limit 2.}
 }
 \description{
-Produces Woods' plot based on previously processed data - theoretical or experimental. User can change labels if needed.
+Produces Woods' plot based on theoretical or experimental HDX-MS data.
 }
 \examples{
-dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+dat <- read_hdx(system.file(package = "HaDeX", 
+                            "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 calc_dat <- prepare_dataset(dat,
                             in_state_first = "CD160_0.001",
                             chosen_state_first = "CD160_1",
@@ -51,4 +52,10 @@ woods_plot(calc_dat = calc_dat,
            confidence_limit = 0.98,
            confidence_limit_2 = 0.99)
             
+}
+\references{
+Woods, V.L., and Hamuro, Y. (2001). High resolution, 
+high-throughput amide deuterium exchange-mass spectrometry (DXMS) 
+determination of protein binding site structure and dynamics: utility 
+in pharmaceutical design. J. Cell. Biochem. Suppl. Suppl 37, 89–98.
 }

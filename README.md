@@ -19,3 +19,7 @@ After installation GUI can be accessed locally:
 library(HaDeX)
 HaDeX_gui()
 ```
+
+### Online manual
+
+The HaDeX documentation is available [online](https://michbur.github.io/HaDeX/).
