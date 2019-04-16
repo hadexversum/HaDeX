@@ -31,8 +31,9 @@ Imports:
 		stringr,
 		tidyr
 Suggests: 
+    covr,
     knitr,
+    rmarkdown,
     shinythemes,
-    testthat,
-    covr
+    testthat
 VignetteBuilder: knitr
