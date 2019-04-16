@@ -31,7 +31,7 @@ Imports:
 		stringr,
 		tidyr
 Suggests: 
-    cover,
+    covr,
     knitr,
     rmarkdown,
     shinythemes,
