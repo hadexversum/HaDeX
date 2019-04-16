@@ -17,8 +17,10 @@ vignette: >
 library(HaDeX)
 library(ggplot2)
 library(knitr)
+library(DT)
 opts_chunk$set(fig.width = 7, fig.height = 5)
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_190304_Nucb2_EDTA_CaCl2_test02_clusterdata.csv"))
+# source(system.file(package = "HaDeX", "HaDeX/data-work.R"))
 ```
 
 # Hydrogen/Deuterium Exchange Mass Spectrometry Data 
@@ -33,7 +35,31 @@ The \textbf{HaDeX} web server relies only on a single data format: DynamiX dataf
 
 ## Transformation of data and measurement uncertainty
 
+Uploaded datafile should fulfills following requirements in order for package function to behave correctly:
+
+```{r warning=FALSE, message=FALSE, echo = FALSE}
+
+datatable(
+  data = data.frame(Name = c("Protein", "Start", "End", "Sequence", "Modification", "Fragment", "MaxUptake", "MHP", "State", "Exposure", "File", "z", "RT", "Inten", "Center"),
+                    Type = c("Character", "Integer", "Integer", "Character", "Logic", "Logic", "Numeric", "Numeric", "Character", "Numeric", "Character", "Integer", "Numeric", "Numeric", "Numeric")),
+  rownames = FALSE,
+  options = list(dom = "t", autoWidth = TRUE))
+
+```
+
+In upcoming version of HaDeX more datafile types will be supported.
+
 ### Protein coverage
+
+First information user can get is protein sequence reconstruction based on supplemented data. Although the sequence should be known to the experimenter, it is uselful to see how the sequence was covered in experiment. Function reconstruct_sequence() does that:
+
+```{r waring=FALSE}
+
+reconstruct_sequence(dat)
+
+```
+
+Unknown amino is marked as x.
 
 ### Data preparation for plots
 

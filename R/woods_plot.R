@@ -4,7 +4,7 @@
 #' 
 #' @importFrom ggplot2 ggplot scale_linetype_manual scale_colour_identity
 #' 
-#' @param calc_dat processed data as imported by the \code{\link{read_hdx}} function.
+#' @param calc_dat data as imported by the \code{\link{read_hdx}} function and processed by the \code{\link{prepare_dataset}} function.
 #' @param theoretical \code{logical}, determines if plot shows theoretical values. 
 #' @param relative logical value to determine if values are relative or absolute. 
 #' @param confidence_limit confidence limit.

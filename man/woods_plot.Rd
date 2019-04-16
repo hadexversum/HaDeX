@@ -8,7 +8,7 @@ woods_plot(calc_dat, theoretical = FALSE, relative = TRUE,
   confidence_limit = 0.98, confidence_limit_2 = 0.99)
 }
 \arguments{
-\item{calc_dat}{processed data as imported by the \code{\link{read_hdx}} function.}
+\item{calc_dat}{data as imported by the \code{\link{read_hdx}} function and processed by the \code{\link{prepare_dataset}} function.}
 
 \item{theoretical}{\code{logical}, determines if plot shows theoretical values.}
 
