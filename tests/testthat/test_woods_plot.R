@@ -1,5 +1,6 @@
 library(testthat)
 library(HaDeX)
+library(digest)
 
 context("woods_plot in test")
 
@@ -16,3 +17,19 @@ test_that("class is right",
           expect_is(woods_plot(calc_dat = calc_dat,
                                theoretical = TRUE),
                     "gg"))
+
+test_that("md5 check 1",
+          expect_equal(digest(as.character(woods_plot(calc_dat = calc_dat,
+                                                      theoretical = TRUE,
+                                                      relative = TRUE)[9]),
+                              algo = "md5",
+                              serialize = FALSE),
+                       "2e88e4d4e7eb31db352e6bf2249920c2"))
+
+test_that("md5 check 2",
+          expect_equal(digest(as.character(woods_plot(calc_dat = calc_dat,
+                                                           theoretical = FALSE,
+                                                           relative = FALSE)[9]),
+                              algo = "md5",
+                              serialize = FALSE),
+                       "12e3c600751338f2c2c03c4d3d386a39"))
