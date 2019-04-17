@@ -4,7 +4,8 @@
 \alias{quality_control}
 \title{quality_control}
 \usage{
-quality_control(dat, state_first, state_second, chosen_time, in_time)
+quality_control(dat, state_first, state_second, chosen_time, in_time,
+  relative = TRUE)
 }
 \arguments{
 \item{dat}{file supplied by user using read_hdx()}

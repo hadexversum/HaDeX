@@ -19,8 +19,6 @@ library(ggplot2)
 library(knitr)
 library(DT)
 opts_chunk$set(fig.width = 7, fig.height = 5)
-dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_190304_Nucb2_EDTA_CaCl2_test02_clusterdata.csv"))
-# source(system.file(package = "HaDeX", "HaDeX/data-work.R"))
 ```
 
 This vignette is work-in-progress and not yet complete.
@@ -280,7 +278,7 @@ ggplot(result[result["time"]>=1,]) +
 
 ## Example workflow 1
 
-```{r}
+```{r warning=FALSE}
 library(HaDeX)
 
 # file import
@@ -373,7 +371,7 @@ ggplot(result) +
 
 ## Example workflow 2
 
-```{r}
+```{r warning=FALSE}
 library(HaDeX)
 
 # file import

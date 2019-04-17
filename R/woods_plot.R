@@ -6,13 +6,15 @@
 #' 
 #' @param calc_dat data as imported by the \code{\link{read_hdx}} function and processed by the \code{\link{prepare_dataset}} function.
 #' @param theoretical \code{logical}, determines if plot shows theoretical values. 
-#' @param relative logical value to determine if values are relative or absolute. 
+#' @param relative \code{logical} value to determine if values are relative or absolute. 
 #' @param confidence_limit confidence limit.
 #' @param confidence_limit_2 confidence limit 2.
+#' 
 #' @references Woods, V.L., and Hamuro, Y. (2001). High resolution, 
 #' high-throughput amide deuterium exchange-mass spectrometry (DXMS) 
 #' determination of protein binding site structure and dynamics: utility 
 #' in pharmaceutical design. J. Cell. Biochem. Suppl. Suppl 37, 89–98.
+#' 
 #' @examples
 #' dat <- read_hdx(system.file(package = "HaDeX", 
 #'                             "HaDeX/data/KD_180110_CD160_HVEM.csv"))

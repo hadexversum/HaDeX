@@ -10,6 +10,7 @@
 #' @param state_second second state
 #' @param chosen_time chosen time 
 #' @param in_time in time
+#' @param relative \code{logical}, determines if values are relative or absolute. 
 #' 
 #' @return data.frame with values - time, value, uncertainty
 #' 
@@ -38,7 +39,8 @@ quality_control <- function(dat,
                             state_first,
                             state_second, 
                             chosen_time, 
-                            in_time){
+                            in_time,
+                            relative = TRUE){
   
   
   times <- unique(dat[["Exposure"]][dat["Exposure"] > in_time])
@@ -53,20 +55,40 @@ quality_control <- function(dat,
                            chosen_state_second = paste0(state_second, "_", chosen_time),
                            out_state_second = paste0(state_second, "_", t))
     
+    if (relative){
+      
+      data.frame(t,
+                 mean(tmp[["err_frac_exch_state_1"]], na.rm = TRUE),
+                 sd(tmp[["err_frac_exch_state_1"]], na.rm = TRUE),
+                 mean(tmp[["err_frac_exch_state_2"]], na.rm = TRUE),
+                 sd(tmp[["err_frac_exch_state_2"]], na.rm = TRUE),
+                 mean(tmp[["err_avg_theo_in_time_1"]], na.rm = TRUE),
+                 sd(tmp[["err_avg_theo_in_time_1"]], na.rm = TRUE),
+                 mean(tmp[["err_avg_theo_in_time_2"]], na.rm = TRUE),
+                 sd(tmp[["err_avg_theo_in_time_2"]], na.rm = TRUE),
+                 mean(tmp[["err_frac_exch"]], na.rm = TRUE),
+                 sd(tmp[["err_frac_exch"]], na.rm = TRUE),
+                 mean(tmp[["err_diff_theo_frac_exch"]], na.rm = TRUE),
+                 sd(tmp[["err_diff_theo_frac_exch"]], na.rm = TRUE))
+      
+    } else {
+      
+      data.frame(t,
+                 mean(tmp[["err_abs_frac_exch_state_1"]], na.rm = TRUE),
+                 sd(tmp[["err_abs_frac_exch_state_1"]], na.rm = TRUE),
+                 mean(tmp[["err_abs_frac_exch_state_2"]], na.rm = TRUE),
+                 sd(tmp[["err_abs_frac_exch_state_2"]], na.rm = TRUE),
+                 mean(tmp[["err_abs_avg_theo_in_time_1"]], na.rm = TRUE),
+                 sd(tmp[["err_abs_avg_theo_in_time_1"]], na.rm = TRUE),
+                 mean(tmp[["err_abs_avg_theo_in_time_2"]], na.rm = TRUE),
+                 sd(tmp[["err_abs_avg_theo_in_time_2"]], na.rm = TRUE),
+                 mean(tmp[["err_abs_frac_exch"]], na.rm = TRUE),
+                 sd(tmp[["err_abs_frac_exch"]], na.rm = TRUE),
+                 mean(tmp[["err_abs_diff_theo_frac_exch"]], na.rm = TRUE),
+                 sd(tmp[["err_abs_diff_theo_frac_exch"]], na.rm = TRUE))
+      
+    }
     
-    data.frame(t,
-               mean(tmp[["err_frac_exch_state_1"]], na.rm = TRUE),
-               sd(tmp[["err_frac_exch_state_1"]], na.rm = TRUE),
-               mean(tmp[["err_frac_exch_state_2"]], na.rm = TRUE),
-               sd(tmp[["err_frac_exch_state_2"]], na.rm = TRUE),
-               mean(tmp[["err_avg_theo_in_time_1"]], na.rm = TRUE),
-               sd(tmp[["err_avg_theo_in_time_1"]], na.rm = TRUE),
-               mean(tmp[["err_avg_theo_in_time_2"]], na.rm = TRUE),
-               sd(tmp[["err_avg_theo_in_time_2"]], na.rm = TRUE),
-               mean(tmp[["err_frac_exch"]], na.rm = TRUE),
-               sd(tmp[["err_frac_exch"]], na.rm = TRUE),
-               mean(tmp[["err_diff_theo_frac_exch"]], na.rm = TRUE),
-               sd(tmp[["err_diff_theo_frac_exch"]], na.rm = TRUE))
     
   })
   
