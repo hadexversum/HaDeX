@@ -6,7 +6,7 @@
 #' 
 #' @param calc_dat data as imported by the \code{\link{read_hdx}} function and processed by the \code{\link{prepare_dataset}} function.
 #' @param theoretical \code{logical}, determines if plot shows theoretical values. 
-#' @param relative \code{logical} value to determine if values are relative or absolute. 
+#' @param relative \code{logical}, determines if values are relative or absolute. 
 #' @param confidence_limit confidence limit.
 #' @param confidence_limit_2 confidence limit 2.
 #' 

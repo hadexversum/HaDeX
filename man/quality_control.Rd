@@ -17,6 +17,8 @@ quality_control(dat, state_first, state_second, chosen_time, in_time,
 \item{chosen_time}{chosen time}
 
 \item{in_time}{in time}
+
+\item{relative}{\code{logical}, determines if values are relative or absolute.}
 }
 \value{
 data.frame with values - time, value, uncertainty

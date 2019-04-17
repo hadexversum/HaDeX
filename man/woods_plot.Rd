@@ -12,7 +12,7 @@ woods_plot(calc_dat, theoretical = FALSE, relative = TRUE,
 
 \item{theoretical}{\code{logical}, determines if plot shows theoretical values.}
 
-\item{relative}{logical value to determine if values are relative or absolute.}
+\item{relative}{\code{logical}, determines if values are relative or absolute.}
 
 \item{confidence_limit}{confidence limit.}
 
