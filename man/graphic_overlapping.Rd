@@ -4,7 +4,7 @@
 \alias{graphic_overlapping}
 \title{Plot graphic sequence overlapping}
 \usage{
-graphic_overlapping(dat, chosen_state)
+graphic_overlapping(dat, chosen_state = dat[["State"]][1])
 }
 \arguments{
 \item{dat}{data as imported by the \code{\link{read_hdx}} function}
@@ -17,6 +17,7 @@ Produces graphic sequence overlapping plot based on experimental HDX-MS data.
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", 
                             "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-graphic_overlapping(dat, "CD160_HVEM")
+graphic_overlapping(dat)
+graphic_overlapping(dat, chosen_state = "CD160_HVEM")
 
 }

@@ -12,12 +12,13 @@
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", 
 #'                             "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' graphic_overlapping(dat, "CD160_HVEM")
+#' graphic_overlapping(dat)
+#' graphic_overlapping(dat, chosen_state = "CD160_HVEM")
 #' 
 #' @export graphic_overlapping
  
 graphic_overlapping <- function(dat,
-                                chosen_state){
+                                chosen_state = dat[["State"]][1]){
   
   dat %>%
     select(Start, End, State) %>%
