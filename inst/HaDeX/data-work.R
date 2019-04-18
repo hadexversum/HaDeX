@@ -8,6 +8,7 @@ library(stringr)
 library(tidyr)
 library(latex2exp)
 library(DT)
+library(rmarkdown)
 
 #########################################
 
