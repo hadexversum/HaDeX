@@ -93,7 +93,7 @@ absolute_woods_plot <- function(calc_dat,
       calc_dat[["abs_diff_theo_frac_exch"]] < interval[1] ~ "deepskyblue1",
       calc_dat[["abs_diff_theo_frac_exch"]] > interval_2[2] ~ "firebrick3",
       calc_dat[["abs_diff_theo_frac_exch"]] > interval[2] ~ "firebrick1",
-      TRUE ~ "black"
+      TRUE ~ "azure4"
     )
     
     ggplot() +
@@ -131,7 +131,7 @@ absolute_woods_plot <- function(calc_dat,
       calc_dat[["abs_diff_frac_exch"]] < interval[1] ~ "deepskyblue1",
       calc_dat[["abs_diff_frac_exch"]] > interval_2[2] ~ "firebrick3",
       calc_dat[["abs_diff_frac_exch"]] > interval[2] ~ "firebrick1",
-      TRUE ~ "black"
+      TRUE ~ "azure4"
     )
     
     ggplot() +
@@ -178,7 +178,7 @@ relative_woods_plot <- function(calc_dat,
       calc_dat[["diff_theo_frac_exch"]] < interval[1] ~ "deepskyblue1",
       calc_dat[["diff_theo_frac_exch"]] > interval_2[2] ~ "firebrick3",
       calc_dat[["diff_theo_frac_exch"]] > interval[2] ~ "firebrick1",
-      TRUE ~ "black"
+      TRUE ~ "azure4"
     )
     
     ggplot() +
@@ -216,7 +216,7 @@ relative_woods_plot <- function(calc_dat,
       calc_dat[["diff_frac_exch"]] < interval[1] ~ "deepskyblue1",
       calc_dat[["diff_frac_exch"]] > interval_2[2] ~ "firebrick3",
       calc_dat[["diff_frac_exch"]] > interval[2] ~ "firebrick1",
-      TRUE ~ "black"
+      TRUE ~ "azure4"
     )
     
     ggplot() +

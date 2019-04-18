@@ -88,6 +88,8 @@ There are a few steps of preliminary data preparation. All of listed transformat
 
 #### Measured data to useful value
 
+DynamX provides experimetal data as measured mass plus proton mass to charge ratio ($Center$). For latter use, this value has to be transformed to overall peptide mass, as shown in equation 1: 
+
 $$expMass = z*(Center-protonMass)\tag{1}$$
 where:
 
@@ -97,7 +99,9 @@ where:
 
 - $Center$ - data from experiment
 
-Data from file containing repeated measurement is aggregated into one result using formula: 
+This transformation is applied to every measurement. 
+
+The experiment is repeated at least three times for the results to be reliable. Than, the repetitions are aggregated as weighted mean into one result per peptide using equation 2: 
 
 $$expMass = \frac{Inten*expMass}{N}\tag{2}$$
 where:
@@ -117,29 +121,33 @@ where:
 
 - $n$ - number of measurements
 
-Experimental deuteration level (function of three variables):
+#### Experimental deuteration level
+
+In HDX experiment the subject of interest is deuteration level exchanged in given time between states. 
+Generaly, the experimental relative deuteration level is calculated as shown in equation 4. It is a function of three variables and produces a value for chosen state and chosen time $t$.  
 
 $$D = \frac{D_{t} - D_{0}}{D_{100} - D_{0}}\tag{4}$$
 
 where:
 
-- $D$ - deuteration level
+- $D$ - deuteration level (relative value)
 
-- $D_{0}$ - deuteration in in time (0 or close to 0, measured) - mean value obtained as explained before
+- $D_{0}$ - deuteration in $in$ time (0 or close to 0, measured) - mean value obtained as explained before
 
-- $D_{100}$ - deuteration in out time (possibly big, at least 1440) - mean value obtainted as explained before
+- $D_{100}$ - deuteration in $out$ time (possibly big, at least 1440 [min]) - mean value obtainted as explained before
 
 - $D_{t}$ - deuteration measured in chosen time - mean value obtainted as explained before
 
+Although equation 4 produces relative value, absolute values are also calculated in HaDeX. Functions contain logical value $relative$ to determine if values should be absoute or relative. Equations below are based on relative values for readability. Absolute values are obtained analogical way - just without scaling. 
 
-Law of propagation of uncertainty.
+To calculate uncertainty related with functions of more than one variables (eq. equation 4) the Law of propagation of uncertainty is used as described in equation 5:
 
 $$u_{c}(y) = \sqrt{\sum_{k} \left[ \frac{\partial y}{\partial x_{k}} u(x_{k}) \right]^2}\tag{5}$$
 
 
 Uncorrelatedness is assumed.
 
-Translated with equation 1:
+Adapting equation 5 using formula from equation 4, uncertainty of equation 4 is calculated as follows:
 
 $$u_{c}(D) = \sqrt{\sum_{k} \left[ \frac{\partial D}{\partial D_{k}} u(D_{k}) \right]^2 }\tag{6}$$
 
@@ -151,11 +159,14 @@ where:
 
 - $u(D_{k})$ - uncertainty associated with $D_{k}$
 
-Then, expanding the equation:
+Then, expanding the equation 6:
 
 $$u_{c}(D) = \sqrt{ \left[ \frac{1}{D_{100}-D_{0}} u(D_{t}) \right]^2 + \left[ \frac{D_{t} - D_{100}}{(D_{100}-D_{0})^2} u(D_{0}) \right]^2 + \left[ \frac{D_{0} - D_{t}}{(D_{100}-D_{0})^2} u(D_{100}) \right]^2}\tag{7}$$
+As suspected, the uncertainty associated with $D_{t}$ has the biggest impact on $u_{c}(D)$.
 
-For theoretical calculation (function of one variable), deuteration:
+#### Theoretical deuteration level 
+
+Other way to examine the data rather then experimental way are the theoertical calculations - obtained deuteration level in chosen time $t$ is compared with theoretical values as shown in equation 8:
 
 $$D = \frac{D_{t}-MHP}{MaxUptake*protonMass}\tag{8}$$
 
@@ -169,19 +180,21 @@ where:
 
 - $protonMass$ - mass of a proton (constant)
 
-and the uncertainty for function of one variable looks like:
+and the uncertainty for function of one variable is shown in equation 9:
 
 $$u(y) = \left| \frac{dy}{dx} u(x) \right|\tag{9}$$
 
-and in our case:
+and based on equation 8:
 
 $$u(D) = \left|\frac{1}{MaxUptake*protonMass} u(d_{t}) \right|\tag{10}$$
 
-For differential plot in Woods format, deueration level in one state $(D_{2})$ is subtracted from deuteration level in other state $(D_{1})$:
+##### Difference of deuteration levels between two states 
+
+Interesting observance can be gained from analysing the difference of deuteration levels in given time $t$ between two states as shown in plot in Woods format. For this, deuteration level in one state $(D_{2})$ is subtracted from deuteration level in other state $(D_{1})$:
 
 $$diff = D_{1} - D_{2}\tag{11}$$
 
-and the uncertainty of function of two variables (based on previous equation):
+and the uncertainty of function of two variables (based on equation 11 and 5):
 
 $$u_{c}(diff) = \sqrt{u(D_{1})^2 + u(D_{2})^2}\tag{12}$$
 All of the previous calculations are done by function prepare_dataset(). Example of use:
@@ -198,46 +211,99 @@ calc_dat <- prepare_dataset(dat,
 
 ### Comparison plot
 
-The levels of deuteration along with uncertainty intervals are shown on comparison plot. HaDeX provides both experimental and theroetical levels of deuteration. Example of use:
+The levels of deuteration along with uncertainty intervals are shown on comparison plot. HaDeX provides both experimental and theroetical levels of deuteration in either relative or absolute values. Example of use:
 
 - theoretical:
+
+-- relative values:
 
 ```{r warning=FALSE}
 comparison_plot(calc_dat = calc_dat,
                 theoretical = TRUE,
+                relative = TRUE,
                 state_first = "Nucb2 Factor 1",
                 state_second = "Nucb2 Factor 2") +
-  labs(title = "Theoretical fraction exchanged in \nstate comparison in 25 min time")
+  labs(title = "Theoretical fraction exchanged in state comparison in 25 min time")
+```
+
+-- absolute values:
+
+```{r warning=FALSE}
+comparison_plot(calc_dat = calc_dat,
+                theoretical = TRUE,
+                relative = FALSE,
+                state_first = "Nucb2 Factor 1",
+                state_second = "Nucb2 Factor 2") +
+  labs(title = "Theoretical fraction exchanged in state comparison in 25 min time")
 ```
 
 - experimental:
+
+-- relative values:
 
 ```{r warning=FALSE}
 comparison_plot(calc_dat = calc_dat,
                 theoretical = FALSE,
+                relative = TRUE, 
                 state_first = "Nucb2 Factor 1",
                 state_second = "Nucb2 Factor 2") +
-  labs(title = "Fraction exchanged in state comparison \nin 25 min time")
+  labs(title = "Fraction exchanged in state comparison in 25 min time")
 ```
+
+-- absolute values:
+
+```{r warning=FALSE}
+comparison_plot(calc_dat = calc_dat,
+                theoretical = FALSE,
+                relative = FALSE, 
+                state_first = "Nucb2 Factor 1",
+                state_second = "Nucb2 Factor 2") +
+  labs(title = "Fraction exchanged in state comparison in 25 min time")
+```
+
 
 ### Woods plot
 
-Woods plot format shows diference between results of two different states as described by equation 11. HaDeX provides both experimental i theoretical calculations. Example of use:
+Woods plot format shows diference between results of two different states as described by equation 11. HaDeX provides both experimental i theoretical calculations in either relative or absolute values. Example of use:
 
 - theoretical:
 
+-- relative values:
+
 ```{r warning=FALSE}
 woods_plot(calc_dat = calc_dat,
-           theoretical = TRUE) +
-  labs(title = "Theoretical fraction exchanged between \nstates in 25 min time")
+           theoretical = TRUE,
+           relative = TRUE) +
+  labs(title = "Theoretical fraction exchanged between states in 25 min time")
+```
+
+-- absolute values:
+
+```{r warning=FALSE}
+woods_plot(calc_dat = calc_dat,
+           theoretical = TRUE,
+           relative = FALSE) +
+  labs(title = "Theoretical fraction exchanged between states in 25 min time")
 ```
 
 - experimental:
 
+-- relative values:
+
 ```{r warning=FALSE }
 woods_plot(calc_dat = calc_dat,
-           theoretical = FALSE) +
-  labs(title = "Theoretical fraction exchanged between \nstates in 25 min time")
+           theoretical = FALSE, 
+           relative = TRUE) +
+  labs(title = "Theoretical fraction exchanged between states in 25 min time")
+```
+
+-- absolute values:
+
+```{r warning=FALSE }
+woods_plot(calc_dat = calc_dat,
+           theoretical = FALSE, 
+           relative = FALSE) +
+  labs(title = "Theoretical fraction exchanged between states in 25 min time")
 ```
 
 ## Additional tools
