@@ -624,21 +624,8 @@ server <- function(input, output, session) {
   
   stateOverlap <- reactive({
     
-    dat() %>%
-      select(Start, End, State) %>%
-      filter(State == input[["chosen_state"]]) %>%
-      filter(Start >= input[["plot_range"]][[1]], End <= input[["plot_range"]][[2]]) %>%
-      filter(!duplicated(.)) %>%
-      select(-State) %>%
-      mutate(ID = 1L:nrow(.)) %>%
-      melt(id.vars = "ID") %>%
-      ggplot(aes(x = value, y = ID, group = ID)) +
-      geom_line() +
-      labs(title = 'Peptides positions compared to whole protein sequence',
-           x = 'Position in sequence',
-           y = '') +
-      theme(axis.ticks.y = element_blank(),
-            axis.text.y = element_blank())
+    graphic_overlapping(dat = dat(),
+                        chosen_state = input[["chosen_state"]])
     
   })
   
@@ -646,7 +633,8 @@ server <- function(input, output, session) {
   
   output[["stateOverlap"]] <- renderPlot({
     
-    stateOverlap()
+    stateOverlap() + 
+      coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]]))
     
   })
   

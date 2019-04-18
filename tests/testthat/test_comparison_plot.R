@@ -1,5 +1,6 @@
 library(testthat)
 library(HaDeX)
+library(digest)
 
 context("comparison_plot in test")
 
@@ -18,3 +19,24 @@ test_that("class is right",
                                     state_first = "CD160",
                                     state_second = "CD160_HVEM"),
                     "gg"))
+
+test_that("md5 check 1",
+          expect_equal(digest(as.character(comparison_plot(calc_dat = calc_dat,
+                                                           theoretical = TRUE,
+                                                           relative = TRUE,
+                                                           state_first = "CD160",
+                                                           state_second = "CD160_HVEM")[9]),
+                              algo = "md5",
+                              serialize = FALSE),
+                       "ec84f005f2fb2aad767aa73b70e0b492"))
+
+test_that("md5 check 2",
+          expect_equal(digest(as.character(comparison_plot(calc_dat = calc_dat,
+                                                           theoretical = FALSE,
+                                                           relative = FALSE,
+                                                           state_first = "CD160",
+                                                           state_second = "CD160_HVEM")[9]),
+                              algo = "md5",
+                              serialize = FALSE),
+                       "b7ef9ee469a37813d0f393ef89ce1b31"))
+

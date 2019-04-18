@@ -17,10 +17,12 @@ vignette: >
 library(HaDeX)
 library(ggplot2)
 library(knitr)
+library(DT)
 opts_chunk$set(fig.width = 7, fig.height = 5)
-dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_190304_Nucb2_EDTA_CaCl2_test02_clusterdata.csv"))
 ```
 
+This vignette is work-in-progress and not yet complete.
+ 
 # Hydrogen/Deuterium Exchange Mass Spectrometry Data 
 
 Hydrogen-deuterium mass spectrometry (HDX-MS) is a staple tool for monitoring dynamics and interactions of proteins. Due to the sheer size of the HDX-MS results, the data analysis require a dedicated software suite. However, the majority of existing tools provides only point-and-click interfaces to black-box models or does not offer a complete workflow. We propose \textbf{HaDeX}, a novel tool for processing, analysis and visualisation of HDX-MS experiments. \textbf{HaDeX} covers the whole analytic process, including preliminary data exploration, quality control and generation of publication-quality figures. The reproducibility of the whole procedure is ensured with advanced reporting functions.
@@ -29,13 +31,62 @@ Hydrogen-deuterium mass spectrometry (HDX-MS) is a staple tool for monitoring dy
 
 ## Input file format 
 
-The \textbf{HaDeX} web server relies only on a single data format: DynamiX datafile. An user can customize each step of the analysis with his own input parameters.
+The \textbf{HaDeX} web server relies only on a single data format: DynamX datafile. An user can customize each step of the analysis with his own input parameters.
 
 ## Transformation of data and measurement uncertainty
 
+Uploaded datafile should fulfills following requirements in order for package functions to behave correctly:
+
+```{r warning=FALSE, message=FALSE, echo = FALSE}
+
+datatable(
+  data = data.frame("Column Name" = c("Protein", "Start", "End", "Sequence", "Modification", "Fragment", "MaxUptake", "MHP", "State", "Exposure", "File", "z", "RT", "Inten", "Center"),
+                    "Column Type" = c("Character", "Integer", "Integer", "Character", "Logic", "Logic", "Numeric", "Numeric", "Character", "Numeric", "Character", "Integer", "Numeric", "Numeric", "Numeric")),
+  rownames = FALSE,
+  options = list(dom = "t", autoWidth = TRUE))
+
+```
+
+This is a structure of datafile produced by DynamX 3. In upcoming versions of HaDeX more datafile types will be supported.
+
+Datafile is imported into R usign function read_hdx(). Currently, HaDeX supports .csv, .tsv and .xls files - with mentioned structure. File loaded this way is later referred as dat.
+
+Example file, used for further demonstration:
+
+```{r warning=FALSE}
+
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_190304_Nucb2_EDTA_CaCl2_test02_clusterdata.csv"))
+
+```
+
 ### Protein coverage
 
-### Data preparation for plots
+First information user can get is protein sequence reconstruction based on supplemented data. Although the sequence should be known to the experimenter, it is uselful to see how the sequence was covered in experiment. Function reconstruct_sequence() does that:
+
+```{r warning=FALSE}
+
+reconstruct_sequence(dat)
+
+```
+
+Unknown amino is marked as x.
+
+Additionally, coverage information can be presented on a plot using function graphic_overlapping(). Peptides positions are shown next to each other for easier data overview.
+
+```{r warning=FALSE}
+
+graphic_overlapping(dat, chosen_state = "gg_Nucb2_CaCl2")
+
+```
+
+User can choose which state (or states) should be included in shown data. If this parameter is not supplied, the first possible state is chosen. If given peptide data is available in more than one state, is shown once for readability. 
+
+
+### Data preparation for deuteration calculations
+
+There are a few steps of preliminary data preparation. All of listed transformation in this section are done by prepare_dataset() function. Product of calling prepare_dataset() on data read by read_hdx() is later referred as calc_dat.
+
+#### Measured data to useful value
 
 $$expMass = z*(Center-protonMass)\tag{1}$$
 where:
@@ -227,7 +278,7 @@ ggplot(result[result["time"]>=1,]) +
 
 ## Example workflow 1
 
-```{r}
+```{r warning=FALSE}
 library(HaDeX)
 
 # file import
@@ -320,7 +371,7 @@ ggplot(result) +
 
 ## Example workflow 2
 
-```{r}
+```{r warning=FALSE}
 library(HaDeX)
 
 # file import
