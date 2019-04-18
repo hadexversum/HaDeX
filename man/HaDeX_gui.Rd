@@ -4,7 +4,10 @@
 \alias{HaDeX_gui}
 \title{HaDeX Graphical User Interface}
 \usage{
-HaDeX_gui()
+HaDeX_gui(port = getOption("shiny.port"))
+}
+\arguments{
+\item{port}{The TCP port. See \code{\link[shiny]{runApp}}.}
 }
 \description{
 Launches graphical user interface.
