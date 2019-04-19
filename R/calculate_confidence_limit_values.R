@@ -49,5 +49,5 @@ calculate_confidence_limit_values <- function(calc_dat,
   confidence_limit_value <- t_value * mean(calc_dat[[err_column]], na.rm = TRUE)/sqrt(length(calc_dat))
   
   c(-confidence_limit_value, confidence_limit_value)
-  
+ 
 }

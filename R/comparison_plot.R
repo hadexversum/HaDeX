@@ -82,6 +82,7 @@ absolute_comparison_plot <- function(calc_dat,
       labs(x = "Position in sequence", 
            y = "Theoretical absolute value exchanged [Da]", 
            title = "Theoretical absolute value exachanged in state comparison in chosen time") +
+      theme_bw() + 
       theme(legend.position = "bottom",
             legend.title = element_blank()) +
       scale_y_continuous(expand = c(0, 0)) 
@@ -96,6 +97,7 @@ absolute_comparison_plot <- function(calc_dat,
       labs(x = "Position in sequence", 
            y = "Absolute value exchanged [Da]", 
            title = "Absolute value exchanged in state comparison in chosen time") +
+      theme_bw() + 
       theme(legend.position = "bottom",
             legend.title = element_blank()) +
       scale_y_continuous(expand = c(0, 0))
@@ -118,6 +120,7 @@ relative_comparison_plot <- function(calc_dat,
       labs(x = "Position in sequence", 
            y = "Theoretical fraction exchanged [%]", 
            title = "Theoretical fraction exchanged in state comparison in chosen time") +
+      theme_bw() + 
       theme(legend.position = "bottom",
             legend.title = element_blank()) +
       scale_y_continuous(breaks = seq(0, 1.2, 0.2), expand = c(0, 0), limits = c(0, 1.2))
@@ -132,6 +135,7 @@ relative_comparison_plot <- function(calc_dat,
       labs(x = "Position in sequence", 
            y = "Fraction exchanged [%]", 
            title = "Fraction exchanged in state comparison in chosen time") +
+      theme_bw() + 
       theme(legend.position = "bottom",
             legend.title = element_blank()) +
       scale_y_continuous(breaks = seq(0, 1.2, 0.2), expand = c(0, 0), limits = c(0, 1.2))
