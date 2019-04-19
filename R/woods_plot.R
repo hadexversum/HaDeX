@@ -107,7 +107,7 @@ absolute_woods_plot <- function(calc_dat,
       scale_linetype_manual(values = c("dashed", "dotdash")) + 
       scale_colour_identity() +
       scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
-      theme_bw() + 
+      # theme_bw() + 
       theme(legend.title = element_blank(),
             legend.position = "bottom",
             legend.direction = "vertical") +
@@ -145,7 +145,7 @@ absolute_woods_plot <- function(calc_dat,
       geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
       scale_linetype_manual(values = c("dashed", "dotdash")) + 
       scale_colour_identity() +
-      theme_bw() + 
+      # theme_bw() + 
       scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
       theme(legend.title = element_blank(),
             legend.position = "bottom",
@@ -194,7 +194,7 @@ relative_woods_plot <- function(calc_dat,
       scale_linetype_manual(values = c("dashed", "dotdash")) + 
       scale_colour_identity() +
       scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
-      theme_bw() + 
+      # theme_bw() + 
       theme(legend.title = element_blank(),
             legend.position = "bottom",
             legend.direction = "vertical") +
@@ -233,7 +233,7 @@ relative_woods_plot <- function(calc_dat,
       scale_linetype_manual(values = c("dashed", "dotdash")) + 
       scale_colour_identity() +
       scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
-      theme_bw() + 
+      # theme_bw() + 
       theme(legend.title = element_blank(),
             legend.position = "bottom",
             legend.direction = "vertical") +

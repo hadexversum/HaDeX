@@ -7,6 +7,15 @@
 add_stat_dependency(calc_dat, confidence_limit = 0.98,
   theoretical = FALSE, relative = TRUE)
 }
+\arguments{
+\item{calc_dat}{processed data from DynamiX file - using prepare_dataset.}
+
+\item{confidence_limit}{confidence limit chosen by user - from range [0, 1].}
+
+\item{theoretical}{logical value to determine if plot is theoretical or not.}
+
+\item{relative}{logical value to determine if values are relative or absolute.}
+}
 \description{
 Returns relation with confidence limits for each peptide
 }
