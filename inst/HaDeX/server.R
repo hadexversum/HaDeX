@@ -4,6 +4,12 @@ source("ui.R")
 
 server <- function(input, output, session) {
   
+  ##
+  
+  ### TAB: START ###
+  
+  ##
+  
   output[["file_req"]] <- renderTable({
     
     file_req
@@ -21,6 +27,225 @@ server <- function(input, output, session) {
     }
     
   })
+  
+  ##
+  
+  ### TAB: SEQUENCE DATA ###
+  
+  ##
+  
+  observe({
+    
+    possible_states <- unique(dat()[["State"]])
+    
+    updateRadioButtons(session,
+                       inputId = "chosen_state",
+                       choices = possible_states)
+    
+  })
+  
+  ##
+  
+  output[["protein_name"]] <- renderText({
+    
+    as.character(unique(dat()[["Protein"]]))
+    
+  })
+  
+  ##
+  
+  position_in_sequence_tmp <- reactive({
+    
+    dat() %>%
+      select(Start, End, Sequence) %>%
+      unique(.) %>%
+      apply(1, function(x) data.frame(position = x[1]:x[2], amino = strsplit(x[3], '')[[1]], stringsAsFactors = FALSE)) %>%
+      bind_rows() %>%
+      unique(.) 
+    
+  })
+  
+  ##
+  
+  protein_sequence <- reactive({
+    
+    reconstruct_sequence(dat())
+    
+  })
+  
+  ##
+  
+  position_in_sequence <- reactive({
+    
+    position_in_sequence_tmp() %>%
+      left_join(amino_prop)
+    
+  })
+  
+  ##
+  
+  output[["protein_stats"]] <- renderTable({
+    
+    data.frame(
+      Name = c("Length", "Coverage", "Cys"),
+      Value = as.character(c(max_range(), 
+                             paste0(round(100-100*str_count(protein_sequence(), 'x')/max_range(), 2), '%'),
+                             str_count(protein_sequence(), 'C'))),
+      stringsAsFactors = FALSE
+    )
+    
+  })
+  
+  ##
+  
+  protein_sequece_colored <- reactive({
+    
+    paste0("<span>", 
+           gsubfn(pattern = 'C', replacement = function(x) paste0('<font color = "red">', x, "</font>"), x = protein_sequence()),
+           "</span>")
+    
+  })
+  
+  ##
+  
+  output[["sequenceName"]] <- renderText({
+    
+    protein_sequece_colored()
+    
+  })
+  
+  ##
+  
+  output[["aminoDist"]] <- renderPlot({
+    charge_colors <- c("-1" = "#E41A1C", "0" = "#377EB8", "1" = "#4DAF4A")
+    
+    position_in_sequence() %>%
+      mutate(affinity = ifelse(is_hydrophobic, "phobic", "philic")) %>% 
+      filter(affinity %in% input[["hydro_prop"]]) %>% 
+      ggplot(aes(x = amino, fill = charge)) + 
+      geom_bar() +
+      scale_fill_manual("Charge", values = charge_colors) + 
+      #ylim(0, NA) + 
+      labs(title = 'Amino acid composition',
+           x = 'Amino acid',
+           y = 'Count')
+  })
+  
+  ##
+  
+  ### TAB: OVERLAPPING ###
+  
+  ##
+  
+  stateOverlap_data <- reactive({
+    
+    dat() %>%
+      select(Sequence, Start, End, State) %>% 
+      filter(State == input[["chosen_state"]]) %>%
+      filter(Start >= input[["plot_range"]][[1]], End <= input[["plot_range"]][[2]]) %>%
+      filter(!duplicated(.)) %>%
+      select(-State) %>%
+      dt_format(cols = c("Sequence", "Start", "End"))
+    
+  })
+  
+  output[["stateOverlap_data"]] <- DT::renderDataTable({
+    
+    stateOverlap_data()
+    
+  })
+  
+  ##
+  
+  stateOverlap <- reactive({
+    
+    graphic_overlapping(dat = dat(),
+                        chosen_state = input[["chosen_state"]])
+    
+  })
+  
+  ##
+  
+  output[["stateOverlap"]] <- renderPlot({
+    
+    stateOverlap() + 
+      coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]]))
+    
+  })
+  
+  ##
+  
+  stateOverlapDist_data <- reactive({
+    
+    dat() %>%
+      select(Start, End, State, Sequence) %>%
+      filter(State == input[["chosen_state"]]) %>%
+      filter(Start >= input[["plot_range"]][[1]], End <= input[["plot_range"]][[2]]) %>%
+      filter(!duplicated(.)) %>%
+      select(-State) %>%
+      apply(1, function(i) i[1]:i[2]) %>%
+      unlist %>%
+      data.frame(pos = .) %>%
+      group_by(pos) %>%
+      summarise(coverage = length(pos)) %>%
+      right_join(data.frame(pos = seq(from = input[["plot_range"]][[1]], to = input[["plot_range"]][[2]]))) %>%
+      replace_na(list(coverage = 0)) %>%
+      dt_format(cols = c("Position", "Times Covered"))
+    
+  })
+  
+  ##
+  
+  output[["stateOverlapDist_data"]] <- DT::renderDataTable({
+    
+    stateOverlapDist_data()
+    
+  })
+  
+  ##
+  
+  stateOverlapDist <- reactive({
+    
+    tmp <- dat() %>%
+      select(Start, End, State) %>% 
+      filter(State == input[["chosen_state"]]) %>% 
+      filter(Start >= input[["plot_range"]][[1]], End <= input[["plot_range"]][[2]]) %>%
+      filter(!duplicated(.)) %>% 
+      select(-State) %>% 
+      apply(1, function(i) i[1]:i[2]) %>% 
+      unlist %>% 
+      data.frame(x = .) %>% 
+      group_by(x) %>% 
+      summarise(coverage = length(x)) 
+    
+    mean_coverage <- round(mean(tmp[["coverage"]], na.rm = TRUE), 2)
+    
+    display_position <- (input[["plot_range"]][[1]] + input[["plot_range"]][[2]])/2
+    
+    tmp %>%
+      ggplot(aes(x = x, y = coverage)) +
+      geom_col(width = 1) +
+      geom_hline(yintercept = mean_coverage, linetype = 'dashed', color = 'red') +
+      geom_text(aes(x = display_position, y = mean_coverage, label = 'Average', color = 'red', vjust = -.5)) +
+      geom_text(aes(x = display_position, y = mean_coverage, label = mean_coverage, color = 'red', vjust = 1.5)) +
+      labs(title = 'How much a position in sequence is covered?',
+           x = 'Position in sequence',
+           y = 'Coverage') +
+      theme(legend.position = "none")
+    
+  })
+  
+  ##
+  
+  output[["stateOverlapDist"]] <- renderPlot({
+    
+    stateOverlapDist()
+    
+  })
+  
+  ##
+  
+  ### TAB: WOODS PLOT ###
   
   ##
   
@@ -246,10 +471,16 @@ server <- function(input, output, session) {
   differential_plot_data_theo <- reactive({
     
     dat_new() %>%
-      select(Sequence, Start, End, diff_theo_frac_exch, err_diff_theo_frac_exch) %>%
+      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit"]]),
+                          theoretical = TRUE, 
+                          relative = TRUE) %>%
+      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
+                          theoretical = TRUE, 
+                          relative = TRUE) %>%
+      select(Sequence, Start, End, diff_theo_frac_exch, err_diff_theo_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
       mutate(diff_theo_frac_exch = round(diff_theo_frac_exch, 4),
              err_diff_theo_frac_exch = round(err_diff_theo_frac_exch, 4)) %>%
-      dt_format(cols = c("Sequence", "Start", "End", "Theo Diff Frac Exch", "Err Theo Diff Frac Exch"))
+      dt_format(cols = c("Sequence", "Start", "End", "Theo Diff Frac Exch", "Err Theo Diff Frac Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]])))
     
   })
   
@@ -258,10 +489,16 @@ server <- function(input, output, session) {
   differential_plot_data_theo_abs <- reactive({
     
     dat_new() %>%
-      select(Sequence, Start, End, abs_diff_theo_frac_exch, err_abs_diff_theo_frac_exch) %>%
+      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit"]]),
+                          theoretical = TRUE, 
+                          relative = FALSE) %>%
+      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
+                          theoretical = TRUE, 
+                          relative = FALSE) %>%
+      select(Sequence, Start, End, abs_diff_theo_frac_exch, err_abs_diff_theo_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
       mutate(abs_diff_theo_frac_exch = round(abs_diff_theo_frac_exch, 4),
              err_abs_diff_theo_frac_exch = round(err_abs_diff_theo_frac_exch, 4)) %>%
-      dt_format(cols = c("Sequence", "Start", "End", "Theo Abs Value Diff", "Err Theo Abs Value Diff"))
+      dt_format(cols = c("Sequence", "Start", "End", "Theo Abs Value Diff", "Err Theo Abs Value Diff", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]])))
     
   })
   
@@ -270,10 +507,16 @@ server <- function(input, output, session) {
   differential_plot_data_exp <- reactive({
     
     dat_new() %>%
-      select(Sequence, Start, End, diff_frac_exch, err_frac_exch) %>%
+      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit"]]),
+                          theoretical = FALSE, 
+                          relative = TRUE) %>%
+      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
+                          theoretical = FALSE, 
+                          relative = TRUE) %>%
+      select(Sequence, Start, End, diff_frac_exch, err_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
       mutate(diff_frac_exch = round(diff_frac_exch, 4),
              err_frac_exch = round(err_frac_exch, 4)) %>%
-      dt_format(cols = c("Sequence", "Start", "End", "Diff Frac Exch", "Err Diff Frac Exch"))
+      dt_format(cols = c("Sequence", "Start", "End", "Diff Frac Exch", "Err Diff Frac Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]])))
     
   })
   
@@ -282,10 +525,16 @@ server <- function(input, output, session) {
   differential_plot_data_exp_abs <- reactive({
     
     dat_new() %>%
-      select(Sequence, Start, End, abs_diff_frac_exch, err_abs_diff_frac_exch) %>%
+      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit"]]),
+                          theoretical = FALSE, 
+                          relative = FALSE) %>%
+      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
+                          theoretical = FALSE, 
+                          relative = FALSE) %>%
+      select(Sequence, Start, End, abs_diff_frac_exch, err_abs_diff_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
       mutate(abs_diff_frac_exch = round(abs_diff_frac_exch, 4),
              err_abs_diff_frac_exch = round(err_abs_diff_frac_exch, 4)) %>%
-      dt_format(cols = c("Sequence", "Start", "End", "Diff Abs Value Exch", "Err Diff Abs Value Exch"))
+      dt_format(cols = c("Sequence", "Start", "End", "Diff Abs Value Exch", "Err Diff Abs Value Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]])))
   })
   
   ##
@@ -488,229 +737,14 @@ server <- function(input, output, session) {
     
     updateSelectInput(session,
                       inputId = "confidence_limit_2",
-                      choices = confidence_limit_choices[confidence_limit_choices > input[["confidence_limit"]]],
+                      choices = confidence_limit_choices[confidence_limit_choices >= input[["confidence_limit"]]],
                       selected = confidence_limit_choices[confidence_limit_choices > input[["confidence_limit"]]][1])
     
   })
   
   ##
   
-  ### TAB : GENERAL DATA ###
-  
-  ##
-  
-  observe({
-    
-    possible_states <- unique(dat()[["State"]])
-    
-    updateRadioButtons(session,
-                       inputId = "chosen_state",
-                       choices = possible_states)
-    
-  })
-  
-  ##
-  
-  output[["protein_name"]] <- renderText({
-    
-    as.character(unique(dat()[["Protein"]]))
-    
-  })
-  
-  ##
-  
-  position_in_sequence_tmp <- reactive({
-    
-    dat() %>%
-      select(Start, End, Sequence) %>%
-      unique(.) %>%
-      apply(1, function(x) data.frame(position = x[1]:x[2], amino = strsplit(x[3], '')[[1]], stringsAsFactors = FALSE)) %>%
-      bind_rows() %>%
-      unique(.) 
-    
-  })
-  
-  ##
-  
-  protein_sequence <- reactive({
-    
-    reconstruct_sequence(dat())
-    
-  })
-  
-  ##
-  
-  position_in_sequence <- reactive({
-    
-    position_in_sequence_tmp() %>%
-      left_join(amino_prop)
-    
-  })
-  
-  ##
-
-  output[["protein_stats"]] <- renderTable({
-    
-    data.frame(
-      Name = c("Length", "Coverage", "Cys"),
-      Value = as.character(c(max_range(), 
-                             paste0(round(100-100*str_count(protein_sequence(), 'x')/max_range(), 2), '%'),
-                             str_count(protein_sequence(), 'C'))),
-      stringsAsFactors = FALSE
-    )
-    
-  })
-  
-  ##
-
-  protein_sequece_colored <- reactive({
-    
-    paste0("<span>", 
-           gsubfn(pattern = 'C', replacement = function(x) paste0('<font color = "red">', x, "</font>"), x = protein_sequence()),
-           "</span>")
-    
-  })
-  
-  ##
-  
-  output[["sequenceName"]] <- renderText({
-    
-    protein_sequece_colored()
-    
-  })
-  
-  ##
-  
-  output[["aminoDist"]] <- renderPlot({
-    charge_colors <- c("-1" = "#E41A1C", "0" = "#377EB8", "1" = "#4DAF4A")
-
-    position_in_sequence() %>%
-      mutate(affinity = ifelse(is_hydrophobic, "phobic", "philic")) %>% 
-      filter(affinity %in% input[["hydro_prop"]]) %>% 
-      ggplot(aes(x = amino, fill = charge)) + 
-      geom_bar() +
-      scale_fill_manual("Charge", values = charge_colors) + 
-      #ylim(0, NA) + 
-      labs(title = 'Amino acid composition',
-           x = 'Amino acid',
-           y = 'Count')
-  })
-  
-  ##
-  
-  ### TAB: OVERLAPPING ###
-  
-  ##
-  
-  stateOverlap_data <- reactive({
-    
-    dat() %>%
-      select(Sequence, Start, End, State) %>% 
-      filter(State == input[["chosen_state"]]) %>%
-      filter(Start >= input[["plot_range"]][[1]], End <= input[["plot_range"]][[2]]) %>%
-      filter(!duplicated(.)) %>%
-      select(-State) %>%
-      dt_format(cols = c("Sequence", "Start", "End"))
-    
-  })
-  
-  output[["stateOverlap_data"]] <- DT::renderDataTable({
-    
-    stateOverlap_data()
-    
-  })
-  
-  ##
-  
-  stateOverlap <- reactive({
-    
-    graphic_overlapping(dat = dat(),
-                        chosen_state = input[["chosen_state"]])
-    
-  })
-  
-  ##
-  
-  output[["stateOverlap"]] <- renderPlot({
-    
-    stateOverlap() + 
-      coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]]))
-    
-  })
-  
-  ##
-  
-  stateOverlapDist_data <- reactive({
-    
-    dat() %>%
-      select(Start, End, State, Sequence) %>%
-      filter(State == input[["chosen_state"]]) %>%
-      filter(Start >= input[["plot_range"]][[1]], End <= input[["plot_range"]][[2]]) %>%
-      filter(!duplicated(.)) %>%
-      select(-State) %>%
-      apply(1, function(i) i[1]:i[2]) %>%
-      unlist %>%
-      data.frame(pos = .) %>%
-      group_by(pos) %>%
-      summarise(coverage = length(pos)) %>%
-      right_join(data.frame(pos = seq(from = input[["plot_range"]][[1]], to = input[["plot_range"]][[2]]))) %>%
-      replace_na(list(coverage = 0)) %>%
-      dt_format(cols = c("Position", "Times Covered"))
-    
-  })
-  
-  ##
-  
-  output[["stateOverlapDist_data"]] <- DT::renderDataTable({
-    
-    stateOverlapDist_data()
-    
-  })
-  
-  ##
-  
-  stateOverlapDist <- reactive({
-    
-    tmp <- dat() %>%
-      select(Start, End, State) %>% 
-      filter(State == input[["chosen_state"]]) %>% 
-      filter(Start >= input[["plot_range"]][[1]], End <= input[["plot_range"]][[2]]) %>%
-      filter(!duplicated(.)) %>% 
-      select(-State) %>% 
-      apply(1, function(i) i[1]:i[2]) %>% 
-      unlist %>% 
-      data.frame(x = .) %>% 
-      group_by(x) %>% 
-      summarise(coverage = length(x)) 
-    
-    mean_coverage <- round(mean(tmp[["coverage"]], na.rm = TRUE), 2)
-    
-    display_position <- (input[["plot_range"]][[1]] + input[["plot_range"]][[2]])/2
-    
-    tmp %>%
-      ggplot(aes(x = x, y = coverage)) +
-      geom_col(width = 1) +
-      geom_hline(yintercept = mean_coverage, linetype = 'dashed', color = 'red') +
-      geom_text(aes(x = display_position, y = mean_coverage, label = 'Average', color = 'red', vjust = -.5)) +
-      geom_text(aes(x = display_position, y = mean_coverage, label = mean_coverage, color = 'red', vjust = 1.5)) +
-      labs(title = 'How much a position in sequence is covered?',
-           x = 'Position in sequence',
-           y = 'Coverage') +
-      theme(legend.position = "none")
-    
-  })
-  
-  ##
-  
-  output[["stateOverlapDist"]] <- renderPlot({
-    
-    stateOverlapDist()
-    
-  })
-  
-  ##
-  
-  ### TAB : REPORT ###
+  ### TAB: REPORT ###
 
   ##
   
