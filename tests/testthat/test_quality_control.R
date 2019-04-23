@@ -10,5 +10,15 @@ test_that("class is right",
                           state_first = "CD160",
                           state_second = "CD160_HVEM", 
                           chosen_time = 1, 
-                          in_time = 0.001),
+                          in_time = 0.001, 
+                          relative = FALSE),
                     "data.frame"))
+
+test_that("size is right",
+          expect_equal(length(colnames(quality_control(dat = dat,
+                                 state_first = "CD160",
+                                 state_second = "CD160_HVEM", 
+                                 chosen_time = 1, 
+                                 in_time = 0.001, 
+                                 relative = TRUE))),
+                       13))

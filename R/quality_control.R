@@ -100,8 +100,8 @@ quality_control <- function(dat,
                  sd(tmp[["err_abs_avg_theo_in_time_1"]], na.rm = TRUE),
                  mean(tmp[["err_abs_avg_theo_in_time_2"]], na.rm = TRUE),
                  sd(tmp[["err_abs_avg_theo_in_time_2"]], na.rm = TRUE),
-                 mean(tmp[["err_abs_frac_exch"]], na.rm = TRUE),
-                 sd(tmp[["err_abs_frac_exch"]], na.rm = TRUE),
+                 mean(tmp[["err_abs_diff_frac_exch"]], na.rm = TRUE),
+                 sd(tmp[["err_abs_diff_frac_exch"]], na.rm = TRUE),
                  mean(tmp[["err_abs_diff_theo_frac_exch"]], na.rm = TRUE),
                  sd(tmp[["err_abs_diff_theo_frac_exch"]], na.rm = TRUE))
       

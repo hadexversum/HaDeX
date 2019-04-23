@@ -1,6 +1,7 @@
 library(testthat)
 library(HaDeX)
 library(digest)
+library(vdiffr)
 
 context("woods_plot in test")
 
@@ -15,7 +16,8 @@ calc_dat <- prepare_dataset(dat,
 
 test_that("class is right",
           expect_is(woods_plot(calc_dat = calc_dat,
-                               theoretical = TRUE),
+                               theoretical = TRUE, 
+                               relative = FALSE),
                     "gg"))
 
 test_that("md5 check 1",
@@ -33,3 +35,15 @@ test_that("md5 check 2",
                               algo = "md5",
                               serialize = FALSE),
                        "12e3c600751338f2c2c03c4d3d386a39"))
+
+wood_plot_1 <- woods_plot(calc_dat = calc_dat,
+                          theoretical = FALSE, 
+                          relative = TRUE)
+
+vdiffr::expect_doppelganger("Woods Plot 1", wood_plot_1)
+
+wood_plot_2 <- woods_plot(calc_dat = calc_dat,
+                          theoretical = TRUE, 
+                          relative = TRUE)
+
+vdiffr::expect_doppelganger("Woods Plot 2", wood_plot_2)

@@ -1,6 +1,7 @@
 library(testthat)
 library(HaDeX)
 library(digest)
+library(vdiffr)
 
 context("comparison_plot in test")
 
@@ -40,3 +41,19 @@ test_that("md5 check 2",
                               serialize = FALSE),
                        "b7ef9ee469a37813d0f393ef89ce1b31"))
 
+comparison_plot_1 <- comparison_plot(calc_dat = calc_dat,
+                                     theoretical = TRUE,
+                                     relative = FALSE, 
+                                     state_first = "CD160",
+                                     state_second = "CD160_HVEM")
+
+vdiffr::expect_doppelganger("Comparison Plot 1", comparison_plot_1)
+
+comparison_plot_2 <- comparison_plot(calc_dat = calc_dat,
+                                     theoretical = FALSE,
+                                     relative = TRUE, 
+                                     state_first = "CD160",
+                                     state_second = "CD160_HVEM")
+
+
+vdiffr::expect_doppelganger("Comparison Plot 2", comparison_plot_2)
