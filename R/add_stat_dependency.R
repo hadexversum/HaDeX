@@ -7,6 +7,23 @@
 #' @param theoretical logical value to determine if plot is theoretical or not. 
 #' @param relative logical value to determine if values are relative or absolute. 
 #' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", 
+#'                             "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' calc_dat <- prepare_dataset(dat,
+#'                             in_state_first = "CD160_0.001",
+#'                             chosen_state_first = "CD160_1",
+#'                             out_state_first = "CD160_1440",
+#'                             in_state_second = "CD160_HVEM_0.001",
+#'                             chosen_state_second = "CD160_HVEM_1",
+#'                             out_state_second = "CD160_HVEM_1440") 
+#' calc_dat <- add_stat_dependency(calc_dat, 
+#'                                 confidence_limit = 0.98, 
+#'                                 theoretical = FALSE, 
+#'                                 relative = TRUE)
+#' calc_dat
+#'                     
+#' 
 #' @export add_stat_dependency
 
 add_stat_dependency <- function(calc_dat,
