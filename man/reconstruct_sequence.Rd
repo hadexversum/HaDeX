@@ -17,6 +17,6 @@ Reconstructs protein sequence from DynamiX file. If a position is not covered by
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-rec_seq <- reconstruct_sequence(dat)
+reconstruct_sequence(dat)
 
 }

@@ -32,11 +32,10 @@ calc_dat <- prepare_dataset(dat,
                             in_state_second = "CD160_HVEM_0.001",
                             chosen_state_second = "CD160_HVEM_1",
                             out_state_second = "CD160_HVEM_1440") 
-calc_dat <- add_stat_dependency(calc_dat, 
-                                confidence_limit = 0.98, 
-                                theoretical = FALSE, 
-                                relative = TRUE)
-calc_dat
-                    
+add_stat_dependency(calc_dat, 
+                    confidence_limit = 0.98, 
+                    theoretical = FALSE, 
+                    relative = TRUE)
+                     
 
 }

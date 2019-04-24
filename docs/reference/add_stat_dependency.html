@@ -172,11 +172,10 @@
                             <span class='kw'>in_state_second</span> <span class='kw'>=</span> <span class='st'>"CD160_HVEM_0.001"</span>,
                             <span class='kw'>chosen_state_second</span> <span class='kw'>=</span> <span class='st'>"CD160_HVEM_1"</span>,
                             <span class='kw'>out_state_second</span> <span class='kw'>=</span> <span class='st'>"CD160_HVEM_1440"</span>)
-<span class='no'>calc_dat</span> <span class='kw'>&lt;-</span> <span class='fu'>add_stat_dependency</span>(<span class='no'>calc_dat</span>,
-                                <span class='kw'>confidence_limit</span> <span class='kw'>=</span> <span class='fl'>0.98</span>,
-                                <span class='kw'>theoretical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-                                <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>calc_dat</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 41 x 29</span><span>
+<span class='fu'>add_stat_dependency</span>(<span class='no'>calc_dat</span>,
+                    <span class='kw'>confidence_limit</span> <span class='kw'>=</span> <span class='fl'>0.98</span>,
+                    <span class='kw'>theoretical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+                    <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 41 x 29</span><span>
 #&gt;    Sequence Start   End Med_Sequence frac_exch_state~ err_frac_exch_s~
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span> INITSSA~     1    15          8              0.842          0.012</span><span style='text-decoration: underline;'>2</span><span> 
@@ -200,7 +199,7 @@
 #&gt; #   abs_avg_theo_in_time_1 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, err_abs_avg_theo_in_time_1 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
 #&gt; #   abs_avg_theo_in_time_2 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, err_abs_avg_theo_in_time_2 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
 #&gt; #   abs_diff_theo_frac_exch </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, err_abs_diff_theo_frac_exch </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
-#&gt; #   valid_at_0.98 </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span></div><div class='input'>                    
+#&gt; #   valid_at_0.98 </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span></div><div class='input'>                     
 
 </div></span></pre>
   </div>

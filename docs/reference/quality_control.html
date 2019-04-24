@@ -174,39 +174,89 @@ Visualization for results is provided in examples.</p>
 #&gt; <span class='message'>  RT = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
 #&gt; <span class='message'>  Inten = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
 #&gt; <span class='message'>  Center = </span><span style='color: #00BB00;'>col_double()</span><span></span>
-#&gt; <span class='message'>)</span></div><div class='input'><span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>quality_control</span>(<span class='kw'>dat</span> <span class='kw'>=</span> <span class='no'>dat</span>,
-                      <span class='kw'>state_first</span> <span class='kw'>=</span> <span class='st'>"CD160"</span>,
-                          <span class='kw'>state_second</span> <span class='kw'>=</span> <span class='st'>"CD160_HVEM"</span>,
-                          <span class='kw'>chosen_time</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-                          <span class='kw'>in_time</span> <span class='kw'>=</span> <span class='fl'>0.001</span>,
-                          <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>ggplot2</span>)
+#&gt; <span class='message'>)</span></div><div class='input'>(<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>quality_control</span>(<span class='kw'>dat</span> <span class='kw'>=</span> <span class='no'>dat</span>,
+                           <span class='kw'>state_first</span> <span class='kw'>=</span> <span class='st'>"CD160"</span>,
+                           <span class='kw'>state_second</span> <span class='kw'>=</span> <span class='st'>"CD160_HVEM"</span>,
+                           <span class='kw'>chosen_time</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+                           <span class='kw'>in_time</span> <span class='kw'>=</span> <span class='fl'>0.001</span>,
+                           <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt;       time avg_err_state_first sd_err_state_first avg_err_state_second
+#&gt; 1    0.167          0.02726432        0.034505648           0.04002412
+#&gt; 2    1.000          0.01809028        0.024756735           0.03441546
+#&gt; 3    5.000          0.02047067        0.014970305           0.02662301
+#&gt; 4   25.000          0.01457019        0.010830460           0.02364142
+#&gt; 5  120.000          0.01487203        0.008620807           0.01947143
+#&gt; 6 1440.000          0.01291996        0.007112112           0.01780559
+#&gt;   sd_err_state_second avg_err_theo_state_first sd_err_theo_state_first
+#&gt; 1         0.052382299              0.004956604             0.003506281
+#&gt; 2         0.046121220              0.004956604             0.003506281
+#&gt; 3         0.031301883              0.004956604             0.003506281
+#&gt; 4         0.025624532              0.004956604             0.003506281
+#&gt; 5         0.013984848              0.004956604             0.003506281
+#&gt; 6         0.007831976              0.004956604             0.003506281
+#&gt;   avg_err_theo_state_second sd_err_theo_state_second   avg_diff     sd_diff
+#&gt; 1               0.008696022              0.003880989 0.04910158 0.062186906
+#&gt; 2               0.008696022              0.003880989 0.03980257 0.051630286
+#&gt; 3               0.008696022              0.003880989 0.03439911 0.033868351
+#&gt; 4               0.008696022              0.003880989 0.02836936 0.027193051
+#&gt; 5               0.008696022              0.003880989 0.02448255 0.014771291
+#&gt; 6               0.008696022              0.003880989 0.02248423 0.009476601
+#&gt;   avg_theo_diff sd_theo_diff
+#&gt; 1    0.01036691  0.004459795
+#&gt; 2    0.01036691  0.004459795
+#&gt; 3    0.01036691  0.004459795
+#&gt; 4    0.01036691  0.004459795
+#&gt; 5    0.01036691  0.004459795
+#&gt; 6    0.01036691  0.004459795</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>ggplot2</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>result</span>) +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>time</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>avg_err_state_first</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"avg_err_state_first"</span>)) +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>time</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>avg_err_state_second</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"avg_err_state_second"</span>)) +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>time</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>avg_err_theo_state_first</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"avg_err_theo_state_first"</span>)) +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>time</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>avg_err_theo_state_second</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"avg_err_theo_state_second"</span>)) +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>time</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>avg_diff</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"avg_diff"</span>)) +
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>time</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>avg_theo_diff</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"avg_theo_diff"</span>)) +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous'>scale_x_log10</a></span>() +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/lims'>ylim</a></span>(<span class='fl'>0</span>, <span class='fl'>0.05</span>) +
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>time</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>avg_theo_diff</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"avg_theo_diff"</span>)) +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"log(time) [min]"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Average uncertainty"</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Uncertainty change in out time"</span>)</div><div class='img'><img src='quality_control-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>quality_control</span>(<span class='kw'>dat</span> <span class='kw'>=</span> <span class='no'>dat</span>,
-                         <span class='kw'>state_first</span> <span class='kw'>=</span> <span class='st'>"CD160"</span>,
-                         <span class='kw'>state_second</span> <span class='kw'>=</span> <span class='st'>"CD160_HVEM"</span>,
-                         <span class='kw'>chosen_time</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-                         <span class='kw'>in_time</span> <span class='kw'>=</span> <span class='fl'>0.001</span>,
-                         <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>result</span>) +
+(<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>quality_control</span>(<span class='kw'>dat</span> <span class='kw'>=</span> <span class='no'>dat</span>,
+                           <span class='kw'>state_first</span> <span class='kw'>=</span> <span class='st'>"CD160"</span>,
+                           <span class='kw'>state_second</span> <span class='kw'>=</span> <span class='st'>"CD160_HVEM"</span>,
+                           <span class='kw'>chosen_time</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+                           <span class='kw'>in_time</span> <span class='kw'>=</span> <span class='fl'>0.001</span>,
+                           <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt;       time avg_err_state_first sd_err_state_first avg_err_state_second
+#&gt; 1    0.167          0.05839928          0.0397346            0.1064781
+#&gt; 2    1.000          0.05839928          0.0397346            0.1064781
+#&gt; 3    5.000          0.05839928          0.0397346            0.1064781
+#&gt; 4   25.000          0.05839928          0.0397346            0.1064781
+#&gt; 5  120.000          0.05839928          0.0397346            0.1064781
+#&gt; 6 1440.000          0.05839928          0.0397346            0.1064781
+#&gt;   sd_err_state_second avg_err_theo_state_first sd_err_theo_state_first
+#&gt; 1          0.05445792               0.05839928               0.0397346
+#&gt; 2          0.05445792               0.05839928               0.0397346
+#&gt; 3          0.05445792               0.05839928               0.0397346
+#&gt; 4          0.05445792               0.05839928               0.0397346
+#&gt; 5          0.05445792               0.05839928               0.0397346
+#&gt; 6          0.05445792               0.05839928               0.0397346
+#&gt;   avg_err_theo_state_second sd_err_theo_state_second  avg_diff    sd_diff
+#&gt; 1                 0.1064781               0.05445792 0.1260377 0.05812599
+#&gt; 2                 0.1064781               0.05445792 0.1260377 0.05812599
+#&gt; 3                 0.1064781               0.05445792 0.1260377 0.05812599
+#&gt; 4                 0.1064781               0.05445792 0.1260377 0.05812599
+#&gt; 5                 0.1064781               0.05445792 0.1260377 0.05812599
+#&gt; 6                 0.1064781               0.05445792 0.1260377 0.05812599
+#&gt;   avg_theo_diff sd_theo_diff
+#&gt; 1     0.1260377   0.05812599
+#&gt; 2     0.1260377   0.05812599
+#&gt; 3     0.1260377   0.05812599
+#&gt; 4     0.1260377   0.05812599
+#&gt; 5     0.1260377   0.05812599
+#&gt; 6     0.1260377   0.05812599</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>result</span>) +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>time</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>avg_err_state_first</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"avg_err_state_first"</span>)) +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>time</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>avg_err_state_second</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"avg_err_state_second"</span>)) +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>time</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>avg_err_theo_state_first</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"avg_err_theo_state_first"</span>)) +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>time</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>avg_err_theo_state_second</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"avg_err_theo_state_second"</span>)) +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>time</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>avg_diff</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"avg_diff"</span>)) +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>time</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>avg_theo_diff</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"avg_theo_diff"</span>)) +
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous'>scale_x_log10</a></span>() +
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/lims'>ylim</a></span>(<span class='fl'>0</span>, <span class='fl'>0.05</span>) +
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"log(time) [min]"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Average uncertainty [Da]"</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Uncertainty change in out time"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 6 rows containing missing values (geom_path).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 6 rows containing missing values (geom_path).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 6 rows containing missing values (geom_path).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 6 rows containing missing values (geom_path).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 6 rows containing missing values (geom_path).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 6 rows containing missing values (geom_path).</span></div><div class='img'><img src='quality_control-2.png' alt='' width='700' height='433' /></div><div class='input'>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span>  <span class='st'>"time [min]"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Average uncertainty [Da]"</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Uncertainty change in out time"</span>)</div><div class='img'><img src='quality_control-2.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

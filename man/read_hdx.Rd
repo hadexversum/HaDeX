@@ -17,7 +17,7 @@ Imports data from a HDX-MS file (as provided by Waters DynamX software)
 and validates its content.
 }
 \examples{
-dat <- read_hdx(system.file(package = "HaDeX", 
-                            "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+read_hdx(system.file(package = "HaDeX", 
+                     "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 
 }
