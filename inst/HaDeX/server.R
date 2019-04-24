@@ -480,7 +480,7 @@ server <- function(input, output, session) {
       select(Sequence, Start, End, diff_theo_frac_exch, err_diff_theo_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
       mutate(diff_theo_frac_exch = round(diff_theo_frac_exch, 4),
              err_diff_theo_frac_exch = round(err_diff_theo_frac_exch, 4)) %>%
-      dt_format(cols = c("Sequence", "Start", "End", "Theo Diff Frac Exch", "Err Theo Diff Frac Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]])))
+      dt_format(cols = unique(c("Sequence", "Start", "End", "Theo Diff Frac Exch", "Err Theo Diff Frac Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
     
   })
   
@@ -498,7 +498,7 @@ server <- function(input, output, session) {
       select(Sequence, Start, End, abs_diff_theo_frac_exch, err_abs_diff_theo_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
       mutate(abs_diff_theo_frac_exch = round(abs_diff_theo_frac_exch, 4),
              err_abs_diff_theo_frac_exch = round(err_abs_diff_theo_frac_exch, 4)) %>%
-      dt_format(cols = c("Sequence", "Start", "End", "Theo Abs Value Diff", "Err Theo Abs Value Diff", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]])))
+      dt_format(cols = unique(c("Sequence", "Start", "End", "Theo Abs Value Diff", "Err Theo Abs Value Diff", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
     
   })
   
@@ -516,7 +516,7 @@ server <- function(input, output, session) {
       select(Sequence, Start, End, diff_frac_exch, err_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
       mutate(diff_frac_exch = round(diff_frac_exch, 4),
              err_frac_exch = round(err_frac_exch, 4)) %>%
-      dt_format(cols = c("Sequence", "Start", "End", "Diff Frac Exch", "Err Diff Frac Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]])))
+      dt_format(cols = unique(c("Sequence", "Start", "End", "Diff Frac Exch", "Err Diff Frac Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
     
   })
   
@@ -527,6 +527,7 @@ server <- function(input, output, session) {
     dat_new() %>%
       add_stat_dependency(confidence_limit = as.double(input[["confidence_limit"]]),
                           theoretical = FALSE, 
+                          
                           relative = FALSE) %>%
       add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
                           theoretical = FALSE, 
@@ -534,7 +535,7 @@ server <- function(input, output, session) {
       select(Sequence, Start, End, abs_diff_frac_exch, err_abs_diff_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
       mutate(abs_diff_frac_exch = round(abs_diff_frac_exch, 4),
              err_abs_diff_frac_exch = round(err_abs_diff_frac_exch, 4)) %>%
-      dt_format(cols = c("Sequence", "Start", "End", "Diff Abs Value Exch", "Err Diff Abs Value Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]])))
+      dt_format(cols = unique(c("Sequence", "Start", "End", "Diff Abs Value Exch", "Err Diff Abs Value Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
   })
   
   ##
