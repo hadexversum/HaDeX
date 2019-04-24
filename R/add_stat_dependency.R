@@ -7,6 +7,8 @@
 #' @param theoretical logical value to determine if plot is theoretical or not. 
 #' @param relative logical value to determine if values are relative or absolute. 
 #' 
+#' @return calc_dat extended by column specifying if given peptide is relevant in given confidence limit. The value of the confidence limit is added as an attribute - as well as parameters used to calculate (theoretical/relative)
+#' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", 
 #'                             "HaDeX/data/KD_180110_CD160_HVEM.csv"))
@@ -46,6 +48,7 @@ add_stat_dependency <- function(calc_dat,
   calc_dat[[paste0("valid_at_", confidence_limit)]] <- calc_dat[[value_column]] > confidence_values[2] | calc_dat[[value_column]] < confidence_values[1]
   
   attr(calc_dat, paste0("confidence_limit_at_", confidence_limit)) <- confidence_values
+  attr(calc_dat, paste0("confidence_limit_at_", confidence_limit, "_prop")) <- data.frame("theoretical" = theoretical, "relative" = relative)
 
   calc_dat
   
