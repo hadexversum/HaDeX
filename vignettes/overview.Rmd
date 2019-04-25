@@ -25,13 +25,15 @@ This vignette is work-in-progress and not yet complete.
  
 # Hydrogen/Deuterium Exchange Mass Spectrometry Data 
 
-Hydrogen-deuterium mass spectrometry (HDX-MS) is a staple tool for monitoring dynamics and interactions of proteins. Due to the sheer size of the HDX-MS results, the data analysis require a dedicated software suite. However, the majority of existing tools provides only point-and-click interfaces to black-box models or does not offer a complete workflow. We propose \textbf{HaDeX}, a novel tool for processing, analysis and visualisation of HDX-MS experiments. \textbf{HaDeX} covers the whole analytic process, including preliminary data exploration, quality control and generation of publication-quality figures. The reproducibility of the whole procedure is ensured with advanced reporting functions.
+Hydrogen-deuterium mass spectrometry (HDX-MS) is a staple tool for monitoring dynamics and interactions of proteins. Due to the sheer size of the HDX-MS results, the data analysis require a dedicated software suite. However, the majority of existing tools provides only point-and-click interfaces to black-box models or does not offer a complete workflow. We propose HaDeX, a novel tool for processing, analysis and visualisation of HDX-MS experiments. HaDeX covers the whole analytic process, including preliminary data exploration, quality control and generation of publication-quality figures. The reproducibility of the whole procedure is ensured with advanced reporting functions.
 
 # General data manipulation
 
+All of the functions mentioned below are wrapped together in Shiny app. It is launched by calling HaDeX_gui() function.
+
 ## Input file format 
 
-The \textbf{HaDeX} web server relies only on a single data format: DynamX datafile. An user can customize each step of the analysis with his own input parameters.
+The HaDeX web server relies only on a single data format: DynamX datafile. An user can customize each step of the analysis with his own input parameters.
 
 ## Transformation of data and measurement uncertainty
 
@@ -43,7 +45,7 @@ datatable(
   data = data.frame("Column Name" = c("Protein", "Start", "End", "Sequence", "Modification", "Fragment", "MaxUptake", "MHP", "State", "Exposure", "File", "z", "RT", "Inten", "Center"),
                     "Column Type" = c("Character", "Integer", "Integer", "Character", "Logic", "Logic", "Numeric", "Numeric", "Character", "Numeric", "Character", "Integer", "Numeric", "Numeric", "Numeric")),
   rownames = FALSE,
-  options = list(dom = "t", autoWidth = TRUE))
+  options = list(dom = "t", autoWidth = TRUE, pageLength = 15))
 
 ```
 
@@ -93,11 +95,11 @@ DynamX provides experimetal data as measured mass plus proton mass to charge rat
 $$expMass = z*(Center-protonMass)\tag{1}$$
 where:
 
-- $expMass$ - experimentally obtained mass, calculated
+- $expMass$ - result calculated from partial values
 
 - $z$ - charge
 
-- $Center$ - data from experiment
+- $Center$ - experimentally measured value - mass plus proton mass per charge ratio
 
 This transformation is applied to every measurement. 
 
@@ -112,7 +114,7 @@ where:
 
 In input file is data from more than one measurement. The mean value for each time in each state is treated as a result. This means that the uncertainty is calculated using the standard deviation of the mean:
 
-$$u(x) = \sqrt{\frac{ \sum_{i=1}^n \left( x_{i} - \overline{x} \right)^2}{n}}\tag{3}$$
+$$u(x) = \sqrt{\frac{ \sum_{i=1}^n \left( x_{i} - \overline{x} \right)^2}{n(n-1)}}\tag{3}$$
 where:
 
 - $x_{i}$ - measurement
@@ -123,7 +125,7 @@ where:
 
 #### Experimental deuteration level
 
-In HDX experiment the subject of interest is deuteration level exchanged in given time between states. 
+In HDX experiment the subject of interest is deuteration level exchanged in given time between two states. 
 Generaly, the experimental relative deuteration level is calculated as shown in equation 4. It is a function of three variables and produces a value for chosen state and chosen time $t$.  
 
 $$D = \frac{D_{t} - D_{0}}{D_{100} - D_{0}}\tag{4}$$
@@ -138,9 +140,12 @@ where:
 
 - $D_{t}$ - deuteration measured in chosen time - mean value obtainted as explained before
 
-Although equation 4 produces relative value, absolute values are also calculated in HaDeX. Functions contain logical value $relative$ to determine if values should be absoute or relative. Equations below are based on relative values for readability. Absolute values are obtained analogical way - just without scaling. 
+Although equation 4 produces relative value, absolute values are also calculated in HaDeX adjusting the equation to its variance as shown in equation 4a:
 
-To calculate uncertainty related with functions of more than one variables (eq. equation 4) the Law of propagation of uncertainty is used as described in equation 5:
+$$D = D_{t} - D_{0}\tag{4a}$$
+Functions in HaDeX package contain logical value $relative$ to determine if values should be absoute or relative. Methodology below is desribed on relative values for readability. Absolute values are obtained analogical way - just without scaling. 
+
+To calculate uncertainty related with functions of more than one variables (eq. equation 4) the Law of propagation of uncertainty is defined by equation 5:
 
 $$u_{c}(y) = \sqrt{\sum_{k} \left[ \frac{\partial y}{\partial x_{k}} u(x_{k}) \right]^2}\tag{5}$$
 
@@ -155,9 +160,9 @@ where:
 
 - $k \in {0, t, 100}$
 
-- $D_{k}$ - deuteration in k time as standard deviation of the mean value 
+- $D_{k}$ - deuteration in k time 
 
-- $u(D_{k})$ - uncertainty associated with $D_{k}$
+- $u(D_{k})$ - uncertainty associated with $D_{k}$ as standard deviation of the mean value 
 
 Then, expanding the equation 6:
 
@@ -166,7 +171,7 @@ As suspected, the uncertainty associated with $D_{t}$ has the biggest impact on 
 
 #### Theoretical deuteration level 
 
-Other way to examine the data rather then experimental way are the theoertical calculations - obtained deuteration level in chosen time $t$ is compared with theoretical values as shown in equation 8:
+Other way to examine the data rather then experimental way are the theoertical calculations - obtained relative deuteration level in chosen time $t$ is compared with theoretical values as shown in equation 8:
 
 $$D = \frac{D_{t}-MHP}{MaxUptake*protonMass}\tag{8}$$
 
@@ -178,15 +183,21 @@ where:
 
 - $MaxUptake$ - max proton uptake for peptide (constant)
 
-- $protonMass$ - mass of a proton (constant)
+- $protonMass$ - mass of a proton (constant).
 
-and the uncertainty for function of one variable is shown in equation 9:
+Absolute value is calculates as in equation 8 without scalling, as shown in equation 8a:
+
+$$D = D_{t} - MHP\tag{8a}$$
+
+The uncertainty of the function of one variable is defined by the equation 9:
 
 $$u(y) = \left| \frac{dy}{dx} u(x) \right|\tag{9}$$
 
 and based on equation 8:
 
-$$u(D) = \left|\frac{1}{MaxUptake*protonMass} u(d_{t}) \right|\tag{10}$$
+$$u(D) = \left|\frac{1}{MaxUptake*protonMass} u(D_{t}) \right|\tag{10}$$
+
+For the absolute values, $u(D)$ is identical with $u(D_{t})$, based on equation 8a and 9.
 
 ##### Difference of deuteration levels between two states 
 
@@ -213,9 +224,9 @@ calc_dat <- prepare_dataset(dat,
 
 The levels of deuteration along with uncertainty intervals are shown on comparison plot. HaDeX provides both experimental and theroetical levels of deuteration in either relative or absolute values. Example of use:
 
-- theoretical:
+-- theoretical:
 
--- relative values:
+- relative values:
 
 ```{r warning=FALSE}
 comparison_plot(calc_dat = calc_dat,
@@ -226,7 +237,7 @@ comparison_plot(calc_dat = calc_dat,
   labs(title = "Theoretical fraction exchanged in state comparison in 25 min time")
 ```
 
--- absolute values:
+- absolute values:
 
 ```{r warning=FALSE}
 comparison_plot(calc_dat = calc_dat,
@@ -237,9 +248,9 @@ comparison_plot(calc_dat = calc_dat,
   labs(title = "Theoretical fraction exchanged in state comparison in 25 min time")
 ```
 
-- experimental:
+-- experimental:
 
--- relative values:
+- relative values:
 
 ```{r warning=FALSE}
 comparison_plot(calc_dat = calc_dat,
@@ -250,7 +261,7 @@ comparison_plot(calc_dat = calc_dat,
   labs(title = "Fraction exchanged in state comparison in 25 min time")
 ```
 
--- absolute values:
+- absolute values:
 
 ```{r warning=FALSE}
 comparison_plot(calc_dat = calc_dat,
@@ -266,9 +277,9 @@ comparison_plot(calc_dat = calc_dat,
 
 Woods plot format shows diference between results of two different states as described by equation 11. HaDeX provides both experimental i theoretical calculations in either relative or absolute values. Example of use:
 
-- theoretical:
+-- theoretical:
 
--- relative values:
+- relative values:
 
 ```{r warning=FALSE}
 woods_plot(calc_dat = calc_dat,
@@ -277,7 +288,7 @@ woods_plot(calc_dat = calc_dat,
   labs(title = "Theoretical fraction exchanged between states in 25 min time")
 ```
 
--- absolute values:
+- absolute values:
 
 ```{r warning=FALSE}
 woods_plot(calc_dat = calc_dat,
@@ -286,9 +297,9 @@ woods_plot(calc_dat = calc_dat,
   labs(title = "Theoretical fraction exchanged between states in 25 min time")
 ```
 
-- experimental:
+-- experimental:
 
--- relative values:
+- relative values:
 
 ```{r warning=FALSE }
 woods_plot(calc_dat = calc_dat,
@@ -297,13 +308,34 @@ woods_plot(calc_dat = calc_dat,
   labs(title = "Theoretical fraction exchanged between states in 25 min time")
 ```
 
--- absolute values:
+- absolute values:
 
 ```{r warning=FALSE }
 woods_plot(calc_dat = calc_dat,
            theoretical = FALSE, 
            relative = FALSE) +
   labs(title = "Theoretical fraction exchanged between states in 25 min time")
+```
+
+
+### Confidence limit in Woods plot
+
+The function calculate_confidence_limit_values() calculates confidence limit values the way that is described in Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086. 
+
+```{r}
+calculate_confidence_limit_values(calc_dat = calc_dat,
+                                  confidence_limit = 0.99,
+                                  theoretical = FALSE, 
+                                  relative = TRUE)  
+``` 
+
+Function add_stat_dependency() returns calc_dat extended by column describing relation of given peptide with confidence limit.
+
+```{r}
+add_stat_dependency(calc_dat, 
+                   confidence_limit = 0.98, 
+                   theoretical = FALSE, 
+                   relative = TRUE)
 ```
 
 ## Additional tools
@@ -319,7 +351,8 @@ result <- quality_control(dat = dat,
                           state_first = "gg_Nucb2_EDTA",
                           state_second = "gg_Nucb2_CaCl2", 
                           chosen_time = 25, 
-                          in_time = 0.001)
+                          in_time = 0.001, 
+                          relative = TRUE)
 
 ```
 
@@ -335,6 +368,8 @@ ggplot(result[result["time"]>=1,]) +
   theme(legend.position = "bottom",
         legend.title = element_blank())
 ```
+
+Example above is based on relative values. Although HaDeX provides results in absolute values, be aware that absolute calculations don't contain time out (it is used for scaling), so the uncertainty is not the function of $D_{100}$ - it is constant. 
 
 # Example workflow
 
