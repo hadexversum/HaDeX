@@ -6,5 +6,6 @@ doc
 .Ruserdata
 HaDeX-package.Rproj
 vignettes/overview.R
+vignettes/overview.html
 codecov.yml
 hadex.Rproj

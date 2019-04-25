@@ -29,15 +29,15 @@ Hydrogen-deuterium mass spectrometry (HDX-MS) is a staple tool for monitoring dy
 
 # General data manipulation
 
-All of the functions mentioned below are wrapped together in Shiny app. It is launched by calling HaDeX_gui() function.
+All of the functions mentioned below are wrapped together in the HaDeX Shiny app. It is launched by calling HaDeX_gui() function.
 
 ## Input file format 
 
-The HaDeX web server relies only on a single data format: DynamX datafile. An user can customize each step of the analysis with his own input parameters.
+The HaDeX web server relies only on a single data format: DynamX datafile. The user can customize each step of the analysis with his own input parameters.
 
 ## Transformation of data and measurement uncertainty
 
-Uploaded datafile should fulfills following requirements in order for package functions to behave correctly:
+The uploaded datafile should fulfill the following requirements in order for package functions to behave correctly:
 
 ```{r warning=FALSE, message=FALSE, echo = FALSE}
 
@@ -53,7 +53,7 @@ This is a structure of datafile produced by DynamX 3. In upcoming versions of Ha
 
 Datafile is imported into R usign function read_hdx(). Currently, HaDeX supports .csv, .tsv and .xls files - with mentioned structure. File loaded this way is later referred as dat.
 
-Example file, used for further demonstration:
+The example file, used for further demonstration:
 
 ```{r warning=FALSE}
 
@@ -63,7 +63,7 @@ dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_190304_Nucb2_EDTA_
 
 ### Protein coverage
 
-First information user can get is protein sequence reconstruction based on supplemented data. Although the sequence should be known to the experimenter, it is uselful to see how the sequence was covered in experiment. Function reconstruct_sequence() does that:
+First information user can get is protein sequence reconstruction based on supplemented data. Although the sequence should be known to the experimenter, it is useful to see how the sequence was covered in the experiment. Function reconstruct_sequence() does that:
 
 ```{r warning=FALSE}
 
@@ -71,7 +71,7 @@ reconstruct_sequence(dat)
 
 ```
 
-Unknown amino is marked as x.
+Unknown amino acids are marked as x according to the IUPAC conventions.
 
 Additionally, coverage information can be presented on a plot using function graphic_overlapping(). Peptides positions are shown next to each other for easier data overview.
 
@@ -86,11 +86,11 @@ User can choose which state (or states) should be included in shown data. If thi
 
 ### Data preparation for deuteration calculations
 
-There are a few steps of preliminary data preparation. All of listed transformation in this section are done by prepare_dataset() function. Product of calling prepare_dataset() on data read by read_hdx() is later referred as calc_dat.
+There are a few steps of preliminary data preparation. All of the listed transformation in this section is done by prepare_dataset() function. Product of calling prepare_dataset() on data read by read_hdx() is later referred as calc_dat.
 
 #### Measured data to useful value
 
-DynamX provides experimetal data as measured mass plus proton mass to charge ratio ($Center$). For latter use, this value has to be transformed to overall peptide mass, as shown in equation 1: 
+DynamX provides experimental data as measured mass plus proton mass to charge ratio ($Center$). For later use, this value has to be transformed into overall peptide mass, as shown in equation 1: 
 
 $$expMass = z*(Center-protonMass)\tag{1}$$
 where:
@@ -103,7 +103,7 @@ where:
 
 This transformation is applied to every measurement. 
 
-The experiment is repeated at least three times for the results to be reliable. Than, the repetitions are aggregated as weighted mean into one result per peptide using equation 2: 
+The experiment is repeated at least three times for the results to be reliable. Then, the repetitions are aggregated as weighted mean into one result per peptide using equation 2: 
 
 $$expMass = \frac{Inten*expMass}{N}\tag{2}$$
 where:
@@ -125,8 +125,8 @@ where:
 
 #### Experimental deuteration level
 
-In HDX experiment the subject of interest is deuteration level exchanged in given time between two states. 
-Generaly, the experimental relative deuteration level is calculated as shown in equation 4. It is a function of three variables and produces a value for chosen state and chosen time $t$.  
+In HDX-MS experiments the subject of interest is deuteration level exchanged in a given time between two states. 
+Generally, the experimental relative deuteration level is calculated as shown in equation 4. It is a function of three variables and produces a value for the chosen state and chosen time $t$.  
 
 $$D = \frac{D_{t} - D_{0}}{D_{100} - D_{0}}\tag{4}$$
 
@@ -143,9 +143,9 @@ where:
 Although equation 4 produces relative value, absolute values are also calculated in HaDeX adjusting the equation to its variance as shown in equation 4a:
 
 $$D = D_{t} - D_{0}\tag{4a}$$
-Functions in HaDeX package contain logical value $relative$ to determine if values should be absoute or relative. Methodology below is desribed on relative values for readability. Absolute values are obtained analogical way - just without scaling. 
+Functions in HaDeX package contain logical value $relative$ to determine if values should be absolute or relative. Methodology below is described on relative values for readability. Absolute values are obtained analogical way - just without scaling. 
 
-To calculate uncertainty related with functions of more than one variables (eq. equation 4) the Law of propagation of uncertainty is defined by equation 5:
+To calculate uncertainty related to functions of more than one variables (eq. equation 4) the Law of propagation of uncertainty is defined by equation 5:
 
 $$u_{c}(y) = \sqrt{\sum_{k} \left[ \frac{\partial y}{\partial x_{k}} u(x_{k}) \right]^2}\tag{5}$$
 
@@ -222,7 +222,7 @@ calc_dat <- prepare_dataset(dat,
 
 ### Comparison plot
 
-The levels of deuteration along with uncertainty intervals are shown on comparison plot. HaDeX provides both experimental and theroetical levels of deuteration in either relative or absolute values. Example of use:
+The levels of deuteration along with uncertainty intervals are shown on comparison plot. HaDeX provides both experimental and theoretical levels of deuteration in either relative or absolute values. Example of use:
 
 -- theoretical:
 
@@ -275,7 +275,7 @@ comparison_plot(calc_dat = calc_dat,
 
 ### Woods plot
 
-Woods plot format shows diference between results of two different states as described by equation 11. HaDeX provides both experimental i theoretical calculations in either relative or absolute values. Example of use:
+Woods plot format shows the difference between the results of two different states as described by equation 11. HaDeX provides both experimental and theoretical calculations in either relative or absolute values. Example of use:
 
 -- theoretical:
 
