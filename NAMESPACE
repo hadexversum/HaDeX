@@ -3,6 +3,7 @@
 export(HaDeX_gui)
 export(add_stat_dependency)
 export(calculate_confidence_limit_values)
+export(calculate_state_deuteration)
 export(comparison_plot)
 export(graphic_overlapping)
 export(prepare_dataset)
