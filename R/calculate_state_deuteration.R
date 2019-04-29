@@ -38,9 +38,9 @@ calculate_state_deuteration <- function(dat,
     summarize(time_in_mean = mean(time_in, na.rm = TRUE),
               err_time_in_mean = coalesce(sd(time_in, na.rm = TRUE)/sqrt(length(time_in)), 0),
               time_chosen_mean = mean(time_chosen, na.rm = TRUE),
-              err_time_chosen_mean = sd(time_chosen, na.rm = TRUE)/sqrt(length(time_chosen)),
+              err_time_chosen_mean = coalesce(sd(time_chosen, na.rm = TRUE)/sqrt(length(time_chosen)), 0),
               time_out_mean = mean(time_out, na.rm = TRUE),
-              err_time_out_mean = sd(time_out, na.rm = TRUE)/sqrt(length(time_out))) %>%
+              err_time_out_mean = coalesce(sd(time_out, na.rm = TRUE)/sqrt(length(time_out)), 0)) %>%
     mutate(# experimental calculations below - relative
       frac_exch_state = (time_chosen_mean - time_in_mean)/(time_out_mean - time_in_mean),
       err_frac_exch_state = sqrt((err_time_chosen_mean*(1/(time_out_mean - time_in_mean)))^2 + (err_time_in_mean*((time_chosen_mean - time_out_mean )/((time_out_mean - time_in_mean)^2)))^2 + (err_time_out_mean*((time_in_mean - time_chosen_mean)/((time_out_mean - time_in_mean)^2)))^2),
