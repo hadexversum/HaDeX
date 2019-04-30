@@ -5,6 +5,7 @@ date: "15.02.2019"
 output: 
   rmarkdown::html_vignette:
     toc: true
+    number_sections: true
     header-includes:
       -\usepackage{amsmath}
 vignette: >
@@ -35,7 +36,7 @@ All of the functions mentioned below are wrapped together in the HaDeX Shiny app
 
 The HaDeX web server relies only on a single data format: DynamX datafile. The user can customize each step of the analysis with his own input parameters.
 
-## Transformation of data and measurement uncertainty
+## Transformation of data
 
 The uploaded datafile should fulfill the following requirements in order for package functions to behave correctly:
 
@@ -143,16 +144,18 @@ where:
 Although equation 4 produces relative value, absolute values are also calculated in HaDeX adjusting the equation to its variance as shown in equation 4a:
 
 $$D = D_{t} - D_{0}\tag{4a}$$
-Functions in HaDeX package contain logical value $relative$ to determine if values should be absolute or relative. Methodology below is described on relative values for readability. Absolute values are obtained analogical way - just without scaling. 
+Functions in HaDeX package contain logical value $relative$ to determine if values should be absolute or relative. Methodology below is described on relative values for readability. Absolute values are obtained analogical way, but without scaling. 
 
-To calculate uncertainty related to functions of more than one variables (eq. equation 4) the Law of propagation of uncertainty is defined by equation 5:
+# Uncertainty calculations
+
+The uncertainty of measurement is variability associated with the precision of measuring instrumentation. To the best of our knowledge, we present here the first derivation of uncertainty formulas for HDX-MS data. To calculate uncertainty related to functions of more than one variables (eq. equation 4) the Law of propagation of uncertainty is defined by equation 5:
 
 $$u_{c}(y) = \sqrt{\sum_{k} \left[ \frac{\partial y}{\partial x_{k}} u(x_{k}) \right]^2}\tag{5}$$
 
 
-Uncorrelatedness is assumed.
+We assume uncorrelatedness of HDX-MS measurements, because XXX.
 
-Adapting equation 5 using formula from equation 4, uncertainty of equation 4 is calculated as follows:
+After adapting the equation 5 using formula from equation 4, uncertainty of equation 4 is calculated as follows:
 
 $$u_{c}(D) = \sqrt{\sum_{k} \left[ \frac{\partial D}{\partial D_{k}} u(D_{k}) \right]^2 }\tag{6}$$
 
@@ -199,7 +202,7 @@ $$u(D) = \left|\frac{1}{MaxUptake*protonMass} u(D_{t}) \right|\tag{10}$$
 
 For the absolute values, $u(D)$ is identical with $u(D_{t})$, based on equation 8a and 9.
 
-##### Difference of deuteration levels between two states 
+## Difference of deuteration levels between two states 
 
 Interesting observance can be gained from analysing the difference of deuteration levels in given time $t$ between two states as shown in plot in Woods format. For this, deuteration level in one state $(D_{2})$ is subtracted from deuteration level in other state $(D_{1})$:
 
@@ -220,7 +223,7 @@ calc_dat <- prepare_dataset(dat,
                             out_state_second = "gg_Nucb2_CaCl2_1440") 
 ```
 
-### Comparison plot
+## Comparison plot
 
 The levels of deuteration along with uncertainty intervals are shown on comparison plot. HaDeX provides both experimental and theoretical levels of deuteration in either relative or absolute values. Example of use:
 
@@ -273,7 +276,7 @@ comparison_plot(calc_dat = calc_dat,
 ```
 
 
-### Woods plot
+## Woods plot
 
 Woods plot format shows the difference between the results of two different states as described by equation 11. HaDeX provides both experimental and theoretical calculations in either relative or absolute values. Example of use:
 
@@ -338,11 +341,11 @@ add_stat_dependency(calc_dat,
                    relative = TRUE)
 ```
 
-## Additional tools
+# Additional tools
 
 HaDeX provides additional tools for assement of experiments. 
 
-### Quality control 
+## Quality control 
 
 Function quality_control() shows how the mean uncertainty per peptide changes with time points of an experiment. Example of use:
 

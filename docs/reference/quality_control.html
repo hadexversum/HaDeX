@@ -181,33 +181,33 @@ Visualization for results is provided in examples.</p>
                            <span class='kw'>chosen_time</span> <span class='kw'>=</span> <span class='fl'>1</span>,
                            <span class='kw'>in_time</span> <span class='kw'>=</span> <span class='fl'>0.001</span>,
                            <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt;       time avg_err_state_first sd_err_state_first avg_err_state_second
-#&gt; 1    0.167          0.02726432        0.034505648           0.04002412
-#&gt; 2    1.000          0.01809028        0.024756735           0.03441546
-#&gt; 3    5.000          0.02047067        0.014970305           0.02662301
-#&gt; 4   25.000          0.01457019        0.010830460           0.02364142
-#&gt; 5  120.000          0.01487203        0.008620807           0.01947143
-#&gt; 6 1440.000          0.01291996        0.007112112           0.01780559
+#&gt; 1    0.167         0.003919621        0.005116853          0.005738668
+#&gt; 2    1.000         0.002607188        0.003708500          0.004930354
+#&gt; 3    5.000         0.002925674        0.002207625          0.003811229
+#&gt; 4   25.000         0.002086275        0.001636480          0.003375989
+#&gt; 5  120.000         0.002124354        0.001284390          0.002759393
+#&gt; 6 1440.000         0.001841383        0.001032972          0.002532581
 #&gt;   sd_err_state_second avg_err_theo_state_first sd_err_theo_state_first
-#&gt; 1         0.052382299              0.004956604             0.003506281
-#&gt; 2         0.046121220              0.004956604             0.003506281
-#&gt; 3         0.031301883              0.004956604             0.003506281
-#&gt; 4         0.025624532              0.004956604             0.003506281
-#&gt; 5         0.013984848              0.004956604             0.003506281
-#&gt; 6         0.007831976              0.004956604             0.003506281
-#&gt;   avg_err_theo_state_second sd_err_theo_state_second   avg_diff     sd_diff
-#&gt; 1               0.008696022              0.003880989 0.04910158 0.062186906
-#&gt; 2               0.008696022              0.003880989 0.03980257 0.051630286
-#&gt; 3               0.008696022              0.003880989 0.03439911 0.033868351
-#&gt; 4               0.008696022              0.003880989 0.02836936 0.027193051
-#&gt; 5               0.008696022              0.003880989 0.02448255 0.014771291
-#&gt; 6               0.008696022              0.003880989 0.02248423 0.009476601
+#&gt; 1         0.007625134             0.0007087017            0.0005185554
+#&gt; 2         0.006697768             0.0007087017            0.0005185554
+#&gt; 3         0.004561764             0.0007087017            0.0005185554
+#&gt; 4         0.003690424             0.0007087017            0.0005185554
+#&gt; 5         0.001976257             0.0007087017            0.0005185554
+#&gt; 6         0.001120593             0.0007087017            0.0005185554
+#&gt;   avg_err_theo_state_second sd_err_theo_state_second    avg_diff     sd_diff
+#&gt; 1               0.001236524             0.0005534176 0.007045439 0.009107625
+#&gt; 2               0.001236524             0.0005534176 0.005709252 0.007555534
+#&gt; 3               0.001236524             0.0005534176 0.004920756 0.004952401
+#&gt; 4               0.001236524             0.0005534176 0.004053767 0.003949308
+#&gt; 5               0.001236524             0.0005534176 0.003470818 0.002088545
+#&gt; 6               0.001236524             0.0005534176 0.003200211 0.001369362
 #&gt;   avg_theo_diff sd_theo_diff
-#&gt; 1    0.01036691  0.004459795
-#&gt; 2    0.01036691  0.004459795
-#&gt; 3    0.01036691  0.004459795
-#&gt; 4    0.01036691  0.004459795
-#&gt; 5    0.01036691  0.004459795
-#&gt; 6    0.01036691  0.004459795</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>ggplot2</span>)
+#&gt; 1   0.001476534 0.0006500359
+#&gt; 2   0.001476534 0.0006500359
+#&gt; 3   0.001476534 0.0006500359
+#&gt; 4   0.001476534 0.0006500359
+#&gt; 5   0.001476534 0.0006500359
+#&gt; 6   0.001476534 0.0006500359</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>ggplot2</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>result</span>) +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>time</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>avg_err_state_first</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"avg_err_state_first"</span>)) +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>time</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>avg_err_state_second</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"avg_err_state_second"</span>)) +
@@ -224,33 +224,33 @@ Visualization for results is provided in examples.</p>
                            <span class='kw'>chosen_time</span> <span class='kw'>=</span> <span class='fl'>1</span>,
                            <span class='kw'>in_time</span> <span class='kw'>=</span> <span class='fl'>0.001</span>,
                            <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt;       time avg_err_state_first sd_err_state_first avg_err_state_second
-#&gt; 1    0.167          0.05839928          0.0397346            0.1064781
-#&gt; 2    1.000          0.05839928          0.0397346            0.1064781
-#&gt; 3    5.000          0.05839928          0.0397346            0.1064781
-#&gt; 4   25.000          0.05839928          0.0397346            0.1064781
-#&gt; 5  120.000          0.05839928          0.0397346            0.1064781
-#&gt; 6 1440.000          0.05839928          0.0397346            0.1064781
+#&gt; 1    0.167         0.008319799        0.005690377            0.0151189
+#&gt; 2    1.000         0.008319799        0.005690377            0.0151189
+#&gt; 3    5.000         0.008319799        0.005690377            0.0151189
+#&gt; 4   25.000         0.008319799        0.005690377            0.0151189
+#&gt; 5  120.000         0.008319799        0.005690377            0.0151189
+#&gt; 6 1440.000         0.008319799        0.005690377            0.0151189
 #&gt;   sd_err_state_second avg_err_theo_state_first sd_err_theo_state_first
-#&gt; 1          0.05445792               0.05839928               0.0397346
-#&gt; 2          0.05445792               0.05839928               0.0397346
-#&gt; 3          0.05445792               0.05839928               0.0397346
-#&gt; 4          0.05445792               0.05839928               0.0397346
-#&gt; 5          0.05445792               0.05839928               0.0397346
-#&gt; 6          0.05445792               0.05839928               0.0397346
-#&gt;   avg_err_theo_state_second sd_err_theo_state_second  avg_diff    sd_diff
-#&gt; 1                 0.1064781               0.05445792 0.1260377 0.05812599
-#&gt; 2                 0.1064781               0.05445792 0.1260377 0.05812599
-#&gt; 3                 0.1064781               0.05445792 0.1260377 0.05812599
-#&gt; 4                 0.1064781               0.05445792 0.1260377 0.05812599
-#&gt; 5                 0.1064781               0.05445792 0.1260377 0.05812599
-#&gt; 6                 0.1064781               0.05445792 0.1260377 0.05812599
+#&gt; 1         0.007706979              0.008319799             0.005690377
+#&gt; 2         0.007706979              0.008319799             0.005690377
+#&gt; 3         0.007706979              0.008319799             0.005690377
+#&gt; 4         0.007706979              0.008319799             0.005690377
+#&gt; 5         0.007706979              0.008319799             0.005690377
+#&gt; 6         0.007706979              0.008319799             0.005690377
+#&gt;   avg_err_theo_state_second sd_err_theo_state_second   avg_diff     sd_diff
+#&gt; 1                 0.0151189              0.007706979 0.01791295 0.008253943
+#&gt; 2                 0.0151189              0.007706979 0.01791295 0.008253943
+#&gt; 3                 0.0151189              0.007706979 0.01791295 0.008253943
+#&gt; 4                 0.0151189              0.007706979 0.01791295 0.008253943
+#&gt; 5                 0.0151189              0.007706979 0.01791295 0.008253943
+#&gt; 6                 0.0151189              0.007706979 0.01791295 0.008253943
 #&gt;   avg_theo_diff sd_theo_diff
-#&gt; 1     0.1260377   0.05812599
-#&gt; 2     0.1260377   0.05812599
-#&gt; 3     0.1260377   0.05812599
-#&gt; 4     0.1260377   0.05812599
-#&gt; 5     0.1260377   0.05812599
-#&gt; 6     0.1260377   0.05812599</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>result</span>) +
+#&gt; 1    0.01791295  0.008253943
+#&gt; 2    0.01791295  0.008253943
+#&gt; 3    0.01791295  0.008253943
+#&gt; 4    0.01791295  0.008253943
+#&gt; 5    0.01791295  0.008253943
+#&gt; 6    0.01791295  0.008253943</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>result</span>) +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>time</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>avg_err_state_first</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"avg_err_state_first"</span>)) +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>time</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>avg_err_state_second</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"avg_err_state_second"</span>)) +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>time</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>avg_err_theo_state_first</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"avg_err_theo_state_first"</span>)) +
