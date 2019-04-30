@@ -28,5 +28,7 @@ calculate_state_deuteration
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+calculate_state_deuteration(dat, protein = "db_CD160", state = "CD160",
+                            time_in = 0, time_chosen = 5.000, time_out = 1440.000)
 
 }

@@ -22,4 +22,12 @@ if(getRversion() >= "2.15.1")
                            'abs_avg_theo_in_time_1', 'abs_avg_theo_in_time_2', 'abs_diff_frac_exch', 'abs_diff_theo_frac_exch', 
                            'abs_frac_exch_state_1', 'abs_frac_exch_state_2', 'colour', 'err_abs_avg_theo_in_time_1', 
                            'err_abs_avg_theo_in_time_2', 'err_abs_diff_frac_exch', 'err_abs_diff_theo_frac_exch', 
-                           'err_abs_frac_exch_state_1', 'err_abs_frac_exch_state_2'))
+                           'err_abs_frac_exch_state_1', 'err_abs_frac_exch_state_2',
+                           'Fragment', 'ID', 'Modification', 'abs_avg_theo_in_time', 'abs_frac_exch_state', 
+                           'avg_theo_in_time', 'err_abs_avg_theo_in_time', 'err_abs_frac_exch_state', 
+                           'err_avg_theo_in_time', 'err_frac_exch_state', 'err_time_chosen_mean', 
+                           'err_time_in_mean', 'err_time_out_mean', 'frac_exch_state', 'time_chosen_mean', 
+                           'time_in_mean', 'time_out_mean', 'value'))
+
+
+
