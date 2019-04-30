@@ -280,6 +280,11 @@ server <- function(input, output, session) {
                       choices = states_from_file,
                       selected = states_from_file[length(states_from_file)])
     
+    updateCheckboxGroupInput(session,
+                             inputId = "compare_states",
+                             choices = states_from_file,
+                             selected = states_from_file)
+    
   })
   
   ##
@@ -356,6 +361,7 @@ server <- function(input, output, session) {
   
   ##
   
+  
   output[["comparisonPlot_data"]] <- DT::renderDataTable({
 
     if (input[["theory"]]) {
@@ -380,90 +386,172 @@ server <- function(input, output, session) {
   
   ##
   
-  comparison_plot_theo <- reactive({
+  ## REDONE ############################
+  # comparison_plot_theo <- reactive({
+  # 
+  #   comparison_plot(calc_dat = dat_new(),
+  #                   theoretical = TRUE,
+  #                   relative = TRUE,
+  #                   state_first = input[["state_first"]],
+  #                   state_second = input[["state_second"]]) +
+  #     labs(title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min"))
+  # 
+  # })
+  # 
+  # ##
+  # 
+  # comparison_plot_theo_abs <- reactive({
+  # 
+  #   comparison_plot(calc_dat = dat_new(),
+  #                   theoretical = TRUE,
+  #                   relative = FALSE,
+  #                   state_first = input[["state_first"]],
+  #                   state_second = input[["state_second"]]) +
+  #     labs(title = paste0("Theoretical absolute value exchanged in state comparison in ", input[["chosen_time"]], " min"))
+  # 
+  # })
+  # 
+  # ##
+  # 
+  # comparison_plot_exp <- reactive({
+  # 
+  #   comparison_plot(calc_dat = dat_new(),
+  #                   theoretical = FALSE,
+  #                   relative = TRUE,
+  #                   state_first = input[["state_first"]],
+  #                   state_second = input[["state_second"]]) +
+  #     labs(title = paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min"))
+  # 
+  # })
+  # 
+  # ##
+  # 
+  # comparison_plot_exp_abs <- reactive({
+  # 
+  #   comparison_plot(calc_dat = dat_new(),
+  #                   theoretical = FALSE,
+  #                   relative = FALSE,
+  #                   state_first = input[["state_first"]],
+  #                   state_second = input[["state_second"]]) +
+  #     labs(title = paste0("Absolute value exchanged in state comparison in ", input[["chosen_time"]], " min"))
+  # 
+  # })
+  # 
+  # ##
+  # 
+  # output[["comparisonPlot"]] <- renderPlot({
+  # 
+  #   if (input[["theory"]]) {
+  #     
+  #     if (input[["calc_type"]] == "relative") {
+  #       
+  #       comparison_plot_theo() +
+  #         coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
+  #                         ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]))
+  #     } else {
+  #       
+  #       comparison_plot_theo_abs() +
+  #         coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
+  #                         ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]))
+  #     }
+  #     
+  #   } else {
+  #       
+  #     if (input[["calc_type"]] == "relative") {
+  #       
+  #       comparison_plot_exp() +
+  #         coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
+  #                         ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]))
+  #     } else {
+  #       
+  #       comparison_plot_exp_abs() +
+  #         coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
+  #                         ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]))
+  #     }
+  #     
+  #   }
+  # 
+  # })
+  
+  prep_dat <- reactive({
     
-    comparison_plot(calc_dat = dat_new(),
-                    theoretical = TRUE,
-                    relative = TRUE,
-                    state_first = input[["state_first"]],
-                    state_second = input[["state_second"]]) +
-      labs(title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min"))
+    validate(need(input[["compare_states"]], "Please select at least one state."))
+    bind_rows(lapply(input[["compare_states"]], function(i) calculate_state_deuteration(dat(), 
+                                                                                        protein = dat()[["Protein"]][1], 
+                                                                                        state = i, 
+                                                                                        time_in = input[["in_time"]],
+                                                                                        time_chosen = input[["chosen_time"]], 
+                                                                                        time_out = input[["out_time"]])))
     
   })
   
-  ##
-  
-  comparison_plot_theo_abs <- reactive({
-    
-    comparison_plot(calc_dat = dat_new(),
-                    theoretical = TRUE,
-                    relative = FALSE,
-                    state_first = input[["state_first"]],
-                    state_second = input[["state_second"]]) +
-      labs(title = paste0("Theoretical absolute value exchanged in state comparison in ", input[["chosen_time"]], " min"))
-    
-  })
-  
-  ##
-  
-  comparison_plot_exp <- reactive({
-    
-    comparison_plot(calc_dat = dat_new(),
-                    theoretical = FALSE,
-                    relative = TRUE,
-                    state_first = input[["state_first"]],
-                    state_second = input[["state_second"]]) +
-      labs(title = paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min"))
-    
-  })
-  
-  ##
-  
-  comparison_plot_exp_abs <- reactive({
-    
-    comparison_plot(calc_dat = dat_new(),
-                    theoretical = FALSE,
-                    relative = FALSE,
-                    state_first = input[["state_first"]],
-                    state_second = input[["state_second"]]) +
-      labs(title = paste0("Absolute value exchanged in state comparison in ", input[["chosen_time"]], " min"))
-    
-  })
   
   ##
   
   output[["comparisonPlot"]] <- renderPlot({
-
+    
     if (input[["theory"]]) {
       
       if (input[["calc_type"]] == "relative") {
         
-        comparison_plot_theo() +
+        ggplot() +
+          geom_segment(data = prep_dat(), aes(x = Start, y = avg_theo_in_time, xend = End, yend = avg_theo_in_time, color = State)) +
+          geom_errorbar(data = prep_dat(), aes(x = Med_Sequence, ymin = avg_theo_in_time - err_avg_theo_in_time, ymax = avg_theo_in_time + err_avg_theo_in_time, color = State)) +
+          labs(x = "Position in sequence", 
+               y = "Theoretical fraction exchanged [%]", 
+               title = "Theoretical fraction exchanged in state comparison in chosen time") +
+          theme(legend.position = "bottom",
+                legend.title = element_blank()) +
+          scale_y_continuous(breaks = seq(-2, 2, 0.2), expand = c(0, 0)) + 
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]))
       } else {
         
-        comparison_plot_theo_abs() +
+        ggplot() +
+          geom_segment(data = prep_dat(), aes(x = Start, y = abs_avg_theo_in_time, xend = End, yend = abs_avg_theo_in_time, color = State)) +
+          geom_errorbar(data = prep_dat(), aes(x = Med_Sequence, ymin = abs_avg_theo_in_time - err_abs_avg_theo_in_time, ymax = abs_avg_theo_in_time + err_abs_avg_theo_in_time, color = State)) +
+          labs(x = "Position in sequence", 
+               y = "Theoretical absolute value exchanged [Da]", 
+               title = "Theoretical absolute value exachanged in state comparison in chosen time") +
+          theme(legend.position = "bottom",
+                legend.title = element_blank()) +
+          scale_y_continuous(expand = c(0, 0)) +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]))
       }
       
     } else {
-        
+      
       if (input[["calc_type"]] == "relative") {
         
-        comparison_plot_exp() +
+        ggplot() +
+          geom_segment(data = prep_dat(), aes(x = Start, y = frac_exch_state, xend = End, yend = frac_exch_state, color = State)) +
+          geom_errorbar(data = prep_dat(), aes(x = Med_Sequence, ymin = frac_exch_state - err_frac_exch_state, ymax = frac_exch_state + err_frac_exch_state, color = State)) +
+          labs(x = "Position in sequence", 
+               y = "Fraction exchanged [%]", 
+               title = "Fraction exchanged in state comparison in chosen time") +
+          theme(legend.position = "bottom",
+                legend.title = element_blank()) +
+          scale_y_continuous(breaks = seq(-2, 2, 0.2), expand = c(0, 0)) +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]))
       } else {
         
-        comparison_plot_exp_abs() +
+        ggplot() +
+          geom_segment(data = prep_dat(), aes(x = Start, y = abs_frac_exch_state, xend = End, yend = abs_frac_exch_state, color = State)) +
+          geom_errorbar(data = prep_dat(), aes(x = Med_Sequence, ymin = abs_frac_exch_state - err_abs_frac_exch_state, ymax = abs_frac_exch_state + err_abs_frac_exch_state, color = State)) +
+          labs(x = "Position in sequence", 
+               y = "Absolute value exchanged [Da]", 
+               title = "Absolute value exchanged in state comparison in chosen time") +
+          theme(legend.position = "bottom",
+                legend.title = element_blank()) +
+          scale_y_continuous(expand = c(0, 0)) +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]))
       }
       
     }
-
+    
   })
   
   ##
