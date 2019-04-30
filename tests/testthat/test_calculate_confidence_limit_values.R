@@ -18,4 +18,4 @@ test_that("class is right",
 
 test_that("returned value is right",
           expect_equal(calculate_confidence_limit_values(calc_dat = calc_dat),
-                       c(-0.02959324, 0.02959324)))
+                       c(-0.004212046, 0.004212046)))
