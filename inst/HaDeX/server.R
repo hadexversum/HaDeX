@@ -475,12 +475,13 @@ server <- function(input, output, session) {
   
   prep_dat <- reactive({
     
+    validate(need(input[["compare_states"]], "Please select at least one state."))
     bind_rows(lapply(input[["compare_states"]], function(i) calculate_state_deuteration(dat(), 
-                                                                               protein = dat()[["Protein"]][1], 
-                                                                               state = i, 
-                                                                               time_in = input[["in_time"]],
-                                                                               time_chosen = input[["chosen_time"]], 
-                                                                               time_out = input[["out_time"]])))
+                                                                                        protein = dat()[["Protein"]][1], 
+                                                                                        state = i, 
+                                                                                        time_in = input[["in_time"]],
+                                                                                        time_chosen = input[["chosen_time"]], 
+                                                                                        time_out = input[["out_time"]])))
     
   })
   
