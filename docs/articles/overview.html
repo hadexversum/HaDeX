@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HaDeX package • HaDeX</title>
+<title>HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data • HaDeX</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="HaDeX package">
+<script src="../pkgdown.js"></script><meta property="og:title" content="HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -54,7 +54,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/overview.html">HaDeX package</a>
+      <a href="../articles/overview.html">HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data</a>
     </li>
   </ul>
 </li>
@@ -75,7 +75,7 @@
 <script src="overview_files/crosstalk-1.0.0/js/crosstalk.min.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>HaDeX package</h1>
+      <h1>HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data</h1>
                         <h4 class="author">Weronika Puchała, Michał Burdukiewicz</h4>
             
             <h4 class="date">15.02.2019</h4>
@@ -87,7 +87,6 @@
 
     
     
-<p>This vignette is work-in-progress and not yet complete.</p>
 <div id="hydrogendeuterium-exchange-mass-spectrometry-data" class="section level1">
 <h1 class="hasAnchor">
 <a href="#hydrogendeuterium-exchange-mass-spectrometry-data" class="anchor"></a>Hydrogen/Deuterium Exchange Mass Spectrometry Data</h1>
@@ -100,16 +99,10 @@
 <div id="input-file-format" class="section level2">
 <h2 class="hasAnchor">
 <a href="#input-file-format" class="anchor"></a>Input file format</h2>
-<p>The HaDeX web server relies only on a single data format: DynamX datafile. The user can customize each step of the analysis with his own input parameters.</p>
-</div>
-<div id="transformation-of-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#transformation-of-data" class="anchor"></a>Transformation of data</h2>
-<p>The uploaded datafile should fulfill the following requirements in order for package functions to behave correctly:</p>
-<div id="htmlwidget-396e353cc41d484570f4" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-396e353cc41d484570f4">{"x":{"filter":"none","data":[["Protein","Start","End","Sequence","Modification","Fragment","MaxUptake","MHP","State","Exposure","File","z","RT","Inten","Center"],["Character","Integer","Integer","Character","Logic","Logic","Numeric","Numeric","Character","Numeric","Character","Integer","Numeric","Numeric","Numeric"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Column.Name<\/th>\n      <th>Column.Type<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","autoWidth":true,"pageLength":15,"order":[],"orderClasses":false,"lengthMenu":[10,15,25,50,100]}},"evals":[],"jsHooks":[]}</script><p>This is a structure of datafile produced by DynamX 3. In upcoming versions of HaDeX more datafile types will be supported.</p>
-<p>Datafile is imported into R usign function read_hdx(). Currently, HaDeX supports .csv, .tsv and .xls files - with mentioned structure. File loaded this way is later referred as dat.</p>
-<p>The example file, used for further demonstration:</p>
+<p>The HaDeX web server works only on data in the DynamX™ datafile format (as produced by DynamX™ 3.0 software by Waters). It must contains a following set of columns with specified properties:</p>
+<div id="htmlwidget-0460d8938f1edfdae4af" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0460d8938f1edfdae4af">{"x":{"filter":"none","data":[["Protein","Start","End","Sequence","Modification","Fragment","MaxUptake","MHP","State","Exposure","File","z","RT","Inten","Center"],["Character","Integer","Integer","Character","Logic","Logic","Numeric","Numeric","Character","Numeric","Character","Integer","Numeric","Numeric","Numeric"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Column.Name<\/th>\n      <th>Column.Type<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","autoWidth":true,"pageLength":15,"order":[],"orderClasses":false,"lengthMenu":[10,15,25,50,100]}},"evals":[],"jsHooks":[]}</script><p>Currently, HaDeX supports .csv, .tsv and .xls files fullfilling the data structure described above.</p>
+<p>Datafile is imported into R using the read_hdx() function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_hdx.html">read_hdx</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="dt">package =</span> <span class="st">"HaDeX"</span>, <span class="st">"HaDeX/data/KD_190304_Nucb2_EDTA_CaCl2_test02_clusterdata.csv"</span>))</code></pre></div>
 <pre><code>## Parsed with column specification:
 ## cols(
@@ -688,7 +681,6 @@ calc_dat_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw
       <li>
 <a href="#general-data-manipulation">General data manipulation</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#input-file-format">Input file format</a></li>
-      <li><a href="#transformation-of-data">Transformation of data</a></li>
       </ul>
 </li>
       <li>
