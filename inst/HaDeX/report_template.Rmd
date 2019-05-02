@@ -5,7 +5,6 @@ date: ""
 output:
   html_document:
     theme: united
-    code_folding: hide
     highlight: textmate
     toc: true
     toc_float: true
@@ -215,8 +214,6 @@ if (input[["export_theo_woods_plot_data"]]){
 
 # R Session
 
-```{r, results = "markup"}
-
-sessionInfo()
-
+```{r, echo=FALSE}
+pander::pander(sessionInfo())
 ```
