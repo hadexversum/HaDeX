@@ -249,6 +249,22 @@ server <- function(input, output, session) {
   
   ##
   
+  max_range <- reactive({
+    
+    max(dat()[['End']])
+    
+  })
+  
+  ##
+  
+  output[["protein_length"]] <- renderText({
+    
+    max_range()
+    
+  })
+  
+  ##
+  
   observe({
     
     times_from_file <- round(unique(dat()["Exposure"]), 3)
@@ -285,10 +301,72 @@ server <- function(input, output, session) {
                              choices = states_from_file,
                              selected = states_from_file)
     
+    updateSelectInput(session,
+                      inputId = "confidence_limit_2",
+                      choices = confidence_limit_choices[confidence_limit_choices >= input[["confidence_limit"]]],
+                      selected = confidence_limit_choices[confidence_limit_choices > input[["confidence_limit"]]][1])
+    
+    updateSliderInput(session, 
+                      inputId = "plot_range",
+                      max = max_range(),
+                      value = c(0, max_range()))
+    
+    updateSliderInput(session, 
+                      inputId = "plot_x_range",
+                      max = max_range(),
+                      value = c(0, max_range()))
+    
   })
   
   ##
-  # TODO : change name for more informative one
+  
+  observe({
+    
+    if (input[["calc_type"]] == "absolute") {
+      
+      min_comparison_abs <- round_any(min(dat_new()[c("abs_frac_exch_state_1", "abs_frac_exch_state_2", 
+                                                      "abs_avg_theo_in_time_1", "abs_avg_theo_in_time_2")], na.rm = TRUE), 5, floor)
+      max_comparison_abs <- round_any(max(dat_new()[c("abs_frac_exch_state_1", "abs_frac_exch_state_2", 
+                                                      "abs_avg_theo_in_time_1", "abs_avg_theo_in_time_2")], na.rm = TRUE), 5, ceiling)
+      
+      updateSliderInput(session,
+                        inputId = "comp_plot_y_range",
+                        min = min_comparison_abs - 5,
+                        max = max_comparison_abs + 5,
+                        value = c(min_comparison_abs, max_comparison_abs),
+                        step = 1)
+      
+      min_woods_abs <- round_any(min(dat_new()[c("abs_diff_frac_exch", "abs_diff_theo_frac_exch")], na.rm = TRUE), 2, floor)
+      max_woods_abs <- round_any(max(dat_new()[c("abs_diff_frac_exch", "abs_diff_theo_frac_exch")], na.rm = TRUE), 2, ceiling)
+      
+      updateSliderInput(session,
+                        inputId = "woods_plot_y_range",
+                        min = min_woods_abs - 2, 
+                        max = max_woods_abs + 2, 
+                        value = c(min_woods_abs, max_woods_abs),
+                        step = 0.5)
+      
+    } else {
+      
+      updateSliderInput(session,
+                        inputId = "comp_plot_y_range",
+                        min = -2,
+                        max = 2,
+                        value = c(0, 1.2),
+                        step = 0.1)
+      
+      updateSliderInput(session,
+                        inputId = "woods_plot_y_range",
+                        min = -2, 
+                        max = 2, 
+                        value = c(-.5, .5),
+                        step = 0.1)
+    }
+    
+  })
+  
+  ##
+  
   dat_new <- reactive({
 
     prepare_dataset(dat = dat(),
@@ -386,93 +464,6 @@ server <- function(input, output, session) {
   
   ##
   
-  ## REDONE ############################
-  # comparison_plot_theo <- reactive({
-  # 
-  #   comparison_plot(calc_dat = dat_new(),
-  #                   theoretical = TRUE,
-  #                   relative = TRUE,
-  #                   state_first = input[["state_first"]],
-  #                   state_second = input[["state_second"]]) +
-  #     labs(title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min"))
-  # 
-  # })
-  # 
-  # ##
-  # 
-  # comparison_plot_theo_abs <- reactive({
-  # 
-  #   comparison_plot(calc_dat = dat_new(),
-  #                   theoretical = TRUE,
-  #                   relative = FALSE,
-  #                   state_first = input[["state_first"]],
-  #                   state_second = input[["state_second"]]) +
-  #     labs(title = paste0("Theoretical absolute value exchanged in state comparison in ", input[["chosen_time"]], " min"))
-  # 
-  # })
-  # 
-  # ##
-  # 
-  # comparison_plot_exp <- reactive({
-  # 
-  #   comparison_plot(calc_dat = dat_new(),
-  #                   theoretical = FALSE,
-  #                   relative = TRUE,
-  #                   state_first = input[["state_first"]],
-  #                   state_second = input[["state_second"]]) +
-  #     labs(title = paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min"))
-  # 
-  # })
-  # 
-  # ##
-  # 
-  # comparison_plot_exp_abs <- reactive({
-  # 
-  #   comparison_plot(calc_dat = dat_new(),
-  #                   theoretical = FALSE,
-  #                   relative = FALSE,
-  #                   state_first = input[["state_first"]],
-  #                   state_second = input[["state_second"]]) +
-  #     labs(title = paste0("Absolute value exchanged in state comparison in ", input[["chosen_time"]], " min"))
-  # 
-  # })
-  # 
-  # ##
-  # 
-  # output[["comparisonPlot"]] <- renderPlot({
-  # 
-  #   if (input[["theory"]]) {
-  #     
-  #     if (input[["calc_type"]] == "relative") {
-  #       
-  #       comparison_plot_theo() +
-  #         coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-  #                         ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]))
-  #     } else {
-  #       
-  #       comparison_plot_theo_abs() +
-  #         coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-  #                         ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]))
-  #     }
-  #     
-  #   } else {
-  #       
-  #     if (input[["calc_type"]] == "relative") {
-  #       
-  #       comparison_plot_exp() +
-  #         coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-  #                         ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]))
-  #     } else {
-  #       
-  #       comparison_plot_exp_abs() +
-  #         coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-  #                         ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]))
-  #     }
-  #     
-  #   }
-  # 
-  # })
-  
   prep_dat <- reactive({
     
     validate(need(input[["compare_states"]], "Please select at least one state."))
@@ -482,7 +473,6 @@ server <- function(input, output, session) {
                                                                                         time_in = input[["in_time"]],
                                                                                         time_chosen = input[["chosen_time"]], 
                                                                                         time_out = input[["out_time"]])))
-    
   })
   
   
@@ -652,14 +642,69 @@ server <- function(input, output, session) {
   
   ##
   
+  woods_plot_dat <- reactive({
+    
+    validate(need(input[["compare_states"]], "Please select at least one state."))
+    
+    prep_dat() %>%
+      filter(State %in% c(input[["state_first"]], input[["state_second"]])) %>% 
+      droplevels() %>% 
+      mutate(State = factor(State, levels = c(input[["state_first"]], input[["state_second"]]), labels = c("1", "2"))) %>%
+      gather(variable, value, -c(Protein:End, Med_Sequence)) %>%
+      unite(tmp, variable, State) %>%
+      spread(tmp, value) %>%
+      mutate(diff_frac_exch = frac_exch_state_1 - frac_exch_state_2,
+             err_frac_exch = sqrt(err_frac_exch_state_1^2 + err_frac_exch_state_2^2),
+             abs_diff_frac_exch = abs_frac_exch_state_1 - abs_frac_exch_state_2,
+             err_abs_diff_frac_exch = sqrt(err_abs_frac_exch_state_1^2 + err_abs_frac_exch_state_2^2),
+             diff_theo_frac_exch = avg_theo_in_time_1 - avg_theo_in_time_2, 
+             err_diff_theo_frac_exch = sqrt(err_avg_theo_in_time_1^2 + err_avg_theo_in_time_2^2),
+             abs_diff_theo_frac_exch = abs_avg_theo_in_time_1 - abs_avg_theo_in_time_2,
+             err_abs_diff_theo_frac_exch = sqrt(err_abs_avg_theo_in_time_1^2 + err_abs_avg_theo_in_time_2^2)) %>%
+      select(Protein, Start, End, Med_Sequence, everything(), -contains("1"), -contains("2"))
+    
+  })
+  
+  ##
+  
   differential_plot_theo <- reactive({
-
-    woods_plot(calc_dat = dat_new(),
-               theoretical = TRUE,
-               relative = TRUE,
-               confidence_limit = as.double(input[["confidence_limit"]]),
-               confidence_limit_2 = as.double(input[["confidence_limit_2"]])) +
-      labs(title = TeX(paste0("$\\Delta$ theoretical fraction exchanged between states in ", input[["chosen_time"]], " min"))) 
+    
+    confidence_limit <- as.double(input[["confidence_limit"]])
+    confidence_limit_2 <- as.double(input[["confidence_limit_2"]])
+    
+    interval <- calculate_confidence_limit_values(calc_dat = woods_plot_dat(),
+                                                  confidence_limit = confidence_limit,
+                                                  theoretical = TRUE,
+                                                  relative = TRUE)
+    
+    interval_2 <- calculate_confidence_limit_values(calc_dat = woods_plot_dat(),
+                                                    confidence_limit = confidence_limit_2,
+                                                    theoretical = TRUE,
+                                                    relative = TRUE)
+    
+    mutate(woods_plot_dat(), colour = case_when(
+      woods_plot_dat()[["diff_theo_frac_exch"]] < interval_2[1] ~ "deepskyblue3",
+      woods_plot_dat()[["diff_theo_frac_exch"]] < interval[1] ~ "deepskyblue1",
+      woods_plot_dat()[["diff_theo_frac_exch"]] > interval_2[2] ~ "firebrick3",
+      woods_plot_dat()[["diff_theo_frac_exch"]] > interval[2] ~ "firebrick1",
+      TRUE ~ "azure3")) %>%
+    ggplot() +
+      geom_segment(aes(x = Start, y = diff_theo_frac_exch, xend = End, yend = diff_theo_frac_exch, color = colour)) +
+      geom_errorbar(aes(x = Med_Sequence, ymin = diff_theo_frac_exch - err_diff_theo_frac_exch, ymax = diff_theo_frac_exch + err_diff_theo_frac_exch, color = colour)) +
+      geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
+      geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) + 
+      geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
+      geom_hline(aes(yintercept = interval_2[1], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "deepskyblue3", size = .7, show.legend = TRUE) +
+      geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
+      scale_linetype_manual(values = c("dashed", "dotdash")) + 
+      scale_colour_identity() +
+      scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
+      theme(legend.title = element_blank(),
+            legend.position = "bottom",
+            legend.direction = "vertical") +
+      labs(x = "Position in sequence", 
+           y = expression(paste(Delta, " theoretical fraction exchanged [%]")), 
+           title = expression(paste(Delta, " Theoretical fraction exchanged between states in chosen time")))
     
   })
   
@@ -667,38 +712,128 @@ server <- function(input, output, session) {
   
   differential_plot_theo_abs <- reactive({
     
-    woods_plot(calc_dat = dat_new(),
-               theoretical = TRUE,
-               relative = FALSE,
-               confidence_limit = as.double(input[["confidence_limit"]]),
-               confidence_limit_2 = as.double(input[["confidence_limit_2"]])) +
-      labs(title = TeX(paste0("$\\Delta$ theoretical absolute value exchanged between states in ", input[["chosen_time"]], " min"))) 
+    confidence_limit <- as.double(input[["confidence_limit"]])
+    confidence_limit_2 <- as.double(input[["confidence_limit_2"]])
+    
+    interval <- calculate_confidence_limit_values(calc_dat = woods_plot_dat(),
+                                                  confidence_limit = confidence_limit,
+                                                  theoretical = TRUE,
+                                                  relative = FALSE)
+    
+    interval_2 <- calculate_confidence_limit_values(calc_dat = woods_plot_dat(),
+                                                    confidence_limit = confidence_limit_2,
+                                                    theoretical = TRUE,
+                                                    relative = FALSE)
+    
+    mutate(woods_plot_dat(), colour = case_when(
+      woods_plot_dat()[["abs_diff_theo_frac_exch"]] < interval_2[1] ~ "deepskyblue3",
+      woods_plot_dat()[["abs_diff_theo_frac_exch"]] < interval[1] ~ "deepskyblue1",
+      woods_plot_dat()[["abs_diff_theo_frac_exch"]] > interval_2[2] ~ "firebrick3",
+      woods_plot_dat()[["abs_diff_theo_frac_exch"]] > interval[2] ~ "firebrick1",
+      TRUE ~ "azure3")) %>%
+    ggplot() +
+      geom_segment(aes(x = Start, y = abs_diff_theo_frac_exch, xend = End, yend = abs_diff_theo_frac_exch, color = colour)) +
+      geom_errorbar(aes(x = Med_Sequence, ymin = abs_diff_theo_frac_exch - err_abs_diff_theo_frac_exch, ymax = abs_diff_theo_frac_exch + err_abs_diff_theo_frac_exch, color = colour)) +
+      geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
+      geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) + 
+      geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
+      geom_hline(aes(yintercept = interval_2[1], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "deepskyblue3", size = .7, show.legend = TRUE) +
+      geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
+      scale_linetype_manual(values = c("dashed", "dotdash")) + 
+      scale_colour_identity() +
+      scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
+      theme(legend.title = element_blank(),
+            legend.position = "bottom",
+            legend.direction = "vertical") +
+      labs(x = "Position in sequence", 
+           y = expression(paste(Delta, " theoretical absolute value exchanged [Da]")), 
+           title = expression(paste(Delta, " Theoretical absoute value exchanged between states in chosen time")))
+    
   })
-  
   
   ##
   
   differential_plot_exp <- reactive({
     
-    woods_plot(calc_dat = dat_new(),
-               theoretical = FALSE, 
-               relative = TRUE,
-               confidence_limit = as.double(input[["confidence_limit"]]),
-               confidence_limit_2 = as.double(input[["confidence_limit_2"]])) +
-      labs(title = TeX(paste0("$\\Delta$ fraction exchanged between states in ", input[["chosen_time"]], " min")))
+    confidence_limit <- as.double(input[["confidence_limit"]])
+    confidence_limit_2 <- as.double(input[["confidence_limit_2"]])
     
+    interval <- calculate_confidence_limit_values(calc_dat = woods_plot_dat(),
+                                                  confidence_limit = confidence_limit,
+                                                  theoretical = FALSE,
+                                                  relative = TRUE)
+
+    interval_2 <- calculate_confidence_limit_values(calc_dat = woods_plot_dat(),
+                                                    confidence_limit = confidence_limit_2,
+                                                    theoretical = FALSE,
+                                                    relative = TRUE)
+
+    mutate(woods_plot_dat(), colour = case_when(
+      woods_plot_dat()[["diff_frac_exch"]] < interval_2[1] ~ "deepskyblue3",
+      woods_plot_dat()[["diff_frac_exch"]] < interval[1] ~ "deepskyblue1",
+      woods_plot_dat()[["diff_frac_exch"]] > interval_2[2] ~ "firebrick3",
+      woods_plot_dat()[["diff_frac_exch"]] > interval[2] ~ "firebrick1",
+      TRUE ~ "azure3")) %>%
+    ggplot() +
+      geom_segment(aes(x = Start, y = diff_frac_exch, xend = End, yend = diff_frac_exch, color = colour)) +
+      geom_errorbar(aes(x = Med_Sequence, ymin = diff_frac_exch - err_frac_exch, ymax = diff_frac_exch + err_frac_exch, color = colour)) +
+      geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
+      geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) +
+      geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
+      geom_hline(aes(yintercept = interval_2[1], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "deepskyblue3", size = .7, show.legend = TRUE) +
+      geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
+      scale_linetype_manual(values = c("dashed", "dotdash")) +
+      scale_colour_identity() +
+      scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
+      theme(legend.title = element_blank(),
+            legend.position = "bottom",
+            legend.direction = "vertical") +
+      labs(x = "Position in sequence",
+           y = expression(paste(Delta, " fraction exchanged [%]")),
+           title = expression(paste(Delta, " Fraction exchanged between states in chosen time")))
   })
   
   ##
   
   differential_plot_exp_abs <- reactive({
     
-    woods_plot(calc_dat = dat_new(),
-               theoretical = FALSE,
-               relative = FALSE,
-               confidence_limit = as.double(input[["confidence_limit"]]),
-               confidence_limit_2 = as.double(input[["confidence_limit_2"]])) +
-      labs(title = TeX(paste0("$\\Delta$ absolute value exchanged between states in ", input[["chosen_time"]], " min"))) 
+    confidence_limit <- as.double(input[["confidence_limit"]])
+    confidence_limit_2 <- as.double(input[["confidence_limit_2"]])
+    
+    interval <- calculate_confidence_limit_values(calc_dat = woods_plot_dat(),
+                                                  confidence_limit = confidence_limit,
+                                                  theoretical = FALSE,
+                                                  relative = FALSE)
+    
+    interval_2 <- calculate_confidence_limit_values(calc_dat = woods_plot_dat(),
+                                                    confidence_limit = confidence_limit_2,
+                                                    theoretical = FALSE,
+                                                    relative = FALSE)
+    
+    mutate(woods_plot_dat(), colour = case_when(
+      woods_plot_dat()[["abs_diff_frac_exch"]] < interval_2[1] ~ "deepskyblue3",
+      woods_plot_dat()[["abs_diff_frac_exch"]] < interval[1] ~ "deepskyblue1",
+      woods_plot_dat()[["abs_diff_frac_exch"]] > interval_2[2] ~ "firebrick3",
+      woods_plot_dat()[["abs_diff_frac_exch"]] > interval[2] ~ "firebrick1",
+      TRUE ~ "azure3")) %>%
+    ggplot() +
+      geom_segment(aes(x = Start, y = abs_diff_frac_exch, xend = End, yend = abs_diff_frac_exch, color = colour)) +
+      geom_errorbar(aes(x = Med_Sequence, ymin = abs_diff_frac_exch - err_abs_diff_frac_exch, ymax = abs_diff_frac_exch + err_abs_diff_frac_exch, color = colour)) +
+      geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
+      geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) + 
+      geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
+      geom_hline(aes(yintercept = interval_2[1], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "deepskyblue3", size = .7, show.legend = TRUE) +
+      geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
+      scale_linetype_manual(values = c("dashed", "dotdash")) + 
+      scale_colour_identity() +
+      scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
+      theme(legend.title = element_blank(),
+            legend.position = "bottom",
+            legend.direction = "vertical") +
+      labs(x = "Position in sequence", 
+           y = expression(paste(Delta, " absolute value exchanged [Da]")), 
+           title = expression(paste(Delta, " Absolute value exchanged between states in chosen time")))
+    
     
   })
   
@@ -706,132 +841,41 @@ server <- function(input, output, session) {
   
   output[["differentialPlot"]] <- renderPlot({
     
+    validate(need(!(input[["state_first"]] == input[["state_second"]]), "Please select two different states."))
+
     if (input[["theory"]]) {
-      
+
       if (input[["calc_type"]] == "relative") {
-        
+
         differential_plot_theo() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]))
-        
+
       } else {
-        
+
         differential_plot_theo_abs() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]))
       }
-      
+
     } else {
-      
+
       if (input[["calc_type"]] == "relative") {
-        
+
         differential_plot_exp() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]))
-        
+
       } else {
-        
+
         differential_plot_exp_abs() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]))
       }
-        
+
     }
-    
-  })
-
-  ##
-  # left as reactive, used more than once
-  
-  max_range <- reactive({
-
-    max(dat()[['End']])
 
   })
-  
-  ##
-  
-  output[["protein_length"]] <- renderText({
-    
-    max_range()
-    
-  })
-  
-  ##
-  
-  observe({
-    
-    updateSliderInput(session, 
-                      inputId = "plot_range",
-                      max = max_range(),
-                      value = c(0, max_range()))
-    
-    updateSliderInput(session, 
-                      inputId = "plot_x_range",
-                      max = max_range(),
-                      value = c(0, max_range()))
-    
-  })
-
-  ##
-  
-  observe({
-    
-    if (input[["calc_type"]] == "absolute") {
-      
-      min_comparison_abs <- round_any(min(dat_new()[c("abs_frac_exch_state_1", "abs_frac_exch_state_2", 
-                                                      "abs_avg_theo_in_time_1", "abs_avg_theo_in_time_2")], na.rm = TRUE), 5, floor)
-      max_comparison_abs <- round_any(max(dat_new()[c("abs_frac_exch_state_1", "abs_frac_exch_state_2", 
-                                                      "abs_avg_theo_in_time_1", "abs_avg_theo_in_time_2")], na.rm = TRUE), 5, ceiling)
-      
-      updateSliderInput(session,
-                        inputId = "comp_plot_y_range",
-                        min = min_comparison_abs - 5,
-                        max = max_comparison_abs + 5,
-                        value = c(min_comparison_abs, max_comparison_abs),
-                        step = 1)
-      
-      min_woods_abs <- round_any(min(dat_new()[c("abs_diff_frac_exch", "abs_diff_theo_frac_exch")], na.rm = TRUE), 2, floor)
-      max_woods_abs <- round_any(max(dat_new()[c("abs_diff_frac_exch", "abs_diff_theo_frac_exch")], na.rm = TRUE), 2, ceiling)
-      
-      updateSliderInput(session,
-                        inputId = "woods_plot_y_range",
-                        min = min_woods_abs - 2, 
-                        max = max_woods_abs + 2, 
-                        value = c(min_woods_abs, max_woods_abs),
-                        step = 0.5)
-      
-    } else {
-      
-      updateSliderInput(session,
-                        inputId = "comp_plot_y_range",
-                        min = -2,
-                        max = 2,
-                        value = c(0, 1.2),
-                        step = 0.1)
-      
-      updateSliderInput(session,
-                        inputId = "woods_plot_y_range",
-                        min = -2, 
-                        max = 2, 
-                        value = c(-.5, .5),
-                        step = 0.1)
-    }
-    
-  })
-  
-  ##
-  
-  observe({
-    
-    updateSelectInput(session,
-                      inputId = "confidence_limit_2",
-                      choices = confidence_limit_choices[confidence_limit_choices >= input[["confidence_limit"]]],
-                      selected = confidence_limit_choices[confidence_limit_choices > input[["confidence_limit"]]][1])
-    
-  })
-  
-  ##
   
   ### TAB: REPORT ###
 
