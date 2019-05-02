@@ -3,9 +3,10 @@ title: "HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Sp
 author: "Weronika Pucha&#322;a, Micha&#322; Burdukiewicz"
 date: "15.02.2019"
 output: 
-  rmarkdown::pdf_document:
+  rmarkdown::html_vignette:
     toc: true
     number_sections: true
+    always_allow_html: yes
 vignette: >
   %\VignetteIndexEntry{HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data}
   %\VignetteEngine{knitr::rmarkdown}
@@ -21,9 +22,11 @@ opts_chunk$set(fig.width = 7, fig.height = 5)
 ```
 
  
-# Hydrogen/Deuterium Exchange Mass Spectrometry Data 
+# About HaDeX
 
-Hydrogen-deuterium mass spectrometry (HDX-MS) is a staple tool for monitoring dynamics and interactions of proteins. Due to the sheer size of the HDX-MS results, the data analysis require a dedicated software suite. However, the majority of existing tools provides only point-and-click interfaces to black-box models or does not offer a complete workflow. We propose HaDeX, a novel tool for processing, analysis and visualisation of HDX-MS experiments. HaDeX covers the whole analytic process, including preliminary data exploration, quality control and generation of publication-quality figures. The reproducibility of the whole procedure is ensured with advanced reporting functions.
+Hydrogen-deuterium mass spectrometry (HDX-MS) is a staple tool for monitoring dynamics and interactions of proteins. Due to the sheer size of the HDX-MS results, the data analysis require a dedicated software suite. However, the majority of existing tools provides only point-and-click interfaces to black-box models or does not offer a complete workflow. We propose HaDeX, a novel tool for processing, analysis and visualisation of HDX-MS experiments. HaDeX covers the whole analytic process, including preliminary data exploration, quality control and generation of publication-quality figures. 
+
+To make the HaDeX **R** package available to the less **R**-fluent users, we enhanced it with a comprehensive Graphical User Interface available as a HaDeX Shiny app. The reproducibility of the whole procedure is ensured with advanced reporting functions. The app is availble online: http://mslab-ibb.pl/shiny/HaDeX/ or locally through the HaDeX_gui() fuction.
 
 # General data manipulation
 
@@ -52,9 +55,9 @@ dat <- read_hdx(system.file(package = "HaDeX",
 
 Currently, *read_hdx()* supports .csv, .tsv and .xls files fullfilling the data structure described above. 
 
-### Protein coverage
+## Peptide coverage
 
-First information user can get is protein sequence reconstruction based on supplemented data. Although the sequence should be known to the experimenter, it is useful to see how the sequence was covered in the experiment. Function reconstruct_sequence() does that:
+The sequence of protein(s) is reconstructed from the input file and based of provided peptides. Thus, parts of the sequences not covered by peptides are marked as X according to the IUPAC convention for unknown amino acids. The sequence is reconstructed using the reconstruct_sequence function.
 
 ```{r warning=FALSE}
 
@@ -62,9 +65,7 @@ reconstruct_sequence(dat)
 
 ```
 
-Unknown amino acids are marked as x according to the IUPAC conventions.
-
-Additionally, coverage information can be presented on a plot using function graphic_overlapping(). Peptides positions are shown next to each other for easier data overview.
+Additionally, the coverage of peptides can be presented on a chart using the graphic_overlapping() function. 
 
 ```{r warning=FALSE}
 
@@ -72,10 +73,10 @@ graphic_overlapping(dat, chosen_state = "gg_Nucb2_CaCl2")
 
 ```
 
-User can choose which state (or states) should be included in shown data. If this parameter is not supplied, the first possible state is chosen. If given peptide data is available in more than one state, is shown once for readability. 
+User can choose which state (or states) should be included in shown data. If this parameter is not supplied, the first possible state is chosen. If a given peptide is available in more than one state, it is shown only once. 
 
 
-### Data preparation for deuteration calculations
+# Data preparation for deuteration calculations
 
 There are a few steps of preliminary data preparation. All of the listed transformation in this section is done by prepare_dataset() function. Product of calling prepare_dataset() on data read by read_hdx() is later referred as calc_dat.
 
