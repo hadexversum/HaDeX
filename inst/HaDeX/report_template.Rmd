@@ -23,7 +23,9 @@ span {
 
 Report generated on `r Sys.time()` using the [HaDeX](http://github.com/michbur/HaDeX) R package.  
 
-Detected input file: `r ifelse(is.null(input[["input_file"]][["name"]]), "none", input[["input_file"]][["name"]])`.  
+Detected input file: `r ifelse(is.null(input[["data_file"]][["name"]]), "none", input[["data_file"]][["name"]])`.  
+
+MD5 hash of the input file: `r ifelse(is.null(input[["data_file"]][["name"]]), "none (example file)", tools::md5sum(as.character(input[["data_file"]][["datapath"]])))`.
 
 # Data description
 

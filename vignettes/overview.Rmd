@@ -33,7 +33,7 @@ All of the functions mentioned below are wrapped together in the HaDeX Shiny app
 
 ## Input file format 
 
-The HaDeX web server works only on data in the DynamX™ datafile format (as produced by DynamX™ 3.0 software by Waters). It must contains a following set of columns with specified properties:
+The HaDeX web server works only on data in the DynamX\textsuperscript{TM} datafile format (Waters Corp.). It must contains a following set of columns with specified properties:
 
 ```{r warning=FALSE, message=FALSE, echo = FALSE}
 
