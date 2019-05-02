@@ -95,14 +95,12 @@
 <div id="general-data-manipulation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#general-data-manipulation" class="anchor"></a>General data manipulation</h1>
-<p>All of the functions mentioned below are wrapped together in the HaDeX Shiny app. It is launched by calling HaDeX_gui() function.</p>
 <div id="input-file-format" class="section level2">
 <h2 class="hasAnchor">
 <a href="#input-file-format" class="anchor"></a>Input file format</h2>
-<p>The HaDeX web server works only on data in the DynamX™ datafile format (as produced by DynamX™ 3.0 software by Waters). It must contains a following set of columns with specified properties:</p>
-<div id="htmlwidget-0460d8938f1edfdae4af" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-0460d8938f1edfdae4af">{"x":{"filter":"none","data":[["Protein","Start","End","Sequence","Modification","Fragment","MaxUptake","MHP","State","Exposure","File","z","RT","Inten","Center"],["Character","Integer","Integer","Character","Logic","Logic","Numeric","Numeric","Character","Numeric","Character","Integer","Numeric","Numeric","Numeric"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Column.Name<\/th>\n      <th>Column.Type<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","autoWidth":true,"pageLength":15,"order":[],"orderClasses":false,"lengthMenu":[10,15,25,50,100]}},"evals":[],"jsHooks":[]}</script><p>Currently, HaDeX supports .csv, .tsv and .xls files fullfilling the data structure described above.</p>
-<p>Datafile is imported into R using the read_hdx() function:</p>
+<p>The HaDeX web server works only on data in the DynamX datafile format (Waters Corp.). It must contains a following set of columns with specified properties:</p>
+<div id="htmlwidget-02fa149aa7121c39d7b6" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-02fa149aa7121c39d7b6">{"x":{"filter":"none","data":[["Protein","Start","End","Sequence","Modification","Fragment","MaxUptake","MHP","State","Exposure","File","z","RT","Inten","Center"],["Character","Integer","Integer","Character","Logic","Logic","Numeric","Numeric","Character","Numeric","Character","Integer","Numeric","Numeric","Numeric"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Column.Name<\/th>\n      <th>Column.Type<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","autoWidth":true,"pageLength":15,"order":[],"orderClasses":false,"lengthMenu":[10,15,25,50,100]}},"evals":[],"jsHooks":[]}</script><p>Although data can be imported into R using other tools, we strongly advice to rely on the <em>read_hdx()</em> function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_hdx.html">read_hdx</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="dt">package =</span> <span class="st">"HaDeX"</span>, <span class="st">"HaDeX/data/KD_190304_Nucb2_EDTA_CaCl2_test02_clusterdata.csv"</span>))</code></pre></div>
 <pre><code>## Parsed with column specification:
 ## cols(
@@ -122,6 +120,7 @@
 ##   Inten = col_double(),
 ##   Center = col_double()
 ## )</code></pre>
+<p>Currently, <em>read_hdx()</em> supports .csv, .tsv and .xls files fullfilling the data structure described above.</p>
 <div id="protein-coverage" class="section level3">
 <h3 class="hasAnchor">
 <a href="#protein-coverage" class="anchor"></a>Protein coverage</h3>
@@ -385,6 +384,11 @@
 <p><img src="overview_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
 <p>Example above is based on relative values. Although HaDeX provides results in absolute values, be aware that absolute calculations don’t contain time out (it is used for scaling), so the uncertainty is not the function of <span class="math inline">\(D_{100}\)</span> - it is constant.</p>
 </div>
+</div>
+<div id="hadex-graphical-user-interface" class="section level1">
+<h1 class="hasAnchor">
+<a href="#hadex-graphical-user-interface" class="anchor"></a>HaDeX Graphical User Interface</h1>
+<p>All of the functions mentioned below are wrapped together in the HaDeX Shiny app. It is launched by the HaDeX_gui() function.</p>
 </div>
 <div id="example-workflow" class="section level1">
 <h1 class="hasAnchor">
@@ -695,6 +699,7 @@ calc_dat_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw
 <li><a href="#quality-control">Quality control</a></li>
       </ul>
 </li>
+      <li><a href="#hadex-graphical-user-interface">HaDeX Graphical User Interface</a></li>
       <li>
 <a href="#example-workflow">Example workflow</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#example-workflow-1">Example workflow 1</a></li>

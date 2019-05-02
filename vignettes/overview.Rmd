@@ -3,11 +3,9 @@ title: "HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Sp
 author: "Weronika Pucha&#322;a, Micha&#322; Burdukiewicz"
 date: "15.02.2019"
 output: 
-  rmarkdown::html_vignette:
+  rmarkdown::pdf_document:
     toc: true
     number_sections: true
-    header-includes:
-      -\usepackage{amsmath}
 vignette: >
   %\VignetteIndexEntry{HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data}
   %\VignetteEngine{knitr::rmarkdown}
@@ -29,8 +27,6 @@ Hydrogen-deuterium mass spectrometry (HDX-MS) is a staple tool for monitoring dy
 
 # General data manipulation
 
-All of the functions mentioned below are wrapped together in the HaDeX Shiny app. It is launched by calling HaDeX_gui() function.
-
 ## Input file format 
 
 The HaDeX web server works only on data in the DynamX\textsuperscript{TM} datafile format (Waters Corp.). It must contains a following set of columns with specified properties:
@@ -45,15 +41,16 @@ datatable(
 
 ```
 
-Currently, HaDeX supports .csv, .tsv and .xls files fullfilling the data structure described above. 
-
-Datafile is imported into R using the read_hdx() function:
+Although data can be imported into R using other tools, we strongly advice to rely on the *read_hdx()* function:
 
 ```{r warning=FALSE}
 
-dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_190304_Nucb2_EDTA_CaCl2_test02_clusterdata.csv"))
+dat <- read_hdx(system.file(package = "HaDeX", 
+                            "HaDeX/data/KD_190304_Nucb2_EDTA_CaCl2_test02_clusterdata.csv"))
 
 ```
+
+Currently, *read_hdx()* supports .csv, .tsv and .xls files fullfilling the data structure described above. 
 
 ### Protein coverage
 
@@ -86,7 +83,7 @@ There are a few steps of preliminary data preparation. All of the listed transfo
 
 DynamX provides experimental data as measured mass plus proton mass to charge ratio ($Center$). For later use, this value has to be transformed into overall peptide mass, as shown in equation 1: 
 
-$$expMass = z*(Center-protonMass)\tag{1}$$
+$$expMass = z \times (Center-protonMass)\tag{1}$$
 where:
 
 - $expMass$ - result calculated from partial values
@@ -99,7 +96,7 @@ This transformation is applied to every measurement.
 
 The experiment is repeated at least three times for the results to be reliable. Then, the repetitions are aggregated as weighted mean into one result per peptide using equation 2: 
 
-$$expMass = \frac{Inten*expMass}{N}\tag{2}$$
+$$expMass = \frac{Inten \times expMass}{N}\tag{2}$$
 where:
 
 - $Inten$ - Intensivity
@@ -169,7 +166,7 @@ As suspected, the uncertainty associated with $D_{t}$ has the biggest impact on 
 
 Other way to examine the data rather then experimental way are the theoertical calculations - obtained relative deuteration level in chosen time $t$ is compared with theoretical values as shown in equation 8:
 
-$$D = \frac{D_{t}-MHP}{MaxUptake*protonMass}\tag{8}$$
+$$D = \frac{D_{t}-MHP}{MaxUptake \times protonMass}\tag{8}$$
 
 where:
 
@@ -191,7 +188,7 @@ $$u(y) = \left| \frac{dy}{dx} u(x) \right|\tag{9}$$
 
 and based on equation 8:
 
-$$u(D) = \left|\frac{1}{MaxUptake*protonMass} u(D_{t}) \right|\tag{10}$$
+$$u(D) = \left|\frac{1}{MaxUptake \times protonMass} u(D_{t}) \right|\tag{10}$$
 
 For the absolute values, $u(D)$ is identical with $u(D_{t})$, based on equation 8a and 9.
 
@@ -365,7 +362,12 @@ ggplot(result[result["time"]>=1,]) +
         legend.title = element_blank())
 ```
 
-Example above is based on relative values. Although HaDeX provides results in absolute values, be aware that absolute calculations don't contain time out (it is used for scaling), so the uncertainty is not the function of $D_{100}$ - it is constant. 
+Example above is based on relative values. Although HaDeX provides results in absolute values, be aware that absolute calculations don't 
+contain time out (it is used for scaling), so the uncertainty is not the function of $D_{100}$ - it is constant. 
+
+# HaDeX Graphical User Interface
+
+All of the functions mentioned below are wrapped together in the HaDeX Shiny app. It is launched by the HaDeX_gui() function.
 
 # Example workflow
 
@@ -379,7 +381,8 @@ Example above is based on relative values. Although HaDeX provides results in ab
 library(HaDeX)
 
 # file import
-dat_1 <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+dat_1 <- read_hdx(system.file(package = "HaDeX", 
+                              "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 
 # protein sequence reconstruction
 reconstruct_sequence(dat_1)
@@ -472,7 +475,8 @@ ggplot(result) +
 library(HaDeX)
 
 # file import
-dat_2 <-  read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_190304_Nucb2_EDTA_CaCl2_test02_clusterdata.csv"))
+dat_2 <-  read_hdx(system.file(package = "HaDeX", 
+                               "HaDeX/data/KD_190304_Nucb2_EDTA_CaCl2_test02_clusterdata.csv"))
 
 # protein sequence reconstruction
 reconstruct_sequence(dat_2)
