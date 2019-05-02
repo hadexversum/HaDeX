@@ -1,5 +1,5 @@
 ---
-title: "HaDeX package"
+title: "HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data"
 author: "Weronika Pucha&#322;a, Micha&#322; Burdukiewicz"
 date: "15.02.2019"
 output: 
@@ -9,7 +9,7 @@ output:
     header-includes:
       -\usepackage{amsmath}
 vignette: >
-  %\VignetteIndexEntry{HaDeX package - an overview}
+  %\VignetteIndexEntry{HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -22,7 +22,6 @@ library(DT)
 opts_chunk$set(fig.width = 7, fig.height = 5)
 ```
 
-This vignette is work-in-progress and not yet complete.
  
 # Hydrogen/Deuterium Exchange Mass Spectrometry Data 
 
@@ -34,11 +33,7 @@ All of the functions mentioned below are wrapped together in the HaDeX Shiny app
 
 ## Input file format 
 
-The HaDeX web server relies only on a single data format: DynamX datafile. The user can customize each step of the analysis with his own input parameters.
-
-## Transformation of data
-
-The uploaded datafile should fulfill the following requirements in order for package functions to behave correctly:
+The HaDeX web server works only on data in the DynamX™ datafile format (as produced by DynamX™ 3.0 software by Waters). It must contains a following set of columns with specified properties:
 
 ```{r warning=FALSE, message=FALSE, echo = FALSE}
 
@@ -50,11 +45,9 @@ datatable(
 
 ```
 
-This is a structure of datafile produced by DynamX 3. In upcoming versions of HaDeX more datafile types will be supported.
+Currently, HaDeX supports .csv, .tsv and .xls files fullfilling the data structure described above. 
 
-Datafile is imported into R usign function read_hdx(). Currently, HaDeX supports .csv, .tsv and .xls files - with mentioned structure. File loaded this way is later referred as dat.
-
-The example file, used for further demonstration:
+Datafile is imported into R using the read_hdx() function:
 
 ```{r warning=FALSE}
 
