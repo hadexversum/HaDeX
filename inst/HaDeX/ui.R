@@ -2,24 +2,10 @@ source("data-work.R")
 
 #########################################
 
-ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
-                #theme = "theme.css",
-                tags[["head"]](
-                  tags[["style"]](HTML("
-                         
-                         span { 
-                         display: block;
-                         max-width: 100%;
-                         word-wrap: break-word;
-                         }
-                         
-                         "))
-                ),
-                
-                
+ui <- fluidPage(theme = "HaDeX_theme.css",
                 titlePanel("HaDeX: analysis of data from hydrogen deuterium exchange-mass spectrometry"),
-                
-                tabsetPanel(
+               
+                 tabsetPanel(type = "pills",  
                   tabPanel("Start",
                            h3("Welcome!"),
                            h4("Upload your file. Otherwise you will see example data."),
@@ -34,9 +20,9 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                   ),
                   tabPanel("Sequence data",
                            h3('Protein name'),
-                           h4(textOutput("protein_name")),
+                           h4(textOutput("protein_name"), class  = "monospaced" ),
                            h3('Reconstructed sequence'),
-                           htmlOutput("sequenceName"),
+                           htmlOutput("sequenceName", container = tags$span, class  = "monospaced"),
                            br(),
                            wellPanel(
                              sidebarLayout(
@@ -101,12 +87,13 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                              h3("Select parameters for the plot."),
                              checkboxInput(inputId = "theory",
                                            label = "Theoretical calculations",
-                                           value = FALSE),
+                                           value = FALSE
+                             ),
                              radioButtons(inputId = "calc_type",
                                           label = "Choose values type:",
                                           choices = c("relative", "absolute"),
                                           selected = "relative"),
-                             h4("Comparison plot parameters:"),
+                             h4("Comparison plo parameters:"),
                              selectInput(inputId = "chosen_time",
                                          label = "Time point CHOSEN",
                                          choices = c("0", "1", "5", "25", "1440"),
@@ -119,18 +106,14 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                                          label = "Time point OUT",
                                          choices = c("0", "1", "5", "25", "1440"),
                                          width = "40%"),
-                             checkboxGroupInput(inputId = "compare_states",
-                                                label = "Choose states for comparison:",
-                                                choices = c("CD160", "CD160_HVEM"),
-                                                selected = c("CD160", "CD160_HVEM")),
                              h4("Woods plot parameters:"),
                              selectInput(inputId = "state_first",
                                          label = "State 1",
-                                         choices = c("CD160", "CD160_HVEM"),
+                                         choices = c("ALPHA", "BETA"),
                                          width = "50%"),
                              selectInput(inputId = "state_second",
                                          label = "State 2", 
-                                         choices = c("CD160", "CD160_HVEM"),
+                                         choices = c("ALPHA", "BETA"),
                                          width = "50%"),
                              selectInput(inputId = "confidence_limit",
                                          label = "Choose confidence limit:",
@@ -143,25 +126,32 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                                          selected = 0.99,
                                          width = "60%"),
                              h4("Adjust plot:"),
-                             sliderInput(inputId = 'comp_plot_y_range',
-                                         label = 'Choose y range for comparison plot:',
-                                         min = -2,
-                                         max = 2,
-                                         value = c(0, 1.2),
-                                         step = 0.1,
-                                         width = "100%"),
-                             sliderInput(inputId = 'woods_plot_y_range',
-                                         label = 'Choose y range for Woods plot:',
-                                         min = -2,
-                                         max = 2,
-                                         value = c(-.5, .5),
-                                         step = 0.1),
-                             sliderInput(inputId = 'plot_x_range',
-                                         label = 'Choose x range for both plots:',
-                                         min = 0,
-                                         max = 300,
-                                         value = c(0, 300),
-                                         ticks = seq(0, 300, 1))),
+                             sliderInput(
+                               inputId = 'comp_plot_y_range',
+                               label = 'Choose y range for comparison plot:',
+                               min = -2,
+                               max = 2,
+                               value = c(0, 1.2),
+                               step = 0.1,
+                               width = "100%"
+                             ),
+                             sliderInput(
+                               inputId = 'woods_plot_y_range',
+                               label = 'Choose y range for Woods plot:',
+                               min = -2,
+                               max = 2,
+                               value = c(-.5, .5),
+                               step = 0.1
+                             ),
+                             sliderInput(
+                               inputId = 'plot_x_range',
+                               label = 'Choose x range for both plots:',
+                               min = 0,
+                               max = 300,
+                               value = c(0, 300),
+                               ticks = seq(0, 300, 1)
+                             )
+                           ),
                            mainPanel(
                              tabsetPanel(
                                tabPanel("Comparison plot", 
@@ -169,7 +159,8 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                                         plotOutput("comparisonPlot")),
                                tabPanel("Data",
                                         br(),
-                                        DT::dataTableOutput("comparisonPlot_data"))),
+                                        DT::dataTableOutput("comparisonPlot_data"))
+                             ),
                              br(),
                              tabsetPanel(
                                tabPanel("Woods plot",
@@ -177,7 +168,8 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                                         plotOutput("differentialPlot")),
                                tabPanel("Data",
                                         br(),
-                                        DT::dataTableOutput("differentialPlot_data")))
+                                        DT::dataTableOutput("differentialPlot_data"))
+                             )
                              
                            )
                   ),
@@ -217,7 +209,8 @@ ui <- fluidPage(theme = shinythemes::shinytheme(theme = "united"),
                                                  checkboxInput(inputId = "export_woods_plot_data",
                                                                label = "Woods Plot Data"),
                                                  checkboxInput(inputId = "export_theo_woods_plot_data",
-                                                               label = "Theoretical Woods Plot Data"))),
+                                                               label = "Theoretical Woods Plot Data"))
+                                        ),
                                         br(),
                                         downloadButton(outputId = "export_action",
                                                        label = "  Create report!",
