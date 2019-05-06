@@ -20,8 +20,10 @@
 read_hdx <- function(filename){
   
   dat <- switch(file_ext(filename),
-                "csv" = read_csv(filename, col_names = TRUE),
-                "tsv" = read_tsv(filename, col_names = TRUE),
+                "csv" = read_csv(filename, col_names = TRUE, col_types = cols(Modification = col_character(), 
+                                                                              Fragment = col_character())),
+                "tsv" = read_tsv(filename, col_names = TRUE, col_types = cols(Modification = col_character(), 
+                                                                              Fragment = col_character())),
                 "xls" = read_excel(filename))
   
   colnames_v <- c("Protein", "Start", "End", "Sequence", 
