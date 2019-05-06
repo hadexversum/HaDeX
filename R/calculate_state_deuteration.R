@@ -36,7 +36,7 @@ calculate_state_deuteration <- function(dat,
                                 Exposure == time_chosen ~ "time_chosen",
                                 Exposure == time_out ~ "time_out")) %>%
     spread(key = Exposure, value = avg_exp_mass) %>%
-    group_by(Start, End, MaxUptake, MHP, Protein, State) %>%
+    group_by(Sequence, Start, End, MaxUptake, MHP, Protein, State) %>%
     summarize(time_in_mean = mean(time_in, na.rm = TRUE),
               err_time_in_mean = coalesce(sd(time_in, na.rm = TRUE)/sqrt(length(time_in)), 0),
               time_chosen_mean = mean(time_chosen, na.rm = TRUE),
@@ -58,6 +58,7 @@ calculate_state_deuteration <- function(dat,
       # helper values
       Med_Sequence = Start + (End - Start)/2) %>%
     ungroup(.) %>%
-    select(Protein, State, Start, End, frac_exch_state, err_frac_exch_state, abs_frac_exch_state, err_abs_frac_exch_state, avg_theo_in_time, err_avg_theo_in_time,abs_avg_theo_in_time, err_abs_avg_theo_in_time, Med_Sequence)
+    arrange(Start, End) %>%
+    select(Protein, Sequence, Start, End, State, frac_exch_state, err_frac_exch_state, abs_frac_exch_state, err_abs_frac_exch_state, avg_theo_in_time, err_avg_theo_in_time,abs_avg_theo_in_time, err_abs_avg_theo_in_time, Med_Sequence)
 
 }

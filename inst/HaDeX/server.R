@@ -367,6 +367,10 @@ server <- function(input, output, session) {
   
   ##
   
+  ## COMPARISON PLOT + DATA
+  
+  ##
+  
   dat_new <- reactive({
 
     prepare_dataset(dat = dat(),
@@ -376,89 +380,6 @@ server <- function(input, output, session) {
                     in_state_second = paste0(input[["state_second"]], "_", input[["in_time"]]),
                     chosen_state_second = paste0(input[["state_second"]], "_", input[["chosen_time"]]),
                     out_state_second = paste0(input[["state_second"]], "_", input[["out_time"]]))
-    
-  })
-  
-  ##
-  
-  comparison_plot_data_theo <- reactive({
-    
-    dat_new() %>%
-      select(Sequence, Start, End, avg_theo_in_time_1, err_avg_theo_in_time_1, 
-             avg_theo_in_time_2, err_avg_theo_in_time_2) %>%
-      mutate(avg_theo_in_time_1 = round(avg_theo_in_time_1, 4),
-             err_avg_theo_in_time_1 = round(err_avg_theo_in_time_1, 4),
-             avg_theo_in_time_2 = round(avg_theo_in_time_2, 4),
-             err_avg_theo_in_time_2 = round(err_avg_theo_in_time_2, 4)) %>%
-      dt_format(cols = c("Sequence", "Start", "End", "Theo Frac Exch 1", "Err Theo Frac Exch 1", 
-                         "Theo Frac Exch 2", "Err Theo Frac Exch 2"))
-    
-  })
-  
-  ##
-  
-  comparison_plot_data_theo_abs <- reactive({
-    
-    dat_new() %>%
-      select(Sequence, Start, End, abs_avg_theo_in_time_1, err_abs_avg_theo_in_time_1, 
-             abs_avg_theo_in_time_2, err_abs_avg_theo_in_time_2) %>%
-      mutate(abs_avg_theo_in_time_1 = round(abs_avg_theo_in_time_1, 4),
-             err_abs_avg_theo_in_time_1 = round(err_abs_avg_theo_in_time_1, 4),
-             abs_avg_theo_in_time_2 = round(abs_avg_theo_in_time_2, 4),
-             err_abs_avg_theo_in_time_2 = round(abs_avg_theo_in_time_2, 4)) %>%
-      dt_format(cols = c("Sequence", "Start", "End", "Theo Abs Val Exch 1", "Err Theo Abs Val Exch 1", 
-                         "Theo Abs Val Exch 2", "Err Theo Abs Val Exch 2"))
-  })
-  
-  ## 
-  
-  comparison_plot_data_exp <- reactive({
-    
-    dat_new() %>%
-      select(Sequence, Start, End, frac_exch_state_1, err_frac_exch_state_1, frac_exch_state_2, err_frac_exch_state_2) %>%
-      mutate(frac_exch_state_1 = round(frac_exch_state_1, 4),
-             err_frac_exch_state_1 = round(err_frac_exch_state_1, 4),
-             frac_exch_state_2 = round(frac_exch_state_2, 4),
-             err_frac_exch_state_2 = round(err_frac_exch_state_2, 4)) %>%
-      dt_format(cols = c("Sequence", "Start", "End", "Frac Exch 1", "Err Frac Exch 1", "Frac Exch 2", "Err Frac Exch 2"))
-    
-  })
-  
-  ##
-  
-  comparison_plot_data_exp_abs <- reactive({
-    
-    dat_new() %>%
-      select(Sequence, Start, End, abs_frac_exch_state_1, err_abs_frac_exch_state_1, abs_frac_exch_state_2, err_abs_frac_exch_state_2) %>%
-      mutate(abs_frac_exch_state_1 = round(abs_frac_exch_state_1, 4),
-             err_abs_frac_exch_state_1 = round(err_abs_frac_exch_state_1, 4),
-             abs_frac_exch_state_2 = round(abs_frac_exch_state_2, 4),
-             err_abs_frac_exch_state_2 = round(abs_frac_exch_state_2, 4)) %>%
-      dt_format(cols = c("Sequence", "Start", "End", "Abs Val Exch 1", "Err Abs Val Exch 1", "Abs Val Exch 2", "Err Abs Val Exch 2"))
-  })
-  
-  ##
-  
-  
-  output[["comparisonPlot_data"]] <- DT::renderDataTable({
-
-    if (input[["theory"]]) {
-      
-      if (input[["calc_type"]] == "relative") {
-        comparison_plot_data_theo()  
-      } else {
-        comparison_plot_data_theo_abs()
-      }
-      
-    } else {
-      
-      if (input[["calc_type"]] == "absolute") {
-        comparison_plot_data_exp()
-      } else {
-        comparison_plot_data_exp_abs()
-      }
-      
-    }
     
   })
   
@@ -575,6 +496,84 @@ server <- function(input, output, session) {
     }
     
   })
+  
+  ##
+  
+  comparison_plot_data_theo <- reactive({
+    
+    prep_dat() %>%
+      select(Sequence, State, Start, End, avg_theo_in_time, err_avg_theo_in_time) %>%
+      mutate(avg_theo_in_time = round(avg_theo_in_time, 4),
+             err_avg_theo_in_time = round(err_avg_theo_in_time, 4)) %>%
+      arrange(Start, End) %>%
+      dt_format(cols = c("Sequence", "State", "Start", "End", "Theo Frac Exch", "Err Theo Frac Exch"))
+    
+  })
+  
+  ##
+  
+  comparison_plot_data_theo_abs <- reactive({
+    
+    prep_dat() %>%
+      select(Sequence, State, Start, End, abs_avg_theo_in_time, err_abs_avg_theo_in_time) %>%
+      mutate(abs_avg_theo_in_time = round(abs_avg_theo_in_time, 4),
+             err_abs_avg_theo_in_time = round(abs_avg_theo_in_time, 4)) %>%
+      arrange(Start, End) %>%
+      dt_format(cols = c("Sequence", "State", "Start", "End", "Theo Abs Val Exch", "Err Theo Abs Val Exch"))
+  })
+  
+  ## 
+  
+  comparison_plot_data_exp <- reactive({
+    
+    prep_dat() %>%
+      select(Sequence, State, Start, End, frac_exch_state, err_frac_exch_state) %>%
+      mutate(frac_exch_state = round(frac_exch_state, 4),
+             err_frac_exch_state = round(err_frac_exch_state, 4)) %>%
+      arrange(Start, End) %>%
+      dt_format(cols = c("Sequence", "State", "Start", "End", "Frac Exch", "Err Frac Exch"))
+    
+  })
+  
+  ##
+  
+  comparison_plot_data_exp_abs <- reactive({
+    
+    prep_dat() %>%
+      select(Sequence, State, Start, End, abs_frac_exch_state, err_abs_frac_exch_state) %>%
+      mutate(abs_frac_exch_state = round(abs_frac_exch_state, 4),
+             err_abs_frac_exch_state = round(abs_frac_exch_state, 4)) %>%
+      arrange(Start, End) %>%
+      dt_format(cols = c("Sequence", "State", "Start", "End", "Abs Val Exch", "Err Abs Val Exch"))
+  })
+  
+  ##
+  
+  output[["comparisonPlot_data"]] <- DT::renderDataTable({
+    
+    if (input[["theory"]]) {
+      
+      if (input[["calc_type"]] == "relative") {
+        comparison_plot_data_theo()  
+      } else {
+        comparison_plot_data_theo_abs()
+      }
+      
+    } else {
+      
+      if (input[["calc_type"]] == "absolute") {
+        comparison_plot_data_exp_abs()
+      } else {
+        comparison_plot_data_exp()
+      }
+      
+    }
+    
+  })
+  
+  ##
+  
+  ## WOODS PLOT + DATA
   
   ##
   
