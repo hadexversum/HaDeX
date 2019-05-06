@@ -577,122 +577,30 @@ server <- function(input, output, session) {
   
   ##
   
-  differential_plot_data_theo <- reactive({
-    
-    dat_new() %>%
-      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit"]]),
-                          theoretical = TRUE, 
-                          relative = TRUE) %>%
-      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
-                          theoretical = TRUE, 
-                          relative = TRUE) %>%
-      select(Sequence, Start, End, diff_theo_frac_exch, err_diff_theo_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
-      mutate(diff_theo_frac_exch = round(diff_theo_frac_exch, 4),
-             err_diff_theo_frac_exch = round(err_diff_theo_frac_exch, 4)) %>%
-      dt_format(cols = unique(c("Sequence", "Start", "End", "Theo Diff Frac Exch", "Err Theo Diff Frac Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
-    
-  })
-  
-  ##
-  
-  differential_plot_data_theo_abs <- reactive({
-    
-    dat_new() %>%
-      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit"]]),
-                          theoretical = TRUE, 
-                          relative = FALSE) %>%
-      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
-                          theoretical = TRUE, 
-                          relative = FALSE) %>%
-      select(Sequence, Start, End, abs_diff_theo_frac_exch, err_abs_diff_theo_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
-      mutate(abs_diff_theo_frac_exch = round(abs_diff_theo_frac_exch, 4),
-             err_abs_diff_theo_frac_exch = round(err_abs_diff_theo_frac_exch, 4)) %>%
-      dt_format(cols = unique(c("Sequence", "Start", "End", "Theo Abs Value Diff", "Err Theo Abs Value Diff", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
-    
-  })
-  
-  ##
-  
-  differential_plot_data_exp <- reactive({
-    
-    dat_new() %>%
-      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit"]]),
-                          theoretical = FALSE, 
-                          relative = TRUE) %>%
-      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
-                          theoretical = FALSE, 
-                          relative = TRUE) %>%
-      select(Sequence, Start, End, diff_frac_exch, err_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
-      mutate(diff_frac_exch = round(diff_frac_exch, 4),
-             err_frac_exch = round(err_frac_exch, 4)) %>%
-      dt_format(cols = unique(c("Sequence", "Start", "End", "Diff Frac Exch", "Err Diff Frac Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
-    
-  })
-  
-  ##
-  
-  differential_plot_data_exp_abs <- reactive({
-    
-    dat_new() %>%
-      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit"]]),
-                          theoretical = FALSE, 
-                          
-                          relative = FALSE) %>%
-      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
-                          theoretical = FALSE, 
-                          relative = FALSE) %>%
-      select(Sequence, Start, End, abs_diff_frac_exch, err_abs_diff_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
-      mutate(abs_diff_frac_exch = round(abs_diff_frac_exch, 4),
-             err_abs_diff_frac_exch = round(err_abs_diff_frac_exch, 4)) %>%
-      dt_format(cols = unique(c("Sequence", "Start", "End", "Diff Abs Value Exch", "Err Diff Abs Value Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
-  })
-  
-  ##
-  
-  output[["differentialPlot_data"]] <- DT::renderDataTable({
-    
-    if (input[["theory"]]) {
-      
-      if(input[["calc_type"]] == "relative") {
-        differential_plot_data_theo()  
-      } else {
-        differential_plot_data_theo_abs()
-      }
-      
-    } else {
-      
-      if (input[["calc_type"]] == "relative") {
-        differential_plot_data_exp()  
-      } else {
-        differential_plot_data_exp_abs()
-      }
-      
-    }
-    
-  })
-  
-  ##
-  
   woods_plot_dat <- reactive({
     
     validate(need(input[["compare_states"]], "Please select at least one state."))
     
-    prep_dat() %>%
-      filter(State %in% c(input[["state_first"]], input[["state_second"]])) %>% 
-      droplevels() %>% 
-      mutate(State = factor(State, levels = c(input[["state_first"]], input[["state_second"]]), labels = c("1", "2"))) %>%
-      gather(variable, value, -c(Protein:End, Med_Sequence)) %>%
-      unite(tmp, variable, State) %>%
-      spread(tmp, value) %>%
-      mutate(diff_frac_exch = frac_exch_state_1 - frac_exch_state_2,
-             err_frac_exch = sqrt(err_frac_exch_state_1^2 + err_frac_exch_state_2^2),
-             abs_diff_frac_exch = abs_frac_exch_state_1 - abs_frac_exch_state_2,
-             err_abs_diff_frac_exch = sqrt(err_abs_frac_exch_state_1^2 + err_abs_frac_exch_state_2^2),
-             diff_theo_frac_exch = avg_theo_in_time_1 - avg_theo_in_time_2, 
-             err_diff_theo_frac_exch = sqrt(err_avg_theo_in_time_1^2 + err_avg_theo_in_time_2^2),
-             abs_diff_theo_frac_exch = abs_avg_theo_in_time_1 - abs_avg_theo_in_time_2,
-             err_abs_diff_theo_frac_exch = sqrt(err_abs_avg_theo_in_time_1^2 + err_abs_avg_theo_in_time_2^2)) %>%
-      select(Protein, Start, End, Med_Sequence, everything(), -contains("1"), -contains("2"))
+    bind_rows(lapply(c(input[["state_first"]], input[["state_second"]]), function(i) calculate_state_deuteration(dat(), 
+                                                                                        protein = dat()[["Protein"]][1], 
+                                                                                        state = i, 
+                                                                                        time_in = input[["in_time"]],
+                                                                                        time_chosen = input[["chosen_time"]], 
+                                                                                        time_out = input[["out_time"]]))) %>%
+    droplevels() %>% 
+    mutate(State = factor(State, levels = c(input[["state_first"]], input[["state_second"]]), labels = c("1", "2"))) %>%
+    gather(variable, value, -c(Protein:End, State, Med_Sequence)) %>%
+    unite(tmp, variable, State) %>%
+    spread(tmp, value) %>%
+    mutate(diff_frac_exch = frac_exch_state_1 - frac_exch_state_2,
+           err_frac_exch = sqrt(err_frac_exch_state_1^2 + err_frac_exch_state_2^2),
+           abs_diff_frac_exch = abs_frac_exch_state_1 - abs_frac_exch_state_2,
+           err_abs_diff_frac_exch = sqrt(err_abs_frac_exch_state_1^2 + err_abs_frac_exch_state_2^2),
+           diff_theo_frac_exch = avg_theo_in_time_1 - avg_theo_in_time_2, 
+           err_diff_theo_frac_exch = sqrt(err_avg_theo_in_time_1^2 + err_avg_theo_in_time_2^2),
+           abs_diff_theo_frac_exch = abs_avg_theo_in_time_1 - abs_avg_theo_in_time_2,
+           err_abs_diff_theo_frac_exch = sqrt(err_abs_avg_theo_in_time_1^2 + err_abs_avg_theo_in_time_2^2)) %>%
+    select(Protein, Start, End, Med_Sequence, everything(), -contains("1"), -contains("2"))
     
   })
   
@@ -907,6 +815,108 @@ server <- function(input, output, session) {
     }
 
   })
+  
+  ##
+  
+  differential_plot_data_theo <- reactive({
+    
+    woods_plot_dat() %>%
+      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit"]]),
+                          theoretical = TRUE, 
+                          relative = TRUE) %>%
+      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
+                          theoretical = TRUE, 
+                          relative = TRUE) %>%
+      select(Sequence, Start, End, diff_theo_frac_exch, err_diff_theo_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
+      mutate(diff_theo_frac_exch = round(diff_theo_frac_exch, 4),
+             err_diff_theo_frac_exch = round(err_diff_theo_frac_exch, 4)) %>%
+      arrange(Start, End) %>%
+      dt_format(cols = unique(c("Sequence", "Start", "End", "Theo Diff Frac Exch", "Err Theo Diff Frac Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
+    
+  })
+  
+  ##
+  
+  differential_plot_data_theo_abs <- reactive({
+    
+    woods_plot_dat() %>%
+      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit"]]),
+                          theoretical = TRUE, 
+                          relative = FALSE) %>%
+      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
+                          theoretical = TRUE, 
+                          relative = FALSE) %>%
+      select(Sequence, Start, End, abs_diff_theo_frac_exch, err_abs_diff_theo_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
+      mutate(abs_diff_theo_frac_exch = round(abs_diff_theo_frac_exch, 4),
+             err_abs_diff_theo_frac_exch = round(err_abs_diff_theo_frac_exch, 4)) %>%
+      arrange(Start, End) %>%
+      dt_format(cols = unique(c("Sequence", "Start", "End", "Theo Abs Value Diff", "Err Theo Abs Value Diff", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
+    
+  })
+  
+  ##
+  
+  differential_plot_data_exp <- reactive({
+    
+    woods_plot_dat() %>%
+      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit"]]),
+                          theoretical = FALSE, 
+                          relative = TRUE) %>%
+      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
+                          theoretical = FALSE, 
+                          relative = TRUE) %>%
+      select(Sequence, Start, End, diff_frac_exch, err_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
+      mutate(diff_frac_exch = round(diff_frac_exch, 4),
+             err_frac_exch = round(err_frac_exch, 4)) %>%
+      arrange(Start, End) %>%
+      dt_format(cols = unique(c("Sequence", "Start", "End", "Diff Frac Exch", "Err Diff Frac Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
+    
+  })
+  
+  ##
+  
+  differential_plot_data_exp_abs <- reactive({
+    
+    woods_plot_dat() %>%
+      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit"]]),
+                          theoretical = FALSE, 
+                          
+                          relative = FALSE) %>%
+      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
+                          theoretical = FALSE, 
+                          relative = FALSE) %>%
+      select(Sequence, Start, End, abs_diff_frac_exch, err_abs_diff_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
+      mutate(abs_diff_frac_exch = round(abs_diff_frac_exch, 4),
+             err_abs_diff_frac_exch = round(err_abs_diff_frac_exch, 4)) %>%
+      arrange(Start, End) %>%
+      dt_format(cols = unique(c("Sequence", "Start", "End", "Diff Abs Value Exch", "Err Diff Abs Value Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
+  })
+  
+  ##
+  
+  output[["differentialPlot_data"]] <- DT::renderDataTable({
+    
+    if (input[["theory"]]) {
+      
+      if(input[["calc_type"]] == "relative") {
+        differential_plot_data_theo()  
+      } else {
+        differential_plot_data_theo_abs()
+      }
+      
+    } else {
+      
+      if (input[["calc_type"]] == "relative") {
+        differential_plot_data_exp()  
+      } else {
+        differential_plot_data_exp_abs()
+      }
+      
+    }
+    
+  })
+  
+  ##
   
   ### TAB: REPORT ###
 
