@@ -1,5 +1,5 @@
-[![Build Status](https://api.travis-ci.org/michbur/HaDeX.png)](https://travis-ci.org/michbur/HaDeX)
-[![Coverage status](https://codecov.io/gh/michbur/hadex/branch/master/graph/badge.svg)](https://codecov.io/github/michbur/hadex?branch=master)
+[![Build Status](https://api.travis-ci.org/hadexversum/HaDeX.png)](https://travis-ci.org/hadexversum/HaDeX)
+[![Coverage status](https://codecov.io/gh/hadexversum/hadex/branch/master/graph/badge.svg)](https://codecov.io/github/hadexversum/hadex?branch=master)
 
 ## HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data 
 
