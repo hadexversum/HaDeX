@@ -796,14 +796,14 @@ server <- function(input, output, session) {
         differential_plot_theo() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
-          labs(title = TeX(paste0("$\\Delta$ Theoretical fraction exchanged in ", input[["chosen_time"]], " min between ", input[["state_first"]], " and ", input[["state_second"]])))
+          labs(title = TeX(paste0("$\\Delta$ Theoretical fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]))))
 
       } else {
 
         differential_plot_theo_abs() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
-          labs(title = TeX(paste0("$\\Delta$ Theoretical fraction exchanged in ", input[["chosen_time"]], " min between ", input[["state_first"]], " and ", input[["state_second"]])))
+          labs(title = TeX(paste0("$\\Delta$ Theoretical fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]))))
       }
 
     } else {
@@ -813,14 +813,14 @@ server <- function(input, output, session) {
         differential_plot_exp() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
-          labs(title = TeX(paste0("$\\Delta$ Fraction exchanged in ", input[["chosen_time"]], " min between ", input[["state_first"]], " and ", input[["state_second"]])))
+          labs(title = TeX(paste0("$\\Delta$ Fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]))))
 
       } else {
 
         differential_plot_exp_abs() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
-          labs(title = TeX(paste0("$\\Delta$ Fraction exchanged in ", input[["chosen_time"]], " min between ", input[["state_first"]], " and ", input[["state_second"]])))
+          labs(title = TeX(paste0("$\\Delta$ Fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]))))
           
       }
 
