@@ -228,9 +228,9 @@ server <- function(input, output, session) {
       geom_hline(yintercept = mean_coverage, linetype = 'dashed', color = 'red') +
       geom_text(aes(x = display_position, y = mean_coverage, label = 'Average', color = 'red', vjust = -.5)) +
       geom_text(aes(x = display_position, y = mean_coverage, label = mean_coverage, color = 'red', vjust = 1.5)) +
-      labs(title = 'How much a position in sequence is covered?',
+      labs(#title = 'How much a position in sequence is covered?',
            x = 'Position in sequence',
-           y = 'Coverage') +
+           y = 'Position frequency in peptide') +
       theme(legend.position = "none")
     
   })
