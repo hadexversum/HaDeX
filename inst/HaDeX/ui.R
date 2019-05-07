@@ -65,7 +65,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                              tabsetPanel(
                                tabPanel("Peptide Coverage",
                                         br(),
-                                        plotOutput("stateOverlap", height = "600px")),
+                                        plotOutput("stateOverlap")), # height = "600px")),
                                tabPanel("Data",
                                         br(),
                                         DT::dataTableOutput("stateOverlap_data"))
@@ -153,7 +153,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                              tabsetPanel(
                                tabPanel("Comparison plot", 
                                         br(),
-                                        plotOutput("comparisonPlot", height = "800px")),
+                                        plotOutput("comparisonPlot")), # height = "800px")),
                                tabPanel("Data",
                                         br(),
                                         DT::dataTableOutput("comparisonPlot_data"))),
@@ -161,7 +161,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                              tabsetPanel(
                                tabPanel("Woods plot",
                                         br(),
-                                        plotOutput("differentialPlot", height = "800px")),
+                                        plotOutput("differentialPlot")), # height = "800px")),
                                tabPanel("Data",
                                         br(),
                                         DT::dataTableOutput("differentialPlot_data")))

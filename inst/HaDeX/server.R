@@ -324,10 +324,8 @@ server <- function(input, output, session) {
     
     if (input[["calc_type"]] == "absolute") {
       
-      min_comparison_abs <- round_any(min(dat_new()[c("abs_frac_exch_state_1", "abs_frac_exch_state_2", 
-                                                      "abs_avg_theo_in_time_1", "abs_avg_theo_in_time_2")], na.rm = TRUE), 5, floor)
-      max_comparison_abs <- round_any(max(dat_new()[c("abs_frac_exch_state_1", "abs_frac_exch_state_2", 
-                                                      "abs_avg_theo_in_time_1", "abs_avg_theo_in_time_2")], na.rm = TRUE), 5, ceiling)
+      min_comparison_abs <- round_any(min(prep_dat()[c("abs_frac_exch_state", "abs_avg_theo_in_time")], na.rm = TRUE), 5, floor)
+      max_comparison_abs <- round_any(max(prep_dat()[c("abs_frac_exch_state", "abs_avg_theo_in_time")], na.rm = TRUE), 5, ceiling)
       
       updateSliderInput(session,
                         inputId = "comp_plot_y_range",
@@ -336,8 +334,8 @@ server <- function(input, output, session) {
                         value = c(min_comparison_abs, max_comparison_abs),
                         step = 1)
       
-      min_woods_abs <- round_any(min(dat_new()[c("abs_diff_frac_exch", "abs_diff_theo_frac_exch")], na.rm = TRUE), 2, floor)
-      max_woods_abs <- round_any(max(dat_new()[c("abs_diff_frac_exch", "abs_diff_theo_frac_exch")], na.rm = TRUE), 2, ceiling)
+      min_woods_abs <- round_any(min(woods_plot_dat()[c("abs_diff_frac_exch", "abs_diff_theo_frac_exch")], na.rm = TRUE), 2, floor)
+      max_woods_abs <- round_any(max(woods_plot_dat()[c("abs_diff_frac_exch", "abs_diff_theo_frac_exch")], na.rm = TRUE), 2, ceiling)
       
       updateSliderInput(session,
                         inputId = "woods_plot_y_range",
@@ -368,20 +366,6 @@ server <- function(input, output, session) {
   ##
   
   ## COMPARISON PLOT + DATA
-  
-  ##
-  
-  dat_new <- reactive({
-
-    prepare_dataset(dat = dat(),
-                    in_state_first = paste0(input[["state_first"]], "_", input[["in_time"]]),
-                    chosen_state_first = paste0(input[["state_first"]], "_", input[["chosen_time"]]),
-                    out_state_first = paste0(input[["state_first"]], "_", input[["out_time"]]),
-                    in_state_second = paste0(input[["state_second"]], "_", input[["in_time"]]),
-                    chosen_state_second = paste0(input[["state_second"]], "_", input[["chosen_time"]]),
-                    out_state_second = paste0(input[["state_second"]], "_", input[["out_time"]]))
-    
-  })
   
   ##
   
@@ -891,8 +875,7 @@ server <- function(input, output, session) {
     
     woods_plot_dat() %>%
       add_stat_dependency(confidence_limit = as.double(input[["confidence_limit"]]),
-                          theoretical = FALSE, 
-                          
+                          theoretical = FALSE,
                           relative = FALSE) %>%
       add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
                           theoretical = FALSE, 
