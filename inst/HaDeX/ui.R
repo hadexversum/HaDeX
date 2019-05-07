@@ -63,22 +63,23 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                            ),
                            mainPanel(
                              tabsetPanel(
-                               tabPanel("Overlap Distribution",
-                                        br(),
-                                        plotOutput("stateOverlapDist")),
-                               tabPanel("Data",
-                                        br(),
-                                        DT::dataTableOutput("stateOverlapDist_data"))
-                             ),
-                             br(),
-                             tabsetPanel(
                                tabPanel("Overlap Graphically",
                                         br(),
                                         plotOutput("stateOverlap")),
                                tabPanel("Data",
                                         br(),
                                         DT::dataTableOutput("stateOverlap_data"))
+                             ),
+                             br(),
+                             tabsetPanel(
+                               tabPanel("Overlap Distribution",
+                                        br(),
+                                        plotOutput("stateOverlapDist")),
+                               tabPanel("Data",
+                                        br(),
+                                        DT::dataTableOutput("stateOverlapDist_data"))
                              )
+                             
                            )
                   ),
                   tabPanel("Woods plot",
