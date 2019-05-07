@@ -5,7 +5,8 @@
 #' 
 #' @importFrom tools file_ext
 #' @importFrom readxl read_excel
-#' @importFrom readr read_csv read_tsv parse_logical parse_integer parse_double parse_character
+#' @importFrom readr read_csv read_tsv parse_logical parse_integer parse_double parse_character 
+#' cols col_character
 #' 
 #' @param filename a file supplied by a user. Formats allowed: .csv, .tsv and .xls.
 #' 
