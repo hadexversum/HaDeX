@@ -471,12 +471,15 @@ server <- function(input, output, session) {
         
         comparison_plot_theo() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-                          ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]))
+                          ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
+          labs(title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min"))
+          
       } else {
         
         comparison_plot_theo_abs() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-                          ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]))
+                          ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
+          labs(title = paste0("Theoretical absolute value exchanged in state comparison in ", input[["chosen_time"]], " min"))
       }
       
     } else {
@@ -485,12 +488,16 @@ server <- function(input, output, session) {
         
         comparison_plot_exp() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-                          ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]))
+                          ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
+          labs(title = paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min"))
+        
       } else {
         
         comparison_plot_exp_abs() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-                          ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]))
+                          ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
+          labs(title = paste0("Absolute value exchanged in state comparison in ", input[["chosen_time"]], " min"))
+        
       }
       
     }
@@ -788,13 +795,15 @@ server <- function(input, output, session) {
 
         differential_plot_theo() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-                          ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]))
+                          ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
+          labs(title = TeX(paste0("$\\Delta$ Theoretical fraction exchanged in ", input[["chosen_time"]], " min between ", input[["state_first"]], " and ", input[["state_second"]])))
 
       } else {
 
         differential_plot_theo_abs() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-                          ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]))
+                          ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
+          labs(title = TeX(paste0("$\\Delta$ Theoretical fraction exchanged in ", input[["chosen_time"]], " min between ", input[["state_first"]], " and ", input[["state_second"]])))
       }
 
     } else {
@@ -803,13 +812,16 @@ server <- function(input, output, session) {
 
         differential_plot_exp() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-                          ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]))
+                          ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
+          labs(title = TeX(paste0("$\\Delta$ Fraction exchanged in ", input[["chosen_time"]], " min between ", input[["state_first"]], " and ", input[["state_second"]])))
 
       } else {
 
         differential_plot_exp_abs() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-                          ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]))
+                          ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
+          labs(title = TeX(paste0("$\\Delta$ Fraction exchanged in ", input[["chosen_time"]], " min between ", input[["state_first"]], " and ", input[["state_second"]])))
+          
       }
 
     }
