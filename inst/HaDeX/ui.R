@@ -49,8 +49,8 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                              radioButtons(
                                inputId = 'chosen_state',
                                label = 'Choose state:',
-                               choices = c('BETA', 'BETA_gamma', 'BETA_gamma_alpha'),
-                               selected = 'BETA'
+                               choices = c('CD160', 'CD160_HVEM'),
+                               selected = 'CD160'
                              ),
                              sliderInput(
                                inputId = 'plot_range',
@@ -106,10 +106,18 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          label = "Time point OUT",
                                          choices = c("0", "1", "5", "25", "1440"),
                                          width = "40%"),
-                             checkboxGroupInput(inputId = "compare_states",
-                                                label = "Choose states for comparison:",
-                                                choices = c("CD160", "CD160_HVEM"),
-                                                selected = c("CD160", "CD160_HVEM")),
+                             ##
+                             fluidRow(
+                               column(6, 
+                                      checkboxGroupInput(inputId = "compare_states",
+                                                         label = "Choose states for comparison:",
+                                                         choices = c("CD160", "CD160_HVEM"),
+                                                         selected = c("CD160", "CD160_HVEM"))),
+                               column(6,
+                                      uiOutput("states_colors"))
+              
+                             ),
+                             ##
                              h4("Woods plot parameters:"),
                              selectInput(inputId = "state_first",
                                          label = "State 1",

@@ -35,7 +35,7 @@ server <- function(input, output, session) {
   ##
   
   observe({
-    
+
     possible_states <- unique(dat()[["State"]])
     
     updateRadioButtons(session,
@@ -265,11 +265,17 @@ server <- function(input, output, session) {
   
   ##
   
+  states_from_file <- reactive({
+    
+    unique(dat()[["State"]])
+    
+  })
+  
+  ##
+  
   observe({
     
     times_from_file <- round(unique(dat()["Exposure"]), 3)
-    
-    states_from_file <- unique(dat()[["State"]])
     
     updateSelectInput(session, 
                       inputId = "chosen_time",
@@ -288,18 +294,18 @@ server <- function(input, output, session) {
     
     updateSelectInput(session,
                       inputId = "state_first",
-                      choices = states_from_file,
-                      selected = states_from_file[1])
+                      choices = states_from_file(),
+                      selected = states_from_file()[1])
     
     updateSelectInput(session,
                       inputId = "state_second",
-                      choices = states_from_file,
-                      selected = states_from_file[length(states_from_file)])
+                      choices = states_from_file(),
+                      selected = states_from_file()[length(states_from_file())])
     
     updateCheckboxGroupInput(session,
                              inputId = "compare_states",
-                             choices = states_from_file,
-                             selected = states_from_file)
+                             choices = states_from_file(),
+                             selected = states_from_file())
     
     updateSelectInput(session,
                       inputId = "confidence_limit_2",
@@ -360,6 +366,36 @@ server <- function(input, output, session) {
                         value = c(-.5, .5),
                         step = 0.1)
     }
+    
+  })
+  
+  ##
+  
+  comparison_plot_colors <- reactive({
+    
+    hcl.colors(length(states_from_file()), palette = "Berlin", alpha = NULL, rev = FALSE, fixup = TRUE)
+    
+  })
+  
+  ##
+  
+  output[["states_colors"]] <- renderUI({
+       
+    lapply(1:length(states_from_file()), function(i){
+      textInput(inputId = paste0(states_from_file()[i], "_color"),
+                label = paste(states_from_file()[i], " color"),
+                value = comparison_plot_colors()[i])
+    })
+    
+  })
+  
+  ##
+  
+  comparison_plot_colors_chosen <- reactive({
+    
+    lapply(paste(states_from_file(), "_color"), function(i) input[[i]])
+
+    sapply(paste0(input[["compare_states"]],"_color"), function(i) input[[i]], simplify = TRUE)
     
   })
   
@@ -449,21 +485,25 @@ server <- function(input, output, session) {
   
   output[["comparisonPlot"]] <- renderPlot({
     
+    comparison_plot_colors_chosen()
+    
     if (input[["theory"]]) {
       
       if (input[["calc_type"]] == "relative") {
-        
+      
         comparison_plot_theo() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
-          labs(title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min"))
-          
+          labs(title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min")) +
+          scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
+        
       } else {
         
         comparison_plot_theo_abs() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
-          labs(title = paste0("Theoretical absolute value exchanged in state comparison in ", input[["chosen_time"]], " min"))
+          labs(title = paste0("Theoretical absolute value exchanged in state comparison in ", input[["chosen_time"]], " min")) +
+          scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
       }
       
     } else {
@@ -473,14 +513,16 @@ server <- function(input, output, session) {
         comparison_plot_exp() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
-          labs(title = paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min"))
+          labs(title = paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min")) +
+          scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
         
       } else {
         
         comparison_plot_exp_abs() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
-          labs(title = paste0("Absolute value exchanged in state comparison in ", input[["chosen_time"]], " min"))
+          labs(title = paste0("Absolute value exchanged in state comparison in ", input[["chosen_time"]], " min")) +
+          scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
         
       }
       
