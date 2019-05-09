@@ -319,12 +319,12 @@ server <- function(input, output, session) {
     updateSliderInput(session, 
                       inputId = "plot_range",
                       max = max_range(),
-                      value = c(0, max_range()))
+                      value = c(1, max_range()))
     
     updateSliderInput(session, 
                       inputId = "plot_x_range",
                       max = max_range(),
-                      value = c(0, max_range()))
+                      value = c(1, max_range()))
     
   })
   
@@ -375,6 +375,48 @@ server <- function(input, output, session) {
   
   ##
   
+  observe({
+    
+    updateTextInput(session, 
+                    inputId = "comparison_plot_title",
+                    value = case_when(
+                      input[["theory"]] & input[["calc_type"]] == "relative" ~ paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min"),
+                      input[["theory"]] & input[["calc_type"]] == "absolute" ~ paste0("Theoretical absolute value exchanged in state comparison in ", input[["chosen_time"]], " min"),
+                      !input[["theory"]] & input[["calc_type"]] == "relative" ~ paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min"),
+                      !input[["theory"]] & input[["calc_type"]] == "absolute" ~ paste0("Absolute value exchanged in state comparison in ", input[["chosen_time"]], " min")
+                    ))
+    
+    updateTextInput(session, 
+                    inputId = "woods_plot_title",
+                    value = case_when(
+                      input[["theory"]] & input[["calc_type"]] == "relative" ~ paste0("Delta Theoretical fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]])),
+                      input[["theory"]] & input[["calc_type"]] == "absolute" ~ paste0("Delta Theoretical fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]])),
+                      !input[["theory"]] & input[["calc_type"]] == "relative" ~ paste0("Delta Fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]])),
+                      !input[["theory"]] & input[["calc_type"]] == "absolute" ~ paste0("Delta Fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]))
+                    ))
+    
+    updateTextInput(session, 
+                    inputId = "comparison_plot_y_label", 
+                    value = case_when(
+                      input[["theory"]] & input[["calc_type"]] == "relative" ~ "Theoretical fraction exchanged [%]",
+                        input[["theory"]] & input[["calc_type"]] == "absolute" ~ "Theoretical absolute value exchanged [Da]",
+                        !input[["theory"]] & input[["calc_type"]] == "relative" ~ "Fraction exchanged [%]",
+                        !input[["theory"]] & input[["calc_type"]] == "absolute" ~ "Absolute value exchanged [Da]"
+                    ))
+    
+    updateTextInput(session, 
+                    inputId = "woods_plot_y_label", 
+                    value = case_when(
+                      input[["theory"]] & input[["calc_type"]] == "relative" ~ "Delta Theoretical fraction exchanged between states [%]",
+                        input[["theory"]] & input[["calc_type"]] == "absolute" ~ "Delta Theoretical absoute value exchanged between states [Da]",
+                        !input[["theory"]] & input[["calc_type"]] == "relative" ~ "Delta Fraction exchanged between states [%]",
+                        !input[["theory"]] & input[["calc_type"]] == "absolute" ~ "Delta Absolute value exchanged between states [Da]"
+                    ))
+    
+  })
+  
+  ##
+  
   comparison_plot_colors <- reactive({
     
     hcl.colors(length(states_from_file()), palette = "Set 2", alpha = NULL, rev = FALSE, fixup = TRUE)
@@ -412,11 +454,11 @@ server <- function(input, output, session) {
   all_dat <- reactive({
     
     bind_rows(lapply(states_from_file(), function(i) calculate_state_deuteration(dat(), 
-                                                                                        protein = dat()[["Protein"]][1], 
-                                                                                        state = i, 
-                                                                                        time_in = input[["in_time"]],
-                                                                                        time_chosen = input[["chosen_time"]], 
-                                                                                        time_out = input[["out_time"]])))
+                                                                                 protein = dat()[["Protein"]][1], 
+                                                                                 state = i, 
+                                                                                 time_in = input[["in_time"]],
+                                                                                 time_chosen = input[["chosen_time"]], 
+                                                                                 time_out = input[["out_time"]])))
   })
   
   ##
@@ -437,9 +479,6 @@ server <- function(input, output, session) {
     ggplot() +
       geom_segment(data = prep_dat(), aes(x = Start, y = avg_theo_in_time, xend = End, yend = avg_theo_in_time, color = State)) +
       geom_errorbar(data = prep_dat(), aes(x = Med_Sequence, ymin = avg_theo_in_time - err_avg_theo_in_time, ymax = avg_theo_in_time + err_avg_theo_in_time, color = State)) +
-      labs(x = "Position in sequence", 
-           y = "Theoretical fraction exchanged [%]", 
-           title = "Theoretical fraction exchanged in state comparison in chosen time") +
       theme(legend.position = "bottom",
             legend.title = element_blank()) +
       scale_y_continuous(breaks = seq(-2, 2, 0.2), expand = c(0, 0))
@@ -453,9 +492,6 @@ server <- function(input, output, session) {
     ggplot() +
       geom_segment(data = prep_dat(), aes(x = Start, y = abs_avg_theo_in_time, xend = End, yend = abs_avg_theo_in_time, color = State)) +
       geom_errorbar(data = prep_dat(), aes(x = Med_Sequence, ymin = abs_avg_theo_in_time - err_abs_avg_theo_in_time, ymax = abs_avg_theo_in_time + err_abs_avg_theo_in_time, color = State)) +
-      labs(x = "Position in sequence", 
-           y = "Theoretical absolute value exchanged [Da]", 
-           title = "Theoretical absolute value exachanged in state comparison in chosen time") +
       theme(legend.position = "bottom",
             legend.title = element_blank()) +
       scale_y_continuous(expand = c(0, 0))
@@ -469,9 +505,6 @@ server <- function(input, output, session) {
     ggplot() +
       geom_segment(data = prep_dat(), aes(x = Start, y = frac_exch_state, xend = End, yend = frac_exch_state, color = State)) +
       geom_errorbar(data = prep_dat(), aes(x = Med_Sequence, ymin = frac_exch_state - err_frac_exch_state, ymax = frac_exch_state + err_frac_exch_state, color = State)) +
-      labs(x = "Position in sequence", 
-           y = "Fraction exchanged [%]", 
-           title = "Fraction exchanged in state comparison in chosen time") +
       theme(legend.position = "bottom",
             legend.title = element_blank()) +
       scale_y_continuous(breaks = seq(-2, 2, 0.2), expand = c(0, 0))
@@ -485,9 +518,6 @@ server <- function(input, output, session) {
     ggplot() +
       geom_segment(data = prep_dat(), aes(x = Start, y = abs_frac_exch_state, xend = End, yend = abs_frac_exch_state, color = State)) +
       geom_errorbar(data = prep_dat(), aes(x = Med_Sequence, ymin = abs_frac_exch_state - err_abs_frac_exch_state, ymax = abs_frac_exch_state + err_abs_frac_exch_state, color = State)) +
-      labs(x = "Position in sequence", 
-           y = "Absolute value exchanged [Da]", 
-           title = "Absolute value exchanged in state comparison in chosen time") +
       theme(legend.position = "bottom",
             legend.title = element_blank()) +
       scale_y_continuous(expand = c(0, 0))
@@ -507,7 +537,9 @@ server <- function(input, output, session) {
         comparison_plot_theo() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
-          labs(title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min")) +
+          labs(title = input[["comparison_plot_title"]], 
+               x = input[["comparison_plot_x_label"]],
+               y = input[["comparison_plot_y_label"]]) +
           scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
         
       } else {
@@ -515,7 +547,9 @@ server <- function(input, output, session) {
         comparison_plot_theo_abs() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
-          labs(title = paste0("Theoretical absolute value exchanged in state comparison in ", input[["chosen_time"]], " min")) +
+          labs(title = input[["comparison_plot_title"]], 
+               x = input[["comparison_plot_x_label"]],
+               y = input[["comparison_plot_y_label"]]) +
           scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
       }
       
@@ -526,7 +560,9 @@ server <- function(input, output, session) {
         comparison_plot_exp() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
-          labs(title = paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min")) +
+          labs(title = input[["comparison_plot_title"]], 
+               x = input[["comparison_plot_x_label"]],
+               y = input[["comparison_plot_y_label"]]) +
           scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
         
       } else {
@@ -534,7 +570,9 @@ server <- function(input, output, session) {
         comparison_plot_exp_abs() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
-          labs(title = paste0("Absolute value exchanged in state comparison in ", input[["chosen_time"]], " min")) +
+          labs(title = input[["comparison_plot_title"]], 
+               x = input[["comparison_plot_x_label"]],
+               y = input[["comparison_plot_y_label"]]) +
           scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
         
       }
@@ -549,6 +587,8 @@ server <- function(input, output, session) {
     
     prep_dat() %>%
       select(Sequence, State, Start, End, avg_theo_in_time, err_avg_theo_in_time) %>%
+      filter(Start >= input[["plot_x_range"]][[1]],
+             End <= input[["plot_x_range"]][[2]]) %>%
       mutate(avg_theo_in_time = round(avg_theo_in_time, 4),
              err_avg_theo_in_time = round(err_avg_theo_in_time, 4)) %>%
       arrange(Start, End) %>%
@@ -562,6 +602,8 @@ server <- function(input, output, session) {
     
     prep_dat() %>%
       select(Sequence, State, Start, End, abs_avg_theo_in_time, err_abs_avg_theo_in_time) %>%
+      filter(Start >= input[["plot_x_range"]][[1]],
+             End <= input[["plot_x_range"]][[2]]) %>%
       mutate(abs_avg_theo_in_time = round(abs_avg_theo_in_time, 4),
              err_abs_avg_theo_in_time = round(abs_avg_theo_in_time, 4)) %>%
       arrange(Start, End) %>%
@@ -574,6 +616,8 @@ server <- function(input, output, session) {
     
     prep_dat() %>%
       select(Sequence, State, Start, End, frac_exch_state, err_frac_exch_state) %>%
+      filter(Start >= input[["plot_x_range"]][[1]],
+             End <= input[["plot_x_range"]][[2]]) %>%
       mutate(frac_exch_state = round(frac_exch_state, 4),
              err_frac_exch_state = round(err_frac_exch_state, 4)) %>%
       arrange(Start, End) %>%
@@ -587,6 +631,8 @@ server <- function(input, output, session) {
     
     prep_dat() %>%
       select(Sequence, State, Start, End, abs_frac_exch_state, err_abs_frac_exch_state) %>%
+      filter(Start >= input[["plot_x_range"]][[1]],
+             End <= input[["plot_x_range"]][[2]]) %>%
       mutate(abs_frac_exch_state = round(abs_frac_exch_state, 4),
              err_abs_frac_exch_state = round(abs_frac_exch_state, 4)) %>%
       arrange(Start, End) %>%
@@ -686,11 +732,7 @@ server <- function(input, output, session) {
       scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
       theme(legend.title = element_blank(),
             legend.position = "bottom",
-            legend.direction = "vertical") +
-      labs(x = "Position in sequence", 
-           y = expression(paste(Delta, " theoretical fraction exchanged [%]")), 
-           title = expression(paste(Delta, " Theoretical fraction exchanged between states in chosen time")))
-    
+            legend.direction = "vertical") 
   })
   
   ##
@@ -729,11 +771,7 @@ server <- function(input, output, session) {
       scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
       theme(legend.title = element_blank(),
             legend.position = "bottom",
-            legend.direction = "vertical") +
-      labs(x = "Position in sequence", 
-           y = expression(paste(Delta, " theoretical absolute value exchanged [Da]")), 
-           title = expression(paste(Delta, " Theoretical absoute value exchanged between states in chosen time")))
-    
+            legend.direction = "vertical") 
   })
   
   ##
@@ -772,10 +810,7 @@ server <- function(input, output, session) {
       scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
       theme(legend.title = element_blank(),
             legend.position = "bottom",
-            legend.direction = "vertical") +
-      labs(x = "Position in sequence",
-           y = expression(paste(Delta, " fraction exchanged [%]")),
-           title = expression(paste(Delta, " Fraction exchanged between states in chosen time")))
+            legend.direction = "vertical") 
   })
   
   ##
@@ -814,12 +849,7 @@ server <- function(input, output, session) {
       scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
       theme(legend.title = element_blank(),
             legend.position = "bottom",
-            legend.direction = "vertical") +
-      labs(x = "Position in sequence", 
-           y = expression(paste(Delta, " absolute value exchanged [Da]")), 
-           title = expression(paste(Delta, " Absolute value exchanged between states in chosen time")))
-    
-    
+            legend.direction = "vertical") 
   })
   
   ##
@@ -835,14 +865,18 @@ server <- function(input, output, session) {
         differential_plot_theo() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
-          labs(title = TeX(paste0("$\\Delta$ Theoretical fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]))))
+          labs(title = input[["woods_plot_title"]],
+               x = input[["woods_plot_x_label"]],
+               y = input[["woods_plot_y_label"]])
 
       } else {
 
         differential_plot_theo_abs() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
-          labs(title = TeX(paste0("$\\Delta$ Theoretical fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]))))
+          labs(title = input[["woods_plot_title"]],
+               x = input[["woods_plot_x_label"]],
+               y = input[["woods_plot_y_label"]])
       }
 
     } else {
@@ -852,14 +886,18 @@ server <- function(input, output, session) {
         differential_plot_exp() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
-          labs(title = TeX(paste0("$\\Delta$ Fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]))))
+          labs(title = input[["woods_plot_title"]],
+               x = input[["woods_plot_x_label"]],
+               y = input[["woods_plot_y_label"]])
 
       } else {
 
         differential_plot_exp_abs() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
-          labs(title = TeX(paste0("$\\Delta$ Fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]))))
+          labs(title = input[["woods_plot_title"]],
+               x = input[["woods_plot_x_label"]],
+               y = input[["woods_plot_y_label"]])
           
       }
 
@@ -879,6 +917,8 @@ server <- function(input, output, session) {
                           theoretical = TRUE, 
                           relative = TRUE) %>%
       select(Sequence, Start, End, diff_theo_frac_exch, err_diff_theo_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
+      filter(Start >= input[["plot_x_range"]][[1]],
+             End <= input[["plot_x_range"]][[2]]) %>%
       mutate(diff_theo_frac_exch = round(diff_theo_frac_exch, 4),
              err_diff_theo_frac_exch = round(err_diff_theo_frac_exch, 4)) %>%
       arrange(Start, End) %>%
@@ -898,6 +938,8 @@ server <- function(input, output, session) {
                           theoretical = TRUE, 
                           relative = FALSE) %>%
       select(Sequence, Start, End, abs_diff_theo_frac_exch, err_abs_diff_theo_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
+      filter(Start >= input[["plot_x_range"]][[1]],
+             End <= input[["plot_x_range"]][[2]]) %>%
       mutate(abs_diff_theo_frac_exch = round(abs_diff_theo_frac_exch, 4),
              err_abs_diff_theo_frac_exch = round(err_abs_diff_theo_frac_exch, 4)) %>%
       arrange(Start, End) %>%
@@ -917,6 +959,8 @@ server <- function(input, output, session) {
                           theoretical = FALSE, 
                           relative = TRUE) %>%
       select(Sequence, Start, End, diff_frac_exch, err_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
+      filter(Start >= input[["plot_x_range"]][[1]],
+             End <= input[["plot_x_range"]][[2]]) %>%
       mutate(diff_frac_exch = round(diff_frac_exch, 4),
              err_frac_exch = round(err_frac_exch, 4)) %>%
       arrange(Start, End) %>%
@@ -936,6 +980,8 @@ server <- function(input, output, session) {
                           theoretical = FALSE, 
                           relative = FALSE) %>%
       select(Sequence, Start, End, abs_diff_frac_exch, err_abs_diff_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
+      filter(Start >= input[["plot_x_range"]][[1]],
+             End <= input[["plot_x_range"]][[2]]) %>%
       mutate(abs_diff_frac_exch = round(abs_diff_frac_exch, 4),
              err_abs_diff_frac_exch = round(err_abs_diff_frac_exch, 4)) %>%
       arrange(Start, End) %>%
