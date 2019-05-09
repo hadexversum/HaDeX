@@ -26,20 +26,28 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                            wellPanel(
                              sidebarLayout(
                                sidebarPanel(
-                                 tableOutput("protein_stats"),
-                                 br(),
-                                 checkboxGroupInput(
-                                   inputId = "hydro_prop",
-                                   label = "Hydro-",
-                                   choices = c(
-                                     "Hydrophilic" = "philic",
-                                     "Hydrophobic" = "phobic"
-                                   ),
-                                   selected = c("philic", "phobic")
+                                 fluidRow(
+                                   column(6, 
+                                          tableOutput("protein_stats"),
+                                          br(),
+                                          checkboxGroupInput(
+                                            inputId = "hydro_prop",
+                                            label = "Hydro-",
+                                            choices = c(
+                                              "Hydrophilic" = "philic",
+                                              "Hydrophobic" = "phobic"),
+                                            selected = c("philic", "phobic"))
+                                          ),
+                                   column(6,
+                                          numericInput(inputId = "sequence_length",
+                                                       label = "Correct sequence length:",
+                                                       value = 300, 
+                                                       step = 1),
+                                          h5("If C-term is not covered, enter correct value.")
+                                          )
                                  )
                                ),
-                               mainPanel(plotOutput('aminoDist'))
-                             )
+                               mainPanel(plotOutput('aminoDist')))
                            )
                   ),
                   tabPanel("Coverage", 

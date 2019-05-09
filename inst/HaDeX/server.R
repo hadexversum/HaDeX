@@ -42,6 +42,10 @@ server <- function(input, output, session) {
                        inputId = "chosen_state",
                        choices = possible_states)
     
+    updateNumericInput(session, 
+                       inputId = "sequence_length",
+                       value = max_range())
+    
   })
   
   ##
@@ -88,8 +92,8 @@ server <- function(input, output, session) {
     
     data.frame(
       Name = c("Length", "Coverage", "Cys"),
-      Value = as.character(c(max_range(), 
-                             paste0(round(100-100*str_count(protein_sequence(), 'x')/max_range(), 2), '%'),
+      Value = as.character(c(input[["sequence_length"]], 
+                             paste0(round(100-100*str_count(protein_sequence(), 'x')/input[["sequence_length"]], 2), '%'),
                              str_count(protein_sequence(), 'C'))),
       stringsAsFactors = FALSE
     )
