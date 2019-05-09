@@ -11,8 +11,9 @@ Authors@R: c(person("Weronika", "Puchala",
            person("Dominik", "Rafacz", 
            email = "d.rafacz@student.mini.pw.edu.pl",
            role = c("ctb")))
-Description: Hydrogen/Deuterium eXchange Mass Spectrometry (HDX-MS) is a staple technology in structural proteomics. 
-             We provide a complete analytic workflow for HDX-MS data, which is also available as a Shiny app.
+Description: Functions for processing, analysis and visualisation of HDX-MS experiments. HaDeX supports the complete analytic process, 
+             including preliminary data exploration, quality control and generation of publication-quality figures. All functionalities 
+             are also available in the in-built Shiny app.
 Depends: R (>= 3.0)
 License: GPL-3
 Encoding: UTF-8
