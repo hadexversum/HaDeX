@@ -35,7 +35,7 @@ server <- function(input, output, session) {
   ##
   
   observe({
-
+    
     possible_states <- unique(dat()[["State"]])
     
     updateRadioButtons(session,
@@ -233,8 +233,8 @@ server <- function(input, output, session) {
       geom_text(aes(x = display_position, y = mean_coverage, label = 'Average', color = 'red', vjust = -.5)) +
       geom_text(aes(x = display_position, y = mean_coverage, label = mean_coverage, color = 'red', vjust = 1.5)) +
       labs(#title = 'How much a position in sequence is covered?',
-           x = 'Position in sequence',
-           y = 'Position frequency in peptide') +
+        x = 'Position in sequence',
+        y = 'Position frequency in peptide') +
       theme(legend.position = "none")
     
   })
@@ -426,13 +426,13 @@ server <- function(input, output, session) {
   ##
   
   output[["states_colors"]] <- renderUI({
-       
-    lapply(1:length(states_from_file()), function(i){
+    
+    lapply(1:length(states_from_file()), function(i) {
       textInput(inputId = paste0(states_from_file()[i], "_color"),
                 label = paste(states_from_file()[i], " color"),
                 value = comparison_plot_colors()[i])
+      #tags$style(paste0("#", paste0(states_from_file()[i], "_color", "{background-color:", comparison_plot_colors()[i], ";}")))
     })
-    
   })
   
   ##
@@ -440,7 +440,7 @@ server <- function(input, output, session) {
   comparison_plot_colors_chosen <- reactive({
     
     lapply(paste(states_from_file(), "_color"), function(i) input[[i]])
-
+    
     sapply(paste0(input[["compare_states"]],"_color"), function(i) input[[i]], simplify = TRUE)
     
   })
@@ -468,7 +468,7 @@ server <- function(input, output, session) {
     validate(need(input[["compare_states"]], "Please select at least one state."))
     
     filter(all_dat(), State %in% input[["compare_states"]])
-           
+    
   })
   
   
@@ -533,7 +533,7 @@ server <- function(input, output, session) {
     if (input[["theory"]]) {
       
       if (input[["calc_type"]] == "relative") {
-      
+        
         comparison_plot_theo() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
@@ -674,25 +674,25 @@ server <- function(input, output, session) {
     validate(need(input[["compare_states"]], "Please select at least one state."))
     
     bind_rows(lapply(c(input[["state_first"]], input[["state_second"]]), function(i) calculate_state_deuteration(dat(), 
-                                                                                        protein = dat()[["Protein"]][1], 
-                                                                                        state = i, 
-                                                                                        time_in = input[["in_time"]],
-                                                                                        time_chosen = input[["chosen_time"]], 
-                                                                                        time_out = input[["out_time"]]))) %>%
-    droplevels() %>% 
-    mutate(State = factor(State, levels = c(input[["state_first"]], input[["state_second"]]), labels = c("1", "2"))) %>%
-    gather(variable, value, -c(Protein:End, State, Med_Sequence)) %>%
-    unite(tmp, variable, State) %>%
-    spread(tmp, value) %>%
-    mutate(diff_frac_exch = frac_exch_state_1 - frac_exch_state_2,
-           err_frac_exch = sqrt(err_frac_exch_state_1^2 + err_frac_exch_state_2^2),
-           abs_diff_frac_exch = abs_frac_exch_state_1 - abs_frac_exch_state_2,
-           err_abs_diff_frac_exch = sqrt(err_abs_frac_exch_state_1^2 + err_abs_frac_exch_state_2^2),
-           diff_theo_frac_exch = avg_theo_in_time_1 - avg_theo_in_time_2, 
-           err_diff_theo_frac_exch = sqrt(err_avg_theo_in_time_1^2 + err_avg_theo_in_time_2^2),
-           abs_diff_theo_frac_exch = abs_avg_theo_in_time_1 - abs_avg_theo_in_time_2,
-           err_abs_diff_theo_frac_exch = sqrt(err_abs_avg_theo_in_time_1^2 + err_abs_avg_theo_in_time_2^2)) %>%
-    select(Protein, Start, End, Med_Sequence, everything(), -contains("1"), -contains("2"))
+                                                                                                                 protein = dat()[["Protein"]][1], 
+                                                                                                                 state = i, 
+                                                                                                                 time_in = input[["in_time"]],
+                                                                                                                 time_chosen = input[["chosen_time"]], 
+                                                                                                                 time_out = input[["out_time"]]))) %>%
+      droplevels() %>% 
+      mutate(State = factor(State, levels = c(input[["state_first"]], input[["state_second"]]), labels = c("1", "2"))) %>%
+      gather(variable, value, -c(Protein:End, State, Med_Sequence)) %>%
+      unite(tmp, variable, State) %>%
+      spread(tmp, value) %>%
+      mutate(diff_frac_exch = frac_exch_state_1 - frac_exch_state_2,
+             err_frac_exch = sqrt(err_frac_exch_state_1^2 + err_frac_exch_state_2^2),
+             abs_diff_frac_exch = abs_frac_exch_state_1 - abs_frac_exch_state_2,
+             err_abs_diff_frac_exch = sqrt(err_abs_frac_exch_state_1^2 + err_abs_frac_exch_state_2^2),
+             diff_theo_frac_exch = avg_theo_in_time_1 - avg_theo_in_time_2, 
+             err_diff_theo_frac_exch = sqrt(err_avg_theo_in_time_1^2 + err_avg_theo_in_time_2^2),
+             abs_diff_theo_frac_exch = abs_avg_theo_in_time_1 - abs_avg_theo_in_time_2,
+             err_abs_diff_theo_frac_exch = sqrt(err_abs_avg_theo_in_time_1^2 + err_abs_avg_theo_in_time_2^2)) %>%
+      select(Protein, Start, End, Med_Sequence, everything(), -contains("1"), -contains("2"))
     
   })
   
@@ -719,7 +719,7 @@ server <- function(input, output, session) {
       woods_plot_dat()[["diff_theo_frac_exch"]] > interval_2[2] ~ "firebrick3",
       woods_plot_dat()[["diff_theo_frac_exch"]] > interval[2] ~ "firebrick1",
       TRUE ~ "azure3")) %>%
-    ggplot() +
+      ggplot() +
       geom_segment(aes(x = Start, y = diff_theo_frac_exch, xend = End, yend = diff_theo_frac_exch, color = colour)) +
       geom_errorbar(aes(x = Med_Sequence, ymin = diff_theo_frac_exch - err_diff_theo_frac_exch, ymax = diff_theo_frac_exch + err_diff_theo_frac_exch, color = colour)) +
       geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
@@ -758,7 +758,7 @@ server <- function(input, output, session) {
       woods_plot_dat()[["abs_diff_theo_frac_exch"]] > interval_2[2] ~ "firebrick3",
       woods_plot_dat()[["abs_diff_theo_frac_exch"]] > interval[2] ~ "firebrick1",
       TRUE ~ "azure3")) %>%
-    ggplot() +
+      ggplot() +
       geom_segment(aes(x = Start, y = abs_diff_theo_frac_exch, xend = End, yend = abs_diff_theo_frac_exch, color = colour)) +
       geom_errorbar(aes(x = Med_Sequence, ymin = abs_diff_theo_frac_exch - err_abs_diff_theo_frac_exch, ymax = abs_diff_theo_frac_exch + err_abs_diff_theo_frac_exch, color = colour)) +
       geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
@@ -785,19 +785,19 @@ server <- function(input, output, session) {
                                                   confidence_limit = confidence_limit,
                                                   theoretical = FALSE,
                                                   relative = TRUE)
-
+    
     interval_2 <- calculate_confidence_limit_values(calc_dat = woods_plot_dat(),
                                                     confidence_limit = confidence_limit_2,
                                                     theoretical = FALSE,
                                                     relative = TRUE)
-
+    
     mutate(woods_plot_dat(), colour = case_when(
       woods_plot_dat()[["diff_frac_exch"]] < interval_2[1] ~ "deepskyblue3",
       woods_plot_dat()[["diff_frac_exch"]] < interval[1] ~ "deepskyblue1",
       woods_plot_dat()[["diff_frac_exch"]] > interval_2[2] ~ "firebrick3",
       woods_plot_dat()[["diff_frac_exch"]] > interval[2] ~ "firebrick1",
       TRUE ~ "azure3")) %>%
-    ggplot() +
+      ggplot() +
       geom_segment(aes(x = Start, y = diff_frac_exch, xend = End, yend = diff_frac_exch, color = colour)) +
       geom_errorbar(aes(x = Med_Sequence, ymin = diff_frac_exch - err_frac_exch, ymax = diff_frac_exch + err_frac_exch, color = colour)) +
       geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
@@ -836,7 +836,7 @@ server <- function(input, output, session) {
       woods_plot_dat()[["abs_diff_frac_exch"]] > interval_2[2] ~ "firebrick3",
       woods_plot_dat()[["abs_diff_frac_exch"]] > interval[2] ~ "firebrick1",
       TRUE ~ "azure3")) %>%
-    ggplot() +
+      ggplot() +
       geom_segment(aes(x = Start, y = abs_diff_frac_exch, xend = End, yend = abs_diff_frac_exch, color = colour)) +
       geom_errorbar(aes(x = Med_Sequence, ymin = abs_diff_frac_exch - err_abs_diff_frac_exch, ymax = abs_diff_frac_exch + err_abs_diff_frac_exch, color = colour)) +
       geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
@@ -857,20 +857,21 @@ server <- function(input, output, session) {
   output[["differentialPlot"]] <- renderPlot({
     
     validate(need(!(input[["state_first"]] == input[["state_second"]]), "Please select two different states."))
-
+    
     if (input[["theory"]]) {
-
+      
       if (input[["calc_type"]] == "relative") {
-
+        
         differential_plot_theo() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
+
           labs(title = input[["woods_plot_title"]],
                x = input[["woods_plot_x_label"]],
                y = input[["woods_plot_y_label"]])
 
       } else {
-
+        
         differential_plot_theo_abs() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
@@ -878,11 +879,11 @@ server <- function(input, output, session) {
                x = input[["woods_plot_x_label"]],
                y = input[["woods_plot_y_label"]])
       }
-
+      
     } else {
-
+      
       if (input[["calc_type"]] == "relative") {
-
+        
         differential_plot_exp() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
@@ -890,19 +891,20 @@ server <- function(input, output, session) {
                x = input[["woods_plot_x_label"]],
                y = input[["woods_plot_y_label"]])
 
-      } else {
 
+      } else {
+        
         differential_plot_exp_abs() +
           coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
           labs(title = input[["woods_plot_title"]],
                x = input[["woods_plot_x_label"]],
                y = input[["woods_plot_y_label"]])
-          
+        
       }
-
+      
     }
-
+    
   })
   
   ##
@@ -1015,7 +1017,7 @@ server <- function(input, output, session) {
   ##
   
   ### TAB: REPORT ###
-
+  
   ##
   
   output[["export_action"]] <- downloadHandler(
@@ -1027,8 +1029,8 @@ server <- function(input, output, session) {
       rmarkdown::render(input = "report_template.Rmd", 
                         output_file = file, quiet = TRUE)
       
-
-  })
+      
+    })
   
   ##
   
