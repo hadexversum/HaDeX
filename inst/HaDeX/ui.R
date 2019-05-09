@@ -3,8 +3,7 @@ source("data-work.R")
 #########################################
 
 ui <- fluidPage(theme = "HaDeX_theme.css",
-                titlePanel("HaDeX: analysis of data from hydrogen deuterium exchange-mass spectrometry"),
-                
+                titlePanel("HaDeX"), #: analysis of data from hydrogen deuterium exchange-mass spectrometry"),
                 tabsetPanel(type = "pills",
                   tabPanel("Start",
                            h3("Welcome!"),
@@ -22,7 +21,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                            h3('Protein name'),
                            h4(textOutput("protein_name"), class  = "monospaced"),
                            h3('Reconstructed sequence'),
-                           htmlOutput("sequenceName", container = tags$span, class  = "monospaced"),
+                           htmlOutput("sequenceName", container = tags[["span"]], class  = "monospaced"),
                            br(),
                            wellPanel(
                              sidebarLayout(

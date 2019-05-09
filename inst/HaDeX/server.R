@@ -373,7 +373,7 @@ server <- function(input, output, session) {
   
   comparison_plot_colors <- reactive({
     
-    hcl.colors(length(states_from_file()), palette = "Berlin", alpha = NULL, rev = FALSE, fixup = TRUE)
+    hcl.colors(length(states_from_file()), palette = "Set 2", alpha = NULL, rev = FALSE, fixup = TRUE)
     
   })
   
@@ -405,15 +405,24 @@ server <- function(input, output, session) {
   
   ##
   
-  prep_dat <- reactive({
+  all_dat <- reactive({
     
-    validate(need(input[["compare_states"]], "Please select at least one state."))
-    bind_rows(lapply(input[["compare_states"]], function(i) calculate_state_deuteration(dat(), 
+    bind_rows(lapply(states_from_file(), function(i) calculate_state_deuteration(dat(), 
                                                                                         protein = dat()[["Protein"]][1], 
                                                                                         state = i, 
                                                                                         time_in = input[["in_time"]],
                                                                                         time_chosen = input[["chosen_time"]], 
                                                                                         time_out = input[["out_time"]])))
+  })
+  
+  ##
+  
+  prep_dat <- reactive({
+    
+    validate(need(input[["compare_states"]], "Please select at least one state."))
+    
+    filter(all_dat(), State %in% input[["compare_states"]])
+           
   })
   
   

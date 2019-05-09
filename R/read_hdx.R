@@ -45,7 +45,7 @@ read_hdx <- function(filename){
   
   dat[["Exposure"]] <- round(dat[["Exposure"]], 3)
   
-  dat <- mutate(dat, State = paste0(State, ifelse(!is.na(Modification), paste0("::", Modification), ""))) 
+  dat <- mutate(dat, State = paste0(State, ifelse(!is.na(Modification), paste0(" - ", Modification), ""))) 
   
   dat
   
