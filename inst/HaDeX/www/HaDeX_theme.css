@@ -1668,6 +1668,8 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
+  height: 90vh; 
+  overflow-y: auto; 
 }
 
 .well blockquote {
