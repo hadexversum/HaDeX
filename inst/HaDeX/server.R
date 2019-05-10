@@ -102,6 +102,14 @@ server <- function(input, output, session) {
   
   ##
   
+  output[["sequence_length_exp_info"]] <- renderText({
+    
+    paste("Sequence length from the file is ", max_range(), ".")
+    
+  })
+  
+  ##
+  
   protein_sequece_colored <- reactive({
     
     paste0("<span>", 

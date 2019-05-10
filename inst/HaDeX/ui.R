@@ -198,7 +198,8 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                label = "Correct sequence length:",
                                                                value = 300, 
                                                                step = 1),
-                                                  h5("If C-term is not covered, enter correct value.")
+                                                  h5("If C-term is not covered, enter correct value."),
+                                                  textOutput("sequence_length_exp_info")
                                            )
                                          )
                                        ),
