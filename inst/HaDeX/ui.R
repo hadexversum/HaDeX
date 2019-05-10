@@ -3,6 +3,7 @@ source("data-work.R")
 #########################################
 
 ui <- fluidPage(theme = "HaDeX_theme.css",
+                #tags$head(tags[["script"]](HTML("document.querySelector('#CD160_color').style.backgroundColor='blue';"))),
                 titlePanel("HaDeX"), #: analysis of data from hydrogen deuterium exchange-mass spectrometry"),
                 tabsetPanel(type = "pills",
                   tabPanel("Start",
