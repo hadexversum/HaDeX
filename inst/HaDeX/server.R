@@ -560,50 +560,33 @@ server <- function(input, output, session) {
         
         if (input[["calc_type"]] == "relative") {
           
-          comparison_plot_theo() +
-            coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-                            ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
-            labs(title = input[["comparison_plot_title"]], 
-                 x = input[["comparison_plot_x_label"]],
-                 y = input[["comparison_plot_y_label"]]) +
-            scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
-          
+          cp <- comparison_plot_theo() 
+             
         } else {
           
-          comparison_plot_theo_abs() +
-            coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-                            ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
-            labs(title = input[["comparison_plot_title"]], 
-                 x = input[["comparison_plot_x_label"]],
-                 y = input[["comparison_plot_y_label"]]) +
-            scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
+          cp <- comparison_plot_theo_abs() 
         }
         
       } else {
         
         if (input[["calc_type"]] == "relative") {
           
-          comparison_plot_exp() +
-            coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-                            ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
-            labs(title = input[["comparison_plot_title"]], 
-                 x = input[["comparison_plot_x_label"]],
-                 y = input[["comparison_plot_y_label"]]) +
-            scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
+          cp <- comparison_plot_exp() 
           
         } else {
           
-          comparison_plot_exp_abs() +
-            coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-                            ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
-            labs(title = input[["comparison_plot_title"]], 
-                 x = input[["comparison_plot_x_label"]],
-                 y = input[["comparison_plot_y_label"]]) +
-            scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
+          cp <- comparison_plot_exp_abs()
           
         }
         
       }
+      
+      cp + coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
+                          ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
+        labs(title = input[["comparison_plot_title"]], 
+             x = input[["comparison_plot_x_label"]],
+             y = input[["comparison_plot_y_label"]]) +
+        scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
       
     })
     
@@ -888,48 +871,33 @@ server <- function(input, output, session) {
         
         if (input[["calc_type"]] == "relative") {
           
-          differential_plot_theo() +
-            coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-                            ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
-            
-            labs(title = input[["woods_plot_title"]],
-                 x = input[["woods_plot_x_label"]],
-                 y = input[["woods_plot_y_label"]])
+          wp <- differential_plot_theo() 
           
         } else {
           
-          differential_plot_theo_abs() +
-            coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-                            ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
-            labs(title = input[["woods_plot_title"]],
-                 x = input[["woods_plot_x_label"]],
-                 y = input[["woods_plot_y_label"]])
+          wp <- differential_plot_theo_abs() 
+          
         }
         
       } else {
         
         if (input[["calc_type"]] == "relative") {
           
-          differential_plot_exp() +
-            coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-                            ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
-            labs(title = input[["woods_plot_title"]],
-                 x = input[["woods_plot_x_label"]],
-                 y = input[["woods_plot_y_label"]])
-          
+          wp <- differential_plot_exp() 
           
         } else {
           
-          differential_plot_exp_abs() +
-            coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-                            ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
-            labs(title = input[["woods_plot_title"]],
-                 x = input[["woods_plot_x_label"]],
-                 y = input[["woods_plot_y_label"]])
+          wp <- differential_plot_exp_abs() 
           
         }
         
       }
+      
+      wp + coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
+                           ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
+        labs(title = input[["woods_plot_title"]],
+             x = input[["woods_plot_x_label"]],
+             y = input[["woods_plot_y_label"]])
       
     })
     
