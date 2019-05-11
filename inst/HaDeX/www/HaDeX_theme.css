@@ -465,8 +465,8 @@ dd {
 .container-fluid {
 	margin-right: auto;
 	margin-left: auto;
-	padding-left: 15px;
-	padding-right: 15px
+	padding-left: 0px;
+	padding-right: 0px
 }
 
 .row {
@@ -1466,11 +1466,12 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
 }
 
 .nav {
-	margin-bottom: 0;
-	list-style: none;
 	background-color: var(--theme-color-first);
-	border-radius: 6px;
-	padding: 6px;
+}
+
+.nav-pills {
+    height: 100px;
+    padding: 20px 10px;
 }
 
 .nav>li {
@@ -1526,7 +1527,9 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
 }
 
 .nav-tabs {
-	border-bottom: 1px solid #dddddd
+	border-bottom: 1px solid #dddddd;
+	padding: 10px;
+	border-radius: 6px;
 }
 
 .nav-tabs>li {
@@ -1535,6 +1538,7 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
 }
 
 .nav-tabs>li>a {
+  padding: 10px;
 }
 
 .nav-tabs>li>a:hover {
@@ -1644,7 +1648,20 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
 }
 
 .tab-content>.active {
-	display: block
+	display: block;
+	margin: 0px 30px;
+}
+
+.tab-content {
+  margin: 0px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+.tab-pane .tab-content {
+  margin: 0px;
+  max-height: unset;
+  overflow-y: unset;
 }
 
 .nav-tabs .dropdown-menu {
@@ -1668,8 +1685,6 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
-  max-height: 90vh; 
-  overflow-y: auto; 
 }
 
 .well blockquote {
@@ -1805,4 +1820,64 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
 
 thead {
   background-color: var(--theme-color-second);
+}
+
+.col-sm-1, 
+.col-sm-10, 
+.col-sm-11, 
+.col-sm-12, 
+.col-sm-2, 
+.col-sm-3, 
+.col-sm-4, 
+.col-sm-5, 
+.col-sm-6, 
+.col-sm-7, 
+.col-sm-8, 
+.col-sm-9 {
+  padding: 0px;
+  max-height: calc(100vh - 125px);
+  overflow-y: auto;
+}
+
+.well .col-sm-8,
+.well .col-sm-4 {
+  overflow-y: unset;
+  max-height: unset;
+}
+
+.col-sm-4 + .col-sm-8 {
+  margin-left: 30px;
+  width: calc(100% / 3 * 2 - 30px);
+}
+
+.col-sm-4 .well {
+    margin-right: 5px;
+}
+
+.col-sm-8 .active {
+  margin: 0px 0px;
+}
+
+.col-sm-8 > .tabbable {
+    margin-right: 5px;
+}
+
+.logo-panel {
+  position: absolute;
+  background: var(--theme-color-first);
+  width: 100%;
+  padding: 0px;
+  margin-left: -15px;
+  height: 100px;
+}
+
+.logo {
+float: right;
+}
+
+.col-sm-6.states-to-compare-column,
+.col-sm-6.states-colors-column {
+    max-height: unset;
+    overflow-y: unset;
+    padding: 0px 15px;
 }
