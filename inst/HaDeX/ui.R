@@ -120,10 +120,11 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                              choices = c("0", "1", "5", "25", "1440"))
                                ),
                                ##
+                               h5("Choose states for comparision and their colors:"),
                                fluidRow(
                                  column(6, 
                                         checkboxGroupInput(inputId = "compare_states",
-                                                           label = "Choose states for comparison:",
+                                                           label = "",
                                                            choices = c("CD160", "CD160_HVEM"),
                                                            selected = c("CD160", "CD160_HVEM")),
                                         class = "states-to-compare-column"),

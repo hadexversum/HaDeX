@@ -361,7 +361,8 @@ h4,
 
 h5,
 .h5 {
-	font-size: 14px
+	font-size: 14px;
+	font-weight: bold;
 }
 
 h6,
@@ -1880,4 +1881,16 @@ float: right;
     max-height: unset;
     overflow-y: unset;
     padding: 0px 15px;
+}
+
+.states-to-compare-column .control-label {
+    display: none;
+}
+
+.states-to-compare-column .shiny-options-group {
+  margin-top: 0px;
+}
+
+.states-to-compare-column .checkbox {
+  margin-bottom: 58px;
 }
