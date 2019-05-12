@@ -22,4 +22,4 @@ HaDeX_gui()
 
 ### Online manual
 
-The HaDeX documentation is available [online](https://michbur.github.io/HaDeX/).
+The HaDeX documentation is available [online](https://HaDeXversum.github.io/HaDeX/).
