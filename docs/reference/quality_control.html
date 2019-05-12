@@ -158,24 +158,8 @@ Visualization for results is provided in examples.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_hdx.html'>read_hdx</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"HaDeX"</span>, <span class='st'>"HaDeX/data/KD_180110_CD160_HVEM.csv"</span>))</div><div class='output co'>#&gt; <span class='message'>Parsed with column specification:</span>
-#&gt; <span class='message'>cols(</span>
-#&gt; <span class='message'>  Protein = <span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  Start = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  End = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  Sequence = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  Modification = </span><span style='color: #BBBB00;'>col_logical()</span><span>,</span>
-#&gt; <span class='message'>  Fragment = </span><span style='color: #BBBB00;'>col_logical()</span><span>,</span>
-#&gt; <span class='message'>  MaxUptake = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  MHP = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  State = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  Exposure = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  File = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  z = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  RT = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  Inten = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  Center = </span><span style='color: #00BB00;'>col_double()</span><span></span>
-#&gt; <span class='message'>)</span></div><div class='input'>(<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>quality_control</span>(<span class='kw'>dat</span> <span class='kw'>=</span> <span class='no'>dat</span>,
+    <pre class="examples"><div class='input'><span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_hdx.html'>read_hdx</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"HaDeX"</span>, <span class='st'>"HaDeX/data/KD_180110_CD160_HVEM.csv"</span>))
+(<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>quality_control</span>(<span class='kw'>dat</span> <span class='kw'>=</span> <span class='no'>dat</span>,
                            <span class='kw'>state_first</span> <span class='kw'>=</span> <span class='st'>"CD160"</span>,
                            <span class='kw'>state_second</span> <span class='kw'>=</span> <span class='st'>"CD160_HVEM"</span>,
                            <span class='kw'>chosen_time</span> <span class='kw'>=</span> <span class='fl'>1</span>,
@@ -258,7 +242,7 @@ Visualization for results is provided in examples.</p>
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>time</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>avg_diff</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"avg_diff"</span>)) +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>time</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>avg_theo_diff</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"avg_theo_diff"</span>)) +
   <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span>  <span class='st'>"time [min]"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Average uncertainty [Da]"</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Uncertainty change in out time"</span>)</div><div class='img'><img src='quality_control-2.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></span></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

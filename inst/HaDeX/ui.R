@@ -21,79 +21,8 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                accept = c(".csv"),
                                placeholder = "No .csv file selected"),
                              h4("In order for program to behave correctly, please make sure supplied file fulfills following requirements:"),
-                             tableOutput("file_req")
-                    ),
-                    tabPanel("Sequence data",
-                             h3('Protein name'),
-                             h4(textOutput("protein_name"), class  = "monospaced"),
-                             h3('Reconstructed sequence'),
-                             htmlOutput("sequenceName", container = tags[["span"]], class  = "monospaced"),
-                             br(),
-                             wellPanel(
-                               sidebarLayout(
-                                 sidebarPanel(
-                                   fluidRow(
-                                     column(6, 
-                                            tableOutput("protein_stats"),
-                                            br(),
-                                            checkboxGroupInput(
-                                              inputId = "hydro_prop",
-                                              label = "Hydro-",
-                                              choices = c(
-                                                "Hydrophilic" = "philic",
-                                                "Hydrophobic" = "phobic"),
-                                              selected = c("philic", "phobic"))
-                                            ),
-                                     column(6,
-                                            numericInput(inputId = "sequence_length",
-                                                         label = "Correct sequence length:",
-                                                         value = 300, 
-                                                         step = 1),
-                                            h5("If C-term is not covered, enter correct value.")
-                                            )
-                                   )
-                                 ),
-                                 mainPanel(plotOutput('aminoDist')))
-                             )
-                    ),
-                    tabPanel("Coverage", 
-                             br(),
-                             sidebarPanel(
-                               radioButtons(
-                                 inputId = 'chosen_state',
-                                 label = 'Choose state:',
-                                 choices = c('CD160', 'CD160_HVEM'),
-                                 selected = 'CD160'
-                               ),
-                               sliderInput(
-                                 inputId = 'plot_range',
-                                 label = 'Choose range:',
-                                 min = 1,
-                                 max = 300,
-                                 value = c(1, 300),
-                                 ticks = seq(1, 300, 1)
-                               )
-                             ),
-                             mainPanel(
-                               tabsetPanel(
-                                 tabPanel("Peptide Coverage",
-                                          br(),
-                                          plotOutput("stateOverlap")), # height = "600px")),
-                                 tabPanel("Data",
-                                          br(),
-                                          DT::dataTableOutput("stateOverlap_data"))
-                               ),
-                               br(),
-                               tabsetPanel(
-                                 tabPanel("Position Frequency",
-                                          br(),
-                                          plotOutput("stateOverlapDist")),
-                                 tabPanel("Data",
-                                          br(),
-                                          DT::dataTableOutput("stateOverlapDist_data"))
-                               )
-                               
-                             )
+                             tableOutput("file_req"),
+                             includeMarkdown("readmes/about.md")
                     ),
                     tabPanel("Woods plot",
                              br(),
@@ -120,7 +49,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                              choices = c("0", "1", "5", "25", "1440"))
                                ),
                                ##
-                               h5("Choose states for comparision and their colors:"),
+                               h5("Choose states for comparison and their colors:"),
                                fluidRow(
                                  column(6, 
                                         checkboxGroupInput(inputId = "compare_states",
@@ -131,7 +60,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                  column(6,
                                         uiOutput("states_colors"),
                                         class = "states-colors-column")
-                
+                                 
                                ),
                                ##
                                h4("Woods plot parameters:"),
@@ -194,7 +123,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                textInput(inputId = "woods_plot_y_label",
                                          label = "Woods plot axis y label:",
                                          value = "")
-                               ),
+                             ),
                              mainPanel(
                                tabsetPanel(
                                  tabPanel("Comparison plot", 
@@ -212,6 +141,78 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                           br(),
                                           DT::dataTableOutput("differentialPlot_data")))
                                
+                             )
+                    ),
+                    tabPanel("Coverage", 
+                             br(),
+                             sidebarPanel(
+                               radioButtons(
+                                 inputId = 'chosen_state',
+                                 label = 'Choose state:',
+                                 choices = c('CD160', 'CD160_HVEM'),
+                                 selected = 'CD160'
+                               ),
+                               sliderInput(
+                                 inputId = 'plot_range',
+                                 label = 'Choose range:',
+                                 min = 1,
+                                 max = 300,
+                                 value = c(1, 300),
+                                 ticks = seq(1, 300, 1)
+                               )
+                             ),
+                             mainPanel(
+                               tabsetPanel(
+                                 tabPanel("Peptide Coverage",
+                                          br(),
+                                          plotOutput("stateOverlap")), # height = "600px")),
+                                 tabPanel("Data",
+                                          br(),
+                                          DT::dataTableOutput("stateOverlap_data"))
+                               ),
+                               br(),
+                               tabsetPanel(
+                                 tabPanel("Position Frequency",
+                                          br(),
+                                          plotOutput("stateOverlapDist")),
+                                 tabPanel("Data",
+                                          br(),
+                                          DT::dataTableOutput("stateOverlapDist_data"))
+                               )
+                               
+                             )
+                    ),
+                    tabPanel("Sequence data",
+                             h3('Protein name'),
+                             h4(textOutput("protein_name"), class  = "monospaced"),
+                             h3('Reconstructed sequence'),
+                             htmlOutput("sequenceName", container = tags[["span"]], class  = "monospaced"),
+                             br(),
+                             wellPanel(
+                               sidebarLayout(
+                                 sidebarPanel(
+                                   fluidRow(
+                                     column(6, 
+                                            tableOutput("protein_stats"),
+                                            br(),
+                                            checkboxGroupInput(
+                                              inputId = "hydro_prop",
+                                              label = "Hydro-",
+                                              choices = c(
+                                                "Hydrophilic" = "philic",
+                                                "Hydrophobic" = "phobic"),
+                                              selected = c("philic", "phobic"))
+                                     ),
+                                     column(6,
+                                            numericInput(inputId = "sequence_length",
+                                                         label = "Correct sequence length:",
+                                                         value = 300, 
+                                                         step = 1),
+                                            h5("If C-term is not covered, enter correct value.")
+                                     )
+                                   )
+                                 ),
+                                 mainPanel(plotOutput('aminoDist')))
                              )
                     ),
                     tabPanel("Report",
@@ -256,9 +257,6 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                          label = "  Create report!",
                                                          icon = icon("fas fa-download"))
                              )
-                    ),
-                    tabPanel("About",
-                             includeMarkdown("readmes/about.md")
                     )
                   )
                 )

@@ -154,24 +154,8 @@ Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_hdx.html'>read_hdx</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"HaDeX"</span>, <span class='st'>"HaDeX/data/KD_180110_CD160_HVEM.csv"</span>))</div><div class='output co'>#&gt; <span class='message'>Parsed with column specification:</span>
-#&gt; <span class='message'>cols(</span>
-#&gt; <span class='message'>  Protein = <span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  Start = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  End = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  Sequence = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  Modification = </span><span style='color: #BBBB00;'>col_logical()</span><span>,</span>
-#&gt; <span class='message'>  Fragment = </span><span style='color: #BBBB00;'>col_logical()</span><span>,</span>
-#&gt; <span class='message'>  MaxUptake = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  MHP = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  State = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  Exposure = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  File = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
-#&gt; <span class='message'>  z = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  RT = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  Inten = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
-#&gt; <span class='message'>  Center = </span><span style='color: #00BB00;'>col_double()</span><span></span>
-#&gt; <span class='message'>)</span></div><div class='input'><span class='no'>calc_dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='prepare_dataset.html'>prepare_dataset</a></span>(<span class='no'>dat</span>,
+    <pre class="examples"><div class='input'><span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_hdx.html'>read_hdx</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"HaDeX"</span>, <span class='st'>"HaDeX/data/KD_180110_CD160_HVEM.csv"</span>))
+<span class='no'>calc_dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='prepare_dataset.html'>prepare_dataset</a></span>(<span class='no'>dat</span>,
                             <span class='kw'>in_state_first</span> <span class='kw'>=</span> <span class='st'>"CD160_0.001"</span>,
                             <span class='kw'>chosen_state_first</span> <span class='kw'>=</span> <span class='st'>"CD160_1"</span>,
                             <span class='kw'>out_state_first</span> <span class='kw'>=</span> <span class='st'>"CD160_1440"</span>,
@@ -182,7 +166,7 @@ Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.</p>
                                   <span class='kw'>confidence_limit</span> <span class='kw'>=</span> <span class='fl'>0.99</span>,
                                   <span class='kw'>theoretical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
                                   <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] -0.006002377  0.006002377</div><div class='input'>                              
-</div></span></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
