@@ -1807,6 +1807,7 @@ tfoot {
 float: right;
 }
 
+
 .col-sm-6.states-to-compare-column,
 .col-sm-6.states-colors-column {
     max-height: unset;
@@ -1821,10 +1822,11 @@ float: right;
 .states-to-compare-column .shiny-options-group {
   margin-top: 0px;
 }
-
+/*
 .states-to-compare-column .checkbox {
   margin-bottom: 58px;
 }
+*/
 
 .collapse-button {
   width: 100%;
@@ -1850,4 +1852,6 @@ float: right;
 
 .hideable {
   display: none;
+  min-height: 10px;
+  background-color: #FFF;
 }
