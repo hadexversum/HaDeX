@@ -21,7 +21,11 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                accept = c(".csv"),
                                placeholder = "No .csv file selected"),
                              h4("In order for program to behave correctly, please make sure supplied file fulfills following requirements:"),
+                             #tags$button("Show requirements", class = "collapse-button"),
+                             #tags$div(
+                             #  class = "hideable",
                              tableOutput("file_req"),
+                             #),
                              includeMarkdown("readmes/about.md")
                     ),
                     tabPanel("Woods plot",
@@ -104,7 +108,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                            value = c(0, 300),
                                            ticks = seq(0, 300, 1)),
                                ##
-                               tags$button("Adjust labels:", class = "collapse-button"),
+                               tags$button("Adjust labels", class = "collapse-button"),
                                tags$div(
                                  class = "hideable",
                                  textInput(inputId = "comparison_plot_title",
