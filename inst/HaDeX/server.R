@@ -93,7 +93,7 @@ server <- function(input, output, session) {
     data.frame(
       Name = c("Length", "Coverage", "Cys"),
       Value = as.character(c(input[["sequence_length"]], 
-                             paste0(round(100-100*str_count(protein_sequence(), 'x')/input[["sequence_length"]], 2), '%'),
+                             paste0(100*round((max_range()-str_count(protein_sequence(), 'x'))/input[["sequence_length"]], 4), '%'),
                              str_count(protein_sequence(), 'C'))),
       stringsAsFactors = FALSE
     )
@@ -467,7 +467,7 @@ server <- function(input, output, session) {
     
     comparison_plot_colors_chosen <- reactive({
       
-      lapply(paste(states_from_file(), "_color"), function(i) input[[i]])
+      lapply(paste0(states_from_file(), "_color"), function(i) input[[i]])
       
       sapply(paste0(input[["compare_states"]],"_color"), function(i) input[[i]], simplify = TRUE)
       
@@ -1017,6 +1017,8 @@ server <- function(input, output, session) {
     ##
     
     output[["export_action"]] <- downloadHandler(
+      
+      
       
       filename <- "HaDeX_Report.html",
       

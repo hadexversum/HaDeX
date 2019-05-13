@@ -104,7 +104,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                            value = c(0, 300),
                                            ticks = seq(0, 300, 1)),
                                ##
-                               tags$button("Adjust labels:", class = "collapse-button"),
+                               tags$button("Adjust labels", class = "collapse-button"),
                                tags$div(
                                  class = "hideable",
                                  textInput(inputId = "comparison_plot_title",
