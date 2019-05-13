@@ -104,25 +104,28 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                            value = c(0, 300),
                                            ticks = seq(0, 300, 1)),
                                ##
-                               h4("Adjust labels:"),
-                               textInput(inputId = "comparison_plot_title",
-                                         label = "Comparison plot title:",
-                                         value = ""),
-                               textInput(inputId = "comparison_plot_x_label",
-                                         label = "Comprison plot axis x label:",
-                                         value = "Position in sequence"),
-                               textInput(inputId = "comparison_plot_y_label",
-                                         label = "Comprison plot axis y label:",
-                                         value = ""),
-                               textInput(inputId = "woods_plot_title",
-                                         label = "Woods plot title:",
-                                         value = ""),
-                               textInput(inputId = "woods_plot_x_label",
-                                         label = "Woods plot axis x label:",
-                                         value = "Position in sequence"),
-                               textInput(inputId = "woods_plot_y_label",
-                                         label = "Woods plot axis y label:",
-                                         value = "")
+                               tags$button("Adjust labels:", class = "collapse-button"),
+                               tags$div(
+                                 class = "hideable",
+                                 textInput(inputId = "comparison_plot_title",
+                                           label = "Comparison plot title:",
+                                           value = ""),
+                                 textInput(inputId = "comparison_plot_x_label",
+                                           label = "Comprison plot axis x label:",
+                                           value = "Position in sequence"),
+                                 textInput(inputId = "comparison_plot_y_label",
+                                           label = "Comprison plot axis y label:",
+                                           value = ""),
+                                 textInput(inputId = "woods_plot_title",
+                                           label = "Woods plot title:",
+                                           value = ""),
+                                 textInput(inputId = "woods_plot_x_label",
+                                           label = "Woods plot axis x label:",
+                                           value = "Position in sequence"),
+                                 textInput(inputId = "woods_plot_y_label",
+                                           label = "Woods plot axis y label:",
+                                           value = "")
+                               )
                              ),
                              mainPanel(
                                tabsetPanel(
@@ -260,7 +263,8 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                              )
                     )
                   )
-                )
+                ),
+                tags$script(src = "collapsing.js")
 )
 
 
