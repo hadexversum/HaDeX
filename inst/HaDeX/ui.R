@@ -21,7 +21,17 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                accept = c(".csv"),
                                placeholder = "No .csv file selected"),
                              h4("In order for program to behave correctly, please make sure supplied file fulfills following requirements:"),
-                             tableOutput("file_req"),
+                             tags$button("Show requirements", 
+                                         class = "collapse-button", 
+                                         style = "width: unset",
+                                         `data-toggle`="collapse", 
+                                         `data-target`="#reqs"),
+                             tags$div(
+                               id = "reqs",
+                               style = "width: min-content",
+                               class = "hideable",
+                             tableOutput("file_req")
+                             ),
                              includeMarkdown("readmes/about.md")
                     ),
                     tabPanel("Woods plot",
@@ -49,16 +59,24 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                              choices = c("0", "1", "5", "25", "1440"))
                                ),
                                ##
-                               h5("Choose states for comparison and their colors:"),
                                fluidRow(
                                  column(6, 
+                                        h5("Choose states for comparison:"),
                                         checkboxGroupInput(inputId = "compare_states",
                                                            label = "",
                                                            choices = c("CD160", "CD160_HVEM"),
                                                            selected = c("CD160", "CD160_HVEM")),
                                         class = "states-to-compare-column"),
                                  column(6,
-                                        uiOutput("states_colors"),
+                                        tags$button("Adjust colors", 
+                                                    class = "collapse-button",
+                                                    `data-toggle`="collapse", 
+                                                    `data-target`="#colorss"),
+                                        tags$div(
+                                          class = "hideable",
+                                          id = "colorss",
+                                          uiOutput("states_colors")
+                                        ),
                                         class = "states-colors-column")
                                  
                                ),
@@ -104,9 +122,13 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                            value = c(0, 300),
                                            ticks = seq(0, 300, 1)),
                                ##
-                               tags$button("Adjust labels", class = "collapse-button"),
+                               tags$button("Adjust labels", 
+                                           class = "collapse-button",
+                                           `data-toggle`="collapse", 
+                                           `data-target`="#labs"),
                                tags$div(
                                  class = "hideable",
+                                 id = "labs",
                                  textInput(inputId = "comparison_plot_title",
                                            label = "Comparison plot title:",
                                            value = ""),
@@ -263,8 +285,8 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                              )
                     )
                   )
-                ),
-                tags$script(src = "collapsing.js")
+                )#,
+                #tags$script(src = "collapsing.js")
 )
 
 
