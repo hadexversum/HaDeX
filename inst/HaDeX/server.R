@@ -129,11 +129,13 @@ server <- function(input, output, session) {
   ##
   
   output[["aminoDist"]] <- renderPlot({
+    
     charge_colors <- c("-1" = "#E41A1C", "0" = "#377EB8", "1" = "#4DAF4A")
     
     position_in_sequence() %>%
       mutate(affinity = ifelse(is_hydrophobic, "phobic", "philic")) %>% 
-      filter(affinity %in% input[["hydro_prop"]]) %>% 
+      filter(affinity %in% input[["hydro_prop"]]) %>%
+      mutate(amino = factor(amino, levels = amino_groups)) %>%
       ggplot(aes(x = amino, fill = charge)) + 
       geom_bar() +
       scale_fill_manual("Charge", values = charge_colors) + 
