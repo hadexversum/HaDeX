@@ -469,7 +469,15 @@ server <- function(input, output, session) {
       
       lapply(paste0(states_from_file(), "_color"), function(i) input[[i]])
       
-      sapply(paste0(input[["compare_states"]],"_color"), function(i) input[[i]], simplify = TRUE)
+      tmp <- t(sapply(paste0(input[["compare_states"]],"_color"), function(i) input[[i]][1], simplify = TRUE))
+      
+      tmp[tmp == "NULL"] <- NA
+      
+      if (all(is.na(tmp))) {
+        comparison_plot_colors()[1:length(states_from_file())]
+      } else {
+        coalesce(as.vector(tmp), comparison_plot_colors()[1:length(input[["compare_states"]])])
+      }
       
     })
     
@@ -588,7 +596,7 @@ server <- function(input, output, session) {
         labs(title = input[["comparison_plot_title"]], 
              x = input[["comparison_plot_x_label"]],
              y = input[["comparison_plot_y_label"]]) +
-        scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
+        scale_color_manual(values = comparison_plot_colors_chosen())
       
     })
     

@@ -68,16 +68,17 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                            selected = c("CD160", "CD160_HVEM")),
                                         class = "states-to-compare-column"),
                                  column(6,
-                                        tags$button("Adjust colors", 
+                                        tags$button("Adjust colors",
                                                     class = "collapse-button",
-                                                    `data-toggle`="collapse", 
+                                                    `data-toggle`="collapse",
                                                     `data-target`="#colorss"),
                                         tags$div(
                                           class = "hideable",
                                           id = "colorss",
                                           uiOutput("states_colors")
                                         ),
-                                        class = "states-colors-column")
+                                        class = "states-colors-column"
+                                        )
                                  
                                ),
                                ##
@@ -124,7 +125,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                ##
                                tags$button("Adjust labels", 
                                            class = "collapse-button",
-                                           `data-toggle`="collapse", 
+                                           `data-toggle`="collapse",
                                            `data-target`="#labs"),
                                tags$div(
                                  class = "hideable",
