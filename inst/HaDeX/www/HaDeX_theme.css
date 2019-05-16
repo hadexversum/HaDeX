@@ -340,7 +340,11 @@ h1,
 
 h2,
 .h2 {
-	font-size: 30px
+	font-size: 30px;
+	background: var(--theme-color-first);
+  padding: 10px;
+  border-radius: 6px;
+  color: var(--theme-color-light);
 }
 
 h3,
@@ -1854,4 +1858,23 @@ float: right;
   display: none;
   min-height: 10px;
   background-color: #FFF;
+}
+
+.shiny-split-layout > div {
+    overflow: unset;
+}
+
+.mobile-site-backbone {
+  display: none;
+}
+
+.tab-pane > h4, 
+.tab-pane > span, 
+.tab-pane > .form-group, 
+.tab-pane > .collapse-button, 
+.tab-pane > p, .tab-pane > img, 
+.tab-pane > ul,
+.tab-pane > .hideable {
+  margin-left: 15px;
+  margin-right: 15px;
 }

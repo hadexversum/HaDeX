@@ -3,7 +3,10 @@ source("data-work.R")
 #########################################
 
 ui <- fluidPage(theme = "HaDeX_theme.css",
-                #titlePanel("HaDeX"), #: analysis of data from hydrogen deuterium exchange-mass spectrometry"),
+                title = "HaDeX",
+                tags$head(tags$link(rel="stylesheet",
+                                    href="mobile_version.css",
+                                    media="handheld")),
                 tags$div(
                   class = "site-backbone",
                   tags$div(
@@ -291,8 +294,20 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                              )
                     )
                   )
-                )#,
-                #tags$script(src = "collapsing.js")
+                ),
+                tags$div(
+                  class = "mobile-site-backbone",
+                  tags$div(
+                    class = "logo-panel",
+                    img(src = "mock_logo.png", class = "logo")
+                  ),
+                  tags$div(
+                    class = "mobile-information",
+                    h3("Welcome to HaDeX website!"),
+                    h4("For better user experience plese use non-mobile device"),
+                    img(src='funding_icons.png', height = 100)
+                  )
+                )
 )
 
 
