@@ -286,7 +286,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                    checkboxInput(inputId = "export_theo_woods_plot_data",
                                                                  label = "Theoretical Woods Plot Data"))),
                                           br(),
-                                          h5("Elements chosen for raport have the same parameters as chosen in panel e.g. axis range and title. Adjust parameters for plots as needed in the raport."),
+                                          h5("Elements chosen for report have the same parameters as chosen in panel e.g. axis range and title. Adjust parameters for plots as needed in the report."),
                                           br(),
                                           downloadButton(outputId = "export_action",
                                                          label = "  Create report!",
@@ -304,7 +304,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                   tags$div(
                     class = "mobile-information",
                     h3("Welcome to HaDeX website!"),
-                    h4("For better user experience plese use non-mobile device"),
+                    h4("For better user experience please use non-mobile device"),
                     img(src='funding_icons.png', height = 100)
                   )
                 )
