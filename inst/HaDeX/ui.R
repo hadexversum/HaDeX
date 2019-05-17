@@ -6,7 +6,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                 title = "HaDeX",
                 tags$head(tags$link(rel="stylesheet",
                                     href="mobile_version.css",
-                                    media="handheld")),
+                                    media="screen and (max-width: 600px)")),
                 tags$div(
                   class = "site-backbone",
                   tags$div(
@@ -304,7 +304,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                   tags$div(
                     class = "mobile-information",
                     h3("Welcome to HaDeX website!"),
-                    h4("For better user experience please use non-mobile device"),
+                    h4("For better user experience please use device with wider screen (at least 900px)."),
                     img(src='funding_icons.png', height = 100)
                   )
                 )
