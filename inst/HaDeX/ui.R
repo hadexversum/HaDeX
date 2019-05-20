@@ -6,7 +6,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                 title = "HaDeX",
                 tags$head(tags$link(rel="stylesheet",
                                     href="mobile_version.css",
-                                    media="screen and (max-width: 600px)")),
+                                    media="screen and (max-width: 600px)"),
+                          tags$script(type="text/javascript",
+                                      src="detect-element-resize.js")),
                 tags$div(
                   class = "site-backbone",
                   tags$div(
@@ -37,12 +39,14 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                              tableOutput("file_req")
                              ),
                              includeMarkdown("readmes/about.md"),
-                             img(src='funding_icons.png', height = 100),
+                             img(class='funding-icons',
+                                 src='funding_icons.png'),
                              br()
                     ),
                     tabPanel("Woods plot",
                              br(),
                              sidebarPanel(
+                               class = "scrollable",
                                h3("Select parameters for the plot."),
                                checkboxInput(inputId = "theory",
                                              label = "Theoretical calculations",
@@ -157,6 +161,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                )
                              ),
                              mainPanel(
+                               class = "scrollable",
                                tabsetPanel(
                                  tabPanel("Comparison plot", 
                                           br(),
@@ -178,6 +183,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                     tabPanel("Coverage", 
                              br(),
                              sidebarPanel(
+                               class = "scrollable",
                                radioButtons(
                                  inputId = 'chosen_state',
                                  label = 'Choose state:',
@@ -194,6 +200,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                )
                              ),
                              mainPanel(
+                               class = "scrollable",
                                tabsetPanel(
                                  tabPanel("Peptide Coverage",
                                           br(),
@@ -307,7 +314,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                     h4("For better user experience please use device with wider screen (at least 900px)."),
                     img(src='funding_icons.png', height = 100)
                   )
-                )
+                ),
+                tags$script(type="text/javascript",
+                            src="resize-logo-panel.js")
 )
 
 
