@@ -20,6 +20,8 @@ span {
     }
 </style>
 
+
+
 Report generated on `r Sys.time()` using the [HaDeX](http://github.com/michbur/HaDeX) R package.  
 
 Detected input file: `r ifelse(is.null(input[["data_file"]][["name"]]), "none", input[["data_file"]][["name"]])`.  
@@ -32,9 +34,9 @@ Protein name : `r as.character(unique(dat()[["Protein"]]))`
 
 Protein sequence : <span>`r protein_sequece_colored()`</span>
 
-Length : `r max_range()`
+Length : `r input[["sequence_length"]]`
 
-Coverage : `r paste0(round(100-100*str_count(protein_sequence(), 'x')/max_range(), 2), '%')`
+Coverage : `r paste0(100*round((max_range()-str_count(protein_sequence(), 'x'))/input[["sequence_length"]], 4), '%')`
 
 <!--- OVERLAP DISTRIBUTION -->
 
@@ -72,7 +74,8 @@ if (input[["export_overlap_graph"]]){
     
   cat("## Overlap Graphically \n")
     
-  stateOverlap()
+  stateOverlap() + 
+      coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]]))
   
 }
 
@@ -102,10 +105,63 @@ if (input[["export_comparison_plot"]]){
     
   cat("## Comparison Plot \n")
   
-  comparison_plot_exp()
+  cat("### Relative values \n")
+
+  p <- comparison_plot_exp() +
+    scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
+  
+  if(!input[["theory"]] & input[["calc_type"]]=="relative"){
     
+    p + 
+      coord_cartesian(ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]),
+                      xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
+      labs(title = input[["comparison_plot_title"]], 
+           x = input[["comparison_plot_x_label"]],
+           y = input[["comparison_plot_y_label"]])
+      
+  } else {
+    
+    p + 
+      coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) + 
+      labs(title = paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min"),
+           x = "Position in sequence",
+           y = "Fraction exchanged [%]") 
+    
+  }
+  
 }
 
+```
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_comparison_plot"]]){
+
+  cat("### Absolute values \n")
+  
+  p <- comparison_plot_exp_abs() +
+    scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
+  
+  if (!input[["theory"]] & input[["calc_type"]]=="absolute"){
+    
+    p + 
+      coord_cartesian(ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]),
+                      xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
+      labs(title = input[["comparison_plot_title"]], 
+           x = input[["comparison_plot_x_label"]],
+           y = input[["comparison_plot_y_label"]])
+    
+  } else {
+    
+    p + 
+      coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
+      labs(title = paste0("Absolute value exchanged in state comparison in ", input[["chosen_time"]], " min"),
+           x = "Position in sequence", 
+           y = "Absolute value exchanged [Da]")
+  }
+  
+ 
+}
 
 ```
 
@@ -117,10 +173,24 @@ if (input[["export_comparison_plot_data"]]){
     
   cat("## Comparison Plot Data \n")
   
-  comparison_plot_data_exp()
+  cat("### Relative values \n")
+  
+  comparison_plot_data_exp() 
+  
+  
     
 }
+```
 
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_comparison_plot_data"]]){
+  
+  cat("### Absolute values \n")
+  
+  comparison_plot_data_exp_abs()
+  
+}
 
 ```
 
@@ -132,10 +202,61 @@ if (input[["export_theo_comparison_plot"]]){
     
   cat("## Theoretical Comparison Plot \n")
   
-  comparison_plot_theo()
+  cat("### Relative values \n")
+
+  p <- comparison_plot_theo() + 
+    scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
+    
+  if(input[["theory"]] & input[["calc_type"]]=="relative"){
+    
+    p + 
+      coord_cartesian(ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]),
+                      xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
+      labs(title = input[["comparison_plot_title"]], 
+           x = input[["comparison_plot_x_label"]],
+           y = input[["comparison_plot_y_label"]])
+    
+  } else {
+    
+    p + 
+      coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
+      labs(title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min"),
+           x = "Position in sequence",
+           y = "Theoretical fraction exchanged [%]")
+      
+  }
     
 }
+```
 
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_theo_comparison_plot"]]){
+  
+  cat("### Absolute values \n")
+  
+  p <- comparison_plot_theo_abs() +
+    scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
+  
+  if(input[["theory"]] & input[["calc_type"]]=="absolute"){
+    
+    p + 
+      coord_cartesian(ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]),
+                      xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
+      labs(title = input[["comparison_plot_title"]], 
+           x = input[["comparison_plot_x_label"]],
+           y = input[["comparison_plot_y_label"]])
+    
+  } else {
+    
+    p + 
+      coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]))+
+      labs(title = paste0("Theoretical absolute value exchanged in state comparison in ", input[["chosen_time"]], " min"),
+           x = "Position in sequence",
+           y = "Theoretical absolute value exchanged [Da]")
+  }
+  
+}
 
 ```
 
@@ -147,10 +268,23 @@ if (input[["export_theo_comparison_plot_data"]]){
     
   cat("## Theoretical Comparison Plot Data \n")
   
+  cat("### Relative values \n")
+  
   comparison_plot_data_theo()
     
 }
 
+```
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_theo_comparison_plot_data"]]){
+  
+  cat("### Absolute values \n")
+  
+  comparison_plot_data_theo_abs()
+  
+}
 
 ```
 
@@ -162,10 +296,60 @@ if (input[["export_woods_plot"]]){
     
   cat("## Woods Plot \n")  
   
-  differential_plot_exp()
+  cat("### Relative values \n")
+  
+  p <- differential_plot_exp()
+  
+  if(!input[["theory"]] & input[["calc_type"]] == "relative"){
+    
+    p + 
+      coord_cartesian(ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]),
+                      xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
+      labs(title = input[["woods_plot_title"]], 
+           x = input[["woods_plot_x_label"]],
+           y = input[["woods_plot_y_label"]])
+    
+  } else {
+    
+    p + 
+      coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
+      labs(title = paste0("Delta Fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]])),
+           x = "Position in sequence",
+           y = "Delta Fraction exchanged between states [%]")
+    
+  }
     
 }
 
+```
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_woods_plot"]]){
+  
+  cat("### Absolute values \n")
+  
+  p <- differential_plot_exp_abs()
+  
+  if(!input[["theory"]] & input[["calc_type"]] == "absolute"){
+    
+    p + 
+      coord_cartesian(ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]),
+                      xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
+      labs(title = input[["woods_plot_title"]], 
+           x = input[["woods_plot_x_label"]],
+           y = input[["woods_plot_y_label"]])
+    
+  } else {
+    
+    p + 
+      coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
+      labs(title = paste0("Delta Fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]])),
+           x = "Position in sequence",
+           y = "Delta Absolute value exchanged between states [Da]")
+  }
+  
+}
 
 ```
 
@@ -177,10 +361,23 @@ if (input[["export_woods_plot_data"]]){
     
   cat("## Woods Plot Data \n")
   
+  cat("### Relative values \n")
+  
   differential_plot_data_exp()
     
 }
 
+```
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_woods_plot_data"]]){
+  
+  cat("### Absolute values \n")
+  
+  differential_plot_data_exp_abs()
+  
+}
 
 ```
 
@@ -192,7 +389,60 @@ if (input[["export_theo_woods_plot"]]){
     
   cat("## Theoretical Woods Plot \n")  
   
-  differential_plot_theo()
+  cat("### Relative values \n")
+  
+  p <- differential_plot_theo()
+  
+  if(input[["theory"]] & input[["calc_type"]] == "relative"){
+    
+    p + 
+      coord_cartesian(ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]),
+                      xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
+      labs(title = input[["woods_plot_title"]], 
+           x = input[["woods_plot_x_label"]],
+           y = input[["woods_plot_y_label"]])
+    
+  } else {
+    
+    p + 
+      coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
+      labs(title = paste0("Delta Theoretical fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]])),
+           x = "Position in sequence",
+           y = "Delta Theoretical fraction exchanged between states [%]")
+    
+  }
+    
+}
+
+
+```
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_theo_woods_plot"]]){
+  
+  cat("### Absolute values \n")
+  
+  p <- differential_plot_theo_abs()
+  
+  if(input[["theory"]] & input[["calc_type"]] == "absolute"){
+    
+    p + 
+      coord_cartesian(ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]),
+                      xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
+      labs(title = input[["woods_plot_title"]], 
+           x = input[["woods_plot_x_label"]],
+           y = input[["woods_plot_y_label"]])
+    
+  } else {
+    
+    p + 
+      coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
+      labs(title = paste0("Delta Theoretical fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]])),
+           x = "Position in sequence",
+           y = "Delta Theoretical absoute value exchanged between states [Da]")
+    
+  }
     
 }
 
@@ -207,9 +457,24 @@ if (input[["export_theo_woods_plot_data"]]){
     
   cat("## Theoretical Woods Plot Data \n")
   
+  cat("### Relative values \n")
+    
   differential_plot_data_theo()
     
 }
+
+```
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_theo_woods_plot_data"]]){
+  
+  cat("### Absolute values \n")
+    
+  differential_plot_data_theo_abs()
+    
+}
+
 ```
 
 # R Session
