@@ -19,7 +19,7 @@ amino_prop <- amino_prop %>%
 
 file_req <- data.frame(
   Name = c("Protein", "Start", "End", "Sequence", "Modification", "Fragment", "MaxUptake", "MHP", "State", "Exposure", "File", "z", "RT", "Inten", "Center"),
-  Type = c("Character", "Integer", "Integer", "Character", "Logic", "Logic", "Numeric", "Numeric", "Character", "Numeric", "Character", "Integer", "Numeric", "Numeric", "Numeric")
+  Type = c("Character", "Integer", "Integer", "Character", "Character", "Character", "Numeric", "Numeric", "Character", "Numeric", "Character", "Integer", "Numeric", "Numeric", "Numeric")
 )
 
 proton_mass <- 1.00727647
