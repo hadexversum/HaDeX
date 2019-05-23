@@ -23,6 +23,7 @@ server <- function(input, output, session) {
     if (is.null(inFile)){
       read_hdx('./data/KD_180110_CD160_HVEM.csv')
     } else {
+      validate(need(try(read_hdx(inFile[["datapath"]])), "Check file requirements"))
       read_hdx(inFile[["datapath"]])
     }
     
