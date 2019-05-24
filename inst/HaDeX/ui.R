@@ -4,7 +4,14 @@ source("data-work.R")
 
 ui <- fluidPage(theme = "HaDeX_theme.css",
                 #titlePanel("HaDeX"), #: analysis of data from hydrogen deuterium exchange-mass spectrometry"),
-                tags$head(includeScript("ga.js")),
+                title = "HaDeX",
+                tags$head(includeScript("ga.js"), 
+                          tags$link(rel="stylesheet",
+                                    href="mobile_version.css",
+                                    media="screen and (max-width: 600px)"),
+                          tags$script(type="text/javascript",
+                                      src="detect-element-resize.js")),
+
                 tags$div(
                   class = "site-backbone",
                   tags$div(
@@ -21,6 +28,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                multiple = FALSE,
                                accept = c(".csv"),
                                placeholder = "No .csv file selected"),
+                             h4("Currently HaDeX supports files with only one protein."),
                              h4("In order for program to behave correctly, please make sure supplied file fulfills following requirements:"),
                              tags$button("Show requirements", 
                                          class = "collapse-button", 
@@ -33,11 +41,15 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                class = "hideable",
                              tableOutput("file_req")
                              ),
-                             includeMarkdown("readmes/about.md")
+                             includeMarkdown("readmes/about.md"),
+                             img(class='funding-icons',
+                                 src='funding_icons.png'),
+                             br()
                     ),
                     tabPanel("Woods plot",
                              br(),
                              sidebarPanel(
+                               class = "scrollable",
                                h3("Select parameters for the plot."),
                                checkboxInput(inputId = "theory",
                                              label = "Theoretical calculations",
@@ -69,16 +81,17 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                            selected = c("CD160", "CD160_HVEM")),
                                         class = "states-to-compare-column"),
                                  column(6,
-                                        tags$button("Adjust colors", 
+                                        tags$button("Adjust colors",
                                                     class = "collapse-button",
-                                                    `data-toggle`="collapse", 
+                                                    `data-toggle`="collapse",
                                                     `data-target`="#colorss"),
                                         tags$div(
                                           class = "hideable",
                                           id = "colorss",
                                           uiOutput("states_colors")
                                         ),
-                                        class = "states-colors-column")
+                                        class = "states-colors-column"
+                                        )
                                  
                                ),
                                ##
@@ -125,7 +138,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                ##
                                tags$button("Adjust labels", 
                                            class = "collapse-button",
-                                           `data-toggle`="collapse", 
+                                           `data-toggle`="collapse",
                                            `data-target`="#labs"),
                                tags$div(
                                  class = "hideable",
@@ -151,6 +164,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                )
                              ),
                              mainPanel(
+                               class = "scrollable",
                                tabsetPanel(
                                  tabPanel("Comparison plot", 
                                           br(),
@@ -172,6 +186,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                     tabPanel("Coverage", 
                              br(),
                              sidebarPanel(
+                               class = "scrollable",
                                radioButtons(
                                  inputId = 'chosen_state',
                                  label = 'Choose state:',
@@ -188,6 +203,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                )
                              ),
                              mainPanel(
+                               class = "scrollable",
                                tabsetPanel(
                                  tabPanel("Peptide Coverage",
                                           br(),
@@ -280,14 +296,30 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                    checkboxInput(inputId = "export_theo_woods_plot_data",
                                                                  label = "Theoretical Woods Plot Data"))),
                                           br(),
+                                          h5("Elements chosen for report have the same parameters as chosen in panel e.g. axis range and title. Adjust parameters for plots as needed in the report."),
+                                          br(),
                                           downloadButton(outputId = "export_action",
                                                          label = "  Create report!",
                                                          icon = icon("fas fa-download"))
                              )
                     )
                   )
-                )#,
-                #tags$script(src = "collapsing.js")
+                ),
+                tags$div(
+                  class = "mobile-site-backbone",
+                  tags$div(
+                    class = "logo-panel",
+                    img(src = "mock_logo.png", class = "logo")
+                  ),
+                  tags$div(
+                    class = "mobile-information",
+                    h3("Welcome to HaDeX website!"),
+                    h4("For better user experience please use device with wider screen (at least 900px)."),
+                    img(src='funding_icons.png', height = 100)
+                  )
+                ),
+                tags$script(type="text/javascript",
+                            src="resize-logo-panel.js")
 )
 
 

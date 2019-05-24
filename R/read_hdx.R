@@ -7,6 +7,7 @@
 #' @importFrom readxl read_excel
 #' @importFrom readr read_csv read_tsv parse_logical parse_integer parse_double parse_character 
 #' cols col_character
+#' @importFrom data.table fread
 #' 
 #' @param filename a file supplied by a user. Formats allowed: .csv, .tsv and .xls.
 #' 
@@ -21,10 +22,12 @@
 read_hdx <- function(filename){
   
   dat <- switch(file_ext(filename),
-                "csv" = read_csv(filename, col_names = TRUE, col_types = cols(Modification = col_character(), 
-                                                                              Fragment = col_character())),
-                "tsv" = read_tsv(filename, col_names = TRUE, col_types = cols(Modification = col_character(), 
-                                                                              Fragment = col_character())),
+                "csv" = fread(filename),
+                # "csv" = read_csv(filename, col_names = TRUE, col_types = cols(Modification = col_character(), 
+                #                                                               Fragment = col_character())),
+                # "tsv" = read_tsv(filename, col_names = TRUE, col_types = cols(Modification = col_character(), 
+                #                                                               Fragment = col_character())),
+                "xlsx" = read_excel(filename),
                 "xls" = read_excel(filename))
   
   colnames_v <- c("Protein", "Start", "End", "Sequence", 
