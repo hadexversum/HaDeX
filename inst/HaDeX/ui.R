@@ -4,6 +4,7 @@ source("data-work.R")
 
 ui <- fluidPage(theme = "HaDeX_theme.css",
                 #titlePanel("HaDeX"), #: analysis of data from hydrogen deuterium exchange-mass spectrometry"),
+                tags$head(includeScript("ga.js")),
                 tags$div(
                   class = "site-backbone",
                   tags$div(
