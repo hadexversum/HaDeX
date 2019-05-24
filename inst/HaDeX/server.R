@@ -23,8 +23,19 @@ server <- function(input, output, session) {
     if (is.null(inFile)){
       read_hdx('./data/KD_180110_CD160_HVEM.csv')
     } else {
-      validate(need(try(read_hdx(inFile[["datapath"]])), "Check file requirements"))
+      validate(need(try(read_hdx(inFile[["datapath"]])), "Check file requirements!"))
       read_hdx(inFile[["datapath"]])
+    }
+    
+  })
+  
+  output[["data_file_info"]] <- renderText({
+    
+    if (is.null(input[["data_file"]])){
+      "Example file: KD_180110_CD160_HVEM.csv"
+    } else {
+      length(dat()[[1]])
+      "Supplied file is valid."
     }
     
   })
@@ -254,7 +265,8 @@ server <- function(input, output, session) {
   
   output[["stateOverlapDist"]] <- renderPlot({
     
-    stateOverlapDist()
+    withProgress(message = "Calculating...",
+                 stateOverlapDist())
     
   })
   
@@ -592,12 +604,14 @@ server <- function(input, output, session) {
         
       }
       
+      withProgress(message = "Calculating...",
       cp + coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                           ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
         labs(title = input[["comparison_plot_title"]], 
              x = input[["comparison_plot_x_label"]],
              y = input[["comparison_plot_y_label"]]) +
         scale_color_manual(values = comparison_plot_colors_chosen())
+      )
       
     })
     

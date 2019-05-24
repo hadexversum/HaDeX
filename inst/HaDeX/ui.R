@@ -22,12 +22,20 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                     tabPanel("Start",
                              h3("Welcome!"),
                              h4("Upload your file. Otherwise you will see example data."),
-                             fileInput(
-                               inputId = "data_file",
-                               label = "Choose file:",
-                               multiple = FALSE,
-                               accept = c(".csv"),
-                               placeholder = "No .csv file selected"),
+                             #
+                             fluidRow(
+                               column(3, 
+                                      fileInput(
+                                        inputId = "data_file",
+                                        label = "Choose file:",
+                                        multiple = FALSE,
+                                        accept = c(".csv"),
+                                        placeholder = "No .csv file selected")),
+                               column(4, 
+                                      h5("File status:"),
+                                      textOutput("data_file_info"))
+                             ),
+                             #
                              h4("Currently HaDeX supports files with only one protein."),
                              h4("In order for program to behave correctly, please make sure supplied file fulfills following requirements:"),
                              tags$button("Show requirements", 
