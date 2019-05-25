@@ -33,7 +33,10 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                         placeholder = "No file selected")),
                                column(4, 
                                       h5("File status:"),
-                                      textOutput("data_file_info"))
+                                      tags$div(
+                                        class = "file-status-message",
+                                        textOutput("data_file_info")
+                                      ))
                              ),
                              #
                              h4("Currently HaDeX supports files with only one protein."),
