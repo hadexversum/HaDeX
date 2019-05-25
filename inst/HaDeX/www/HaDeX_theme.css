@@ -293,7 +293,7 @@ a {
 
 a:hover,
 a:focus {
-	color: var(--theme-color-accent);
+	color: var(--theme-color-secondary);
 	text-decoration: underline
 }
 
@@ -1229,31 +1229,42 @@ fieldset[disabled] a.btn {
 	pointer-events: none
 }
 
-.btn-default {
-	color: var(--theme-color-bright-text);
-	background-color: var(--theme-color-buttons);
-	border-color: var(--theme-color-buttons)
+.btn-default,
+a.dt-button, 
+.paginate_button {
+	color: var(--theme-color-bright-text) !important;
+	background-color: var(--theme-color-buttons) !important;
+	border-color: var(--theme-color-buttons) !important;
+	background-image: none !important
 }
 
 .btn-default:focus,
-.btn-default.focus {
-	color: var(--theme-color-text);
-	background-color: var(--theme-color-buttons-secondary);
-	border-color: var(--theme-color-buttons-secondary)
+.btn-default.focus,
+a.dt-button:focus, 
+.paginate_button:focus {
+	color: var(--theme-color-text) !important;
+	background-color: var(--theme-color-buttons-secondary) !important;
+	border-color: var(--theme-color-buttons-secondary) !important;
+	background-image: none !important
 }
 
-.btn-default:hover {
-	color: var(--theme-color-text);
-	background-color: var(--theme-color-buttons-secondary);
-	border-color: var(--theme-color-semi-text)
+.btn-default:hover,
+a.dt-button:hover, 
+.paginate_button:hover {
+	color: var(--theme-color-text) !important;
+	background-color: var(--theme-color-buttons-secondary) !important;
+	border-color: var(--theme-color-semi-text) !important;
+  background-image: none !important
 }
 
 .btn-default:active,
 .btn-default.active,
+a.dt-button:active, 
+.paginate_button:active,
 .open>.dropdown-toggle.btn-default {
-	color: var(--theme-color-text);
-	background-color: var(--theme-color-buttons-secondary);
-	border-color: var(--theme-color-buttons-secondary)
+	color: var(--theme-color-text) !important;
+	background-color: var(--theme-color-buttons-secondary) !important;
+	border-color: var(--theme-color-buttons-secondary) !important;
 }
 
 .btn-default:active:hover,
@@ -1265,15 +1276,16 @@ fieldset[disabled] a.btn {
 .btn-default:active.focus,
 .btn-default.active.focus,
 .open>.dropdown-toggle.btn-default.focus {
-	color: var(--theme-color-text);
-	background-color: var(--theme-color-buttons-secondary);
-	border-color: var(--theme-color-buttons-secondary)
+	color: var(--theme-color-text) !important;
+	background-color: var(--theme-color-buttons-secondary) !important;
+	border-color: var(--theme-color-buttons-secondary) !important;
+	background-image: none !important
 }
 
 .btn-default:active,
 .btn-default.active,
 .open>.dropdown-toggle.btn-default {
-	background-image: none
+	background-image: none !important
 }
 
 .btn-default.disabled:hover,
@@ -1285,8 +1297,9 @@ fieldset[disabled] .btn-default:focus,
 .btn-default.disabled.focus,
 .btn-default[disabled].focus,
 fieldset[disabled] .btn-default.focus {
-	background-color: #aea79f;
-	border-color: #aea79f
+	background-color: #aea79f !important;
+	border-color: #aea79f !important;
+	background-image: none !important
 }
 
 .btn-default .badge {
@@ -1514,7 +1527,7 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
 .nav>li>a:hover,
 .nav>li>a:focus {
 	text-decoration: none;
-	background-color: var(--theme-color-buttons-secondary);
+	background-color: var(--theme-color-secondary);
 	color: var(--theme-color-text);
 }
 
@@ -1570,7 +1583,7 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
 .nav-tabs>li.active>a:hover,
 .nav-tabs>li.active>a:focus {
 	color: var(--theme-color-text);
-	background-color: var(--theme-color-accent);
+	background-color: var(--theme-color-secondary);
 }
 
 .nav-pills>li {
@@ -1590,7 +1603,7 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
 .nav-pills>li.active>a:hover,
 .nav-pills>li.active>a:focus {
 	color: var(--theme-color-text);
-	background-color: var(--theme-color-accent);
+	background-color: var(--theme-color-secondary);
 }
 
 .tab-content>.tab-pane {
@@ -1879,11 +1892,11 @@ float: right;
   background-color: #FFF;
 }
 
-/*
+
 .shiny-split-layout > div {
     overflow: unset;
 }
-*/
+
 
 .mobile-site-backbone {
   display: none;
@@ -1934,4 +1947,23 @@ float: right;
   padding: 10px;
   width: max-content;
   border-radius: 6px;
+}
+
+button.dt-button, 
+div.dt-button, 
+a.dt-button,
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  border: none !important;
+}
+
+.ellipsis {
+  display: unset;
+}
+
+.dataTables_paginate > span {
+  display: unset;
+}
+
+a.dt-button {
+  background-image: none !important;
 }
