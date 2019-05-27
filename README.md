@@ -10,7 +10,7 @@ Hydrogen/Deuterium eXchange Mass Spectrometry (HDX-MS) is a staple technology in
 You can install the latest development version of the package:
 
 ```R
-source("https://install-github.me/michbur/HaDeX")
+source("https://install-github.me/hadexversum/HaDeX")
 ```
 
 After installation GUI can be accessed locally:
