@@ -265,8 +265,7 @@ server <- function(input, output, session) {
   
   output[["stateOverlapDist"]] <- renderPlot({
     
-    withProgress(message = "Calculating...",
-                 stateOverlapDist())
+    stateOverlapDist()
     
   })
   
@@ -604,14 +603,12 @@ server <- function(input, output, session) {
         
       }
       
-      withProgress(message = "Calculating...",
       cp + coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-                          ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
+                           ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
         labs(title = input[["comparison_plot_title"]], 
              x = input[["comparison_plot_x_label"]],
              y = input[["comparison_plot_y_label"]]) +
         scale_color_manual(values = comparison_plot_colors_chosen())
-      )
       
     })
     
@@ -671,6 +668,7 @@ server <- function(input, output, session) {
                err_abs_frac_exch_state = round(abs_frac_exch_state, 4)) %>%
         arrange(Start, End) %>%
         dt_format(cols = c("Sequence", "State", "Start", "End", "Abs Val Exch", "Err Abs Val Exch"))
+      
     })
     
     ##
@@ -1041,15 +1039,12 @@ server <- function(input, output, session) {
     
     output[["export_action"]] <- downloadHandler(
       
-      
-      
       filename <- "HaDeX_Report.html",
       
       content <- function(file) {
         
         rmarkdown::render(input = "report_template.Rmd", 
                           output_file = file, quiet = TRUE)
-        
         
       })
     

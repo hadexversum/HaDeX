@@ -30,12 +30,22 @@ read_hdx <- function(filename){
                 "xlsx" = read_excel(filename),
                 "xls" = read_excel(filename))
   
-  colnames_v <- c("Protein", "Start", "End", "Sequence", 
+  #check for dynamx2 file
+  colnames_v_2 <- c("Protein", "Start", "End", "Sequence", 
+                    "Modification", "Max Exchangers", 
+                    "MHP", "State", "Exposure", "File", 
+                    "z", "RT", "Inten", "Center")
+  
+  if(all(colnames_v_2 %in% colnames(dat))){
+    dat <- upgrade_2_to_3(dat)
+  }
+  
+  colnames_v_3 <- c("Protein", "Start", "End", "Sequence", 
                   "Modification", "Fragment", "MaxUptake", 
                   "MHP", "State", "Exposure", "File", "z", 
                   "RT", "Inten", "Center") 
   
-  colnames_presence <- colnames_v %in% colnames(dat)
+  colnames_presence <- colnames_v_3 %in% colnames(dat)
   
   if(!all(colnames_presence)) {
     err_message <- paste0(ifelse(sum(!colnames_presence) > 0, 
@@ -49,6 +59,15 @@ read_hdx <- function(filename){
   dat[["Exposure"]] <- round(dat[["Exposure"]], 3)
   
   dat <- mutate(dat, State = paste0(State, ifelse(!is.na(Modification), paste0(" - ", Modification), ""))) 
+  
+  dat
+  
+}
+
+upgrade_2_to_3 <- function(dat){
+  
+  colnames(dat)[6] <- "MaxUptake"
+  dat[["Fragment"]] <- NA
   
   dat
   
