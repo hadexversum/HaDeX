@@ -17,3 +17,6 @@ test_that("file with ; passes",
 
 test_that("xlsx file passes",
           expect_silent(read_hdx(system.file(package = "HaDeX", "HaDeX/data/161114_BETA_alpha_gamma.xlsx"))))
+
+test_that("dynamx 2 file passes", 
+          expect_silent(read_hdx(system.file(package = "HaDeX", "HaDeX/data/lysenin.csv"))))
