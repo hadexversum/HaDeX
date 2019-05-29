@@ -574,7 +574,7 @@ server <- function(input, output, session) {
     
     ##
     
-    output[["comparisonPlot"]] <- renderPlot({
+    cp_out <- reactive({
       
       comparison_plot_colors_chosen()
       
@@ -612,6 +612,23 @@ server <- function(input, output, session) {
       
     })
     
+    ##
+    
+    output[["comparisonPlot"]] <- renderPlot({
+      
+      cp_out()
+      
+    })
+    
+    ##
+    
+    output[["comparisonPlot_download_button"]] <- downloadHandler("comparisonPlot.svg",
+                                                                   content = function(file) {
+                                                                      ggsave(file, cp_out(), device = svg,
+                                                                             height = 400, width = 300, 
+                                                                             units = "mm")
+                                                                    })
+
     ##
     
     comparison_plot_data_theo <- reactive({
@@ -936,11 +953,6 @@ server <- function(input, output, session) {
     
     output[["differentialPlot_download_button"]] <- downloadHandler("differentialPlot.svg",
                                                                     content = function(file) {
-                                                                      # source("./plots/differentialPlot.R", local = TRUE)
-                                                                      # differential_plot_exp_abs()
-                                                                      # ggsave(file, wp, device = svg, 
-                                                                      #        height = 400, width = 300,
-                                                                      #        units = "mm")
                                                                       ggsave(file, wp_out(), device = svg,
                                                                              height = 400, width = 300, 
                                                                              units = "mm")
