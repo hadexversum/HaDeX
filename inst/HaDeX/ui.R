@@ -191,7 +191,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                           br(),
                                           plotOutput("differentialPlot"),
                                           downloadButton("differentialPlot_download_button", 
-                                                         "Save chart (.svg)")), # height = "800px")),
+                                                         "Save chart (.svg)")), 
                                  tabPanel("Data",
                                           br(),
                                           DT::dataTableOutput("differentialPlot_data")))
@@ -222,7 +222,10 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                tabsetPanel(
                                  tabPanel("Peptide Coverage",
                                           br(),
-                                          plotOutput("stateOverlap")), # height = "600px")),
+                                          plotOutput("stateOverlap"),
+                                          downloadButton("stateOverlap_download_button",
+                                                         "Save chart (.svg)")),
+                                 
                                  tabPanel("Data",
                                           br(),
                                           DT::dataTableOutput("stateOverlap_data"))
@@ -231,7 +234,10 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                tabsetPanel(
                                  tabPanel("Position Frequency",
                                           br(),
-                                          plotOutput("stateOverlapDist")),
+                                          plotOutput("stateOverlapDist"),
+                                          downloadButton("stateOverlapDist_download_button",
+                                                         "Save chart (.svg)")
+                                 ),
                                  tabPanel("Data",
                                           br(),
                                           DT::dataTableOutput("stateOverlapDist_data"))
@@ -270,7 +276,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                      )
                                    )
                                  ),
-                                 mainPanel(plotOutput('aminoDist')))
+                                 mainPanel(plotOutput("aminoDist"),
+                                           downloadButton("aminoDist_download_button",
+                                                         "Save chart (.svg)")))
                              )
                     ),
                     tabPanel("Report",

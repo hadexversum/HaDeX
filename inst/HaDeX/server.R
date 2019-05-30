@@ -140,7 +140,7 @@ server <- function(input, output, session) {
   
   ##
   
-  output[["aminoDist"]] <- renderPlot({
+  aminoDist_out <- reactive({
     
     charge_colors <- c("-1" = "#E41A1C", "0" = "#377EB8", "1" = "#4DAF4A")
     
@@ -151,12 +151,27 @@ server <- function(input, output, session) {
       ggplot(aes(x = amino, fill = charge)) + 
       geom_bar() +
       scale_fill_manual("Charge", values = charge_colors) + 
-      #ylim(0, NA) + 
       labs(title = 'Amino acid composition',
            x = 'Amino acid',
            y = 'Count')
+    
   })
   
+  ##
+  
+  output[["aminoDist"]] <- renderPlot({
+    
+    aminoDist_out()
+    
+  })
+  
+  ##
+  
+  output[["aminoDist_download_button"]] <- downloadHandler("aminoDist.svg",
+                                                           content = function(file){
+                                                             ggsave(file, aminoDist_out(), device = svg, 
+                                                                    height = 300, width = 400, units = "mm")
+                                                           })
   ##
   
   ### TAB: OVERLAPPING ###
@@ -192,13 +207,29 @@ server <- function(input, output, session) {
   
   ##
   
-  output[["stateOverlap"]] <- renderPlot({
+  stateOverlap_out <- reactive({
     
     stateOverlap() + 
       coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]]))
     
   })
   
+  ##
+  
+  output[["stateOverlap"]] <- renderPlot({
+    
+    stateOverlap_out()
+    
+  })
+  
+  ##
+  
+  output[["stateOverlap_download_button"]] <- downloadHandler("stateOverlap.svg",
+                                                              content = function(file){
+                                                                ggsave(file, stateOverlap_out(), device = svg, 
+                                                                       height = 300, width = 400, units = "mm")
+                                                              })
+
   ##
   
   stateOverlapDist_data <- reactive({
@@ -269,6 +300,13 @@ server <- function(input, output, session) {
     
   })
   
+  ##
+  
+  output[["stateOverlapDist_download_button"]] <- downloadHandler("stateOverlapDist.svg",
+                                                                  content = function(file){
+                                                                    ggsave(file, stateOverlapDist(), device = svg,
+                                                                           height = 300, width = 400, units = "mm")
+                                                                  })
   ##
   
   ### TAB: WOODS PLOT ###
@@ -625,8 +663,7 @@ server <- function(input, output, session) {
     output[["comparisonPlot_download_button"]] <- downloadHandler("comparisonPlot.svg",
                                                                    content = function(file) {
                                                                       ggsave(file, cp_out(), device = svg,
-                                                                             height = 400, width = 300, 
-                                                                             units = "mm")
+                                                                             height = 300, width = 400, units = "mm")
                                                                     })
 
     ##
@@ -954,8 +991,7 @@ server <- function(input, output, session) {
     output[["differentialPlot_download_button"]] <- downloadHandler("differentialPlot.svg",
                                                                     content = function(file) {
                                                                       ggsave(file, wp_out(), device = svg,
-                                                                             height = 400, width = 300, 
-                                                                             units = "mm")
+                                                                             height = 300, width = 400, units = "mm")
                                                                     })
     
     ##
