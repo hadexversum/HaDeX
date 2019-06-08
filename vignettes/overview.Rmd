@@ -1,6 +1,6 @@
 ---
-title: "HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data"
-author: "Weronika Pucha&#322;a, Micha&#322; Burdukiewicz"
+title: 'Supplement to: "HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data"'
+author: "Weronika Pucha&#322;a, Micha&#322; Burdukiewicz, Micha&#322; Kistowski, Katarzyna A. Dabrowska, Aleksandra E. Badaczewska-Dawid, Dominik Cysewski, Micha&#322; Dadlez"
 date: "15.02.2019"
 output: 
   rmarkdown::html_vignette:
