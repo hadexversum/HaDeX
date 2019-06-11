@@ -338,7 +338,9 @@ HaDeX provides additional tools for assement of experiments.
 
 ## Quality control 
 
-Function quality_control() shows how the mean uncertainty per peptide changes with time points of an experiment. Example of use:
+Function quality_control() shows how the mean deuteration uncertainty per peptide changes with time points of an experiment. Therefore, a user can detect a time point after which the decrease of the deuteration uncertainty becomes too marginal to prolong the measurements. This function is the most useful in the case of multiple measurements of the same or very similar proteins, where it allows to optimize the experiment duration.
+
+Example:
 
 ```{r warning=FALSE}
 result <- quality_control(dat = dat,
@@ -363,8 +365,8 @@ ggplot(result[result["time"]>=1,]) +
         legend.title = element_blank())
 ```
 
-Example above is based on relative values. Although HaDeX provides results in absolute values, be aware that absolute calculations don't 
-contain time out (it is used for scaling), so the uncertainty is not the function of $D_{100}$ - it is constant. 
+Example above is based on relative values. Although HaDeX provides results in absolute values, be aware that absolute calculations do not
+encompass time out (it is used for scaling), so the uncertainty is not the function of $D_{100}$, but is constant. 
 
 # HaDeX Graphical User Interface
 
