@@ -391,7 +391,9 @@ dat_1 <- read_hdx(system.file(package = "HaDeX",
 reconstruct_sequence(dat_1)
 ```
 
-We can use these type of chart to preliminary inspect data.
+What we see on comparison plots?
+
+This protein quickly exchanges hydrogen with deuterium, thus we can rely on experimental computations and theoretical plots are not necessary.
 
 ```{r warning=FALSE}
 # calculate data
@@ -434,9 +436,7 @@ comparison_plot(calc_dat = calc_dat_1,
 
 ```
 
-Next, on the the Woods we see peptides with the decreased hydrogen-deuterium exchange after the binding with the other protein.
-
-The theoretical values are commonly used in situations where we do not have measured the endopoint of the exchange (low amount of material, exchange occurs very slowly)
+What we see here?
 
 ```{r warning=FALSE}
   
