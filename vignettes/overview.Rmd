@@ -389,7 +389,11 @@ dat_1 <- read_hdx(system.file(package = "HaDeX",
 
 # protein sequence reconstruction
 reconstruct_sequence(dat_1)
+```
 
+We can use these type of chart to preliminary inspect data.
+
+```{r warning=FALSE}
 # calculate data
 calc_dat_1 <- prepare_dataset(dat = dat_1,
                               in_state_first = "CD160_0.001",
@@ -426,6 +430,15 @@ comparison_plot(calc_dat = calc_dat_1,
                 relative = FALSE,
                 state_first = "CD160",
                 state_second = "CD160_HVEM")
+
+
+```
+
+Next, on the the Woods we see peptides with the decreased hydrogen-deuterium exchange after the binding with the other protein.
+
+The theoretical values are commonly used in situations where we do not have measured the endopoint of the exchange (low amount of material, exchange occurs very slowly)
+
+```{r warning=FALSE}
   
 
 # theoretical Woods plot - relative values
