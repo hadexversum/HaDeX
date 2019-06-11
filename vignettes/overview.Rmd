@@ -393,7 +393,10 @@ reconstruct_sequence(dat_1)
 
 What we see on comparison plots?
 
-This protein quickly exchanges hydrogen with deuterium, thus we can rely on experimental computations and theoretical plots are not necessary.
+Comparison plots show the peptides’ level of deuteration.
+The x axis shows amino acid position in protein sequence, the y axis shows the level of exchange- relative (in percent) or absolute (in Da).
+For example, the plot below shows levels of peptides’ deuteration after 1 minute deuteration time along with error bars.
+On the theoretical plot are visible regions, which exchange quickly (N terminal part, regions between 30-70 amino acid) and regions, which exchange slowly (peptides 15-24, 95-110 amino acid). We can also see the differences in exchange between two states, indicating regions which changed upon binding with other protein.
 
 ```{r warning=FALSE}
 # calculate data
@@ -412,6 +415,11 @@ comparison_plot(calc_dat = calc_dat_1,
                 state_first = "CD160",
                 state_second = "CD160_HVEM")
 
+```
+
+On the experimental plot are visible regions, which exchange quickly (N terminal part, regions between 30-70 amino acid) and regions, which exchange slowly (peptides 15-24, 30-35, 95-110 amino acid). 
+
+```{r warning=FALSE}
 # experimental comparison plot - relative values
 comparison_plot(calc_dat = calc_dat_1,
                 theoretical = FALSE,
@@ -419,6 +427,11 @@ comparison_plot(calc_dat = calc_dat_1,
                 state_first = "CD160",
                 state_second = "CD160_HVEM")
 
+```
+
+Plots below are equivalent to plots above but in absolute values - for users that prefer those.
+
+```{r warning=FALSE}
 # theoretical comparison plot - absolute values
 comparison_plot(calc_dat = calc_dat_1,
                 theoretical = TRUE,
@@ -438,6 +451,9 @@ comparison_plot(calc_dat = calc_dat_1,
 
 What we see here?
 
+Wood’s plot is a different way of presenting the same data as in comparison plot. In Wood’s plot the levels of peptides’ deuteration (either relative or absolute) are subtracted between states and presented with error bars.
+The plot below shows peptides, which levels of deuteration were significantly lower upon binding with other protein (red) and peptides, which levels of exchange were significantly higher upon binding with other protein (blue). The plot also show peptides in which no significant changes in deuteration between states are visible (grey). The biggest changes on the theoretical plot can be observed in 3 peptides (15-24, 30-35, 75-90). 
+
 ```{r warning=FALSE}
   
 
@@ -447,12 +463,22 @@ woods_plot(calc_dat = calc_dat_1,
            relative = TRUE) +
   coord_cartesian(ylim = c(-.2, .2))
 
+```
+
+The biggest changes on the experimental plot can be observed in 3 peptides (15-24, 110-115).
+
+```{r warning=FALSE}
 # experimental Woods plot - relative values
 woods_plot(calc_dat = calc_dat_1,
            theoretical = FALSE,
            relative = TRUE) +
   coord_cartesian(ylim = c(-.2, .2))
 
+```
+
+Plot below show results in absolute values.
+
+```{r warning=FALSE}
 # theoretical Woods plot - absolute values
 woods_plot(calc_dat = calc_dat_1,
            theoretical = TRUE, 
