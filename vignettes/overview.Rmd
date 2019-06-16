@@ -216,7 +216,7 @@ calc_dat <- prepare_dataset(dat,
 
 ## Comparison plot
 
-The levels of deuteration along with uncertainty intervals are shown on comparison plot. HaDeX provides both experimental and theoretical levels of deuteration in either relative or absolute values. Example of use:
+Comparison plots show the peptide deuteration level. The x-axis represents positions of amino acids in the sequence. On the y-axis shows the level of exchange: *relative* (to the maximum deuteration) or *absolute* (in Daltons). The chart below shows peptide deuteration after 25 minutes of the incubation along with the confidence intervals. The maximum deuteration can be also computed in two different ways: either as *theoretical* (where the maximum duteration depends on the theoretical deuteration levels) and *experimental* (where the maximum deuteration is assumed to be equal to the deuteration measured at the last timepoint).
 
 -- theoretical:
 
@@ -391,11 +391,6 @@ dat_1 <- read_hdx(system.file(package = "HaDeX",
 reconstruct_sequence(dat_1)
 ```
 
-What we see on comparison plots?
-
-Comparison plots show the peptides’ level of deuteration.
-The x axis shows amino acid position in protein sequence, the y axis shows the level of exchange- relative (in percent) or absolute (in Da).
-For example, the plot below shows levels of peptides’ deuteration after 1 minute deuteration time along with error bars.
 On the theoretical plot are visible regions, which exchange quickly (N terminal part, regions between 30-70 amino acid) and regions, which exchange slowly (peptides 15-24, 95-110 amino acid). We can also see the differences in exchange between two states, indicating regions which changed upon binding with other protein.
 
 ```{r warning=FALSE}
