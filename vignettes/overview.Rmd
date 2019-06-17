@@ -28,6 +28,31 @@ Hydrogen-deuterium mass spectrometry (HDX-MS) is a staple tool for monitoring dy
 
 To make the HaDeX **R** package available to the less **R**-fluent users, we enhanced it with a comprehensive Graphical User Interface available as a HaDeX Shiny app. The reproducibility of the whole procedure is ensured with advanced reporting functions. The app is availble online: http://mslab-ibb.pl/shiny/HaDeX/ or locally through the HaDeX_gui() fuction.
 
+## Comparison of the existing HDX-MS software
+
+| Type          |                                                   | MEMHDX | Deuteros | HaDeX |
+|---------------|---------------------------------------------------|--------|----------|-------|
+| Accessibility | Web server                                        | Yes    | No       | Yes   |
+| Accessibility | Programmatic access                               | No     | No       | Yes   |
+| Accessibility | Desktop software                                  | No     | Yes      | Yes   |
+| Analysis      | Multi-state analysis                              | No     | No       | Yes   |
+| Analysis      | ISO-based uncertainty                             | No     | No       | Yes   |
+| Analysis      | Coverage and peptide overlap                      | No     | No       | Yes   |
+| Analysis      | Quality control                                   | No     | No       | Yes   |
+| Analysis      | N- and C-terminal length corrections              | No     | Yes      | Yes   |
+| Visualization | Global visualization of deuterium uptake          | Yes    | Yes      | Yes   |
+| Visualization | Woods plot                                        | No     | Yes      | Yes   |
+| Visualization | Zooming of the Woods plot                         | No     | Yes      | Yes   |
+| Visualization | Customizable label names and colors               | No     | No       | Yes   |
+| Visualization | Peptide kinetics chart                            | Yes    | No       | No    |
+| Visualization | 3D structure visualization                        | Yes    | No       | No    |
+| Visualization | Downloadable charts                               | Yes    | Yes      | Yes   |
+|               |                                                   |        |          |       |
+| Reporting     | Deuterium uptake download                         | Yes    | Yes      | Yes   |
+| Reporting     | Downloadable results of intermediate computations | No     | No       | Yes   |
+| Reporting     | Report generation                                 | No     | No       | Yes   |
+| Reporting     | PyMol export                                      | No     | Yes      | No    |
+
 # General data manipulation
 
 ## Input file format 
@@ -269,7 +294,7 @@ comparison_plot(calc_dat = calc_dat,
 
 ## Woods plot
 
-Woods plot format shows the difference between the results of two different states as described by equation 11. HaDeX provides both experimental and theoretical calculations in either relative or absolute values. Example of use:
+Woods plot format shows the difference between the results of two different states as described by equation 11. Similarly to the comparison plot, HaDeX provides both experimental and theoretical calculations using either relative or absolute values:
 
 -- theoretical:
 
@@ -314,7 +339,7 @@ woods_plot(calc_dat = calc_dat,
 
 ### Confidence limit in Woods plot
 
-The function calculate_confidence_limit_values() calculates confidence limit values the way that is described in Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086. 
+The function calculate_confidence_limit_values() calculates confidence limit values as it is described elsewhere (Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086). 
 
 ```{r}
 calculate_confidence_limit_values(calc_dat = calc_dat,
@@ -323,7 +348,7 @@ calculate_confidence_limit_values(calc_dat = calc_dat,
                                   relative = TRUE)  
 ``` 
 
-Function add_stat_dependency() returns calc_dat extended by column describing relation of given peptide with confidence limit.
+Function add_stat_dependency() returns data extended by column describing relation of a given peptide with confidence limit.
 
 ```{r}
 add_stat_dependency(calc_dat, 
@@ -338,7 +363,7 @@ HaDeX provides additional tools for assement of experiments.
 
 ## Quality control 
 
-Function quality_control() shows how the mean deuteration uncertainty per peptide changes with time points of an experiment. Therefore, a user can detect a time point after which the decrease of the deuteration uncertainty becomes too marginal to prolong the measurements. This function is the most useful in the case of multiple measurements of the same or very similar proteins, where it allows to optimize the experiment duration.
+Function quality_control() shows how the mean deuteration uncertainty per peptide changes with time points of an experiment. Therefore, a user can detect a time point after which the decrease of the deuteration uncertainty becomes too marginal to prolong the measurements. This function is the most useful in the case of multiple measurements of the same or very similar proteins, where it allows to optimize the duration of the incubation.
 
 Example:
 
@@ -352,7 +377,7 @@ result <- quality_control(dat = dat,
 
 ```
 
-As the function returns data.frame with calculated value, here is an example of result visualization:
+The function returns an object of the data.frame class, that can be easily visualized.
 
 ```{r warning=FALSE}
 ggplot(result[result["time"]>=1,]) + 
