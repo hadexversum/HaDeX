@@ -23,3 +23,11 @@ HaDeX_gui()
 ### Online manual
 
 The HaDeX documentation is available [online](https://HaDeXversum.github.io/HaDeX/).
+
+### Citation
+
+Puchala W, Burdukiewicz M, Kistowski M, Dabrowska KA, Badaczewska-Dawid AE, Cysewski D and Dadlez M (2019). HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data. R package version 0.1.
+
+### Funding  
+
+This work is supported by Foundation of Polish Science (TEAM TECH CORE FACILITY/2016-2/2 *Mass Spectrometry of Biopharmaceuticals - improved methodologies for qualitative, quantitative and structural characterization of drugs, proteinaceous drug targets and diagnostic molecules)*.
