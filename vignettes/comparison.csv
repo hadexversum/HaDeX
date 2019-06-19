@@ -1,4 +1,4 @@
-Type;;MEMHDX;Deuteros;HaDeX
+Type;Name;MEMHDX;Deuteros;HaDeX
 Accessibility;Web server;Yes;No;Yes
 Accessibility;Programmatic access;No;No;Yes
 Accessibility;Desktop software;No;Yes;Yes
@@ -18,4 +18,3 @@ Reporting;Deuterium uptake download;Yes;Yes;Yes
 Reporting;Downloadable results of intermediate computations;No;No;Yes
 Reporting;Report generation;No;No;Yes
 Reporting;PyMol export;No;Yes;No
- ;;;;

@@ -69,10 +69,12 @@
 
       
       </header><script src="overview_files/htmlwidgets-1.3/htmlwidgets.js"></script><script src="overview_files/jquery-1.12.4/jquery.min.js"></script><link href="overview_files/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
-<script src="overview_files/datatables-binding-0.5/datatables.js"></script><link href="overview_files/dt-core-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+<script src="overview_files/datatables-binding-0.5/datatables.js"></script><link href="overview_files/dt-core-bootstrap-1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet">
+<link href="overview_files/dt-core-bootstrap-1.10.16/css/dataTables.bootstrap.extra.css" rel="stylesheet">
+<script src="overview_files/dt-core-bootstrap-1.10.16/js/jquery.dataTables.min.js"></script><script src="overview_files/dt-core-bootstrap-1.10.16/js/dataTables.bootstrap.min.js"></script><link href="overview_files/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet">
+<script src="overview_files/crosstalk-1.0.0/js/crosstalk.min.js"></script><link href="overview_files/dt-core-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="overview_files/dt-core-1.10.16/css/jquery.dataTables.extra.css" rel="stylesheet">
-<script src="overview_files/dt-core-1.10.16/js/jquery.dataTables.min.js"></script><link href="overview_files/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet">
-<script src="overview_files/crosstalk-1.0.0/js/crosstalk.min.js"></script><div class="row">
+<script src="overview_files/dt-core-1.10.16/js/jquery.dataTables.min.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Supplement to: “HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data”</h1>
@@ -95,157 +97,8 @@
 <div id="comparison-of-the-existing-hdx-ms-software" class="section level2">
 <h2 class="hasAnchor">
 <a href="#comparison-of-the-existing-hdx-ms-software" class="anchor"></a>Comparison of the existing HDX-MS software</h2>
-<table class="table">
-<thead><tr class="header">
-<th>Type</th>
-<th></th>
-<th>MEMHDX</th>
-<th>Deuteros</th>
-<th>HaDeX</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>Accessibility</td>
-<td>Web server</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-</tr>
-<tr class="even">
-<td>Accessibility</td>
-<td>Programmatic access</td>
-<td>No</td>
-<td>No</td>
-<td>Yes</td>
-</tr>
-<tr class="odd">
-<td>Accessibility</td>
-<td>Desktop software</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-<tr class="even">
-<td>Analysis</td>
-<td>Multi-state analysis</td>
-<td>No</td>
-<td>No</td>
-<td>Yes</td>
-</tr>
-<tr class="odd">
-<td>Analysis</td>
-<td>ISO-based uncertainty</td>
-<td>No</td>
-<td>No</td>
-<td>Yes</td>
-</tr>
-<tr class="even">
-<td>Analysis</td>
-<td>Coverage and peptide overlap</td>
-<td>No</td>
-<td>No</td>
-<td>Yes</td>
-</tr>
-<tr class="odd">
-<td>Analysis</td>
-<td>Quality control</td>
-<td>No</td>
-<td>No</td>
-<td>Yes</td>
-</tr>
-<tr class="even">
-<td>Analysis</td>
-<td>N- and C-terminal length corrections</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-<tr class="odd">
-<td>Visualization</td>
-<td>Global visualization of deuterium uptake</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-<tr class="even">
-<td>Visualization</td>
-<td>Woods plot</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-<tr class="odd">
-<td>Visualization</td>
-<td>Zooming of the Woods plot</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-<tr class="even">
-<td>Visualization</td>
-<td>Customizable label names and colors</td>
-<td>No</td>
-<td>No</td>
-<td>Yes</td>
-</tr>
-<tr class="odd">
-<td>Visualization</td>
-<td>Peptide kinetics chart</td>
-<td>Yes</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr class="even">
-<td>Visualization</td>
-<td>3D structure visualization</td>
-<td>Yes</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr class="odd">
-<td>Visualization</td>
-<td>Downloadable charts</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>Reporting</td>
-<td>Deuterium uptake download</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-<tr class="even">
-<td>Reporting</td>
-<td>Downloadable results of intermediate computations</td>
-<td>No</td>
-<td>No</td>
-<td>Yes</td>
-</tr>
-<tr class="odd">
-<td>Reporting</td>
-<td>Report generation</td>
-<td>No</td>
-<td>No</td>
-<td>Yes</td>
-</tr>
-<tr class="even">
-<td>Reporting</td>
-<td>PyMol export</td>
-<td>No</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-</tbody>
-</table>
+<div id="htmlwidget-ba007a168debe445524d" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ba007a168debe445524d">{"x":{"style":"bootstrap","filter":"none","data":[["Accessibility","Accessibility","Accessibility","Analysis","Analysis","Analysis","Analysis","Analysis","Visualization","Visualization","Visualization","Visualization","Visualization","Visualization","Visualization","Reporting","Reporting","Reporting","Reporting"],["Web server","Programmatic access","Desktop software","Multi-state analysis","ISO-based uncertainty","Coverage and peptide overlap","Quality control","N- and C-terminal length corrections","Global visualization of deuterium uptake","Woods plot","Zooming of the Woods plot","Customizable label names and colors","Peptide kinetics chart","3D structure visualization","Downloadable charts","Deuterium uptake download","Downloadable results of intermediate computations","Report generation","PyMol export"],["Yes","No","No","No","No","No","No","No","Yes","No","No","No","Yes","Yes","Yes","Yes","No","No","No"],["No","No","Yes","No","No","No","No","Yes","Yes","Yes","Yes","No","No","No","Yes","Yes","No","No","Yes"],["Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","No","No","Yes","Yes","Yes","Yes","No"]],"container":"<table class=\"table table-striped table-hover\">\n  <thead>\n    <tr>\n      <th>Type<\/th>\n      <th>Name<\/th>\n      <th>MEMHDX<\/th>\n      <th>Deuteros<\/th>\n      <th>HaDeX<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","ordering":false,"paging":false,"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data) {\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == 'No' ? 'red' : ''});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == 'No' ? 'red' : ''});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':value == 'No' ? 'red' : ''});\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="general-data-manipulation" class="section level1">
@@ -255,8 +108,8 @@
 <h2 class="hasAnchor">
 <a href="#input-file-format" class="anchor"></a>Input file format</h2>
 <p>The HaDeX web server works only on data in the DynamX datafile format (Waters Corp.). It must contains a following set of columns with specified properties:</p>
-<div id="htmlwidget-06ebf6a11d857d9e5922" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-06ebf6a11d857d9e5922">{"x":{"filter":"none","data":[["Protein","Start","End","Sequence","Modification","Fragment","MaxUptake","MHP","State","Exposure","File","z","RT","Inten","Center"],["Character","Integer","Integer","Character","Logic","Logic","Numeric","Numeric","Character","Numeric","Character","Integer","Numeric","Numeric","Numeric"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Column.Name<\/th>\n      <th>Column.Type<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","autoWidth":true,"pageLength":15,"order":[],"orderClasses":false,"lengthMenu":[10,15,25,50,100]}},"evals":[],"jsHooks":[]}</script><p>Although data can be imported into R using other tools, we strongly advice to rely on the <em>read_hdx()</em> function:</p>
+<div id="htmlwidget-900b6b693c9e720f2ac0" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-900b6b693c9e720f2ac0">{"x":{"filter":"none","data":[["Protein","Start","End","Sequence","Modification","Fragment","MaxUptake","MHP","State","Exposure","File","z","RT","Inten","Center"],["Character","Integer","Integer","Character","Logic","Logic","Numeric","Numeric","Character","Numeric","Character","Integer","Numeric","Numeric","Numeric"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Column.Name<\/th>\n      <th>Column.Type<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","autoWidth":true,"pageLength":15,"order":[],"orderClasses":false,"lengthMenu":[10,15,25,50,100]}},"evals":[],"jsHooks":[]}</script><p>Although data can be imported into R using other tools, we strongly advice to rely on the <em>read_hdx()</em> function:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">dat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_hdx.html">read_hdx</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="dt">package =</span> <span class="st">"HaDeX"</span>, </a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">                            <span class="st">"HaDeX/data/KD_190304_Nucb2_EDTA_CaCl2_test02_clusterdata.csv"</span>))</a></code></pre></div>
 <p>Currently, <em>read_hdx()</em> supports .csv, .tsv and .xls files fullfilling the data structure described above.</p>
@@ -269,7 +122,7 @@
 <pre><code>## [1] "xxxxxxxxxxxxxxxxVPIDIDKTKVKGEGHVEGEKIENPDTGLYYDEYLRQVIDVLETDKHFREKLQTADIEEIKSGKLSRELDLVSHHVRTRLDELKRQEVARLRMLIKAKMDSVQDTGIDHQALLKQFEHLNHQNPDTFEPKDLDMLIKAATSDLENYDKTRHEEFKKYEMxxxxxxxxxxxxLDEEKRQREESKFGEMxxxxxxxxxxxxxxxxxxxKEVWEEADGLDPNEFDPKTFFKLHDVNNDRFLDEQELEAxFTKELEKVYDPKNEEDDMVEMEEERLxxxxHVMNEVDINKDRLVTLEEFLRATEKKEFLEPDSWETLDQQQLFTEDELKEFESHISQQEDELRKKAEELQKQKEELQRQHDQLQAQEQELQQVVKQMEQKKLQQANPPAGPAGELK"</code></pre>
 <p>Additionally, the coverage of peptides can be presented on a chart using the graphic_overlapping() function.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/graphic_overlapping.html">graphic_overlapping</a></span>(dat, <span class="dt">chosen_state =</span> <span class="st">"gg_Nucb2_CaCl2"</span>)</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 <p>User can choose which state (or states) should be included in shown data. If this parameter is not supplied, the first possible state is chosen. If a given peptide is available in more than one state, it is shown only once.</p>
 </div>
 </div>
@@ -383,7 +236,7 @@
 <a class="sourceLine" id="cb6-4" data-line-number="4">                <span class="dt">state_first =</span> <span class="st">"Nucb2 Factor 1"</span>,</a>
 <a class="sourceLine" id="cb6-5" data-line-number="5">                <span class="dt">state_second =</span> <span class="st">"Nucb2 Factor 2"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb6-6" data-line-number="6"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">"Theoretical fraction exchanged in state comparison in 25 min time"</span>)</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
 <ul>
 <li>absolute values:</li>
 </ul>
@@ -393,7 +246,7 @@
 <a class="sourceLine" id="cb7-4" data-line-number="4">                <span class="dt">state_first =</span> <span class="st">"Nucb2 Factor 1"</span>,</a>
 <a class="sourceLine" id="cb7-5" data-line-number="5">                <span class="dt">state_second =</span> <span class="st">"Nucb2 Factor 2"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb7-6" data-line-number="6"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">"Theoretical fraction exchanged in state comparison in 25 min time"</span>)</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
 <p>– experimental:</p>
 <ul>
 <li>relative values:</li>
@@ -404,7 +257,7 @@
 <a class="sourceLine" id="cb8-4" data-line-number="4">                <span class="dt">state_first =</span> <span class="st">"Nucb2 Factor 1"</span>,</a>
 <a class="sourceLine" id="cb8-5" data-line-number="5">                <span class="dt">state_second =</span> <span class="st">"Nucb2 Factor 2"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb8-6" data-line-number="6"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">"Fraction exchanged in state comparison in 25 min time"</span>)</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
 <ul>
 <li>absolute values:</li>
 </ul>
@@ -414,7 +267,7 @@
 <a class="sourceLine" id="cb9-4" data-line-number="4">                <span class="dt">state_first =</span> <span class="st">"Nucb2 Factor 1"</span>,</a>
 <a class="sourceLine" id="cb9-5" data-line-number="5">                <span class="dt">state_second =</span> <span class="st">"Nucb2 Factor 2"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb9-6" data-line-number="6"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">"Fraction exchanged in state comparison in 25 min time"</span>)</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
 </div>
 <div id="woods-plot" class="section level2">
 <h2 class="hasAnchor">
@@ -428,7 +281,7 @@
 <a class="sourceLine" id="cb10-2" data-line-number="2">           <span class="dt">theoretical =</span> <span class="ot">TRUE</span>,</a>
 <a class="sourceLine" id="cb10-3" data-line-number="3">           <span class="dt">relative =</span> <span class="ot">TRUE</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">"Theoretical fraction exchanged between states in 25 min time"</span>)</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
 <ul>
 <li>absolute values:</li>
 </ul>
@@ -436,7 +289,7 @@
 <a class="sourceLine" id="cb11-2" data-line-number="2">           <span class="dt">theoretical =</span> <span class="ot">TRUE</span>,</a>
 <a class="sourceLine" id="cb11-3" data-line-number="3">           <span class="dt">relative =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">"Theoretical fraction exchanged between states in 25 min time"</span>)</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
 <p>– experimental:</p>
 <ul>
 <li>relative values:</li>
@@ -445,7 +298,7 @@
 <a class="sourceLine" id="cb12-2" data-line-number="2">           <span class="dt">theoretical =</span> <span class="ot">FALSE</span>, </a>
 <a class="sourceLine" id="cb12-3" data-line-number="3">           <span class="dt">relative =</span> <span class="ot">TRUE</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb12-4" data-line-number="4"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">"Theoretical fraction exchanged between states in 25 min time"</span>)</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
 <ul>
 <li>absolute values:</li>
 </ul>
@@ -453,7 +306,7 @@
 <a class="sourceLine" id="cb13-2" data-line-number="2">           <span class="dt">theoretical =</span> <span class="ot">FALSE</span>, </a>
 <a class="sourceLine" id="cb13-3" data-line-number="3">           <span class="dt">relative =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb13-4" data-line-number="4"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">"Theoretical fraction exchanged between states in 25 min time"</span>)</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
 <div id="confidence-limit-in-woods-plot" class="section level3">
 <h3 class="hasAnchor">
 <a href="#confidence-limit-in-woods-plot" class="anchor"></a>Confidence limit in Woods plot</h3>
@@ -520,7 +373,7 @@
 <a class="sourceLine" id="cb19-6" data-line-number="6"><span class="st">  </span><span class="kw">theme_bw</span>(<span class="dt">base_size =</span> <span class="dv">11</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb19-7" data-line-number="7"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">"bottom"</span>,</a>
 <a class="sourceLine" id="cb19-8" data-line-number="8">        <span class="dt">legend.title =</span> <span class="kw">element_blank</span>())</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
 <p>Example above is based on relative values. Although HaDeX provides results in absolute values, be aware that absolute calculations do not encompass time out (it is used for scaling), so the uncertainty is not the function of <span class="math inline">\(D_{100}\)</span>, but is constant.</p>
 </div>
 </div>
@@ -565,7 +418,7 @@
 <a class="sourceLine" id="cb22-13" data-line-number="13">                <span class="dt">relative =</span> <span class="ot">TRUE</span>, </a>
 <a class="sourceLine" id="cb22-14" data-line-number="14">                <span class="dt">state_first =</span> <span class="st">"CD160"</span>,</a>
 <a class="sourceLine" id="cb22-15" data-line-number="15">                <span class="dt">state_second =</span> <span class="st">"CD160_HVEM"</span>)</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-21-1.png" width="672"></p>
 <p>On the experimental plot are visible regions, which exchange quickly (N terminal part, regions between 30-70 amino acid) and regions, which exchange slowly (peptides 15-24, 30-35, 95-110 amino acid).</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="co"># experimental comparison plot - relative values</span></a>
 <a class="sourceLine" id="cb23-2" data-line-number="2"><span class="kw"><a href="../reference/comparison_plot.html">comparison_plot</a></span>(<span class="dt">calc_dat =</span> calc_dat_<span class="dv">1</span>,</a>
@@ -573,7 +426,7 @@
 <a class="sourceLine" id="cb23-4" data-line-number="4">                <span class="dt">relative =</span> <span class="ot">TRUE</span>,</a>
 <a class="sourceLine" id="cb23-5" data-line-number="5">                <span class="dt">state_first =</span> <span class="st">"CD160"</span>,</a>
 <a class="sourceLine" id="cb23-6" data-line-number="6">                <span class="dt">state_second =</span> <span class="st">"CD160_HVEM"</span>)</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-21-1.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
 <p>Plots below are equivalent to plots above but in absolute values - for users that prefer those.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="co"># theoretical comparison plot - absolute values</span></a>
 <a class="sourceLine" id="cb24-2" data-line-number="2"><span class="kw"><a href="../reference/comparison_plot.html">comparison_plot</a></span>(<span class="dt">calc_dat =</span> calc_dat_<span class="dv">1</span>,</a>
@@ -581,14 +434,14 @@
 <a class="sourceLine" id="cb24-4" data-line-number="4">                <span class="dt">relative =</span> <span class="ot">FALSE</span>, </a>
 <a class="sourceLine" id="cb24-5" data-line-number="5">                <span class="dt">state_first =</span> <span class="st">"CD160"</span>,</a>
 <a class="sourceLine" id="cb24-6" data-line-number="6">                <span class="dt">state_second =</span> <span class="st">"CD160_HVEM"</span>)</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="co"># experimental comparison plot - absolute values</span></a>
 <a class="sourceLine" id="cb25-2" data-line-number="2"><span class="kw"><a href="../reference/comparison_plot.html">comparison_plot</a></span>(<span class="dt">calc_dat =</span> calc_dat_<span class="dv">1</span>,</a>
 <a class="sourceLine" id="cb25-3" data-line-number="3">                <span class="dt">theoretical =</span> <span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb25-4" data-line-number="4">                <span class="dt">relative =</span> <span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb25-5" data-line-number="5">                <span class="dt">state_first =</span> <span class="st">"CD160"</span>,</a>
 <a class="sourceLine" id="cb25-6" data-line-number="6">                <span class="dt">state_second =</span> <span class="st">"CD160_HVEM"</span>)</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-22-2.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-23-2.png" width="672"></p>
 <p>What we see here?</p>
 <p>Wood’s plot is a different way of presenting the same data as in comparison plot. In Wood’s plot the levels of peptides’ deuteration (either relative or absolute) are subtracted between states and presented with error bars. The plot below shows peptides, which levels of deuteration were significantly lower upon binding with other protein (red) and peptides, which levels of exchange were significantly higher upon binding with other protein (blue). The plot also show peptides in which no significant changes in deuteration between states are visible (grey). The biggest changes on the theoretical plot can be observed in 3 peptides (15-24, 30-35, 75-90).</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="co"># theoretical Woods plot - relative values</span></a>
@@ -596,27 +449,27 @@
 <a class="sourceLine" id="cb26-3" data-line-number="3">           <span class="dt">theoretical =</span> <span class="ot">TRUE</span>, </a>
 <a class="sourceLine" id="cb26-4" data-line-number="4">           <span class="dt">relative =</span> <span class="ot">TRUE</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb26-5" data-line-number="5"><span class="st">  </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span>.<span class="dv">2</span>, <span class="fl">.2</span>))</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-24-1.png" width="672"></p>
 <p>The biggest changes on the experimental plot can be observed in 3 peptides (15-24, 110-115).</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="co"># experimental Woods plot - relative values</span></a>
 <a class="sourceLine" id="cb27-2" data-line-number="2"><span class="kw"><a href="../reference/woods_plot.html">woods_plot</a></span>(<span class="dt">calc_dat =</span> calc_dat_<span class="dv">1</span>,</a>
 <a class="sourceLine" id="cb27-3" data-line-number="3">           <span class="dt">theoretical =</span> <span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb27-4" data-line-number="4">           <span class="dt">relative =</span> <span class="ot">TRUE</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb27-5" data-line-number="5"><span class="st">  </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span>.<span class="dv">2</span>, <span class="fl">.2</span>))</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-24-1.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-25-1.png" width="672"></p>
 <p>Plot below show results in absolute values.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="co"># theoretical Woods plot - absolute values</span></a>
 <a class="sourceLine" id="cb28-2" data-line-number="2"><span class="kw"><a href="../reference/woods_plot.html">woods_plot</a></span>(<span class="dt">calc_dat =</span> calc_dat_<span class="dv">1</span>,</a>
 <a class="sourceLine" id="cb28-3" data-line-number="3">           <span class="dt">theoretical =</span> <span class="ot">TRUE</span>, </a>
 <a class="sourceLine" id="cb28-4" data-line-number="4">           <span class="dt">relative =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb28-5" data-line-number="5"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">"Theoretical fraction exchanged between states in 1 min time"</span>) </a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-25-1.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-26-1.png" width="672"></p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="co"># experimental Woods plot - absolute values</span></a>
 <a class="sourceLine" id="cb29-2" data-line-number="2"><span class="kw"><a href="../reference/woods_plot.html">woods_plot</a></span>(<span class="dt">calc_dat =</span> calc_dat_<span class="dv">1</span>,</a>
 <a class="sourceLine" id="cb29-3" data-line-number="3">           <span class="dt">theoretical =</span> <span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb29-4" data-line-number="4">           <span class="dt">relative =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb29-5" data-line-number="5"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">"Fraction exchanged between states in 1 min time"</span>) </a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-25-2.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-26-2.png" width="672"></p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="co"># quality control - relative values </span></a>
 <a class="sourceLine" id="cb30-2" data-line-number="2">(result &lt;-<span class="st"> </span><span class="kw"><a href="../reference/quality_control.html">quality_control</a></span>(<span class="dt">dat =</span> dat_<span class="dv">1</span>,</a>
 <a class="sourceLine" id="cb30-3" data-line-number="3">                <span class="dt">state_first =</span> <span class="st">"CD160"</span>,</a>
@@ -661,7 +514,7 @@
 <a class="sourceLine" id="cb32-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x =</span> <span class="st">"log(time) [min]"</span>, <span class="dt">y =</span> <span class="st">"Average uncertainty"</span>, <span class="dt">title =</span> <span class="st">"Uncertainty change in out time"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb32-9" data-line-number="9"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.title =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>(),</a>
 <a class="sourceLine" id="cb32-10" data-line-number="10">        <span class="dt">legend.position =</span> <span class="st">"bottom"</span>)</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-25-3.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-26-3.png" width="672"></p>
 </div>
 <div id="example-workflow-2" class="section level2">
 <h2 class="hasAnchor">
@@ -691,7 +544,7 @@
 <a class="sourceLine" id="cb35-14" data-line-number="14">                <span class="dt">state_first =</span> <span class="st">"Nucb2 Factor 1"</span>,</a>
 <a class="sourceLine" id="cb35-15" data-line-number="15">                <span class="dt">state_second =</span> <span class="st">"Nucb2 Factor 2"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb35-16" data-line-number="16"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">title =</span> <span class="st">"Theoretical fraction exchanged in </span><span class="ch">\n</span><span class="st">state comparison in 25 min time"</span>)</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-26-1.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-27-1.png" width="672"></p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="co"># experimental comparison plot - relative values </span></a>
 <a class="sourceLine" id="cb36-2" data-line-number="2"><span class="kw"><a href="../reference/comparison_plot.html">comparison_plot</a></span>(<span class="dt">calc_dat =</span> calc_dat_<span class="dv">2</span>,</a>
 <a class="sourceLine" id="cb36-3" data-line-number="3">                <span class="dt">theoretical =</span> <span class="ot">FALSE</span>,</a>
@@ -699,7 +552,7 @@
 <a class="sourceLine" id="cb36-5" data-line-number="5">                <span class="dt">state_first =</span> <span class="st">"Nucb2 Factor 1"</span>,</a>
 <a class="sourceLine" id="cb36-6" data-line-number="6">                <span class="dt">state_second =</span> <span class="st">"Nucb2 Factor 2"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb36-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">title =</span> <span class="st">"Fraction exchanged in </span><span class="ch">\n</span><span class="st">state comparison in 25 min time"</span>)</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-26-2.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-27-2.png" width="672"></p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="co"># theoretical comparison plot - absolute values</span></a>
 <a class="sourceLine" id="cb37-2" data-line-number="2"><span class="kw"><a href="../reference/comparison_plot.html">comparison_plot</a></span>(<span class="dt">calc_dat =</span> calc_dat_<span class="dv">2</span>,</a>
 <a class="sourceLine" id="cb37-3" data-line-number="3">                <span class="dt">theoretical =</span> <span class="ot">TRUE</span>,</a>
@@ -707,7 +560,7 @@
 <a class="sourceLine" id="cb37-5" data-line-number="5">                <span class="dt">state_first =</span> <span class="st">"Nucb2 Factor 1"</span>,</a>
 <a class="sourceLine" id="cb37-6" data-line-number="6">                <span class="dt">state_second =</span> <span class="st">"Nucb2 Factor 2"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb37-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">title =</span> <span class="st">"Theoretical fraction exchanged in </span><span class="ch">\n</span><span class="st">state comparison in 25 min time"</span>)</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-26-3.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-27-3.png" width="672"></p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="co"># experimental comparison plot - absolute values </span></a>
 <a class="sourceLine" id="cb38-2" data-line-number="2"><span class="kw"><a href="../reference/comparison_plot.html">comparison_plot</a></span>(<span class="dt">calc_dat =</span> calc_dat_<span class="dv">2</span>,</a>
 <a class="sourceLine" id="cb38-3" data-line-number="3">                <span class="dt">theoretical =</span> <span class="ot">FALSE</span>,</a>
@@ -715,33 +568,33 @@
 <a class="sourceLine" id="cb38-5" data-line-number="5">                <span class="dt">state_first =</span> <span class="st">"Nucb2 Factor 1"</span>,</a>
 <a class="sourceLine" id="cb38-6" data-line-number="6">                <span class="dt">state_second =</span> <span class="st">"Nucb2 Factor 2"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb38-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">title =</span> <span class="st">"Fraction exchanged in </span><span class="ch">\n</span><span class="st">state comparison in 25 min time"</span>)</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-26-4.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-27-4.png" width="672"></p>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="co"># theoretical Woods plot - relative values</span></a>
 <a class="sourceLine" id="cb39-2" data-line-number="2"><span class="kw"><a href="../reference/woods_plot.html">woods_plot</a></span>(<span class="dt">calc_dat =</span> calc_dat_<span class="dv">2</span>,</a>
 <a class="sourceLine" id="cb39-3" data-line-number="3">           <span class="dt">theoretical =</span> <span class="ot">TRUE</span>,</a>
 <a class="sourceLine" id="cb39-4" data-line-number="4">           <span class="dt">relative =</span> <span class="ot">TRUE</span>) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb39-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">title =</span> <span class="st">"Theoretical fraction exchanged between states in 25 min time"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb39-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span>(<span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span>.<span class="dv">5</span>, <span class="fl">.7</span>))</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-26-5.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-27-5.png" width="672"></p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="co"># experimental Woods plot - relative values</span></a>
 <a class="sourceLine" id="cb40-2" data-line-number="2"><span class="kw"><a href="../reference/woods_plot.html">woods_plot</a></span>(<span class="dt">calc_dat =</span> calc_dat_<span class="dv">2</span>,</a>
 <a class="sourceLine" id="cb40-3" data-line-number="3">           <span class="dt">theoretical =</span> <span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb40-4" data-line-number="4">           <span class="dt">relative =</span> <span class="ot">TRUE</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb40-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">title =</span> <span class="st">"Fraction exchanged between states in 25 min time"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb40-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span>(<span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span>.<span class="dv">5</span>, <span class="fl">.7</span>))</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-26-6.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-27-6.png" width="672"></p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="co"># theoretical Woods plot - absolute values</span></a>
 <a class="sourceLine" id="cb41-2" data-line-number="2"><span class="kw"><a href="../reference/woods_plot.html">woods_plot</a></span>(<span class="dt">calc_dat =</span> calc_dat_<span class="dv">2</span>,</a>
 <a class="sourceLine" id="cb41-3" data-line-number="3">           <span class="dt">theoretical =</span> <span class="ot">TRUE</span>,</a>
 <a class="sourceLine" id="cb41-4" data-line-number="4">           <span class="dt">relative =</span> <span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb41-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">title =</span> <span class="st">"Theoretical fraction exchanged between states in 25 min time"</span>) </a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-26-7.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-27-7.png" width="672"></p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="co"># experimental Woods plot - absolute values</span></a>
 <a class="sourceLine" id="cb42-2" data-line-number="2"><span class="kw"><a href="../reference/woods_plot.html">woods_plot</a></span>(<span class="dt">calc_dat =</span> calc_dat_<span class="dv">2</span>,</a>
 <a class="sourceLine" id="cb42-3" data-line-number="3">           <span class="dt">theoretical =</span> <span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb42-4" data-line-number="4">           <span class="dt">relative =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb42-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">title =</span> <span class="st">"Fraction exchanged between states in 25 min time"</span>) </a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-26-8.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-27-8.png" width="672"></p>
 <div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="co"># quality control</span></a>
 <a class="sourceLine" id="cb43-2" data-line-number="2">(result &lt;-<span class="st"> </span><span class="kw"><a href="../reference/quality_control.html">quality_control</a></span>(<span class="dt">dat =</span> dat_<span class="dv">2</span>,</a>
 <a class="sourceLine" id="cb43-3" data-line-number="3">                           <span class="dt">state_first =</span> <span class="st">"gg_Nucb2_EDTA"</span>,</a>
@@ -785,7 +638,7 @@
 <a class="sourceLine" id="cb45-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x =</span> <span class="st">"log(time) [min]"</span>, <span class="dt">y =</span> <span class="st">"Average uncertainty"</span>, <span class="dt">title =</span> <span class="st">"Uncertainty change"</span>) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb45-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.position =</span> <span class="st">"bottom"</span>,</a>
 <a class="sourceLine" id="cb45-9" data-line-number="9">        <span class="dt">legend.title =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())</a></code></pre></div>
-<p><img src="overview_files/figure-html/unnamed-chunk-26-9.png" width="672"></p>
+<p><img src="overview_files/figure-html/unnamed-chunk-27-9.png" width="672"></p>
 </div>
 </div>
   </div>
