@@ -1,0 +1,21 @@
+Type;;MEMHDX;Deuteros;HaDeX
+Accessibility;Web server;Yes;No;Yes
+Accessibility;Programmatic access;No;No;Yes
+Accessibility;Desktop software;No;Yes;Yes
+Analysis;Multi-state analysis;No;No;Yes
+Analysis;ISO-based uncertainty;No;No;Yes
+Analysis;Coverage and peptide overlap;No;No;Yes
+Analysis;Quality control;No;No;Yes
+Analysis;N- and C-terminal length corrections;No;Yes;Yes
+Visualization;Global visualization of deuterium uptake;Yes;Yes;Yes
+Visualization;Woods plot;No;Yes;Yes
+Visualization;Zooming of the Woods plot;No;Yes;Yes
+Visualization;Customizable label names and colors;No;No;Yes
+Visualization;Peptide kinetics chart;Yes;No;No
+Visualization;3D structure visualization;Yes;No;No
+Visualization;Downloadable charts;Yes;Yes;Yes
+Reporting;Deuterium uptake download;Yes;Yes;Yes
+Reporting;Downloadable results of intermediate computations;No;No;Yes
+Reporting;Report generation;No;No;Yes
+Reporting;PyMol export;No;Yes;No
+ ;;;;
