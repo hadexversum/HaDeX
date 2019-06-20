@@ -200,7 +200,7 @@ server <- function(input, output, session) {
   
   stateOverlap <- reactive({
     
-    plot_coverage(dat = dat(), chosen_state = input[["chosen_state"]])
+    
     
   })
   
@@ -208,7 +208,7 @@ server <- function(input, output, session) {
   
   stateOverlap_out <- reactive({
     
-    stateOverlap() + 
+    plot_coverage(dat = dat(), chosen_state = input[["chosen_state"]]) + 
       coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]]))
     
   })
@@ -245,8 +245,7 @@ server <- function(input, output, session) {
       group_by(pos) %>%
       summarise(coverage = length(pos)) %>%
       right_join(data.frame(pos = seq(from = input[["plot_range"]][[1]], to = input[["plot_range"]][[2]]))) %>%
-      replace_na(list(coverage = 0)) %>%
-      dt_format(cols = c("Position", "Times Covered"))
+      replace_na(list(coverage = 0))
     
   })
   
@@ -254,7 +253,7 @@ server <- function(input, output, session) {
   
   output[["stateOverlapDist_data"]] <- DT::renderDataTable({
     
-    stateOverlapDist_data()
+    dt_format(stateOverlapDist_data())
     
   })
   
@@ -262,39 +261,19 @@ server <- function(input, output, session) {
   
   stateOverlapDist <- reactive({
     
-    tmp <- dat() %>%
-      select(Start, End, State) %>% 
-      filter(State == input[["chosen_state"]]) %>% 
-      filter(Start >= input[["plot_range"]][[1]], End <= input[["plot_range"]][[2]]) %>%
-      filter(!duplicated(.)) %>% 
-      select(-State) %>% 
-      apply(1, function(i) i[1]:i[2]) %>% 
-      unlist %>% 
-      data.frame(x = .) %>% 
-      group_by(x) %>% 
-      summarise(coverage = length(x)) 
-    
-    mean_coverage <- round(mean(tmp[["coverage"]], na.rm = TRUE), 2)
-    
+    mean_coverage <- round(mean(stateOverlapDist_data()[["coverage"]], na.rm = TRUE), 2)
     display_position <- (input[["plot_range"]][[1]] + input[["plot_range"]][[2]])/2
     
-    tmp %>%
-      ggplot(aes(x = x, y = coverage)) +
-      geom_col(width = 1) +
-      geom_hline(yintercept = mean_coverage, linetype = 'dashed', color = 'red') +
-      geom_text(aes(x = display_position, y = mean_coverage, label = 'Average', color = 'red', vjust = -.5)) +
-      geom_text(aes(x = display_position, y = mean_coverage, label = mean_coverage, color = 'red', vjust = 1.5)) +
-      labs(#title = 'How much a position in sequence is covered?',
-        x = 'Position in sequence',
-        y = 'Position frequency in peptide') +
-      theme(legend.position = "none")
+    plot_position_frequency(dat(), input[["chosen_state"]]) + 
+      coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]])) +
+      geom_hline(yintercept = mean_coverage, color = 'red') +
+      geom_text(aes(x = display_position, y = mean_coverage), label = paste0("Average frequency: ", mean_coverage), color = 'red', vjust = -.5)
     
   })
   
   ##
   
   output[["stateOverlapDist"]] <- renderPlot({
-    
     stateOverlapDist()
     
   })

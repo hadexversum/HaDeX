@@ -17,8 +17,7 @@
 #' 
 #' @export plot_coverage
  
-plot_coverage <- function(dat,
-                                chosen_state = dat[["State"]][1]){
+plot_coverage <- function(dat, chosen_state = dat[["State"]][1]){
   
   dat %>%
     select(Start, End, State) %>%
