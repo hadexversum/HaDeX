@@ -1,6 +1,8 @@
 [![Build Status](https://api.travis-ci.org/hadexversum/HaDeX.png)](https://travis-ci.org/hadexversum/HaDeX)
 [![Coverage status](https://codecov.io/gh/hadexversum/hadex/branch/master/graph/badge.svg)](https://codecov.io/github/hadexversum/hadex?branch=master)
 
+![HaDeX](https://raw.githubusercontent.com/hadexversum/HaDeX/master/inst/HaDeX/www/mock_logo.png)
+
 ## HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data 
 
 Hydrogen/Deuterium eXchange Mass Spectrometry (HDX-MS) is a staple technology in structural proteomics. HaDeX provides a complete analytic workflow for HDX-MS data availble as a web server (http://mslab-ibb.pl/shiny/HaDeX/) and **R** package. 
