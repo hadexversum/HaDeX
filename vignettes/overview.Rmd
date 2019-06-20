@@ -336,11 +336,11 @@ reconstruct_sequence(dat)
 
 ```
 
-Additionally, the coverage of peptides can be presented on a chart using the graphic_overlapping() function. 
+Additionally, the coverage of peptides can be presented on a chart using the plot_coverage() function. 
 
 ```{r warning=FALSE}
 
-graphic_overlapping(dat, chosen_state = "gg_Nucb2_CaCl2")
+plot_coverage(dat, chosen_state = "gg_Nucb2_CaCl2")
 
 ```
 
@@ -405,7 +405,7 @@ Then, we reconstruct the protein sequence using peptides measured during the exp
 ```{r warning=FALSE}
 reconstruct_sequence(dat_1)
 
-graphic_overlapping(dat_1, chosen_state = "CD160")
+plot_coverage(dat_1, chosen_state = "CD160")
 ```
 
 On the theoretical plot are visible regions, which exchange quickly (N-terminus, regions between 30-70 amino acid) and regions, which exchange slowly (peptides 15-24, 95-110 amino acid). We can also see the differences in exchange between two states, indicating regions which changed upon binding with other protein.

@@ -1,6 +1,6 @@
-#' Plot graphic sequence overlapping
+#' Plot peptide coverage
 #' 
-#' Produces graphic sequence overlapping plot based on experimental HDX-MS data.
+#' Plots the peptide coverage of the protein sequence.
 #' 
 #' @importFrom ggplot2 ggplot geom_line
 #' @importFrom reshape2 melt
@@ -12,12 +12,12 @@
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", 
 #'                             "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' graphic_overlapping(dat)
-#' graphic_overlapping(dat, chosen_state = "CD160_HVEM")
+#' plot_coverage(dat)
+#' plot_coverage(dat, chosen_state = "CD160_HVEM")
 #' 
-#' @export graphic_overlapping
+#' @export plot_coverage
  
-graphic_overlapping <- function(dat,
+plot_coverage <- function(dat,
                                 chosen_state = dat[["State"]][1]){
   
   dat %>%
@@ -29,8 +29,8 @@ graphic_overlapping <- function(dat,
     melt(id.vars = "ID") %>%
     ggplot(aes(x = value, y = ID, group = ID)) +
     geom_line() +
-    labs(title = 'Peptides positions compared to whole protein sequence',
-         x = 'Position in sequence',
+    labs(title = 'Peptide coverage',
+         x = 'Position',
          y = '') +
     theme(axis.ticks.y = element_blank(),
           axis.text.y = element_blank())

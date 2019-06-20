@@ -200,8 +200,7 @@ server <- function(input, output, session) {
   
   stateOverlap <- reactive({
     
-    graphic_overlapping(dat = dat(),
-                        chosen_state = input[["chosen_state"]])
+    plot_coverage(dat = dat(), chosen_state = input[["chosen_state"]])
     
   })
   
