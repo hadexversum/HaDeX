@@ -10,3 +10,4 @@
 ^.covrignore$
 ^CRAN-RELEASE$
 ^cran-comments\.md$
+^pkgdown$

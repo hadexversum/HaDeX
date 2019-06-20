@@ -336,17 +336,17 @@ reconstruct_sequence(dat)
 
 ```
 
-Additionally, the coverage of peptides can be presented on a chart using the plot_coverage() function. 
+Additionally, the coverage of peptides can be presented on a chart using the plot_coverage() and plot_position_frequency() functions. 
 
 ```{r warning=FALSE}
 
 plot_coverage(dat, chosen_state = "gg_Nucb2_CaCl2")
 
+plot_position_frequency(dat, chosen_state = "gg_Nucb2_CaCl2")
+
 ```
 
-User can choose which state (or states) should be included in shown data. If this parameter is not supplied, the first possible state is chosen. If a given peptide is available in more than one state, it is shown only once. 
-
-
+User can choose which state (or states) should be included in these plots. If this parameter is not provided, the first possible state is chosen. If a given peptide is available in more than one state, it is shown only once. 
 
 ## Quality control 
 
@@ -405,7 +405,7 @@ Then, we reconstruct the protein sequence using peptides measured during the exp
 ```{r warning=FALSE}
 reconstruct_sequence(dat_1)
 
-plot_coverage(dat_1, chosen_state = "CD160")
+plot_position_frequency(dat_1, chosen_state = "CD160")
 ```
 
 On the theoretical plot are visible regions, which exchange quickly (N-terminus, regions between 30-70 amino acid) and regions, which exchange slowly (peptides 15-24, 95-110 amino acid). We can also see the differences in exchange between two states, indicating regions which changed upon binding with other protein.

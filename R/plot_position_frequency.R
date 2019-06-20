@@ -4,7 +4,7 @@
 #' 
 #' @importFrom ggplot2 ggplot geom_line
 #' @importFrom reshape2 melt
-#' @importFrom dplyr filter
+#' @importFrom dplyr filter summarise
 #' 
 #' @param dat data as imported by the \code{\link{read_hdx}} function
 #' @param chosen_state sequence states to be included in plot
