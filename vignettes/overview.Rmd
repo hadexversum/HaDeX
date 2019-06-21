@@ -1,7 +1,7 @@
 ---
 title: 'Supplement to: "HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data"'
 author: "Weronika Pucha&#322;a, Micha&#322; Burdukiewicz, Micha&#322; Kistowski, Katarzyna A. D&#261;browska, Aleksandra E. Badaczewska-Dawid, Dominik Cysewski, Micha&#322; Dadlez"
-date: "15.02.2019"
+date: "20.06.2019"
 output: 
   rmarkdown::html_vignette:
     toc: true
@@ -33,24 +33,26 @@ This document covers the main functonalities of both the **R** package and the w
 ```{r echo=FALSE,results='asis'}
 read.csv2("comparison.csv") %>% 
   datatable(options = list(dom = "t", ordering = FALSE, paging = FALSE), rownames = FALSE, style = "bootstrap") %>%
-  #formatStyle(c("MEMHDX", "Deuteros", "HaDeX"), backgroundColor = styleEqual("Yes", "blue")) %>% 
-  formatStyle(c("MEMHDX", "Deuteros", "HaDeX"), backgroundColor = styleEqual("No", "red"))
+  formatStyle(c("MEMHDX", "Deuteros", "HaDeX"), backgroundColor = styleEqual(c("Yes", "No"), c("#00BFFF", "#FF8C91")))
 ```
 
+We had not considered HDX Workbench
 
 # General data manipulation
 
 ## Input file format 
 
-The HaDeX web server works only on data in the DynamX\textsuperscript{TM} datafile format (Waters Corp.). It must contains a following set of columns with specified properties:
+The HaDeX web server works only on data in the DynamX\textsuperscript{TM} datafile format (Waters Corp.). The data from other sources may be also adjusted to the format accepted by HaDeX provided it has following columns:
 
 ```{r warning=FALSE, message=FALSE, echo = FALSE}
 
 datatable(
-  data = data.frame("Column Name" = c("Protein", "Start", "End", "Sequence", "Modification", "Fragment", "MaxUptake", "MHP", "State", "Exposure", "File", "z", "RT", "Inten", "Center"),
-                    "Column Type" = c("Character", "Integer", "Integer", "Character", "Logic", "Logic", "Numeric", "Numeric", "Character", "Numeric", "Character", "Integer", "Numeric", "Numeric", "Numeric")),
-  rownames = FALSE,
-  options = list(dom = "t", autoWidth = TRUE, pageLength = 15))
+  data = data.frame("Column Name" = c("Protein", "Start", "End", "Sequence", "Modification", "Fragment", "MaxUptake", "MHP", 
+                             "State", "Exposure", "File", "z", "RT", "Inten", "Center"),
+           "Column Type" = c("Character", "Integer", "Integer", "Character", "Logic", "Logic", "Numeric", 
+                             "Numeric", "Character", "Numeric", "Character", "Integer", "Numeric", "Numeric", "Numeric")),
+  rownames = FALSE, style = "bootstrap",
+  list(dom = "t", ordering = FALSE, paging = FALSE, autoWidth = TRUE))
 
 ```
 
@@ -460,8 +462,6 @@ comparison_plot(calc_dat = calc_dat_1,
 
 
 ```
-
-What we see here?
 
 Wood’s plot is a different way of presenting the same data as in comparison plot. In Wood’s plot the levels of peptides’ deuteration (either relative or absolute) are subtracted between states and presented with error bars.
 The plot below shows peptides, which levels of deuteration were significantly lower upon binding with other protein (red) and peptides, which levels of exchange were significantly higher upon binding with other protein (blue). The plot also show peptides in which no significant changes in deuteration between states are visible (grey). The biggest changes on the theoretical plot can be observed in 3 peptides (15-24, 30-35, 75-90). 
