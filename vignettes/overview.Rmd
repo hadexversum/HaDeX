@@ -7,6 +7,7 @@ output:
     toc: true
     number_sections: true
     always_allow_html: yes
+bibliography: HDX.bib
 vignette: >
   %\VignetteIndexEntry{HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data}
   %\VignetteEngine{knitr::rmarkdown}
@@ -30,13 +31,15 @@ This document covers the main functonalities of both the **R** package and the w
 
 ## Comparison of the existing HDX-MS software
 
+MEMHDX [@HourdelMEMHDXinteractivetool2016] and Deuteros [@LauDeuterossoftwarerapid2019]
+
 ```{r echo=FALSE,results='asis'}
 read.csv2("comparison.csv") %>% 
   datatable(options = list(dom = "t", ordering = FALSE, paging = FALSE), rownames = FALSE, style = "bootstrap") %>%
   formatStyle(c("MEMHDX", "Deuteros", "HaDeX"), backgroundColor = styleEqual(c("Yes", "No"), c("#00BFFF", "#FF8C91")))
 ```
 
-We had not considered HDX Workbench
+We had not considered HDX Workbench [@PascalHDXWorkbenchSoftware2012]
 
 # General data manipulation
 
@@ -619,3 +622,5 @@ ggplot(result[result["time"]>=1,]) +
   theme(legend.position = "bottom",
         legend.title = element_blank())
 ```
+
+# References

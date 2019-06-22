@@ -1,0 +1,665 @@
+
+@article{HourdelMEMHDXinteractivetool2016,
+  title = {{{MEMHDX}}: An Interactive Tool to Expedite the Statistical Validation and Visualization of Large {{HDX}}-{{MS}} Datasets},
+  volume = {32},
+  issn = {1367-4803},
+  shorttitle = {{{MEMHDX}}},
+  abstract = {Motivation: With the continued improvement of requisite mass spectrometers and UHPLC systems, Hydrogen/Deuterium eXchange Mass Spectrometry (HDX-MS) workflows are rapidly evolving towards the investigation of more challenging biological systems, including large protein complexes and membrane proteins. The analysis of such extensive systems results in very large HDX-MS datasets for which specific analysis tools are required to speed up data validation and interpretation., Results: We introduce a web application and a new R-package named `MEMHDX' to help users analyze, validate and visualize large HDX-MS datasets. MEMHDX is composed of two elements. A statistical tool aids in the validation of the results by applying a mixed-effects model for each peptide, in each experimental condition, and at each time point, taking into account the time dependency of the HDX reaction and number of independent replicates. Two adjusted P-values are generated per peptide, one for the `Change in dynamics' and one for the `Magnitude of {$\Delta$}D', and are used to classify the data by means of a `Logit' representation. A user-friendly interface developed with Shiny by RStudio facilitates the use of the package. This interactive tool allows the user to easily and rapidly validate, visualize and compare the relative deuterium incorporation on the amino acid sequence and 3D structure, providing both spatial and temporal information., Availability and Implementation: MEMHDX is freely available as a web tool at the project home page http://memhdx.c3bi.pasteur.fr, Contact:
+marie-agnes.dillies@pasteur.fr or sebastien.brier@pasteur.fr, Supplementary information:
+Supplementary data is available at Bioinformatics online.},
+  number = {22},
+  journal = {Bioinformatics},
+  doi = {10.1093/bioinformatics/btw420},
+  author = {Hourdel, V{\'e}ronique and Volant, Stevenn and O'Brien, Darragh P. and Chenal, Alexandre and {Chamot-Rooke}, Julia and Dillies, Marie-Agn{\`e}s and Brier, S{\'e}bastien},
+  month = nov,
+  year = {2016},
+  pages = {3413-3419},
+  file = {/home/michal/Zotero/storage/2RKXN97D/Hourdel i in. - 2016 - MEMHDX an interactive tool to expedite the statis.pdf;/home/michal/Zotero/storage/RPNUQT2R/Hourdel i in. - 2016 - MEMHDX an interactive tool to expedite the statis.pdf},
+  pmid = {27412089},
+  pmcid = {PMC5181559}
+}
+
+@article{KouranovRCSBPDBinformation2006,
+  title = {The {{RCSB PDB}} Information Portal for Structural Genomics},
+  volume = {34},
+  issn = {1362-4962},
+  abstract = {The RCSB Protein Data Bank (PDB) offers online tools, summary reports and target information related to the worldwide structural genomics initiatives from its portal at http://sg.pdb.org. There are currently three components to this site: Structural Genomics Initiatives contains information and links on each structural genomics site, including progress reports, target lists, target status, targets in the PDB and level of sequence redundancy; Targets provides combined target information, protocols and other data associated with protein structure determination; and Structures offers an assessment of the progress of structural genomics based on the functional coverage of the human genome by PDB structures, structural genomics targets and homology models. Functional coverage can be examined according to enzyme classification, gene ontology (biological process, cell component and molecular function) and disease.},
+  language = {eng},
+  number = {Database issue},
+  journal = {Nucleic Acids Research},
+  doi = {10.1093/nar/gkj120},
+  author = {Kouranov, Andrei and Xie, Lei and {de la Cruz}, Joanna and Chen, Li and Westbrook, John and Bourne, Philip E. and Berman, Helen M.},
+  month = jan,
+  year = {2006},
+  keywords = {Proteins,Humans,Genome; Human,Genomics,Databases; Protein,Internet,Structural Homology; Protein,User-Computer Interface},
+  pages = {D302-305},
+  pmid = {16381872},
+  pmcid = {PMC1347482}
+}
+
+@article{LauDeuterossoftwarerapid2019,
+  title = {Deuteros: Software for Rapid Analysis and Visualization of Data from Differential Hydrogen Deuterium Exchange-Mass Spectrometry},
+  issn = {1367-4811},
+  shorttitle = {Deuteros},
+  abstract = {Summary: Hydrogen deuterium exchange-mass spectrometry (HDX-MS) has emerged as a powerful technique for interrogating the conformational dynamics of proteins and their complexes. Currently, analysis of HDX-MS data remains a laborious procedure, mainly due to the lack of streamlined software to process the large datasets. We present Deuteros which is a standalone software designed to be coupled with Waters DynamX HDX data analysis software, allowing the rapid analysis and visualization of data from differential HDX-MS.
+Availability: Deuteros is open-source and can be downloaded from https://github.com/andymlau/Deuteros, under the Apache 2.0 license.
+Implementation: written in MATLAB and supported on both Windows and MacOS. Requires the MATLAB runtime library.},
+  language = {eng},
+  journal = {Bioinformatics (Oxford, England)},
+  doi = {10.1093/bioinformatics/btz022},
+  author = {Lau, Andy M. C. and Ahdash, Zainab and Martens, Chloe and Politis, Argyris},
+  month = jan,
+  year = {2019},
+  file = {/home/michal/Zotero/storage/TPNC73CA/Lau i in. - Deuteros software for rapid analysis and visualiz.pdf;/home/michal/Zotero/storage/TQSYASAB/5288775.html},
+  pmid = {30649183}
+}
+
+@article{TheUniProtConsortiumUniProtuniversalprotein2017,
+  title = {{{UniProt}}: The Universal Protein Knowledgebase},
+  volume = {45},
+  issn = {1362-4962},
+  shorttitle = {{{UniProt}}},
+  abstract = {The UniProt knowledgebase is a large resource of protein sequences and associated detailed annotation. The database contains over 60 million sequences, of which over half a million sequences have been curated by experts who critically review experimental and predicted data for each protein. The remainder are automatically annotated based on rule systems that rely on the expert curated knowledge. Since our last update in 2014, we have more than doubled the number of reference proteomes to 5631, giving a greater coverage of taxonomic diversity. We implemented a pipeline to remove redundant highly similar proteomes that were causing excessive redundancy in UniProt. The initial run of this pipeline reduced the number of sequences in UniProt by 47 million. For our users interested in the accessory proteomes, we have made available sets of pan proteome sequences that cover the diversity of sequences for each species that is found in its strains and sub-strains. To help interpretation of genomic variants, we provide tracks of detailed protein information for the major genome browsers. We provide a SPARQL endpoint that allows complex queries of the more than 22 billion triples of data in UniProt (http://sparql.uniprot.org/). UniProt resources can be accessed via the website at http://www.uniprot.org/.},
+  language = {eng},
+  number = {D1},
+  journal = {Nucleic Acids Research},
+  doi = {10.1093/nar/gkw1099},
+  author = {{The UniProt Consortium}},
+  month = apr,
+  year = {2017},
+  keywords = {Genomics,Databases; Protein,Computational Biology,Proteomics,Proteome,Web Browser},
+  pages = {D158-D169},
+  pmid = {27899622},
+  pmcid = {PMC5210571}
+}
+
+@article{PascalHDXWorkbenchSoftware2012,
+  title = {{{HDX Workbench}}: {{Software}} for the {{Analysis}} of {{H}}/{{D Exchange MS Data}}},
+  volume = {23},
+  issn = {1879-1123},
+  shorttitle = {{{HDX Workbench}}},
+  abstract = {Hydrogen/deuterium exchange mass spectrometry (HDX-MS) is an established method for the interrogation of protein conformation and dynamics. While the data analysis challenge of HDX-MS has been addressed by a number of software packages, new computational tools are needed to keep pace with the improved methods and throughput of this technique. To address these needs, we report an integrated desktop program titled HDX Workbench, which facilitates automation, management, visualization, and statistical cross-comparison of large HDX data sets. Using the software, validated data analysis can be achieved at the rate of generation. The application is available at the project home page http://hdx.florida.scripps.edu.},
+  language = {en},
+  number = {9},
+  journal = {Journal of The American Society for Mass Spectrometry},
+  doi = {10.1007/s13361-012-0419-6},
+  author = {Pascal, Bruce D. and Willis, Scooter and Lauer, Janelle L. and Landgraf, Rachelle R. and West, Graham M. and Marciano, David and Novick, Scott and Goswami, Devrishi and Chalmers, Michael J. and Griffin, Patrick R.},
+  month = sep,
+  year = {2012},
+  keywords = {Algorithms,Amino Acid Sequence,Proteins,Sequence Alignment,Software,Sequence Analysis; Protein,Peptides,Molecular Sequence Data,Reproducibility of Results,Tandem Mass Spectrometry,Automation,User-Computer Interface,H/D exchange,HDX,Mass spectrometry,Protein dynamics,Deuterium Exchange Measurement},
+  pages = {1512-1521},
+  file = {/home/michal/Zotero/storage/QWSXHDGM/Pascal i in. - 2012 - HDX Workbench Software for the Analysis of HD Ex.pdf}
+}
+
+@article{WoodsHighresolutionhighthroughput2001,
+  title = {High Resolution, High-Throughput Amide Deuterium Exchange-Mass Spectrometry ({{DXMS}}) Determination of Protein Binding Site Structure and Dynamics: Utility in Pharmaceutical Design},
+  volume = {Suppl 37},
+  issn = {0733-1959},
+  shorttitle = {High Resolution, High-Throughput Amide Deuterium Exchange-Mass Spectrometry ({{DXMS}}) Determination of Protein Binding Site Structure and Dynamics},
+  abstract = {Mass spectrometry-based peptide amide deuterium exchange techniques have proven to be increasingly powerful tools with which protein structure and function can be studied, and are unparalleled in their ability to probe sub-molecular protein dynamics. Despite this promise, the methodology has remained labor-intensive and time consuming, with substantial limitations in comprehensiveness (the extent to which target protein sequence is covered with measurable peptide fragments) and resolution (the degree to which exchange measurements can be ascribed to particular amides). I have developed and integrated a number of improvements to these methodologies into an automated high throughput, high resolution system termed Deuterium Exchange Mass Spectrometry (DXMS). With DXMS, complete sequence coverage and single-amide (amino acid) resolution are now rapidly accomplished. DXMS is designed to work well with large proteins and when only small amounts of material are available for study. Studies can be performed upon a receptor-ligand pair as they exist on or within a living cell (in vivo) without prior purification, allowing effective in situ study of integral membrane protein receptors. We have ambitious initiatives underway to make DXMS widely available both for basic academic research studies and commercial drug discovery efforts. In this paper I present an overview of DXMS technology and highlight some of the benefits it will provide in drug discovery and basic proteomics research.},
+  language = {eng},
+  journal = {Journal of Cellular Biochemistry. Supplement},
+  author = {Woods, V. L. and Hamuro, Y.},
+  year = {2001},
+  keywords = {Thermodynamics,Protein Conformation,Binding Sites,Forecasting,Oxidation-Reduction,Proteome,Mass Spectrometry,Deuterium,Amides,Automation,Chromatography; Affinity,Disulfides,Drug Design,Peptide Hydrolases,Technology; Pharmaceutical},
+  pages = {89-98},
+  pmid = {11842433}
+}
+
+@article{ReyMassSpecStudio2014,
+  title = {Mass {{Spec Studio}} for {{Integrative Structural Biology}}},
+  volume = {22},
+  issn = {0969-2126},
+  abstract = {The integration of biophysical data from multiple sources is critical for developing accurate structural models of large multiprotein systems and their regulators. Mass spectrometry (MS) can be used to measure the insertion location for a wide range of topographically sensitive chemical probes, and such insertion data provide a rich, but disparate set of modeling restraints. We have developed a software platform that integrates the analysis of label-based MS data with protein modeling activities (Mass Spec Studio). Analysis packages can mine any labeling data from any mass spectrometer in a proteomics-grade manner, and link labeling methods with data-directed protein interaction modeling using HADDOCK. Support is provided for hydrogen/ deuterium exchange (HX) and covalent labeling chemistries, including novel acquisition strategies such as targeted HX-tandem MS (MS2) and data-independent HX-MS2. The latter permits the modeling of highly complex systems, which we demonstrate by the analysis of microtubule interactions.},
+  number = {10},
+  journal = {Structure (London, England : 1993)},
+  doi = {10.1016/j.str.2014.08.013},
+  author = {Rey, Martial and Sarpe, Vladimir and Burns, Kyle and Buse, Joshua and Baker, Charles A.H. and {van Dijk}, Marc and Wordeman, Linda and Bonvin, Alexandre M.J.J. and Schriemer, David C.},
+  month = oct,
+  year = {2014},
+  pages = {1538-1548},
+  file = {/home/michal/Zotero/storage/M3SWH8YZ/Rey i in. - 2014 - Mass Spec Studio for Integrative Structural Biolog.pdf},
+  pmid = {25242457},
+  pmcid = {PMC4391204}
+}
+
+@article{KonermannHydrogenexchangemass2011,
+  title = {Hydrogen Exchange Mass Spectrometry for Studying Protein Structure and Dynamics},
+  volume = {40},
+  issn = {1460-4744},
+  abstract = {Hydrogen/deuterium exchange (HDX) mass spectrometry (MS) has become a key technique for monitoring structural and dynamic aspects of proteins in solution. This approach relies on the fact that exposure of a protein to D(2)O induces rapid amide H {$\rightarrow$} D exchange in disordered regions that lack stable hydrogen-bonding. Tightly folded elements are much more protected from HDX, resulting in slow isotope exchange that is mediated by the structural dynamics ("breathing motions") of the protein. MS-based peptide mapping is a well established technique for measuring the mass shifts of individual protein segments. This tutorial review briefly discusses basic fundamentals of HDX/MS, before highlighting a number of recent developments and applications. Gas phase fragmentation strategies represent a promising alternative to the traditional proteolysis-based approach, but experimentalists have to be aware of scrambling phenomena that can be encountered under certain conditions. Electron-based dissociation methods provide a solution to this problem. We also discuss recent advances that facilitate the applicability of HDX/MS to membrane proteins, and to the characterization of short-lived protein folding intermediates. It is hoped that this review will provide a starting point for novices, as well as a useful reference for practitioners, who require an overview of some recent trends in HDX/MS.},
+  language = {eng},
+  number = {3},
+  journal = {Chemical Society Reviews},
+  doi = {10.1039/c0cs00113a},
+  author = {Konermann, Lars and Pan, Jingxi and Liu, Yu-Hong},
+  month = mar,
+  year = {2011},
+  keywords = {Protein Folding,Proteins,Mass Spectrometry,Hydrogen,Molecular Dynamics Simulation,Deuterium Exchange Measurement},
+  pages = {1224-1234},
+  pmid = {21173980}
+}
+
+@article{RandMeasuringhydrogendeuterium2014,
+  title = {Measuring the Hydrogen/Deuterium Exchange of Proteins at High Spatial Resolution by Mass Spectrometry: Overcoming Gas-Phase Hydrogen/Deuterium Scrambling},
+  volume = {47},
+  issn = {1520-4898},
+  shorttitle = {Measuring the Hydrogen/Deuterium Exchange of Proteins at High Spatial Resolution by Mass Spectrometry},
+  abstract = {Proteins are dynamic molecules that exhibit conformational flexibility to function properly. Well-known examples of this are allosteric regulation of protein activity and ligand-induced conformational changes in protein receptors. Detailed knowledge of the conformational properties of proteins is therefore pertinent to both basic and applied research, including drug development, since the majority of drugs target protein receptors and a growing number of drugs introduced to the market are therapeutic peptides or proteins. X-ray crystallography provides a static picture at atomic resolution of the lowest-energy structure of the native ensemble. There is a growing need for sensitive analytical tools to explore all of the significant molecular structures in the conformational landscape of proteins. Hydrogen/deuterium exchange monitored by mass spectrometry (HDX-MS) has recently emerged as a powerful method for characterizing protein conformational dynamics. The basis of this method is the fact that backbone amides in stable hydrogen-bonded structures (e.g., {$\alpha$}-helices and {$\beta$}-sheets) are protected against exchange with the aqueous solvent. All protein structures are dynamic, however, and eventually all of the protecting hydrogen bonds will transiently break as the protein--according to thermodynamic principles--cycles through partially unfolded states that correspond to excited free energy levels. As a result, all of the backbone amides will eventually become temporarily solvent-exposed and exchange-competent over time. Consequently, a folded protein in D2O will gradually incorporate deuterium into its backbone amides, and the kinetics of the process can be readily monitored by mass spectrometry. The deuterium uptake kinetics for the intact protein (global exchange kinetics) represents the sum of the exchange kinetics for the individual backbone amides. Local exchange kinetics is typically achieved by using pepsin digestion under quench conditions (i.e., under cold acidic conditions where the amide hydrogen exchange rate is slowed by many orders of magnitude). The ability to localize the individual deuterated residues (the spatial resolution) is determined by the size (typically {$\sim$}7-15 residues) and the number of peptic peptides. These peptides provide a relatively coarse-grained picture of the protein dynamics. A fundamental understanding of the relationship between protein function/dysfunction and conformational dynamics requires in many cases higher resolution and ultimately single-residue resolution. In this Account, we summarize our efforts to achieve single-residue deuterium levels in proteins by electron-based or laser-induced gas-phase fragmentation methods. A crucial analytical requirement for this approach is that the pattern of deuterium labeling from solution is retained in the gas-phase fragment ions. It is therefore essential to control and minimize any occurrence of gas-phase randomization of the solution deuterium label (H/D scrambling) during the MS experiment. For this purpose, we have developed model peptide probes to accurately measure the onset and extent of H/D scrambling. Our analytical procedures to control the occurrence of H/D scrambling are detailed along with the physical parameters that induce it during MS analysis. In light of the growing use of gas-phase dissociation experiments to measure the HDX of proteins in order to obtain a detailed characterization and understanding of the dynamic conformations and interactions of proteins at the molecular level, we discuss the perspectives and challenges of future high-resolution HDX-MS methodology.},
+  language = {eng},
+  number = {10},
+  journal = {Accounts of Chemical Research},
+  doi = {10.1021/ar500194w},
+  author = {Rand, Kasper D. and Zehl, Martin and J{\o}rgensen, Thomas J. D.},
+  month = oct,
+  year = {2014},
+  keywords = {Proteins,Thermodynamics,Models; Molecular,Mass Spectrometry,Deuterium Exchange Measurement,Gases},
+  pages = {3018-3027},
+  pmid = {25171396}
+}
+
+@article{ChalmersDifferentialhydrogendeuterium2011,
+  title = {Differential Hydrogen/Deuterium Exchange Mass Spectrometry Analysis of Protein-Ligand Interactions},
+  volume = {8},
+  issn = {1744-8387},
+  abstract = {Functional regulation of ligand-activated receptors is driven by alterations in the conformational dynamics of the protein upon ligand binding. Differential hydrogen/deuterium exchange (HDX) coupled with mass spectrometry has emerged as a rapid and sensitive approach for characterization of perturbations in conformational dynamics of proteins following ligand binding. While this technique is sensitive to detecting ligand interactions and alterations in receptor dynamics, it also can provide important mechanistic insights into ligand regulation. For example, HDX has been used to determine a novel mechanism of ligand activation of the nuclear receptor peroxisome proliferator activated receptor-{$\gamma$}, perform detailed analyses of binding modes of ligands within the ligand-binding pocket of two estrogen receptor isoforms, providing insight into selectivity, and helped classify different types of estrogen receptor-{$\alpha$} ligands by correlating their pharmacology with the way they interact with the receptor based solely on hierarchical clustering of receptor HDX signatures. Beyond small-molecule-receptor interactions, this technique has also been applied to study protein-protein complexes, such as mapping antibody-antigen interactions. In this article, we summarize the current state of the differential HDX approaches and the future outlook. We summarize how HDX analysis of protein-ligand interactions has had an impact on biology and drug discovery.},
+  language = {eng},
+  number = {1},
+  journal = {Expert Review of Proteomics},
+  doi = {10.1586/epr.10.109},
+  author = {Chalmers, Michael J. and Busby, Scott A. and Pascal, Bruce D. and West, Graham M. and Griffin, Patrick R.},
+  month = feb,
+  year = {2011},
+  keywords = {Proteins,Protein Conformation,Humans,Protein Structure; Tertiary,Animals,Protein Binding,Models; Molecular,Mass Spectrometry,Hydrogen,Protein Kinases,Deuterium Exchange Measurement,Hormones,Ligands,Receptors; Cell Surface,Receptors; Cytoplasmic and Nuclear},
+  pages = {43-59},
+  pmid = {21329427},
+  pmcid = {PMC3113475}
+}
+
+@article{LiuHDXAnalyzernovelpackage2011,
+  title = {{{HDX}}-{{Analyzer}}: A Novel Package for Statistical Analysis of Protein Structure Dynamics},
+  volume = {12},
+  issn = {1471-2105},
+  shorttitle = {{{HDX}}-{{Analyzer}}},
+  abstract = {Background
+HDX mass spectrometry is a powerful platform to probe protein structure dynamics during ligand binding, protein folding, enzyme catalysis, and such. HDX mass spectrometry analysis derives the protein structure dynamics based on the mass increase of a protein of which the backbone protons exchanged with solvent deuterium. Coupled with enzyme digestion and MS/MS analysis, HDX mass spectrometry can be used to study the regional dynamics of protein based on the m/z value or percentage of deuterium incorporation for the digested peptides in the HDX experiments. Various software packages have been developed to analyze HDX mass spectrometry data. Despite the progresses, proper and explicit statistical treatment is still lacking in most of the current HDX mass spectrometry software. In order to address this issue, we have developed the HDXanalyzer for the statistical analysis of HDX mass spectrometry data using R, Python, and RPY2.
+
+Implementation and results
+HDXanalyzer package contains three major modules, the data processing module, the statistical analysis module, and the user interface. RPY2 is employed to enable the connection of these three components, where the data processing module is implemented using Python and the statistical analysis module is implemented with R. RPY2 creates a low-level interface for R and allows the effective integration of statistical module for data processing. The data processing module generates the centroid for the peptides in form of m/z value, and the differences of centroids between the peptides derived from apo and ligand-bound protein allow us to evaluate whether the regions have significant changes in structure dynamics or not. Another option of the software is to calculate the deuterium incorporation rate for the comparison. The two types of statistical analyses are Paired Student's t-test and the linear combination of the intercept for multiple regression and ANCOVA model. The user interface is implemented with wxpython to facilitate the data visualization in graphs and the statistical analysis output presentation. In order to evaluate the software, a previously published xylanase HDX mass spectrometry analysis dataset is processed and presented. The results from the different statistical analysis methods are compared and shown to be similar. The statistical analysis results are overlaid with the three dimensional structure of the protein to highlight the regional structure dynamics changes in the xylanase enzyme.
+
+Conclusion
+Statistical analysis provides crucial evaluation of whether a protein region is significantly protected or unprotected during the HDX mass spectrometry studies. Although there are several other available software programs to process HDX experimental data, HDXanalyzer is the first software program to offer multiple statistical methods to evaluate the changes in protein structure dynamics based on HDX mass spectrometry analysis. Moreover, the statistical analysis can be carried out for both m/z value and deuterium incorporation rate. In addition, the software package can be used for the data generated from a wide range of mass spectrometry instruments.},
+  number = {Suppl 1},
+  journal = {BMC Bioinformatics},
+  doi = {10.1186/1471-2105-12-S1-S43},
+  author = {Liu, Sanmin and Liu, Lantao and Uzuner, Ugur and Zhou, Xin and Gu, Manxi and Shi, Weibing and Zhang, Yixiang and Dai, Susie Y and Yuan, Joshua S},
+  month = feb,
+  year = {2011},
+  pages = {S43},
+  file = {/home/michal/Zotero/storage/I3Y3SKC8/Liu i in. - 2011 - HDX-Analyzer a novel package for statistical anal.pdf},
+  pmid = {21342575},
+  pmcid = {PMC3044300}
+}
+
+@article{KlukowskiNMRNetdeeplearning2018,
+  title = {{{NMRNet}}: A Deep Learning Approach to Automated Peak Picking of Protein {{NMR}} Spectra},
+  volume = {34},
+  issn = {1367-4811},
+  shorttitle = {{{NMRNet}}},
+  abstract = {Motivation: Automated selection of signals in protein NMR spectra, known as peak picking, has been studied for over 20\,years, nevertheless existing peak picking methods are still largely deficient. Accurate and precise automated peak picking would accelerate the structure calculation, and analysis of dynamics and interactions of macromolecules. Recent advancement in handling big data, together with an outburst of machine learning techniques, offer an opportunity to tackle the peak picking problem substantially faster than manual picking and on par with human accuracy. In particular, deep learning has proven to systematically achieve human-level performance in various recognition tasks, and thus emerges as an ideal tool to address automated identification of NMR signals.
+Results: We have applied a convolutional neural network for visual analysis of multidimensional NMR spectra. A comprehensive test on 31 manually annotated spectra has demonstrated top-tier average precision (AP) of 0.9596, 0.9058 and 0.8271 for backbone, side-chain and NOESY spectra, respectively. Furthermore, a combination of extracted peak lists with automated assignment routine, FLYA, outperformed other methods, including the manual one, and led to correct resonance assignment at the levels of 90.40\%, 89.90\% and 90.20\% for three benchmark proteins.
+Availability and implementation: The proposed model is a part of a Dumpling software (platform for protein NMR data analysis), and is available at https://dumpling.bio/.
+Supplementary information: Supplementary data are available at Bioinformatics online.},
+  language = {eng},
+  number = {15},
+  journal = {Bioinformatics (Oxford, England)},
+  doi = {10.1093/bioinformatics/bty134},
+  author = {Klukowski, Piotr and Augoff, Michal and Zieba, Maciej and Drwal, Maciej and Gonczarek, Adam and Walczak, Michal J.},
+  month = aug,
+  year = {2018},
+  pages = {2590-2597},
+  pmid = {29547986}
+}
+
+@article{ZhouRecognitionproteinallosteric2018,
+  title = {Recognition of Protein Allosteric States and Residues: {{Machine}} Learning Approaches},
+  volume = {39},
+  issn = {1096-987X},
+  shorttitle = {Recognition of Protein Allosteric States and Residues},
+  abstract = {Allostery is a process by which proteins transmit the effect of perturbation at one site to a distal functional site upon certain perturbation. As an intrinsically global effect of protein dynamics, it is difficult to associate protein allostery with individual residues, hindering effective selection of key residues for mutagenesis studies. The machine learning models including decision tree (DT) and artificial neural network (ANN) models were applied to develop classification model for a cell signaling allosteric protein with two states showing extremely similar tertiary structures in both crystallographic structures and molecular dynamics simulations. Both DT and ANN models were developed with 75\% and 80\% of predicting accuracy, respectively. Good agreement between machine learning models and previous experimental as well as computational studies of the same protein validates this approach as an alternative way to analyze protein dynamics simulations and allostery. In addition, the difference of distributions of key features in two allosteric states also underlies the population shift hypothesis of dynamics-driven allostery model. \textcopyright{} 2018 Wiley Periodicals, Inc.},
+  language = {eng},
+  number = {20},
+  journal = {Journal of Computational Chemistry},
+  doi = {10.1002/jcc.25218},
+  author = {Zhou, Hongyu and Dong, Zheng and Tao, Peng},
+  month = jul,
+  year = {2018},
+  keywords = {classification,machine learning,allostery,molecular dynamics,protein},
+  pages = {1481-1490},
+  pmid = {29604117}
+}
+
+@article{HuangASDcomprehensivedatabase2011,
+  title = {{{ASD}}: A Comprehensive Database of Allosteric Proteins and Modulators},
+  volume = {39},
+  issn = {0305-1048},
+  shorttitle = {{{ASD}}},
+  abstract = {Allostery is the most direct, rapid and efficient way of regulating protein function, ranging from the control of metabolic mechanisms to signal-transduction pathways. However, an enormous amount of unsystematic allostery information has deterred scientists who could benefit from this field. Here, we present the AlloSteric Database (ASD), the first online database that provides a central resource for the display, search and analysis of structure, function and related annotation for allosteric molecules. Currently, ASD contains 336 allosteric proteins from 101 species and 8095 modulators in three categories (activators, inhibitors and regulators). Proteins are annotated with a detailed description of allostery, biological process and related diseases, and modulators with binding affinity, physicochemical properties and therapeutic area. Integrating the information of allosteric proteins in ASD should allow for the identification of specific allosteric sites of a given subtype among proteins of the same family that can potentially serve as ideal targets for experimental validation. In addition, modulators curated in ASD can be used to investigate potent allosteric targets for the query compound, and also help chemists to implement structure modifications for novel allosteric drug design. Therefore, ASD could be a platform and a starting point for biologists and medicinal chemists for furthering allosteric research. ASD is freely available at http://mdl.shsmu.edu.cn/ASD/.},
+  number = {Database issue},
+  journal = {Nucleic Acids Research},
+  doi = {10.1093/nar/gkq1022},
+  author = {Huang, Zhimin and Zhu, Liang and Cao, Yan and Wu, Geng and Liu, Xinyi and Chen, Yingyi and Wang, Qi and Shi, Ting and Zhao, Yaxue and Wang, Yuefei and Li, Weihua and Li, Yixue and Chen, Haifeng and Chen, Guoqiang and Zhang, Jian},
+  month = jan,
+  year = {2011},
+  pages = {D663-D669},
+  file = {/home/michal/Zotero/storage/W5CN553L/Huang i in. - 2011 - ASD a comprehensive database of allosteric protei.pdf},
+  pmid = {21051350},
+  pmcid = {PMC3013650}
+}
+
+@article{ShenASDv3unraveling2016,
+  title = {{{ASD}} v3.0: Unraveling Allosteric Regulation with Structural Mechanisms and Biological Networks},
+  volume = {44},
+  issn = {0305-1048},
+  shorttitle = {{{ASD}} v3.0},
+  abstract = {Abstract.  Allosteric regulation, the most direct and efficient way of regulating protein function, is induced by the binding of a ligand at one site that is to},
+  language = {en},
+  number = {D1},
+  journal = {Nucleic Acids Research},
+  doi = {10.1093/nar/gkv902},
+  author = {Shen, Qiancheng and Wang, Guanqiao and Li, Shuai and Liu, Xinyi and Lu, Shaoyong and Chen, Zhongjie and Song, Kun and Yan, Junhao and Geng, Lv and Huang, Zhimin and Huang, Wenkang and Chen, Guoqiang and Zhang, Jian},
+  month = jan,
+  year = {2016},
+  pages = {D527-D535},
+  file = {/home/michal/Zotero/storage/SHPPVBNZ/Shen i in. - 2016 - ASD v3.0 unraveling allosteric regulation with st.pdf;/home/michal/Zotero/storage/ZEDICFCL/2503129.html}
+}
+
+@article{KielkopfHDXMSrevealsorthosteric2019,
+  title = {{{HDX}}-{{MS}} Reveals Orthosteric and Allosteric Changes in Apolipoprotein-{{D}} Structural Dynamics upon Binding of Progesterone},
+  volume = {28},
+  issn = {1469-896X},
+  abstract = {Apolipoprotein-D is a glycosylated tetrameric lipocalin that binds and transports small hydrophobic molecules such as progesterone and arachidonic acid. Like other lipocalins, apolipoprotein-D adopts an eight-stranded {$\beta$}-barrel fold stabilized by two intramolecular disulphide bonds, with an adjacent {$\alpha$}-helix. Crystallography studies of recombinant apolipoprotein-D demonstrated no major conformational changes upon progesterone binding. Amide hydrogen-deuterium exchange mass spectrometry (HDX-MS) reports structural changes of proteins in solution by monitoring exchange of amide hydrogens in the protein backbone with deuterium. HDX-MS detects changes in conformation and structural dynamics in response to protein function such as ligand binding that may go undetected in X-ray crystallography, making HDX-MS an invaluable orthogonal technique. Here, we report an HDX-MS protocol for apolipoprotein-D that solved challenges of high protein rigidity and low pepsin cleavage using rigorous quenching conditions and longer deuteration times, yielding 85\% sequence coverage and 50\% deuterium exchange. The relative fractional deuterium exchange of ligand-free apolipoprotein-D revealed apolipoprotein-D to be a highly structured protein. Progesterone binding was detected by significant reduction in deuterium exchange in eight peptides. Stabilization of apolipoprotein-D dynamics can be interpreted as a combined orthosteric effect in the ligand binding pocket and allosteric effect at the N-terminus and C-terminus. Together, our experiments provide insight into apolipoprotein-D structural dynamics and map the effects of progesterone binding that are relayed to distal parts of the protein. The observed stabilization of apolipoprotein-D dynamics upon progesterone binding demonstrates a common behaviour in the lipocalin family and may have implications for interactions of apolipoprotein-D with receptors or lipoprotein particles. Statement: We reveal for the first time how apolipoprotein-D, which is protective in Alzheimer's disease, becomes more ordered when bound to a molecule of steroid hormone. These results significantly extend the understanding of apolipoprotein-D structure from X-ray crystallography studies by incorporating information on how protein motion changes over time. To achieve these results an improved protocol was developed, suitable for proteins similar to apolipoprotein-D, to elucidate how proteins change flexibility when binding to small molecules.},
+  language = {eng},
+  number = {2},
+  journal = {Protein Science: A Publication of the Protein Society},
+  doi = {10.1002/pro.3534},
+  author = {Kielkopf, Claudia S. and Ghosh, Madhubrata and Anand, Ganesh S. and Brown, Simon H. J.},
+  month = feb,
+  year = {2019},
+  keywords = {mass spectrometry,apolipoprotein structure,apolipoprotein-D,HDX-MS,ligand,lipid,lipocalin,lipocalin structure},
+  pages = {365-374},
+  pmid = {30353968},
+  pmcid = {PMC6319766}
+}
+
+@article{ChandramohanPredictingAllostericEffects2016,
+  title = {Predicting {{Allosteric Effects}} from {{Orthosteric Binding}} in {{Hsp90}}-{{Ligand Interactions}}: {{Implications}} for {{Fragment}}-{{Based Drug Design}}},
+  volume = {12},
+  issn = {1553-7358},
+  shorttitle = {Predicting {{Allosteric Effects}} from {{Orthosteric Binding}} in {{Hsp90}}-{{Ligand Interactions}}},
+  abstract = {A key question in mapping dynamics of protein-ligand interactions is to distinguish changes at binding sites from those associated with long range conformational changes upon binding at distal sites. This assumes a greater challenge when considering the interactions of low affinity ligands (dissociation constants, KD, in the {$\mu$}M range or lower). Amide hydrogen deuterium Exchange mass spectrometry (HDXMS) is a robust method that can provide both structural insights and dynamics information on both high affinity and transient protein-ligand interactions. In this study, an application of HDXMS for probing the dynamics of low affinity ligands to proteins is described using the N-terminal ATPase domain of Hsp90. Comparison of Hsp90 dynamics between high affinity natural inhibitors (KD \textasciitilde{} nM) and fragment compounds reveal that HDXMS is highly sensitive in mapping the interactions of both high and low affinity ligands. HDXMS reports on changes that reflect both orthosteric effects and allosteric changes accompanying binding. Orthosteric sites can be identified by overlaying HDXMS onto structural information of protein-ligand complexes. Regions distal to orthosteric sites indicate long range conformational changes with implications for allostery. HDXMS, thus finds powerful utility as a high throughput method for compound library screening to identify binding sites and describe allostery with important implications for fragment-based ligand discovery (FBLD).},
+  language = {en},
+  number = {6},
+  journal = {PLOS Computational Biology},
+  doi = {10.1371/journal.pcbi.1004840},
+  author = {Chandramohan, Arun and Krishnamurthy, Srinath and Larsson, Andreas and Nordlund, Paer and Jansson, Anna and Anand, Ganesh S.},
+  month = jun,
+  year = {2016},
+  keywords = {Crystal structure,Deuterium,Amides,Allosteric regulation,Chemical dissociation,Pepsins,Protein interactions,X-ray crystallography},
+  pages = {e1004840},
+  file = {/home/michal/Zotero/storage/3STW2W4K/Chandramohan i in. - 2016 - Predicting Allosteric Effects from Orthosteric Bin.pdf;/home/michal/Zotero/storage/ASW2DVIS/article.html}
+}
+
+@article{NussinovComputationalStructuralBiology2019,
+  title = {Computational {{Structural Biology}}: {{Successes}}, {{Future Directions}}, and {{Challenges}}},
+  volume = {24},
+  copyright = {http://creativecommons.org/licenses/by/3.0/},
+  shorttitle = {Computational {{Structural Biology}}},
+  abstract = {Computational biology has made powerful advances. Among these, trends in human health have been uncovered through heterogeneous \&lsquo;big data\&rsquo; integration, and disease-associated genes were identified and classified. Along a different front, the dynamic organization of chromatin is being elucidated to gain insight into the fundamental question of genome regulation. Powerful conformational sampling methods have also been developed to yield a detailed molecular view of cellular processes. when combining these methods with the advancements in the modeling of supramolecular assemblies, including those at the membrane, we are finally able to get a glimpse into how cells\&rsquo; actions are regulated. Perhaps most intriguingly, a major thrust is on to decipher the mystery of how the brain is coded. Here, we aim to provide a broad, yet concise, sketch of modern aspects of computational biology, with a special focus on computational structural biology. We attempt to forecast the areas that computational structural biology will embrace in the future and the challenges that it may face. We skirt details, highlight successes, note failures, and map directions.},
+  language = {en},
+  number = {3},
+  journal = {Molecules},
+  doi = {10.3390/molecules24030637},
+  author = {Nussinov, Ruth and Tsai, Chung-Jung and Shehu, Amarda and Jang, Hyunbum},
+  month = jan,
+  year = {2019},
+  keywords = {bioinformatics,big data,biological modeling,free-energy landscape,machine intelligence,mutations},
+  pages = {637},
+  file = {/home/michal/Zotero/storage/Q4IS74DX/Nussinov i in. - 2019 - Computational Structural Biology Successes, Futur.pdf;/home/michal/Zotero/storage/9D8TKJIN/htm.html}
+}
+
+@article{ZhouAllostericmechanismcircadian2019,
+  title = {Allosteric Mechanism of the Circadian Protein {{Vivid}} Resolved through {{Markov}} State Model and Machine Learning Analysis},
+  volume = {15},
+  issn = {1553-7358},
+  abstract = {The fungal circadian clock photoreceptor Vivid (VVD) contains a photosensitive allosteric light, oxygen, voltage (LOV) domain that undergoes a large N-terminal conformational change. The mechanism by which a blue-light driven covalent bond formation leads to a global conformational change remains unclear, which hinders the further development of VVD as an optogenetic tool. We answered this question through a novel computational platform integrating Markov state models, machine learning methods, and newly developed community analysis algorithms. Applying this new integrative approach, we provided a quantitative evaluation of the contribution from the covalent bond to the protein global conformational change, and proposed an atomistic allosteric mechanism leading to the discovery of the unexpected importance of A'{$\alpha$}/A{$\beta$} and previously overlooked E{$\alpha$}/F{$\alpha$} loops in the conformational change. This approach could be applicable to other allosteric proteins in general to provide interpretable atomistic representations of their otherwise elusive allosteric mechanisms.},
+  language = {en},
+  number = {2},
+  journal = {PLOS Computational Biology},
+  doi = {10.1371/journal.pcbi.1006801},
+  author = {Zhou, Hongyu and Dong, Zheng and Verkhivker, Gennady and Zoltowski, Brian D. and Tao, Peng},
+  month = feb,
+  year = {2019},
+  keywords = {Crystal structure,Allosteric regulation,Biochemical simulations,Covalent bonding,Machine learning,Markov models,Principal component analysis,Simulation and modeling},
+  pages = {e1006801},
+  file = {/home/michal/Zotero/storage/4ZTHFCAJ/Zhou i in. - 2019 - Allosteric mechanism of the circadian protein Vivi.pdf;/home/michal/Zotero/storage/UK9MQTDG/comments.html}
+}
+
+@article{MalmstromAllosterycomputationalmicroscope2015,
+  title = {Allostery through the Computational Microscope: {{cAMP}} Activation of a Canonical Signalling Domain},
+  volume = {6},
+  copyright = {2015 Nature Publishing Group},
+  issn = {2041-1723},
+  shorttitle = {Allostery through the Computational Microscope},
+  abstract = {Ligand-induced protein allostery plays a central role in modulating cellular signalling pathways. Here using the conserved cyclic nucleotide-binding domain of protein kinase A's (PKA) regulatory subunit as a prototype signalling unit, we combine long-timescale, all-atom molecular dynamics simulations with Markov state models to elucidate the conformational ensembles of PKA's cyclic nucleotide-binding domain A for the cAMP-free (apo) and cAMP-bound states. We find that both systems exhibit shallow free-energy landscapes that link functional states through multiple transition pathways. This observation suggests conformational selection as the general mechanism of allostery in this canonical signalling domain. Further, we expose the propagation of the allosteric signal through key structural motifs in the cyclic nucleotide-binding domain and explore the role of kinetics in its function. Our approach integrates disparate lines of experimental data into one cohesive framework to understand structure, dynamics and function in complex biological systems.},
+  language = {en},
+  journal = {Nature Communications},
+  doi = {10.1038/ncomms8588},
+  author = {Malmstrom, Robert D. and Kornev, Alexandr P. and Taylor, Susan S. and Amaro, Rommie E.},
+  month = jul,
+  year = {2015},
+  pages = {7588},
+  file = {/home/michal/Zotero/storage/J6WVPZUX/Malmstrom i in. - 2015 - Allostery through the computational microscope cA.pdf;/home/michal/Zotero/storage/9SX6D4CY/ncomms8588.html}
+}
+
+@article{WangCurrentStrategiesApplications2018,
+  title = {Current {{Strategies}} and {{Applications}} for {{Precision Drug Design}}},
+  volume = {9},
+  issn = {1663-9812},
+  abstract = {In the context of the heterogeneity of individuals been uncovered by Human Genome Project (HGP), precision medicine that proposes the customized healthcare has become an intractable and hot research. Meanwhile, as the Precision Medicine Initiative launched, precision drug design aiming at maximizing therapeutic effects while minimizing undesired side effects for an individual patient has entered a new stage. The core of precision drug design is target based drug design. Once a disease related pathogenic key target is identified, rational drug design (also known as structure based drug design) which constitutes the major aspect of precision drug design can be performed. Examples of rational drug design including modulators design targeting on novel druggable targets and protein-protein interaction surface are summarized in this review. Besides, by virtue of the powerful ability in handling high-dimensional data and complex system, deep learning has efficiently promoted the applications of artificial intelligence in drug discovery and design. In this review, deep learning methods tailored to precision drug design are carefully discussed: genetic variants discovery and tumor neoantigen prediction. When a drug molecule is discovered, the development of specific targeted drug delivery system becomes another key aspect of precision drug design. Therefore, state-of-the-art techniques including antibody-drug conjugates (ADCs), and ligand-targeted conjugates are also included in this review.},
+  language = {English},
+  journal = {Frontiers in Pharmacology},
+  doi = {10.3389/fphar.2018.00787},
+  author = {Wang, Chen and Xu, Pan and Zhang, Luyu and Huang, Jing and Zhu, Kongkai and Luo, Cheng},
+  year = {2018},
+  keywords = {Antibody-drug conjugates,artificial intelligence,deep learning,ligand-targeted conjugates.,Precision drug design,precision medicine},
+  file = {/home/michal/Zotero/storage/5IHADCZN/Wang i in. - 2018 - Current Strategies and Applications for Precision .pdf;/home/michal/Zotero/storage/U9SVLGPU/Wang i in. - 2018 - Current Strategies and Applications for Precision .pdf}
+}
+
+@article{WeisSemiautomateddataprocessing2006,
+  title = {Semi-Automated Data Processing of Hydrogen Exchange Mass Spectra Using {{HX}}-{{Express}}},
+  volume = {17},
+  issn = {1044-0305},
+  abstract = {A Microsoft Excel utility, HX-Express, that significantly accelerates the analysis of hydrogen exchange mass spectrometry data is described. HX-Express generates deuterium uptake and peak width plots from peaks in mass spectral data. Data analysis is intentionally semi-automated, requiring that the user find the peaks to be analyzed. The peaks are entered in the form of x, y lists of m/z versus intensity or can be directly imported from Waters MassLynx software. Analysis of data with HX-Express provides the same results as manual data processing but is substantially faster. In addition to speed, HX-Express provides and preserves visual and numeric displays of the analysis process for quality control.},
+  language = {eng},
+  number = {12},
+  journal = {Journal of the American Society for Mass Spectrometry},
+  doi = {10.1016/j.jasms.2006.07.025},
+  author = {Weis, David D. and Engen, John R. and Kass, Ignatius J.},
+  month = dec,
+  year = {2006},
+  keywords = {Algorithms,Computer Simulation,Software,Models; Chemical,Reproducibility of Results,Sensitivity and Specificity,Models; Molecular,Hydrogen,User-Computer Interface,Deuterium Exchange Measurement,Spectrometry; Mass; Electrospray Ionization,Spectroscopy; Fourier Transform Infrared},
+  pages = {1700-1703},
+  pmid = {16931036}
+}
+
+@article{LouDeuterationdistributionestimation2010,
+  title = {Deuteration Distribution Estimation with Improved Sequence Coverage for {{HX}}/{{MS}} Experiments},
+  volume = {26},
+  issn = {1367-4803},
+  abstract = {Abstract.  Motivation: Time-resolved hydrogen exchange (HX) followed by mass spectrometry (MS) is a key technology for studying protein structure, dynamics and},
+  language = {en},
+  number = {12},
+  journal = {Bioinformatics},
+  doi = {10.1093/bioinformatics/btq165},
+  author = {Lou, Xinghua and Kirchner, Marc and Renard, Bernhard Y. and K{\"o}the, Ullrich and Boppel, Sebastian and Graf, Christian and Lee, Chung-Tien and Steen, Judith A. J. and Steen, Hanno and Mayer, Matthias P. and Hamprecht, Fred A.},
+  month = jun,
+  year = {2010},
+  pages = {1535-1541},
+  file = {/home/michal/Zotero/storage/2VT2IS3E/Lou i in. - 2010 - Deuteration distribution estimation with improved .pdf;/home/michal/Zotero/storage/QJCA78IW/281316.html}
+}
+
+@article{ChalmersMethodsanalysishigh2011,
+  series = {Hydrogen {{Exchange Mass Spectrometry}}},
+  title = {Methods for the Analysis of High Precision Differential Hydrogen\textendash{}Deuterium Exchange Data},
+  volume = {302},
+  issn = {1387-3806},
+  abstract = {Hydrogen/deuterium exchange (HDX) mass spectrometry has been widely applied to the characterization of protein dynamics. More recently, differential HDX has been shown to be effective for the characterization of ligand binding. Previously we have described a fully automated HDX system for use as a ligand screening platform. Here we describe and validate the required data analysis workflow to facilitate the use of HDX as a robust approach for ligand screening. Following acquisition of HDX data at a single on-exchange time point (n{$\geq$}3), one way analysis of variance in conjunction with the Tukey multiple comparison procedure is used to establish the significance of any measured difference. Analysis results are graphed with respect to a single peptide, ligand or group of ligands, or displayed as an overview within a heat map. For the heat map display, only {$\Delta\%$}D values with a Tukey-adjusted P-value less than 0.05 are colored. Hierarchical clustering is used to bin compounds with highly similar HDX signatures. The workflow is evaluated with a small dataset showing the ligand binding domain (LDB) of the nuclear receptor peroxisome proliferator-activated receptor gamma (PPAR{$\gamma$}) screened against 10 functionally selective ligands. More significantly, data for the vitamin D receptor (VDR) in complex with 87 ligands are presented. To highlight the robustness and precision of our automated HDX platform we analyzed the data from 4191 replicate HDX measurements acquired over an eight month timeframe. Ninety six percent of these measurements were within 10\% of the mean value. Work has begun to integrate these analysis and graphing components within our HDX software suite.},
+  number = {1},
+  journal = {International Journal of Mass Spectrometry},
+  doi = {10.1016/j.ijms.2010.08.002},
+  author = {Chalmers, Michael J. and Pascal, Bruce D. and Willis, Scooter and Zhang, Jun and Iturria, Stephen J. and Dodge, Jeffery A. and Griffin, Patrick R.},
+  month = apr,
+  year = {2011},
+  keywords = {HDX,Ligand,MS,Nuclear receptor,Screening},
+  pages = {59-68},
+  file = {/home/michal/Zotero/storage/7RZ3TD74/Chalmers i in. - 2011 - Methods for the analysis of high precision differe.pdf;/home/michal/Zotero/storage/ASESWSEW/S1387380610002824.html}
+}
+
+@article{ClaesenComputationalmethodschallenges2017,
+  title = {Computational Methods and Challenges in Hydrogen/Deuterium Exchange Mass Spectrometry},
+  volume = {36},
+  copyright = {\textcopyright{} 2016 Wiley Periodicals, Inc.},
+  issn = {1098-2787},
+  abstract = {Hydrogen/Deuterium exchange (HDX) has been applied, since the 1930s, as an analytical tool to study the structure and dynamics of (small) biomolecules. The popularity of using HDX to study proteins increased drastically in the last two decades due to the successful combination with mass spectrometry (MS). Together with this growth in popularity, several technological advances have been made, such as improved quenching and fragmentation. As a consequence of these experimental improvements and the increased use of protein-HDXMS, large amounts of complex data are generated, which require appropriate analysis. Computational analysis of HDXMS requires several steps. A typical workflow for proteins consists of identification of (non-)deuterated peptides or fragments of the protein under study (local analysis), or identification of the deuterated protein as a whole (global analysis); determination of the deuteration level; estimation of the protection extent or exchange rates of the labile backbone amide hydrogen atoms; and a statistically sound interpretation of the estimated protection extent or exchange rates. Several algorithms, specifically designed for HDX analysis, have been proposed. They range from procedures that focus on one specific step in the analysis of HDX data to complete HDX workflow analysis tools. In this review, we provide an overview of the computational methods and discuss outstanding challenges. \textcopyright{} 2016 Wiley Periodicals, Inc. Mass Spec Rev 36:649\textendash{}667, 2017},
+  language = {en},
+  number = {5},
+  journal = {Mass Spectrometry Reviews},
+  doi = {10.1002/mas.21519},
+  author = {Claesen, J{\"u}rgen and Burzykowski, Tomasz},
+  year = {2017},
+  keywords = {mass spectrometry,analysis,hydrogen/deuterium exchange},
+  pages = {649-667},
+  file = {/home/michal/Zotero/storage/US548QLC/Claesen i Burzykowski - 2017 - Computational methods and challenges in hydrogend.pdf;/home/michal/Zotero/storage/UDMIVDHS/mas.html}
+}
+
+@article{GuttmanAnalysisOverlappedNoisy2013,
+  title = {Analysis of {{Overlapped}} and {{Noisy Hydrogen}}/{{Deuterium Exchange Mass Spectra}}},
+  volume = {24},
+  issn = {1879-1123},
+  abstract = {Noisy and overlapped mass spectrometry data hinder the sequence coverage that can be obtained from hydrogen deuterium exchange analysis, and places a limit on the complexity of the samples that can be studied by this technique. Advances in instrumentation have addressed these limits, but as the complexity of the biological samples under investigation increases, these problems are re-encountered. Here we describe the use of binomial distribution fitting with asymmetric linear squares regression for calculating the accurate deuterium content for mass envelopes of low signal or that contain significant overlap. The approach is demonstrated with a test data set of HIV Env gp140 wherein inclusion of the new analysis regime resulted in obtaining exchange data for 42 additional peptides, improving the sequence coverage by 11 \%. At the same time, the precision of deuterium uptake measurements was improved for nearly every peptide examined. The improved processing algorithms also provide an efficient method for deconvolution of bimodal mass envelopes and EX1 kinetic signatures. All these functions and visualization tools have been implemented in the new version of the freely available software, HX-Express v2. Open image in new window Figure ᅟ},
+  language = {en},
+  number = {12},
+  journal = {Journal of The American Society for Mass Spectrometry},
+  doi = {10.1007/s13361-013-0727-5},
+  author = {Guttman, Miklos and Weis, David D. and Engen, John R. and Lee, Kelly K.},
+  month = dec,
+  year = {2013},
+  keywords = {Deuterium,Binomial,H/D exchange,Bimodal,Conformational dynamics,Deconvolution,Overlap},
+  pages = {1906-1912},
+  file = {/home/michal/Zotero/storage/RM9DHRYV/Guttman i in. - 2013 - Analysis of Overlapped and Noisy HydrogenDeuteriu.pdf}
+}
+
+@article{KanExMSDataAnalysis2011,
+  title = {{{ExMS}}: {{Data Analysis}} for {{HX}}-{{MS Experiments}}},
+  volume = {22},
+  issn = {1879-1123},
+  shorttitle = {{{ExMS}}},
+  abstract = {A previous paper considered the problems that presently limit the hydrogen exchange - mass spectrometry (HX-MS) method for studying the biophysical and functional properties of proteins. Many of these problems can be overcome by obtaining and analyzing hundreds of sequentially overlapping peptide fragments that cover the protein many times over (Mayne et al. J. Am. Soc. Mass Spectrom. 2011: 10.1007/s13361-011-0235-4). This paper describes a computer program called ExMS that furthers this advance by making it possible to efficiently process crowded mass spectra and definitively identify and characterize these many peptide fragments. ExMS automatically scans through high resolution MS data to find the individual isotopic peaks and isotopic envelopes of a list of peptides previously identified by MS/MS. It performs a number of tests to ensure correct identification in spite of peptide overlap in both chromatographic and mass spectrometric dimensions and possible multi-modal envelopes due to static or dynamic structural heterogeneity or HX EX1 behavior. The program can automatically process data from many sequential HX time points with no operator intervention at the rate of \textasciitilde{}2 sec per peptide per HX time point using desktop computer equipment, but it also provides for rapid manual checking and decision when ambiguity exists. Additional subroutines can provide a step by step report of performance at each test along the way and parameter adjustment, deconvolute isotopic envelopes, and plot the time course of single and multi-modal H-D exchange. The program will be available on an open source basis at: http://HX2.med.upenn.edu/download.html},
+  language = {en},
+  number = {11},
+  journal = {Journal of The American Society for Mass Spectrometry},
+  doi = {10.1007/s13361-011-0236-3},
+  author = {Kan, Zhong-Yuan and Mayne, Leland and Sevugan Chetty, Palaniappan and Englander, S. Walter},
+  month = sep,
+  year = {2011},
+  keywords = {Proteins,HDX,Hydrogen exchange},
+  pages = {1906},
+  file = {/home/michal/Zotero/storage/VY5TMDQT/Kan i in. - 2011 - ExMS Data Analysis for HX-MS Experiments.pdf}
+}
+
+@article{PfeufferOpenMSplatformreproducible2017,
+  series = {Bioinformatics {{Solutions}} for {{Big Data Analysis}} in {{Life Sciences}} Presented by the {{German Network}} for {{Bioinformatics Infrastructure}}},
+  title = {{{OpenMS}} \textendash{} {{A}} Platform for Reproducible Analysis of Mass Spectrometry Data},
+  volume = {261},
+  issn = {0168-1656},
+  abstract = {Background
+In recent years, several mass spectrometry-based omics technologies emerged to investigate qualitative and quantitative changes within thousands of biologically active components such as proteins, lipids and metabolites. The research enabled through these methods potentially contributes to the diagnosis and pathophysiology of human diseases as well as to the clarification of structures and interactions between biomolecules. Simultaneously, technological advances in the field of mass spectrometry leading to an ever increasing amount of data, demand high standards in efficiency, accuracy and reproducibility of potential analysis software.
+Results
+This article presents the current state and ongoing developments in OpenMS, a versatile open-source framework aimed at enabling reproducible analyses of high-throughput mass spectrometry data. It provides implementations of frequently occurring processing operations on MS data through a clean application programming interface in C++ and Python. A collection of 185 tools and ready-made workflows for typical MS-based experiments enable convenient analyses for non-developers and facilitate reproducible research without losing flexibility.
+Conclusions
+OpenMS will continue to increase its ease of use for developers as well as users with improved continuous integration/deployment strategies, regular trainings with updated training materials and multiple sources of support. The active developer community ensures the incorporation of new features to support state of the art research.},
+  journal = {Journal of Biotechnology},
+  doi = {10.1016/j.jbiotec.2017.05.016},
+  author = {Pfeuffer, Julianus and Sachsenberg, Timo and Alka, Oliver and Walzer, Mathias and Fillbrunn, Alexander and Nilse, Lars and Schilling, Oliver and Reinert, Knut and Kohlbacher, Oliver},
+  month = nov,
+  year = {2017},
+  keywords = {Mass spectrometry,Analysis workflows,Reproducible research,Software libraries,Tool collection},
+  pages = {142-148},
+  file = {/home/michal/Zotero/storage/UFEFTGJA/Pfeuffer i in. - 2017 - OpenMS – A platform for reproducible analysis of m.pdf;/home/michal/Zotero/storage/RXI6VWMK/S0168165617302511.html}
+}
+
+@article{TyanovaMaxQuantcomputationalplatform2016,
+  title = {The {{MaxQuant}} Computational Platform for Mass Spectrometry-Based Shotgun Proteomics},
+  volume = {11},
+  copyright = {2016 Nature Publishing Group},
+  issn = {1750-2799},
+  abstract = {MaxQuant is one of the most frequently used platforms for mass-spectrometry (MS)-based proteomics data analysis. Since its first release in 2008, it has grown substantially in functionality and can be used in conjunction with more MS platforms. Here we present an updated protocol covering the most important basic computational workflows, including those designed for quantitative label-free proteomics, MS1-level labeling and isobaric labeling techniques. This protocol presents a complete description of the parameters used in MaxQuant, as well as of the configuration options of its integrated search engine, Andromeda. This protocol update describes an adaptation of an existing protocol that substantially modifies the technique. Important concepts of shotgun proteomics and their implementation in MaxQuant are briefly reviewed, including different quantification strategies and the control of false-discovery rates (FDRs), as well as the analysis of post-translational modifications (PTMs). The MaxQuant output tables, which contain information about quantification of proteins and PTMs, are explained in detail. Furthermore, we provide a short version of the workflow that is applicable to data sets with simple and standard experimental designs. The MaxQuant algorithms are efficiently parallelized on multiple processors and scale well from desktop computers to servers with many cores. The software is written in C\# and is freely available at http://www.maxquant.org.},
+  language = {en},
+  number = {12},
+  journal = {Nature Protocols},
+  doi = {10.1038/nprot.2016.136},
+  author = {Tyanova, Stefka and Temu, Tikira and Cox, Juergen},
+  month = dec,
+  year = {2016},
+  pages = {2301-2319},
+  file = {/home/michal/Zotero/storage/T9EPJIMX/Tyanova i in. - 2016 - The MaxQuant computational platform for mass spect.pdf;/home/michal/Zotero/storage/9WQMGL59/nprot.2016.html}
+}
+
+@article{RandProteinHydrogenExchange2009,
+  title = {Protein {{Hydrogen Exchange Measured}} at {{Single}}-{{Residue Resolution}} by {{Electron Transfer Dissociation Mass Spectrometry}}},
+  volume = {81},
+  issn = {0003-2700},
+  abstract = {Because of unparalleled sensitivity and tolerance to protein size, mass spectrometry (MS) has become a popular method for measuring the solution hydrogen (1H/2H) exchange (HX) of biologically relevant protein states. While incorporated deuterium can be localized to different regions by pepsin proteolysis of the labeled protein, the assignment of deuteriums to individual residues is typically not obtained, thereby limiting a detailed understanding of HX and the dynamics of protein structure. Here we use gas-phase fragmentation of peptic peptides by electron transfer dissociation (ETD) to measure the HX of individual amide linkages in the amyloidogenic protein {$\beta$}2-microglobulin. A comparison of the deuterium levels of 60 individual backbone amides of {$\beta$}2-microglobulin measured by HX-ETD-MS analysis to the corresponding values measured by NMR spectroscopy shows an excellent correlation. The deuterium labeling pattern of {$\beta$}2-microglobulin is retained in the gaseous fragment ions by employing mild declustering conditions for electrospray ionization. A recently developed model peptide is used to arrive at such ion source declustering conditions that prevent the occurrence of intramolecular gas-phase hydrogen (1H/2H) migration (i.e., hydrogen scrambling). This article demonstrates that ETD can be implemented in a mass spectrometric method to monitor the conformational dynamics of proteins in solution at single-residue resolution.},
+  number = {14},
+  journal = {Analytical Chemistry},
+  doi = {10.1021/ac9008447},
+  author = {Rand, Kasper D. and Zehl, Martin and Jensen, Ole N. and J{\o}rgensen, Thomas J. D.},
+  month = jul,
+  year = {2009},
+  pages = {5577-5584},
+  file = {/home/michal/Zotero/storage/RSIFQ55L/Rand i in. - 2009 - Protein Hydrogen Exchange Measured at Single-Resid.pdf;/home/michal/Zotero/storage/4PDMBXVL/ac9008447.html}
+}
+
+@article{BittrichApplicationinterpretableclassification2019,
+  title = {Application of an Interpretable Classification Model on {{Early Folding Residues}} during Protein Folding},
+  volume = {12},
+  issn = {1756-0381},
+  abstract = {Background
+Machine learning strategies are prominent tools for data analysis. Especially in life sciences, they have become increasingly important to handle the growing datasets collected by the scientific community. Meanwhile, algorithms improve in performance, but also gain complexity, and tend to neglect interpretability and comprehensiveness of the resulting models.
+
+Results
+Generalized Matrix Learning Vector Quantization (GMLVQ) is a supervised, prototype-based machine learning method and provides comprehensive visualization capabilities not present in other classifiers which allow for a fine-grained interpretation of the data. In contrast to commonly used machine learning strategies, GMLVQ is well-suited for imbalanced classification problems which are frequent in life sciences. We present a Weka plug-in implementing GMLVQ. The feasibility of GMLVQ is demonstrated on a dataset of Early Folding Residues (EFR) that have been shown to initiate and guide the protein folding process. Using 27 features, an area under the receiver operating characteristic of 76.6\% was achieved which is comparable to other state-of-the-art classifiers. The obtained model is accessible at https://biosciences.hs-mittweida.de/efpred/.
+
+Conclusions
+The application on EFR prediction demonstrates how an easy interpretation of classification models can promote the comprehension of biological mechanisms. The results shed light on the special features of EFR which were reported as most influential for the classification: EFR are embedded in ordered secondary structure elements and they participate in networks of hydrophobic residues. Visualization capabilities of GMLVQ are presented as we demonstrate how to interpret the results.
+
+Electronic supplementary material
+The online version of this article (10.1186/s13040-018-0188-2) contains supplementary material, which is available to authorized users.},
+  journal = {BioData Mining},
+  doi = {10.1186/s13040-018-0188-2},
+  author = {Bittrich, Sebastian and Kaden, Marika and Leberecht, Christoph and Kaiser, Florian and Villmann, Thomas and Labudde, Dirk},
+  month = jan,
+  year = {2019},
+  file = {/home/michal/Zotero/storage/ELYBYSJ6/Bittrich i in. - 2019 - Application of an interpretable classification mod.pdf},
+  pmid = {30627219},
+  pmcid = {PMC6321665}
+}
+
+@article{ReadingInterrogatingMembraneProtein2017,
+  title = {Interrogating {{Membrane Protein Conformational Dynamics}} within {{Native Lipid Compositions}}},
+  volume = {56},
+  issn = {1521-3773},
+  abstract = {The interplay between membrane proteins and the lipids of the membrane is important for cellular function, however, tools enabling the interrogation of protein dynamics within native lipid environments are scarce and often invasive. We show that the styrene-maleic acid lipid particle (SMALP) technology can be coupled with hydrogen-deuterium exchange mass spectrometry (HDX-MS) to investigate membrane protein conformational dynamics within native lipid bilayers. We demonstrate changes in accessibility and dynamics of the rhomboid protease GlpG, captured within three different native lipid compositions, and identify protein regions sensitive to changes in the native lipid environment. Our results illuminate the value of this approach for distinguishing the putative role(s) of the native lipid composition in modulating membrane protein conformational dynamics.},
+  language = {eng},
+  number = {49},
+  journal = {Angewandte Chemie (International Ed. in English)},
+  doi = {10.1002/anie.201709657},
+  author = {Reading, Eamonn and Hall, Zoe and Martens, Chloe and Haghighi, Tabasom and Findlay, Heather and Ahdash, Zainab and Politis, Argyris and Booth, Paula J.},
+  month = apr,
+  year = {2017},
+  keywords = {Protein Conformation,Membrane Proteins,Endopeptidases,Escherichia coli Proteins,Mass Spectrometry,mass spectrometry,Deuterium Exchange Measurement,DNA-Binding Proteins,lipids,Lipids,membrane nanodiscs,membrane proteins,structural biology},
+  pages = {15654-15657},
+  pmid = {29049865}
+}
+
+@article{GoswamiTimewindowexpansion2013,
+  title = {Time Window Expansion for {{HDX}} Analysis of an Intrinsically Disordered Protein},
+  volume = {24},
+  issn = {1044-0305},
+  abstract = {Application of typical HDX methods to examine intrinsically disordered proteins (IDP), proteins that are natively unstructured and highly dynamic at physiological pH, is limited due to the rapid exchange of unprotected amide hydrogens with solvent. The exchange rates of these fast exchanging amides are usually faster than the shortest time scale (10s) employed in typical automated HDX-MS experiments. Considering the functional importance of IDPs and their association with many diseases, it is valuable to develop methods that allow the study of solution dynamics of these proteins as well as the ability to probe the interaction of IDPs with their wide range of binding partners. Here, we report the application of time window expansion to the millisecond range by altering the on-exchange pH of the HDX experiment to study a well characterized IDP; the activation domain of the nuclear receptor coactivator, peroxisome proliferator-activated receptor gamma coactivator-1 alpha (PGC-1{$\alpha$}). This method enabled mapping the regions of PGC-1{$\alpha$} that are stabilized upon binding the ligand binding domain (LBD) of the nuclear receptor peroxisome proliferator-activated receptor gamma (PPAR{$\gamma$}). We further demonstrate the method's applicability to other binding partners of the IDP PGC-1{$\alpha$} and pave the way for characterizing many other biologically important ID proteins.},
+  number = {10},
+  journal = {Journal of the American Society for Mass Spectrometry},
+  doi = {10.1007/s13361-013-0669-y},
+  author = {Goswami, Devrishi and Devarakonda, Srikripa and Chalmers, Michael J and Pascal, Bruce D and Spiegelman, Bruce M and Griffin, Patrick R},
+  month = oct,
+  year = {2013},
+  pages = {1584-1592},
+  file = {/home/michal/Zotero/storage/WF3XF4DZ/Goswami i in. - 2013 - Time window expansion for HDX analysis of an intri.pdf},
+  pmid = {23884631},
+  pmcid = {PMC3773365}
+}
+
+@article{ZhangImprovedProteinHydrogen2012,
+  title = {Improved {{Protein Hydrogen}}/{{Deuterium Exchange Mass Spectrometry Platform}} with {{Fully Automated Data Processing}}},
+  volume = {84},
+  issn = {0003-2700},
+  abstract = {Protein hydrogen/deuterium exchange (HDX) followed by protease digestion and mass spectrometric (MS) analysis is accepted as a standard method for studying protein conformation and conformational dynamics. In this article, an improved HDX MS platform with fully automated data processing is described. The platform significantly reduces systematic and random errors in the measurement by introducing two types of corrections in HDX data analysis. First, a mixture of short peptides with fast HDX rates is introduced as internal standards to adjust the variations in the extent of back exchange from run to run. Second, a designed unique peptide (PPPI) with slow intrinsic HDX rate is employed as another internal standard to reflect the possible differences in protein intrinsic HDX rates when protein conformations at different solution conditions are compared. HDX data processing is achieved with a comprehensive HDX model to simulate the deuterium labeling and back exchange process. The HDX model is implemented into the in-house developed software MassAnalyzer and enables fully unattended analysis of the entire protein HDX MS data set starting from ion detection and peptide identification to final processed HDX output, typically within 1 day. The final output of the automated data processing is a set (or the average) of the most possible protection factors for each backbone amide hydrogen. The utility of the HDX MS platform is demonstrated by exploring the conformational transition of a monoclonal antibody by increasing concentrations of guanidine.},
+  number = {11},
+  journal = {Analytical Chemistry},
+  doi = {10.1021/ac300535r},
+  author = {Zhang, Zhongqi and Zhang, Aming and Xiao, Gang},
+  month = jun,
+  year = {2012},
+  pages = {4942-4949},
+  file = {/home/michal/Zotero/storage/VWFN8RPA/ac300535r.html}
+}
+
+@article{HoudeUtilityHydrogenDeuterium2011,
+  title = {The {{Utility}} of {{Hydrogen}}/{{Deuterium Exchange Mass Spectrometry}} in {{Biopharmaceutical Comparability Studies}}},
+  volume = {100},
+  issn = {0022-3549},
+  abstract = {The function, efficacy, and safety of protein biopharmaceuticals are tied to their three-dimensional structure. The analysis and verification of this higher-order structure are critical in demonstrating manufacturing consistency and in establishing the absence of structural changes in response to changes in production. It is, therefore, essential to have reliable, high-resolution and high sensitivity biophysical tools capable of interrogating protein structure and conformation. Here, we demonstrate the use of hydrogen/deuterium exchange mass spectrometry (H/DX-MS) in biopharmaceutical comparability studies. H/DX-MS measurements can be conducted with good precision, consume only picomoles of protein, interrogate nearly the entire molecule with peptide level resolution, and can be completed in a few days. Structural comparability or lack of comparability was monitored for different preparations of interferon-{$\beta$}-1a. We present specific graphical formats for the display of H/DX-MS data that aid in rapidly making both the qualitative (visual) and quantitative assessment of comparability. H/DX-MS is capable of making significant contributions in biopharmaceutical characterization by providing more informative and confident comparability assessments of protein higher order structure than are currently available within the biopharmaceutical industry.},
+  number = {6},
+  journal = {Journal of pharmaceutical sciences},
+  doi = {10.1002/jps.22432},
+  author = {Houde, Damian and Berkowitz, Steven A. and Engen, John R.},
+  month = jun,
+  year = {2011},
+  pages = {2071-2086},
+  file = {/home/michal/Zotero/storage/ZA9ZP9T8/Houde i in. - 2011 - The Utility of HydrogenDeuterium Exchange Mass Sp.pdf},
+  pmid = {21491437},
+  pmcid = {PMC3164548}
+}
+
+@techreport{jcgm:2008:EMDG,
+  title = {{{JCGM}} 100: {{Evaluation}} of {{Measurement Data}} - {{Guide}} to the {{Expression}} of {{Uncertainty}} in {{Measurement}}},
+  institution = {{JCGM}},
+  author = {{Joint Committee for Guides in Metrology}},
+  year = {2008}
+}
+
+@article{GessnerComputationalmethodallowing2017a,
+  title = {Computational Method Allowing {{Hydrogen}}-{{Deuterium Exchange Mass Spectrometry}} at Single Amide {{Resolution}}},
+  volume = {7},
+  copyright = {2017 The Author(s)},
+  issn = {2045-2322},
+  abstract = {Hydrogen-deuterium exchange (HDX) coupled with mass spectrometry (HDXMS) is a rapid and effective method for localizing and determining protein stability and dynamics. Localization is routinely limited to a peptide resolution of 5 to 20 amino acid residues. HDXMS data can contain information beyond that needed for defining protein stability at single amide resolution. Here we present a method for extracting this information from an HDX dataset to generate a HDXMS protein stability fingerprint. High resolution (HR)-HDXMS was applied to the analysis of a model protein of a spectrin tandem repeat that exemplified an intuitive stability profile based on the linkage of two triple helical repeats connected by a helical linker. The fingerprint recapitulated expected stability maximums and minimums with interesting structural features that corroborate proposed mechanisms of spectrin flexibility and elasticity. HR-HDXMS provides the unprecedented ability to accurately assess protein stability at the resolution of a single amino acid. The determination of HDX stability fingerprints may be broadly applicable in many applications for understanding protein structure and function as well as protein ligand interactions.},
+  language = {En},
+  number = {1},
+  journal = {Scientific Reports},
+  doi = {10.1038/s41598-017-03922-3},
+  author = {Gessner, Chris and Steinchen, Wieland and B{\'e}dard, Sabrina and Skinner, John J. and Woods, Virgil L. and Walsh, Thomas J. and Bange, Gert and Pantazatos, Dionysios P.},
+  month = jun,
+  year = {2017},
+  pages = {3789},
+  file = {/home/michal/Zotero/storage/CL99PAXE/Gessner i in. - 2017 - Computational method allowing Hydrogen-Deuterium E.pdf;/home/michal/Zotero/storage/4CKKSVXW/s41598-017-03922-3.html}
+}
+
+@article{Kupniewska-KozakIntertwinedStructuredUnstructured2010,
+  title = {Intertwined {{Structured}} and {{Unstructured Regions}} of {{exRAGE Identified}} by {{Monitoring Hydrogen}}\textendash{{Deuterium Exchange}}},
+  volume = {403},
+  issn = {0022-2836},
+  abstract = {Receptor for advanced glycation end products (RAGE) is a multiligand receptor that is engaged in many pathological processes. Potentially beneficial modification of its activity requires sound knowledge of its structural properties. However, up to now, only the structures of its separated domains have been published or deposited in databases. In this work, we used hydrogen\textendash{}deuterium exchange and mass spectrometry to gain insight into the structural properties of exRAGE (extracellular region of RAGE)\textemdash{}the full extracellular part of the protein. The present work indicates the common and disparate features of full exRAGE as compared to the structural models of its separate domains. The highlight of the present study is the contrasting behavior of the different regions of the protein, with the protected regions neighboring fully exposed parts especially in the N-terminal V domain.},
+  number = {1},
+  journal = {Journal of Molecular Biology},
+  doi = {10.1016/j.jmb.2010.08.027},
+  author = {{Kupniewska-Kozak}, Anna and Gospodarska, Emilia and Dadlez, Michal},
+  month = oct,
+  year = {2010},
+  keywords = {mass spectrometry,hydrogen–deuterium exchange,protein structure,receptor for advanced glycation end products},
+  pages = {52-65},
+  file = {/home/michal/Zotero/storage/QW9UVYDX/S0022283610008892.html}
+}
+
+

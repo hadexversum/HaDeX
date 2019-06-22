@@ -78,15 +78,13 @@
 <script src="overview_files/datatables-binding-0.5/datatables.js"></script><link href="overview_files/dt-core-bootstrap-1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet">
 <link href="overview_files/dt-core-bootstrap-1.10.16/css/dataTables.bootstrap.extra.css" rel="stylesheet">
 <script src="overview_files/dt-core-bootstrap-1.10.16/js/jquery.dataTables.min.js"></script><script src="overview_files/dt-core-bootstrap-1.10.16/js/dataTables.bootstrap.min.js"></script><link href="overview_files/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet">
-<script src="overview_files/crosstalk-1.0.0/js/crosstalk.min.js"></script><link href="overview_files/dt-core-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
-<link href="overview_files/dt-core-1.10.16/css/jquery.dataTables.extra.css" rel="stylesheet">
-<script src="overview_files/dt-core-1.10.16/js/jquery.dataTables.min.js"></script><div class="row">
+<script src="overview_files/crosstalk-1.0.0/js/crosstalk.min.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Supplement to: “HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data”</h1>
                         <h4 class="author">Weronika Puchała, Michał Burdukiewicz, Michał Kistowski, Katarzyna A. Dąbrowska, Aleksandra E. Badaczewska-Dawid, Dominik Cysewski, Michał Dadlez</h4>
             
-            <h4 class="date">15.02.2019</h4>
+            <h4 class="date">20.06.2019</h4>
       
       
       <div class="hidden name"><code>overview.Rmd</code></div>
@@ -103,8 +101,9 @@
 <div id="comparison-of-the-existing-hdx-ms-software" class="section level2">
 <h2 class="hasAnchor">
 <a href="#comparison-of-the-existing-hdx-ms-software" class="anchor"></a>Comparison of the existing HDX-MS software</h2>
-<div id="htmlwidget-da534e2603e4321999a7" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-da534e2603e4321999a7">{"x":{"style":"bootstrap","filter":"none","data":[["Accessibility","Accessibility","Accessibility","Analysis","Analysis","Analysis","Analysis","Analysis","Visualization","Visualization","Visualization","Visualization","Visualization","Visualization","Visualization","Reporting","Reporting","Reporting","Reporting"],["Web server","Programmatic access","Desktop software","Multi-state analysis","ISO-based uncertainty","Coverage and peptide overlap","Quality control","N- and C-terminal length corrections","Global visualization of deuterium uptake","Woods plot","Zooming of the Woods plot","Customizable label names and colors","Peptide kinetics chart","3D structure visualization","Downloadable charts","Deuterium uptake download","Downloadable results of intermediate computations","Report generation","PyMol export"],["Yes","No","No","No","No","No","No","No","Yes","No","No","No","Yes","Yes","Yes","Yes","No","No","No"],["No","No","Yes","No","No","No","No","Yes","Yes","Yes","Yes","No","No","No","Yes","Yes","No","No","Yes"],["Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","No","No","Yes","Yes","Yes","Yes","No"]],"container":"<table class=\"table table-striped table-hover\">\n  <thead>\n    <tr>\n      <th>Type<\/th>\n      <th>Name<\/th>\n      <th>MEMHDX<\/th>\n      <th>Deuteros<\/th>\n      <th>HaDeX<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","ordering":false,"paging":false,"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data) {\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == 'No' ? 'red' : ''});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == 'No' ? 'red' : ''});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':value == 'No' ? 'red' : ''});\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script>
+<p>MEMHDX <span class="citation">(Hourdel et al. 2016)</span> and Deuteros <span class="citation">(Lau et al. 2019)</span></p>
+<div id="htmlwidget-9f8ce3595704d0a032fe" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9f8ce3595704d0a032fe">{"x":{"style":"bootstrap","filter":"none","data":[["Accessibility","Accessibility","Accessibility","Analysis","Analysis","Analysis","Analysis","Analysis","Visualization","Visualization","Visualization","Visualization","Visualization","Visualization","Visualization","Reporting","Reporting","Reporting","Reporting"],["Web server","Programmatic access","Desktop software","Multi-state analysis","ISO-based uncertainty","Coverage and peptide overlap","Quality control","N- and C-terminal length corrections","Global visualization of deuterium uptake","Woods plot","Zooming of the Woods plot","Customizable label names and colors","Peptide kinetics chart","3D structure visualization","Downloadable charts","Deuterium uptake download","Downloadable results of intermediate computations","Report generation","PyMol export"],["Yes","No","No","No","No","No","No","No","Yes","No","No","No","Yes","Yes","Yes","Yes","No","No","No"],["No","No","Yes","No","No","No","No","Yes","Yes","Yes","Yes","No","No","No","Yes","Yes","No","No","Yes"],["Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","No","No","Yes","Yes","Yes","Yes","No"]],"container":"<table class=\"table table-striped table-hover\">\n  <thead>\n    <tr>\n      <th>Type<\/th>\n      <th>Name<\/th>\n      <th>MEMHDX<\/th>\n      <th>Deuteros<\/th>\n      <th>HaDeX<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","ordering":false,"paging":false,"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data) {\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == 'Yes' ? '#00BFFF' : value == 'No' ? '#FF8C91' : ''});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == 'Yes' ? '#00BFFF' : value == 'No' ? '#FF8C91' : ''});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':value == 'Yes' ? '#00BFFF' : value == 'No' ? '#FF8C91' : ''});\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script><p>We had not considered HDX Workbench <span class="citation">(Pascal et al. 2012)</span></p>
 </div>
 </div>
 <div id="general-data-manipulation" class="section level1">
@@ -113,9 +112,9 @@
 <div id="input-file-format" class="section level2">
 <h2 class="hasAnchor">
 <a href="#input-file-format" class="anchor"></a>Input file format</h2>
-<p>The HaDeX web server works only on data in the DynamX datafile format (Waters Corp.). It must contains a following set of columns with specified properties:</p>
-<div id="htmlwidget-3ee09dfde11a538fc2bb" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3ee09dfde11a538fc2bb">{"x":{"filter":"none","data":[["Protein","Start","End","Sequence","Modification","Fragment","MaxUptake","MHP","State","Exposure","File","z","RT","Inten","Center"],["Character","Integer","Integer","Character","Logic","Logic","Numeric","Numeric","Character","Numeric","Character","Integer","Numeric","Numeric","Numeric"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Column.Name<\/th>\n      <th>Column.Type<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","autoWidth":true,"pageLength":15,"order":[],"orderClasses":false,"lengthMenu":[10,15,25,50,100]}},"evals":[],"jsHooks":[]}</script><p>Although data can be imported into R using other tools, we strongly advice to rely on the <em>read_hdx()</em> function:</p>
+<p>The HaDeX web server works only on data in the DynamX datafile format (Waters Corp.). The data from other sources may be also adjusted to the format accepted by HaDeX provided it has following columns:</p>
+<div id="htmlwidget-0e1100d622dacbd8e261" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0e1100d622dacbd8e261">{"x":{"style":"bootstrap","filter":"none","data":[["Protein","Start","End","Sequence","Modification","Fragment","MaxUptake","MHP","State","Exposure","File","z","RT","Inten","Center"],["Character","Integer","Integer","Character","Logic","Logic","Numeric","Numeric","Character","Numeric","Character","Integer","Numeric","Numeric","Numeric"]],"container":"<table class=\"table table-striped table-hover\">\n  <thead>\n    <tr>\n      <th>Column.Name<\/th>\n      <th>Column.Type<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","ordering":false,"paging":false,"autoWidth":true,"order":[],"orderClasses":false}},"evals":[],"jsHooks":[]}</script><p>Although data can be imported into R using other tools, we strongly advice to rely on the <em>read_hdx()</em> function:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">dat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_hdx.html">read_hdx</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="dt">package =</span> <span class="st">"HaDeX"</span>, </a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">                            <span class="st">"HaDeX/data/KD_190304_Nucb2_EDTA_CaCl2_test02_clusterdata.csv"</span>))</a></code></pre></div>
 <p>Currently, <em>read_hdx()</em> supports .csv, .tsv and .xls files fullfilling the data structure described above.</p>
@@ -448,7 +447,6 @@
 <a class="sourceLine" id="cb28-5" data-line-number="5">                <span class="dt">state_first =</span> <span class="st">"CD160"</span>,</a>
 <a class="sourceLine" id="cb28-6" data-line-number="6">                <span class="dt">state_second =</span> <span class="st">"CD160_HVEM"</span>)</a></code></pre></div>
 <p><img src="overview_files/figure-html/unnamed-chunk-24-2.png" width="672"></p>
-<p>What we see here?</p>
 <p>Wood’s plot is a different way of presenting the same data as in comparison plot. In Wood’s plot the levels of peptides’ deuteration (either relative or absolute) are subtracted between states and presented with error bars. The plot below shows peptides, which levels of deuteration were significantly lower upon binding with other protein (red) and peptides, which levels of exchange were significantly higher upon binding with other protein (blue). The plot also show peptides in which no significant changes in deuteration between states are visible (grey). The biggest changes on the theoretical plot can be observed in 3 peptides (15-24, 30-35, 75-90).</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="co"># theoretical Woods plot - relative values</span></a>
 <a class="sourceLine" id="cb29-2" data-line-number="2"><span class="kw"><a href="../reference/woods_plot.html">woods_plot</a></span>(<span class="dt">calc_dat =</span> calc_dat_<span class="dv">1</span>,</a>
@@ -647,6 +645,21 @@
 <p><img src="overview_files/figure-html/unnamed-chunk-28-9.png" width="672"></p>
 </div>
 </div>
+<div id="references" class="section level1 unnumbered">
+<h1 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h1>
+<div id="refs" class="references">
+<div id="ref-HourdelMEMHDXinteractivetool2016">
+<p>Hourdel, Véronique, Stevenn Volant, Darragh P. O’Brien, Alexandre Chenal, Julia Chamot-Rooke, Marie-Agnès Dillies, and Sébastien Brier. 2016. “MEMHDX: An Interactive Tool to Expedite the Statistical Validation and Visualization of Large HDX-MS Datasets.” <em>Bioinformatics</em> 32 (22): 3413–9. <a href="https://doi.org/10.1093/bioinformatics/btw420">https://doi.org/10.1093/bioinformatics/btw420</a>.</p>
+</div>
+<div id="ref-LauDeuterossoftwarerapid2019">
+<p>Lau, Andy M. C., Zainab Ahdash, Chloe Martens, and Argyris Politis. 2019. “Deuteros: Software for Rapid Analysis and Visualization of Data from Differential Hydrogen Deuterium Exchange-Mass Spectrometry.” <em>Bioinformatics (Oxford, England)</em>, January. <a href="https://doi.org/10.1093/bioinformatics/btz022">https://doi.org/10.1093/bioinformatics/btz022</a>.</p>
+</div>
+<div id="ref-PascalHDXWorkbenchSoftware2012">
+<p>Pascal, Bruce D., Scooter Willis, Janelle L. Lauer, Rachelle R. Landgraf, Graham M. West, David Marciano, Scott Novick, Devrishi Goswami, Michael J. Chalmers, and Patrick R. Griffin. 2012. “HDX Workbench: Software for the Analysis of H/D Exchange MS Data.” <em>Journal of the American Society for Mass Spectrometry</em> 23 (9): 1512–21. <a href="https://doi.org/10.1007/s13361-012-0419-6">https://doi.org/10.1007/s13361-012-0419-6</a>.</p>
+</div>
+</div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -685,6 +698,7 @@
       <li><a href="#example-workflow-2">Example workflow 2</a></li>
       </ul>
 </li>
+      <li><a href="#references">References</a></li>
       </ul>
 </div>
       </div>
