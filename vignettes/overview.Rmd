@@ -179,6 +179,8 @@ Absolute value is calculates as in equation 8 without scalling, as shown in equa
 
 $$D = D_{t} - MHP\tag{8a}$$
 
+##### Uncertainty calculations
+
 The uncertainty of the function of one variable is defined by the equation 9:
 
 $$u(y) = \left| \frac{dy}{dx} u(x) \right|\tag{9}$$
