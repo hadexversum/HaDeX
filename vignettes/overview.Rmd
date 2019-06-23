@@ -43,7 +43,7 @@ We have not considered HDX Workbench [@PascalHDXWorkbenchSoftware2012] as it dea
 
 # HaDeX functionalities
 
-## Input data
+## Data import
 
 The HaDeX web server works only on data in the DynamX\textsuperscript{TM} datafile format (Waters Corp.). The data from other sources may be also adjusted to the format accepted by HaDeX provided it has following columns:
 
@@ -71,73 +71,76 @@ dat <- read_hdx(system.file(package = "HaDeX",
 Currently, *read_hdx()* supports .csv, .tsv and .xls files fullfilling the data structure described above. 
 
 
-## Computation of basic HDX-MS parameters
+## Computation of deuteration levels
 
-The computation of the basic HDX-MS parameters (e.g., deuteration) involves several pre-processing steps, all of which are described in this section. These steps are performed automatically in the GUI or by the prepare_dataset() function in the console. The result of using prepare_dataset() on HDX-MS data further referred to as calc_dat.
+The computation of the level of deuteration involves several pre-processing steps, all of which are described in this section. These steps are performed automatically in the GUI or by the prepare_dataset() function in the console. The result of using prepare_dataset() on HDX-MS data further referred to as calc_dat.
 
-#### Measured data to useful value
+### Measured data into overall peptide mass
 
 The results of HDX-MS measurements as given in the DynamX datafiles are represented as the measured mass of peptides plus proton mass to charge ratio ($Center$). For later use, this value has to be transformed into overall peptide mass, as shown in equation 1: 
 
 $$expMass = z \times (Center-protonMass)\tag{1}$$
 where:
 
-- $expMass$ - result calculated from partial values
+- $expMass$ - result calculated from partial values,
 
-- $z$ - charge
+- $z$ - charge,
 
-- $Center$ - experimentally measured value - mass plus proton mass per charge ratio
+- $Center$ - experimentally measured value - mass plus proton mass per charge ratio.
 
-HDX-MS experiments are often repeated (as the rule of thumb at least three times). Thus, we aggregate the results of replicates as the weighted mean into one result per peptide using equation 2: 
+HDX-MS experiments are often repeated (as the rule of thumb at least three times). Thus, we aggregate the results of replicates as the weighted mean into a single result per peptide using equation 2: 
 
 $$expMass = \frac{Inten \times expMass}{N}\tag{2}$$
 where:
 
-- $Inten$ - Intensivity
+- $Inten$ - intensivity,
 
-- $N$ - number of repetitions
+- $N$ - number of replicates.
 
-In input file is data from more than one measurement. The mean value for each time in each state is treated as a result. This means that the uncertainty is calculated using the standard deviation of the mean:
+The input files always encompass results of more than one measurement. The mean mass for each time point of the measurement in each state is treated as an individual result. This means that the uncertainty is calculated using the standard deviation of the mean:
 
 $$u(x) = \sqrt{\frac{ \sum_{i=1}^n \left( x_{i} - \overline{x} \right)^2}{n(n-1)}}\tag{3}$$
 where:
 
-- $x_{i}$ - measurement
+- $x_{i}$ - measurement,
  
-- $\overline{x}$ - mean value
+- $\overline{x}$ - mean value,
 
-- $n$ - number of measurements
+- $n$ - number of measurements.
 
-#### Experimental deuteration level
+After obtaining the mass of the peptide, we can compute experimental or theoretical deuteration level depending on the chosen maximum deuteration level.
 
-In HDX-MS experiments the subject of interest is deuteration level exchanged in a given time between two states. 
-Generally, the experimental relative deuteration level is calculated as shown in equation 4. It is a function of three variables and produces a value for the chosen state and chosen time $t$.  
+### Experimental deuteration level
 
-$$D = \frac{D_{t} - D_{0}}{D_{100} - D_{0}}\tag{4}$$
+The experimental deuteration level is computed as the deuteration level of the peptide in a specific time point $t$ compared to the deuteration level measured at the last timepoint $out$ (as as shown in equation 4). It is a function of three variables and yields a value for the chosen state and chosen time $t$.  
+
+$$D = \frac{D_{t} - D_{0}}{D_{out} - D_{0}}\tag{4}$$
 
 where:
 
-- $D$ - deuteration level (relative value)
+- $D$ - deuteration level (relative value),
 
-- $D_{0}$ - deuteration in $in$ time (0 or close to 0, measured) - mean value obtained as explained before
+- $D_{0}$ - deuteration at the beginning of the experiment (0 or close to 0, measured),
 
-- $D_{100}$ - deuteration in $out$ time (possibly big, at least 1440 [min]) - mean value obtainted as explained before
+- $D_{out}$ - deuteration in $out$ tim,
 
 - $D_{t}$ - deuteration measured in chosen time - mean value obtainted as explained before
 
-Although equation 4 produces relative value, absolute values are also calculated in HaDeX adjusting the equation to its variance as shown in equation 4a:
+The equation 4 produces only relative deuteration levels. The computations of absolute deuteration levels follows a similar logic and requires only adjusting the equation 4 to its variance as shown in equation 4a:
 
 $$D = D_{t} - D_{0}\tag{4a}$$
-Functions in HaDeX package contain logical value $relative$ to determine if values should be absolute or relative. Methodology below is described on relative values for readability. Absolute values are obtained analogical way, but without scaling. 
+All functions in the HaDeX package contain the logical parameter $relative$ to determine if they should return absolute or relative deuteration levels. 
 
-# Uncertainty calculations
+##### Uncertainty calculations
 
-The uncertainty of measurement is variability associated with the precision of measuring instrumentation. To the best of our knowledge, we present here the first derivation of uncertainty formulas for HDX-MS data. To calculate uncertainty related to functions of more than one variables (eq. equation 4) the Law of propagation of uncertainty is defined by equation 5:
+The uncertainty of a measurement is variability associated with the precision of measuring instrumentation. We present here the first derivation of uncertainty formulas for HDX-MS data according to the ISO guidelines [@jcgm:2008:EMDG].  We describe the methodology of the uncertainty calculations for relative deuteration levels. The uncertainty for absolute deuteration levels is computed similarly, but without scaling. 
+
+To calculate uncertainty related to functions of more than one variables (e. g., equation 4) the Law of propagation of uncertainty is defined by equation 5:
 
 $$u_{c}(y) = \sqrt{\sum_{k} \left[ \frac{\partial y}{\partial x_{k}} u(x_{k}) \right]^2}\tag{5}$$
 
 
-We assume uncorrelatedness of HDX-MS measurements, because XXX.
+We assume uncorrelatedness of HDX-MS measurements as they come from differently incubated samples.
 
 After adapting the equation 5 using formula from equation 4, uncertainty of equation 4 is calculated as follows:
 
@@ -145,20 +148,20 @@ $$u_{c}(D) = \sqrt{\sum_{k} \left[ \frac{\partial D}{\partial D_{k}} u(D_{k}) \r
 
 where:
 
-- $k \in {0, t, 100}$
+- $k \in {0, t, 100}$,
 
-- $D_{k}$ - deuteration in k time 
+- $D_{k}$ - deuteration in $k$ time,
 
-- $u(D_{k})$ - uncertainty associated with $D_{k}$ as standard deviation of the mean value 
+- $u(D_{k})$ - an uncertainty associated with $D_{k}$ as standard deviation of the mean value, 
 
 Then, expanding the equation 6:
 
 $$u_{c}(D) = \sqrt{ \left[ \frac{1}{D_{100}-D_{0}} u(D_{t}) \right]^2 + \left[ \frac{D_{t} - D_{100}}{(D_{100}-D_{0})^2} u(D_{0}) \right]^2 + \left[ \frac{D_{0} - D_{t}}{(D_{100}-D_{0})^2} u(D_{100}) \right]^2}\tag{7}$$
 As suspected, the uncertainty associated with $D_{t}$ has the biggest impact on $u_{c}(D)$.
 
-#### Theoretical deuteration level 
+### Theoretical deuteration level 
 
-Other way to examine the data rather then experimental way are the theoertical calculations - obtained relative deuteration level in chosen time $t$ is compared with theoretical values as shown in equation 8:
+In the oppostition to the experimental deuteration levels, theoetical computations only partially depend on the experimental data. Here, the maximum deuteration level comes from an imaginary peptide where all hydrogens were replaced by deuters, as it is shown in equation 8:
 
 $$D = \frac{D_{t}-MHP}{MaxUptake \times protonMass}\tag{8}$$
 
