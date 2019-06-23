@@ -25,13 +25,13 @@ opts_chunk$set(fig.width = 7, fig.height = 5)
  
 # About HaDeX
 
-HaDeX is a novel tool for processing, analysis and visualisation of HDX-MS experiments. HaDeX covers the final parts of the analytic process, including data exploration, quality control and generation of publication-quality figures. To make the HaDeX **R** package available to the less **R**-fluent users, we enhanced it with a comprehensive Graphical User Interface available as a HaDeX Shiny app. The reproducibility of the whole procedure is ensured with advanced reporting functions. The app is availble online: http://mslab-ibb.pl/shiny/HaDeX/ or locally through the HaDeX_gui() fuction.  
+HaDeX is a novel tool for processing, analysis and visualisation of HDX-MS experiments. HaDeX covers the final parts of the analytic process, including comparison of experiments, quality control and generation of publication-quality figures. To make the HaDeX **R** package available to the less **R**-fluent users, we enhanced it with a comprehensive Graphical User Interface available as a HaDeX Shiny app. The reproducibility of the whole procedure is ensured with advanced reporting functions. The app is availble online: http://mslab-ibb.pl/shiny/HaDeX/ or locally through the HaDeX_gui() fuction.  
 
 This document covers the main functonalities of both the **R** package and the web server.
 
 ## Comparison of the existing HDX-MS software
 
-MEMHDX [@HourdelMEMHDXinteractivetool2016] and Deuteros [@LauDeuterossoftwarerapid2019]
+To show the novelty of HaDeX, we compare its functionalities with other relatively new software for analysis of HDX-MS data: MEMHDX [@HourdelMEMHDXinteractivetool2016] and Deuteros [@LauDeuterossoftwarerapid2019]. 
 
 ```{r echo=FALSE,results='asis'}
 read.csv2("comparison.csv") %>% 
@@ -39,11 +39,11 @@ read.csv2("comparison.csv") %>%
   formatStyle(c("MEMHDX", "Deuteros", "HaDeX"), backgroundColor = styleEqual(c("Yes", "No"), c("#00BFFF", "#FF8C91")))
 ```
 
-We had not considered HDX Workbench [@PascalHDXWorkbenchSoftware2012]
+We have not considered HDX Workbench [@PascalHDXWorkbenchSoftware2012] as it deals with the preliminary steps of the analysis.
 
-# General data manipulation
+# HaDeX functionalities
 
-## Input file format 
+## Input data
 
 The HaDeX web server works only on data in the DynamX\textsuperscript{TM} datafile format (Waters Corp.). The data from other sources may be also adjusted to the format accepted by HaDeX provided it has following columns:
 
@@ -71,13 +71,13 @@ dat <- read_hdx(system.file(package = "HaDeX",
 Currently, *read_hdx()* supports .csv, .tsv and .xls files fullfilling the data structure described above. 
 
 
-# Data preparation for deuteration calculations
+## Computation of basic HDX-MS parameters
 
-There are a few steps of preliminary data preparation. All of the listed transformation in this section is done by prepare_dataset() function. Product of calling prepare_dataset() on data read by read_hdx() is later referred as calc_dat.
+The computation of the basic HDX-MS parameters (e.g., deuteration) involves several pre-processing steps, all of which are described in this section. These steps are performed automatically in the GUI or by the prepare_dataset() function in the console. The result of using prepare_dataset() on HDX-MS data further referred to as calc_dat.
 
 #### Measured data to useful value
 
-DynamX provides experimental data as measured mass plus proton mass to charge ratio ($Center$). For later use, this value has to be transformed into overall peptide mass, as shown in equation 1: 
+The results of HDX-MS measurements as given in the DynamX datafiles are represented as the measured mass of peptides plus proton mass to charge ratio ($Center$). For later use, this value has to be transformed into overall peptide mass, as shown in equation 1: 
 
 $$expMass = z \times (Center-protonMass)\tag{1}$$
 where:
@@ -88,9 +88,7 @@ where:
 
 - $Center$ - experimentally measured value - mass plus proton mass per charge ratio
 
-This transformation is applied to every measurement. 
-
-The experiment is repeated at least three times for the results to be reliable. Then, the repetitions are aggregated as weighted mean into one result per peptide using equation 2: 
+HDX-MS experiments are often repeated (as the rule of thumb at least three times). Thus, we aggregate the results of replicates as the weighted mean into one result per peptide using equation 2: 
 
 $$expMass = \frac{Inten \times expMass}{N}\tag{2}$$
 where:
@@ -309,7 +307,7 @@ woods_plot(calc_dat = calc_dat,
 
 ### Confidence limit in Woods plot
 
-The function calculate_confidence_limit_values() calculates confidence limit values as it is described elsewhere (Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086). 
+The function calculate_confidence_limit_values() calculates confidence limit values as it is described elsewhere [@HoudeUtilityHydrogenDeuterium2011]. 
 
 ```{r}
 calculate_confidence_limit_values(calc_dat = calc_dat,
