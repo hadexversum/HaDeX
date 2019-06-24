@@ -193,14 +193,13 @@ For the absolute values, $u(D)$ is identical with $u(D_{t})$, based on equation 
 
 ## Difference of deuteration levels between two states 
 
-Interesting observance can be gained from analysing the difference of deuteration levels in given time $t$ between two states as shown in plot in Woods format. For this, deuteration level in one state $(D_{2})$ is subtracted from deuteration level in other state $(D_{1})$:
+The differences of deuteration levels between two states are associated with a different level of protection of hydrogens. Therefore, we are especially interested in the differential analysis of the deuteration levels. Thus, the deuteration level in one state $(D_{2})$ is subtracted from deuteration level in the other state $(D_{1})$:
 
 $$diff = D_{1} - D_{2}\tag{11}$$
 
-and the uncertainty of function of two variables (based on equation 11 and 5):
+and the uncertainty is a function of two variables (based on equation 11 and 5):
 
 $$u_{c}(diff) = \sqrt{u(D_{1})^2 + u(D_{2})^2}\tag{12}$$
-All of the previous calculations are done by function prepare_dataset(). Example of use:
 
 ```{r warning=FALSE}
 calc_dat <- prepare_dataset(dat,
@@ -212,7 +211,10 @@ calc_dat <- prepare_dataset(dat,
                             out_state_second = "gg_Nucb2_CaCl2_1440") 
 ```
 
-## Comparison plot
+
+## Visual data analysis
+
+### Comparison of states
 
 Comparison plots show the peptide deuteration level. The x-axis represents positions of amino acids in the sequence. On the y-axis shows the level of exchange: *relative* (to the maximum deuteration) or *absolute* (in Daltons). The chart below shows peptide deuteration after 25 minutes of the incubation along with the confidence intervals. The maximum deuteration can be also computed in two different ways: either as *theoretical* (where the maximum duteration depends on the theoretical deuteration levels) and *experimental* (where the maximum deuteration is assumed to be equal to the deuteration measured at the last timepoint).
 
@@ -330,11 +332,11 @@ add_stat_dependency(calc_dat,
                    relative = TRUE)
 ```
 
-# Additional tools
+## Additional tools
 
 HaDeX provides additional tools for assement of experiments. 
 
-## Peptide coverage
+### Peptide coverage
 
 The sequence of protein(s) is reconstructed from the input file and based of provided peptides. Thus, parts of the sequences not covered by peptides are marked as X according to the IUPAC convention for unknown amino acids. The sequence is reconstructed using the reconstruct_sequence function.
 
@@ -356,7 +358,7 @@ plot_position_frequency(dat, chosen_state = "gg_Nucb2_CaCl2")
 
 User can choose which state (or states) should be included in these plots. If this parameter is not provided, the first possible state is chosen. If a given peptide is available in more than one state, it is shown only once. 
 
-## Quality control 
+### Quality control 
 
 Function quality_control() shows how the mean deuteration uncertainty per peptide changes with time points of an experiment. Therefore, a user can detect a time point after which the decrease of the deuteration uncertainty becomes too marginal to prolong the measurements. This function is the most useful in the case of multiple measurements of the same or very similar proteins, where it allows to optimize the duration of the incubation.
 
@@ -390,7 +392,7 @@ encompass time out (it is used for scaling), so the uncertainty is not the funct
 
 # HaDeX Graphical User Interface
 
-All of the functions mentioned below are wrapped together in the HaDeX Shiny app. It is launched by the HaDeX_gui() function.
+The HaDeX Shiny app is launched by the HaDeX_gui() function or available at MS Lab website: http://mslab-ibb.pl/shiny/HaDeX/.
 
 # Examples
 
