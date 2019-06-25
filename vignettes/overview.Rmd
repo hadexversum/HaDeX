@@ -41,6 +41,8 @@ read.csv2("comparison.csv") %>%
 
 We have not considered HDX Workbench [@PascalHDXWorkbenchSoftware2012] as it deals with the preliminary steps of the analysis.
 
+Opisac poszczegolne rzeczy
+
 # HaDeX functionalities
 
 ## Data import
@@ -59,7 +61,7 @@ datatable(
 
 ```
 
-Although data can be imported into R using other tools, we strongly advice to rely on the *read_hdx()* function:
+Although data can be imported into R using other tools, we strongly advice to rely on the [read_hdx()](https://hadexversum.github.io/HaDeX/reference/read_hdx.html) function:
 
 ```{r warning=FALSE}
 
@@ -68,36 +70,39 @@ dat <- read_hdx(system.file(package = "HaDeX",
 
 ```
 
-Currently, *read_hdx()* supports .csv, .tsv and .xls files fullfilling the data structure described above. 
-
+Currently, [read_hdx()](https://hadexversum.github.io/HaDeX/reference/read_hdx.html) supports .csv, .tsv and .xls files fullfilling the data structure described above. 
 
 ## Computation of deuteration levels
 
-The computation of the level of deuteration involves several pre-processing steps, all of which are described in this section. These steps are performed automatically in the GUI or by the prepare_dataset() function in the console. The result of using prepare_dataset() on HDX-MS data further referred to as calc_dat.
+The computation of the level of deuteration involves several pre-processing steps, all of which are described in this section. These steps are performed automatically in the GUI or by the [prepare_dataset](https://hadexversum.github.io/HaDeX/reference/prepare_dataset.html) function in the console. 
 
 ### Measured data into overall peptide mass
 
-The results of HDX-MS measurements as given in the DynamX datafiles are represented as the measured mass of peptides plus proton mass to charge ratio ($Center$). For later use, this value has to be transformed into overall peptide mass, as shown in equation 1: 
+The results of HDX-MS measurements as given in the DynamX datafiles are represented as the measured mass of peptides plus proton mass to charge ratio ($Center$). For later use, this value has to be transformed into an overall mass of a peptide measured after specific timepoint from a protein in a specific state, as shown in equation 1: 
 
-$$expMass = z \times (Center-protonMass)\tag{1}$$
+$$pepMass = z \times (Center-protonMass)\tag{1}$$
 where:
 
-- $expMass$ - result calculated from partial values,
+- $pepMass$ - expected mass of the peptide after incubation,
 
-- $z$ - charge,
+- $z$ - charge of the peptide,
 
-- $Center$ - experimentally measured value - mass plus proton mass per charge ratio.
+- $Center$ - experimentally measured peptide mass plus proton mass to charge ratio $\left(\frac{m}{z}\right)$.
 
-HDX-MS experiments are often repeated (as the rule of thumb at least three times). Thus, we aggregate the results of replicates as the weighted mean into a single result per peptide using equation 2: 
+HDX-MS experiments are often repeated (by the rule of thumb at least three times). Thus, we aggregate the results of replicates as a weighted mean mass into a single result per peptide using equation 2: 
 
-$$expMass = \frac{Inten \times expMass}{N}\tag{2}$$
+$$aggMass = \sum_{k = 1}^{N}\frac{Inten_k}{N}{\times}pepMass_k\tag{2}$$
 where:
 
-- $Inten$ - intensivity,
+- $aggMass$ - weighted mean mass of the peptide,
+
+- $k$ - replicate index,
+
+- $Inten$ - intensity,
 
 - $N$ - number of replicates.
 
-The input files always encompass results of more than one measurement. The mean mass for each time point of the measurement in each state is treated as an individual result. This means that the uncertainty is calculated using the standard deviation of the mean:
+Input files always encompass results of more than one measurement. The mean mass $aggMass$ for each time point of the measurement in each state is treated as an individual result. This means that the peptide mass uncertainty $u$ is calculated using the formula for standard deviation of the mean:
 
 $$u(x) = \sqrt{\frac{ \sum_{i=1}^n \left( x_{i} - \overline{x} \right)^2}{n(n-1)}}\tag{3}$$
 where:
@@ -112,23 +117,20 @@ After obtaining the mass of the peptide, we can compute experimental or theoreti
 
 ### Experimental deuteration level
 
-The experimental deuteration level is computed as the deuteration level of the peptide in a specific time point $t$ compared to the deuteration level measured at the last timepoint $out$ (as as shown in equation 4). It is a function of three variables and yields a value for the chosen state and chosen time $t$.  
+The experimental deuteration level is computed as the deuteration level of the peptide from a protein in a specifc state and after incubation time $t$ compared to the deuteration level measured at the start of the incubation ($t_0$). It yields a value for the chosen state and chosen time $t$.
 
-$$D = \frac{D_{t} - D_{0}}{D_{out} - D_{0}}\tag{4}$$
+$$D = D_{t} - D_{t_0}\tag{4}$$
 
 where:
 
 - $D$ - deuteration level (relative value),
 
-- $D_{0}$ - deuteration at the beginning of the experiment (0 or close to 0, measured),
+- $D_{t_0}$ - experimentally measured deuteration at the beginning of the incubation (0 or close to 0),
 
-- $D_{out}$ - deuteration in $out$ tim,
+The equation 4 produces only absolute deuteration levels. The computations of relative deuteration levels follows a similar logic and is normalized by the difference of deuteration between the start ($t_0$) and the end of the experiment ($t_out$) as shown in the equation 4a:
 
-- $D_{t}$ - deuteration measured in chosen time - mean value obtainted as explained before
+$$D = \frac{D_{t} - D_{0}}{D_{t_{out}} - D_{t_0}}\tag{4a}$$
 
-The equation 4 produces only relative deuteration levels. The computations of absolute deuteration levels follows a similar logic and requires only adjusting the equation 4 to its variance as shown in equation 4a:
-
-$$D = D_{t} - D_{0}\tag{4a}$$
 All functions in the HaDeX package contain the logical parameter $relative$ to determine if they should return absolute or relative deuteration levels. 
 
 ##### Uncertainty calculations
