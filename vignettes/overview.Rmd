@@ -85,6 +85,8 @@ where:
 
 - $pepMass$ - expected mass of the peptide after incubation,
 
+- $protonMass$ - mass of the proton,
+
 - $z$ - charge of the peptide,
 
 - $Center$ - experimentally measured peptide mass plus proton mass to charge ratio $\left(\frac{m}{z}\right)$.
@@ -129,13 +131,13 @@ where:
 
 The equation 4 produces only absolute deuteration levels. The computations of relative deuteration levels follows a similar logic and is normalized by the difference of deuteration between the start ($t_0$) and the end of the experiment ($t_out$) as shown in the equation 4a:
 
-$$D = \frac{D_{t} - D_{0}}{D_{t_{out}} - D_{t_0}}\tag{4a}$$
+$$D = \frac{D_{t} - D_{t_0}}{D_{t_{out}} - D_{t_0}}\tag{4a}$$
 
 All functions in the HaDeX package contain the logical parameter $relative$ to determine if they should return absolute or relative deuteration levels. 
 
 ##### Uncertainty calculations
 
-The uncertainty of a measurement is variability associated with the precision of measuring instrumentation. We present here the first derivation of uncertainty formulas for HDX-MS data according to the ISO guidelines [@jcgm:2008:EMDG].  We describe the methodology of the uncertainty calculations for relative deuteration levels. The uncertainty for absolute deuteration levels is computed similarly, but without scaling. 
+The uncertainty of a measurement is variability associated with the precision of measuring instrumentation. We present here a novel derivation of uncertainty formulas for HDX-MS data according to the ISO guidelines [@jcgm:2008:EMDG]. We describe the methodology of the uncertainty calculations for relative deuteration levels. The uncertainty for absolute deuteration levels is computed similarly, but without scaling. 
 
 To calculate uncertainty related to functions of more than one variables (e. g., equation 4) the Law of propagation of uncertainty is defined by equation 5:
 
@@ -144,13 +146,13 @@ $$u_{c}(y) = \sqrt{\sum_{k} \left[ \frac{\partial y}{\partial x_{k}} u(x_{k}) \r
 
 We assume uncorrelatedness of HDX-MS measurements as they come from differently incubated samples.
 
-After adapting the equation 5 using formula from equation 4, uncertainty of equation 4 is calculated as follows:
+As the variable of interest is $D$, we apply the general formula to the deuteration level $D$ (equation 6):
 
 $$u_{c}(D) = \sqrt{\sum_{k} \left[ \frac{\partial D}{\partial D_{k}} u(D_{k}) \right]^2 }\tag{6}$$
 
 where:
 
-- $k \in {0, t, 100}$,
+- $k \in \{0, t, out\}$,
 
 - $D_{k}$ - deuteration in $k$ time,
 
@@ -158,40 +160,40 @@ where:
 
 Then, expanding the equation 6:
 
-$$u_{c}(D) = \sqrt{ \left[ \frac{1}{D_{100}-D_{0}} u(D_{t}) \right]^2 + \left[ \frac{D_{t} - D_{100}}{(D_{100}-D_{0})^2} u(D_{0}) \right]^2 + \left[ \frac{D_{0} - D_{t}}{(D_{100}-D_{0})^2} u(D_{100}) \right]^2}\tag{7}$$
-As suspected, the uncertainty associated with $D_{t}$ has the biggest impact on $u_{c}(D)$.
+$$u_{c}(D) = \sqrt{ \left[ \frac{1}{D_{100}-D_{t_0}} u(D_{t}) \right]^2 + \left[ \frac{D_{t} - D_{100}}{D_{t_{out}-D_{t_0})^2} u(D_{t_0}) \right]^2 + \left[ \frac{D_{t_0} - D_{t}}{D_{t_{out}-D_{t_0})^2} uD_{t_{out}) \right]^2}\tag{7}$$
+As expected, the uncertainty associated with $D_{t}$ has the biggest impact on $u_{c}(D)$.
 
 ### Theoretical deuteration level 
 
-In the oppostition to the experimental deuteration levels, theoetical computations only partially depend on the experimental data. Here, the maximum deuteration level comes from an imaginary peptide where all hydrogens were replaced by deuters, as it is shown in equation 8:
+As opposed to the experimental deuteration levels, theoretical deuteration level only partially depends on the experimental data. Here, the maximum deuteration level is based on a hypothetical peptide where all hydrogens were replaced by deuters, as it is shown in equation 8:
 
 $$D = \frac{D_{t}-MHP}{MaxUptake \times protonMass}\tag{8}$$
 
 where:
 
-- $D_{t}$ - deuteration measured in chosen time
+- $D_{t}$ - deuteration measured in a chosen time point,
 
-- $MHP$ - theoretical mass for peptide (constant)
+- $MHP$ - theoretical mass of the peptide (constant),
 
-- $MaxUptake$ - max proton uptake for peptide (constant)
+- $MaxUptake$ - the maximum proton uptake for the peptide (theoretical constant),
 
 - $protonMass$ - mass of a proton (constant).
 
-Absolute value is calculates as in equation 8 without scalling, as shown in equation 8a:
+The absolute deuteration level is calculated as in equation 8 but without scalling (equation 8a):
 
 $$D = D_{t} - MHP\tag{8a}$$
 
 ##### Uncertainty calculations
 
-The uncertainty of the function of one variable is defined by the equation 9:
+For functions of one variable uncertainty reduces to:
 
 $$u(y) = \left| \frac{dy}{dx} u(x) \right|\tag{9}$$
 
-and based on equation 8:
+and substituting $D$ from the equation 8:
 
 $$u(D) = \left|\frac{1}{MaxUptake \times protonMass} u(D_{t}) \right|\tag{10}$$
 
-For the absolute values, $u(D)$ is identical with $u(D_{t})$, based on equation 8a and 9.
+For the absolute values, $u(D)$ is identical with $u(D_{t})$, based on equations 8a and 9.
 
 ## Difference of deuteration levels between two states 
 
