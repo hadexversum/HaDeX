@@ -104,7 +104,7 @@ where:
 
 - $N$ - number of replicates.
 
-Input files always encompass results of more than one measurement. The mean mass $aggMass$ for each time point of the measurement in each state is treated as an individual result. This means that the peptide mass uncertainty $u$ is calculated using the formula for standard deviation of the mean:
+The uncertainty of a measurement is variability associated with the precision of measuring instrumentation. We present here a novel derivation of uncertainty formulas for HDX-MS data according to the ISO guidelines [@jcgm:2008:EMDG]. Input files always encompass results of more than one measurement. We assume uncorrelatedness of replicates as they come from different samples. Therefore, we average measurements of replicates for each time point and for all protein states. Thus, we compute peptide mass uncertainty $u$ as uncertainty for aggregate estimate using the formula for standard deviation of the mean:
 
 $$u(x) = \sqrt{\frac{ \sum_{i=1}^n \left( x_{i} - \overline{x} \right)^2}{n(n-1)}}\tag{3}$$
 where:
@@ -137,14 +137,11 @@ All functions in the HaDeX package contain the logical parameter $relative$ to d
 
 ##### Uncertainty calculations
 
-The uncertainty of a measurement is variability associated with the precision of measuring instrumentation. We present here a novel derivation of uncertainty formulas for HDX-MS data according to the ISO guidelines [@jcgm:2008:EMDG]. We describe the methodology of the uncertainty calculations for relative deuteration levels. The uncertainty for absolute deuteration levels is computed similarly, but without scaling. 
+We describe the methodology of the uncertainty calculations for relative deuteration levels. The uncertainty for absolute deuteration levels is computed similarly, but without scaling. 
 
 To calculate uncertainty related to functions of more than one variables (e. g., equation 4) the Law of propagation of uncertainty is defined by equation 5:
 
 $$u_{c}(y) = \sqrt{\sum_{k} \left[ \frac{\partial y}{\partial x_{k}} u(x_{k}) \right]^2}\tag{5}$$
-
-
-We assume uncorrelatedness of HDX-MS measurements as they come from differently incubated samples.
 
 As the variable of interest is $D$, we apply the general formula to the deuteration level $D$ (equation 6):
 
@@ -187,9 +184,9 @@ $$D = D_{t} - MHP\tag{8a}$$
 
 For functions of one variable uncertainty reduces to:
 
-$$u(y) = \left| \frac{dy}{dx} u(x) \right|\tag{9}$$
+$$u(y) = \left| \frac{dy}{dx} u(x) \right|.\tag{9}$$
 
-and substituting $D$ from the equation 8:
+Substituting $D$ from the equation 8, we have
 
 $$u(D) = \left|\frac{1}{MaxUptake \times protonMass} u(D_{t}) \right|\tag{10}$$
 
@@ -220,7 +217,7 @@ calc_dat <- prepare_dataset(dat,
 
 ### Comparison of states
 
-Comparison plots show the peptide deuteration level. The x-axis represents positions of amino acids in the sequence. On the y-axis shows the level of exchange: *relative* (to the maximum deuteration) or *absolute* (in Daltons). The chart below shows peptide deuteration after 25 minutes of the incubation along with the confidence intervals. The maximum deuteration can be also computed in two different ways: either as *theoretical* (where the maximum duteration depends on the theoretical deuteration levels) and *experimental* (where the maximum deuteration is assumed to be equal to the deuteration measured at the last timepoint).
+Comparison plots show the deuteration level of all peptides in selected states in a given time. The x-axis represents positions of amino acids in the sequence. The y-axis shows the level of deuteration, either expressed as the *relative* deuteration (to the maximum deuteration) or *absolute* deuteration (in Daltons). The chart below shows peptide deuteration after 25 minutes of the incubation along with the confidence intervals. The maximum deuteration can be also computed in two different ways: either as *theoretical* (where the maximum duteration depends on the theoretical deuteration levels) and *experimental* (where the maximum deuteration is assumed to be equal to the deuteration measured at the last timepoint).
 
 -- theoretical:
 
