@@ -83,9 +83,9 @@ The results of HDX-MS measurements as given in the DynamX datafiles are represen
 $$pepMass = z \times (Center-protonMass)\tag{1}$$
 where:
 
-- $pepMass$ - expected mass of the peptide after incubation,
+- $pepMass$ - expected mass of the peptide after incubation (Da),
 
-- $protonMass$ - mass of the proton,
+- $protonMass$ - mass of the proton (Da),
 
 - $z$ - charge of the peptide,
 
@@ -96,7 +96,7 @@ HDX-MS experiments are often repeated (by the rule of thumb at least three times
 $$aggMass = \sum_{k = 1}^{N}\frac{Inten_k}{N}{\times}pepMass_k\tag{2}$$
 where:
 
-- $aggMass$ - weighted mean mass of the peptide,
+- $aggMass$ - weighted mean mass of the peptide (Da),
 
 - $k$ - replicate index,
 
@@ -115,7 +115,7 @@ where:
 
 - $n$ - number of measurements.
 
-After obtaining the mass of the peptide, we can compute experimental or theoretical deuteration level depending on the chosen maximum deuteration level.
+After obtaining the mass of the peptide, we can compute the deuteration level depending on the chosen maximum deuteration level. The maximum deuteration can also be computed in two different ways: either as *theoretical* (where the maximum deuteration depends on the theoretical deuteration levels) and *experimental* (where the maximum deuteration is assumed to be equal to the deuteration measured at the last time point).
 
 ### Experimental deuteration level
 
@@ -125,7 +125,7 @@ $$D = D_{t} - D_{t_0}\tag{4}$$
 
 where:
 
-- $D$ - deuteration level (relative value),
+- $D$ - deuteration level (Da),
 
 - $D_{t_0}$ - experimentally measured deuteration at the beginning of the incubation (0 or close to 0),
 
@@ -151,13 +151,16 @@ where:
 
 - $k \in \{0, t, out\}$,
 
-- $D_{k}$ - deuteration in $k$ time,
+- $D_{k}$ - deuteration in $k$ time (Da),
 
 - $u(D_{k})$ - an uncertainty associated with $D_{k}$ as standard deviation of the mean value, 
 
 Then, expanding the equation 6:
 
-$$u_{c}(D) = \sqrt{ \left[ \frac{1}{D_{100}-D_{t_0}} u(D_{t}) \right]^2 + \left[ \frac{D_{t} - D_{100}}{D_{t_{out}-D_{t_0})^2} u(D_{t_0}) \right]^2 + \left[ \frac{D_{t_0} - D_{t}}{D_{t_{out}-D_{t_0})^2} uD_{t_{out}) \right]^2}\tag{7}$$
+$$u_{c}(D) = \sqrt{ \left[ 
+\frac{1}{D_{t_{out}}-D_{t_0}} u(D_{t}) \right]^2 + 
+\left[ \frac{D_{t} - D_{t_{out}}}{(D_{t_{out}}-D_{t_0})^2} u(D_{t_0}) \right]^2 + 
+\left[ \frac{D_{t_0} - D_{t}}{(D_{t_{out}}-D_{t_0})^2} u (D_{t_{out}}) \right]^2}\tag{7}$$
 As expected, the uncertainty associated with $D_{t}$ has the biggest impact on $u_{c}(D)$.
 
 ### Theoretical deuteration level 
@@ -168,13 +171,13 @@ $$D = \frac{D_{t}-MHP}{MaxUptake \times protonMass}\tag{8}$$
 
 where:
 
-- $D_{t}$ - deuteration measured in a chosen time point,
+- $D_{t}$ - deuteration measured in a chosen time point (Da),
 
-- $MHP$ - theoretical mass of the peptide (constant),
+- $MHP$ - theoretical mass of the peptide (constant) (Da),
 
-- $MaxUptake$ - the maximum proton uptake for the peptide (theoretical constant),
+- $MaxUptake$ - the maximum proton uptake for the peptide (theoretical constant) (Da),
 
-- $protonMass$ - mass of a proton (constant).
+- $protonMass$ - mass of a proton (constant) (Da).
 
 The absolute deuteration level is calculated as in equation 8 but without scalling (equation 8a):
 
@@ -217,7 +220,7 @@ calc_dat <- prepare_dataset(dat,
 
 ### Comparison of states
 
-Comparison plots show the deuteration level of all peptides in selected states in a given time. The x-axis represents positions of amino acids in the sequence. The y-axis shows the level of deuteration, either expressed as the *relative* deuteration (to the maximum deuteration) or *absolute* deuteration (in Daltons). The chart below shows peptide deuteration after 25 minutes of the incubation along with the confidence intervals. The maximum deuteration can be also computed in two different ways: either as *theoretical* (where the maximum duteration depends on the theoretical deuteration levels) and *experimental* (where the maximum deuteration is assumed to be equal to the deuteration measured at the last timepoint).
+Comparison plots show the deuteration level of all peptides in selected states in a given time. The x-axis represents positions of amino acids in the sequence. The y-axis shows the deuteration level, expressed either as a *relative* or *absolute* deuteration. The chart below shows peptide deuteration after 25 minutes of the incubation along with the confidence intervals. 
 
 -- theoretical:
 
@@ -270,7 +273,7 @@ comparison_plot(calc_dat = calc_dat,
 
 ## Woods plot
 
-Woods plot format shows the difference between the results of two different states as described by equation 11. Similarly to the comparison plot, HaDeX provides both experimental and theoretical calculations using either relative or absolute values:
+Woods plots show the difference between the deuteration of all peptides in two different states in a specific time point as described by equation 11. Similarly to the comparison plot, HaDeX provides both experimental and theoretical deuteration levels using either relative or absolute values:
 
 -- theoretical:
 
@@ -324,7 +327,7 @@ calculate_confidence_limit_values(calc_dat = calc_dat,
                                   relative = TRUE)  
 ``` 
 
-Function add_stat_dependency() returns data extended by column describing relation of a given peptide with confidence limit.
+The function add_stat_dependency() returns data extended by column describing relation of a given peptide with confidence limit.
 
 ```{r}
 add_stat_dependency(calc_dat, 
@@ -335,11 +338,11 @@ add_stat_dependency(calc_dat,
 
 ## Additional tools
 
-HaDeX provides additional tools for assement of experiments. 
+HaDeX provides additional tools for assessment of experiments.
 
 ### Peptide coverage
 
-The sequence of protein(s) is reconstructed from the input file and based of provided peptides. Thus, parts of the sequences not covered by peptides are marked as X according to the IUPAC convention for unknown amino acids. The sequence is reconstructed using the reconstruct_sequence function.
+The sequence of protein(s) is reconstructed from the peptides from the input file. Thus, amino acids not covered by peptides are marked as X according to the IUPAC convention. The sequence is reconstructed using the reconstruct_sequence function.
 
 ```{r warning=FALSE}
 
@@ -357,7 +360,7 @@ plot_position_frequency(dat, chosen_state = "gg_Nucb2_CaCl2")
 
 ```
 
-User can choose which state (or states) should be included in these plots. If this parameter is not provided, the first possible state is chosen. If a given peptide is available in more than one state, it is shown only once. 
+The user can choose which state (or states) should be included in these plots. If this parameter is not provided, the first possible state is chosen. If a given peptide is available in more than one state, it is shown only once. 
 
 ### Quality control 
 
