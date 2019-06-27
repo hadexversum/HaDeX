@@ -2,7 +2,7 @@
 #' 
 #' Plots the frequency of positions
 #' 
-#' @importFrom ggplot2 ggplot geom_line
+#' @importFrom ggplot2 ggplot geom_line geom_col
 #' @importFrom reshape2 melt
 #' @importFrom dplyr filter summarise
 #' 
