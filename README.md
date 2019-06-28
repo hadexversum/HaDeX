@@ -9,7 +9,7 @@ Hydrogen/Deuterium eXchange Mass Spectrometry (HDX-MS) is a staple technology in
 
 ### Local instance of HaDeX GUI
 
-To run HaDeX locally on Windows, install it using Windows binary file: https://sourceforge.net/projects/hadex/files/HaDeX_setup.exe/download
+To run HaDeX GUI locally on Windows, install it using the following binary file: https://sourceforge.net/projects/HaDeX/files/HaDeX_setup.exe/download
 
 ### Local instance of HaDeX package
 
