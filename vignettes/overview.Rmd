@@ -25,7 +25,7 @@ opts_chunk$set(fig.width = 7, fig.height = 5)
  
 # About HaDeX
 
-HaDeX is a novel tool for processing, analysis and visualisation of HDX-MS experiments. HaDeX covers the final parts of the analytic process, including comparison of experiments, quality control and generation of publication-quality figures. To make the HaDeX **R** package available to the less **R**-fluent users, we enhanced it with a comprehensive Graphical User Interface available as a HaDeX Shiny app. The reproducibility of the whole procedure is ensured with advanced reporting functions. The app is availble online: http://mslab-ibb.pl/shiny/HaDeX/ or locally through the HaDeX_gui() fuction.  
+HaDeX is a novel tool for processing, analysis and visualisation of HDX-MS experiments. HaDeX covers the final parts of the analytic process, including comparison of experiments, quality control and generation of publication-quality figures. To make the HaDeX **R** package available to the less **R**-fluent users, we enhanced it with a comprehensive Graphical User Interface available as a HaDeX Shiny app. The reproducibility of the whole procedure is ensured with advanced reporting functions. The app is availble online: http://mslab-ibb.pl/shiny/HaDeX/ or locally through the [HaDeX_gui()](https://hadexversum.github.io/HaDeX/reference/HaDeX_gui.html) fuction.  
 
 This document covers the main functonalities of both the **R** package and the web server.
 
@@ -74,7 +74,7 @@ Currently, [read_hdx()](https://hadexversum.github.io/HaDeX/reference/read_hdx.h
 
 ## Computation of deuteration levels
 
-The computation of the level of deuteration involves several pre-processing steps, all of which are described in this section. These steps are performed automatically in the GUI or by the [prepare_dataset](https://hadexversum.github.io/HaDeX/reference/prepare_dataset.html) function in the console. 
+The computation of the level of deuteration involves several pre-processing steps, all of which are described in this section. These steps are performed automatically in the GUI or by the [prepare_dataset()](https://hadexversum.github.io/HaDeX/reference/prepare_dataset.html) function in the console. 
 
 ### Measured data into overall peptide mass
 
@@ -318,7 +318,7 @@ woods_plot(calc_dat = calc_dat,
 
 ### Confidence limit in Woods plot
 
-The function calculate_confidence_limit_values() calculates confidence limit values as it is described elsewhere [@HoudeUtilityHydrogenDeuterium2011]. 
+The function [calculate_confidence_limit_values()](https://hadexversum.github.io/HaDeX/reference/calculate_confidence_limit_values.html) calculates confidence limit values as it is described elsewhere [@HoudeUtilityHydrogenDeuterium2011]. 
 
 ```{r}
 calculate_confidence_limit_values(calc_dat = calc_dat,
@@ -327,7 +327,7 @@ calculate_confidence_limit_values(calc_dat = calc_dat,
                                   relative = TRUE)  
 ``` 
 
-The function add_stat_dependency() returns data extended by column describing relation of a given peptide with confidence limit.
+The function [add_stat_dependency()](https://hadexversum.github.io/HaDeX/reference/add_stat_dependency.html) returns data extended by column describing relation of a given peptide with confidence limit.
 
 ```{r}
 add_stat_dependency(calc_dat, 
@@ -342,7 +342,7 @@ HaDeX provides additional tools for assessment of experiments.
 
 ### Peptide coverage
 
-The sequence of protein(s) is reconstructed from the peptides from the input file. Thus, amino acids not covered by peptides are marked as X according to the IUPAC convention. The sequence is reconstructed using the reconstruct_sequence function.
+The sequence of protein(s) is reconstructed from the peptides from the input file. Thus, amino acids not covered by peptides are marked as X according to the IUPAC convention. The sequence is reconstructed using the [reconstruct_sequence()](https://hadexversum.github.io/HaDeX/reference/reconstruct_sequence.html) function.
 
 ```{r warning=FALSE}
 
@@ -350,7 +350,7 @@ reconstruct_sequence(dat)
 
 ```
 
-Additionally, the coverage of peptides can be presented on a chart using the plot_coverage() and plot_position_frequency() functions. 
+Additionally, the coverage of peptides can be presented on a chart using the [plot_coverage()](https://hadexversum.github.io/HaDeX/reference/plot_coverage.html) and [plot_position_frequency()](https://hadexversum.github.io/HaDeX/reference/plot_position_frequency.html) functions. 
 
 ```{r warning=FALSE}
 
@@ -364,7 +364,7 @@ The user can choose which state (or states) should be included in these plots. I
 
 ### Quality control 
 
-Function quality_control() shows how the mean deuteration uncertainty per peptide changes with time points of an experiment. Therefore, a user can detect a time point after which the decrease of the deuteration uncertainty becomes too marginal to prolong the measurements. This function is the most useful in the case of multiple measurements of the same or very similar proteins, where it allows to optimize the duration of the incubation.
+Function [quality_control()](https://hadexversum.github.io/HaDeX/reference/quality_control.html) shows how the mean deuteration uncertainty per peptide changes with time points of an experiment. Therefore, a user can detect a time point after which the decrease of the deuteration uncertainty becomes too marginal to prolong the measurements. This function is the most useful in the case of multiple measurements of the same or very similar proteins, where it allows to optimize the duration of the incubation.
 
 Example:
 
@@ -396,7 +396,7 @@ encompass time out (it is used for scaling), so the uncertainty is not the funct
 
 # HaDeX Graphical User Interface
 
-The HaDeX Shiny app is launched by the HaDeX_gui() function or available at MS Lab website: http://mslab-ibb.pl/shiny/HaDeX/.
+The HaDeX Shiny app is launched by the [HaDeX_gui()](https://hadexversum.github.io/HaDeX/reference/HaDeX_gui.html) function or available at MS Lab website: http://mslab-ibb.pl/shiny/HaDeX/.
 
 # Examples
 
