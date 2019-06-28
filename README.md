@@ -5,7 +5,7 @@
 
 ## HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data 
 
-Hydrogen/Deuterium eXchange Mass Spectrometry (HDX-MS) is a staple technology in structural proteomics. HaDeX provides a complete analytic workflow for HDX-MS data availble as a web server (http://mslab-ibb.pl/shiny/HaDeX/) and **R** package. 
+Hydrogen/Deuterium eXchange Mass Spectrometry (HDX-MS) is a staple technology in structural proteomics. HaDeX provides a complete analytic workflow for HDX-MS data availble as a GUI (http://mslab-ibb.pl/shiny/HaDeX/) and **R** package. 
 
 ### Local instance of HaDeX GUI
 

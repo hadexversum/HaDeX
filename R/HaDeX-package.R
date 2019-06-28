@@ -27,7 +27,7 @@ if(getRversion() >= "2.15.1")
                            'avg_theo_in_time', 'err_abs_avg_theo_in_time', 'err_abs_frac_exch_state', 
                            'err_avg_theo_in_time', 'err_frac_exch_state', 'err_time_chosen_mean', 
                            'err_time_in_mean', 'err_time_out_mean', 'frac_exch_state', 'time_chosen_mean', 
-                           'time_in_mean', 'time_out_mean', 'value'))
+                           'time_in_mean', 'time_out_mean', 'value', 'x', 'coverage'))
 
 
 
