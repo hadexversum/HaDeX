@@ -7,7 +7,11 @@
 
 Hydrogen/Deuterium eXchange Mass Spectrometry (HDX-MS) is a staple technology in structural proteomics. HaDeX provides a complete analytic workflow for HDX-MS data availble as a web server (http://mslab-ibb.pl/shiny/HaDeX/) and **R** package. 
 
-### Local instance of HaDeX
+### Local instance of HaDeX GUI
+
+To run HaDeX locally on Windows, install it using Windows binary file: https://sourceforge.net/projects/hadex/files/HaDeX_setup.exe/download
+
+### Local instance of HaDeX package
 
 You can install the latest development version of the package:
 
