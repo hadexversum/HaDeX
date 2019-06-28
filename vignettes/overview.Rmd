@@ -364,7 +364,9 @@ The user can choose which state (or states) should be included in these plots. I
 
 ### Quality control 
 
-Function quality_control() shows how the mean deuteration uncertainty per peptide changes with time points of an experiment. Therefore, a user can detect a time point after which the decrease of the deuteration uncertainty becomes too marginal to prolong the measurements. This function is the most useful in the case of multiple measurements of the same or very similar proteins, where it allows to optimize the duration of the incubation.
+The function quality_control() plots the change in uncertainty of deuteration levels as a function of incubation time. The uncertainty is averaged over all peptides available at a given time point in a selected state. 
+Therefore, the user can detect a time point after which the decrease of the deuteration uncertainty becomes too marginal to prolong the measurements. This function is most useful in case of multiple measurements of the same or very similar proteins, because it helps to optimize the duration of the incubation.
+The result of this function can be easily visualized.
 
 Example:
 
@@ -378,8 +380,6 @@ result <- quality_control(dat = dat,
 
 ```
 
-The function returns an object of the data.frame class, that can be easily visualized.
-
 ```{r warning=FALSE}
 ggplot(result[result["time"]>=1,]) + 
   geom_line(aes(x = time, y = avg_err_state_first, color = "Average error (first state)")) +
@@ -391,8 +391,8 @@ ggplot(result[result["time"]>=1,]) +
         legend.title = element_blank())
 ```
 
-Example above is based on relative values. Although HaDeX provides results in absolute values, be aware that absolute calculations do not
-encompass time out (it is used for scaling), so the uncertainty is not the function of $D_{100}$, but is constant. 
+This example is based on relative values. Although HaDeX can provide results in absolute values, be aware that absolute calculations do not
+encompass time out, so the uncertainty does not change with $D_{t_{out}}$. 
 
 # HaDeX Graphical User Interface
 
@@ -414,7 +414,7 @@ dat_1 <- read_hdx(system.file(package = "HaDeX",
                               "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 ```
 
-Then, we reconstruct the protein sequence using peptides measured during the experiment. We observe tha region from amino acid 107 till amino acid 124 is not covered by any peptide.
+Then, we reconstruct the protein sequence from the peptides measured during the experiment. We observe tha region from amino acid 107 till amino acid 124 is not covered by any peptide.
 
 ```{r warning=FALSE}
 reconstruct_sequence(dat_1)
@@ -422,7 +422,7 @@ reconstruct_sequence(dat_1)
 plot_position_frequency(dat_1, chosen_state = "CD160")
 ```
 
-On the theoretical plot are visible regions, which exchange quickly (N-terminus, regions between 30-70 amino acid) and regions, which exchange slowly (peptides 15-24, 95-110 amino acid). We can also see the differences in exchange between two states, indicating regions which changed upon binding with other protein.
+The theoretical plot allows to find regions, which exchange quickly (N-terminus, regions between 30-70 amino acid) and regions, which exchange slowly (peptides 15-24, 95-110 amino acid). We can also see the differences in exchange between two states, indicating regions which changed upon binding with other protein.
 
 ```{r warning=FALSE}
 # calculate data
@@ -443,7 +443,7 @@ comparison_plot(calc_dat = calc_dat_1,
 
 ```
 
-On the experimental plot are visible regions, which exchange quickly (N terminal part, regions between 30-70 amino acid) and regions, which exchange slowly (peptides 15-24, 30-35, 95-110 amino acid). 
+On the experimental plot, there are visible regions, which exchange quickly (N terminal part, regions between 30-70 amino acid) and regions, which exchange slowly (peptides 15-24, 30-35, 95-110 amino acid). 
 
 ```{r warning=FALSE}
 # experimental comparison plot - relative values
@@ -475,8 +475,7 @@ comparison_plot(calc_dat = calc_dat_1,
 
 ```
 
-Wood’s plot is a different way of presenting the same data as in comparison plot. In Wood’s plot the levels of peptides’ deuteration (either relative or absolute) are subtracted between states and presented with error bars.
-The plot below shows peptides, which levels of deuteration were significantly lower upon binding with other protein (red) and peptides, which levels of exchange were significantly higher upon binding with other protein (blue). The plot also show peptides in which no significant changes in deuteration between states are visible (grey). The biggest changes on the theoretical plot can be observed in 3 peptides (15-24, 30-35, 75-90). 
+The plot below shows peptides for which levels of deuteration were significantly lower upon binding with other protein (red) and peptides for which levels of exchange were significantly higher upon binding with other protein (blue). The plot also show peptides in which no significant changes in deuteration between states are visible (grey). The biggest changes on the theoretical plot can be observed in 3 peptides (15-24, 30-35, 75-90). 
 
 ```{r warning=FALSE}
   
@@ -500,7 +499,7 @@ woods_plot(calc_dat = calc_dat_1,
 
 ```
 
-Plot below show results in absolute values.
+Plot below shows results in absolute values.
 
 ```{r warning=FALSE}
 # theoretical Woods plot - absolute values
