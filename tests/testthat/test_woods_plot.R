@@ -42,8 +42,8 @@ wood_plot_1 <- woods_plot(calc_dat = calc_dat,
 
 vdiffr::expect_doppelganger("Woods Plot 1", wood_plot_1)
 
-wood_plot_2 <- woods_plot(calc_dat = calc_dat,
-                          theoretical = TRUE, 
-                          relative = TRUE)
-
-vdiffr::expect_doppelganger("Woods Plot 2", wood_plot_2)
+# wood_plot_2 <- woods_plot(calc_dat = calc_dat,
+#                           theoretical = TRUE, 
+#                           relative = TRUE)
+# 
+# vdiffr::expect_doppelganger("Woods Plot 2", wood_plot_2)
