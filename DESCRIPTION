@@ -40,7 +40,6 @@ Suggests:
     knitr,
     pander,
     rmarkdown,
-    shinythemes,
     testthat,
     vdiffr
 VignetteBuilder: knitr
