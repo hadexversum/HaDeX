@@ -12,10 +12,10 @@ Authors@R: c(person("Weronika", "Puchala",
            email = "d.rafacz@student.mini.pw.edu.pl",
            role = c("ctb")))
 Description: Functions for processing, analysis and visualization of Hydrogen Deuterium eXchange monitored by 
-             Mass Spectrometry experiments (HDX-MS). HaDeX introduces a new standardized and reproducible workflow 
+             Mass Spectrometry experiments (HDX-MS). 'HaDeX' introduces a new standardized and reproducible workflow 
              for the analysis of the HDX-MS data, including novel uncertainty intervals. Additionally, it covers 
              data exploration, quality control and generation of publication-quality figures. All functionalities 
-             are also available in the in-built Shiny app.
+             are also available in the in-built 'Shiny' app.
 Depends: R (>= 3.0)
 License: GPL-3
 Encoding: UTF-8
