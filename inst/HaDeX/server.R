@@ -190,7 +190,7 @@ server <- function(input, output, session) {
     
   })
   
-  output[["stateOverlap_data"]] <- DT::renderDataTable({
+  output[["stateOverlap_data"]] <- DT::renderDataTable(server = FALSE, {
     
     stateOverlap_data()
     
@@ -251,7 +251,7 @@ server <- function(input, output, session) {
   
   ##
   
-  output[["stateOverlapDist_data"]] <- DT::renderDataTable({
+  output[["stateOverlapDist_data"]] <- DT::renderDataTable(server = FALSE, {
     
     dt_format(stateOverlapDist_data())
     
@@ -705,7 +705,7 @@ server <- function(input, output, session) {
     
     ##
     
-    output[["comparisonPlot_data"]] <- DT::renderDataTable({
+    output[["comparisonPlot_data"]] <- DT::renderDataTable(server = FALSE, {
       
       if (input[["theory"]]) {
         
@@ -1057,7 +1057,7 @@ server <- function(input, output, session) {
     
     ##
     
-    output[["differentialPlot_data"]] <- DT::renderDataTable({
+    output[["differentialPlot_data"]] <- DT::renderDataTable(server = FALSE, {
       
       if (input[["theory"]]) {
         
