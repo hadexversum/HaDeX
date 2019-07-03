@@ -271,7 +271,8 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                          label = "Correct sequence length:",
                                                          value = 300, 
                                                          step = 1),
-                                            h5("If C-term is not covered, enter correct value."),
+                                            h5("If C-terminal of is not covered by peptides, 
+                                               enter its correct position."),
                                             textOutput("sequence_length_exp_info")
                                      )
                                    )

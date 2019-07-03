@@ -197,15 +197,7 @@ server <- function(input, output, session) {
   })
   
   ##
-  
-  stateOverlap <- reactive({
-    
-    
-    
-  })
-  
-  ##
-  
+
   stateOverlap_out <- reactive({
     
     plot_coverage(dat = dat(), chosen_state = input[["chosen_state"]]) + 
@@ -232,7 +224,7 @@ server <- function(input, output, session) {
   ##
   
   stateOverlapDist_data <- reactive({
-    
+
     dat() %>%
       select(Start, End, State, Sequence) %>%
       filter(State == input[["chosen_state"]]) %>%
@@ -260,7 +252,7 @@ server <- function(input, output, session) {
   ##
   
   stateOverlapDist <- reactive({
-    
+
     mean_coverage <- round(mean(stateOverlapDist_data()[["coverage"]], na.rm = TRUE), 2)
     display_position <- (input[["plot_range"]][[1]] + input[["plot_range"]][[2]])/2
     
