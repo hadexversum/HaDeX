@@ -19,6 +19,7 @@ library(HaDeX)
 library(ggplot2)
 library(knitr)
 library(DT)
+library(dplyr)
 opts_chunk$set(fig.width = 7, fig.height = 5)
 ```
 
@@ -105,6 +106,20 @@ where:
 - $Inten$ - intensity,
 
 - $N$ - number of replicates.
+
+This data manipulation results from original data structure. Each repetition of the measurement gives the data for given peptide in given time per possible value of $z$ as shown in the example below. We need to use the value of $pepMass$ as shown in equation 1 but still keep the information about original measurement - that's why we use the weighted mass. 
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+
+dat_temp <- read.csv(system.file(package = "HaDeX", 
+                            "HaDeX/data/KD_190304_Nucb2_EDTA_CaCl2_test02_clusterdata.csv"))
+
+dat_temp %>% 
+  filter(File == "KD_190119_gg_Nucb2_CaCl2_10s_01", Sequence == "KQFEHLNHQNPDTFEPKDLDML", Exposure == 0.167) %>%
+  select(Sequence, File, z, RT, Inten, Center)
+
+```
+
 
 The uncertainty of a measurement is variability associated with the precision of measuring instrumentation. We present here a novel derivation of uncertainty formulas for HDX-MS data according to the ISO guidelines [@jcgm:2008:EMDG]. Input files always encompass results of more than one measurement. We assume uncorrelatedness of replicates as they come from different samples. Therefore, we average measurements of replicates for each time point and for all protein states. Thus, we compute peptide mass uncertainty $u$ as uncertainty for aggregate estimate using the formula for standard deviation of the mean:
 
