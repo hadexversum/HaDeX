@@ -39,6 +39,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                       ))
                              ),
                              #
+                             h3("Please be aware that loading data (including example file) may take a while. Be patient."),
                              h4("Currently HaDeX supports files with only one protein."),
                              h4("Accepted file extensions: .csv, .xsl, .xslx. "),
                              h4("In order for program to behave correctly, please make sure supplied file fulfills following requirements:"),
