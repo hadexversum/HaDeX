@@ -33,7 +33,6 @@ Imports:
 		readr,
 		readxl,
 		shiny,
-		shinycssloaders,
 		stringr,
 		tidyr
 Suggests: 
@@ -42,6 +41,7 @@ Suggests:
     knitr,
     pander,
     rmarkdown,
+    shinycssloaders,
     testthat,
     vdiffr
 VignetteBuilder: knitr
