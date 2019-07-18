@@ -2,6 +2,10 @@ source("data-work.R")
 
 #########################################
 
+options(spinner.color="#715D91")
+
+#########################################
+
 ui <- fluidPage(theme = "HaDeX_theme.css",
                 #titlePanel("HaDeX"), #: analysis of data from hydrogen deuterium exchange-mass spectrometry"),
                 title = "HaDeX",
@@ -35,11 +39,11 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                       h5("File status:"),
                                       tags$div(
                                         class = "file-status-message",
-                                        textOutput("data_file_info")
+                                        withSpinner(textOutput("data_file_info"))
                                       ))
                              ),
                              #
-                             h3("Please be aware that loading data (including example file) may take a while. Be patient."),
+                             h4("Please be aware that loading data (including example file) may take a while. Be patient."),
                              h4("Currently HaDeX supports files with only one protein."),
                              h4("Accepted file extensions: .csv, .xsl, .xslx. "),
                              h4("In order for program to behave correctly, please make sure supplied file fulfills following requirements:"),
@@ -180,7 +184,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                tabsetPanel(
                                  tabPanel("Comparison plot", 
                                           br(),
-                                          plotOutput("comparisonPlot"), 
+                                          withSpinner(plotOutput("comparisonPlot")), 
                                           downloadButton("comparisonPlot_download_button", 
                                                          "Save chart (.svg)")), 
                                  tabPanel("Data",
@@ -190,7 +194,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                tabsetPanel(
                                  tabPanel("Woods plot",
                                           br(),
-                                          plotOutput("differentialPlot"),
+                                          withSpinner(plotOutput("differentialPlot")),
                                           downloadButton("differentialPlot_download_button", 
                                                          "Save chart (.svg)")), 
                                  tabPanel("Data",
@@ -223,7 +227,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                tabsetPanel(
                                  tabPanel("Peptide Coverage",
                                           br(),
-                                          plotOutput("stateOverlap"),
+                                          withSpinner(plotOutput("stateOverlap")),
                                           downloadButton("stateOverlap_download_button",
                                                          "Save chart (.svg)")),
                                  
@@ -235,7 +239,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                tabsetPanel(
                                  tabPanel("Position Frequency",
                                           br(),
-                                          plotOutput("stateOverlapDist"),
+                                          withSpinner(plotOutput("stateOverlapDist")),
                                           downloadButton("stateOverlapDist_download_button",
                                                          "Save chart (.svg)")
                                  ),
@@ -278,7 +282,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                      )
                                    )
                                  ),
-                                 mainPanel(plotOutput("aminoDist"),
+                                 mainPanel(withSpinner(plotOutput("aminoDist")),
                                            downloadButton("aminoDist_download_button",
                                                          "Save chart (.svg)")))
                              )
