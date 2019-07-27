@@ -44,7 +44,44 @@ read.csv2("comparison.csv") %>%
 
 We have not considered HDX Workbench [@PascalHDXWorkbenchSoftware2012] as it deals with the preliminary steps of the analysis.
 
-Opisac poszczegolne rzeczy
+**Web server:** a software is available as a web server.
+
+ **Programmatic access:** analytic functionalties are documented and available from a command line.
+
+ **Desktop software:** a software can be installed locally.
+
+ **Multi-state analysis:**
+
+ **ISO-based uncertainty:**
+
+ **Coverage and peptide overlap:**
+
+ **Quality control:**
+
+ **N- and C-terminal length corrections:**
+
+ **Global visualization of deuterium uptake:**
+
+ **Woods plot:**
+
+ **Zooming of the Woods plot:**
+
+ **Customizable label names and colors:**
+
+ **Peptide kinetics chart:**
+
+ **3D structure visualization:**
+
+ **Downloadable charts:**
+
+ **Deuterium uptake download:**
+
+ **Downloadable results of intermediate computations:**
+
+ **Report generation:**
+
+ **PyMol export:**
+
 
 # HaDeX functionalities
 
