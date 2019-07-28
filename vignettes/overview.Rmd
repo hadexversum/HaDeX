@@ -46,41 +46,41 @@ We have not considered HDX Workbench [@PascalHDXWorkbenchSoftware2012] as it dea
 
 **Web server:** a software is available as a web server.
 
- **Programmatic access:** analytic functionalties are documented and available from a command line.
+**Programmatic access:** analytic functionalities are documented and available from a command line.
 
- **Desktop software:** a software can be installed locally.
+**Desktop software:** a software can be installed locally.
 
- **Multi-state analysis:**
+**Multi-state analysis:** a software supports comparisons of more than two states.
 
- **ISO-based uncertainty:**
+**ISO-based uncertainty:** analytic functions produce ISO-compatible uncertainty intervals. 
 
- **Coverage and peptide overlap:**
+**Coverage and peptide overlap:** 
 
- **Quality control:**
+**Quality control:**
 
- **N- and C-terminal length corrections:**
+**N- and C-terminal length corrections:**
 
- **Global visualization of deuterium uptake:**
+**Global visualization of deuterium uptake:**
 
- **Woods plot:**
+**Woods plot:**
 
- **Zooming of the Woods plot:**
+**Zooming of the Woods plot:**
 
- **Customizable label names and colors:**
+**Customizable label names and colors:**
 
- **Peptide kinetics chart:**
+**Peptide kinetics chart:**
 
- **3D structure visualization:**
+**3D structure visualization:**
 
- **Downloadable charts:**
+**Downloadable charts:** charts are downloadable, preferably in a vector format (.eps, .svg or .pdf)..
 
- **Deuterium uptake download:**
+**Deuterium uptake download:**
 
- **Downloadable results of intermediate computations:**
+**Downloadable results of intermediate computations:**
 
- **Report generation:**
+**Report generation:**
 
- **PyMol export:**
+**PyMol export:** exports data to the [PyMol](https://pymol.org/2/) format.
 
 
 # HaDeX functionalities
