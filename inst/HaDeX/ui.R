@@ -287,6 +287,14 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                          "Save chart (.svg)")))
                              )
                     ),
+                    tabPanel("Kinetics",
+                             br(),
+                             sidebarPanel(h4("Choose peptide:"),
+                                          DT::dataTableOutput("peptide_list_data")),
+                             mainPanel("See plot:", 
+                                       h4("Chosen values:"),
+                                       DT::dataTableOutput("chosen_peptide_list_data"))
+                             ),
                     tabPanel("Report",
                              br(),
                              sidebarPanel(width = 8,

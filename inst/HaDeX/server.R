@@ -1073,6 +1073,40 @@ server <- function(input, output, session) {
     
     ##
     
+    ### TAB: KINETICS ###
+    
+    ##
+    
+    peptide_list <- reactive({
+      
+      dat() %>%
+        select(Sequence, State, Start, End) %>%
+        unique(.) %>%
+        arrange(Start, End)
+      
+    })
+    
+    ##
+    
+    output[["peptide_list_data"]] <- DT::renderDataTable({
+      
+      peptide_list() %>%
+        dt_format(cols = c("Sequence", "State", "Start", "End"))
+     
+      })
+    
+    ##
+    
+    output[["chosen_peptide_list_data"]] <- renderDataTable({
+
+      peptide_list()[input[["peptide_list_data_rows_selected"]], ] %>%
+        select(Sequence, State) %>%
+        dt_format()
+        
+    })
+    
+    ##
+    
     ### TAB: REPORT ###
     
     ##

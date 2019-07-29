@@ -33,7 +33,7 @@ dt_format <- function(dat, cols = colnames(dat)) {
             colnames = cols,
             class = "table-bordered table-condensed",
             extensions = "Buttons",
-            options = list(pageLength = 10, dom = "tBip", autoWidth = TRUE, buttons = c("excel", "pdf")),
+            options = list(pageLength = 10, dom = "tBip", autoWidth = TRUE, buttons = c("excel", "pdf"), target = 'cell'),
             filter = "bottom",
             rownames = FALSE)
   
