@@ -85,7 +85,7 @@
 <div id="hadex-analysis-and-visualisation-of-hydrogendeuterium-exchange-mass-spectrometry-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#hadex-analysis-and-visualisation-of-hydrogendeuterium-exchange-mass-spectrometry-data" class="anchor"></a>HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data</h2>
-<p>Hydrogen/Deuterium eXchange Mass Spectrometry (HDX-MS) is a staple technology in structural proteomics. HaDeX provides a analytic workflow for HDX-MS data availble as a standalone GUI (<a href="https://sourceforge.net/projects/HaDeX/" class="uri">https://sourceforge.net/projects/HaDeX/</a>), web server (<a href="http://mslab-ibb.pl/shiny/HaDeX/" class="uri">http://mslab-ibb.pl/shiny/HaDeX/</a>) and the <strong>R</strong> package.</p>
+<p>Hydrogen/Deuterium eXchange Mass Spectrometry (HDX-MS) is a staple technology in structural proteomics. HaDeX provides a analytic workflow for HDX-MS data availble as a standalone GUI (<a href="https://sourceforge.net/projects/HaDeX/" class="uri">https://sourceforge.net/projects/HaDeX/</a>), web server (<a href="http://mslab-ibb.pl/shiny/HaDeX/" class="uri">http://mslab-ibb.pl/shiny/HaDeX/</a>) and the <strong>R</strong> package available on CRAN (<a href="https://cran.r-project.org/web/packages/HaDeX/index.html" class="uri">https://cran.r-project.org/web/packages/HaDeX/index.html</a>).</p>
 <div id="local-instance-of-hadex-gui" class="section level3">
 <h3 class="hasAnchor">
 <a href="#local-instance-of-hadex-gui" class="anchor"></a>Local instance of HaDeX GUI</h3>
@@ -96,9 +96,11 @@
 <a href="#local-instance-of-hadex-package" class="anchor"></a>Local instance of HaDeX package</h3>
 <p>You can install the latest development version of the package:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/source">source</a></span>(<span class="st">"https://install-github.me/hadexversum/HaDeX"</span>)</a></code></pre></div>
+<p>or the latest version available on CRAN:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"HaDeX"</span>)</a></code></pre></div>
 <p>After installation GUI can be accessed locally:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(HaDeX)</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="kw"><a href="reference/HaDeX_gui.html">HaDeX_gui</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(HaDeX)</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw"><a href="reference/HaDeX_gui.html">HaDeX_gui</a></span>()</a></code></pre></div>
 </div>
 <div id="online-manual" class="section level3">
 <h3 class="hasAnchor">
@@ -147,6 +149,7 @@
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.org/hadexversum/HaDeX"><img src="https://api.travis-ci.org/hadexversum/HaDeX.png" alt="Build Status"></a></li>
 <li><a href="https://codecov.io/github/hadexversum/hadex?branch=master"><img src="https://codecov.io/gh/hadexversum/hadex/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
+<li><a href="https://cran.r-project.org/package=HaDeX"><img src="https://www.r-pkg.org/badges/version/HaDeX" alt="CRAN_Status_Badge"></a></li>
 </ul>
 </div>
 </div>

@@ -1,5 +1,6 @@
 [![Build Status](https://api.travis-ci.org/hadexversum/HaDeX.png)](https://travis-ci.org/hadexversum/HaDeX)
 [![Coverage status](https://codecov.io/gh/hadexversum/hadex/branch/master/graph/badge.svg)](https://codecov.io/github/hadexversum/hadex?branch=master)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/HaDeX)](https://cran.r-project.org/package=HaDeX)
 
 ![HaDeX](https://raw.githubusercontent.com/hadexversum/HaDeX/master/inst/HaDeX/www/mock_logo.png)
 
