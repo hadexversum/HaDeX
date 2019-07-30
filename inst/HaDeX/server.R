@@ -62,9 +62,17 @@ server <- function(input, output, session) {
   
   ##
   
-  output[["protein_name"]] <- renderText({
+  protein_name <- reactive({
     
     as.character(unique(dat()[["Protein"]]))
+    
+  })
+  
+  ##
+  
+  output[["protein_name"]] <- renderText({
+    
+    protein_name()
     
   })
   
@@ -1077,6 +1085,24 @@ server <- function(input, output, session) {
     
     ##
     
+    observe({
+      
+      times_from_file <- round(unique(dat()["Exposure"]), 3)
+      
+      updateSelectInput(session, 
+                        inputId = "kin_in_time",
+                        choices = times_from_file,
+                        selected = min(times_from_file[times_from_file["Exposure"] > 0, ]))
+      
+      updateSelectInput(session, 
+                        inputId = "kin_out_time",
+                        choices = times_from_file,
+                        selected = max(times_from_file))
+      
+    })
+    
+    ##
+    
     peptide_list <- reactive({
       
       dat() %>%
@@ -1090,34 +1116,117 @@ server <- function(input, output, session) {
     
     output[["peptide_list_data"]] <- DT::renderDataTable({
       
-      peptide_list() %>%
-        dt_format(cols = c("Sequence", "State", "Start", "End"))
-     
+      datatable(data = peptide_list(),
+                class = "table-bordered table-condensed",
+                extensions = "Buttons",
+                options = list(pageLength = 10, dom = "tip", autoWidth = TRUE, target = 'cell'),
+                filter = "bottom",
+                rownames = FALSE)
+
       })
     
     ##
     
-    output[["kinetic_plot_chosen_peptides"]] <- renderPlot({
+    kin_dat <- reactive({
       
-      kin <- bind_rows(apply(peptide_list()[input[["peptide_list_data_rows_selected"]], ], 1, function(peptide){
+      bind_rows(apply(peptide_list()[input[["peptide_list_data_rows_selected"]], ], 1, function(peptide){
         calculate_kinetics(dat = dat(),
-                           protein = dat()[["Protein"]][1], 
+                           protein = protein_name(), 
                            sequence = peptide[1],
                            state = peptide[2],
                            start = peptide[3],
                            end = peptide[4],
-                           time_in = 0.001,
-                           time_out = 1440)
+                           time_in = as.numeric(input[["kin_in_time"]]),
+                           time_out = as.numeric(input[["kin_out_time"]]))
       }))
       
-      kin %>%
-        mutate(time_chosen = factor(time_chosen)) %>%
-        ggplot(aes(x = time_chosen, y = frac_exch_state, group = paste0(Sequence, "-", State))) +
+    })
+    
+    ##
+    
+    kin_plot_theo <- reactive({
+      
+      kin_dat() %>% 
+        mutate(prop = paste0(Sequence, "-", State)) %>%
+        ggplot(aes(x = time_chosen, y = avg_theo_in_time, group = prop)) +
         geom_point() + 
-        geom_line(aes(color = paste0(Sequence, "-", State))) +
-        labs(title = "Experimental relative kinetic plot for chosen peptides", 
-             x = "Time point [min]", 
-             y = "Deuteration") +
+        geom_ribbon(aes(ymin = avg_theo_in_time - err_avg_theo_in_time, ymax = avg_theo_in_time + err_avg_theo_in_time, fill = prop), alpha = 0.15) +
+        geom_line(aes(color = prop))
+      
+    })
+    
+    ##
+    
+    kin_plot_theo_abs <- reactive({
+      
+      kin_dat() %>% 
+        mutate(prop = paste0(Sequence, "-", State)) %>%
+        ggplot(aes(x = time_chosen, y = abs_avg_theo_in_time, group = prop)) +
+        geom_point() + 
+        geom_ribbon(aes(ymin = abs_avg_theo_in_time - err_abs_avg_theo_in_time, ymax = abs_avg_theo_in_time + err_abs_avg_theo_in_time, fill = prop), alpha = 0.15) +
+        geom_line(aes(color = prop))
+      
+    })
+    
+    ##
+    
+    kin_plot_exp <- reactive({
+      
+      kin_dat() %>% 
+        mutate(prop = paste0(Sequence, "-", State)) %>%
+        ggplot(aes(x = time_chosen, y = frac_exch_state, group = prop)) +
+        geom_point() + 
+        geom_ribbon(aes(ymin = frac_exch_state - err_frac_exch_state, ymax = frac_exch_state + err_frac_exch_state, fill = prop), alpha = 0.15) +
+        geom_line(aes(color = prop))
+      
+    })
+    
+    ##
+    
+    kin_plot_exp_abs <- reactive({
+      
+      kin_dat() %>% 
+        mutate(prop = paste0(Sequence, "-", State)) %>%
+        ggplot(aes(x = time_chosen, y = abs_frac_exch_state, group = prop)) +
+        geom_point() + 
+        geom_ribbon(aes(ymin = abs_frac_exch_state - err_abs_frac_exch_state, ymax = abs_frac_exch_state + err_abs_frac_exch_state, fill = prop), alpha = 0.15) +
+        geom_line(aes(color = prop))
+      
+    })
+    
+    ##
+    
+    kp_out <- reactive({
+      
+      if (input[["kin_theory"]]) {
+        
+        if (input[["kin_calc_type"]] == "relative") {
+          
+          kp <- kin_plot_theo()
+            
+        } else {
+          
+          kp <- kin_plot_theo_abs()
+          
+        }
+        
+      } else {
+        
+        if (input[["kin_calc_type"]] == "relative"){
+          
+          kp <- kin_plot_exp()
+          
+        } else {
+          
+          kp <- kin_plot_exp_abs()
+          
+        }
+        
+      }
+      
+      kp + labs(title = input[["kin_plot_title"]],
+             x = input[["kin_plot_x_label"]],
+             y = input[["kin_plot_y_label"]]) +
         coord_cartesian(ylim = c(0, 1)) +
         theme(legend.position = "bottom",
               legend.title = element_blank())
@@ -1125,6 +1234,68 @@ server <- function(input, output, session) {
     })
     
     ##
+    
+    output[["kinetic_plot_chosen_peptides"]] <- renderPlot({
+      
+      kp_out()
+      
+    })
+    
+    ##
+    
+    kin_plot_exp_data <- reactive({
+      
+      
+      
+    })
+    
+    ##
+    
+    kin_plot_exp_abs_data <- reactive({
+      
+      
+      
+    })
+    
+    ## 
+    
+    kin_plot_theo_data <- reactive({
+      
+      
+      
+    })
+    
+    ##
+    
+    kin_plot_theo_abs_data <- reactive({
+      
+      
+      
+    })
+    
+    ##
+    
+    output[["kin_plot_data"]] <- DT::renderDataTable(server = FALSE, {
+      
+      if (input[["kin_theory"]]) {
+        
+        if (input[["kin_calc_type"]] == "relative") {
+          kin_plot_theo_data()
+        } else {
+          kin_plot_theo_abs_data()
+        } 
+        
+      } else {
+        
+        if (input[["kin_calc_type"]] == "relative") {
+          kin_plot_exp_data()
+        } else {
+          kin_plot_exp_abs_data()
+        } 
+        
+      }
+      
+    })
     
     ### TAB: REPORT ###
     
