@@ -1097,12 +1097,31 @@ server <- function(input, output, session) {
     
     ##
     
-    output[["chosen_peptide_list_data"]] <- renderDataTable({
-
-      peptide_list()[input[["peptide_list_data_rows_selected"]], ] %>%
-        select(Sequence, State) %>%
-        dt_format()
-        
+    output[["kinetic_plot_chosen_peptides"]] <- renderPlot({
+      
+      kin <- bind_rows(apply(peptide_list()[input[["peptide_list_data_rows_selected"]], ], 1, function(peptide){
+        calculate_kinetics(dat = dat(),
+                           protein = dat()[["Protein"]][1], 
+                           sequence = peptide[1],
+                           state = peptide[2],
+                           start = peptide[3],
+                           end = peptide[4],
+                           time_in = 0.001,
+                           time_out = 1440)
+      }))
+      
+      kin %>%
+        mutate(time_chosen = factor(time_chosen)) %>%
+        ggplot(aes(x = time_chosen, y = frac_exch_state, group = paste0(Sequence, "-", State))) +
+        geom_point() + 
+        geom_line(aes(color = paste0(Sequence, "-", State))) +
+        labs(title = "Experimental relative kinetic plot for chosen peptides", 
+             x = "Time point [min]", 
+             y = "Deuteration") +
+        coord_cartesian(ylim = c(0, 1)) +
+        theme(legend.position = "bottom",
+              legend.title = element_blank())
+      
     })
     
     ##

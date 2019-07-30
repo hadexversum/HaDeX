@@ -291,9 +291,13 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                              br(),
                              sidebarPanel(h4("Choose peptide:"),
                                           DT::dataTableOutput("peptide_list_data")),
-                             mainPanel("See plot:", 
-                                       h4("Chosen values:"),
-                                       DT::dataTableOutput("chosen_peptide_list_data"))
+                             mainPanel(
+                               tabsetPanel(
+                                 tabPanel("Kinetic plot",
+                                          plotOutput("kinetic_plot_chosen_peptides")),
+                                 tabPanel("Data")
+                               )
+                             )
                              ),
                     tabPanel("Report",
                              br(),

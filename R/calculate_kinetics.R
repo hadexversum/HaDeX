@@ -2,7 +2,7 @@
 #' 
 #' Calculate kinetics - deuteration change in time for given peptide.
 #' 
-#' @importFrom dplyr %>% bind_rows
+#' @importFrom dplyr %>% bind_rows mutate
 #' 
 #' @param dat data frame with data from Dynamix file
 #' @param protein protein value for chosen peptide
@@ -16,26 +16,53 @@
 #' @examples 
 #' # load example data
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' calculate_kinetics(dat, 
+#' 
+#' # calculate data for sequence INITSSASQEGTRLN in state CD160
+#' (kin1 <- calculate_kinetics(dat, 
 #'                    protein = "db_CD160",
 #'                    sequence = "INITSSASQEGTRLN", 
 #'                    state = "CD160",
 #'                    start = 1, 
 #'                    end = 15,
 #'                    time_in = 0.001, 
-#'                    time_out = 1440)
-#'
+#'                    time_out = 1440))
+#'                    
+#' # calculate data for sequence INITSSASQEGTRLN in state CD160_HVEM
+#' (kin2 <- calculate_kinetics(dat, 
+#'                    protein = "db_CD160",
+#'                    sequence = "INITSSASQEGTRLN", 
+#'                    state = "CD160_HVEM",
+#'                    start = 1, 
+#'                    end = 15,
+#'                    time_in = 0.001, 
+#'                    time_out = 1440))
+#'                    
+#' # plot data together 
+#' bind_rows(kin1, kin2) %>% 
+#'  mutate(time_chosen = factor(time_chosen)) %>%
+#'  ggplot(aes(x = time_chosen, y = frac_exch_state, group = State)) +
+#'  geom_point() + 
+#'  geom_line(aes(color = State)) +
+#'  labs(title = "Kinetic plot for INITSSASQEGTRLN", 
+#'       x = "Time point [min]", 
+#'       y = "Deuteration") +
+#'  coord_cartesian(ylim = c(0, 1)) +
+#'  theme(legend.position = "bottom",
+#'        legend.title = element_blank())
+#'        
 #' @seealso 
 #' calculate_state_deuteration
 #' 
 #' @return data frame with deuteration calculated for all the data points between time_in and time_out. 
 #' Chosen time point for which deuteration in all four variants is calculated is available in column `time_chosen`. The rest of
-#' the returned structure is equivalent to structure returned by calculate_state_deuteration
+#' the returned structure is equivalent to structure returned by calculate_state_deuteration.
+#' 
+#' @details First version doesn't support filled Modification and Fragment.
 #' 
 #' @export calculate_kinetics
 
 calculate_kinetics <- function(dat, 
-                               protein, 
+                               protein = dat[["Protein"]][1], 
                                sequence, 
                                state, 
                                start, 
@@ -64,6 +91,7 @@ calculate_kinetics <- function(dat,
       mutate(time_chosen = time_point) 
     
   })) %>%
-    select(Protein, Sequence, Start, End, State, time_chosen, everything())
+    select(Protein, Sequence, Start, End, State, time_chosen, everything()) %>%
+    mutate(time_chosen = factor(time_chosen))
   
 }
