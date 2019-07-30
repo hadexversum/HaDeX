@@ -2,7 +2,7 @@
 #' 
 #' Calculate kinetics - deuteration change in time for given peptide.
 #' 
-#' @importFrom dplyr %>% bind_rows mutate
+#' @importFrom dplyr %>% bind_rows mutate everything
 #' 
 #' @param dat data frame with data from Dynamix file
 #' @param protein protein value for chosen peptide
