@@ -1100,7 +1100,7 @@ server <- function(input, output, session) {
                         selected = max(times_from_file))
       
     })
-    
+  
     ##
     
     peptide_list <- reactive({
@@ -1139,6 +1139,34 @@ server <- function(input, output, session) {
                            time_in = as.numeric(input[["kin_in_time"]]),
                            time_out = as.numeric(input[["kin_out_time"]]))
       }))
+      
+    })
+    
+    ##
+    
+    observe({
+      
+      if (input[["kin_calc_type"]] == "absolute") {
+        
+        min_kin_abs <- round_any(min(kin_dat()[c("abs_frac_exch_state", "abs_avg_theo_in_time")], na.rm = TRUE), 5, floor)
+        max_kin_abs <- round_any(max(kin_dat()[c("abs_frac_exch_state", "abs_avg_theo_in_time")], na.rm = TRUE), 5, ceiling)
+        
+        updateSliderInput(session,
+                          inputId = "kin_plot_y_range",
+                          min = min_kin_abs - 5,
+                          max = max_kin_abs + 5,
+                          value = c(min_kin_abs, max_kin_abs),
+                          step = 1)
+        
+      } else {
+        
+        updateSliderInput(session,
+                          inputId = "kin_plot_y_range",
+                          min = -.5,
+                          max = 2,
+                          value = c(-.1, 1),
+                          step = 0.1)
+      }
       
     })
     
@@ -1227,7 +1255,7 @@ server <- function(input, output, session) {
       kp + labs(title = input[["kin_plot_title"]],
              x = input[["kin_plot_x_label"]],
              y = input[["kin_plot_y_label"]]) +
-        coord_cartesian(ylim = c(0, 1)) +
+        coord_cartesian(ylim = c(input[["kin_plot_y_range"]][1], input[["kin_plot_y_range"]][2])) +
         theme(legend.position = "bottom",
               legend.title = element_blank())
       

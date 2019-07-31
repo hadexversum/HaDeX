@@ -39,7 +39,6 @@
 #'                    
 #' # plot data together 
 #' bind_rows(kin1, kin2) %>% 
-#'  mutate(time_chosen = factor(time_chosen)) %>%
 #'  ggplot(aes(x = time_chosen, y = frac_exch_state, group = State)) +
 #'  geom_point() + 
 #'  geom_line(aes(color = State)) +
