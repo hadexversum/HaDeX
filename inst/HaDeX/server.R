@@ -1129,6 +1129,8 @@ server <- function(input, output, session) {
     
     kin_dat <- reactive({
       
+      validate(need(input[["peptide_list_data_rows_selected"]], "Please select at least one peptide from the table on the left."))
+      
       bind_rows(apply(peptide_list()[input[["peptide_list_data_rows_selected"]], ], 1, function(peptide){
         calculate_kinetics(dat = dat(),
                            protein = protein_name(), 
