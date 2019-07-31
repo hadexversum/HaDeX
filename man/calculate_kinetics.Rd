@@ -59,9 +59,11 @@ dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.
                    time_in = 0.001, 
                    time_out = 1440))
                    
+# load extra libraries
+library(dplyr)
+
 # plot data together 
 bind_rows(kin1, kin2) \%>\% 
- mutate(time_chosen = factor(time_chosen)) \%>\%
  ggplot(aes(x = time_chosen, y = frac_exch_state, group = State)) +
  geom_point() + 
  geom_line(aes(color = State)) +

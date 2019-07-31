@@ -13,7 +13,7 @@
 #' @param time_in time in for experimental calculations
 #' @param time_out time out for experimental calculations
 #'
-#' @examples 
+#' @examples
 #' # load example data
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' 
@@ -37,6 +37,9 @@
 #'                    time_in = 0.001, 
 #'                    time_out = 1440))
 #'                    
+#' # load extra libraries
+#' library(dplyr)
+#' 
 #' # plot data together 
 #' bind_rows(kin1, kin2) %>% 
 #'  ggplot(aes(x = time_chosen, y = frac_exch_state, group = State)) +
