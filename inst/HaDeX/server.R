@@ -1273,7 +1273,11 @@ server <- function(input, output, session) {
     
     kin_plot_exp_data <- reactive({
       
-      
+      kin_dat() %>%
+        select(Sequence, State, Start, End, time_chosen, frac_exch_state, err_frac_exch_state) %>%
+        mutate(frac_exch_state = round(frac_exch_state, 4), 
+               err_frac_exch_state = round(frac_exch_state, 4)) %>%
+        dt_format(cols = c("Sequence", "State", "Start", "End", "Time Point", "Frac Exch", "Err Frac Exch"))
       
     })
     
@@ -1281,7 +1285,11 @@ server <- function(input, output, session) {
     
     kin_plot_exp_abs_data <- reactive({
       
-      
+      kin_dat() %>%
+        select(Sequence, State, Start, End, time_chosen, abs_frac_exch_state, err_abs_frac_exch_state) %>%
+        mutate(abs_frac_exch_state = round(abs_frac_exch_state, 4), 
+               err_abs_frac_exch_state = round(err_abs_frac_exch_state, 4)) %>%
+        dt_format(cols = c("Sequence", "State", "Start", "End", "Time Point", "Abs Val Exch", "Err Abs Val Exch"))
       
     })
     
@@ -1289,7 +1297,11 @@ server <- function(input, output, session) {
     
     kin_plot_theo_data <- reactive({
       
-      
+      kin_dat() %>%
+        select(Sequence, State, Start, End, time_chosen, avg_theo_in_time, err_avg_theo_in_time) %>%
+        mutate(avg_theo_in_time = round(avg_theo_in_time, 4), 
+               err_avg_theo_in_time = round(err_avg_theo_in_time, 4)) %>%
+        dt_format(cols = c("Sequence", "State", "Start", "End", "Time Point", "Theo Frac Exch", "Theo Err Frac Exch"))
       
     })
     
@@ -1297,7 +1309,11 @@ server <- function(input, output, session) {
     
     kin_plot_theo_abs_data <- reactive({
       
-      
+      kin_dat() %>%
+        select(Sequence, State, Start, End, time_chosen, abs_avg_theo_in_time, err_abs_avg_theo_in_time) %>%
+        mutate(abs_avg_theo_in_time = round(abs_avg_theo_in_time, 4), 
+               err_abs_avg_theo_in_time = round(err_abs_avg_theo_in_time, 4)) %>%
+        dt_format(cols = c("Sequence", "State", "Start", "End", "Time Point", "Theo Abs Val Exch", "Theo Err Abs Val Exch"))
       
     })
     
