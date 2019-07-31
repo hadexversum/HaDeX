@@ -39,6 +39,7 @@
 #'                    
 #' # load extra libraries
 #' library(dplyr)
+#' library(ggplot2)
 #' 
 #' # plot data together 
 #' bind_rows(kin1, kin2) %>% 
