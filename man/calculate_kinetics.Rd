@@ -61,6 +61,7 @@ dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.
                    
 # load extra libraries
 library(dplyr)
+library(ggplot2)
 
 # plot data together 
 bind_rows(kin1, kin2) \%>\% 
