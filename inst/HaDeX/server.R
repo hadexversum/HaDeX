@@ -1134,8 +1134,8 @@ server <- function(input, output, session) {
                            protein = protein_name(), 
                            sequence = peptide[1],
                            state = peptide[2],
-                           start = peptide[3],
-                           end = peptide[4],
+                           start = as.numeric(peptide[3]),
+                           end = as.numeric(peptide[4]),
                            time_in = as.numeric(input[["kin_in_time"]]),
                            time_out = as.numeric(input[["kin_out_time"]]))
       }))
