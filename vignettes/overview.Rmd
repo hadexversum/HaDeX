@@ -54,33 +54,34 @@ We have not considered HDX Workbench [@PascalHDXWorkbenchSoftware2012] as it dea
 
 **ISO-based uncertainty:** analytic functions produce ISO-compatible uncertainty intervals. 
 
-**Coverage and peptide overlap:** 
+**Coverage and peptide overlap:** overview of experimental squence coverage is available in user-friendly way.
 
-**Quality control:**
+**Quality control:** additional information about course of the experiment.
 
-**N- and C-terminal length corrections:**
+**N- and C-terminal length corrections:** manual correction of sequence length.
 
-**Global visualization of deuterium uptake:**
+**Global visualization of deuterium uptake:** deuterium uptake for different states is shown together for comparison.
 
-**Woods plot:**
+**Woods plot:** deuteration difference between chosen states shown in format of Woods plot.
 
-**Zooming of the Woods plot:**
+**Zooming of the Woods plot:** Woods plot can be zoomed in and out as user wishes. 
 
-**Customizable label names and colors:**
+**Customizable label names and colors:** Labels and colors on the plot can be changed by user.
 
-**Peptide kinetics chart:**
+**Peptide kinetics chart:** Kinetics plot (deuteration change in time) are available for each peptide.
 
-**3D structure visualization:**
+**3D structure visualization:** structure of the protein is visualised in 3D.
 
-**Downloadable charts:** charts are downloadable, preferably in a vector format (.eps, .svg or .pdf)..
+**Downloadable charts:** charts are downloadable, preferably in a vector format (.eps, .svg or .pdf).
 
-**Deuterium uptake download:**
+**Deuterium uptake download:** data shown on Woods plot is downloadable (e.q. as csv file).
 
-**Downloadable results of intermediate computations:**
+**Downloadable results of intermediate computations:** results of intermediate computations (e.q. pure deuteration data) are downloadable.
 
-**Report generation:**
+**Report generation:** generates raport (e.q. in html format) with results of analysis with parametrization.
 
 **PyMol export:** exports data to the [PyMol](https://pymol.org/2/) format.
+
 
 
 # HaDeX functionalities
@@ -189,7 +190,7 @@ $$D = \frac{D_{t} - D_{t_0}}{D_{t_{out}} - D_{t_0}}\tag{4a}$$
 
 All functions in the HaDeX package contain the logical parameter $relative$ to determine if they should return absolute or relative deuteration levels. 
 
-##### Uncertainty calculations
+#### Uncertainty calculations
 
 We describe the methodology of the uncertainty calculations for relative deuteration levels. The uncertainty for absolute deuteration levels is computed similarly, but without scaling. 
 
@@ -237,7 +238,7 @@ The absolute deuteration level is calculated as in equation 8 but without scalli
 
 $$D = D_{t} - MHP\tag{8a}$$
 
-##### Uncertainty calculations
+#### Uncertainty calculations
 
 For functions of one variable uncertainty reduces to:
 
@@ -388,6 +389,53 @@ add_stat_dependency(calc_dat,
                    confidence_limit = 0.98, 
                    theoretical = FALSE, 
                    relative = TRUE)
+```
+
+## Kinetic plots
+
+By the term *kinetics* we understand deuteration change in time. To calculate deuteration values per peptide for different time points is used function [calculate_kinetics()](https://hadexversum.github.io/HaDeX/reference/calculate_kinetics.html). This function uses the [calculate_state_deuteration()](https://hadexversum.github.io/HaDeX/reference/calculate_state_deuteration.html) function.
+
+
+```{r warning = FALSE}
+
+(kin_YYDEYL_gg_Nucb2_CaCl2 <- calculate_kinetics(dat = dat, 
+                                                protein = "db_Nucb2", 
+                                                sequence = "YYDEYL",
+                                                state = "gg_Nucb2_CaCl2", 
+                                                start = 45, 
+                                                end = 50, 
+                                                time_in = 0.001, 
+                                                time_out = 1440))
+```
+
+```{r warning = FALSE}
+
+(kin_YYDEYL_gg_Nucb2_EDTA <- calculate_kinetics(dat = dat, 
+                                              protein = "db_Nucb2", 
+                                              sequence = "YYDEYL",
+                                              state = "gg_Nucb2_EDTA", 
+                                              start = 45, 
+                                              end = 50, 
+                                              time_in = 0.001, 
+                                              time_out = 1440))
+```
+
+Calculated data can be shown next to each other on the plot for comparison. Plot below shows relative values calculated from experimental data for the same peptide in different states.
+
+```{r warning = FALSE}
+
+bind_rows(kin_YYDEYL_gg_Nucb2_CaCl2, kin_YYDEYL_gg_Nucb2_EDTA) %>% 
+  ggplot(aes(x = time_chosen, y = frac_exch_state, group = State)) +
+  geom_ribbon(aes(ymin = frac_exch_state - err_frac_exch_state, ymax = frac_exch_state + err_frac_exch_state, fill = State), alpha = 0.15) +
+  geom_point() + 
+  geom_line(aes(color = State)) +
+  labs(title = "Kinetic plot for YYDEYL based on experimental data", 
+       x = "Time point [min]", 
+       y = "Deuteration [%]") +
+  coord_cartesian(ylim = c(0, 1)) +
+  theme(legend.position = "bottom",
+        legend.title = element_blank())
+
 ```
 
 ## Additional tools

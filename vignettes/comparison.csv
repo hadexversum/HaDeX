@@ -11,7 +11,7 @@ Visualization;Global visualization of deuterium uptake;Yes;Yes;Yes
 Visualization;Woods plot;No;Yes;Yes
 Visualization;Zooming of the Woods plot;No;Yes;Yes
 Visualization;Customizable label names and colors;No;No;Yes
-Visualization;Peptide kinetics chart;Yes;No;No
+Visualization;Peptide kinetics chart;Yes;No;Yes
 Visualization;3D structure visualization;Yes;No;No
 Visualization;Downloadable charts;Yes;Yes;Yes
 Reporting;Deuterium uptake download;Yes;Yes;Yes

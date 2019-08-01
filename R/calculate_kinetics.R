@@ -60,7 +60,7 @@
 #' Chosen time point for which deuteration in all four variants is calculated is available in column `time_chosen`. The rest of
 #' the returned structure is equivalent to structure returned by calculate_state_deuteration.
 #' 
-#' @details First version doesn't support filled Modification and Fragment.
+#' @details First version doesn't support filled Modification and Fragment columns.
 #' 
 #' @export calculate_kinetics
 

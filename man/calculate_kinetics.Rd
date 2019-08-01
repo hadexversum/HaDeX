@@ -33,7 +33,7 @@ the returned structure is equivalent to structure returned by calculate_state_de
 Calculate kinetics - deuteration change in time for given peptide.
 }
 \details{
-First version doesn't support filled Modification and Fragment.
+First version doesn't support filled Modification and Fragment columns.
 }
 \examples{
 # load example data
