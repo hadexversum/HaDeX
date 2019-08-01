@@ -1174,6 +1174,10 @@ server <- function(input, output, session) {
     
     ##
     
+    ##  KINETIC PLOT +  DATA
+    
+    ##
+    
     kin_plot_theo <- reactive({
       
       kin_dat() %>% 
