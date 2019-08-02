@@ -1100,6 +1100,28 @@ server <- function(input, output, session) {
                         selected = max(times_from_file))
       
     })
+    
+    ##
+    
+    observe({
+      
+      updateTextInput(session, 
+                      inputId = "kin_plot_title",
+                      value = case_when(
+                        input[["kin_theory"]] ~ "Theoretical kinetic plot for chosen peptides",
+                        !input[["kin_theory"]]  ~ "Kinetic plot for chosen peptides"
+                      ))
+      
+      updateTextInput(session, 
+                      inputId = "kin_plot_y_label", 
+                      value = case_when(
+                        input[["kin_theory"]] & input[["kin_calc_type"]] == "relative" ~ "Theoretical deuteration [%]",
+                        input[["kin_theory"]] & input[["kin_calc_type"]] == "absolute" ~ "Theoretical deuteration [Da]",
+                        !input[["kin_theory"]] & input[["kin_calc_type"]] == "relative" ~ "Deuteration [%]",
+                        !input[["kin_theory"]] & input[["kin_calc_type"]] == "absolute" ~ "Deuteration [Da]"
+                      ))
+      
+    })
   
     ##
     

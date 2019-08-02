@@ -501,6 +501,29 @@ if (input[["export_kin_plot"]]){
     
     cat("### Relative values \n")
     
+    p <- kin_plot_exp()
+    
+    if(!input[["theory"]] & input[["calc_type"]]=="relative"){
+    
+      p + 
+        coord_cartesian(ylim = c(input[["kin_plot_y_range"]][[1]], input[["kin_plot_y_range"]][[2]])) +
+        labs(title = input[["kin_plot_title"]], 
+             x = input[["kin_plot_x_label"]],
+             y = input[["kin_plot_y_label"]]) +
+        theme(legend.position = "bottom",
+              legend.title = element_blank())
+        
+    } else {
+      
+      p + 
+        labs(title = "Kinetic plot for chosen peptides",
+             x = "Time points [min]",
+             y = "Deuteration [%]") +
+        theme(legend.position = "bottom",
+              legend.title = element_blank())
+      
+    }
+    
   } else {
     
     "Kinetic plot cannot be shown - no peptides were selected"
@@ -518,6 +541,29 @@ if (input[["export_kin_plot"]]){
   if (kin_valid) {
     
     cat("### Absolute values \n")
+    
+    p <- kin_plot_exp_abs()
+    
+    if (!input[["theory"]] & input[["calc_type"]]=="absolute"){
+    
+      p + 
+        coord_cartesian(ylim = c(input[["kin_plot_y_range"]][[1]], input[["kin_plot_y_range"]][[2]])) +
+        labs(title = input[["kin_plot_title"]], 
+             x = input[["kin_plot_x_label"]],
+             y = input[["kin_plot_y_label"]]) +
+        theme(legend.position = "bottom",
+              legend.title = element_blank())
+      
+    } else {
+      
+      p + 
+        labs(title = "Kinetic plot for chosen peptides",
+             x = "Time points [min]",
+             y = "Deuteration [Da]") +
+        scale_y_continuous(limits = c(0, NA)) +
+        theme(legend.position = "bottom",
+              legend.title = element_blank())
+    }
     
   }
   
@@ -577,6 +623,29 @@ if (input[["export_theo_kin_plot"]]){
     
     cat("### Relative values \n")
     
+    p <- kin_plot_theo()
+    
+    if(input[["theory"]] & input[["calc_type"]]=="relative"){
+    
+      p + 
+        coord_cartesian(ylim = c(input[["kin_plot_y_range"]][[1]], input[["kin_plot_y_range"]][[2]])) +
+        labs(title = input[["kin_plot_title"]], 
+             x = input[["kin_plot_x_label"]],
+             y = input[["kin_plot_y_label"]]) +
+        theme(legend.position = "bottom",
+              legend.title = element_blank())
+      
+    } else {
+      
+      p + 
+        labs(title = "Theoretical kinetic plot for chosen peptides",
+             x = "Time points [min]",
+             y = "Deuteration [%]") +
+        theme(legend.position = "bottom",
+              legend.title = element_blank())
+        
+    }
+    
   } else {
     
     "Theoretical Kinetic plot cannot be shown - no peptides were selected"
@@ -594,6 +663,29 @@ if (input[["export_theo_kin_plot"]]){
   if (kin_valid) {
     
     cat("### Absolute values \n")
+    
+    p <- kin_plot_theo_abs()
+    
+    if(input[["theory"]] & input[["calc_type"]]=="absolute"){
+    
+      p + 
+        coord_cartesian(ylim = c(input[["kin_plot_y_range"]][[1]], input[["kin_plot_y_range"]][[2]])) +
+        labs(title = input[["kin_plot_title"]], 
+             x = input[["kin_plot_x_label"]],
+             y = input[["kin_plot_y_label"]]) +
+        theme(legend.position = "bottom",
+              legend.title = element_blank())
+      
+    } else {
+      
+      p + 
+        labs(title = "Theoretical kinetic plot for chosen peptides",
+             x = "Time points [min]",
+             y = "Deuteration [Da]") +
+        scale_y_continuous(limits = c(0, NA)) +
+        theme(legend.position = "bottom",
+              legend.title = element_blank())
+    }
     
   }
   
