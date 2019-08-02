@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate kinetic data — calculate_kinetics • HaDeX</title>
+<title>Plot kinetics data — plot_kinetics • HaDeX</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,9 +37,9 @@
 
 
 
-<meta property="og:title" content="Calculate kinetic data — calculate_kinetics" />
+<meta property="og:title" content="Plot kinetics data — plot_kinetics" />
 
-<meta property="og:description" content="Calculate kinetics - deuteration change in time for given peptide." />
+<meta property="og:description" content="Plots kinetic data for peptide based on supplied parameters." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -113,74 +113,50 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate kinetic data</h1>
+    <h1>Plot kinetics data</h1>
     
-    <div class="hidden name"><code>calculate_kinetics.Rd</code></div>
+    <div class="hidden name"><code>plot_kinetics.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Calculate kinetics - deuteration change in time for given peptide.</p>
+    <p>Plots kinetic data for peptide based on supplied parameters.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>calculate_kinetics</span>(<span class='no'>dat</span>, <span class='kw'>protein</span> <span class='kw'>=</span> <span class='no'>dat</span><span class='kw'>[[</span><span class='st'>"Protein"</span>]][<span class='fl'>1</span>], <span class='no'>sequence</span>, <span class='no'>state</span>,
-  <span class='no'>start</span>, <span class='no'>end</span>, <span class='no'>time_in</span>, <span class='no'>time_out</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_kinetics</span>(<span class='no'>kin_dat</span>, <span class='kw'>theoretical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>dat</th>
-      <td><p>data frame with data from Dynamix file</p></td>
+      <th>kin_dat</th>
+      <td><p>calculated kinetic data by <code><a href='calculate_kinetics.html'>calculate_kinetics</a></code> function</p></td>
     </tr>
     <tr>
-      <th>protein</th>
-      <td><p>protein value for chosen peptide</p></td>
+      <th>theoretical</th>
+      <td><p><code>logical</code>, determines if plot shows theoretical values</p></td>
     </tr>
     <tr>
-      <th>sequence</th>
-      <td><p>sequence of the peptide for which the kinetics is calculated</p></td>
-    </tr>
-    <tr>
-      <th>state</th>
-      <td><p>state of given sequence</p></td>
-    </tr>
-    <tr>
-      <th>start</th>
-      <td><p>end of given sequence</p></td>
-    </tr>
-    <tr>
-      <th>end</th>
-      <td><p>end of given sequence</p></td>
-    </tr>
-    <tr>
-      <th>time_in</th>
-      <td><p>time in for experimental calculations</p></td>
-    </tr>
-    <tr>
-      <th>time_out</th>
-      <td><p>time out for experimental calculations</p></td>
+      <th>relative</th>
+      <td><p><code>logical</code>, determines if values are relative or absolute</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>data frame with deuteration calculated for all the data points between time_in and time_out. 
-Chosen time point for which deuteration in all four variants is calculated is available in column `time_chosen`. The rest of
-the returned structure is equivalent to structure returned by <code><a href='calculate_state_deuteration.html'>calculate_state_deuteration</a></code>.</p>
+    <p>a ggplot object that can be further modified according to the user needs.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Function <code>calculate_kinetics</code> calculates deuteration data for all available data points for given peptide. 
-To clearly identify a peptide we need following information: protein, sequence, state, start and end.
-All four variants (relative &amp; theoretical combinations) are supplied.
-To visualize obtained data we recomend using <code><a href='plot_kinetics.html'>plot_kinetics</a></code> function.
-First version doesn't support filled Modification and Fragment columns.</p>
+    <p>This function is for visualizating the data obtained by calling <code><a href='calculate_kinetics.html'>calculate_kinetics</a></code> function. 
+Based on supplied parameters appopriate columns are chosen for the plot. The uncertainty associated with each peptide is shown as a ribbon. 
+Axis are labeled according to the supplied parameters but no title is provied.</p>
+<p>If you want to plot data for more then one peptide in one state, join calculated data by using <code><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_rows</a></code> from dplyr package and pass the result as kin_dat.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='calculate_state_deuteration.html'>calculate_state_deuteration</a></code> <code><a href='plot_kinetics.html'>plot_kinetics</a></code></p></div>
+    <div class='dont-index'><p><code><a href='calculate_kinetics.html'>calculate_kinetics</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -188,14 +164,14 @@ First version doesn't support filled Modification and Fragment columns.</p>
 <span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_hdx.html'>read_hdx</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"HaDeX"</span>, <span class='st'>"HaDeX/data/KD_180110_CD160_HVEM.csv"</span>))
 
 <span class='co'># calculate data for sequence INITSSASQEGTRLN in state CD160</span>
-(<span class='no'>kin1</span> <span class='kw'>&lt;-</span> <span class='fu'>calculate_kinetics</span>(<span class='no'>dat</span>,
-                   <span class='kw'>protein</span> <span class='kw'>=</span> <span class='st'>"db_CD160"</span>,
-                   <span class='kw'>sequence</span> <span class='kw'>=</span> <span class='st'>"INITSSASQEGTRLN"</span>,
-                   <span class='kw'>state</span> <span class='kw'>=</span> <span class='st'>"CD160"</span>,
-                   <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-                   <span class='kw'>end</span> <span class='kw'>=</span> <span class='fl'>15</span>,
-                   <span class='kw'>time_in</span> <span class='kw'>=</span> <span class='fl'>0.001</span>,
-                   <span class='kw'>time_out</span> <span class='kw'>=</span> <span class='fl'>1440</span>))</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 5 x 15</span><span>
+(<span class='no'>kin1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_kinetics.html'>calculate_kinetics</a></span>(<span class='no'>dat</span>,
+                           <span class='kw'>protein</span> <span class='kw'>=</span> <span class='st'>"db_CD160"</span>,
+                           <span class='kw'>sequence</span> <span class='kw'>=</span> <span class='st'>"INITSSASQEGTRLN"</span>,
+                           <span class='kw'>state</span> <span class='kw'>=</span> <span class='st'>"CD160"</span>,
+                           <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+                           <span class='kw'>end</span> <span class='kw'>=</span> <span class='fl'>15</span>,
+                           <span class='kw'>time_in</span> <span class='kw'>=</span> <span class='fl'>0.001</span>,
+                           <span class='kw'>time_out</span> <span class='kw'>=</span> <span class='fl'>1440</span>))</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 5 x 15</span><span>
 #&gt;   Protein Sequence Start   End State time_chosen frac_exch_state
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> db_CD1~ INITSSA~     1    15 CD160 0.167                 0.769
@@ -209,14 +185,14 @@ First version doesn't support filled Modification and Fragment columns.</p>
 #&gt; #   abs_avg_theo_in_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, err_abs_avg_theo_in_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
 #&gt; #   Med_Sequence </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
 <span class='co'># calculate data for sequence INITSSASQEGTRLN in state CD160_HVEM</span>
-(<span class='no'>kin2</span> <span class='kw'>&lt;-</span> <span class='fu'>calculate_kinetics</span>(<span class='no'>dat</span>,
-                   <span class='kw'>protein</span> <span class='kw'>=</span> <span class='st'>"db_CD160"</span>,
-                   <span class='kw'>sequence</span> <span class='kw'>=</span> <span class='st'>"INITSSASQEGTRLN"</span>,
-                   <span class='kw'>state</span> <span class='kw'>=</span> <span class='st'>"CD160_HVEM"</span>,
-                   <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-                   <span class='kw'>end</span> <span class='kw'>=</span> <span class='fl'>15</span>,
-                   <span class='kw'>time_in</span> <span class='kw'>=</span> <span class='fl'>0.001</span>,
-                   <span class='kw'>time_out</span> <span class='kw'>=</span> <span class='fl'>1440</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 5 x 15</span><span>
+(<span class='no'>kin2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_kinetics.html'>calculate_kinetics</a></span>(<span class='no'>dat</span>,
+                           <span class='kw'>protein</span> <span class='kw'>=</span> <span class='st'>"db_CD160"</span>,
+                           <span class='kw'>sequence</span> <span class='kw'>=</span> <span class='st'>"INITSSASQEGTRLN"</span>,
+                           <span class='kw'>state</span> <span class='kw'>=</span> <span class='st'>"CD160_HVEM"</span>,
+                           <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+                           <span class='kw'>end</span> <span class='kw'>=</span> <span class='fl'>15</span>,
+                           <span class='kw'>time_in</span> <span class='kw'>=</span> <span class='fl'>0.001</span>,
+                           <span class='kw'>time_out</span> <span class='kw'>=</span> <span class='fl'>1440</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 5 x 15</span><span>
 #&gt;   Protein Sequence Start   End State time_chosen frac_exch_state
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> db_CD1~ INITSSA~     1    15 CD16~ 0.167                 0.744
@@ -229,27 +205,17 @@ First version doesn't support filled Modification and Fragment columns.</p>
 #&gt; #   avg_theo_in_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, err_avg_theo_in_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
 #&gt; #   abs_avg_theo_in_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, err_abs_avg_theo_in_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
 #&gt; #   Med_Sequence </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
-<span class='co'># load extra libraries</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Dołączanie pakietu: 'dplyr'</span></div><div class='output co'>#&gt; <span class='message'>Następujący obiekt został zakryty z 'package:testthat':</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    matches</span></div><div class='output co'>#&gt; <span class='message'>Następujące obiekty zostały zakryte z 'package:stats':</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>Następujące obiekty zostały zakryte z 'package:base':</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>ggplot2</span>)
+<span class='co'># load extra packages </span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)
 
-<span class='co'># plot example - experimental and relative </span>
+<span class='co'># plot one peptide - theoretical and relative</span>
+<span class='fu'>plot_kinetics</span>(<span class='kw'>kin_dat</span> <span class='kw'>=</span> <span class='no'>kin1</span>,
+              <span class='kw'>theoretical</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+              <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='plot_kinetics-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># plot joined data - experimental and absolute</span>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_rows</a></span>(<span class='no'>kin1</span>, <span class='no'>kin2</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='plot_kinetics.html'>plot_kinetics</a></span>(<span class='kw'>theoretical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-               <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) +
- <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(<span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Kinetic plot for INITSSASQEGTRLN"</span>)</div><div class='img'><img src='calculate_kinetics-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># plot example - theoretical and absolute</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_rows</a></span>(<span class='no'>kin1</span>, <span class='no'>kin2</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='plot_kinetics.html'>plot_kinetics</a></span>(<span class='kw'>theoretical</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-               <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(<span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Theoretical kinetics plot for INITSSASQEGTRLN"</span>)</div><div class='img'><img src='calculate_kinetics-2.png' alt='' width='700' height='433' /></div><div class='input'>       
-</div></span></pre>
+  <span class='fu'>plot_kinetics</span>(<span class='kw'>theoretical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+                <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='img'><img src='plot_kinetics-2.png' alt='' width='700' height='433' /></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
