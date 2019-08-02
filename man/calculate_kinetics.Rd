@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculate_kinetics.R
 \name{calculate_kinetics}
 \alias{calculate_kinetics}
-\title{calculate_kinetics}
+\title{Calculate kinetic data}
 \usage{
 calculate_kinetics(dat, protein = dat[["Protein"]][1], sequence, state,
   start, end, time_in, time_out)
@@ -27,12 +27,16 @@ calculate_kinetics(dat, protein = dat[["Protein"]][1], sequence, state,
 \value{
 data frame with deuteration calculated for all the data points between time_in and time_out. 
 Chosen time point for which deuteration in all four variants is calculated is available in column `time_chosen`. The rest of
-the returned structure is equivalent to structure returned by calculate_state_deuteration.
+the returned structure is equivalent to structure returned by \code{\link{calculate_state_deuteration}}.
 }
 \description{
 Calculate kinetics - deuteration change in time for given peptide.
 }
 \details{
+Function \code{calculate_kinetics} calculates deuteration data for all available data points for given peptide. 
+To clearly identify a peptide we need following information: protein, sequence, state, start and end.
+All four variants (relative & theoretical combinations) are supplied.
+To visualize obtained data we recomend using \code{\link{plot_kinetics}} function.
 First version doesn't support filled Modification and Fragment columns.
 }
 \examples{
@@ -63,19 +67,19 @@ dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.
 library(dplyr)
 library(ggplot2)
 
-# plot data together 
+# plot example - experimental and relative 
 bind_rows(kin1, kin2) \%>\% 
- ggplot(aes(x = time_chosen, y = frac_exch_state, group = State)) +
- geom_point() + 
- geom_line(aes(color = State)) +
- labs(title = "Kinetic plot for INITSSASQEGTRLN", 
-      x = "Time point [min]", 
-      y = "Deuteration") +
- coord_cartesian(ylim = c(0, 1)) +
- theme(legend.position = "bottom",
-       legend.title = element_blank())
+ plot_kinetics(theoretical = FALSE, 
+               relative = TRUE) +
+ labs(title = "Kinetic plot for INITSSASQEGTRLN")
+ 
+# plot example - theoretical and absolute
+bind_rows(kin1, kin2) \%>\%
+  plot_kinetics(theoretical = TRUE, 
+               relative = FALSE) +
+  labs(title = "Theoretical kinetics plot for INITSSASQEGTRLN")
        
 }
 \seealso{
-calculate_state_deuteration
+\code{\link{calculate_state_deuteration}} \code{\link{plot_kinetics}}
 }
