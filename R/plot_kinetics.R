@@ -3,7 +3,7 @@
 #' @description Plots kinetic data for peptide based on supplied parameters.
 #' 
 #' @importFrom dplyr %>% mutate
-#' @importFrom ggplot2 ggplot aes geom_point geom_ribbon geom_line
+#' @importFrom ggplot2 ggplot aes geom_point geom_ribbon geom_line scale_y_continuous
 #' 
 #' @param kin_dat calculated kinetic data by \code{\link{calculate_kinetics}} function
 #' @param theoretical \code{logical}, determines if plot shows theoretical values
@@ -72,7 +72,7 @@ plot_kinetics <- function(kin_dat,
         geom_line(aes(color = prop)) +
         theme(legend.position = "bottom",
               legend.title = element_blank()) +
-        coord_cartesian(ylim = c(-.1, 1.1)) + 
+        scale_y_continuous(limits = c(-.1, 1.1)) + 
         labs(x = "Time points [min]", 
              y = "Theoretical deuteration [%]")
       
@@ -86,7 +86,7 @@ plot_kinetics <- function(kin_dat,
         geom_line(aes(color = prop)) +
         theme(legend.position = "bottom",
               legend.title = element_blank()) +
-        coord_cartesian(ylim = c(0, NA)) + 
+        scale_y_continuous(limits = c(0, NA)) + 
         labs(x = "Time points [min]", 
              y = "Theoretical deuteration [Da]")
       
@@ -104,7 +104,7 @@ plot_kinetics <- function(kin_dat,
         geom_line(aes(color = prop)) +
         theme(legend.position = "bottom",
               legend.title = element_blank()) +
-        coord_cartesian(ylim = c(-.1, 1.1)) + 
+        scale_y_continuous(limits = c(-.1, 1.1)) + 
         labs(x = "Time points [min]", 
              y = "Deuteration [%]")
       
@@ -118,7 +118,7 @@ plot_kinetics <- function(kin_dat,
         geom_line(aes(color = prop)) +
         theme(legend.position = "bottom",
               legend.title = element_blank()) +
-        coord_cartesian(ylim = c(0, NA)) + 
+        scale_y_continuous(limits = c(0, NA)) + 
         labs(x = "Time points [min]", 
              y = "Deuteration [Da]")
       
