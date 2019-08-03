@@ -1,6 +1,7 @@
 #' Calculate kinetic data
 #' 
-#' @description Calculate kinetics - deuteration change in time for given peptide.
+#' @description Calculate kinetics of the hydrogen-deuteration exchange 
+#' for given peptide.
 #' 
 #' @importFrom dplyr %>% bind_rows mutate everything
 #' 
@@ -12,7 +13,21 @@
 #' @param end end of given sequence
 #' @param time_in time in for experimental calculations
 #' @param time_out time out for experimental calculations
-#'
+#' @details The function calculates deuteration data for all available data points 
+#' for given peptide. 
+#' All four variants (relative & theoretical combinations) of deuteration computations 
+#' are supported.
+#' To visualize obtained data we recomend using \code{\link{plot_kinetics}} function.
+#' The first version doesn't support filled Modification and Fragment columns.
+#' 
+#' @return data frame with deuteration calculated for all the data points 
+#' between time_in and time_out. 
+#' The chosen time point for which deuteration in all four variants is calculated 
+#' is available in column `time_chosen`. The rest of
+#' the returned structure is equivalent to structure returned by
+#' \code{\link{calculate_state_deuteration}}.
+#' @seealso 
+#' \code{\link{calculate_state_deuteration}} \code{\link{plot_kinetics}}
 #' @examples
 #' # load example data
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
@@ -53,18 +68,6 @@
 #'                relative = FALSE) +
 #'   labs(title = "Theoretical kinetics plot for INITSSASQEGTRLN")
 #'        
-#' @details Function \code{calculate_kinetics} calculates deuteration data for all available data points for given peptide. 
-#' To clearly identify a peptide we need following information: protein, sequence, state, start and end.
-#' All four variants (relative & theoretical combinations) are supplied.
-#' To visualize obtained data we recomend using \code{\link{plot_kinetics}} function.
-#' First version doesn't support filled Modification and Fragment columns.
-#' 
-#' @return data frame with deuteration calculated for all the data points between time_in and time_out. 
-#' Chosen time point for which deuteration in all four variants is calculated is available in column `time_chosen`. The rest of
-#' the returned structure is equivalent to structure returned by \code{\link{calculate_state_deuteration}}.
-
-#' @seealso 
-#' \code{\link{calculate_state_deuteration}} \code{\link{plot_kinetics}}
 #' 
 #' @export 
 calculate_kinetics <- function(dat, 

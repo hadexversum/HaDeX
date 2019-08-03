@@ -25,19 +25,24 @@ calculate_kinetics(dat, protein = dat[["Protein"]][1], sequence, state,
 \item{time_out}{time out for experimental calculations}
 }
 \value{
-data frame with deuteration calculated for all the data points between time_in and time_out. 
-Chosen time point for which deuteration in all four variants is calculated is available in column `time_chosen`. The rest of
-the returned structure is equivalent to structure returned by \code{\link{calculate_state_deuteration}}.
+data frame with deuteration calculated for all the data points 
+between time_in and time_out. 
+The chosen time point for which deuteration in all four variants is calculated 
+is available in column `time_chosen`. The rest of
+the returned structure is equivalent to structure returned by
+\code{\link{calculate_state_deuteration}}.
 }
 \description{
-Calculate kinetics - deuteration change in time for given peptide.
+Calculate kinetics of the hydrogen-deuteration exchange 
+for given peptide.
 }
 \details{
-Function \code{calculate_kinetics} calculates deuteration data for all available data points for given peptide. 
-To clearly identify a peptide we need following information: protein, sequence, state, start and end.
-All four variants (relative & theoretical combinations) are supplied.
+The function calculates deuteration data for all available data points 
+for given peptide. 
+All four variants (relative & theoretical combinations) of deuteration computations 
+are supported.
 To visualize obtained data we recomend using \code{\link{plot_kinetics}} function.
-First version doesn't support filled Modification and Fragment columns.
+The first version doesn't support filled Modification and Fragment columns.
 }
 \examples{
 # load example data
@@ -79,6 +84,7 @@ bind_rows(kin1, kin2) \%>\%
                relative = FALSE) +
   labs(title = "Theoretical kinetics plot for INITSSASQEGTRLN")
        
+
 }
 \seealso{
 \code{\link{calculate_state_deuteration}} \code{\link{plot_kinetics}}
