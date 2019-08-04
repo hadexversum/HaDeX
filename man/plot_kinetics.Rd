@@ -7,30 +7,37 @@
 plot_kinetics(kin_dat, theoretical = FALSE, relative = TRUE)
 }
 \arguments{
-\item{kin_dat}{calculated kinetic data by \code{\link{calculate_kinetics}} function}
+\item{kin_dat}{calculated kinetic data by \code{\link{calculate_kinetics}} 
+function}
 
 \item{theoretical}{\code{logical}, determines if plot shows theoretical values}
 
 \item{relative}{\code{logical}, determines if values are relative or absolute}
+
+\item{smooth}{\code{logical}, if \code{TRUE}}
 }
 \value{
-a ggplot object that can be further modified according to the user needs.
+a \code{\link[ggplot2]{ggplot}} object.
 }
 \description{
-Plots kinetic data for peptide based on supplied parameters.
+Plots kinetics of the hydrogen-deuterium exchange for specific peptides.
 }
 \details{
-This function is for visualizating the data obtained by calling \code{\link{calculate_kinetics}} function. 
-Based on supplied parameters appopriate columns are chosen for the plot. The uncertainty associated with each peptide is shown as a ribbon. 
+This function visualises the output of the  
+\code{\link{calculate_kinetics}} function. 
+Based on supplied parameters appopriate columns are chosen for the plot. 
+The uncertainty associated with each peptide is shown as a ribbon. 
 Axis are labeled according to the supplied parameters but no title is provied.
 
-If you want to plot data for more then one peptide in one state, join calculated data by using \code{\link{bind_rows}} from dplyr package and pass the result as kin_dat.
+If you want to plot data for more then one peptide in one state, join 
+calculated data by using \code{\link{bind_rows}} from dplyr package and 
+pass the result as kin_dat.
 }
 \examples{
 # load example data
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 
-# calculate data for sequence INITSSASQEGTRLN in state CD160
+# calculate data for the sequence INITSSASQEGTRLN in the CD160 state 
 (kin1 <- calculate_kinetics(dat, 
                            protein = "db_CD160",
                            sequence = "INITSSASQEGTRLN", 
@@ -40,7 +47,7 @@ dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.
                            time_in = 0.001, 
                            time_out = 1440))
 
-# calculate data for sequence INITSSASQEGTRLN in state CD160_HVEM
+# calculate data for the sequence INITSSASQEGTRLN in the CD160_HVEM state 
 (kin2 <- calculate_kinetics(dat, 
                            protein = "db_CD160",
                            sequence = "INITSSASQEGTRLN", 
@@ -53,7 +60,7 @@ dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.
 # load extra packages 
 library(dplyr)
   
-# plot one peptide - theoretical and relative
+# plot a single peptide - theoretical and relative
 plot_kinetics(kin_dat = kin1, 
               theoretical = TRUE, 
               relative = TRUE)

@@ -30,7 +30,8 @@
 #' \code{\link{calculate_state_deuteration}} \code{\link{plot_kinetics}}
 #' @examples
 #' # load example data
-#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' dat <- read_hdx(system.file(package = "HaDeX", 
+#'                             "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' 
 #' # calculate data for sequence INITSSASQEGTRLN in state CD160
 #' (kin1 <- calculate_kinetics(dat, 

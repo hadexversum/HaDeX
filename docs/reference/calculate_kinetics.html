@@ -192,7 +192,8 @@ The first version doesn't support filled Modification and Fragment columns.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># load example data</span>
-<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_hdx.html'>read_hdx</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"HaDeX"</span>, <span class='st'>"HaDeX/data/KD_180110_CD160_HVEM.csv"</span>))
+<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_hdx.html'>read_hdx</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"HaDeX"</span>,
+                            <span class='st'>"HaDeX/data/KD_180110_CD160_HVEM.csv"</span>))
 
 <span class='co'># calculate data for sequence INITSSASQEGTRLN in state CD160</span>
 (<span class='no'>kin1</span> <span class='kw'>&lt;-</span> <span class='fu'>calculate_kinetics</span>(<span class='no'>dat</span>,

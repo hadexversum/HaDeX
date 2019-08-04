@@ -40,7 +40,7 @@
 
 <meta property="og:title" content="Plot kinetics data — plot_kinetics" />
 
-<meta property="og:description" content="Plots kinetic data for peptide based on supplied parameters." />
+<meta property="og:description" content="Plots kinetics of the hydrogen-deuterium exchange for specific peptides." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,7 +121,7 @@
 
     <div class="ref-description">
     
-    <p>Plots kinetic data for peptide based on supplied parameters.</p>
+    <p>Plots kinetics of the hydrogen-deuterium exchange for specific peptides.</p>
     
     </div>
 
@@ -132,7 +132,8 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>kin_dat</th>
-      <td><p>calculated kinetic data by <code><a href='calculate_kinetics.html'>calculate_kinetics</a></code> function</p></td>
+      <td><p>calculated kinetic data by <code><a href='calculate_kinetics.html'>calculate_kinetics</a></code> 
+function</p></td>
     </tr>
     <tr>
       <th>theoretical</th>
@@ -142,18 +143,26 @@
       <th>relative</th>
       <td><p><code>logical</code>, determines if values are relative or absolute</p></td>
     </tr>
+    <tr>
+      <th>smooth</th>
+      <td><p><code>logical</code>, if <code>TRUE</code></p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a ggplot object that can be further modified according to the user needs.</p>
+    <p>a <code><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></code> object.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function is for visualizating the data obtained by calling <code><a href='calculate_kinetics.html'>calculate_kinetics</a></code> function. 
-Based on supplied parameters appopriate columns are chosen for the plot. The uncertainty associated with each peptide is shown as a ribbon. 
+    <p>This function visualises the output of the  
+<code><a href='calculate_kinetics.html'>calculate_kinetics</a></code> function. 
+Based on supplied parameters appopriate columns are chosen for the plot. 
+The uncertainty associated with each peptide is shown as a ribbon. 
 Axis are labeled according to the supplied parameters but no title is provied.</p>
-<p>If you want to plot data for more then one peptide in one state, join calculated data by using <code><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_rows</a></code> from dplyr package and pass the result as kin_dat.</p>
+<p>If you want to plot data for more then one peptide in one state, join 
+calculated data by using <code><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_rows</a></code> from dplyr package and 
+pass the result as kin_dat.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -164,7 +173,7 @@ Axis are labeled according to the supplied parameters but no title is provied.</
     <pre class="examples"><div class='input'><span class='co'># load example data</span>
 <span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_hdx.html'>read_hdx</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"HaDeX"</span>, <span class='st'>"HaDeX/data/KD_180110_CD160_HVEM.csv"</span>))
 
-<span class='co'># calculate data for sequence INITSSASQEGTRLN in state CD160</span>
+<span class='co'># calculate data for the sequence INITSSASQEGTRLN in the CD160 state </span>
 (<span class='no'>kin1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_kinetics.html'>calculate_kinetics</a></span>(<span class='no'>dat</span>,
                            <span class='kw'>protein</span> <span class='kw'>=</span> <span class='st'>"db_CD160"</span>,
                            <span class='kw'>sequence</span> <span class='kw'>=</span> <span class='st'>"INITSSASQEGTRLN"</span>,
@@ -185,7 +194,7 @@ Axis are labeled according to the supplied parameters but no title is provied.</
 #&gt; #   avg_theo_in_time </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, err_avg_theo_in_time </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
 #&gt; #   abs_avg_theo_in_time </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, err_abs_avg_theo_in_time </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
 #&gt; #   Med_Sequence </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
-<span class='co'># calculate data for sequence INITSSASQEGTRLN in state CD160_HVEM</span>
+<span class='co'># calculate data for the sequence INITSSASQEGTRLN in the CD160_HVEM state </span>
 (<span class='no'>kin2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_kinetics.html'>calculate_kinetics</a></span>(<span class='no'>dat</span>,
                            <span class='kw'>protein</span> <span class='kw'>=</span> <span class='st'>"db_CD160"</span>,
                            <span class='kw'>sequence</span> <span class='kw'>=</span> <span class='st'>"INITSSASQEGTRLN"</span>,
@@ -209,7 +218,7 @@ Axis are labeled according to the supplied parameters but no title is provied.</
 <span class='co'># load extra packages </span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)
 
-<span class='co'># plot one peptide - theoretical and relative</span>
+<span class='co'># plot a single peptide - theoretical and relative</span>
 <span class='fu'>plot_kinetics</span>(<span class='kw'>kin_dat</span> <span class='kw'>=</span> <span class='no'>kin1</span>,
               <span class='kw'>theoretical</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
               <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='plot_kinetics-1.png' alt='' width='700' height='433' /></div><div class='input'>
