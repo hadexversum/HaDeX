@@ -35,7 +35,8 @@ Imports:
 		shiny,
 		stringr,
 		tidyr
-Suggests: 
+Suggests:
+    spelling, 
     covr,
     digest,
     knitr,
@@ -45,3 +46,4 @@ Suggests:
     testthat,
     vdiffr
 VignetteBuilder: knitr
+Language: en-US
