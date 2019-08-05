@@ -13,8 +13,6 @@ function}
 \item{theoretical}{\code{logical}, determines if plot shows theoretical values}
 
 \item{relative}{\code{logical}, determines if values are relative or absolute}
-
-\item{smooth}{\code{logical}, if \code{TRUE}}
 }
 \value{
 a \code{\link[ggplot2]{ggplot}} object.

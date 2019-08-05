@@ -9,7 +9,6 @@
 #' function
 #' @param theoretical \code{logical}, determines if plot shows theoretical values
 #' @param relative \code{logical}, determines if values are relative or absolute
-#' @param smooth \code{logical}, if \code{TRUE}
 #' 
 #' @seealso \code{\link{calculate_kinetics}}
 #' 
