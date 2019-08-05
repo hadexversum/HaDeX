@@ -18,7 +18,7 @@
 #' for given peptide. 
 #' All four variants (relative & theoretical combinations) of deuteration computations 
 #' are supported.
-#' To visualize obtained data we recomend using \code{\link{plot_kinetics}} function.
+#' To visualize obtained data we recommend using \code{\link{plot_kinetics}} function.
 #' The first version doesn't support filled Modification and Fragment columns.
 #' 
 #' @return data frame with deuteration calculated for all the data points 

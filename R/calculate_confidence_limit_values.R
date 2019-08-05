@@ -1,6 +1,6 @@
 #' calculate_confidence_limit_values
 #' 
-#' Calculates confidence limit values for prepared datased, based on chosen parameters.
+#' Calculates confidence limit values for prepared dataset, based on chosen parameters.
 #' 
 #' @importFrom dplyr case_when
 #' @importFrom stats qt

@@ -28,9 +28,9 @@ opts_chunk$set(fig.width = 7, fig.height = 5)
 
 HaDeX is a novel tool for processing, analysis and visualisation of HDX-MS experiments. HaDeX covers the final parts of the analytic process, including comparison of experiments, quality control and generation of publication-quality figures. To make the HaDeX **R** package available to the less **R**-fluent users, we enhanced it with a comprehensive Graphical User Interface available as a HaDeX GUI. The reproducibility of the whole procedure is ensured with advanced reporting functions. 
 
-The GUI is availble online: http://mslab-ibb.pl/shiny/HaDeX/ or can be installed locally on Windows systems: https://sourceforge.net/projects/hadex/files/HaDeX_setup.exe/download. Alternatively, R-fluent users can access the GUI through the [HaDeX_gui()](https://hadexversum.github.io/HaDeX/reference/HaDeX_gui.html) function.  
+The GUI is available online: http://mslab-ibb.pl/shiny/HaDeX/ or can be installed locally on Windows systems: https://sourceforge.net/projects/hadex/files/HaDeX_setup.exe/download. Alternatively, R-fluent users can access the GUI through the [HaDeX_gui()](https://hadexversum.github.io/HaDeX/reference/HaDeX_gui.html) function.  
 
-This document covers the main functonalities of both the **R** package and the GUI.
+This document covers the main functionalities of both the **R** package and the GUI.
 
 ## Comparison of the existing HDX-MS software
 
@@ -54,7 +54,7 @@ We have not considered HDX Workbench [@PascalHDXWorkbenchSoftware2012] as it dea
 
 **ISO-based uncertainty:** analytic functions produce ISO-compatible uncertainty intervals. 
 
-**Coverage and peptide overlap:** overview of experimental squence coverage is available in user-friendly way.
+**Coverage and peptide overlap:** overview of experimental sequence coverage is available in user-friendly way.
 
 **Quality control:** additional information about course of the experiment.
 
@@ -78,7 +78,7 @@ We have not considered HDX Workbench [@PascalHDXWorkbenchSoftware2012] as it dea
 
 **Downloadable results of intermediate computations:** results of intermediate computations (e.q. pure deuteration data) are downloadable.
 
-**Report generation:** generates raport (e.q. in html format) with results of analysis with parametrization.
+**Report generation:** generates report (e.q. in html format) with results of analysis with parametrization.
 
 **PyMol export:** exports data to the [PyMol](https://pymol.org/2/) format.
 
@@ -111,7 +111,7 @@ dat <- read_hdx(system.file(package = "HaDeX",
 
 ```
 
-Currently, [read_hdx()](https://hadexversum.github.io/HaDeX/reference/read_hdx.html) supports .csv, .tsv and .xls files fullfilling the data structure described above. 
+Currently, [read_hdx()](https://hadexversum.github.io/HaDeX/reference/read_hdx.html) supports .csv, .tsv and .xls files fulfilling the data structure described above. 
 
 ## Computation of deuteration levels
 
@@ -119,7 +119,7 @@ The computation of the level of deuteration involves several pre-processing step
 
 ### Measured data into overall peptide mass
 
-The results of HDX-MS measurements as given in the DynamX datafiles are represented as the measured mass of peptides plus proton mass to charge ratio ($Center$). For later use, this value has to be transformed into an overall mass of a peptide measured after specific timepoint from a protein in a specific state, as shown in equation 1: 
+The results of HDX-MS measurements as given in the DynamX datafiles are represented as the measured mass of peptides plus proton mass to charge ratio ($Center$). For later use, this value has to be transformed into an overall mass of a peptide measured after specific time point from a protein in a specific state, as shown in equation 1: 
 
 $$pepMass = z \times (Center-protonMass)\tag{1}$$
 where:
@@ -174,7 +174,7 @@ After obtaining the mass of the peptide, we can compute the deuteration level de
 
 ### Experimental deuteration level
 
-The experimental deuteration level is computed as the deuteration level of the peptide from a protein in a specifc state and after incubation time $t$ compared to the deuteration level measured at the start of the incubation ($t_0$). It yields a value for the chosen state and chosen time $t$.
+The experimental deuteration level is computed as the deuteration level of the peptide from a protein in a specific state and after incubation time $t$ compared to the deuteration level measured at the start of the incubation ($t_0$). It yields a value for the chosen state and chosen time $t$.
 
 $$D = D_{t} - D_{t_0}\tag{4}$$
 
@@ -234,7 +234,7 @@ where:
 
 - $protonMass$ - mass of a proton (constant) (Da).
 
-The absolute deuteration level is calculated as in equation 8 but without scalling (equation 8a):
+The absolute deuteration level is calculated as in equation 8 but without scaling (equation 8a):
 
 $$D = D_{t} - MHP\tag{8a}$$
 
@@ -506,7 +506,7 @@ The HaDeX Shiny app is launched by the [HaDeX_gui()](https://hadexversum.github.
 
 The interaction between HVEM and the [CD160](https://www.uniprot.org/uniprot/O95971) receptor was measured with HDX-MS.
 
-Firstly, we read the input data, exactly as provided by theDynamX\textsuperscript{TM} 3.0 (Waters Corp.)
+Firstly, we read the input data, exactly as provided by the DynamX\textsuperscript{TM} 3.0 (Waters Corp.)
 
 ```{r warning=FALSE}
 library(HaDeX)
@@ -516,7 +516,7 @@ dat_1 <- read_hdx(system.file(package = "HaDeX",
                               "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 ```
 
-Then, we reconstruct the protein sequence from the peptides measured during the experiment. We observe tha region from amino acid 107 till amino acid 124 is not covered by any peptide.
+Then, we reconstruct the protein sequence from the peptides measured during the experiment. We observe the region from amino acid 107 till amino acid 124 is not covered by any peptide.
 
 ```{r warning=FALSE}
 reconstruct_sequence(dat_1)

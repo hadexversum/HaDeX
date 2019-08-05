@@ -27,11 +27,11 @@ quality_control(dat, state_first, state_second, chosen_time, in_time,
 Checks how the uncertainty changes in a function of `out_time`.
 }
 \details{
-The function calculates mean uncertainty of all peptides and its unceratinty (standard error) based on given `in_time` and `chosen_time` 
+The function calculates mean uncertainty of all peptides and its uncertainty (standard error) based on given `in_time` and `chosen_time` 
 as a function of `out_time`. Both theoretical and experimental results for each state and their difference are supplied for comparison but only 
 experimental calculations depends on `out_time` variable. The results are either in form of relative or absolute values depending on the `relative` 
 parameter supplied by the user. 
-This data can be useful for general overview of the experiment and analysing chosen time parameters.
+This data can be useful for general overview of the experiment and analyse of the chosen time parameters.
 }
 \examples{
 # load example data

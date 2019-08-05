@@ -14,9 +14,9 @@
 #' 
 #' @details This function visualises the output of the  
 #' \code{\link{calculate_kinetics}} function. 
-#' Based on supplied parameters appopriate columns are chosen for the plot. 
+#' Based on supplied parameters appropriate columns are chosen for the plot. 
 #' The uncertainty associated with each peptide is shown as a ribbon. 
-#' Axis are labeled according to the supplied parameters but no title is provied.
+#' Axis are labeled according to the supplied parameters but no title is provided.
 #' 
 #' If you want to plot data for more then one peptide in one state, join 
 #' calculated data by using \code{\link{bind_rows}} from dplyr package and 
@@ -60,7 +60,9 @@
 #' bind_rows(kin1, kin2) %>%
 #'   plot_kinetics(theoretical = FALSE, 
 #'                 relative = FALSE)
+#'                 
 #' @export plot_kinetics
+#' 
 plot_kinetics <- function(kin_dat, 
                           theoretical = FALSE, 
                           relative = TRUE){

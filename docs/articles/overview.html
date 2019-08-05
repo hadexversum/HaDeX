@@ -96,20 +96,20 @@
 <h1 class="hasAnchor">
 <a href="#about-hadex" class="anchor"></a>About HaDeX</h1>
 <p>HaDeX is a novel tool for processing, analysis and visualisation of HDX-MS experiments. HaDeX covers the final parts of the analytic process, including comparison of experiments, quality control and generation of publication-quality figures. To make the HaDeX <strong>R</strong> package available to the less <strong>R</strong>-fluent users, we enhanced it with a comprehensive Graphical User Interface available as a HaDeX GUI. The reproducibility of the whole procedure is ensured with advanced reporting functions.</p>
-<p>The GUI is availble online: <a href="http://mslab-ibb.pl/shiny/HaDeX/" class="uri">http://mslab-ibb.pl/shiny/HaDeX/</a> or can be installed locally on Windows systems: <a href="https://sourceforge.net/projects/hadex/files/HaDeX_setup.exe/download" class="uri">https://sourceforge.net/projects/hadex/files/HaDeX_setup.exe/download</a>. Alternatively, R-fluent users can access the GUI through the <a href="https://hadexversum.github.io/HaDeX/reference/HaDeX_gui.html">HaDeX_gui()</a> function.</p>
-<p>This document covers the main functonalities of both the <strong>R</strong> package and the GUI.</p>
+<p>The GUI is available online: <a href="http://mslab-ibb.pl/shiny/HaDeX/" class="uri">http://mslab-ibb.pl/shiny/HaDeX/</a> or can be installed locally on Windows systems: <a href="https://sourceforge.net/projects/hadex/files/HaDeX_setup.exe/download" class="uri">https://sourceforge.net/projects/hadex/files/HaDeX_setup.exe/download</a>. Alternatively, R-fluent users can access the GUI through the <a href="https://hadexversum.github.io/HaDeX/reference/HaDeX_gui.html">HaDeX_gui()</a> function.</p>
+<p>This document covers the main functionalities of both the <strong>R</strong> package and the GUI.</p>
 <div id="comparison-of-the-existing-hdx-ms-software" class="section level2">
 <h2 class="hasAnchor">
 <a href="#comparison-of-the-existing-hdx-ms-software" class="anchor"></a>Comparison of the existing HDX-MS software</h2>
 <p>To show the novelty of HaDeX, we compare its functionalities with other relatively new software for analysis of HDX-MS data: MEMHDX <span class="citation">(Hourdel et al. 2016)</span> and Deuteros <span class="citation">(Lau et al. 2019)</span>.</p>
-<div id="htmlwidget-0243882cd46c366ca028" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-0243882cd46c366ca028">{"x":{"style":"bootstrap","filter":"none","data":[["Accessibility","Accessibility","Accessibility","Analysis","Analysis","Analysis","Analysis","Analysis","Visualization","Visualization","Visualization","Visualization","Visualization","Visualization","Visualization","Reporting","Reporting","Reporting","Reporting"],["Web server","Programmatic access","Desktop software","Multi-state analysis","ISO-based uncertainty","Coverage and peptide overlap","Quality control","N- and C-terminal length corrections","Global visualization of deuterium uptake","Woods plot","Zooming of the Woods plot","Customizable label names and colors","Peptide kinetics chart","3D structure visualization","Downloadable charts","Deuterium uptake download","Downloadable results of intermediate computations","Report generation","PyMol export"],["Yes","No","No","No","No","No","No","No","Yes","No","No","No","Yes","Yes","Yes","Yes","No","No","No"],["No","No","Yes","No","No","No","No","Yes","Yes","Yes","Yes","No","No","No","Yes","Yes","No","No","Yes"],["Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","No","Yes","Yes","Yes","Yes","No"]],"container":"<table class=\"table table-striped table-hover\">\n  <thead>\n    <tr>\n      <th>Type<\/th>\n      <th>Name<\/th>\n      <th>MEMHDX<\/th>\n      <th>Deuteros<\/th>\n      <th>HaDeX<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","ordering":false,"paging":false,"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data) {\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == 'Yes' ? '#00BFFF' : value == 'No' ? '#FF8C91' : ''});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == 'Yes' ? '#00BFFF' : value == 'No' ? '#FF8C91' : ''});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':value == 'Yes' ? '#00BFFF' : value == 'No' ? '#FF8C91' : ''});\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script><p>We have not considered HDX Workbench <span class="citation">(Pascal et al. 2012)</span> as it deals with the preliminary steps of the analysis.</p>
+<div id="htmlwidget-b5be4c7083921138d53e" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b5be4c7083921138d53e">{"x":{"style":"bootstrap","filter":"none","data":[["Accessibility","Accessibility","Accessibility","Analysis","Analysis","Analysis","Analysis","Analysis","Visualization","Visualization","Visualization","Visualization","Visualization","Visualization","Visualization","Reporting","Reporting","Reporting","Reporting"],["Web server","Programmatic access","Desktop software","Multi-state analysis","ISO-based uncertainty","Coverage and peptide overlap","Quality control","N- and C-terminal length corrections","Global visualization of deuterium uptake","Woods plot","Zooming of the Woods plot","Customizable label names and colors","Peptide kinetics chart","3D structure visualization","Downloadable charts","Deuterium uptake download","Downloadable results of intermediate computations","Report generation","PyMol export"],["Yes","No","No","No","No","No","No","No","Yes","No","No","No","Yes","Yes","Yes","Yes","No","No","No"],["No","No","Yes","No","No","No","No","Yes","Yes","Yes","Yes","No","No","No","Yes","Yes","No","No","Yes"],["Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes","No","Yes","Yes","Yes","Yes","No"]],"container":"<table class=\"table table-striped table-hover\">\n  <thead>\n    <tr>\n      <th>Type<\/th>\n      <th>Name<\/th>\n      <th>MEMHDX<\/th>\n      <th>Deuteros<\/th>\n      <th>HaDeX<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","ordering":false,"paging":false,"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data) {\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == 'Yes' ? '#00BFFF' : value == 'No' ? '#FF8C91' : ''});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == 'Yes' ? '#00BFFF' : value == 'No' ? '#FF8C91' : ''});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':value == 'Yes' ? '#00BFFF' : value == 'No' ? '#FF8C91' : ''});\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script><p>We have not considered HDX Workbench <span class="citation">(Pascal et al. 2012)</span> as it deals with the preliminary steps of the analysis.</p>
 <p><strong>Web server:</strong> a software is available as a web server.</p>
 <p><strong>Programmatic access:</strong> analytic functionalities are documented and available from a command line.</p>
 <p><strong>Desktop software:</strong> a software can be installed locally.</p>
 <p><strong>Multi-state analysis:</strong> a software supports comparisons of more than two states.</p>
 <p><strong>ISO-based uncertainty:</strong> analytic functions produce ISO-compatible uncertainty intervals.</p>
-<p><strong>Coverage and peptide overlap:</strong> overview of experimental squence coverage is available in user-friendly way.</p>
+<p><strong>Coverage and peptide overlap:</strong> overview of experimental sequence coverage is available in user-friendly way.</p>
 <p><strong>Quality control:</strong> additional information about course of the experiment.</p>
 <p><strong>N- and C-terminal length corrections:</strong> manual correction of sequence length.</p>
 <p><strong>Global visualization of deuterium uptake:</strong> deuterium uptake for different states is shown together for comparison.</p>
@@ -121,7 +121,7 @@
 <p><strong>Downloadable charts:</strong> charts are downloadable, preferably in a vector format (.eps, .svg or .pdf).</p>
 <p><strong>Deuterium uptake download:</strong> data shown on Woods plot is downloadable (e.q. as csv file).</p>
 <p><strong>Downloadable results of intermediate computations:</strong> results of intermediate computations (e.q. pure deuteration data) are downloadable.</p>
-<p><strong>Report generation:</strong> generates raport (e.q. in html format) with results of analysis with parametrization.</p>
+<p><strong>Report generation:</strong> generates report (e.q. in html format) with results of analysis with parametrization.</p>
 <p><strong>PyMol export:</strong> exports data to the <a href="https://pymol.org/2/">PyMol</a> format.</p>
 </div>
 </div>
@@ -132,11 +132,11 @@
 <h2 class="hasAnchor">
 <a href="#data-import" class="anchor"></a>Data import</h2>
 <p>The HaDeX web server works only on data in the DynamX datafile format (Waters Corp.). The data from other sources may be also adjusted to the format accepted by HaDeX provided it has following columns:</p>
-<div id="htmlwidget-c02b256646f020fcda1d" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c02b256646f020fcda1d">{"x":{"style":"bootstrap","filter":"none","data":[["Protein","Start","End","Sequence","Modification","Fragment","MaxUptake","MHP","State","Exposure","File","z","RT","Inten","Center"],["Character","Integer","Integer","Character","Logic","Logic","Numeric","Numeric","Character","Numeric","Character","Integer","Numeric","Numeric","Numeric"]],"container":"<table class=\"table table-striped table-hover\">\n  <thead>\n    <tr>\n      <th>Column.Name<\/th>\n      <th>Column.Type<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","ordering":false,"paging":false,"autoWidth":true,"order":[],"orderClasses":false}},"evals":[],"jsHooks":[]}</script><p>Although data can be imported into R using other tools, we strongly advice to rely on the <a href="https://hadexversum.github.io/HaDeX/reference/read_hdx.html">read_hdx()</a> function:</p>
+<div id="htmlwidget-ccd3596fc8284d128eb6" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ccd3596fc8284d128eb6">{"x":{"style":"bootstrap","filter":"none","data":[["Protein","Start","End","Sequence","Modification","Fragment","MaxUptake","MHP","State","Exposure","File","z","RT","Inten","Center"],["Character","Integer","Integer","Character","Logic","Logic","Numeric","Numeric","Character","Numeric","Character","Integer","Numeric","Numeric","Numeric"]],"container":"<table class=\"table table-striped table-hover\">\n  <thead>\n    <tr>\n      <th>Column.Name<\/th>\n      <th>Column.Type<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","ordering":false,"paging":false,"autoWidth":true,"order":[],"orderClasses":false}},"evals":[],"jsHooks":[]}</script><p>Although data can be imported into R using other tools, we strongly advice to rely on the <a href="https://hadexversum.github.io/HaDeX/reference/read_hdx.html">read_hdx()</a> function:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">dat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_hdx.html">read_hdx</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="dt">package =</span> <span class="st">"HaDeX"</span>, </a>
 <a class="sourceLine" id="cb1-2" title="2">                            <span class="st">"HaDeX/data/KD_190304_Nucb2_EDTA_CaCl2_test02_clusterdata.csv"</span>))</a></code></pre></div>
-<p>Currently, <a href="https://hadexversum.github.io/HaDeX/reference/read_hdx.html">read_hdx()</a> supports .csv, .tsv and .xls files fullfilling the data structure described above.</p>
+<p>Currently, <a href="https://hadexversum.github.io/HaDeX/reference/read_hdx.html">read_hdx()</a> supports .csv, .tsv and .xls files fulfilling the data structure described above.</p>
 </div>
 <div id="computation-of-deuteration-levels" class="section level2">
 <h2 class="hasAnchor">
@@ -145,7 +145,7 @@
 <div id="measured-data-into-overall-peptide-mass" class="section level3">
 <h3 class="hasAnchor">
 <a href="#measured-data-into-overall-peptide-mass" class="anchor"></a>Measured data into overall peptide mass</h3>
-<p>The results of HDX-MS measurements as given in the DynamX datafiles are represented as the measured mass of peptides plus proton mass to charge ratio (<span class="math inline">\(Center\)</span>). For later use, this value has to be transformed into an overall mass of a peptide measured after specific timepoint from a protein in a specific state, as shown in equation 1:</p>
+<p>The results of HDX-MS measurements as given in the DynamX datafiles are represented as the measured mass of peptides plus proton mass to charge ratio (<span class="math inline">\(Center\)</span>). For later use, this value has to be transformed into an overall mass of a peptide measured after specific time point from a protein in a specific state, as shown in equation 1:</p>
 <p><span class="math display">\[pepMass = z \times (Center-protonMass)\tag{1}\]</span> where:</p>
 <ul>
 <li><p><span class="math inline">\(pepMass\)</span> - expected mass of the peptide after incubation (Da),</p></li>
@@ -180,7 +180,7 @@
 <div id="experimental-deuteration-level" class="section level3">
 <h3 class="hasAnchor">
 <a href="#experimental-deuteration-level" class="anchor"></a>Experimental deuteration level</h3>
-<p>The experimental deuteration level is computed as the deuteration level of the peptide from a protein in a specifc state and after incubation time <span class="math inline">\(t\)</span> compared to the deuteration level measured at the start of the incubation (<span class="math inline">\(t_0\)</span>). It yields a value for the chosen state and chosen time <span class="math inline">\(t\)</span>.</p>
+<p>The experimental deuteration level is computed as the deuteration level of the peptide from a protein in a specific state and after incubation time <span class="math inline">\(t\)</span> compared to the deuteration level measured at the start of the incubation (<span class="math inline">\(t_0\)</span>). It yields a value for the chosen state and chosen time <span class="math inline">\(t\)</span>.</p>
 <p><span class="math display">\[D = D_{t} - D_{t_0}\tag{4}\]</span></p>
 <p>where:</p>
 <ul>
@@ -223,7 +223,7 @@
 <li><p><span class="math inline">\(MaxUptake\)</span> - the maximum proton uptake for the peptide (theoretical constant) (Da),</p></li>
 <li><p><span class="math inline">\(protonMass\)</span> - mass of a proton (constant) (Da).</p></li>
 </ul>
-<p>The absolute deuteration level is calculated as in equation 8 but without scalling (equation 8a):</p>
+<p>The absolute deuteration level is calculated as in equation 8 but without scaling (equation 8a):</p>
 <p><span class="math display">\[D = D_{t} - MHP\tag{8a}\]</span></p>
 <div id="uncertainty-calculations-1" class="section level4">
 <h4 class="hasAnchor">
@@ -494,13 +494,13 @@
 <h2 class="hasAnchor">
 <a href="#example-1-cd160-hvem" class="anchor"></a>Example 1: CD160-HVEM</h2>
 <p>The interaction between HVEM and the <a href="https://www.uniprot.org/uniprot/O95971">CD160</a> receptor was measured with HDX-MS.</p>
-<p>Firstly, we read the input data, exactly as provided by theDynamX 3.0 (Waters Corp.)</p>
+<p>Firstly, we read the input data, exactly as provided by the DynamX 3.0 (Waters Corp.)</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(HaDeX)</a>
 <a class="sourceLine" id="cb27-2" title="2"></a>
 <a class="sourceLine" id="cb27-3" title="3"><span class="co"># file import</span></a>
 <a class="sourceLine" id="cb27-4" title="4">dat_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_hdx.html">read_hdx</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="dt">package =</span> <span class="st">"HaDeX"</span>, </a>
 <a class="sourceLine" id="cb27-5" title="5">                              <span class="st">"HaDeX/data/KD_180110_CD160_HVEM.csv"</span>))</a></code></pre></div>
-<p>Then, we reconstruct the protein sequence from the peptides measured during the experiment. We observe tha region from amino acid 107 till amino acid 124 is not covered by any peptide.</p>
+<p>Then, we reconstruct the protein sequence from the peptides measured during the experiment. We observe the region from amino acid 107 till amino acid 124 is not covered by any peptide.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1"><span class="kw"><a href="../reference/reconstruct_sequence.html">reconstruct_sequence</a></span>(dat_<span class="dv">1</span>)</a></code></pre></div>
 <pre><code>## [1] "INITSSASQEGTRLNLICTVWHKKEEAEGFVVFLCKDRSGDCSPETSLKQLRLKRDPGIDGVGEISSQLMFTISQVTPLHSGTYQCCARSQKSGIRLQGHFFSILFxxxxxxxxxxxxxxxxxxFSHNEGTL"</code></pre>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1"><span class="kw"><a href="../reference/plot_position_frequency.html">plot_position_frequency</a></span>(dat_<span class="dv">1</span>, <span class="dt">chosen_state =</span> <span class="st">"CD160"</span>)</a></code></pre></div>

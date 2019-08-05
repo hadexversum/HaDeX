@@ -20,7 +20,7 @@ calculate_confidence_limit_values(calc_dat, confidence_limit = 0.98,
 range of confidence limit interval
 }
 \description{
-Calculates confidence limit values for prepared datased, based on chosen parameters.
+Calculates confidence limit values for prepared dataset, based on chosen parameters.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))

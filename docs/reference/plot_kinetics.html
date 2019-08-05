@@ -152,9 +152,9 @@ function</p></td>
 
     <p>This function visualises the output of the  
 <code><a href='calculate_kinetics.html'>calculate_kinetics</a></code> function. 
-Based on supplied parameters appopriate columns are chosen for the plot. 
+Based on supplied parameters appropriate columns are chosen for the plot. 
 The uncertainty associated with each peptide is shown as a ribbon. 
-Axis are labeled according to the supplied parameters but no title is provied.</p>
+Axis are labeled according to the supplied parameters but no title is provided.</p>
 <p>If you want to plot data for more then one peptide in one state, join 
 calculated data by using <code><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_rows</a></code> from dplyr package and 
 pass the result as kin_dat.</p>
@@ -220,7 +220,8 @@ pass the result as kin_dat.</p>
 <span class='co'># plot joined data - experimental and absolute</span>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_rows</a></span>(<span class='no'>kin1</span>, <span class='no'>kin2</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>plot_kinetics</span>(<span class='kw'>theoretical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-                <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='img'><img src='plot_kinetics-2.png' alt='' width='700' height='433' /></div></span></pre>
+                <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='img'><img src='plot_kinetics-2.png' alt='' width='700' height='433' /></div><div class='input'>                
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
