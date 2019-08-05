@@ -2,38 +2,63 @@
 % Please edit documentation in R/quality_control.R
 \name{quality_control}
 \alias{quality_control}
-\title{quality_control}
+\title{Experiment quality control}
 \usage{
 quality_control(dat, state_first, state_second, chosen_time, in_time,
   relative = TRUE)
 }
 \arguments{
-\item{dat}{file supplied by user using read_hdx()}
+\item{dat}{data read by \code{\link{read_hdx}}}
 
-\item{state_first}{first state}
+\item{state_first}{state of the first peptide}
 
-\item{state_second}{second state}
+\item{state_second}{state of the second peptide}
 
-\item{chosen_time}{chosen time}
+\item{chosen_time}{chosen time point}
 
-\item{in_time}{in time}
+\item{in_time}{`in` time}
 
 \item{relative}{\code{logical}, determines if values are relative or absolute.}
 }
 \value{
-data.frame with values - time, value, uncertainty
+\code{data.frame} with mean uncertainty per different `out_time` value
 }
 \description{
-Checks uncertainty level (mean for all peptides in sequence) depending on chosen out value.
-Visualization for results is provided in examples.
+Checks how the uncertainty changes in a function of `out_time`.
+}
+\details{
+The function calculates mean uncertainty of all peptides and its unceratinty (standard error) based on given `in_time` and `chosen_time` 
+as a function of `out_time`. Both theoretical and experimental results for each state and their difference are supplied for comparison but only 
+experimental calculations depends on `out_time` variable. The results are either in form of relative or absolute values depending on the `relative` 
+parameter supplied by the user. 
+This data can be useful for general overview of the experiment and analysing chosen time parameters.
 }
 \examples{
+# load example data
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+
+# calculate mean uncertainty 
 (result <- quality_control(dat = dat,
                            state_first = "CD160",
                            state_second = "CD160_HVEM", 
                            chosen_time = 1, 
                            in_time = 0.001, 
                            relative = TRUE))    
+                           
+# load extra libraries
+library(ggplot2)
+library(tidyr)
+library(dplyr)
 
+# example of data visualization 
+gather(result, 2:13, key = 'type', value = 'value') \%>\%
+filter(startsWith(type, "avg")) \%>\%
+  ggplot(aes(x = factor(out_time), y = value, group = type)) +
+  geom_line(aes(color = type)) +
+  labs(x = "Out time", 
+       y = "Mean uncertainty")
+
+}
+\seealso{
+\code{\link{read_hdx}}
 }

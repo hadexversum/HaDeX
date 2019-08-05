@@ -60,7 +60,7 @@
 #' bind_rows(kin1, kin2) %>%
 #'   plot_kinetics(theoretical = FALSE, 
 #'                 relative = FALSE)
-#' @export
+#' @export plot_kinetics
 plot_kinetics <- function(kin_dat, 
                           theoretical = FALSE, 
                           relative = TRUE){

@@ -1,7 +1,6 @@
 #' Read HDX-MS data file
 #' 
-#' Imports data from a HDX-MS file (as provided by Waters DynamX software) 
-#' and validates its content.
+#' @description Imports data from a HDX-MS file and validates its content.
 #' 
 #' @importFrom tools file_ext
 #' @importFrom readxl read_excel
@@ -9,9 +8,15 @@
 #' cols col_character
 #' @importFrom data.table fread
 #' 
-#' @param filename a file supplied by a user. Formats allowed: .csv, .tsv and .xls.
+#' @param filename a file supplied by the user. Formats allowed: .csv, .xlsx and .xls.
 #' 
-#' @return a \code{data.frame}.
+#' @details First version accepts files produced by DynamX 3.0 and 2.0 in basic format. 
+#' The function checks if all necessary columns are provided in correct format.
+#' 
+#' @return \code{dat} - a \code{\link{data.frame}} with validated content.
+#' 
+#' @seealso \code{\link{calculate_kinetics}} \code{\link{calculate_state_deuteration}} \code{\link{plot_coverage}} \code{\link{plot_position_frequency}}
+#' \code{\link{prepare_dataset}} \code{\link{quality_control}} \code{\link{reconstruct_sequence}}
 #' 
 #' @examples
 #' head(read_hdx(system.file(package = "HaDeX", 

@@ -2,21 +2,30 @@
 % Please edit documentation in R/reconstruct_sequence.R
 \name{reconstruct_sequence}
 \alias{reconstruct_sequence}
-\title{reconstruct_sequence}
+\title{Reconstruct protein sequence}
 \usage{
-reconstruct_sequence(dat)
+reconstruct_sequence(dat, protein = dat[["Protein"]][1])
 }
 \arguments{
-\item{dat}{data frame with data from Dynamix file}
+\item{dat}{data read by \code{\link{read_hdx}}}
+
+\item{protein}{the protein of which the structure is to be reconstructed}
 }
 \value{
-reconstructed sequence (character)
+reconstructed sequence - \code{character} object.
 }
 \description{
-Reconstructs protein sequence from DynamiX file. If a position is not covered by experiment data, x is shown.
+Reconstructs protein sequence from supplied file.
+}
+\details{
+The function reconstructs protein sequence from supplied experimental data. If a position is not covered, x is shown.
+First version doesn't support manual sequence length correction.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 reconstruct_sequence(dat)
 
+}
+\seealso{
+\code{\link{read_hdx}}
 }

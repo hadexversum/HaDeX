@@ -8,7 +8,7 @@ calculate_kinetics(dat, protein = dat[["Protein"]][1], sequence, state,
   start, end, time_in, time_out)
 }
 \arguments{
-\item{dat}{data frame with data from Dynamix file}
+\item{dat}{dat data read by \code{\link{read_hdx}}}
 
 \item{protein}{protein value for chosen peptide}
 
@@ -88,5 +88,5 @@ bind_rows(kin1, kin2) \%>\%
 
 }
 \seealso{
-\code{\link{calculate_state_deuteration}} \code{\link{plot_kinetics}}
+\code{\link{read_hdx}} \code{\link{calculate_state_deuteration}} \code{\link{plot_kinetics}}
 }

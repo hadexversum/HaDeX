@@ -7,17 +7,24 @@
 read_hdx(filename)
 }
 \arguments{
-\item{filename}{a file supplied by a user. Formats allowed: .csv, .tsv and .xls.}
+\item{filename}{a file supplied by the user. Formats allowed: .csv, .xlsx and .xls.}
 }
 \value{
-a \code{data.frame}.
+\code{dat} - a \code{\link{data.frame}} with validated content.
 }
 \description{
-Imports data from a HDX-MS file (as provided by Waters DynamX software) 
-and validates its content.
+Imports data from a HDX-MS file and validates its content.
+}
+\details{
+First version accepts files produced by DynamX 3.0 and 2.0 in basic format. 
+The function checks if all necessary columns are provided in correct format.
 }
 \examples{
 head(read_hdx(system.file(package = "HaDeX", 
                      "HaDeX/data/KD_180110_CD160_HVEM.csv")))
 
+}
+\seealso{
+\code{\link{calculate_kinetics}} \code{\link{calculate_state_deuteration}} \code{\link{plot_coverage}} \code{\link{plot_position_frequency}}
+\code{\link{prepare_dataset}} \code{\link{quality_control}} \code{\link{reconstruct_sequence}}
 }

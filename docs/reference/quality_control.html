@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>quality_control — quality_control • HaDeX</title>
+<title>Experiment quality control — quality_control • HaDeX</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -23,8 +23,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -38,10 +37,9 @@
 
 
 
-<meta property="og:title" content="quality_control — quality_control" />
+<meta property="og:title" content="Experiment quality control — quality_control" />
 
-<meta property="og:description" content="Checks uncertainty level (mean for all peptides in sequence) depending on chosen out value.
-Visualization for results is provided in examples." />
+<meta property="og:description" content="Checks how the uncertainty changes in a function of `out_time`." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -80,7 +78,7 @@ Visualization for results is provided in examples." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -115,15 +113,14 @@ Visualization for results is provided in examples." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>quality_control</h1>
+    <h1>Experiment quality control</h1>
     
     <div class="hidden name"><code>quality_control.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Checks uncertainty level (mean for all peptides in sequence) depending on chosen out value.
-Visualization for results is provided in examples.</p>
+    <p>Checks how the uncertainty changes in a function of `out_time`.</p>
     
     </div>
 
@@ -135,23 +132,23 @@ Visualization for results is provided in examples.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dat</th>
-      <td><p>file supplied by user using read_hdx()</p></td>
+      <td><p>data read by <code><a href='read_hdx.html'>read_hdx</a></code></p></td>
     </tr>
     <tr>
       <th>state_first</th>
-      <td><p>first state</p></td>
+      <td><p>state of the first peptide</p></td>
     </tr>
     <tr>
       <th>state_second</th>
-      <td><p>second state</p></td>
+      <td><p>state of the second peptide</p></td>
     </tr>
     <tr>
       <th>chosen_time</th>
-      <td><p>chosen time</p></td>
+      <td><p>chosen time point</p></td>
     </tr>
     <tr>
       <th>in_time</th>
-      <td><p>in time</p></td>
+      <td><p>`in` time</p></td>
     </tr>
     <tr>
       <th>relative</th>
@@ -161,44 +158,63 @@ Visualization for results is provided in examples.</p>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>data.frame with values - time, value, uncertainty</p>
+    <p><code>data.frame</code> with mean uncertainty per different `out_time` value</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The function calculates mean uncertainty of all peptides and its unceratinty (standard error) based on given `in_time` and `chosen_time` 
+as a function of `out_time`. Both theoretical and experimental results for each state and their difference are supplied for comparison but only 
+experimental calculations depends on `out_time` variable. The results are either in form of relative or absolute values depending on the `relative` 
+parameter supplied by the user. 
+This data can be useful for general overview of the experiment and analysing chosen time parameters.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='read_hdx.html'>read_hdx</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_hdx.html'>read_hdx</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"HaDeX"</span>, <span class='st'>"HaDeX/data/KD_180110_CD160_HVEM.csv"</span>))
+    <pre class="examples"><div class='input'><span class='co'># load example data</span>
+<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_hdx.html'>read_hdx</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"HaDeX"</span>, <span class='st'>"HaDeX/data/KD_180110_CD160_HVEM.csv"</span>))
+
+<span class='co'># calculate mean uncertainty </span>
 (<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>quality_control</span>(<span class='kw'>dat</span> <span class='kw'>=</span> <span class='no'>dat</span>,
                            <span class='kw'>state_first</span> <span class='kw'>=</span> <span class='st'>"CD160"</span>,
                            <span class='kw'>state_second</span> <span class='kw'>=</span> <span class='st'>"CD160_HVEM"</span>,
                            <span class='kw'>chosen_time</span> <span class='kw'>=</span> <span class='fl'>1</span>,
                            <span class='kw'>in_time</span> <span class='kw'>=</span> <span class='fl'>0.001</span>,
-                           <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt;       time avg_err_state_first sd_err_state_first avg_err_state_second
-#&gt; 1    0.167         0.003919621        0.005116853          0.005738668
-#&gt; 2    1.000         0.002607188        0.003708500          0.004930354
-#&gt; 3    5.000         0.002925674        0.002207625          0.003811229
-#&gt; 4   25.000         0.002086275        0.001636480          0.003375989
-#&gt; 5  120.000         0.002124354        0.001284390          0.002759393
-#&gt; 6 1440.000         0.001841383        0.001032972          0.002532581
+                           <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt;   out_time avg_err_state_first sd_err_state_first avg_err_state_second
+#&gt; 1        5         0.002925674        0.002207625          0.003811229
+#&gt; 2       25         0.002086275        0.001636480          0.003375989
+#&gt; 3      120         0.002124354        0.001284390          0.002759393
+#&gt; 4     1440         0.001841383        0.001032972          0.002532581
 #&gt;   sd_err_state_second avg_err_theo_state_first sd_err_theo_state_first
-#&gt; 1         0.007625134             0.0007087017            0.0005185554
-#&gt; 2         0.006697768             0.0007087017            0.0005185554
-#&gt; 3         0.004561764             0.0007087017            0.0005185554
-#&gt; 4         0.003690424             0.0007087017            0.0005185554
-#&gt; 5         0.001976257             0.0007087017            0.0005185554
-#&gt; 6         0.001120593             0.0007087017            0.0005185554
+#&gt; 1         0.004561764             0.0007087017            0.0005185554
+#&gt; 2         0.003690424             0.0007087017            0.0005185554
+#&gt; 3         0.001976257             0.0007087017            0.0005185554
+#&gt; 4         0.001120593             0.0007087017            0.0005185554
 #&gt;   avg_err_theo_state_second sd_err_theo_state_second    avg_diff     sd_diff
-#&gt; 1               0.001236524             0.0005534176 0.007045439 0.009107625
-#&gt; 2               0.001236524             0.0005534176 0.005709252 0.007555534
-#&gt; 3               0.001236524             0.0005534176 0.004920756 0.004952401
-#&gt; 4               0.001236524             0.0005534176 0.004053767 0.003949308
-#&gt; 5               0.001236524             0.0005534176 0.003470818 0.002088545
-#&gt; 6               0.001236524             0.0005534176 0.003200211 0.001369362
+#&gt; 1               0.001236524             0.0005534176 0.004920756 0.004952401
+#&gt; 2               0.001236524             0.0005534176 0.004053767 0.003949308
+#&gt; 3               0.001236524             0.0005534176 0.003470818 0.002088545
+#&gt; 4               0.001236524             0.0005534176 0.003200211 0.001369362
 #&gt;   avg_theo_diff sd_theo_diff
 #&gt; 1   0.001476534 0.0006500359
 #&gt; 2   0.001476534 0.0006500359
 #&gt; 3   0.001476534 0.0006500359
-#&gt; 4   0.001476534 0.0006500359
-#&gt; 5   0.001476534 0.0006500359
-#&gt; 6   0.001476534 0.0006500359</div><div class='input'>
+#&gt; 4   0.001476534 0.0006500359</div><div class='input'>
+<span class='co'># load extra libraries</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>ggplot2</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>tidyr</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)
+
+<span class='co'># example of data visualization </span>
+<span class='fu'><a href='https://tidyr.tidyverse.org/reference/gather.html'>gather</a></span>(<span class='no'>result</span>, <span class='fl'>2</span>:<span class='fl'>13</span>, <span class='kw'>key</span> <span class='kw'>=</span> <span class='st'>'type'</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='st'>'value'</span>) <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/startsWith'>startsWith</a></span>(<span class='no'>type</span>, <span class='st'>"avg"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='no'>out_time</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>value</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>type</span>)) +
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>type</span>)) +
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"Out time"</span>,
+       <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Mean uncertainty"</span>)</div><div class='img'><img src='quality_control-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -207,6 +223,10 @@ Visualization for results is provided in examples.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
@@ -220,7 +240,7 @@ Visualization for results is provided in examples.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

@@ -1,13 +1,16 @@
-#' add_stat_dependency
+#' Calculates confidence limits
 #' 
-#' Returns relation with confidence limits for each peptide
+#' @description Returns relation with confidence limits for each peptide
 #' 
 #' @param calc_dat processed data from DynamiX file - using prepare_dataset.
 #' @param confidence_limit confidence limit chosen by user - from range [0, 1]. 
 #' @param theoretical logical value to determine if plot is theoretical or not. 
 #' @param relative logical value to determine if values are relative or absolute. 
 #' 
-#' @return calc_dat extended by column specifying if given peptide is relevant in given confidence limit. The value of the confidence limit is added as an attribute - as well as parameters used to calculate (theoretical/relative)
+#' @return calc_dat extended by column specifying if given peptide is relevant in given confidence limit. 
+#' The value of the confidence limit is added as an attribute - as well as parameters used to calculate (theoretical/relative)
+#' 
+#' @seealso \code{\link{read_hdx}} \code{\link{prepare_dataset}}
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", 

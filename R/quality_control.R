@@ -1,27 +1,50 @@
-#' quality_control
+#' Experiment quality control
 #' 
-#' Checks uncertainty level (mean for all peptides in sequence) depending on chosen out value.
-#' Visualization for results is provided in examples. 
+#' @description Checks how the uncertainty changes in a function of `out_time`.
 #' 
 #' @importFrom dplyr bind_rows
 #' 
-#' @param dat file supplied by user using read_hdx()
-#' @param state_first first state
-#' @param state_second second state
-#' @param chosen_time chosen time 
-#' @param in_time in time
+#' @param dat data read by \code{\link{read_hdx}}
+#' @param state_first state of the first peptide
+#' @param state_second state of the second peptide
+#' @param chosen_time chosen time point
+#' @param in_time `in` time
 #' @param relative \code{logical}, determines if values are relative or absolute. 
 #' 
-#' @return data.frame with values - time, value, uncertainty
+#' @details The function calculates mean uncertainty of all peptides and its unceratinty (standard error) based on given `in_time` and `chosen_time` 
+#' as a function of `out_time`. Both theoretical and experimental results for each state and their difference are supplied for comparison but only 
+#' experimental calculations depends on `out_time` variable. The results are either in form of relative or absolute values depending on the `relative` 
+#' parameter supplied by the user. 
+#' This data can be useful for general overview of the experiment and analysing chosen time parameters. 
+#' 
+#' @return \code{data.frame} with mean uncertainty per different `out_time` value  
+#' 
+#' @seealso \code{\link{read_hdx}}
 #' 
 #' @examples 
+#' # load example data
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' 
+#' # calculate mean uncertainty 
 #' (result <- quality_control(dat = dat,
 #'                            state_first = "CD160",
 #'                            state_second = "CD160_HVEM", 
 #'                            chosen_time = 1, 
 #'                            in_time = 0.001, 
 #'                            relative = TRUE))    
+#'                            
+#' # load extra libraries
+#' library(ggplot2)
+#' library(tidyr)
+#' library(dplyr)
+#' 
+#' # example of data visualization 
+#' gather(result, 2:13, key = 'type', value = 'value') %>%
+#' filter(startsWith(type, "avg")) %>%
+#'   ggplot(aes(x = factor(out_time), y = value, group = type)) +
+#'   geom_line(aes(color = type)) +
+#'   labs(x = "Out time", 
+#'        y = "Mean uncertainty")
 #' 
 #' @export quality_control
 
@@ -33,7 +56,7 @@ quality_control <- function(dat,
                             relative = TRUE){
   
   
-  times <- unique(dat[["Exposure"]][dat["Exposure"] > in_time])
+  times <- unique(dat[["Exposure"]][dat["Exposure"] > chosen_time])
   
   result <- lapply(times, function(t){
     
@@ -83,37 +106,12 @@ quality_control <- function(dat,
   })
   
   result <- bind_rows(result)
-  colnames(result) <- c("time", "avg_err_state_first", "sd_err_state_first", "avg_err_state_second", 
+  
+  colnames(result) <- c("out_time", "avg_err_state_first", "sd_err_state_first", "avg_err_state_second", 
                         "sd_err_state_second", "avg_err_theo_state_first", "sd_err_theo_state_first", 
                         "avg_err_theo_state_second", "sd_err_theo_state_second", "avg_diff", 
                         "sd_diff", "avg_theo_diff", "sd_theo_diff")
 
   result
+  
 }
-
-# library(ggplot2)
-# ggplot(result) + 
-#   geom_line(aes(x = time, y = avg_err_state_first, color = "avg_err_state_first")) +
-#   geom_line(aes(x = time, y = avg_err_state_second, color = "avg_err_state_second")) +
-#   geom_line(aes(x = time, y = avg_err_theo_state_first, color = "avg_err_theo_state_first")) +
-#   geom_line(aes(x = time, y = avg_err_theo_state_second, color = "avg_err_theo_state_second")) +
-#   geom_line(aes(x = time, y = avg_diff, color = "avg_diff")) +
-#   scale_x_log10() +
-#   ylim(0, 0.05) + 
-#   geom_line(aes(x = time, y = avg_theo_diff, color = "avg_theo_diff")) + 
-#   labs(x = "log(time) [min]", y = "Average uncertainty", title = "Uncertainty change in out time")
-#   
-# (result <- quality_control(dat = dat,
-#                            state_first = "CD160",
-#                            state_second = "CD160_HVEM", 
-#                            chosen_time = 1, 
-#                            in_time = 0.001, 
-#                            relative = FALSE))    
-# ggplot(result) + 
-#   geom_line(aes(x = time, y = avg_err_state_first, color = "avg_err_state_first")) +
-#   geom_line(aes(x = time, y = avg_err_state_second, color = "avg_err_state_second")) +
-#   geom_line(aes(x = time, y = avg_err_theo_state_first, color = "avg_err_theo_state_first")) +
-#   geom_line(aes(x = time, y = avg_err_theo_state_second, color = "avg_err_theo_state_second")) +
-#   geom_line(aes(x = time, y = avg_diff, color = "avg_diff")) +
-#   geom_line(aes(x = time, y = avg_theo_diff, color = "avg_theo_diff")) + 
-#   labs(x =  "time [min]", y = "Average uncertainty [Da]", title = "Uncertainty change in out time")

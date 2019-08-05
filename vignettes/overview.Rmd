@@ -483,9 +483,9 @@ result <- quality_control(dat = dat,
 ```
 
 ```{r warning=FALSE}
-ggplot(result[result["time"]>=1,]) + 
-  geom_line(aes(x = time, y = avg_err_state_first, color = "Average error (first state)")) +
-  geom_line(aes(x = time, y = avg_err_state_second, color = "Average error (second state)")) +
+ggplot(result[result["out_time"]>=1,]) + 
+  geom_line(aes(x = out_time, y = avg_err_state_first, color = "Average error (first state)")) +
+  geom_line(aes(x = out_time, y = avg_err_state_second, color = "Average error (second state)")) +
   scale_x_log10() +
   labs(x = "log(time) [min]", y = "Average uncertainty", title = "Uncertainty change") + 
   theme_bw(base_size = 11) +
@@ -626,8 +626,8 @@ woods_plot(calc_dat = calc_dat_1,
 # example quality control visualisation
 library(ggplot2)
 ggplot(result) + 
-  geom_line(aes(x = time, y = avg_err_state_first, color = "Average error (first state)")) +
-  geom_line(aes(x = time, y = avg_err_state_second, color = "Average error (second state)")) +
+  geom_line(aes(x = out_time, y = avg_err_state_first, color = "Average error (first state)")) +
+  geom_line(aes(x = out_time, y = avg_err_state_second, color = "Average error (second state)")) +
   scale_x_log10() +
   ylim(0, 0.05) + 
   labs(x = "log(time) [min]", y = "Average uncertainty", title = "Uncertainty change in out time") +
@@ -724,9 +724,9 @@ woods_plot(calc_dat = calc_dat_2,
 
 # example quality control visualisation - relative values
 library(ggplot2)
-ggplot(result[result["time"]>=1,]) + 
-  geom_line(aes(x = time, y = avg_err_state_first, color = "Average error (first state)")) +
-  geom_line(aes(x = time, y = avg_err_state_second, color = "Average error (second state)")) +
+ggplot(result[result["out_time"]>=1,]) + 
+  geom_line(aes(x = out_time, y = avg_err_state_first, color = "Average error (first state)")) +
+  geom_line(aes(x = out_time, y = avg_err_state_second, color = "Average error (second state)")) +
   scale_x_log10() +
   labs(x = "log(time) [min]", y = "Average uncertainty", title = "Uncertainty change") + 
   theme(legend.position = "bottom",

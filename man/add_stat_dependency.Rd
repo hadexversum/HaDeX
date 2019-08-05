@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_stat_dependency.R
 \name{add_stat_dependency}
 \alias{add_stat_dependency}
-\title{add_stat_dependency}
+\title{Calculates confidence limits}
 \usage{
 add_stat_dependency(calc_dat, confidence_limit = 0.98,
   theoretical = FALSE, relative = TRUE)
@@ -17,7 +17,8 @@ add_stat_dependency(calc_dat, confidence_limit = 0.98,
 \item{relative}{logical value to determine if values are relative or absolute.}
 }
 \value{
-calc_dat extended by column specifying if given peptide is relevant in given confidence limit. The value of the confidence limit is added as an attribute - as well as parameters used to calculate (theoretical/relative)
+calc_dat extended by column specifying if given peptide is relevant in given confidence limit. 
+The value of the confidence limit is added as an attribute - as well as parameters used to calculate (theoretical/relative)
 }
 \description{
 Returns relation with confidence limits for each peptide
@@ -38,4 +39,7 @@ add_stat_dependency(calc_dat,
                     relative = TRUE)
                      
 
+}
+\seealso{
+\code{\link{read_hdx}} \code{\link{prepare_dataset}}
 }

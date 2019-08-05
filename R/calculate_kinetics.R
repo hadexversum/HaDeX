@@ -5,7 +5,7 @@
 #' 
 #' @importFrom dplyr %>% bind_rows mutate everything
 #' 
-#' @param dat data frame with data from Dynamix file
+#' @param dat dat data read by \code{\link{read_hdx}}
 #' @param protein protein value for chosen peptide
 #' @param sequence sequence of the peptide for which the kinetics is calculated
 #' @param state state of given sequence
@@ -13,6 +13,7 @@
 #' @param end end of given sequence
 #' @param time_in time in for experimental calculations
 #' @param time_out time out for experimental calculations
+#' 
 #' @details The function calculates deuteration data for all available data points 
 #' for given peptide. 
 #' All four variants (relative & theoretical combinations) of deuteration computations 
@@ -26,8 +27,10 @@
 #' is available in column `time_chosen`. The rest of
 #' the returned structure is equivalent to structure returned by
 #' \code{\link{calculate_state_deuteration}}.
+#' 
 #' @seealso 
-#' \code{\link{calculate_state_deuteration}} \code{\link{plot_kinetics}}
+#' \code{\link{read_hdx}} \code{\link{calculate_state_deuteration}} \code{\link{plot_kinetics}}
+#' 
 #' @examples
 #' # load example data
 #' dat <- read_hdx(system.file(package = "HaDeX", 
@@ -70,7 +73,7 @@
 #'   labs(title = "Theoretical kinetics plot for INITSSASQEGTRLN")
 #'        
 #' 
-#' @export 
+#' @export calculate_kinetics
 calculate_kinetics <- function(dat, 
                                protein = dat[["Protein"]][1], 
                                sequence, 
