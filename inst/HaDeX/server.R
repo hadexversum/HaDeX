@@ -130,7 +130,7 @@ server <- function(input, output, session) {
   
   ##
   
-  protein_sequece_colored <- reactive({
+  protein_sequence_colored <- reactive({
     
     paste0("<span>", 
            gsubfn(pattern = 'C', replacement = function(x) paste0('<font color = "red">', x, "</font>"), x = protein_sequence()),
@@ -142,7 +142,7 @@ server <- function(input, output, session) {
   
   output[["sequenceName"]] <- renderText({
     
-    protein_sequece_colored()
+    protein_sequence_colored()
     
   })
   
@@ -446,7 +446,7 @@ server <- function(input, output, session) {
                     inputId = "woods_plot_y_label", 
                     value = case_when(
                       input[["theory"]] & input[["calc_type"]] == "relative" ~ "Delta Theoretical fraction exchanged between states [%]",
-                      input[["theory"]] & input[["calc_type"]] == "absolute" ~ "Delta Theoretical absoute value exchanged between states [Da]",
+                      input[["theory"]] & input[["calc_type"]] == "absolute" ~ "Delta Theoretical absolute value exchanged between states [Da]",
                       !input[["theory"]] & input[["calc_type"]] == "relative" ~ "Delta Fraction exchanged between states [%]",
                       !input[["theory"]] & input[["calc_type"]] == "absolute" ~ "Delta Absolute value exchanged between states [Da]"
                     ))
