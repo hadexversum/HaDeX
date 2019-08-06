@@ -6,7 +6,7 @@
 #' @importFrom tidyr unite spread
 #' @importFrom stats sd weighted.mean
 #' 
-#' @param dat data frame with data from Dynamix file
+#' @param dat data frame with data from DynamX file
 #' @param in_state_first string in form "state_time" for first state in in time
 #' @param chosen_state_first string in form "state_time" for chosen state in in time
 #' @param out_state_first string in form "state_time" for first state in out time

@@ -5,7 +5,7 @@
 #' @importFrom ggplot2 ggplot geom_segment aes geom_errorbar labs theme scale_y_continuous geom_hline element_blank
 #' @importFrom latex2exp TeX
 #' 
-#' @param calc_dat processed data from DynamiX file - using prepare_dataset
+#' @param calc_dat processed data from DynamX file - using prepare_dataset
 #' @param theoretical logical value to determine if plot is theoretical or not. default : false
 #' @param relative logical value to determine if values are relative or absolute. default : true
 #' @param state_first first state name
