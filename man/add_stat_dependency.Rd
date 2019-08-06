@@ -8,7 +8,7 @@ add_stat_dependency(calc_dat, confidence_limit = 0.98,
   theoretical = FALSE, relative = TRUE)
 }
 \arguments{
-\item{calc_dat}{processed data from DynamiX file - using prepare_dataset.}
+\item{calc_dat}{processed data from DynamX file - using prepare_dataset.}
 
 \item{confidence_limit}{confidence limit chosen by user - from range [0, 1].}
 

@@ -5,7 +5,7 @@
 #' @importFrom dplyr case_when
 #' @importFrom stats qt
 #' 
-#' @param calc_dat processed data from DynamiX file - using prepare_dataset
+#' @param calc_dat processed data from DynamX file - using prepare_dataset
 #' @param confidence_limit confidence limit chosen by user - from range [0, 1]. 
 #' @param theoretical logical value to determine if plot is theoretical or not. 
 #' @param relative logical value to determine if values are relative or absolute. 

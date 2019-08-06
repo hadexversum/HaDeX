@@ -8,7 +8,7 @@ comparison_plot(calc_dat, theoretical = FALSE, relative = TRUE,
   state_first = "state_first", state_second = "state_second")
 }
 \arguments{
-\item{calc_dat}{processed data from DynamiX file - using prepare_dataset}
+\item{calc_dat}{processed data from DynamX file - using prepare_dataset}
 
 \item{theoretical}{logical value to determine if plot is theoretical or not. default : false}
 
