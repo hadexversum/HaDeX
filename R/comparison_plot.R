@@ -1,6 +1,6 @@
-#' comparison_plot
+#' Plot comparison plot
 #' 
-#' Produces comparison_plot based on previously processed data - theoretical or experimental. User can change labels if needed.
+#' @description Produces comparison_plot based on previously processed data - theoretical or experimental. User can change labels if needed.
 #' 
 #' @importFrom ggplot2 ggplot geom_segment aes geom_errorbar labs theme scale_y_continuous geom_hline element_blank
 #' @importFrom latex2exp TeX
@@ -11,30 +11,49 @@
 #' @param state_first first state name
 #' @param state_second second state name 
 #' 
+#' @details ...
+#' 
+#' This is the first version - multi-state calculations are not supported.
+#' 
+#' @return a \code{\link[ggplot2]{ggplot}} object.
+#' 
+#' @seealso \code{\link{read_hdx}} \code{\link{prepare_dataset}}
+#' 
 #' @examples
+#' # load example data
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' 
+#' # prepare dataset for states `CD160` and `CD160_HVEM` in given time parameters
 #' calc_dat <- prepare_dataset(dat,
 #'                             in_state_first = "CD160_0.001",
 #'                             chosen_state_first = "CD160_1",
 #'                             out_state_first = "CD160_1440",
 #'                             in_state_second = "CD160_HVEM_0.001",
 #'                             chosen_state_second = "CD160_HVEM_1",
-#'                             out_state_second = "CD160_HVEM_1440")                             
+#'                             out_state_second = "CD160_HVEM_1440")       
+#'
+#' # plot comparison plot - theoretical & relative                      
 #' comparison_plot(calc_dat = calc_dat,
 #'                 theoretical = TRUE,
 #'                 relative = TRUE,
 #'                 state_first = "CD160",
 #'                 state_second = "CD160_HVEM")
+#'                 
+#' # plot comparison plot - experimental & relative                      
 #' comparison_plot(calc_dat = calc_dat,
 #'                 theoretical = FALSE,
 #'                 relative = TRUE,
 #'                 state_first = "CD160",
 #'                 state_second = "CD160_HVEM")  
+#'                 
+#' # plot comparison plot - theoretical & absolute                      
 #' comparison_plot(calc_dat = calc_dat,
 #'                 theoretical = TRUE,
 #'                 relative = FALSE,
 #'                 state_first = "CD160",
 #'                 state_second = "CD160_HVEM")
+#' 
+#' # plot comparison plot - experimental & absolute                      
 #' comparison_plot(calc_dat = calc_dat,
 #'                 theoretical = FALSE,
 #'                 relative = FALSE,

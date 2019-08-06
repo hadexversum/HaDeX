@@ -1,6 +1,6 @@
-#' prepare_dataset
+#' Calculate data 
 #' 
-#' Calculates values for visualization  from input data file - both experimental and theoretical. All parameters are needed.
+#' @description Calculates values for visualization  from input data file - both experimental and theoretical. All parameters are needed.
 #' 
 #' @importFrom dplyr %>% mutate select group_by summarize ungroup sym coalesce arrange
 #' @importFrom tidyr unite spread
@@ -14,10 +14,19 @@
 #' @param chosen_state_second string in form "state_time" for second state in chosen time
 #' @param out_state_second string in form "state_time" for second state in out time
 #' 
+#' @details ...
+#' 
+#' This is the first version - multi-state calculations are not supported.
+#' 
 #' @return data frame with calculated values
 #' 
+#' @seealso \code{\link{read_hdx}} 
+#' 
 #' @examples
+#' # load example data
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' 
+#' # prepare dataset for states `CD160` and `CD160_HVEM` in given time parameters
 #' prepare_dataset(dat,
 #'                 in_state_first = "CD160_0.001",
 #'                 chosen_state_first = "CD160_1",

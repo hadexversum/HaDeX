@@ -152,6 +152,15 @@
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a <code><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></code> object.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>...</p>
+<p>This is the first version - multi-state calculations are not supported.</p>
+    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Woods, V.L., and Hamuro, Y. (2001). High resolution, 
@@ -159,10 +168,17 @@ high-throughput amide deuterium exchange-mass spectrometry (DXMS)
 determination of protein binding site structure and dynamics: utility 
 in pharmaceutical design. J. Cell. Biochem. Suppl. Suppl 37, 89–98.</p>
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='read_hdx.html'>read_hdx</a></code> <code><a href='prepare_dataset.html'>prepare_dataset</a></code></p></div>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_hdx.html'>read_hdx</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"HaDeX"</span>,
+    <pre class="examples"><div class='input'><span class='co'># load example data</span>
+<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_hdx.html'>read_hdx</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"HaDeX"</span>,
                             <span class='st'>"HaDeX/data/KD_180110_CD160_HVEM.csv"</span>))
+
+<span class='co'># prepare dataset for states `CD160` and `CD160_HVEM` in given time parameters                           </span>
 <span class='no'>calc_dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='prepare_dataset.html'>prepare_dataset</a></span>(<span class='no'>dat</span>,
                             <span class='kw'>in_state_first</span> <span class='kw'>=</span> <span class='st'>"CD160_0.001"</span>,
                             <span class='kw'>chosen_state_first</span> <span class='kw'>=</span> <span class='st'>"CD160_1"</span>,
@@ -170,19 +186,27 @@ in pharmaceutical design. J. Cell. Biochem. Suppl. Suppl 37, 89–98.</p>
                             <span class='kw'>in_state_second</span> <span class='kw'>=</span> <span class='st'>"CD160_HVEM_0.001"</span>,
                             <span class='kw'>chosen_state_second</span> <span class='kw'>=</span> <span class='st'>"CD160_HVEM_1"</span>,
                             <span class='kw'>out_state_second</span> <span class='kw'>=</span> <span class='st'>"CD160_HVEM_1440"</span>)
+
+<span class='co'># plot Woods plot - theoretical &amp; relative                             </span>
 <span class='fu'>woods_plot</span>(<span class='kw'>calc_dat</span> <span class='kw'>=</span> <span class='no'>calc_dat</span>,
            <span class='kw'>theoretical</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
            <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
            <span class='kw'>confidence_limit</span> <span class='kw'>=</span> <span class='fl'>0.98</span>,
-           <span class='kw'>confidence_limit_2</span> <span class='kw'>=</span> <span class='fl'>0.99</span>)</div><div class='img'><img src='woods_plot-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>woods_plot</span>(<span class='kw'>calc_dat</span> <span class='kw'>=</span> <span class='no'>calc_dat</span>,
+           <span class='kw'>confidence_limit_2</span> <span class='kw'>=</span> <span class='fl'>0.99</span>)</div><div class='img'><img src='woods_plot-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># plot Woods plot - experimental  &amp; relative                </span>
+<span class='fu'>woods_plot</span>(<span class='kw'>calc_dat</span> <span class='kw'>=</span> <span class='no'>calc_dat</span>,
            <span class='kw'>theoretical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
            <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
            <span class='kw'>confidence_limit</span> <span class='kw'>=</span> <span class='fl'>0.98</span>,
-           <span class='kw'>confidence_limit_2</span> <span class='kw'>=</span> <span class='fl'>0.99</span>)</div><div class='img'><img src='woods_plot-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>woods_plot</span>(<span class='kw'>calc_dat</span> <span class='kw'>=</span> <span class='no'>calc_dat</span>,
+           <span class='kw'>confidence_limit_2</span> <span class='kw'>=</span> <span class='fl'>0.99</span>)</div><div class='img'><img src='woods_plot-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># plot Woods plot - theoretical &amp; absolute    </span>
+<span class='fu'>woods_plot</span>(<span class='kw'>calc_dat</span> <span class='kw'>=</span> <span class='no'>calc_dat</span>,
            <span class='kw'>theoretical</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
            <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
            <span class='kw'>confidence_limit</span> <span class='kw'>=</span> <span class='fl'>0.98</span>,
-           <span class='kw'>confidence_limit_2</span> <span class='kw'>=</span> <span class='fl'>0.99</span>)</div><div class='img'><img src='woods_plot-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>woods_plot</span>(<span class='kw'>calc_dat</span> <span class='kw'>=</span> <span class='no'>calc_dat</span>,
+           <span class='kw'>confidence_limit_2</span> <span class='kw'>=</span> <span class='fl'>0.99</span>)</div><div class='img'><img src='woods_plot-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># plot Woods plot - experimental &amp; absolute    </span>
+<span class='fu'>woods_plot</span>(<span class='kw'>calc_dat</span> <span class='kw'>=</span> <span class='no'>calc_dat</span>,
            <span class='kw'>theoretical</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
            <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
            <span class='kw'>confidence_limit</span> <span class='kw'>=</span> <span class='fl'>0.98</span>,
@@ -194,7 +218,13 @@ in pharmaceutical design. J. Cell. Biochem. Suppl. Suppl 37, 89–98.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#references">References</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

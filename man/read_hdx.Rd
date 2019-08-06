@@ -20,6 +20,7 @@ First version accepts files produced by DynamX 3.0 and 2.0 in basic format.
 The function checks if all necessary columns are provided in correct format.
 }
 \examples{
+# read example data
 head(read_hdx(system.file(package = "HaDeX", 
                      "HaDeX/data/KD_180110_CD160_HVEM.csv")))
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_dataset.R
 \name{prepare_dataset}
 \alias{prepare_dataset}
-\title{prepare_dataset}
+\title{Calculate data}
 \usage{
 prepare_dataset(dat, in_state_first, chosen_state_first, out_state_first,
   in_state_second, chosen_state_second, out_state_second)
@@ -28,8 +28,16 @@ data frame with calculated values
 \description{
 Calculates values for visualization  from input data file - both experimental and theoretical. All parameters are needed.
 }
+\details{
+...
+
+This is the first version - multi-state calculations are not supported.
+}
 \examples{
+# load example data
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+
+# prepare dataset for states `CD160` and `CD160_HVEM` in given time parameters
 prepare_dataset(dat,
                 in_state_first = "CD160_0.001",
                 chosen_state_first = "CD160_1",
@@ -38,4 +46,7 @@ prepare_dataset(dat,
                 chosen_state_second = "CD160_HVEM_1",
                 out_state_second = "CD160_HVEM_1440") 
 
+}
+\seealso{
+\code{\link{read_hdx}}
 }

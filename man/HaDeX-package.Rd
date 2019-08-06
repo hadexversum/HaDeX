@@ -6,9 +6,7 @@
 \alias{HaDeX}
 \title{HaDeX}
 \description{
-The \code{HaDeX} package is a toolbox for the analysis of ...
-
-words words
+The \code{HaDeX} package is a toolbox for the analysis of HDX-MS data.
 }
 \author{
 Weronika Puchala, Michal Burdukiewicz.

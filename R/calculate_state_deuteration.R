@@ -1,16 +1,29 @@
-#' calculate_state_deuteration
+#' Calculate deuteration 
 #' 
-#' @param dat dat
-#' @param protein protein
-#' @param state state
-#' @param time_in time in
-#' @param time_chosen time chosen
-#' @param time_out time out
+#' @description Calculates deuteration uptake based on supplied parameters.
 #' 
-#' @return data.frame 
+#' @param dat data as imported by the \code{\link{read_hdx}} function
+#' @param protein protein included in calculations
+#' @param state state included in calculations
+#' @param time_in experimental `time_in`
+#' @param time_out experimental `time_out`
+#' @param time_chosen chosen time point 
+#' 
+#' @details The function \code{calculate_state_deuteration} calculates deuteration for peptides in given protein in given state based
+#' on supplied parameters: `time_in`, `time_out` and `time_chosen`. All four variants (combinations of theoretical & relative) are 
+#' supplied (mean values and uncertainty).
+#'
+#' Methods of calculation and uncertainty are profoundly discussed in the vignette.
+#' 
+#' @return a \code{\link{data.frame}} object
+#' 
+#' @seealso \code{\link{read_hdx}} \code{\link{calculate_confidence_limit_values}} \code{\link{add_stat_dependency}}
 #' 
 #' @examples
+#' # load example data
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' 
+#' # calculate deuteration for state "CD160"
 #' calculate_state_deuteration(dat, protein = "db_CD160", state = "CD160",
 #'                             time_in = 0, time_chosen = 5.000, time_out = 1440.000)
 #' 

@@ -1,8 +1,7 @@
 #' HaDeX
 #'
-#' @description The \code{HaDeX} package is a toolbox for the analysis of ...
+#' @description The \code{HaDeX} package is a toolbox for the analysis of HDX-MS data.
 #' 
-#' words words
 #' @author Weronika Puchala, Michal Burdukiewicz.
 #' @docType package
 #' @name HaDeX-package

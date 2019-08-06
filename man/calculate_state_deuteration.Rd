@@ -2,33 +2,46 @@
 % Please edit documentation in R/calculate_state_deuteration.R
 \name{calculate_state_deuteration}
 \alias{calculate_state_deuteration}
-\title{calculate_state_deuteration}
+\title{Calculate deuteration}
 \usage{
 calculate_state_deuteration(dat, protein, state, time_in, time_chosen,
   time_out)
 }
 \arguments{
-\item{dat}{dat}
+\item{dat}{data as imported by the \code{\link{read_hdx}} function}
 
-\item{protein}{protein}
+\item{protein}{protein included in calculations}
 
-\item{state}{state}
+\item{state}{state included in calculations}
 
-\item{time_in}{time in}
+\item{time_in}{experimental `time_in`}
 
-\item{time_chosen}{time chosen}
+\item{time_chosen}{chosen time point}
 
-\item{time_out}{time out}
+\item{time_out}{experimental `time_out`}
 }
 \value{
-data.frame
+a \code{\link{data.frame}} object
 }
 \description{
-calculate_state_deuteration
+Calculates deuteration uptake based on supplied parameters.
+}
+\details{
+The function \code{calculate_state_deuteration} calculates deuteration for peptides in given protein in given state based
+on supplied parameters: `time_in`, `time_out` and `time_chosen`. All four variants (combinations of theoretical & relative) are 
+supplied (mean values and uncertainty).
+
+Methods of calculation and uncertainty are profoundly discussed in the vignette.
 }
 \examples{
+# load example data
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+
+# calculate deuteration for state "CD160"
 calculate_state_deuteration(dat, protein = "db_CD160", state = "CD160",
                             time_in = 0, time_chosen = 5.000, time_out = 1440.000)
 
+}
+\seealso{
+\code{\link{read_hdx}} \code{\link{calculate_confidence_limit_values}} \code{\link{add_stat_dependency}}
 }

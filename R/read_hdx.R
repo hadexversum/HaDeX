@@ -19,6 +19,7 @@
 #' \code{\link{prepare_dataset}} \code{\link{quality_control}} \code{\link{reconstruct_sequence}}
 #' 
 #' @examples
+#' # read example data
 #' head(read_hdx(system.file(package = "HaDeX", 
 #'                      "HaDeX/data/KD_180110_CD160_HVEM.csv")))
 #' 
