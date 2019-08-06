@@ -4,19 +4,38 @@
 \alias{plot_position_frequency}
 \title{Plot position frequency}
 \usage{
-plot_position_frequency(dat, chosen_state = dat[["State"]][1])
+plot_position_frequency(dat, protein = dat[["Protein"]][1],
+  chosen_state = dat[["State"]][1])
 }
 \arguments{
 \item{dat}{data as imported by the \code{\link{read_hdx}} function}
 
+\item{protein}{protein to be included in plot}
+
 \item{chosen_state}{sequence states to be included in plot}
 }
+\value{
+a \code{\link[ggplot2]{ggplot}} object.
+}
 \description{
-Plots the frequency of positions
+Plots the frequency of coverage of protein sequence.
+}
+\details{
+The function \code{plot_position_frequency} plots a histogram of the coverage frequency based on experimental data.
+The aim of this plot is to see how many times each position of the sequence was covered (by different peptides).
 }
 \examples{
+# load example data
 dat <- read_hdx(system.file(package = "HaDeX", 
                             "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+                            
+# function call with default parameters
+plot_position_frequency(dat)
+
+# function call with explicit parameters
 plot_position_frequency(dat, chosen_state = "CD160_HVEM")
 
+}
+\seealso{
+\code{\link{read_hdx}} \code{\link{plot_coverage}}
 }

@@ -10,8 +10,17 @@
 #' @param protein protein to be included in plot
 #' @param chosen_state sequence states to be included in plot
 #' 
-#' @examples 
+#' @details The function \code{plot_coverage} plots sequence coverage based on experimental data for chosen protein in chosen state. 
+#' Only non-duplicated peptides are shown on the plot, next to each other. 
 #' 
+#' The aim of this plot is to see the dependence between positions of the peptides on the protein sequence. Their position in y-axis 
+#' does not contain any information. 
+#' 
+#' @return a \code{\link[ggplot2]{ggplot}} object.
+#' 
+#' @seealso \code{\link{read_hdx}} \code{\link{plot_position_frequency}}
+#' 
+#' @examples 
 #' # load example data
 #' dat <- read_hdx(system.file(package = "HaDeX", 
 #'                             "HaDeX/data/KD_180110_CD160_HVEM.csv"))
@@ -21,12 +30,6 @@
 #' 
 #' # plot coverage with explicit parameters
 #' plot_coverage(dat, protein = "db_CD160", chosen_state = "CD160_HVEM")
-#' 
-#' @details Function \code{plot_coverage} plots sequence coverage based on experimental data for chosen protein in chosen state. 
-#' 
-#' @return a ggplot object that can be further modified according to the user needs.
-#' 
-#' @seealso \code{\link{read_hdx}}
 #' 
 #' @export plot_coverage
  
