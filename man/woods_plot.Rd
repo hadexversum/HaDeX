@@ -8,7 +8,8 @@ woods_plot(calc_dat, theoretical = FALSE, relative = TRUE,
   confidence_limit = 0.98, confidence_limit_2 = 0.99)
 }
 \arguments{
-\item{calc_dat}{data as imported by the \code{\link{read_hdx}} function and processed by the \code{\link{prepare_dataset}} function.}
+\item{calc_dat}{data as imported by the \code{\link{read_hdx}} function and 
+processed by the \code{\link{prepare_dataset}} function.}
 
 \item{theoretical}{\code{logical}, determines if plot shows theoretical values.}
 
@@ -34,7 +35,8 @@ This is the first version - multi-state calculations are not supported.
 dat <- read_hdx(system.file(package = "HaDeX", 
                             "HaDeX/data/KD_180110_CD160_HVEM.csv"))
                             
-# prepare dataset for states `CD160` and `CD160_HVEM` in given time parameters                           
+# prepare dataset for states `CD160` and `CD160_HVEM` 
+# in given time parameters                           
 calc_dat <- prepare_dataset(dat,
                             in_state_first = "CD160_0.001",
                             chosen_state_first = "CD160_1",
