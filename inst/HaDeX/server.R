@@ -264,7 +264,7 @@ server <- function(input, output, session) {
     mean_coverage <- round(mean(stateOverlapDist_data()[["coverage"]], na.rm = TRUE), 2)
     display_position <- (input[["plot_range"]][[1]] + input[["plot_range"]][[2]])/2
     
-    plot_position_frequency(dat(), input[["chosen_state"]]) + 
+    plot_position_frequency(dat(), chosen_state = input[["chosen_state"]]) + 
       coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]])) +
       geom_hline(yintercept = mean_coverage, color = 'red') +
       geom_text(aes(x = display_position, y = mean_coverage), label = paste0("Average frequency: ", mean_coverage), color = 'red', vjust = -.5)
@@ -274,6 +274,7 @@ server <- function(input, output, session) {
   ##
   
   output[["stateOverlapDist"]] <- renderPlot({
+    
     stateOverlapDist()
     
   })
