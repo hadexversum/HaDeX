@@ -1300,6 +1300,13 @@ server <- function(input, output, session) {
     
     ##
     
+    output[["kineticPlot_download_button"]] <- downloadHandler("kineticPlot.svg",
+                                                                    content = function(file){
+                                                                      ggsave(file, kp_out(), device = svg,
+                                                                             height = 300, width = 400, units = "mm")
+                                                                    })
+    ##
+    
     kin_plot_exp_data <- reactive({
       
       kin_dat() %>%
