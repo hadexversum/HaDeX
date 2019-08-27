@@ -5,6 +5,7 @@ Accessibility;Desktop software;No;Yes;Yes
 Analysis;Multi-state analysis;No;No;Yes
 Analysis;ISO-based uncertainty;No;No;Yes
 Analysis;Coverage and peptide overlap;No;No;Yes
+Analysis;Kinetics analysis;Yes;No;Yes
 Analysis;Quality control;No;No;Yes
 Analysis;N- and C-terminal length corrections;No;Yes;Yes
 Visualization;Global visualization of deuterium uptake;Yes;Yes;Yes

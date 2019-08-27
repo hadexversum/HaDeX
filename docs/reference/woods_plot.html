@@ -132,7 +132,8 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>calc_dat</th>
-      <td><p>data as imported by the <code><a href='read_hdx.html'>read_hdx</a></code> function and processed by the <code><a href='prepare_dataset.html'>prepare_dataset</a></code> function.</p></td>
+      <td><p>data as imported by the <code><a href='read_hdx.html'>read_hdx</a></code> function and 
+processed by the <code><a href='prepare_dataset.html'>prepare_dataset</a></code> function.</p></td>
     </tr>
     <tr>
       <th>theoretical</th>
@@ -178,7 +179,8 @@ in pharmaceutical design. J. Cell. Biochem. Suppl. Suppl 37, 89–98.</p>
 <span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_hdx.html'>read_hdx</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"HaDeX"</span>,
                             <span class='st'>"HaDeX/data/KD_180110_CD160_HVEM.csv"</span>))
 
-<span class='co'># prepare dataset for states `CD160` and `CD160_HVEM` in given time parameters                           </span>
+<span class='co'># prepare dataset for states `CD160` and `CD160_HVEM` </span>
+<span class='co'># in given time parameters                           </span>
 <span class='no'>calc_dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='prepare_dataset.html'>prepare_dataset</a></span>(<span class='no'>dat</span>,
                             <span class='kw'>in_state_first</span> <span class='kw'>=</span> <span class='st'>"CD160_0.001"</span>,
                             <span class='kw'>chosen_state_first</span> <span class='kw'>=</span> <span class='st'>"CD160_1"</span>,
