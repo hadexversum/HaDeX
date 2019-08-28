@@ -1,0 +1,4 @@
+Changes from Version 0.1 to 1.0.
+* Added functions for kinetic calculations and plots.
+* Added kinetic module for GUI.
+* Improved documentation.
