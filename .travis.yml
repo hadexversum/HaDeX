@@ -4,12 +4,17 @@ r_check_args: --as-cran
 r_build_args: --compact-vignettes=both
 
 r:
-  - oldrel
   - release
   - devel
 
-r_github_packages:
-  - r-lib/covr
+os:
+  - linux
+  - osx
+
+matrix:
+  fast_finish: true
+  allow_failures:
+  - r: devel
 
 before_install:
   - export DISPLAY=:99.0
