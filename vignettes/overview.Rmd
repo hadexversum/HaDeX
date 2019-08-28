@@ -26,7 +26,7 @@ opts_chunk$set(fig.width = 7, fig.height = 5)
  
 # About HaDeX
 
-HaDeX is a novel tool for processing, analysis and visualisation of HDX-MS experiments. HaDeX covers the final parts of the analytic process, including comparison of experiments, quality control and generation of publication-quality figures. To make the HaDeX **R** package available to the less **R**-fluent users, we enhanced it with a comprehensive Graphical User Interface available as a HaDeX GUI. The reproducibility of the whole procedure is ensured with advanced reporting functions. 
+HaDeX is a novel tool for processing, analysis, and visualization of HDX-MS experiments. HaDeX covers the final parts of the analytic process, including a comparison of experiments, quality control and generation of publication-quality figures. To make the HaDeX **R** package available to the less **R**-fluent users, we enhanced it with a comprehensive Graphical User Interface available as a HaDeX GUI. The reproducibility of the whole procedure is ensured with advanced reporting functions. 
 
 The GUI is available online: http://mslab-ibb.pl/shiny/HaDeX/ or can be installed locally on Windows systems: https://sourceforge.net/projects/hadex/files/HaDeX_setup.exe/download. Alternatively, R-fluent users can access the GUI through the [HaDeX_gui()](https://hadexversum.github.io/HaDeX/reference/HaDeX_gui.html) function.  
 
@@ -54,7 +54,7 @@ We have not considered HDX Workbench [@PascalHDXWorkbenchSoftware2012] as it dea
 
 **ISO-based uncertainty:** analytic functions produce ISO-compatible uncertainty intervals. 
 
-**Coverage and peptide overlap:** overview of experimental sequence coverage is available in user-friendly way.
+**Coverage and peptide overlap:** overview of experimental sequence coverage is available in a user-friendly way.
 
 **Quality control:** additional information about course of the experiment.
 
@@ -62,23 +62,23 @@ We have not considered HDX Workbench [@PascalHDXWorkbenchSoftware2012] as it dea
 
 **Global visualization of deuterium uptake:** deuterium uptake for different states is shown together for comparison.
 
-**Woods plot:** deuteration difference between chosen states shown in format of Woods plot.
+**Woods plot:** deuteration difference between chosen states shown in the format of Woods plot.
 
 **Zooming of the Woods plot:** Woods plot can be zoomed in and out as user wishes. 
 
-**Customizable label names and colors:** Labels and colors on the plot can be changed by user.
+**Customizable label names and colors:** Labels and colors on the plot can be changed by the user.
 
 **Peptide kinetics chart:** Kinetics plot (deuteration change in time) are available for each peptide.
 
-**3D structure visualization:** structure of the protein is visualised in 3D.
+**3D structure visualization:** structure of the protein is visualized in 3D.
 
 **Downloadable charts:** charts are downloadable, preferably in a vector format (.eps, .svg or .pdf).
 
-**Deuterium uptake download:** data shown on Woods plot is downloadable (e.q. as csv file).
+**Deuterium uptake download:** data shown on Woods plot is downloadable (e.q. as CSV file).
 
 **Downloadable results of intermediate computations:** results of intermediate computations (e.q. pure deuteration data) are downloadable.
 
-**Report generation:** generates report (e.q. in html format) with results of analysis with parametrization.
+**Report generation:** generates a report (e.q. in Html format) with results of the analysis with parametrization.
 
 **PyMol export:** exports data to the [PyMol](https://pymol.org/2/) format.
 
@@ -102,7 +102,7 @@ datatable(
 
 ```
 
-Although data can be imported into R using other tools, we strongly advice to rely on the [read_hdx()](https://hadexversum.github.io/HaDeX/reference/read_hdx.html) function:
+Although data can be imported into R using other tools, we strongly advise to rely on the [read_hdx()](https://hadexversum.github.io/HaDeX/reference/read_hdx.html) function:
 
 ```{r warning=FALSE}
 
@@ -119,14 +119,14 @@ The computation of the level of deuteration involves several pre-processing step
 
 ### Measured data into overall peptide mass
 
-The results of HDX-MS measurements as given in the DynamX datafiles are represented as the measured mass of peptides plus proton mass to charge ratio ($Center$). For later use, this value has to be transformed into an overall mass of a peptide measured after specific time point from a protein in a specific state, as shown in equation 1: 
+The results of HDX-MS measurements as given in the DynamX data files are represented as the measured mass of peptides plus proton mass to charge ratio ($Center$). For later use, this value has to be transformed into an overall mass of a peptide measured after specific time point from a protein in a specific state, as shown in equation 1: 
 
 $$pepMass = z \times (Center-protonMass)\tag{1}$$
 where:
 
 - $pepMass$ - expected mass of the peptide after incubation (Da),
 
-- $protonMass$ - mass of the proton (Da),
+- $protonMass$ - the mass of the proton (Da),
 
 - $z$ - charge of the peptide,
 
@@ -145,7 +145,7 @@ where:
 
 - $N$ - number of replicates.
 
-This data manipulation results from original data structure. Each repetition of the measurement gives the data for given peptide in given time per possible value of $z$ as shown in the example below. We need to use the value of $pepMass$ as shown in equation 1 but still keep the information about original measurement - that's why we use the weighted mass. 
+This data manipulation results from an original data structure. Each repetition of the measurement gives the data for given peptide in a given time per possible value of $z$ as shown in the example below. We need to use the value of $pepMass$ as shown in equation 1 but still keep the information about original measurement - that's why we use the weighted mass. 
 
 ```{r warning=FALSE, message=FALSE, echo=FALSE}
 
@@ -244,7 +244,7 @@ For functions of one variable uncertainty reduces to:
 
 $$u(y) = \left| \frac{dy}{dx} u(x) \right|.\tag{9}$$
 
-Substituting $D$ from the equation 8, we have
+Substituting $D$ from equation 8, we have
 
 $$u(D) = \left|\frac{1}{MaxUptake \times protonMass} u(D_{t}) \right|\tag{10}$$
 
@@ -472,7 +472,7 @@ HaDeX provides additional tools for assessment of experiments.
 
 ### Peptide coverage
 
-The sequence of protein(s) is reconstructed from the peptides from the input file. Thus, amino acids not covered by peptides are marked as X according to the IUPAC convention. The sequence is reconstructed using the [reconstruct_sequence()](https://hadexversum.github.io/HaDeX/reference/reconstruct_sequence.html) function.
+The sequence of the protein(s) is reconstructed from the peptides from the input file. Thus, amino acids not covered by peptides are marked as X according to the IUPAC convention. The sequence is reconstructed using the [reconstruct_sequence()](https://hadexversum.github.io/HaDeX/reference/reconstruct_sequence.html) function.
 
 ```{r warning=FALSE}
 
@@ -495,7 +495,7 @@ The user can choose which state (or states) should be included in these plots. I
 ### Quality control 
 
 The function [quality_control()](https://hadexversum.github.io/HaDeX/reference/quality_control.html) plots the change in uncertainty of deuteration levels as a function of incubation time. The uncertainty is averaged over all peptides available at a given time point in a selected state. 
-Therefore, the user can detect a time point after which the decrease of the deuteration uncertainty becomes too marginal to prolong the measurements. This function is most useful in case of multiple measurements of the same or very similar proteins, because it helps to optimize the duration of the incubation.
+Therefore, the user can detect a time point after which the decrease of the deuteration uncertainty becomes too marginal to prolong the measurements. This function is most useful in case of multiple measurements of the same or very similar proteins because it helps to optimize the duration of the incubation.
 The result of this function can be easily visualized.
 
 Example:
@@ -552,7 +552,7 @@ reconstruct_sequence(dat_1)
 plot_position_frequency(dat_1, chosen_state = "CD160")
 ```
 
-The theoretical plot allows to find regions, which exchange quickly (N-terminus, regions between 30-70 amino acid) and regions, which exchange slowly (peptides 15-24, 95-110 amino acid). We can also see the differences in exchange between two states, indicating regions which changed upon binding with other protein.
+The theoretical plot allows finding regions, which exchange quickly (N-terminus, regions between 30-70 amino acid) and regions, which exchange slowly (peptides 15-24, 95-110 amino acid). We can also see the differences in the exchange between two states, indicating regions which changed upon binding with other protein.
 
 ```{r warning=FALSE}
 # calculate data
@@ -605,7 +605,7 @@ comparison_plot(calc_dat = calc_dat_1,
 
 ```
 
-The plot below shows peptides for which levels of deuteration were significantly lower upon binding with other protein (red) and peptides for which levels of exchange were significantly higher upon binding with other protein (blue). The plot also show peptides in which no significant changes in deuteration between states are visible (grey). The biggest changes on the theoretical plot can be observed in 3 peptides (15-24, 30-35, 75-90). 
+The plot below shows peptides for which levels of deuteration were significantly lower upon binding with other protein (red) and peptides for which levels of exchange were significantly higher upon binding with other protein (blue). The plot also shows peptides in which no significant changes in deuteration between states are visible (grey). The biggest changes on the theoretical plot can be observed in 3 peptides (15-24, 30-35, 75-90). 
 
 ```{r warning=FALSE}
   

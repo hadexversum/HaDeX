@@ -339,7 +339,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                  tabPanel(
                                    "Kinetic plot",
                                    br(),
-                                   plotOutput("kinetic_plot_chosen_peptides"),
+                                   withSpinner(plotOutput("kinetic_plot_chosen_peptides", height = 600)),
                                    downloadButton("kineticPlot_download_button", 
                                                   "Save chart (.svg)")),
                                  tabPanel("Data", 

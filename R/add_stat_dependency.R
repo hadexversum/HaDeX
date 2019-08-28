@@ -4,7 +4,7 @@
 #' 
 #' @param calc_dat processed data from DynamX file - using \code{\link{prepare_dataset}}
 #' @param confidence_limit confidence limit chosen by user - from range [0, 1]. 
-#' @param theoretical logical value to determine if plot is theoretical or not. 
+#' @param theoretical logical value to determine if the plot is theoretical or not. 
 #' @param relative logical value to determine if values are relative or absolute. 
 #' 
 #' @details ...
