@@ -64,7 +64,7 @@ We have not considered HDX Workbench [@PascalHDXWorkbenchSoftware2012] as it dea
 
 **Woods plot:** deuteration difference between chosen states shown in the format of Woods plot.
 
-**Zooming of the Woods plot:** Woods plot can be zoomed in and out as user wishes. 
+**Zooming of the Woods plot:** Woods plot can be zoomed in. 
 
 **Customizable label names and colors:** Labels and colors on the plot can be changed by the user.
 
@@ -82,7 +82,7 @@ We have not considered HDX Workbench [@PascalHDXWorkbenchSoftware2012] as it dea
 
 **PyMol export:** exports data to the [PyMol](https://pymol.org/2/) format.
 
-
+**HDX Data Summary:** summary of the experimental data [@MassonRecommendationsperforminginterpreting2019].
 
 # HaDeX functionalities
 

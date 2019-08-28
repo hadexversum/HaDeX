@@ -19,3 +19,4 @@ Reporting;Deuterium uptake download;Yes;Yes;Yes
 Reporting;Downloadable results of intermediate computations;No;No;Yes
 Reporting;Report generation;No;No;Yes
 Reporting;PyMol export;No;Yes;No
+Reporting;HDX Data Summary;No;No;Yes

@@ -28,15 +28,20 @@ Detected input file: `r ifelse(is.null(input[["data_file"]][["name"]]), "none", 
 
 MD5 hash of the input file: `r ifelse(is.null(input[["data_file"]][["name"]]), "none (example file)", tools::md5sum(as.character(input[["data_file"]][["datapath"]])))`.
 
-# Data description
+# Summary
 
 Protein name : `r as.character(unique(dat()[["Protein"]]))`
 
-Protein sequence : <span>`r protein_sequece_colored()`</span>
+Protein sequence : <span>`r protein_sequence_colored()`</span>
 
-Length : `r input[["sequence_length"]]`
+Sequence length : `r input[["sequence_length"]]`
 
-Coverage : `r paste0(100*round((max_range()-str_count(protein_sequence(), 'x'))/input[["sequence_length"]], 4), '%')`
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+knitr::kable(summary_data())
+```
+
+```{r, child="readmes/summary.md"}
+```
 
 <!--- OVERLAP DISTRIBUTION -->
 
