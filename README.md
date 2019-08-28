@@ -4,7 +4,9 @@
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![metacran downloads](https://cranlogs.r-pkg.org/badges/grand-total/HaDeX)](https://cran.r-project.org/package=HaDeX)
 
-![HaDeX](https://raw.githubusercontent.com/hadexversum/HaDeX/master/inst/HaDeX/www/mock_logo.png)
+<p>
+  <img src="https://raw.githubusercontent.com/hadexversum/HaDeX/master/HaDeX.png" width="100">
+</p>
 
 ## HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data 
 
