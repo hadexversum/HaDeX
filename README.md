@@ -5,7 +5,7 @@
 [![metacran downloads](https://cranlogs.r-pkg.org/badges/grand-total/HaDeX)](https://cran.r-project.org/package=HaDeX)
 
 <p>
-  <img src="https://raw.githubusercontent.com/hadexversum/HaDeX/master/HaDeX.png" width="100">
+  <img src="https://raw.githubusercontent.com/hadexversum/HaDeX/inst/HaDeX/HaDeX.png" width="100">
 </p>
 
 ## HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data 
