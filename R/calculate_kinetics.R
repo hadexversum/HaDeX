@@ -84,7 +84,8 @@ calculate_kinetics <- function(dat,
                                time_out) {
   
   prep_dat <- dat %>%
-    filter(Sequence == sequence, 
+    filter(Protein == protein,
+           Sequence == sequence, 
            State == state,
            Start == start, 
            End == end)
