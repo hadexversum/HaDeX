@@ -11,3 +11,5 @@
 ^CRAN-RELEASE$
 ^cran-comments\.md$
 ^pkgdown$
+appveyor.yml
+^appveyor\.yml$
