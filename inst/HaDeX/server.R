@@ -46,7 +46,20 @@ server <- function(input, output, session) {
   
   ##
   
+  proteins_from_file <- reactive({
+    
+    unique(dat()[["Protein"]])
+    
+  })
+  
+  ##
+  
   observe({
+    
+    updateSelectInput(session, 
+                      inputId = "chosen_protein_seq",
+                      choices = proteins_from_file(),
+                      selected = proteins_from_file()[1])
     
     possible_states <- unique(dat()[["State"]])
     
@@ -72,7 +85,7 @@ server <- function(input, output, session) {
   
   output[["protein_name"]] <- renderText({
     
-    protein_name()
+    input[["chosen_protein_seq"]]
     
   })
   
@@ -81,6 +94,7 @@ server <- function(input, output, session) {
   position_in_sequence_tmp <- reactive({
     
     dat() %>%
+      filter(Protein == input[["chosen_protein_seq"]]) %>%
       select(Start, End, Sequence) %>%
       unique(.) %>%
       apply(1, function(x) data.frame(position = x[1]:x[2], amino = strsplit(x[3], '')[[1]], stringsAsFactors = FALSE)) %>%
@@ -93,7 +107,7 @@ server <- function(input, output, session) {
   
   protein_sequence <- reactive({
     
-    reconstruct_sequence(dat())
+    reconstruct_sequence(filter(dat(), Protein == input[["chosen_protein_seq"]]))
     
   })
   
@@ -186,14 +200,26 @@ server <- function(input, output, session) {
   
   ##
   
+  observe({
+    
+    updateSelectInput(session,
+                      inputId = "chosen_protein_cov",
+                      choices = proteins_from_file(), 
+                      selected = proteins_from_file()[1])
+    
+  })
+  
+  ##
+  
   stateOverlap_data <- reactive({
     
     dat() %>%
-      select(Sequence, Start, End, State) %>% 
+      select(Sequence, Start, End, State, Protein) %>% 
+      filter(Protein == input[["chosen_protein_cov"]]) %>%
       filter(State == input[["chosen_state"]]) %>%
       filter(Start >= input[["plot_range"]][[1]], End <= input[["plot_range"]][[2]]) %>%
       filter(!duplicated(.)) %>%
-      select(-State) %>%
+      select(-State, -Protein) %>%
       dt_format(cols = c("Sequence", "Start", "End"))
     
   })
@@ -208,7 +234,7 @@ server <- function(input, output, session) {
   
   stateOverlap_out <- reactive({
     
-    plot_coverage(dat = dat(), chosen_state = input[["chosen_state"]]) + 
+    plot_coverage(dat = filter(dat(), Protein == input[["chosen_protein_cov"]]), chosen_state = input[["chosen_state"]]) + 
       coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]]))
     
   })
@@ -234,11 +260,12 @@ server <- function(input, output, session) {
   stateOverlapDist_data <- reactive({
     
     dat() %>%
-      select(Start, End, State, Sequence) %>%
+      select(Start, End, State, Sequence, Protein) %>%
+      filter(Protein == input[["chosen_protein_cov"]]) %>%
       filter(State == input[["chosen_state"]]) %>%
       filter(Start >= input[["plot_range"]][[1]], End <= input[["plot_range"]][[2]]) %>%
       filter(!duplicated(.)) %>%
-      select(-State) %>%
+      select(-State, -Protein) %>%
       apply(1, function(i) i[1]:i[2]) %>%
       unlist %>%
       data.frame(pos = .) %>%
@@ -264,7 +291,9 @@ server <- function(input, output, session) {
     mean_coverage <- round(mean(stateOverlapDist_data()[["coverage"]], na.rm = TRUE), 2)
     display_position <- (input[["plot_range"]][[1]] + input[["plot_range"]][[2]])/2
     
-    plot_position_frequency(dat(), chosen_state = input[["chosen_state"]]) + 
+    plot_position_frequency(dat(), 
+                            protein = input[["chosen_protein_cov"]],
+                            chosen_state = input[["chosen_state"]]) + 
       coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]])) +
       geom_hline(yintercept = mean_coverage, color = 'red') +
       geom_text(aes(x = display_position, y = mean_coverage), label = paste0("Average frequency: ", mean_coverage), color = 'red', vjust = -.5)
@@ -294,7 +323,7 @@ server <- function(input, output, session) {
   
   max_range <- reactive({
     
-    max(dat()[['End']])
+    max(filter(dat(), Protein == input[["chosen_protein_woods"]])[['End']])
     
   })
   
@@ -317,6 +346,11 @@ server <- function(input, output, session) {
   ##
   
   observe({
+    
+    updateSelectInput(session,
+                      inputId = "chosen_protein_woods",
+                      choices = proteins_from_file(),
+                      selected = proteins_from_file()[1])
     
     times_from_file <- round(unique(dat()["Exposure"]), 3)
     
@@ -519,7 +553,7 @@ server <- function(input, output, session) {
   all_dat <- reactive({
     
     bind_rows(lapply(states_from_file(), function(i) calculate_state_deuteration(dat(), 
-                                                                                 protein = dat()[["Protein"]][1], 
+                                                                                 protein = input[["chosen_protein_woods"]], 
                                                                                  state = i, 
                                                                                  time_in = input[["in_time"]],
                                                                                  time_chosen = input[["chosen_time"]], 
@@ -739,7 +773,7 @@ server <- function(input, output, session) {
     validate(need(input[["compare_states"]], "Please select at least one state."))
     
     bind_rows(lapply(c(input[["state_first"]], input[["state_second"]]), function(i) calculate_state_deuteration(dat(), 
-                                                                                                                 protein = dat()[["Protein"]][1], 
+                                                                                                                 protein = input[["chosen_protein_woods"]], 
                                                                                                                  state = i, 
                                                                                                                  time_in = input[["in_time"]],
                                                                                                                  time_chosen = input[["chosen_time"]], 
@@ -1106,6 +1140,11 @@ server <- function(input, output, session) {
   
   observe({
     
+    updateSelectInput(session, 
+                      inputId = "chosen_protein_kin",
+                      choices = proteins_from_file(),
+                      selected = proteins_from_file()[1])
+    
     updateTextInput(session, 
                     inputId = "kin_plot_title",
                     value = case_when(
@@ -1156,7 +1195,7 @@ server <- function(input, output, session) {
     
     bind_rows(apply(peptide_list()[input[["peptide_list_data_rows_selected"]], ], 1, function(peptide){
       calculate_kinetics(dat = dat(),
-                         protein = protein_name(), 
+                         protein = input[["chosen_protein_kin"]], 
                          sequence = peptide[1],
                          state = peptide[2],
                          start = as.numeric(peptide[3]),
