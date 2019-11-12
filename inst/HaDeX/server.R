@@ -1166,8 +1166,9 @@ server <- function(input, output, session) {
   ##
   
   peptide_list <- reactive({
-    
+
     dat() %>%
+      filter(Protein == input[["chosen_protein_kin"]]) %>%
       select(Sequence, State, Start, End) %>%
       unique(.) %>%
       arrange(Start, End)
