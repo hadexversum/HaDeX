@@ -1,10 +1,13 @@
 source("ui.R")
 
+
+
 #########################################
 
 server <- function(input, output, session) {
   
   ##
+  observe_helpers(help_dir = "docs", withMathJax = TRUE)
   
   ### TAB: START ###
   

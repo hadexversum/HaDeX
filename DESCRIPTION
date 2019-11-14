@@ -43,6 +43,7 @@ Suggests:
     pander,
     rmarkdown,
     shinycssloaders,
+    shinyhelper,
     testthat,
     vdiffr
 VignetteBuilder: knitr
