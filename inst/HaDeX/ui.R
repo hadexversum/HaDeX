@@ -369,6 +369,32 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          )
                                        )
                               ),
+                              #
+                              tabPanel("Quality control",
+                                       br(),
+                                       sidebarPanel(
+                                         radioButtons(inputId = "qc_calc_type",
+                                                      label = "Choose values type:",
+                                                      choices = c("relative", "absolute"),
+                                                      selected = "relative"),
+                                         selectInput(inputId = "qc_in_time",
+                                                     label = "Choose in time: ",
+                                                     choices = c("0", "1", "5", "25", "1440")),
+                                         selectInput(inputId = "qc_chosen_time",
+                                                     label = "Choose time: ",
+                                                     choices = c("0", "1", "5", "25", "1440")),
+                                         selectInput(inputId = "qc_state_first",
+                                                     label = "State 1",
+                                                     choices = c("CD160", "CD160_HVEM")),
+                                         selectInput(inputId = "qc_state_second",
+                                                     label = "State 2", 
+                                                     choices = c("CD160", "CD160_HVEM"))
+                                       ),
+                                       mainPanel(
+                                         withSpinner(plotOutput("quality_control_plot", height = 600))
+                                       )
+                                       ),
+                              #
                               tabPanel("Summary",
                                        br(),
                                        fluidRow(

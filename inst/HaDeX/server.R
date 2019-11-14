@@ -1420,6 +1420,69 @@ server <- function(input, output, session) {
     
   })
   
+  ### TAB: QUALITY CONTROL  
+  
+  ##
+  
+  observe({
+    
+    times_from_file <- round(unique(dat()["Exposure"]), 3)
+    
+    updateSelectInput(session, 
+                      inputId = "qc_chosen_time",
+                      choices = times_from_file,
+                      selected = min(times_from_file[times_from_file["Exposure"] >= 1, ]))
+    
+    updateSelectInput(session, 
+                      inputId = "qc_in_time",
+                      choices = times_from_file,
+                      selected = min(times_from_file[times_from_file["Exposure"] > 0, ]))
+    
+    updateSelectInput(session,
+                     inputId = "qc_state_first",
+                     choices = states_from_file(),
+                     selected = states_from_file()[1])
+    
+    updateSelectInput(session,
+                      inputId = "qc_state_second",
+                      choices = states_from_file(),
+                      selected = states_from_file()[length(states_from_file())])
+    
+  })
+  
+  ##
+  
+  output[["quality_control_plot"]] <- renderPlot({
+    
+    if (input[["qc_calc_type"]] == "relative"){
+      
+      result <- quality_control(dat = dat(),
+                                state_first = input[["qc_state_first"]],
+                                state_second = input[["qc_state_second"]], 
+                                chosen_time = input[["qc_chosen_time"]], 
+                                in_time = input[["qc_in_time"]], 
+                                relative = TRUE)
+      
+    } else {
+      
+      result <- quality_control(dat = dat(),
+                                state_first = input[["qc_state_first"]],
+                                state_second = input[["qc_state_second"]], 
+                                chosen_time = input[["qc_chosen_time"]], 
+                                in_time = input[["qc_in_time"]], 
+                                relative = FALSE)
+      
+    }
+    
+    gather(result, 2:13, key = 'type', value = 'value') %>%
+      filter(startsWith(type, "avg")) %>%
+      ggplot(aes(x = factor(out_time), y = value, group = type)) +
+      geom_line(aes(color = type)) +
+      labs(x = "Out time", 
+           y = "Mean uncertainty")
+    
+  })
+  
   ### TAB: SUMMARY
   
   summary_data <- reactive({
