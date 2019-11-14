@@ -5,7 +5,7 @@
 \title{Calculate deuteration}
 \usage{
 calculate_state_deuteration(dat, protein, state, time_in, time_chosen,
-  time_out)
+  time_out, deut_part = 1)
 }
 \arguments{
 \item{dat}{data as imported by the \code{\link{read_hdx}} function}
@@ -19,6 +19,8 @@ calculate_state_deuteration(dat, protein, state, time_in, time_chosen,
 \item{time_chosen}{chosen time point}
 
 \item{time_out}{experimental `time_out`}
+
+\item{deut_part}{percentage of deuterium the protein was exposed to, value in range [0, 1]}
 }
 \value{
 a \code{\link{data.frame}} object
@@ -29,7 +31,8 @@ Calculates deuteration uptake based on supplied parameters.
 \details{
 The function \code{calculate_state_deuteration} calculates deuteration for peptides in given protein in given state based
 on supplied parameters: `time_in`, `time_out` and `time_chosen`. All four variants (combinations of theoretical & relative) are 
-supplied (mean values and uncertainty).
+supplied (mean values and uncertainty). Manual correction of percentage of deuterium the protein was exposed to during the exchange 
+is provided. 
 
 Methods of calculation and uncertainty are profoundly discussed in the vignette.
 }
