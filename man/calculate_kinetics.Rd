@@ -5,7 +5,7 @@
 \title{Calculate kinetic data}
 \usage{
 calculate_kinetics(dat, protein = dat[["Protein"]][1], sequence, state,
-  start, end, time_in, time_out)
+  start, end, time_in, time_out, deut_part = 1)
 }
 \arguments{
 \item{dat}{dat data read by \code{\link{read_hdx}}}
@@ -23,6 +23,8 @@ calculate_kinetics(dat, protein = dat[["Protein"]][1], sequence, state,
 \item{time_in}{time in for experimental calculations}
 
 \item{time_out}{time out for experimental calculations}
+
+\item{deut_part}{percentage of deuterium the protein was exposed to, value in range [0, 1]}
 }
 \value{
 data frame with deuteration calculated for all the data points 
@@ -40,7 +42,8 @@ for given peptide.
 The function calculates deuteration data for all available data points 
 for given peptide. 
 All four variants (relative & theoretical combinations) of deuteration computations 
-are supported.
+are supported. Manual correction of percentage of deuterium the protein was exposed 
+to during the exchange in theoretical calculations is provided.
 To visualize obtained data we recommend using \code{\link{plot_kinetics}} function.
 The first version doesn't support filled Modification and Fragment columns.
 }

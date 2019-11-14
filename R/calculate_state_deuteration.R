@@ -12,8 +12,8 @@
 #' 
 #' @details The function \code{calculate_state_deuteration} calculates deuteration for peptides in given protein in given state based
 #' on supplied parameters: `time_in`, `time_out` and `time_chosen`. All four variants (combinations of theoretical & relative) are 
-#' supplied (mean values and uncertainty). Manual correction of percentage of deuterium the protein was exposed to during the exchange 
-#' is provided. 
+#' supplied (mean values and uncertainty). Manual correction of percentage of deuterium the protein was exposed to during the exchange
+#' in theoretical calculations is provided. 
 #'
 #' Methods of calculation and uncertainty are profoundly discussed in the vignette.
 #' 
@@ -60,16 +60,16 @@ calculate_state_deuteration <- function(dat,
               time_out_mean = mean(time_out, na.rm = TRUE),
               err_time_out_mean = coalesce(sd(time_out, na.rm = TRUE)/sqrt(length(time_out)), 0)) %>%
     mutate(# experimental calculations below - relative
-      frac_exch_state = (time_chosen_mean - time_in_mean)/(time_out_mean - time_in_mean),
-      err_frac_exch_state = sqrt((err_time_chosen_mean*(1/(time_out_mean - time_in_mean)))^2 + (err_time_in_mean*((time_chosen_mean - time_out_mean )/((time_out_mean - time_in_mean)^2)))^2 + (err_time_out_mean*((time_in_mean - time_chosen_mean)/((time_out_mean - time_in_mean)^2)))^2),
+      frac_exch_state = 100*(time_chosen_mean - time_in_mean)/(time_out_mean - time_in_mean),
+      err_frac_exch_state = 100*sqrt((err_time_chosen_mean*(1/(time_out_mean - time_in_mean)))^2 + (err_time_in_mean*((time_chosen_mean - time_out_mean )/((time_out_mean - time_in_mean)^2)))^2 + (err_time_out_mean*((time_in_mean - time_chosen_mean)/((time_out_mean - time_in_mean)^2)))^2),
       # experimental calculations below - absolute
-      abs_frac_exch_state = time_chosen_mean - time_in_mean,
+      abs_frac_exch_state = (time_chosen_mean - time_in_mean),
       err_abs_frac_exch_state = sqrt(err_time_chosen_mean^2 + err_time_in_mean^2),
       # theoretical calculations below - relative
-      avg_theo_in_time = (time_chosen_mean - MHP)/(MaxUptake * proton_mass * deut_part),
-      err_avg_theo_in_time = abs(err_time_chosen_mean)*(1/(MaxUptake * proton_mass * deut_part)),
+      avg_theo_in_time = 100*(time_chosen_mean - MHP)/(MaxUptake * proton_mass * deut_part),
+      err_avg_theo_in_time = 100*abs(err_time_chosen_mean)*(1/(MaxUptake * proton_mass * deut_part)),
       # theoeretical calculations below - absolute
-      abs_avg_theo_in_time = time_chosen_mean - MHP,
+      abs_avg_theo_in_time = (time_chosen_mean - MHP),
       err_abs_avg_theo_in_time = err_time_chosen_mean,
       # helper values
       Med_Sequence = Start + (End - Start)/2) %>%

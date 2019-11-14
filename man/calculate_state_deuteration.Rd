@@ -31,8 +31,8 @@ Calculates deuteration uptake based on supplied parameters.
 \details{
 The function \code{calculate_state_deuteration} calculates deuteration for peptides in given protein in given state based
 on supplied parameters: `time_in`, `time_out` and `time_chosen`. All four variants (combinations of theoretical & relative) are 
-supplied (mean values and uncertainty). Manual correction of percentage of deuterium the protein was exposed to during the exchange 
-is provided. 
+supplied (mean values and uncertainty). Manual correction of percentage of deuterium the protein was exposed to during the exchange
+in theoretical calculations is provided. 
 
 Methods of calculation and uncertainty are profoundly discussed in the vignette.
 }

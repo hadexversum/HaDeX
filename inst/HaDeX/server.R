@@ -427,17 +427,17 @@ server <- function(input, output, session) {
       
       updateSliderInput(session,
                         inputId = "comp_plot_y_range",
-                        min = -2,
-                        max = 2,
-                        value = c(0, 1.2),
-                        step = 0.1)
+                        min = -200,
+                        max = 200,
+                        value = c(0, 120),
+                        step = 10)
       
       updateSliderInput(session,
                         inputId = "woods_plot_y_range",
-                        min = -2, 
-                        max = 2, 
-                        value = c(-.5, .5),
-                        step = 0.1)
+                        min = -200, 
+                        max = 200, 
+                        value = c(-50, 50),
+                        step = 10)
     }
     
   })
@@ -553,7 +553,8 @@ server <- function(input, output, session) {
                                                                                  state = i, 
                                                                                  time_in = input[["in_time"]],
                                                                                  time_chosen = input[["chosen_time"]], 
-                                                                                 time_out = input[["out_time"]])))
+                                                                                 time_out = input[["out_time"]],
+                                                                                 deut_part = 0.01*as.integer(input[["deut_concentration"]]))))
   })
   
   ##
@@ -576,7 +577,7 @@ server <- function(input, output, session) {
       geom_errorbar(data = prep_dat(), aes(x = Med_Sequence, ymin = avg_theo_in_time - err_avg_theo_in_time, ymax = avg_theo_in_time + err_avg_theo_in_time, color = State)) +
       theme(legend.position = "bottom",
             legend.title = element_blank()) +
-      scale_y_continuous(breaks = seq(-2, 2, 0.2), expand = c(0, 0))
+      scale_y_continuous(breaks = seq(-200, 200, 10), expand = c(0, 0))
     
   })
   
@@ -602,7 +603,7 @@ server <- function(input, output, session) {
       geom_errorbar(data = prep_dat(), aes(x = Med_Sequence, ymin = frac_exch_state - err_frac_exch_state, ymax = frac_exch_state + err_frac_exch_state, color = State)) +
       theme(legend.position = "bottom",
             legend.title = element_blank()) +
-      scale_y_continuous(breaks = seq(-2, 2, 0.2), expand = c(0, 0))
+      scale_y_continuous(breaks = seq(-200, 200, 10), expand = c(0, 0))
     
   })
   
@@ -778,7 +779,8 @@ server <- function(input, output, session) {
                                                                                                                  state = i, 
                                                                                                                  time_in = input[["in_time"]],
                                                                                                                  time_chosen = input[["chosen_time"]], 
-                                                                                                                 time_out = input[["out_time"]]))) %>%
+                                                                                                                 time_out = input[["out_time"]],
+                                                                                                                 deut_part = 0.01*as.integer(input[["deut_concentration"]])))) %>%
       droplevels() %>% 
       mutate(State = factor(State, levels = c(input[["state_first"]], input[["state_second"]]), labels = c("1", "2"))) %>%
       gather(variable, value, -c(Protein:End, State, Med_Sequence)) %>%
@@ -829,7 +831,7 @@ server <- function(input, output, session) {
       geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
       scale_linetype_manual(values = c("dashed", "dotdash")) + 
       scale_colour_identity() +
-      scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
+      scale_y_continuous(expand = c(0, 0), limits = c(-100, 100)) +
       theme(legend.title = element_blank(),
             legend.position = "bottom",
             legend.direction = "vertical") 
@@ -907,7 +909,7 @@ server <- function(input, output, session) {
       geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
       scale_linetype_manual(values = c("dashed", "dotdash")) +
       scale_colour_identity() +
-      scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
+      scale_y_continuous(expand = c(0, 0), limits = c(-100, 100)) +
       theme(legend.title = element_blank(),
             legend.position = "bottom",
             legend.direction = "vertical") 
@@ -1202,7 +1204,8 @@ server <- function(input, output, session) {
                          start = as.numeric(peptide[3]),
                          end = as.numeric(peptide[4]),
                          time_in = as.numeric(input[["kin_in_time"]]),
-                         time_out = as.numeric(input[["kin_out_time"]]))
+                         time_out = as.numeric(input[["kin_out_time"]]),
+                         deut_part = 0.01*as.integer(input[["deut_concentration"]]))
     }))
     
   })
@@ -1218,19 +1221,19 @@ server <- function(input, output, session) {
       
       updateSliderInput(session,
                         inputId = "kin_plot_y_range",
-                        min = min_kin_abs - 5,
+                        min = 0,
                         max = max_kin_abs + 5,
-                        value = c(min_kin_abs, max_kin_abs),
+                        value = c(0, max_kin_abs),
                         step = 1)
       
     } else {
       
       updateSliderInput(session,
                         inputId = "kin_plot_y_range",
-                        min = -.5,
-                        max = 2,
-                        value = c(-.1, 1),
-                        step = 0.1)
+                        min = -50,
+                        max = 200,
+                        value = c(-10, 100),
+                        step = 10)
     }
     
   })
