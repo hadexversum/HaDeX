@@ -98,7 +98,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        sidebarPanel(
                                          class = "scrollable",
                                          h3("Select parameters for the plot."),
-                                         checkboxInput(inputId = "theory",
+                                         checkboxInput_h(inputId = "theory",
                                                        label = "Theoretical calculations",
                                                        value = FALSE),
                                          radioButtons(inputId = "calc_type",

@@ -50,9 +50,9 @@ plotOutput_h <- function(outputId, ...)
   helper(withSpinner(plotOutput(outputId = outputId, ...)),  content = outputId,
          type = "markdown", buttonLabel = "Okay", easyClose = TRUE)
 
-for(ith_fun in c("selectInput", "textInput")) {
+for(ith_fun in c("selectInput", "textInput", "checkboxInput")) {
   tmp_name <- function(inputId, ...) {
-    helper(getFromNamespace(ith_fun, ns = "shiny")(outputId = outputId, ...),  content = outputId,
+    helper(getFromNamespace(ith_fun, ns = "shiny")(inputId = inputId, ...),  content = inputId,
            type = "markdown", buttonLabel = "Okay", easyClose = TRUE)
   }
 
