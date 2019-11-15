@@ -330,6 +330,10 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                        choices = c("0", "1", "5", "25", "1440"))),
                                          h5("Choose peptide:"),
                                          DT::dataTableOutput("peptide_list_data"),
+                                         actionButton(inputId = "reset_peptide_list", 
+                                                       label = "Reset chosen peptides"),
+                                         br(),
+                                         br(),
                                          br(),
                                          sliderInput(inputId = 'kin_plot_y_range',
                                                      label = 'Choose y range for kinetic plot:',
@@ -391,7 +395,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                      choices = c("CD160", "CD160_HVEM"))
                                        ),
                                        mainPanel(
-                                         withSpinner(plotOutput("quality_control_plot", height = 600))
+                                         plotOutput_h("quality_control_plot", height = 600)
                                        )
                                        ),
                               #

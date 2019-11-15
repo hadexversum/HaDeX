@@ -1195,6 +1195,18 @@ server <- function(input, output, session) {
   
   ##
   
+  DTproxy <- DT::dataTableProxy("peptide_list_data", session = session)
+  
+  ##
+  
+  observeEvent(input[["reset_peptide_list"]], {
+    
+    DT::selectRows(DTproxy, NULL)
+    
+  })
+  
+  ##
+  
   kin_dat <- reactive({
     
     validate(need(input[["peptide_list_data_rows_selected"]], "Please select at least one peptide from the table on the left."))
