@@ -46,5 +46,17 @@ confidence_limit_choices <- c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9
 
 amino_groups <- c("G", "A", "V", "I", "L", "F", "P", "M", "S", "T", "Y", "W", "N", "Q", "C", "D", "E", "K", "R", "H")
 
-plotOutput_h <- function(..., content) helper(withSpinner(plotOutput(...)),  content = content,
-       type = "markdown", buttonLabel = "Okay", easyClose = TRUE)
+plotOutput_h <- function(outputId, ...) 
+  helper(withSpinner(plotOutput(outputId = outputId, ...)),  content = outputId,
+         type = "markdown", buttonLabel = "Okay", easyClose = TRUE)
+
+for(ith_fun in c("selectInput", "textInput")) {
+  tmp_name <- function(inputId, ...) {
+    helper(getFromNamespace(ith_fun, ns = "shiny")(outputId = outputId, ...),  content = outputId,
+           type = "markdown", buttonLabel = "Okay", easyClose = TRUE)
+  }
+  
+  assign(x = paste0(ith_fun, "_h"), value = tmp_name)
+}
+
+get("selectInput", envir = "package::shiny")

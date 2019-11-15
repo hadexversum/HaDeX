@@ -221,7 +221,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          tabsetPanel(
                                            tabPanel("Woods plot",
                                                     br(),
-                                                    plotOutput_h("differentialPlot", content = "woodsPlot"),
+                                                    plotOutput_h("differentialPlot"),
                                                     downloadButton("differentialPlot_download_button", 
                                                                    "Save chart (.svg)")), 
                                            tabPanel("Data",
