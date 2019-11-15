@@ -55,8 +55,8 @@ for(ith_fun in c("selectInput", "textInput")) {
     helper(getFromNamespace(ith_fun, ns = "shiny")(outputId = outputId, ...),  content = outputId,
            type = "markdown", buttonLabel = "Okay", easyClose = TRUE)
   }
-  
+
   assign(x = paste0(ith_fun, "_h"), value = tmp_name)
 }
 
-get("selectInput", envir = "package::shiny")
+# get("selectInput", envir = "package::shiny")

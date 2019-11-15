@@ -127,7 +127,7 @@ for given peptide.</p>
     </div>
 
     <pre class="usage"><span class='fu'>calculate_kinetics</span>(<span class='no'>dat</span>, <span class='kw'>protein</span> <span class='kw'>=</span> <span class='no'>dat</span><span class='kw'>[[</span><span class='st'>"Protein"</span>]][<span class='fl'>1</span>], <span class='no'>sequence</span>, <span class='no'>state</span>,
-  <span class='no'>start</span>, <span class='no'>end</span>, <span class='no'>time_in</span>, <span class='no'>time_out</span>)</pre>
+  <span class='no'>start</span>, <span class='no'>end</span>, <span class='no'>time_in</span>, <span class='no'>time_out</span>, <span class='kw'>deut_part</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,6 +164,10 @@ for given peptide.</p>
       <th>time_out</th>
       <td><p>time out for experimental calculations</p></td>
     </tr>
+    <tr>
+      <th>deut_part</th>
+      <td><p>percentage of deuterium the protein was exposed to, value in range [0, 1]</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -180,7 +184,8 @@ the returned structure is equivalent to structure returned by
     <p>The function calculates deuteration data for all available data points 
 for given peptide. 
 All four variants (relative &amp; theoretical combinations) of deuteration computations 
-are supported.
+are supported. Manual correction of percentage of deuterium the protein was exposed 
+to during the exchange in theoretical calculations is provided.
 To visualize obtained data we recommend using <code><a href='plot_kinetics.html'>plot_kinetics</a></code> function.
 The first version doesn't support filled Modification and Fragment columns.</p>
     
@@ -205,11 +210,11 @@ The first version doesn't support filled Modification and Fragment columns.</p>
                    <span class='kw'>time_out</span> <span class='kw'>=</span> <span class='fl'>1440</span>))</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 5 x 15</span><span>
 #&gt;   Protein Sequence Start   End State time_chosen frac_exch_state
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> db_CD1~ INITSSA~     1    15 CD160 0.167                 0.769
-#&gt; </span><span style='color: #555555;'>2</span><span> db_CD1~ INITSSA~     1    15 CD160 1                     0.842
-#&gt; </span><span style='color: #555555;'>3</span><span> db_CD1~ INITSSA~     1    15 CD160 5                     0.875
-#&gt; </span><span style='color: #555555;'>4</span><span> db_CD1~ INITSSA~     1    15 CD160 25                    0.932
-#&gt; </span><span style='color: #555555;'>5</span><span> db_CD1~ INITSSA~     1    15 CD160 120                   0.955
+#&gt; </span><span style='color: #555555;'>1</span><span> db_CD1~ INITSSA~     1    15 CD160 0.167                  76.9
+#&gt; </span><span style='color: #555555;'>2</span><span> db_CD1~ INITSSA~     1    15 CD160 1                      84.2
+#&gt; </span><span style='color: #555555;'>3</span><span> db_CD1~ INITSSA~     1    15 CD160 5                      87.5
+#&gt; </span><span style='color: #555555;'>4</span><span> db_CD1~ INITSSA~     1    15 CD160 25                     93.2
+#&gt; </span><span style='color: #555555;'>5</span><span> db_CD1~ INITSSA~     1    15 CD160 120                    95.5
 #&gt; </span><span style='color: #555555;'># ... with 8 more variables: err_frac_exch_state </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
 #&gt; #   abs_frac_exch_state </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, err_abs_frac_exch_state </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
 #&gt; #   avg_theo_in_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, err_avg_theo_in_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
@@ -226,11 +231,11 @@ The first version doesn't support filled Modification and Fragment columns.</p>
                    <span class='kw'>time_out</span> <span class='kw'>=</span> <span class='fl'>1440</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 5 x 15</span><span>
 #&gt;   Protein Sequence Start   End State time_chosen frac_exch_state
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> db_CD1~ INITSSA~     1    15 CD16~ 0.167                 0.744
-#&gt; </span><span style='color: #555555;'>2</span><span> db_CD1~ INITSSA~     1    15 CD16~ 1                     0.815
-#&gt; </span><span style='color: #555555;'>3</span><span> db_CD1~ INITSSA~     1    15 CD16~ 5                     0.829
-#&gt; </span><span style='color: #555555;'>4</span><span> db_CD1~ INITSSA~     1    15 CD16~ 25                    0.877
-#&gt; </span><span style='color: #555555;'>5</span><span> db_CD1~ INITSSA~     1    15 CD16~ 120                   0.952
+#&gt; </span><span style='color: #555555;'>1</span><span> db_CD1~ INITSSA~     1    15 CD16~ 0.167                  74.4
+#&gt; </span><span style='color: #555555;'>2</span><span> db_CD1~ INITSSA~     1    15 CD16~ 1                      81.5
+#&gt; </span><span style='color: #555555;'>3</span><span> db_CD1~ INITSSA~     1    15 CD16~ 5                      82.9
+#&gt; </span><span style='color: #555555;'>4</span><span> db_CD1~ INITSSA~     1    15 CD16~ 25                     87.7
+#&gt; </span><span style='color: #555555;'>5</span><span> db_CD1~ INITSSA~     1    15 CD16~ 120                    95.2
 #&gt; </span><span style='color: #555555;'># ... with 8 more variables: err_frac_exch_state </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
 #&gt; #   abs_frac_exch_state </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, err_abs_frac_exch_state </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
 #&gt; #   avg_theo_in_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, err_avg_theo_in_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,

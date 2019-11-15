@@ -79,7 +79,7 @@ plot_kinetics <- function(kin_dat,
         geom_line(aes(color = prop)) +
         theme(legend.position = "bottom",
               legend.title = element_blank()) +
-        scale_y_continuous(limits = c(-.1, 1.1)) + 
+        scale_y_continuous(limits = c(0, 110)) + 
         labs(x = "Time points [min]", 
              y = "Theoretical deuteration [%]")
       
@@ -111,7 +111,7 @@ plot_kinetics <- function(kin_dat,
         geom_line(aes(color = prop)) +
         theme(legend.position = "bottom",
               legend.title = element_blank()) +
-        scale_y_continuous(limits = c(-.1, 1.1)) + 
+        scale_y_continuous(limits = c(0, 110)) + 
         labs(x = "Time points [min]", 
              y = "Deuteration [%]")
       

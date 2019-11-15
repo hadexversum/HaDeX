@@ -111,7 +111,7 @@ dat <- read_hdx(system.file(package = "HaDeX",
 
 ```
 
-Currently, [read_hdx()](https://hadexversum.github.io/HaDeX/reference/read_hdx.html) supports .csv, .tsv and .xls files fulfilling the data structure described above. 
+Currently, [read_hdx()](https://hadexversum.github.io/HaDeX/reference/read_hdx.html) supports .csv, .tsv and .xls files fulfilling the data structure described above. Files with data from multiple proteins are supported. The user need to indicate which protein is of interest for calculations. 
 
 ## Computation of deuteration levels
 
@@ -526,7 +526,7 @@ encompass time out, so the uncertainty does not change with $D_{t_{out}}$.
 
 # HaDeX Graphical User Interface
 
-The HaDeX Shiny app is launched by the [HaDeX_gui()](https://hadexversum.github.io/HaDeX/reference/HaDeX_gui.html) function or available at MS Lab website: http://mslab-ibb.pl/shiny/HaDeX/.
+The HaDeX Shiny app is launched by the [HaDeX_gui()](https://hadexversum.github.io/HaDeX/reference/HaDeX_gui.html) function or available at MS Lab website: http://mslab-ibb.pl/shiny/HaDeX/. In the Input Data tab the user can adjust parameters to be propagated for the whole analysis.
 
 # Examples
 
