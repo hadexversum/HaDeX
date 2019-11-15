@@ -19,7 +19,7 @@ server <- function(input, output, session) {
     
   })
   
-  dat <- reactive({
+  dat_tmp <- reactive({
     
     inFile <- input[["data_file"]]
     
@@ -46,6 +46,16 @@ server <- function(input, output, session) {
   ##
   
   ### TAB: INPUT DATA
+  
+  ##
+  
+  dat <- reactive({
+    
+    dat_tmp() %>%
+      mutate(Start = Start + input[["sequence_start_shift"]] -1,
+             End = End + input[["sequence_start_shift"]] -1)
+    
+  })
   
   ##
   
