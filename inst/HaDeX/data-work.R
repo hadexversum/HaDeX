@@ -50,13 +50,16 @@ plotOutput_h <- function(outputId, ...)
   helper(withSpinner(plotOutput(outputId = outputId, ...)),  content = outputId,
          type = "markdown", buttonLabel = "Okay", easyClose = TRUE)
 
-for(ith_fun in c("selectInput", "textInput", "checkboxInput", "numericInput")) {
+func_vec <- c("selectInput", "textInput", "checkboxInput", "numericInput")
+func_list <- setNames(lapply(func_vec, function(ith_fun) 
   tmp_name <- function(inputId, ...) {
-    helper(getFromNamespace(ith_fun, ns = "shiny")(inputId = inputId, ...),  content = inputId,
-           type = "markdown", buttonLabel = "Okay", easyClose = TRUE)
-  }
+    helper(getFromNamespace(ith_fun, ns = "shiny")(inputId = inputId, ...),  
+           content = inputId, type = "markdown", buttonLabel = "Okay", easyClose = TRUE)
+  }), func_vec)
 
-  assign(x = paste0(ith_fun, "_h"), value = tmp_name)
+for(ith_fun_id in 1L:length(func_list)) {
+  assign(x = paste0(names(func_list)[ith_fun_id], "_h"), value = func_list[[ith_fun_id]])
 }
+
 
 # get("selectInput", envir = "package::shiny")
