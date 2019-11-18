@@ -50,7 +50,7 @@ plotOutput_h <- function(outputId, ...)
   helper(withSpinner(plotOutput(outputId = outputId, ...)),  content = outputId,
          type = "markdown", buttonLabel = "Okay", easyClose = TRUE)
 
-func_vec <- c("selectInput", "textInput", "checkboxInput", "numericInput")
+func_vec <- c("selectInput", "textInput", "checkboxInput", "numericInput", "radioButtons")
 func_list <- setNames(lapply(func_vec, function(ith_fun) 
   tmp_name <- function(inputId, ...) {
     helper(getFromNamespace(ith_fun, ns = "shiny")(inputId = inputId, ...),  
