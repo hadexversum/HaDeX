@@ -19,7 +19,7 @@ server <- function(input, output, session) {
     
   })
   
-  dat_tmp <- reactive({
+  dat_in <- reactive({
     
     inFile <- input[["data_file"]]
     
@@ -49,9 +49,9 @@ server <- function(input, output, session) {
   
   ##
   
-  dat <- reactive({
+  dat_tmp <- reactive({
     
-    dat_tmp() %>%
+    dat_in() %>%
       mutate(Start = Start + input[["sequence_start_shift"]] -1,
              End = End + input[["sequence_start_shift"]] -1)
     
@@ -61,7 +61,7 @@ server <- function(input, output, session) {
   
   proteins_from_file <- reactive({
     
-    unique(dat()[["Protein"]])
+    unique(dat_in()[["Protein"]])
     
   })
   
@@ -74,6 +74,40 @@ server <- function(input, output, session) {
                       choices = proteins_from_file(),
                       selected = proteins_from_file()[1])
     
+  })
+  
+  ##
+  
+  options_for_control <- reactive({
+
+    dat_in() %>%
+      filter(Protein == input[["chosen_protein"]]) %>%
+      mutate(Exposure = round(Exposure, 3)) %>%
+      select(Protein, State, Exposure) %>%
+      arrange(State, desc(Exposure)) %>%
+      unique(.) %>%
+      mutate(control = paste0(Protein, " | ", State, " | ", Exposure)) %>%
+      select(control) 
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    updateSelectInput(session, 
+                      inputId = "chosen_control", 
+                      choices = options_for_control())
+    
+  })
+  
+  
+  ##
+  
+  ##create dat based on control
+  
+  dat <- reactive({
+    dat_in()
   })
   
   ##
