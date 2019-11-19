@@ -337,7 +337,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                        label = "OUT",
                                                        choices = c("0", "1", "5", "25", "1440"))),
                                          h5("Choose peptide:"),
-                                         DT::dataTableOutput("peptide_list_data"),
+                                         dataTableOutput_h("peptide_list_data"), ## !! 
                                          actionButton(inputId = "reset_peptide_list", 
                                                        label = "Reset chosen peptides"),
                                          br(),
@@ -377,7 +377,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                             "Save chart (.svg)")),
                                            tabPanel("Data", 
                                                     br(), 
-                                                    DT::dataTableOutput("kin_plot_data")) ##!!
+                                                    DT::dataTableOutput("kin_plot_data")) 
                                          )
                                        )
                               ),
