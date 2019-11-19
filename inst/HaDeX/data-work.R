@@ -48,18 +48,21 @@ amino_groups <- c("G", "A", "V", "I", "L", "F", "P", "M", "S", "T", "Y", "W", "N
 
 plotOutput_h <- function(outputId, ...) 
   helper(withSpinner(plotOutput(outputId = outputId, ...)),  content = outputId,
-         type = "markdown", buttonLabel = "Okay", easyClose = TRUE)
+         type = "markdown", buttonLabel = "Okay", easyClose = TRUE, 
+         icon = "far fa-question-circle", colour = "#715d91")
 
 ## "DT::dataTableOutput"
 dataTableOutput_h <- function(outputId, ...)
   helper(getFromNamespace("dataTableOutput", ns = "DT")(outputId = outputId, ...), content = outputId, 
-         type = "markdown", buttonLabel = "okay", easyClose = TRUE)
+         type = "markdown", buttonLabel = "okay", easyClose = TRUE, 
+         icon = "far fa-question-circle", colour = "#715d91")
 
 func_vec <- c("selectInput", "textInput", "checkboxInput", "numericInput", "radioButtons", "checkboxGroupInput")
 func_list <- setNames(lapply(func_vec, function(ith_fun) 
   tmp_name <- function(inputId, ...) {
-    helper(getFromNamespace(ith_fun, ns = "shiny")(inputId = inputId, ...),  
-           content = inputId, type = "markdown", buttonLabel = "Okay", easyClose = TRUE)
+    helper(getFromNamespace(ith_fun, ns = "shiny")(inputId = inputId, ...),  content = inputId, 
+           type = "markdown", buttonLabel = "Okay", easyClose = TRUE, 
+           icon = "far fa-question-circle", colour = "#715d91")
   }), func_vec)
 
 for(ith_fun_id in 1L:length(func_list)) {
