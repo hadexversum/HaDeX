@@ -7,6 +7,7 @@ source("ui.R")
 server <- function(input, output, session) {
   
   ##
+  
   observe_helpers(help_dir = "docs", withMathJax = TRUE)
   
   ### TAB: START ###
@@ -37,7 +38,7 @@ server <- function(input, output, session) {
     if (is.null(input[["data_file"]])){
       "Example file: KD_180110_CD160_HVEM.csv"
     } else {
-      length(dat()[[1]])
+      length(dat_in()[[1]])
       "Supplied file is valid."
     }
     
@@ -62,6 +63,14 @@ server <- function(input, output, session) {
   proteins_from_file <- reactive({
     
     unique(dat_in()[["Protein"]])
+    
+  })
+  
+  ##
+  
+  max_range <- reactive({
+    
+    max(filter(dat_in(), Protein == input[["chosen_protein"]])[['End']])
     
   })
   
@@ -99,15 +108,31 @@ server <- function(input, output, session) {
                       inputId = "chosen_control", 
                       choices = options_for_control())
     
+    updateNumericInput(session, 
+                       inputId = "sequence_length",
+                       value = max_range())
+    
   })
   
   
   ##
   
-  ##create dat based on control
+  ## create dat based on control
   
   dat <- reactive({
-    dat_in()
+
+    tmp <- dat_tmp() %>%
+      filter(Protein == input[["chosen_protein"]], 
+             State == strsplit(input[["chosen_control"]], " | ")[[1]][3], 
+             Exposure == strsplit(input[["chosen_control"]], " | ")[[1]][5]) %>%
+      mutate(Exposure = 99999)
+    
+    states_to_prepare <- unique(filter(dat_tmp(), Protein == input[["chosen_protein"]])[["State"]])
+    
+    bind_rows(dat_tmp(), 
+              lapply(states_to_prepare, function(state){
+                            mutate(tmp, State = state) 
+                     }))
   })
   
   ##
@@ -123,10 +148,6 @@ server <- function(input, output, session) {
     updateRadioButtons(session,
                        inputId = "chosen_state",
                        choices = possible_states)
-    
-    updateNumericInput(session, 
-                       inputId = "sequence_length",
-                       value = max_range())
     
   })
   
@@ -369,14 +390,6 @@ server <- function(input, output, session) {
   
   ##
   
-  max_range <- reactive({
-    
-    max(filter(dat(), Protein == input[["chosen_protein"]])[['End']])
-    
-  })
-  
-  ##
-  
   output[["protein_length"]] <- renderText({
     
     max_range()
@@ -395,7 +408,10 @@ server <- function(input, output, session) {
   
   observe({
     
-    times_from_file <- round(unique(dat()["Exposure"]), 3)
+    times_from_file <- unique(round(dat()["Exposure"], 3))
+    
+    tmp <- unique(round(dat()["Exposure"], 3))[[1]]
+    choose_time_out <- setNames(tmp, c(head(tmp, -1), "chosen control"))
     
     updateSelectInput(session, 
                       inputId = "chosen_time",
@@ -409,8 +425,8 @@ server <- function(input, output, session) {
     
     updateSelectInput(session, 
                       inputId = "out_time",
-                      choices = times_from_file,
-                      selected = max(times_from_file))
+                      choices = choose_time_out,
+                      selected = choose_time_out["chosen control"])
     
     updateSelectInput(session,
                       inputId = "state_first",
