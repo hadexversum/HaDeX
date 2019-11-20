@@ -1194,6 +1194,9 @@ server <- function(input, output, session) {
     
     times_from_file <- round(unique(dat()["Exposure"]), 3)
     
+    tmp <- unique(round(dat()["Exposure"], 3))[[1]]
+    choose_time_out <- setNames(tmp, c(head(tmp, -1), "chosen control"))
+    
     updateSelectInput(session, 
                       inputId = "kin_in_time",
                       choices = times_from_file,
@@ -1201,8 +1204,8 @@ server <- function(input, output, session) {
     
     updateSelectInput(session, 
                       inputId = "kin_out_time",
-                      choices = times_from_file,
-                      selected = max(times_from_file))
+                      choices =  choose_time_out,
+                      selected = choose_time_out["chosen control"])
     
   })
   
@@ -1529,9 +1532,12 @@ server <- function(input, output, session) {
   
   output[["quality_control_plot"]] <- renderPlot({
     
+    qc_dat <- dat() %>%
+      filter(Exposure < 99999)
+    
     if (input[["qc_calc_type"]] == "relative"){
       
-      result <- quality_control(dat = dat(),
+      result <- quality_control(dat = qc_dat,
                                 state_first = input[["qc_state_first"]],
                                 state_second = input[["qc_state_second"]], 
                                 chosen_time = input[["qc_chosen_time"]], 
@@ -1540,7 +1546,7 @@ server <- function(input, output, session) {
       
     } else {
       
-      result <- quality_control(dat = dat(),
+      result <- quality_control(dat = qc_dat,
                                 state_first = input[["qc_state_first"]],
                                 state_second = input[["qc_state_second"]], 
                                 chosen_time = input[["qc_chosen_time"]], 
