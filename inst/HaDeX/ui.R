@@ -139,7 +139,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                               class = "collapse-button",
                                                               `data-toggle`="collapse",
                                                               `data-target`="#colorss"),
-                                                         content = "theory", type = "markdown", buttonLabel = "Okay", 
+                                                         content = "adjust_colors", type = "markdown", buttonLabel = "Okay", 
                                                          easyClose = TRUE, colour = "#F8F1FF"),
                                                   tags$div(
                                                     class = "hideable",
