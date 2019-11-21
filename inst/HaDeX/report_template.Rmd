@@ -110,6 +110,12 @@ if (input[["export_comparison_plot"]]){
   cat("## Comparison Plot \n")
   
   cat("### Relative values \n")
+  
+  if(input[["out_time"]] == 99999){
+    cat(paste0("Chosen control: ", input[["chosen_control"]], "."))
+  } else{
+    cat("No chosen control. \n")
+  }
 
   p <- comparison_plot_exp() +
     scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
@@ -178,6 +184,12 @@ if (input[["export_comparison_plot_data"]]){
   cat("## Comparison Plot Data \n")
   
   cat("### Relative values \n")
+  
+  if(input[["out_time"]] == 99999){
+    cat(paste0("Chosen control: ", input[["chosen_control"]], "."))
+  } else{
+    cat("No chosen control. \n")
+  }
   
   comparison_plot_data_exp() 
   
@@ -306,6 +318,12 @@ if (input[["export_woods_plot"]]){
   
   cat("### Relative values \n")
   
+  if(input[["out_time"]] == 99999){
+    cat(paste0("Chosen control: ", input[["chosen_control"]], "."))
+  } else{
+    cat("No chosen control. \n")
+  }
+  
   p <- differential_plot_exp()
   
   if(!input[["theory"]] & input[["calc_type"]] == "relative"){
@@ -370,6 +388,12 @@ if (input[["export_woods_plot_data"]]){
   cat("## Woods Plot Data \n")
   
   cat("### Relative values \n")
+  
+  if(input[["out_time"]] == 99999){
+    cat(paste0("Chosen control: ", input[["chosen_control"]], "."))
+  } else{
+    cat("No chosen control. \n")
+  }
   
   differential_plot_data_exp()
     
@@ -490,7 +514,6 @@ if (input[["export_theo_woods_plot_data"]]){
 ```
 
 
-<!--- UZUPELNIAM PONIZEJ !!!!!!!!!!!!!! --->
 
 
 <!--- KINETIC CHECK --->
@@ -513,6 +536,12 @@ if (input[["export_kin_plot"]]){
   if (kin_valid) {
     
     cat("### Relative values \n")
+    
+    if(input[["kin_out_time"]] == 99999){
+    cat(paste0("Chosen control: ", input[["chosen_control"]], "."))
+  } else{
+    cat("No chosen control. \n")
+  }
     
     p <- kin_plot_exp()
     
@@ -595,7 +624,13 @@ if (input[["export_kin_plot_data"]]){
   if (kin_valid){
     
     cat("### Relative values \n")
-  
+    
+      if(input[["kin_out_time"]] == 99999){
+        cat(paste0("Chosen control: ", input[["chosen_control"]], "."))
+      } else{
+        cat("No chosen control. \n")
+      }
+    
     kin_plot_exp_data()
 
   } else {
