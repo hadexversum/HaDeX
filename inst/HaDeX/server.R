@@ -1022,6 +1022,7 @@ server <- function(input, output, session) {
   wp_out <- reactive({
     
     validate(need(!(input[["state_first"]] == input[["state_second"]]), "Please select two different states."))
+    # validate(need(differential_plot_theo(), "Select different states."))
     
     if (input[["theory"]]) {
       
@@ -1585,9 +1586,9 @@ server <- function(input, output, session) {
                         "Replicates",
                         #"Average standard deviation",
                         "Significant differences in HDX"), 
-               Value = c(length(unique(dat()[["Exposure"]])), 
+               Value = c(length(unique(dat()[["Exposure"]])) - 1, # we add control as an additional timepoint 
                          length(unique(dat()[["Sequence"]])), 
-                         round(mean(stateOverlapDist_data()[["coverage"]] > 0), 4), 
+                         paste0(100*round(mean(stateOverlapDist_data()[["coverage"]] > 0), 4), "%"), 
                          round(mean(nchar(unique(dat()[["Sequence"]]))), 4), 
                          round(mean(stateOverlapDist_data()[["coverage"]]), 4), 
                          n_reps[1], 
