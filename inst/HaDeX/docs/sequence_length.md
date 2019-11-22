@@ -1,4 +1,3 @@
-## Sequence length
+## Sequence C-terminus
 
-If the sequence is cut in the C-term, you can adjust the length.
-This affect the sequence coverage and the added ending is empty.
+If the C-terminus of a sequence is trimmed, provide its true position. Imputed amino acids are represented as "x" in the reconstructed sequence.  

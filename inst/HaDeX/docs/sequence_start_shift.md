@@ -1,4 +1,3 @@
-## Sequence start shift
+## Sequence N-terminus
 
-If the sequence is cut in the beginning, you can shift it for desired value.
-After shift, the previous beginning is empty.
+If the N-terminus of a sequence is trimmed, provide its true position. Imputed amino acids are represented as "x" in the reconstructed sequence.   
