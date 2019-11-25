@@ -1,6 +1,6 @@
 ## About  
 
-The HaDeX web server relies on functions from the [HaDeX](https://github.com/michbur/HaDeX) **R** package. For more information check our [documentation](https://hadexversum.github.io/HaDeX/). In case of any question or suggestion don't hesitate to contact us. 
+The HaDeX web server relies on functions from the [HaDeX](https://github.com/michbur/HaDeX) **R** package. For more information check our [documentation](https://hadexversum.github.io/HaDeX/). 
 
 ### Authors  
 
