@@ -4,9 +4,9 @@ In HaDeX, we support two methods of calculating the results.
 
 ### Theoretical
 
-This method compares measure deuterium uptake with theoretical values. The correction of the D2O concentration can be made in Settings panel.
+This method compares measure deuterium uptake with theoretical values. The correction of the D2O concentration is made in the Settings panel.
 
-As a consequence of this method, the information on back-exchange in the experiment is lost.
+As a consequence of this method, the information on the back-exchange in the experiment is lost.
 
 To get more insight, check the [documentation](https://hadexversum.github.io/HaDeX/articles/overview.html#theoretical-deuteration-level).
 

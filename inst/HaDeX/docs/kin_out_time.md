@@ -1,4 +1,5 @@
 ## Choose `out` time for calculations
 
-This value is treated as a maximum measured deuterated value for experimental calculation type. If the control in Settins panel is chosen, 
-all of the states are compared with this control. Otherwise, they are compared with measurement in the same state in chosen timepoint. Be careful with using this option if you don't have measurement for all of the states in the same timpoints.
+This value is treated as an approximation of a fully deuterated sample for the experimental calculation type. If the control in the Settings panel is chosen, this control is a reference time point for all states. Otherwise, measurements are compared with the measurement in the same state in the chosen time point. 
+
+Be careful with using this option if you do not have measurements for all states in all time points.

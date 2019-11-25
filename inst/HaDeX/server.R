@@ -837,7 +837,7 @@ server <- function(input, output, session) {
     validate(need(input[["compare_states"]], "Please select at least one state."))
     validate(need(length(unique(filter(dat(), !is.na("Modification"), Protein == input[["chosen_protein"]])[["State"]])) > 1, "Not sufficient number of states without modifications."))
     
-    bind_rows(lapply(c(input[["state_first"]], input[["state_second"]]), function(i) calculate_state_deuteration(dat(), 
+    tmp <- bind_rows(lapply(c(input[["state_first"]], input[["state_second"]]), function(i) calculate_state_deuteration(dat(), 
                                                                                                                  protein = input[["chosen_protein"]], 
                                                                                                                  state = i, 
                                                                                                                  time_in = input[["in_time"]],
@@ -848,7 +848,12 @@ server <- function(input, output, session) {
       mutate(State = factor(State, levels = c(input[["state_first"]], input[["state_second"]]), labels = c("1", "2"))) %>%
       gather(variable, value, -c(Protein:End, State, Med_Sequence)) %>%
       unite(tmp, variable, State) %>%
-      spread(tmp, value) %>%
+      spread(tmp, value) 
+
+      validate(need(!is.na(tmp[["frac_exch_state_1"]]), "First state data is not sufficient. Choose another state."))
+      validate(need(!is.na(tmp[["frac_exch_state_2"]]), "Second state data is not sufficient. Choose another state."))
+      
+      tmp %>%
       mutate(diff_frac_exch = frac_exch_state_1 - frac_exch_state_2,
              err_frac_exch = sqrt(err_frac_exch_state_1^2 + err_frac_exch_state_2^2),
              abs_diff_frac_exch = abs_frac_exch_state_1 - abs_frac_exch_state_2,
@@ -1022,6 +1027,7 @@ server <- function(input, output, session) {
   wp_out <- reactive({
     
     validate(need(!(input[["state_first"]] == input[["state_second"]]), "Please select two different states."))
+    # validate(need(differential_plot_theo(), "Select different states."))
     
     if (input[["theory"]]) {
       
@@ -1585,9 +1591,9 @@ server <- function(input, output, session) {
                         "Replicates",
                         #"Average standard deviation",
                         "Significant differences in HDX"), 
-               Value = c(length(unique(dat()[["Exposure"]])), 
+               Value = c(length(unique(dat()[["Exposure"]])) - 1, # we add control as an additional timepoint 
                          length(unique(dat()[["Sequence"]])), 
-                         round(mean(stateOverlapDist_data()[["coverage"]] > 0), 4), 
+                         paste0(100*round(mean(stateOverlapDist_data()[["coverage"]] > 0), 4), "%"), 
                          round(mean(nchar(unique(dat()[["Sequence"]]))), 4), 
                          round(mean(stateOverlapDist_data()[["coverage"]]), 4), 
                          n_reps[1], 
