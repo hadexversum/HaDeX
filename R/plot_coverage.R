@@ -43,6 +43,7 @@ plot_coverage <- function(dat,
     filter(State %in% chosen_state) %>%
     select(-State) %>%
     filter(!duplicated(.)) %>%
+    arrange(Start, End) %>%
     mutate(ID = 1L:nrow(.)) %>%
     melt(id.vars = "ID") %>%
     ggplot(aes(x = value, y = ID, group = ID)) +
