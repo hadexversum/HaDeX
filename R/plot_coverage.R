@@ -4,7 +4,7 @@
 #' 
 #' @importFrom ggplot2 ggplot geom_line
 #' @importFrom reshape2 melt
-#' @importFrom dplyr filter
+#' @importFrom dplyr filter arrange
 #' 
 #' @param dat data as imported by the \code{\link{read_hdx}} function
 #' @param protein protein to be included in plot
