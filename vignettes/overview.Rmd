@@ -42,7 +42,7 @@ read.csv2("comparison.csv") %>%
   formatStyle(c("MEMHDX", "Deuteros", "HaDeX"), backgroundColor = styleEqual(c("Yes", "No"), c("#00BFFF", "#FF8C91")))
 ```
 
-We have not considered HDX Workbench [@PascalHDXWorkbenchSoftware2012] as it deals with the preliminary steps of the analysis.
+We have not considered HDX Workbench [@PascalHDXWorkbenchSoftware2012] as it deals with the preliminary steps of the analysis. This comparison also does not cover a versatile structural visualisation tool for HDX-MS results, HDX-Viewer [@BouyssieHDXViewerinteractive3D2019]  as its scope is different from the abovementioned tools. 
 
 **Web server:** a software is available as a web server.
 
