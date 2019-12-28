@@ -141,7 +141,7 @@ server <- function(input, output, session) {
   
   ##
   
-  observe({
+  observeEvent(input[["data_file"]], {
     
     possible_states <- unique(dat()[["State"]])
     
