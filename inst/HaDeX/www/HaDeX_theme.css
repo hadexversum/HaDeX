@@ -1967,3 +1967,21 @@ a.dt-button,
 a.dt-button {
   background-image: none !important;
 }
+
+.shinyhelper-container {
+  right: 20px !important;
+}
+
+.collapse-button + .shinyhelper-container {
+    top: 10px !important;
+    right: 25px !important;
+}
+
+.datatables + .shinyhelper-container {
+    top: -25px !important;
+    right: 15px !important;
+}
+
+.shiny-plot-output {
+    margin-bottom: 10px;
+}
