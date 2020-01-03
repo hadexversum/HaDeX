@@ -123,8 +123,8 @@ server <- function(input, output, session) {
 
     tmp <- dat_tmp() %>%
       filter(Protein == input[["chosen_protein"]], 
-             State == strsplit(input[["chosen_control"]], " | ")[[1]][3], 
-             Exposure == strsplit(input[["chosen_control"]], " | ")[[1]][5]) %>%
+             State == strsplit(input[["chosen_control"]], " \\| ")[[1]][2], 
+             Exposure == strsplit(input[["chosen_control"]], " \\| ")[[1]][3]) %>%
       mutate(Exposure = 99999)
     
     states_to_prepare <- unique(filter(dat_tmp(), Protein == input[["chosen_protein"]])[["State"]])
