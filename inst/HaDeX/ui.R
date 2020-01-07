@@ -253,7 +253,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          radioButtons(
                                            inputId = 'chosen_state',
                                            label = 'Choose state:',
-                                           choices = c('CD160', 'CD160VEM'),
+                                           choices = c('CD160', 'CD160_HVEM'),
                                            selected = 'CD160'
                                          ),
                                          sliderInput(
