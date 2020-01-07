@@ -1,7 +1,7 @@
 source("data-work.R")
 
-library(reactlog)
-options(shiny.reactlog = TRUE)
+# library(reactlog)
+# options(shiny.reactlog = TRUE)
 #########################################
 
 options(spinner.color="#715D91")
