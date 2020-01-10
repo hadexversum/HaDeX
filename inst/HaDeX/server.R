@@ -1439,7 +1439,7 @@ server <- function(input, output, session) {
     kin_dat() %>%
       select(Protein, Sequence, State, Start, End, time_chosen, frac_exch_state, err_frac_exch_state) %>%
       mutate(frac_exch_state = round(frac_exch_state, 4), 
-             err_frac_exch_state = round(frac_exch_state, 4)) %>%
+             err_frac_exch_state = round(err_frac_exch_state, 4)) %>%
       dt_format(cols = c("Protein", "Sequence", "State", "Start", "End", "Time Point", "Frac Exch", "Err Frac Exch"))
     
   })
