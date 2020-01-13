@@ -4,8 +4,13 @@
 \alias{woods_plot}
 \title{Plot Woods' plot}
 \usage{
-woods_plot(calc_dat, theoretical = FALSE, relative = TRUE,
-  confidence_limit = 0.98, confidence_limit_2 = 0.99)
+woods_plot(
+  calc_dat,
+  theoretical = FALSE,
+  relative = TRUE,
+  confidence_limit = 0.98,
+  confidence_limit_2 = 0.99
+)
 }
 \arguments{
 \item{calc_dat}{data as imported by the \code{\link{read_hdx}} function and 

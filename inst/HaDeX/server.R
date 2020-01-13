@@ -1561,7 +1561,7 @@ server <- function(input, output, session) {
       
     }
     
-    gather(result, 2:13, key = 'type', value = 'value') %>%
+    gather(result, 2:7, key = 'type', value = 'value') %>%
       filter(startsWith(type, "avg")) %>%
       ggplot(aes(x = factor(out_time), y = value, group = type)) +
       geom_line(aes(color = type)) +
