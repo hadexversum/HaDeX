@@ -1,3 +1,3 @@
 ## Choose `chosen` time for calculations
 
-This is the measured value compared with experimental/theoretical calculations.  
+The measured value of deuteration compared with experimental/theoretical deuteration.  
