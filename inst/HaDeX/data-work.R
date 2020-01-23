@@ -14,6 +14,10 @@ library(shinyhelper)
 
 #########################################
 
+HaDeX_theme <- theme_bw() + theme(plot.background = element_rect(fill = NA, color = NA))
+
+theme_set(HaDeX_theme) 
+
 amino_prop <- read.csv("./data/amino_prop.csv")
 
 amino_prop <- amino_prop %>%
@@ -74,5 +78,5 @@ for(ith_fun_id in 1L:length(func_list)) {
   assign(x = paste0(names(func_list)[ith_fun_id], "_h"), value = func_list[[ith_fun_id]])
 }
 
-
+  
 # get("selectInput", envir = "package::shiny")
