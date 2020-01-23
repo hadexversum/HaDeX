@@ -174,7 +174,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                          selected = 0.99)
                                          ),
                                          ##
-                                         h4("Adjust plot:"),
+                                         h4("Zoom:"),
                                          sliderInput(inputId = 'comp_plot_y_range',
                                                     label = 'Choose y range for comparison plot:',
                                                     min = -200,
@@ -321,7 +321,8 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                            ),
                                            mainPanel(withSpinner(plotOutput("aminoDist")),
                                                      downloadButton("aminoDist_download_button",
-                                                                    "Save chart (.svg)")))
+                                                                    "Save chart (.svg)")),
+                                           includeText("Source: Kyte, J., and Doolittle, R.F. (1982). A simple method for displaying the hydropathic character of a protein. J Mol Biol 157, 105–132."))
                                        )
                               ),
                               tabPanel("Kinetics",
