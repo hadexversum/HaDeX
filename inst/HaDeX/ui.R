@@ -1,12 +1,6 @@
 source("data-work.R")
 
-# library(reactlog)
-# options(shiny.reactlog = TRUE)
-#########################################
-
 options(spinner.color="#715D91")
-
-#########################################
 
 ui <- fluidPage(theme = "HaDeX_theme.css",
                 #titlePanel("HaDeX"), #: analysis of data from hydrogen deuterium exchange-mass spectrometry"),
@@ -393,6 +387,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        )
                               ),
                               #
+<<<<<<< HEAD
                               tabPanel("Quality control",
                                        br(),
                                        sidebarPanel(
@@ -417,6 +412,32 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          plotOutput_h("quality_control_plot", height = 600)
                                        )
                               ),
+=======
+                              # tabPanel("Quality control",
+                              #          br(),
+                              #          sidebarPanel(
+                              #            radioButtons_h(inputId = "qc_calc_type",
+                              #                           label = "Choose values type:",
+                              #                           choices = c("relative", "absolute"),
+                              #                           selected = "relative"),
+                              #            selectInput_h(inputId = "qc_in_time",
+                              #                          label = "Choose in time: ",
+                              #                          choices = c("0", "1", "5", "25", "1440")),
+                              #            selectInput_h(inputId = "qc_chosen_time",
+                              #                          label = "Choose time: ",
+                              #                          choices = c("0", "1", "5", "25", "1440")),
+                              #            selectInput_h(inputId = "qc_state_first",
+                              #                          label = "State 1",
+                              #                          choices = c("CD160", "CD160VEM")),
+                              #            selectInput_h(inputId = "qc_state_second",
+                              #                          label = "State 2", 
+                              #                          choices = c("CD160", "CD160VEM"))
+                              #          ),
+                              #          mainPanel(
+                              #            plotOutput_h("quality_control_plot", height = 600)
+                              #          )
+                              #          ),
+>>>>>>> cb562fd4f3962b66369fbd898cc9fcc9e4173538
                               #
                               tabPanel("Summary",
                                        br(),
