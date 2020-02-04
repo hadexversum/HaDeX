@@ -392,30 +392,30 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        )
                               ),
                               #
-                              tabPanel("Quality control",
-                                       br(),
-                                       sidebarPanel(
-                                         radioButtons_h(inputId = "qc_calc_type",
-                                                        label = "Choose values type:",
-                                                        choices = c("relative", "absolute"),
-                                                        selected = "relative"),
-                                         selectInput_h(inputId = "qc_in_time",
-                                                       label = "Choose in time: ",
-                                                       choices = c("0", "1", "5", "25", "1440")),
-                                         selectInput_h(inputId = "qc_chosen_time",
-                                                       label = "Choose time: ",
-                                                       choices = c("0", "1", "5", "25", "1440")),
-                                         selectInput_h(inputId = "qc_state_first",
-                                                       label = "State 1",
-                                                       choices = c("CD160", "CD160VEM")),
-                                         selectInput_h(inputId = "qc_state_second",
-                                                       label = "State 2", 
-                                                       choices = c("CD160", "CD160VEM"))
-                                       ),
-                                       mainPanel(
-                                         plotOutput_h("quality_control_plot", height = 600)
-                                       )
-                                       ),
+                              # tabPanel("Quality control",
+                              #          br(),
+                              #          sidebarPanel(
+                              #            radioButtons_h(inputId = "qc_calc_type",
+                              #                           label = "Choose values type:",
+                              #                           choices = c("relative", "absolute"),
+                              #                           selected = "relative"),
+                              #            selectInput_h(inputId = "qc_in_time",
+                              #                          label = "Choose in time: ",
+                              #                          choices = c("0", "1", "5", "25", "1440")),
+                              #            selectInput_h(inputId = "qc_chosen_time",
+                              #                          label = "Choose time: ",
+                              #                          choices = c("0", "1", "5", "25", "1440")),
+                              #            selectInput_h(inputId = "qc_state_first",
+                              #                          label = "State 1",
+                              #                          choices = c("CD160", "CD160VEM")),
+                              #            selectInput_h(inputId = "qc_state_second",
+                              #                          label = "State 2", 
+                              #                          choices = c("CD160", "CD160VEM"))
+                              #          ),
+                              #          mainPanel(
+                              #            plotOutput_h("quality_control_plot", height = 600)
+                              #          )
+                              #          ),
                               #
                               tabPanel("Summary",
                                        br(),
