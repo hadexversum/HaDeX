@@ -1,10 +1,14 @@
 source("ui.R")
 
+
+
 #########################################
 
 server <- function(input, output, session) {
   
   ##
+  
+  observe_helpers(help_dir = "docs", withMathJax = TRUE)
   
   ### TAB: START ###
   
@@ -16,7 +20,7 @@ server <- function(input, output, session) {
     
   })
   
-  dat <- reactive({
+  dat_in <- reactive({
     
     inFile <- input[["data_file"]]
     
@@ -34,10 +38,101 @@ server <- function(input, output, session) {
     if (is.null(input[["data_file"]])){
       "Example file: KD_180110_CD160_HVEM.csv"
     } else {
-      length(dat()[[1]])
+      length(dat_in()[[1]])
       "Supplied file is valid."
     }
     
+  })
+  
+  ##
+  
+  ### TAB: INPUT DATA
+  
+  ##
+  
+  dat_tmp <- reactive({
+    
+    dat_in() %>%
+      mutate(Start = Start + input[["sequence_start_shift"]] -1,
+             End = End + input[["sequence_start_shift"]] -1)
+    
+  })
+  
+  ##
+  
+  proteins_from_file <- reactive({
+    
+    unique(dat_in()[["Protein"]])
+    
+  })
+  
+  ##
+  
+  max_range <- reactive({
+    
+    max(filter(dat_in(), Protein == input[["chosen_protein"]])[['End']])
+    
+  })
+  
+  ##
+  
+  observe({
+
+    updateSelectInput(session,
+                      inputId = "chosen_protein",
+                      choices = proteins_from_file(),
+                      selected = proteins_from_file()[1])
+    
+  })
+  
+  ##
+  
+  options_for_control <- reactive({
+
+    dat_in() %>%
+      filter(Protein == input[["chosen_protein"]]) %>%
+      mutate(Exposure = round(Exposure, 3)) %>%
+      select(Protein, State, Exposure) %>%
+      arrange(State, desc(Exposure)) %>%
+      unique(.) %>%
+      mutate(control = paste0(Protein, " | ", State, " | ", Exposure)) %>%
+      select(control) 
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    updateSelectInput(session, 
+                      inputId = "chosen_control", 
+                      choices = options_for_control())
+    
+    updateNumericInput(session, 
+                       inputId = "sequence_length",
+                       value = max_range())
+    
+  })
+  
+  
+  ##
+  
+  ## create dat based on control
+  
+  dat <- reactive({
+
+    tmp <- dat_tmp() %>%
+      filter(Protein == input[["chosen_protein"]], 
+             State == strsplit(input[["chosen_control"]], " \\| ")[[1]][2], 
+             Exposure == strsplit(input[["chosen_control"]], " \\| ")[[1]][3]) %>%
+      mutate(Exposure = 99999)
+    
+    states_to_prepare <- unique(filter(dat_tmp(), Protein == input[["chosen_protein"]])[["State"]])
+    
+    bind_rows(dat_tmp(), 
+              lapply(states_to_prepare, function(state){
+                            mutate(tmp, State = state) 
+                     }))
   })
   
   ##
@@ -46,17 +141,13 @@ server <- function(input, output, session) {
   
   ##
   
-  observe({
+  observeEvent(input[["data_file"]], {
     
     possible_states <- unique(dat()[["State"]])
     
     updateRadioButtons(session,
                        inputId = "chosen_state",
                        choices = possible_states)
-    
-    updateNumericInput(session, 
-                       inputId = "sequence_length",
-                       value = max_range())
     
   })
   
@@ -72,7 +163,7 @@ server <- function(input, output, session) {
   
   output[["protein_name"]] <- renderText({
     
-    protein_name()
+    input[["chosen_protein"]]
     
   })
   
@@ -81,6 +172,7 @@ server <- function(input, output, session) {
   position_in_sequence_tmp <- reactive({
     
     dat() %>%
+      filter(Protein == input[["chosen_protein"]]) %>%
       select(Start, End, Sequence) %>%
       unique(.) %>%
       apply(1, function(x) data.frame(position = x[1]:x[2], amino = strsplit(x[3], '')[[1]], stringsAsFactors = FALSE)) %>%
@@ -93,7 +185,7 @@ server <- function(input, output, session) {
   
   protein_sequence <- reactive({
     
-    reconstruct_sequence(dat())
+    reconstruct_sequence(filter(dat(), Protein == input[["chosen_protein"]]))
     
   })
   
@@ -159,7 +251,7 @@ server <- function(input, output, session) {
       ggplot(aes(x = amino, fill = charge)) + 
       geom_bar() +
       scale_fill_manual("Charge", values = charge_colors) + 
-      labs(title = 'Amino acid composition',
+      labs(title = paste0('Amino acid composition for ', input[["chosen_protein"]]),
            x = 'Amino acid',
            y = 'Count')
     
@@ -182,19 +274,20 @@ server <- function(input, output, session) {
                                                            })
   ##
   
-  ### TAB: OVERLAPPING ###
+  ### TAB: COVERAGE ###
   
   ##
   
   stateOverlap_data <- reactive({
     
     dat() %>%
-      select(Sequence, Start, End, State) %>% 
+      select(Protein, Sequence, Start, End, State) %>% 
+      filter(Protein == input[["chosen_protein"]]) %>%
       filter(State == input[["chosen_state"]]) %>%
       filter(Start >= input[["plot_range"]][[1]], End <= input[["plot_range"]][[2]]) %>%
       filter(!duplicated(.)) %>%
       select(-State) %>%
-      dt_format(cols = c("Sequence", "Start", "End"))
+      dt_format(cols = c("Protein", "Sequence", "Start", "End"))
     
   })
   
@@ -208,7 +301,7 @@ server <- function(input, output, session) {
   
   stateOverlap_out <- reactive({
     
-    plot_coverage(dat = dat(), chosen_state = input[["chosen_state"]]) + 
+    plot_coverage(dat = filter(dat(), Protein == input[["chosen_protein"]]), chosen_state = input[["chosen_state"]]) + 
       coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]]))
     
   })
@@ -217,7 +310,8 @@ server <- function(input, output, session) {
   
   output[["stateOverlap"]] <- renderPlot({
     
-    stateOverlap_out()
+    stateOverlap_out() +
+      labs(title = paste0("Peptide coverage for ", input[["chosen_protein"]]))
     
   })
   
@@ -234,11 +328,12 @@ server <- function(input, output, session) {
   stateOverlapDist_data <- reactive({
     
     dat() %>%
-      select(Start, End, State, Sequence) %>%
+      select(Protein, Start, End, State, Sequence) %>%
+      filter(Protein == input[["chosen_protein"]]) %>%
       filter(State == input[["chosen_state"]]) %>%
       filter(Start >= input[["plot_range"]][[1]], End <= input[["plot_range"]][[2]]) %>%
       filter(!duplicated(.)) %>%
-      select(-State) %>%
+      select(-State, -Protein) %>%
       apply(1, function(i) i[1]:i[2]) %>%
       unlist %>%
       data.frame(pos = .) %>%
@@ -253,7 +348,8 @@ server <- function(input, output, session) {
   
   output[["stateOverlapDist_data"]] <- DT::renderDataTable(server = FALSE, {
     
-    dt_format(stateOverlapDist_data())
+    dt_format(stateOverlapDist_data(),
+              cols = c("Position", "Coverage"))
     
   })
   
@@ -264,7 +360,9 @@ server <- function(input, output, session) {
     mean_coverage <- round(mean(stateOverlapDist_data()[["coverage"]], na.rm = TRUE), 2)
     display_position <- (input[["plot_range"]][[1]] + input[["plot_range"]][[2]])/2
     
-    plot_position_frequency(dat(), chosen_state = input[["chosen_state"]]) + 
+    plot_position_frequency(dat(), 
+                            protein = input[["chosen_protein"]],
+                            chosen_state = input[["chosen_state"]]) + 
       coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]])) +
       geom_hline(yintercept = mean_coverage, color = 'red') +
       geom_text(aes(x = display_position, y = mean_coverage), label = paste0("Average frequency: ", mean_coverage), color = 'red', vjust = -.5)
@@ -292,14 +390,6 @@ server <- function(input, output, session) {
   
   ##
   
-  max_range <- reactive({
-    
-    max(dat()[['End']])
-    
-  })
-  
-  ##
-  
   output[["protein_length"]] <- renderText({
     
     max_range()
@@ -318,7 +408,10 @@ server <- function(input, output, session) {
   
   observe({
     
-    times_from_file <- round(unique(dat()["Exposure"]), 3)
+    times_from_file <- unique(round(dat()["Exposure"], 3))
+    
+    tmp <- unique(round(dat()["Exposure"], 3))[[1]]
+    choose_time_out <- setNames(tmp, c(head(tmp, -1), "chosen control"))
     
     updateSelectInput(session, 
                       inputId = "chosen_time",
@@ -332,8 +425,8 @@ server <- function(input, output, session) {
     
     updateSelectInput(session, 
                       inputId = "out_time",
-                      choices = times_from_file,
-                      selected = max(times_from_file))
+                      choices = choose_time_out,
+                      selected = choose_time_out["chosen control"])
     
     updateSelectInput(session,
                       inputId = "state_first",
@@ -397,17 +490,17 @@ server <- function(input, output, session) {
       
       updateSliderInput(session,
                         inputId = "comp_plot_y_range",
-                        min = -2,
-                        max = 2,
-                        value = c(0, 1.2),
-                        step = 0.1)
+                        min = -200,
+                        max = 200,
+                        value = c(0, 120),
+                        step = 10)
       
       updateSliderInput(session,
                         inputId = "woods_plot_y_range",
-                        min = -2, 
-                        max = 2, 
-                        value = c(-.5, .5),
-                        step = 0.1)
+                        min = -200, 
+                        max = 200, 
+                        value = c(-50, 50),
+                        step = 10)
     }
     
   })
@@ -419,19 +512,19 @@ server <- function(input, output, session) {
     updateTextInput(session, 
                     inputId = "comparison_plot_title",
                     value = case_when(
-                      input[["theory"]] & input[["calc_type"]] == "relative" ~ paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min"),
-                      input[["theory"]] & input[["calc_type"]] == "absolute" ~ paste0("Theoretical absolute value exchanged in state comparison in ", input[["chosen_time"]], " min"),
-                      !input[["theory"]] & input[["calc_type"]] == "relative" ~ paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min"),
-                      !input[["theory"]] & input[["calc_type"]] == "absolute" ~ paste0("Absolute value exchanged in state comparison in ", input[["chosen_time"]], " min")
+                      input[["theory"]] & input[["calc_type"]] == "relative" ~ paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min for ", input[["chosen_protein"]]),
+                      input[["theory"]] & input[["calc_type"]] == "absolute" ~ paste0("Theoretical absolute value exchanged in state comparison in ", input[["chosen_time"]], " min for ", input[["chosen_protein"]]),
+                      !input[["theory"]] & input[["calc_type"]] == "relative" ~ paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min for ", input[["chosen_protein"]]),
+                      !input[["theory"]] & input[["calc_type"]] == "absolute" ~ paste0("Absolute value exchanged in state comparison in ", input[["chosen_time"]], " min for ", input[["chosen_protein"]])
                     ))
     
     updateTextInput(session, 
                     inputId = "woods_plot_title",
                     value = case_when(
-                      input[["theory"]] & input[["calc_type"]] == "relative" ~ paste0("Delta Theoretical fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]])),
-                      input[["theory"]] & input[["calc_type"]] == "absolute" ~ paste0("Delta Theoretical fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]])),
-                      !input[["theory"]] & input[["calc_type"]] == "relative" ~ paste0("Delta Fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]])),
-                      !input[["theory"]] & input[["calc_type"]] == "absolute" ~ paste0("Delta Fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]))
+                      input[["theory"]] & input[["calc_type"]] == "relative" ~ paste0("Delta Theoretical fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]), " for ", input[["chosen_protein"]]),
+                      input[["theory"]] & input[["calc_type"]] == "absolute" ~ paste0("Delta Theoretical fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]), " for ", input[["chosen_protein"]]),
+                      !input[["theory"]] & input[["calc_type"]] == "relative" ~ paste0("Delta Fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]), " for ", input[["chosen_protein"]]),
+                      !input[["theory"]] & input[["calc_type"]] == "absolute" ~ paste0("Delta Fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]), " for ", input[["chosen_protein"]])
                     ))
     
     updateTextInput(session, 
@@ -519,11 +612,12 @@ server <- function(input, output, session) {
   all_dat <- reactive({
     
     bind_rows(lapply(states_from_file(), function(i) calculate_state_deuteration(dat(), 
-                                                                                 protein = dat()[["Protein"]][1], 
+                                                                                 protein = input[["chosen_protein"]], 
                                                                                  state = i, 
                                                                                  time_in = input[["in_time"]],
                                                                                  time_chosen = input[["chosen_time"]], 
-                                                                                 time_out = input[["out_time"]])))
+                                                                                 time_out = input[["out_time"]],
+                                                                                 deut_part = 0.01*as.integer(input[["deut_concentration"]]))))
   })
   
   ##
@@ -546,7 +640,7 @@ server <- function(input, output, session) {
       geom_errorbar(data = prep_dat(), aes(x = Med_Sequence, ymin = avg_theo_in_time - err_avg_theo_in_time, ymax = avg_theo_in_time + err_avg_theo_in_time, color = State)) +
       theme(legend.position = "bottom",
             legend.title = element_blank()) +
-      scale_y_continuous(breaks = seq(-2, 2, 0.2), expand = c(0, 0))
+      scale_y_continuous(breaks = seq(-200, 200, 10), expand = c(0, 0))
     
   })
   
@@ -572,7 +666,7 @@ server <- function(input, output, session) {
       geom_errorbar(data = prep_dat(), aes(x = Med_Sequence, ymin = frac_exch_state - err_frac_exch_state, ymax = frac_exch_state + err_frac_exch_state, color = State)) +
       theme(legend.position = "bottom",
             legend.title = element_blank()) +
-      scale_y_continuous(breaks = seq(-2, 2, 0.2), expand = c(0, 0))
+      scale_y_continuous(breaks = seq(-200, 200, 10), expand = c(0, 0))
     
   })
   
@@ -650,13 +744,14 @@ server <- function(input, output, session) {
   comparison_plot_data_theo <- reactive({
     
     prep_dat() %>%
-      select(Sequence, State, Start, End, avg_theo_in_time, err_avg_theo_in_time) %>%
-      filter(Start >= input[["plot_x_range"]][[1]],
+      select(Protein, Sequence, State, Start, End, avg_theo_in_time, err_avg_theo_in_time) %>%
+      filter(Protein == input[["chosen_protein"]],
+             Start >= input[["plot_x_range"]][[1]],
              End <= input[["plot_x_range"]][[2]]) %>%
       mutate(avg_theo_in_time = round(avg_theo_in_time, 4),
              err_avg_theo_in_time = round(err_avg_theo_in_time, 4)) %>%
       arrange(Start, End) %>%
-      dt_format(cols = c("Sequence", "State", "Start", "End", "Theo Frac Exch", "Err Theo Frac Exch"))
+      dt_format(cols = c("Protein", "Sequence", "State", "Start", "End", "Theo Frac Exch", "Err Theo Frac Exch"))
     
   })
   
@@ -665,13 +760,14 @@ server <- function(input, output, session) {
   comparison_plot_data_theo_abs <- reactive({
     
     prep_dat() %>%
-      select(Sequence, State, Start, End, abs_avg_theo_in_time, err_abs_avg_theo_in_time) %>%
-      filter(Start >= input[["plot_x_range"]][[1]],
+      select(Protein, Sequence, State, Start, End, abs_avg_theo_in_time, err_abs_avg_theo_in_time) %>%
+      filter(Protein == input[["chosen_protein"]],
+             Start >= input[["plot_x_range"]][[1]],
              End <= input[["plot_x_range"]][[2]]) %>%
       mutate(abs_avg_theo_in_time = round(abs_avg_theo_in_time, 4),
              err_abs_avg_theo_in_time = round(abs_avg_theo_in_time, 4)) %>%
       arrange(Start, End) %>%
-      dt_format(cols = c("Sequence", "State", "Start", "End", "Theo Abs Val Exch", "Err Theo Abs Val Exch"))
+      dt_format(cols = c("Protein", "Sequence", "State", "Start", "End", "Theo Abs Val Exch", "Err Theo Abs Val Exch"))
   })
   
   ## 
@@ -679,13 +775,14 @@ server <- function(input, output, session) {
   comparison_plot_data_exp <- reactive({
     
     prep_dat() %>%
-      select(Sequence, State, Start, End, frac_exch_state, err_frac_exch_state) %>%
-      filter(Start >= input[["plot_x_range"]][[1]],
+      select(Protein, Sequence, State, Start, End, frac_exch_state, err_frac_exch_state) %>%
+      filter(Protein == input[["chosen_protein"]],
+             Start >= input[["plot_x_range"]][[1]],
              End <= input[["plot_x_range"]][[2]]) %>%
       mutate(frac_exch_state = round(frac_exch_state, 4),
              err_frac_exch_state = round(err_frac_exch_state, 4)) %>%
       arrange(Start, End) %>%
-      dt_format(cols = c("Sequence", "State", "Start", "End", "Frac Exch", "Err Frac Exch"))
+      dt_format(cols = c("Protein", "Sequence", "State", "Start", "End", "Frac Exch", "Err Frac Exch"))
     
   })
   
@@ -694,13 +791,14 @@ server <- function(input, output, session) {
   comparison_plot_data_exp_abs <- reactive({
     
     prep_dat() %>%
-      select(Sequence, State, Start, End, abs_frac_exch_state, err_abs_frac_exch_state) %>%
-      filter(Start >= input[["plot_x_range"]][[1]],
+      select(Protein, Sequence, State, Start, End, abs_frac_exch_state, err_abs_frac_exch_state) %>%
+      filter(Protein == input[["chosen_protein"]],
+             Start >= input[["plot_x_range"]][[1]],
              End <= input[["plot_x_range"]][[2]]) %>%
       mutate(abs_frac_exch_state = round(abs_frac_exch_state, 4),
              err_abs_frac_exch_state = round(abs_frac_exch_state, 4)) %>%
       arrange(Start, End) %>%
-      dt_format(cols = c("Sequence", "State", "Start", "End", "Abs Val Exch", "Err Abs Val Exch"))
+      dt_format(cols = c("Protein", "Sequence", "State", "Start", "End", "Abs Val Exch", "Err Abs Val Exch"))
     
   })
   
@@ -737,18 +835,25 @@ server <- function(input, output, session) {
   woods_plot_dat <- reactive({
     
     validate(need(input[["compare_states"]], "Please select at least one state."))
+    validate(need(length(unique(filter(dat(), !is.na("Modification"), Protein == input[["chosen_protein"]])[["State"]])) > 1, "Not sufficient number of states without modifications."))
     
-    bind_rows(lapply(c(input[["state_first"]], input[["state_second"]]), function(i) calculate_state_deuteration(dat(), 
-                                                                                                                 protein = dat()[["Protein"]][1], 
+    tmp <- bind_rows(lapply(c(input[["state_first"]], input[["state_second"]]), function(i) calculate_state_deuteration(dat(), 
+                                                                                                                 protein = input[["chosen_protein"]], 
                                                                                                                  state = i, 
                                                                                                                  time_in = input[["in_time"]],
                                                                                                                  time_chosen = input[["chosen_time"]], 
-                                                                                                                 time_out = input[["out_time"]]))) %>%
+                                                                                                                 time_out = input[["out_time"]],
+                                                                                                                 deut_part = 0.01*as.integer(input[["deut_concentration"]])))) %>%
       droplevels() %>% 
       mutate(State = factor(State, levels = c(input[["state_first"]], input[["state_second"]]), labels = c("1", "2"))) %>%
       gather(variable, value, -c(Protein:End, State, Med_Sequence)) %>%
       unite(tmp, variable, State) %>%
-      spread(tmp, value) %>%
+      spread(tmp, value) 
+
+      validate(need(!is.na(tmp[["frac_exch_state_1"]]), "First state data is not sufficient. Choose another state."))
+      validate(need(!is.na(tmp[["frac_exch_state_2"]]), "Second state data is not sufficient. Choose another state."))
+      
+      tmp %>%
       mutate(diff_frac_exch = frac_exch_state_1 - frac_exch_state_2,
              err_frac_exch = sqrt(err_frac_exch_state_1^2 + err_frac_exch_state_2^2),
              abs_diff_frac_exch = abs_frac_exch_state_1 - abs_frac_exch_state_2,
@@ -794,7 +899,7 @@ server <- function(input, output, session) {
       geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
       scale_linetype_manual(values = c("dashed", "dotdash")) + 
       scale_colour_identity() +
-      scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
+      scale_y_continuous(expand = c(0, 0), limits = c(-100, 100)) +
       theme(legend.title = element_blank(),
             legend.position = "bottom",
             legend.direction = "vertical") 
@@ -872,7 +977,7 @@ server <- function(input, output, session) {
       geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
       scale_linetype_manual(values = c("dashed", "dotdash")) +
       scale_colour_identity() +
-      scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
+      scale_y_continuous(expand = c(0, 0), limits = c(-100, 100)) +
       theme(legend.title = element_blank(),
             legend.position = "bottom",
             legend.direction = "vertical") 
@@ -922,6 +1027,7 @@ server <- function(input, output, session) {
   wp_out <- reactive({
     
     validate(need(!(input[["state_first"]] == input[["state_second"]]), "Please select two different states."))
+    # validate(need(differential_plot_theo(), "Select different states."))
     
     if (input[["theory"]]) {
       
@@ -984,13 +1090,14 @@ server <- function(input, output, session) {
       add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
                           theoretical = TRUE, 
                           relative = TRUE) %>%
-      select(Sequence, Start, End, diff_theo_frac_exch, err_diff_theo_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
-      filter(Start >= input[["plot_x_range"]][[1]],
+      select(Protein, Sequence, Start, End, diff_theo_frac_exch, err_diff_theo_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
+      filter(Protein == input[["chosen_protein"]],
+             Start >= input[["plot_x_range"]][[1]],
              End <= input[["plot_x_range"]][[2]]) %>%
       mutate(diff_theo_frac_exch = round(diff_theo_frac_exch, 4),
              err_diff_theo_frac_exch = round(err_diff_theo_frac_exch, 4)) %>%
       arrange(Start, End) %>%
-      dt_format(cols = unique(c("Sequence", "Start", "End", "Theo Diff Frac Exch", "Err Theo Diff Frac Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
+      dt_format(cols = unique(c("Protein", "Sequence", "Start", "End", "Theo Diff Frac Exch", "Err Theo Diff Frac Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
     
   })
   
@@ -1005,13 +1112,14 @@ server <- function(input, output, session) {
       add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
                           theoretical = TRUE, 
                           relative = FALSE) %>%
-      select(Sequence, Start, End, abs_diff_theo_frac_exch, err_abs_diff_theo_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
-      filter(Start >= input[["plot_x_range"]][[1]],
+      select(Protein, Sequence, Start, End, abs_diff_theo_frac_exch, err_abs_diff_theo_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
+      filter(Protein == input[["chosen_protein"]],
+             Start >= input[["plot_x_range"]][[1]],
              End <= input[["plot_x_range"]][[2]]) %>%
       mutate(abs_diff_theo_frac_exch = round(abs_diff_theo_frac_exch, 4),
              err_abs_diff_theo_frac_exch = round(err_abs_diff_theo_frac_exch, 4)) %>%
       arrange(Start, End) %>%
-      dt_format(cols = unique(c("Sequence", "Start", "End", "Theo Abs Value Diff", "Err Theo Abs Value Diff", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
+      dt_format(cols = unique(c("Protein", "Sequence", "Start", "End", "Theo Abs Value Diff", "Err Theo Abs Value Diff", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
     
   })
   
@@ -1026,13 +1134,14 @@ server <- function(input, output, session) {
       add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
                           theoretical = FALSE, 
                           relative = TRUE) %>%
-      select(Sequence, Start, End, diff_frac_exch, err_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
-      filter(Start >= input[["plot_x_range"]][[1]],
+      select(Protein, Sequence, Start, End, diff_frac_exch, err_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
+      filter(Protein == input[["chosen_protein"]],
+             Start >= input[["plot_x_range"]][[1]],
              End <= input[["plot_x_range"]][[2]]) %>%
       mutate(diff_frac_exch = round(diff_frac_exch, 4),
              err_frac_exch = round(err_frac_exch, 4)) %>%
       arrange(Start, End) %>%
-      dt_format(cols = unique(c("Sequence", "Start", "End", "Diff Frac Exch", "Err Diff Frac Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
+      dt_format(cols = unique(c("Protein", "Sequence", "Start", "End", "Diff Frac Exch", "Err Diff Frac Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
     
   })
   
@@ -1047,13 +1156,14 @@ server <- function(input, output, session) {
       add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
                           theoretical = FALSE, 
                           relative = FALSE) %>%
-      select(Sequence, Start, End, abs_diff_frac_exch, err_abs_diff_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
-      filter(Start >= input[["plot_x_range"]][[1]],
+      select(Protein, Sequence, Start, End, abs_diff_frac_exch, err_abs_diff_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
+      filter(Protein == input[["chosen_protein"]],
+             Start >= input[["plot_x_range"]][[1]],
              End <= input[["plot_x_range"]][[2]]) %>%
       mutate(abs_diff_frac_exch = round(abs_diff_frac_exch, 4),
              err_abs_diff_frac_exch = round(err_abs_diff_frac_exch, 4)) %>%
       arrange(Start, End) %>%
-      dt_format(cols = unique(c("Sequence", "Start", "End", "Diff Abs Value Exch", "Err Diff Abs Value Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
+      dt_format(cols = unique(c("Protein", "Sequence", "Start", "End", "Diff Abs Value Exch", "Err Diff Abs Value Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
   })
   
   ##
@@ -1090,6 +1200,9 @@ server <- function(input, output, session) {
     
     times_from_file <- round(unique(dat()["Exposure"]), 3)
     
+    tmp <- unique(round(dat()["Exposure"], 3))[[1]]
+    choose_time_out <- setNames(tmp, c(head(tmp, -1), "chosen control"))
+    
     updateSelectInput(session, 
                       inputId = "kin_in_time",
                       choices = times_from_file,
@@ -1097,8 +1210,8 @@ server <- function(input, output, session) {
     
     updateSelectInput(session, 
                       inputId = "kin_out_time",
-                      choices = times_from_file,
-                      selected = max(times_from_file))
+                      choices =  choose_time_out,
+                      selected = choose_time_out["chosen control"])
     
   })
   
@@ -1109,8 +1222,8 @@ server <- function(input, output, session) {
     updateTextInput(session, 
                     inputId = "kin_plot_title",
                     value = case_when(
-                      input[["kin_theory"]] ~ "Theoretical kinetic plot for chosen peptides",
-                      !input[["kin_theory"]]  ~ "Kinetic plot for chosen peptides"
+                      input[["kin_theory"]] ~ paste0("Theoretical kinetic plot for chosen peptides for ", input[["chosen_protein"]]),
+                      !input[["kin_theory"]]  ~ paste0("Kinetic plot for chosen peptides for ", input[["chosen_protein"]])
                     ))
     
     updateTextInput(session, 
@@ -1127,8 +1240,9 @@ server <- function(input, output, session) {
   ##
   
   peptide_list <- reactive({
-    
+
     dat() %>%
+      filter(Protein == input[["chosen_protein"]]) %>%
       select(Sequence, State, Start, End) %>%
       unique(.) %>%
       arrange(Start, End)
@@ -1150,19 +1264,32 @@ server <- function(input, output, session) {
   
   ##
   
+  DTproxy <- DT::dataTableProxy("peptide_list_data", session = session)
+  
+  ##
+  
+  observeEvent(input[["reset_peptide_list"]], {
+    
+    DT::selectRows(DTproxy, NULL)
+    
+  })
+  
+  ##
+  
   kin_dat <- reactive({
     
     validate(need(input[["peptide_list_data_rows_selected"]], "Please select at least one peptide from the table on the left."))
     
     bind_rows(apply(peptide_list()[input[["peptide_list_data_rows_selected"]], ], 1, function(peptide){
       calculate_kinetics(dat = dat(),
-                         protein = protein_name(), 
+                         protein = input[["chosen_protein"]], 
                          sequence = peptide[1],
                          state = peptide[2],
                          start = as.numeric(peptide[3]),
                          end = as.numeric(peptide[4]),
                          time_in = as.numeric(input[["kin_in_time"]]),
-                         time_out = as.numeric(input[["kin_out_time"]]))
+                         time_out = as.numeric(input[["kin_out_time"]]),
+                         deut_part = 0.01*as.integer(input[["deut_concentration"]]))
     }))
     
   })
@@ -1178,19 +1305,19 @@ server <- function(input, output, session) {
       
       updateSliderInput(session,
                         inputId = "kin_plot_y_range",
-                        min = min_kin_abs - 5,
+                        min = 0,
                         max = max_kin_abs + 5,
-                        value = c(min_kin_abs, max_kin_abs),
+                        value = c(0, max_kin_abs),
                         step = 1)
       
     } else {
       
       updateSliderInput(session,
                         inputId = "kin_plot_y_range",
-                        min = -.5,
-                        max = 2,
-                        value = c(-.1, 1),
-                        step = 0.1)
+                        min = -50,
+                        max = 200,
+                        value = c(-10, 100),
+                        step = 10)
     }
     
   })
@@ -1310,10 +1437,10 @@ server <- function(input, output, session) {
   kin_plot_exp_data <- reactive({
     
     kin_dat() %>%
-      select(Sequence, State, Start, End, time_chosen, frac_exch_state, err_frac_exch_state) %>%
+      select(Protein, Sequence, State, Start, End, time_chosen, frac_exch_state, err_frac_exch_state) %>%
       mutate(frac_exch_state = round(frac_exch_state, 4), 
-             err_frac_exch_state = round(frac_exch_state, 4)) %>%
-      dt_format(cols = c("Sequence", "State", "Start", "End", "Time Point", "Frac Exch", "Err Frac Exch"))
+             err_frac_exch_state = round(err_frac_exch_state, 4)) %>%
+      dt_format(cols = c("Protein", "Sequence", "State", "Start", "End", "Time Point", "Frac Exch", "Err Frac Exch"))
     
   })
   
@@ -1322,10 +1449,10 @@ server <- function(input, output, session) {
   kin_plot_exp_abs_data <- reactive({
     
     kin_dat() %>%
-      select(Sequence, State, Start, End, time_chosen, abs_frac_exch_state, err_abs_frac_exch_state) %>%
+      select(Protein, Sequence, State, Start, End, time_chosen, abs_frac_exch_state, err_abs_frac_exch_state) %>%
       mutate(abs_frac_exch_state = round(abs_frac_exch_state, 4), 
              err_abs_frac_exch_state = round(err_abs_frac_exch_state, 4)) %>%
-      dt_format(cols = c("Sequence", "State", "Start", "End", "Time Point", "Abs Val Exch", "Err Abs Val Exch"))
+      dt_format(cols = c("Protein", "Sequence", "State", "Start", "End", "Time Point", "Abs Val Exch", "Err Abs Val Exch"))
     
   })
   
@@ -1334,10 +1461,10 @@ server <- function(input, output, session) {
   kin_plot_theo_data <- reactive({
     
     kin_dat() %>%
-      select(Sequence, State, Start, End, time_chosen, avg_theo_in_time, err_avg_theo_in_time) %>%
+      select(Protein, Sequence, State, Start, End, time_chosen, avg_theo_in_time, err_avg_theo_in_time) %>%
       mutate(avg_theo_in_time = round(avg_theo_in_time, 4), 
              err_avg_theo_in_time = round(err_avg_theo_in_time, 4)) %>%
-      dt_format(cols = c("Sequence", "State", "Start", "End", "Time Point", "Theo Frac Exch", "Theo Err Frac Exch"))
+      dt_format(cols = c("Protein", "Sequence", "State", "Start", "End", "Time Point", "Theo Frac Exch", "Theo Err Frac Exch"))
     
   })
   
@@ -1346,10 +1473,10 @@ server <- function(input, output, session) {
   kin_plot_theo_abs_data <- reactive({
     
     kin_dat() %>%
-      select(Sequence, State, Start, End, time_chosen, abs_avg_theo_in_time, err_abs_avg_theo_in_time) %>%
+      select(Protein, Sequence, State, Start, End, time_chosen, abs_avg_theo_in_time, err_abs_avg_theo_in_time) %>%
       mutate(abs_avg_theo_in_time = round(abs_avg_theo_in_time, 4), 
              err_abs_avg_theo_in_time = round(err_abs_avg_theo_in_time, 4)) %>%
-      dt_format(cols = c("Sequence", "State", "Start", "End", "Time Point", "Theo Abs Val Exch", "Theo Err Abs Val Exch"))
+      dt_format(cols = c("Protein", "Sequence", "State", "Start", "End", "Time Point", "Theo Abs Val Exch", "Theo Err Abs Val Exch"))
     
   })
   
@@ -1377,6 +1504,72 @@ server <- function(input, output, session) {
     
   })
   
+  ### TAB: QUALITY CONTROL  
+  
+  ##
+  
+  observe({
+    
+    times_from_file <- round(unique(dat()["Exposure"]), 3)
+    
+    updateSelectInput(session, 
+                      inputId = "qc_chosen_time",
+                      choices = times_from_file,
+                      selected = min(times_from_file[times_from_file["Exposure"] >= 1, ]))
+    
+    updateSelectInput(session, 
+                      inputId = "qc_in_time",
+                      choices = times_from_file,
+                      selected = min(times_from_file[times_from_file["Exposure"] > 0, ]))
+    
+    updateSelectInput(session,
+                     inputId = "qc_state_first",
+                     choices = states_from_file(),
+                     selected = states_from_file()[1])
+    
+    updateSelectInput(session,
+                      inputId = "qc_state_second",
+                      choices = states_from_file(),
+                      selected = states_from_file()[length(states_from_file())])
+    
+  })
+  
+  ##
+  
+  output[["quality_control_plot"]] <- renderPlot({
+    
+    qc_dat <- dat() %>%
+      filter(Exposure < 99999)
+    
+    if (input[["qc_calc_type"]] == "relative"){
+      
+      result <- quality_control(dat = qc_dat,
+                                state_first = input[["qc_state_first"]],
+                                state_second = input[["qc_state_second"]], 
+                                chosen_time = input[["qc_chosen_time"]], 
+                                in_time = input[["qc_in_time"]], 
+                                relative = TRUE)
+      
+    } else {
+      
+      result <- quality_control(dat = qc_dat,
+                                state_first = input[["qc_state_first"]],
+                                state_second = input[["qc_state_second"]], 
+                                chosen_time = input[["qc_chosen_time"]], 
+                                in_time = input[["qc_in_time"]], 
+                                relative = FALSE)
+      
+    }
+    
+    gather(result, 2:7, key = 'type', value = 'value') %>%
+      filter(startsWith(type, "avg")) %>%
+      ggplot(aes(x = factor(out_time), y = value, group = type)) +
+      geom_line(aes(color = type)) +
+      labs(x = "Out time", 
+           y = "Mean uncertainty")
+    
+  })
+  
   ### TAB: SUMMARY
   
   summary_data <- reactive({
@@ -1398,9 +1591,9 @@ server <- function(input, output, session) {
                         "Replicates",
                         #"Average standard deviation",
                         "Significant differences in HDX"), 
-               Value = c(length(unique(dat()[["Exposure"]])), 
+               Value = c(length(unique(dat()[["Exposure"]])) - 1, # we add control as an additional timepoint 
                          length(unique(dat()[["Sequence"]])), 
-                         round(mean(stateOverlapDist_data()[["coverage"]] > 0), 4), 
+                         paste0(100*round(mean(stateOverlapDist_data()[["coverage"]] > 0), 4), "%"), 
                          round(mean(nchar(unique(dat()[["Sequence"]]))), 4), 
                          round(mean(stateOverlapDist_data()[["coverage"]]), 4), 
                          n_reps[1], 

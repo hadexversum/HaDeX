@@ -21,4 +21,4 @@ test_that("size is right",
                                  chosen_time = 1, 
                                  in_time = 0.001, 
                                  relative = TRUE))),
-                       13))
+                       7))

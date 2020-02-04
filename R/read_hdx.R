@@ -7,11 +7,13 @@
 #' @importFrom readr read_csv read_tsv parse_logical parse_integer parse_double parse_character 
 #' cols col_character
 #' @importFrom data.table fread
+#' @importFrom dplyr %>%
 #' 
 #' @param filename a file supplied by the user. Formats allowed: .csv, .xlsx and .xls.
 #' 
-#' @details First version accepts files produced by DynamX 3.0 and 2.0 in basic format. 
-#' The function checks if all necessary columns are provided in correct format.
+#' @details First version accepts files produced by DynamX 3.0 and 2.0 in `cluster data` format. 
+#' The function checks if all necessary columns are provided in correct format. The file must 
+#' include at least two repetitions of the measurement for the uncertainty to be calculated.
 #' 
 #' @return \code{dat} - a \code{\link{data.frame}} with validated content.
 #' 
@@ -61,6 +63,15 @@ read_hdx <- function(filename){
     stop(err_message)
   }
   
+  no_replicates <- dat %>%
+    group_by(Protein, Start, End, Sequence, Modification, State, Exposure) %>%
+    summarise(n_rep = length(unique(File))) %>%
+    ungroup(.) %>%
+    summarize(avg_rep = mean(n_rep))
+    
+  if (!(no_replicates[[1]] > 2)) {
+    err_message <- "There is no sufficient number of replicates."
+  } 
   
   dat[["Exposure"]] <- round(dat[["Exposure"]], 3)
   

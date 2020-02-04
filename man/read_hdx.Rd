@@ -16,8 +16,9 @@ read_hdx(filename)
 Imports data from a HDX-MS file and validates its content.
 }
 \details{
-First version accepts files produced by DynamX 3.0 and 2.0 in basic format. 
-The function checks if all necessary columns are provided in correct format.
+First version accepts files produced by DynamX 3.0 and 2.0 in `cluster data` format. 
+The function checks if all necessary columns are provided in correct format. The file must 
+include at least two repetitions of the measurement for the uncertainty to be calculated.
 }
 \examples{
 # read example data

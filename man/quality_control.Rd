@@ -4,8 +4,14 @@
 \alias{quality_control}
 \title{Experiment quality control}
 \usage{
-quality_control(dat, state_first, state_second, chosen_time, in_time,
-  relative = TRUE)
+quality_control(
+  dat,
+  state_first,
+  state_second,
+  chosen_time,
+  in_time,
+  relative = TRUE
+)
 }
 \arguments{
 \item{dat}{data read by \code{\link{read_hdx}}}
@@ -51,7 +57,7 @@ library(tidyr)
 library(dplyr)
 
 # example of data visualization 
-gather(result, 2:13, key = 'type', value = 'value') \%>\%
+gather(result, 2:7, key = 'type', value = 'value') \%>\%
 filter(startsWith(type, "avg")) \%>\%
   ggplot(aes(x = factor(out_time), y = value, group = type)) +
   geom_line(aes(color = type)) +

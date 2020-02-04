@@ -8,8 +8,12 @@ Analysis;Coverage and peptide overlap;No;No;Yes
 Analysis;Kinetics analysis;Yes;No;Yes
 Analysis;Quality control;No;No;Yes
 Analysis;N- and C-terminal length corrections;No;Yes;Yes
+Analysis;Wald's test;Yes;No;No
+Analysis;Consolidation;Yes;No;No
 Visualization;Global visualization of deuterium uptake;Yes;Yes;Yes
 Visualization;Woods plot;No;Yes;Yes
+Visualization;Butterfly plot;Yes;No;No
+Visualization;Logit plot;Yes;Yes;No
 Visualization;Zooming of the Woods plot;No;Yes;Yes
 Visualization;Customizable label names and colors;No;No;Yes
 Visualization;Peptide kinetics chart;Yes;No;Yes
