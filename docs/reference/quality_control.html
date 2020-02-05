@@ -15,11 +15,13 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -39,10 +41,11 @@
 
 
 
-<meta property="og:title" content="Experiment quality control — quality_control" />
 
+<meta property="og:title" content="Experiment quality control — quality_control" />
 <meta property="og:description" content="Checks how the uncertainty changes in a function of `out_time`." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -101,7 +104,6 @@
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -123,14 +125,11 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Checks how the uncertainty changes in a function of `out_time`.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>quality_control</span>(<span class='no'>dat</span>, <span class='no'>state_first</span>, <span class='no'>state_second</span>, <span class='no'>chosen_time</span>, <span class='no'>in_time</span>,
-  <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>quality_control</span>(<span class='no'>dat</span>, <span class='no'>state_first</span>, <span class='no'>state_second</span>, <span class='no'>chosen_time</span>, <span class='no'>in_time</span>)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -154,16 +153,11 @@
       <th>in_time</th>
       <td><p>`in` time</p></td>
     </tr>
-    <tr>
-      <th>relative</th>
-      <td><p><code>logical</code>, determines if values are relative or absolute.</p></td>
-    </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>data.frame</code> with mean uncertainty per different `out_time` value</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The function calculates mean uncertainty of all peptides and its uncertainty (standard error) based on given `in_time` and `chosen_time` 
@@ -171,11 +165,9 @@ as a function of `out_time`. Both theoretical and experimental results for each 
 experimental calculations depends on `out_time` variable. The results are either in form of relative or absolute values depending on the `relative` 
 parameter supplied by the user. 
 This data can be useful for general overview of the experiment and analyse of the chosen time parameters.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='read_hdx.html'>read_hdx</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># load example data</span>
@@ -186,34 +178,23 @@ This data can be useful for general overview of the experiment and analyse of th
                            <span class='kw'>state_first</span> <span class='kw'>=</span> <span class='st'>"CD160"</span>,
                            <span class='kw'>state_second</span> <span class='kw'>=</span> <span class='st'>"CD160_HVEM"</span>,
                            <span class='kw'>chosen_time</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-                           <span class='kw'>in_time</span> <span class='kw'>=</span> <span class='fl'>0.001</span>,
-                           <span class='kw'>relative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt;   out_time avg_err_state_first sd_err_state_first avg_err_state_second
+                           <span class='kw'>in_time</span> <span class='kw'>=</span> <span class='fl'>0.001</span>))</div><div class='output co'>#&gt;   out_time avg_err_state_first sd_err_state_first avg_err_state_second
 #&gt; 1        5         0.002925674        0.002207625          0.003811229
 #&gt; 2       25         0.002086275        0.001636480          0.003375989
 #&gt; 3      120         0.002124354        0.001284390          0.002759393
 #&gt; 4     1440         0.001841383        0.001032972          0.002532581
-#&gt;   sd_err_state_second avg_err_theo_state_first sd_err_theo_state_first
-#&gt; 1         0.004561764             0.0007087017            0.0005185554
-#&gt; 2         0.003690424             0.0007087017            0.0005185554
-#&gt; 3         0.001976257             0.0007087017            0.0005185554
-#&gt; 4         0.001120593             0.0007087017            0.0005185554
-#&gt;   avg_err_theo_state_second sd_err_theo_state_second    avg_diff     sd_diff
-#&gt; 1               0.001236524             0.0005534176 0.004920756 0.004952401
-#&gt; 2               0.001236524             0.0005534176 0.004053767 0.003949308
-#&gt; 3               0.001236524             0.0005534176 0.003470818 0.002088545
-#&gt; 4               0.001236524             0.0005534176 0.003200211 0.001369362
-#&gt;   avg_theo_diff sd_theo_diff
-#&gt; 1   0.001476534 0.0006500359
-#&gt; 2   0.001476534 0.0006500359
-#&gt; 3   0.001476534 0.0006500359
-#&gt; 4   0.001476534 0.0006500359</div><div class='input'>
+#&gt;   sd_err_state_second    avg_diff     sd_diff
+#&gt; 1         0.004561764 0.004920756 0.004952401
+#&gt; 2         0.003690424 0.004053767 0.003949308
+#&gt; 3         0.001976257 0.003470818 0.002088545
+#&gt; 4         0.001120593 0.003200211 0.001369362</div><div class='input'>
 <span class='co'># load extra libraries</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tidyr</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
 
 <span class='co'># example of data visualization </span>
-<span class='fu'><a href='https://tidyr.tidyverse.org/reference/gather.html'>gather</a></span>(<span class='no'>result</span>, <span class='fl'>2</span>:<span class='fl'>13</span>, <span class='kw'>key</span> <span class='kw'>=</span> <span class='st'>'type'</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='st'>'value'</span>) <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='https://tidyr.tidyverse.org/reference/gather.html'>gather</a></span>(<span class='no'>result</span>, <span class='fl'>2</span>:<span class='fl'>7</span>, <span class='kw'>key</span> <span class='kw'>=</span> <span class='st'>'type'</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='st'>'value'</span>) <span class='kw'>%&gt;%</span>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/startsWith.html'>startsWith</a></span>(<span class='no'>type</span>, <span class='st'>"avg"</span>)) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>out_time</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>value</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>type</span>)) +
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>type</span>)) +
@@ -225,13 +206,9 @@ This data can be useful for general overview of the experiment and analyse of th
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
