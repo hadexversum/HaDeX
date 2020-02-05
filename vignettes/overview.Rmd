@@ -508,8 +508,7 @@ result <- quality_control(dat = dat,
                           state_first = "gg_Nucb2_EDTA",
                           state_second = "gg_Nucb2_CaCl2", 
                           chosen_time = 25, 
-                          in_time = 0.001, 
-                          relative = TRUE)
+                          in_time = 0.001)
 
 ```
 

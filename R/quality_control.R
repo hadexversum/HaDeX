@@ -30,8 +30,7 @@
 #'                            state_first = "CD160",
 #'                            state_second = "CD160_HVEM", 
 #'                            chosen_time = 1, 
-#'                            in_time = 0.001, 
-#'                            relative = TRUE))    
+#'                            in_time = 0.001))    
 #'                            
 #' # load extra libraries
 #' library(ggplot2)
@@ -52,8 +51,7 @@ quality_control <- function(dat,
                             state_first,
                             state_second, 
                             chosen_time, 
-                            in_time,
-                            relative = TRUE){
+                            in_time){
   
   
   times <- unique(dat[["Exposure"]][dat["Exposure"] > chosen_time])
@@ -68,28 +66,13 @@ quality_control <- function(dat,
                            chosen_state_second = paste0(state_second, "_", chosen_time),
                            out_state_second = paste0(state_second, "_", t))
     
-    if (relative) {
-      
-      data.frame(t,
-                 mean(tmp[["err_frac_exch_state_1"]], na.rm = TRUE),
-                 sd(tmp[["err_frac_exch_state_1"]], na.rm = TRUE),
-                 mean(tmp[["err_frac_exch_state_2"]], na.rm = TRUE),
-                 sd(tmp[["err_frac_exch_state_2"]], na.rm = TRUE),
-                 mean(tmp[["err_frac_exch"]], na.rm = TRUE),
-                 sd(tmp[["err_frac_exch"]], na.rm = TRUE))
-      
-    } else {
-      
-      data.frame(t,
-                 mean(tmp[["err_abs_frac_exch_state_1"]], na.rm = TRUE),
-                 sd(tmp[["err_abs_frac_exch_state_1"]], na.rm = TRUE),
-                 mean(tmp[["err_abs_frac_exch_state_2"]], na.rm = TRUE),
-                 sd(tmp[["err_abs_frac_exch_state_2"]], na.rm = TRUE),
-                 mean(tmp[["err_abs_diff_frac_exch"]], na.rm = TRUE),
-                 sd(tmp[["err_abs_diff_frac_exch"]], na.rm = TRUE))
-      
-    }
-    
+    data.frame(t,
+               mean(tmp[["err_frac_exch_state_1"]], na.rm = TRUE),
+               sd(tmp[["err_frac_exch_state_1"]], na.rm = TRUE),
+               mean(tmp[["err_frac_exch_state_2"]], na.rm = TRUE),
+               sd(tmp[["err_frac_exch_state_2"]], na.rm = TRUE),
+               mean(tmp[["err_frac_exch"]], na.rm = TRUE),
+               sd(tmp[["err_frac_exch"]], na.rm = TRUE))
     
   })
   
@@ -97,7 +80,7 @@ quality_control <- function(dat,
   
   colnames(result) <- c("out_time", "avg_err_state_first", "sd_err_state_first", "avg_err_state_second", 
                         "sd_err_state_second", "avg_diff", "sd_diff")
-
+  
   result
   
 }
