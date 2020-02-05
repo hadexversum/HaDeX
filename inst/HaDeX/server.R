@@ -1149,10 +1149,12 @@ server <- function(input, output, session) {
                             wp_hv[["coords_css"]][["x"]], 
                             wp_hv[["range"]][["right"]]/wp_hv[["img_css_ratio"]][["x"]] - wp_hv[["coords_css"]][["x"]])
         
-        
+        # browser()
         style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
-                        wp_tt_pos_adj, ":", wp_tt_pos, 
-                        "px; top:", wp_hv[["coords_css"]][["y"]], "px; padding: 0px;") ## changed y position
+                        wp_tt_pos_adj, ":", wp_tt_pos, "px; padding: 0px;",
+                        "bottom:", wp_hv[["range"]][["bottom"]] - wp_hv[["coords_css"]][["y"]] , "px; ") 
+        
+        # wp_hv[["coords_css"]][["y"]]
         
         div(
           style = style,
