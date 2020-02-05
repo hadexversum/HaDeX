@@ -507,13 +507,13 @@ Example:
 result <- quality_control(dat = dat,
                           state_first = "gg_Nucb2_EDTA",
                           state_second = "gg_Nucb2_CaCl2", 
-                          chosen_time = 25, 
+                          chosen_time = 1, 
                           in_time = 0.001)
 
 ```
 
 ```{r warning=FALSE}
-ggplot(result[result["out_time"]>=1,]) + 
+ggplot(result) + 
   geom_line(aes(x = out_time, y = avg_err_state_first, color = "Average error (first state)")) +
   geom_line(aes(x = out_time, y = avg_err_state_second, color = "Average error (second state)")) +
   scale_x_log10() +
@@ -523,8 +523,28 @@ ggplot(result[result["out_time"]>=1,]) +
         legend.title = element_blank())
 ```
 
-This example is based on relative values. Although HaDeX can provide results in absolute values, be aware that absolute calculations do not
-encompass time out, so the uncertainty does not change with $D_{t_{out}}$. 
+The chart below shows how we interpret the three most common results of quality control.
+
+```{r warning=FALSE,echo=FALSE}
+example_qc <- rbind(data.frame(x = c(10, 25, 60, 1440),
+                               y = c(0.008, 0.0075, 0.007, 0.0065),
+                               type = "Uncertainty decreases too slowly\nExperiment should be prolonged",
+                               Assessment = "Alter experimental settings"),
+                    data.frame(x = c(10, 25, 60, 1440),
+                               y = c(0.008, 0.001, 0.001, 0.001),
+                               type = "Uncertainty decreases too quickly\nExperiment should have more early timepoints",
+                               Assessment = "Alter experimental settings"),
+                    data.frame(x = c(10, 25, 60, 1440),
+                               y = c(0.008, 0.004, 0.003, 0.001),
+                               type = "Uncertainty decreases properly",
+                               Assessment = "Experiment conducted properly"))
+ggplot(example_qc, aes(x = x, y = y, color = Assessment)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~ type, ncol = 1) +
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
 
 # HaDeX Graphical User Interface
 
