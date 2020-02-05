@@ -9,7 +9,6 @@
 #' @param state_second state of the second peptide
 #' @param chosen_time chosen time point
 #' @param in_time `in` time
-#' @param relative \code{logical}, determines if values are relative or absolute. 
 #' 
 #' @details The function calculates mean uncertainty of all peptides and its uncertainty (standard error) based on given `in_time` and `chosen_time` 
 #' as a function of `out_time`. Both theoretical and experimental results for each state and their difference are supplied for comparison but only 
