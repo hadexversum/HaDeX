@@ -494,7 +494,7 @@ The user can choose which state (or states) should be included in these plots. I
 
 ### Quality control 
 
-The function [quality_control()](https://hadexversum.github.io/HaDeX/reference/quality_control.html) plots the change in the uncertainty of deuteration levels as a function of incubation time. The uncertainty is averaged over all peptides available at a given time point in a selected state. This chart has a double function: firstly, it allows checking if the measurement uncertainty is decreasing over time (which is the expected behaviour) and the second one helps to plan the appropriate incubation length for the tested white (whether we obtain the desired data reliability values).
+The function [quality_control()](https://hadexversum.github.io/HaDeX/reference/quality_control.html) plots the change in the uncertainty of deuteration levels as a function of incubation time. The uncertainty is averaged over all peptides available at a given time point in a selected state. This chart has a double function: firstly, it allows checking if the measurement uncertainty is decreasing over time (which is the expected behaviour) and the second one helps to plan the appropriate incubation length for the tested protein (whether we obtain the desired data reliability values).
 
 In HDX-MS experiments, the average uncertainty of measurements decreases over time as the sample is more and more deuterated (even accounting for the back-propagation). Therefore, if the level of uncertainty is stable, the exchange is still ongoing and it would be advisable to prolong the reaction.
 
