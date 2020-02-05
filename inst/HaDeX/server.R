@@ -731,6 +731,8 @@ server <- function(input, output, session) {
     
   })
   
+  ##
+  
   output[["comparisonPlot_debug"]] <- renderUI({
     
     if(!is.null(input[["comparisonPlot_hover"]])) {
@@ -1579,39 +1581,78 @@ server <- function(input, output, session) {
   
   ##
   
-  output[["quality_control_plot"]] <- renderPlot({
+  quality_control_dat <- reactive({
     
     qc_dat <- dat() %>%
       filter(Exposure < 99999)
     
-    if (input[["qc_calc_type"]] == "relative"){
+    result <- quality_control(dat = qc_dat,
+                              state_first = input[["qc_state_first"]],
+                              state_second = input[["qc_state_second"]], 
+                              chosen_time = input[["qc_chosen_time"]], 
+                              in_time = input[["qc_in_time"]], 
+                              relative = TRUE) %>%
+      # to get the percentages in readable form
+      mutate(avg_err_state_first = 100 * avg_err_state_first,
+             sd_err_state_first = 100 * sd_err_state_first,
+             avg_err_state_second = 100 * avg_err_state_second,
+             sd_err_state_second = 100 * sd_err_state_second, 
+             avg_diff = 100 * avg_diff, 
+             sd_diff = 100 * sd_diff)
       
-      result <- quality_control(dat = qc_dat,
-                                state_first = input[["qc_state_first"]],
-                                state_second = input[["qc_state_second"]], 
-                                chosen_time = input[["qc_chosen_time"]], 
-                                in_time = input[["qc_in_time"]], 
-                                relative = TRUE)
-      
-    } else {
-      
-      result <- quality_control(dat = qc_dat,
-                                state_first = input[["qc_state_first"]],
-                                state_second = input[["qc_state_second"]], 
-                                chosen_time = input[["qc_chosen_time"]], 
-                                in_time = input[["qc_in_time"]], 
-                                relative = FALSE)
-      
-    }
     
-    gather(result, 2:7, key = 'type', value = 'value') %>%
+  })
+  
+  ##
+  
+  qc_out <- reactive({
+    
+    quality_control_dat() %>%
+      gather(2:7, key = 'type', value = 'value') %>%
       filter(startsWith(type, "avg")) %>%
       ggplot(aes(x = factor(out_time), y = value, group = type)) +
       geom_line(aes(color = type)) +
-      labs(x = "Out time", 
-           y = "Mean uncertainty")
+      scale_colour_discrete(name = "Mean uncertainty of: ", labels = c("difference", "first state", "second state")) +
+      labs(x = "Out time [min]",
+           y = "Mean uncertainty [%]",
+           title = "Quality control plot for experiment")
     
   })
+  
+  output[["quality_control_plot"]] <- renderPlot({
+    
+    qc_out()
+    
+  })
+  
+  ##
+  
+  quality_control_plot_data_out <- reactive({
+    
+    quality_control_dat() %>%
+      select(out_time, avg_err_state_first, avg_err_state_second, avg_diff) %>%
+      mutate(avg_err_state_first = round(avg_err_state_first, 2),
+             avg_err_state_second = round(avg_err_state_second, 2),
+             avg_diff = round(avg_diff, 2)) %>%
+      dt_format(cols = c("Out time", "Mean error - first state [%]", "Mean error - second state [%]", "Mean error of difference [%]"))
+    
+  })
+  
+  ##
+  
+  output[["quality_control_plot_data"]] <- DT::renderDataTable({
+    
+    quality_control_plot_data_out()
+    
+  })
+  
+  ##
+  
+  output[["quality_control_plot_download_button"]] <- downloadHandler("qualityControlPlot.svg",
+                                                                      content = function(file){
+                                                                        ggsave(file, qc_out(), device = svg,
+                                                                               height = 300, width = 400, units = "mm")
+                                                                      })
   
   ### TAB: SUMMARY
   
