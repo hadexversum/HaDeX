@@ -232,12 +232,13 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          tabsetPanel(
                                            tabPanel("Woods plot",
                                                     br(),
-                                                    plotOutput_h("differentialPlot"),
+                                                    plotOutput_h("differentialPlot", hover = hoverOpts("differentialPlot_hover", delay = 10, delayType = "debounce")), 
                                                     downloadButton("differentialPlot_download_button", 
                                                                    "Save chart (.svg)")), 
                                            tabPanel("Data",
                                                     br(),
-                                                    DT::dataTableOutput("differentialPlot_data")))
+                                                    DT::dataTableOutput("differentialPlot_data"))),
+                                         uiOutput("differentialPlot_debug")
                                          
                                        )
                               ),

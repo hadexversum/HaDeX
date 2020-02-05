@@ -737,6 +737,8 @@ server <- function(input, output, session) {
     
     if(!is.null(input[["comparisonPlot_hover"]])) {
       
+      # browser()
+      
       plot_data <- cp_out()[["data"]]
       hv <- input[["comparisonPlot_hover"]]
       
@@ -749,7 +751,8 @@ server <- function(input, output, session) {
                            State = plot_data[["State"]])
       
       tt_df <- filter(hv_dat, Start < x, End > x) %>% 
-        filter(abs(y_plot - y) == min(abs(y_plot - y))) 
+        filter(abs(y_plot - y) == min(abs(y_plot - y)))
+   
       
       if(nrow(tt_df) != 0) { 
         
@@ -1114,6 +1117,51 @@ server <- function(input, output, session) {
     
     wp_out()
     
+  })
+  
+  ##
+  
+  output[["differentialPlot_debug"]] <- renderUI({
+    
+    if(!is.null(input[["differentialPlot_hover"]])) {
+      
+      # browser()
+      wp_plot_data <- wp_out()[["data"]]
+      wp_hv <- input[["differentialPlot_hover"]]
+      
+      wp_hv_dat <- data.frame(x = wp_hv[["x"]],
+                           y = wp_hv[["y"]],
+                           Start = wp_plot_data[[wp_hv[["mapping"]][["x"]]]],
+                           End = wp_plot_data[["End"]],
+                           y_plot = wp_plot_data[[wp_hv[["mapping"]][["y"]]]],
+                           Sequence = wp_plot_data[["Sequence"]])
+      
+      wp_tt_df <- filter(wp_hv_dat, Start < x, End > x) %>% 
+        filter(abs(y_plot - y) == min(abs(y_plot - y)))
+      
+      
+      if(nrow(wp_tt_df) != 0) { 
+        
+        wp_tt_pos_adj <- ifelse(wp_hv[["coords_img"]][["x"]]/wp_hv[["range"]][["right"]] < 0.5,
+                             "left", "right")
+        
+        wp_tt_pos <- ifelse(wp_hv[["coords_img"]][["x"]]/wp_hv[["range"]][["right"]] < 0.5,
+                            wp_hv[["coords_css"]][["x"]], 
+                            wp_hv[["range"]][["right"]]/wp_hv[["img_css_ratio"]][["x"]] - wp_hv[["coords_css"]][["x"]])
+        
+        
+        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+                        wp_tt_pos_adj, ":", wp_tt_pos, 
+                        "px; top:", wp_hv[["coords_css"]][["y"]], "px; padding: 0px;") ## changed y position
+        
+        div(
+          style = style,
+          p(HTML(paste0(wp_tt_df[["Sequence"]], 
+                        "<br/> Position: ", wp_tt_df[["Start"]], "-", wp_tt_df[["End"]], 
+                        "<br/> Value: ", round(wp_tt_df[["y_plot"]], 2))))
+        )
+      }
+    }
   })
   
   ##
