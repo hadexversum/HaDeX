@@ -4,15 +4,8 @@
 \alias{calculate_state_deuteration}
 \title{Calculate deuteration}
 \usage{
-calculate_state_deuteration(
-  dat,
-  protein,
-  state,
-  time_in,
-  time_chosen,
-  time_out,
-  deut_part = 1
-)
+calculate_state_deuteration(dat, protein, state, time_in, time_chosen,
+  time_out, deut_part = 1)
 }
 \arguments{
 \item{dat}{data as imported by the \code{\link{read_hdx}} function}

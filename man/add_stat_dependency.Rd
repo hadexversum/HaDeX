@@ -4,12 +4,8 @@
 \alias{add_stat_dependency}
 \title{Calculates confidence limits}
 \usage{
-add_stat_dependency(
-  calc_dat,
-  confidence_limit = 0.98,
-  theoretical = FALSE,
-  relative = TRUE
-)
+add_stat_dependency(calc_dat, confidence_limit = 0.98,
+  theoretical = FALSE, relative = TRUE)
 }
 \arguments{
 \item{calc_dat}{processed data from DynamX file - using \code{\link{prepare_dataset}}}

@@ -4,11 +4,8 @@
 \alias{plot_coverage}
 \title{Plot peptide coverage}
 \usage{
-plot_coverage(
-  dat,
-  protein = dat[["Protein"]][1],
-  chosen_state = dat[["State"]][1]
-)
+plot_coverage(dat, protein = dat[["Protein"]][1],
+  chosen_state = dat[["State"]][1])
 }
 \arguments{
 \item{dat}{data as imported by the \code{\link{read_hdx}} function}
