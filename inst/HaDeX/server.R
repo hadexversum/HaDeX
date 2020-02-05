@@ -77,7 +77,7 @@ server <- function(input, output, session) {
   ##
   
   observe({
-
+    
     updateSelectInput(session,
                       inputId = "chosen_protein",
                       choices = proteins_from_file(),
@@ -88,7 +88,7 @@ server <- function(input, output, session) {
   ##
   
   options_for_control <- reactive({
-
+    
     dat_in() %>%
       filter(Protein == input[["chosen_protein"]]) %>%
       mutate(Exposure = round(Exposure, 3)) %>%
@@ -120,7 +120,7 @@ server <- function(input, output, session) {
   ## create dat based on control
   
   dat <- reactive({
-
+    
     tmp <- dat_tmp() %>%
       filter(Protein == input[["chosen_protein"]], 
              State == strsplit(input[["chosen_control"]], " \\| ")[[1]][2], 
@@ -131,8 +131,8 @@ server <- function(input, output, session) {
     
     bind_rows(dat_tmp(), 
               lapply(states_to_prepare, function(state){
-                            mutate(tmp, State = state) 
-                     }))
+                mutate(tmp, State = state) 
+              }))
   })
   
   ##
@@ -635,7 +635,7 @@ server <- function(input, output, session) {
   
   comparison_plot_theo <- reactive({
     
-    ggplot() +
+    ggplot(data = prep_dat()) +
       geom_segment(data = prep_dat(), aes(x = Start, y = avg_theo_in_time, xend = End, yend = avg_theo_in_time, color = State)) +
       geom_errorbar(data = prep_dat(), aes(x = Med_Sequence, ymin = avg_theo_in_time - err_avg_theo_in_time, ymax = avg_theo_in_time + err_avg_theo_in_time, color = State)) +
       theme(legend.position = "bottom",
@@ -648,7 +648,7 @@ server <- function(input, output, session) {
   
   comparison_plot_theo_abs <- reactive({
     
-    ggplot() +
+    ggplot(data = prep_dat()) +
       geom_segment(data = prep_dat(), aes(x = Start, y = abs_avg_theo_in_time, xend = End, yend = abs_avg_theo_in_time, color = State)) +
       geom_errorbar(data = prep_dat(), aes(x = Med_Sequence, ymin = abs_avg_theo_in_time - err_abs_avg_theo_in_time, ymax = abs_avg_theo_in_time + err_abs_avg_theo_in_time, color = State)) +
       theme(legend.position = "bottom",
@@ -661,7 +661,7 @@ server <- function(input, output, session) {
   
   comparison_plot_exp <- reactive({
     
-    ggplot() +
+    ggplot(data = prep_dat()) +
       geom_segment(data = prep_dat(), aes(x = Start, y = frac_exch_state, xend = End, yend = frac_exch_state, color = State)) +
       geom_errorbar(data = prep_dat(), aes(x = Med_Sequence, ymin = frac_exch_state - err_frac_exch_state, ymax = frac_exch_state + err_frac_exch_state, color = State)) +
       theme(legend.position = "bottom",
@@ -674,7 +674,7 @@ server <- function(input, output, session) {
   
   comparison_plot_exp_abs <- reactive({
     
-    ggplot() +
+    ggplot(data = prep_dat()) +
       geom_segment(data = prep_dat(), aes(x = Start, y = abs_frac_exch_state, xend = End, yend = abs_frac_exch_state, color = State)) +
       geom_errorbar(data = prep_dat(), aes(x = Med_Sequence, ymin = abs_frac_exch_state - err_abs_frac_exch_state, ymax = abs_frac_exch_state + err_abs_frac_exch_state, color = State)) +
       theme(legend.position = "bottom",
@@ -726,9 +726,57 @@ server <- function(input, output, session) {
   ##
   
   output[["comparisonPlot"]] <- renderPlot({
+    #browser()
+    cp_out() 
     
-    cp_out()
+  })
+  
+  ##
+  
+  output[["comparisonPlot_debug"]] <- renderUI({
     
+    if(!is.null(input[["comparisonPlot_hover"]])) {
+      
+      # browser()
+      
+      plot_data <- cp_out()[["data"]]
+      hv <- input[["comparisonPlot_hover"]]
+      
+      hv_dat <- data.frame(x = hv[["x"]],
+                           y = hv[["y"]],
+                           Start = plot_data[[hv[["mapping"]][["x"]]]],
+                           End = plot_data[["End"]],
+                           y_plot = plot_data[[hv[["mapping"]][["y"]]]],
+                           Sequence = plot_data[["Sequence"]],
+                           State = plot_data[["State"]])
+      
+      tt_df <- filter(hv_dat, Start < x, End > x) %>% 
+        filter(abs(y_plot - y) == min(abs(y_plot - y)))
+   
+      
+      if(nrow(tt_df) != 0) { 
+        
+        tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                             "left", "right")
+        
+        tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                         hv[["coords_css"]][["x"]], 
+                         hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+        
+        
+        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+                        tt_pos_adj, ":", tt_pos, 
+                        "px; top:", hv[["coords_css"]][["y"]], "px; padding: 0px;")
+        
+        div(
+          style = style,
+          p(HTML(paste0(tt_df[["Sequence"]], 
+                        "<br/> Position: ", tt_df[["Start"]], "-", tt_df[["End"]], 
+                        "<br/> Value: ", round(tt_df[["y_plot"]], 2),
+                        "<br/> State: ", tt_df[["State"]])))
+        )
+      }
+    }
   })
   
   ##
@@ -838,22 +886,22 @@ server <- function(input, output, session) {
     validate(need(length(unique(filter(dat(), !is.na("Modification"), Protein == input[["chosen_protein"]])[["State"]])) > 1, "Not sufficient number of states without modifications."))
     
     tmp <- bind_rows(lapply(c(input[["state_first"]], input[["state_second"]]), function(i) calculate_state_deuteration(dat(), 
-                                                                                                                 protein = input[["chosen_protein"]], 
-                                                                                                                 state = i, 
-                                                                                                                 time_in = input[["in_time"]],
-                                                                                                                 time_chosen = input[["chosen_time"]], 
-                                                                                                                 time_out = input[["out_time"]],
-                                                                                                                 deut_part = 0.01*as.integer(input[["deut_concentration"]])))) %>%
+                                                                                                                        protein = input[["chosen_protein"]], 
+                                                                                                                        state = i, 
+                                                                                                                        time_in = input[["in_time"]],
+                                                                                                                        time_chosen = input[["chosen_time"]], 
+                                                                                                                        time_out = input[["out_time"]],
+                                                                                                                        deut_part = 0.01*as.integer(input[["deut_concentration"]])))) %>%
       droplevels() %>% 
       mutate(State = factor(State, levels = c(input[["state_first"]], input[["state_second"]]), labels = c("1", "2"))) %>%
       gather(variable, value, -c(Protein:End, State, Med_Sequence)) %>%
       unite(tmp, variable, State) %>%
       spread(tmp, value) 
-
-      validate(need(!is.na(tmp[["frac_exch_state_1"]]), "First state data is not sufficient. Choose another state."))
-      validate(need(!is.na(tmp[["frac_exch_state_2"]]), "Second state data is not sufficient. Choose another state."))
-      
-      tmp %>%
+    
+    validate(need(!is.na(tmp[["frac_exch_state_1"]]), "First state data is not sufficient. Choose another state."))
+    validate(need(!is.na(tmp[["frac_exch_state_2"]]), "Second state data is not sufficient. Choose another state."))
+    
+    tmp %>%
       mutate(diff_frac_exch = frac_exch_state_1 - frac_exch_state_2,
              err_frac_exch = sqrt(err_frac_exch_state_1^2 + err_frac_exch_state_2^2),
              abs_diff_frac_exch = abs_frac_exch_state_1 - abs_frac_exch_state_2,
@@ -1073,6 +1121,53 @@ server <- function(input, output, session) {
   
   ##
   
+  output[["differentialPlot_debug"]] <- renderUI({
+    
+    if(!is.null(input[["differentialPlot_hover"]])) {
+      
+      # browser()
+      wp_plot_data <- wp_out()[["data"]]
+      wp_hv <- input[["differentialPlot_hover"]]
+      
+      wp_hv_dat <- data.frame(x = wp_hv[["x"]],
+                           y = wp_hv[["y"]],
+                           Start = wp_plot_data[[wp_hv[["mapping"]][["x"]]]],
+                           End = wp_plot_data[["End"]],
+                           y_plot = wp_plot_data[[wp_hv[["mapping"]][["y"]]]],
+                           Sequence = wp_plot_data[["Sequence"]])
+      
+      wp_tt_df <- filter(wp_hv_dat, Start < x, End > x) %>% 
+        filter(abs(y_plot - y) == min(abs(y_plot - y)))
+      
+      
+      if(nrow(wp_tt_df) != 0) { 
+        
+        wp_tt_pos_adj <- ifelse(wp_hv[["coords_img"]][["x"]]/wp_hv[["range"]][["right"]] < 0.5,
+                             "left", "right")
+        
+        wp_tt_pos <- ifelse(wp_hv[["coords_img"]][["x"]]/wp_hv[["range"]][["right"]] < 0.5,
+                            wp_hv[["coords_css"]][["x"]], 
+                            wp_hv[["range"]][["right"]]/wp_hv[["img_css_ratio"]][["x"]] - wp_hv[["coords_css"]][["x"]])
+        
+        # browser()
+        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+                        wp_tt_pos_adj, ":", wp_tt_pos, "px; padding: 0px;",
+                        "bottom:", wp_hv[["range"]][["bottom"]] - wp_hv[["coords_css"]][["y"]] , "px; ") 
+        
+        # wp_hv[["coords_css"]][["y"]]
+        
+        div(
+          style = style,
+          p(HTML(paste0(wp_tt_df[["Sequence"]], 
+                        "<br/> Position: ", wp_tt_df[["Start"]], "-", wp_tt_df[["End"]], 
+                        "<br/> Value: ", round(wp_tt_df[["y_plot"]], 2))))
+        )
+      }
+    }
+  })
+  
+  ##
+  
   output[["differentialPlot_download_button"]] <- downloadHandler("differentialPlot.svg",
                                                                   content = function(file) {
                                                                     ggsave(file, wp_out(), device = svg,
@@ -1240,7 +1335,7 @@ server <- function(input, output, session) {
   ##
   
   peptide_list <- reactive({
-
+    
     dat() %>%
       filter(Protein == input[["chosen_protein"]]) %>%
       select(Sequence, State, Start, End) %>%
@@ -1523,9 +1618,9 @@ server <- function(input, output, session) {
                       selected = min(times_from_file[times_from_file["Exposure"] > 0, ]))
     
     updateSelectInput(session,
-                     inputId = "qc_state_first",
-                     choices = states_from_file(),
-                     selected = states_from_file()[1])
+                      inputId = "qc_state_first",
+                      choices = states_from_file(),
+                      selected = states_from_file()[1])
     
     updateSelectInput(session,
                       inputId = "qc_state_second",
@@ -1536,39 +1631,78 @@ server <- function(input, output, session) {
   
   ##
   
-  output[["quality_control_plot"]] <- renderPlot({
+  quality_control_dat <- reactive({
     
     qc_dat <- dat() %>%
       filter(Exposure < 99999)
     
-    if (input[["qc_calc_type"]] == "relative"){
+    result <- quality_control(dat = qc_dat,
+                              state_first = input[["qc_state_first"]],
+                              state_second = input[["qc_state_second"]], 
+                              chosen_time = input[["qc_chosen_time"]], 
+                              in_time = input[["qc_in_time"]], 
+                              relative = TRUE) %>%
+      # to get the percentages in readable form
+      mutate(avg_err_state_first = 100 * avg_err_state_first,
+             sd_err_state_first = 100 * sd_err_state_first,
+             avg_err_state_second = 100 * avg_err_state_second,
+             sd_err_state_second = 100 * sd_err_state_second, 
+             avg_diff = 100 * avg_diff, 
+             sd_diff = 100 * sd_diff)
       
-      result <- quality_control(dat = qc_dat,
-                                state_first = input[["qc_state_first"]],
-                                state_second = input[["qc_state_second"]], 
-                                chosen_time = input[["qc_chosen_time"]], 
-                                in_time = input[["qc_in_time"]], 
-                                relative = TRUE)
-      
-    } else {
-      
-      result <- quality_control(dat = qc_dat,
-                                state_first = input[["qc_state_first"]],
-                                state_second = input[["qc_state_second"]], 
-                                chosen_time = input[["qc_chosen_time"]], 
-                                in_time = input[["qc_in_time"]], 
-                                relative = FALSE)
-      
-    }
     
-    gather(result, 2:7, key = 'type', value = 'value') %>%
+  })
+  
+  ##
+  
+  qc_out <- reactive({
+    
+    quality_control_dat() %>%
+      gather(2:7, key = 'type', value = 'value') %>%
       filter(startsWith(type, "avg")) %>%
       ggplot(aes(x = factor(out_time), y = value, group = type)) +
       geom_line(aes(color = type)) +
-      labs(x = "Out time", 
-           y = "Mean uncertainty")
+      scale_colour_discrete(name = "Mean uncertainty of: ", labels = c("difference", "first state", "second state")) +
+      labs(x = "Out time [min]",
+           y = "Mean uncertainty [%]",
+           title = "Quality control plot for experiment")
     
   })
+  
+  output[["quality_control_plot"]] <- renderPlot({
+    
+    qc_out()
+    
+  })
+  
+  ##
+  
+  quality_control_plot_data_out <- reactive({
+    
+    quality_control_dat() %>%
+      select(out_time, avg_err_state_first, avg_err_state_second, avg_diff) %>%
+      mutate(avg_err_state_first = round(avg_err_state_first, 2),
+             avg_err_state_second = round(avg_err_state_second, 2),
+             avg_diff = round(avg_diff, 2)) %>%
+      dt_format(cols = c("Out time", "Mean error - first state [%]", "Mean error - second state [%]", "Mean error of difference [%]"))
+    
+  })
+  
+  ##
+  
+  output[["quality_control_plot_data"]] <- DT::renderDataTable({
+    
+    quality_control_plot_data_out()
+    
+  })
+  
+  ##
+  
+  output[["quality_control_plot_download_button"]] <- downloadHandler("qualityControlPlot.svg",
+                                                                      content = function(file){
+                                                                        ggsave(file, qc_out(), device = svg,
+                                                                               height = 300, width = 400, units = "mm")
+                                                                      })
   
   ### TAB: SUMMARY
   

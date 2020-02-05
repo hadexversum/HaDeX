@@ -4,14 +4,7 @@
 \alias{quality_control}
 \title{Experiment quality control}
 \usage{
-quality_control(
-  dat,
-  state_first,
-  state_second,
-  chosen_time,
-  in_time,
-  relative = TRUE
-)
+quality_control(dat, state_first, state_second, chosen_time, in_time)
 }
 \arguments{
 \item{dat}{data read by \code{\link{read_hdx}}}
@@ -23,8 +16,6 @@ quality_control(
 \item{chosen_time}{chosen time point}
 
 \item{in_time}{`in` time}
-
-\item{relative}{\code{logical}, determines if values are relative or absolute.}
 }
 \value{
 \code{data.frame} with mean uncertainty per different `out_time` value
@@ -48,8 +39,7 @@ dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.
                            state_first = "CD160",
                            state_second = "CD160_HVEM", 
                            chosen_time = 1, 
-                           in_time = 0.001, 
-                           relative = TRUE))    
+                           in_time = 0.001))    
                            
 # load extra libraries
 library(ggplot2)

@@ -4,17 +4,8 @@
 \alias{calculate_kinetics}
 \title{Calculate kinetic data}
 \usage{
-calculate_kinetics(
-  dat,
-  protein = dat[["Protein"]][1],
-  sequence,
-  state,
-  start,
-  end,
-  time_in,
-  time_out,
-  deut_part = 1
-)
+calculate_kinetics(dat, protein = dat[["Protein"]][1], sequence, state,
+  start, end, time_in, time_out, deut_part = 1)
 }
 \arguments{
 \item{dat}{dat data read by \code{\link{read_hdx}}}

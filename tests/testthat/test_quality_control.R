@@ -10,8 +10,7 @@ test_that("class is right",
                           state_first = "CD160",
                           state_second = "CD160_HVEM", 
                           chosen_time = 1, 
-                          in_time = 0.001, 
-                          relative = FALSE),
+                          in_time = 0.001),
                     "data.frame"))
 
 test_that("size is right",
@@ -19,6 +18,5 @@ test_that("size is right",
                                  state_first = "CD160",
                                  state_second = "CD160_HVEM", 
                                  chosen_time = 1, 
-                                 in_time = 0.001, 
-                                 relative = TRUE))),
+                                 in_time = 0.001))),
                        7))

@@ -1,12 +1,6 @@
 source("data-work.R")
 
-# library(reactlog)
-# options(shiny.reactlog = TRUE)
-#########################################
-
 options(spinner.color="#715D91")
-
-#########################################
 
 ui <- fluidPage(theme = "HaDeX_theme.css",
                 #titlePanel("HaDeX"), #: analysis of data from hydrogen deuterium exchange-mass spectrometry"),
@@ -34,7 +28,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        img(class='funding-icons',
                                            src='funding_icons.png'),
                                        br()
-    
+                                       
                                        
                               ),
                               tabPanel("Input data",
@@ -97,24 +91,24 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                 # h5("If C-terminal of is not covered by peptides, 
                                                 #         enter its correct position."),
                                                 textOutput("sequence_length_exp_info")
-                                                )
+                                         )
                                        ),
                                        br(),
                                        br(),
                                        br()
-                                       ),
+                              ),
                               tabPanel("Woods plot",
                                        br(),
                                        sidebarPanel(
                                          class = "scrollable",
                                          h3("Select parameters for the plot."),
                                          fluidRow(checkboxInput_h(inputId = "theory",
-                                                                           label = "Theoretical calculations",
-                                                                           value = FALSE)),
+                                                                  label = "Theoretical calculations",
+                                                                  value = FALSE)),
                                          radioButtons_h(inputId = "calc_type",
-                                                       label = "Choose values type:",
-                                                       choices = c("relative", "absolute"),
-                                                       selected = "relative"),
+                                                        label = "Choose values type:",
+                                                        choices = c("relative", "absolute"),
+                                                        selected = "relative"),
                                          h4("Comparison plot parameters:"),
                                          h5("Choose time parameters:"),
                                          splitLayout(
@@ -139,9 +133,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                   class = "states-to-compare-column"),
                                            column(6,
                                                   helper(tags$button("Adjust colors",
-                                                              class = "collapse-button",
-                                                              `data-toggle`="collapse",
-                                                              `data-target`="#colorss"),
+                                                                     class = "collapse-button",
+                                                                     `data-toggle`="collapse",
+                                                                     `data-target`="#colorss"),
                                                          content = "adjust_colors", type = "markdown", buttonLabel = "Okay", 
                                                          easyClose = TRUE, colour = "#F8F1FF"),
                                                   tags$div(
@@ -176,24 +170,24 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          ##
                                          h4("Zoom:"),
                                          sliderInput(inputId = 'comp_plot_y_range',
-                                                    label = 'Choose y range for comparison plot:',
-                                                    min = -200,
-                                                    max = 200,
-                                                    value = c(0, 120),
-                                                    step = 10,
-                                                    width = "100%"),
+                                                     label = 'Choose y range for comparison plot:',
+                                                     min = -200,
+                                                     max = 200,
+                                                     value = c(0, 120),
+                                                     step = 10,
+                                                     width = "100%"),
                                          sliderInput(inputId = 'woods_plot_y_range',
-                                                    label = 'Choose y range for Woods plot:',
-                                                    min = -200,
-                                                    max = 200,
-                                                    value = c(-50, 50),
-                                                    step = 10),
+                                                     label = 'Choose y range for Woods plot:',
+                                                     min = -200,
+                                                     max = 200,
+                                                     value = c(-50, 50),
+                                                     step = 10),
                                          sliderInput(inputId = 'plot_x_range',
-                                                    label = 'Choose x range for both plots:',
-                                                    min = 0,
-                                                    max = 300,
-                                                    value = c(0, 300),
-                                                    ticks = seq(0, 300, 1)),
+                                                     label = 'Choose x range for both plots:',
+                                                     min = 0,
+                                                     max = 300,
+                                                     value = c(0, 300),
+                                                     ticks = seq(0, 300, 1)),
                                          ##
                                          tags$button("Adjust labels", 
                                                      class = "collapse-button",
@@ -227,22 +221,24 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          tabsetPanel(
                                            tabPanel("Comparison plot", 
                                                     br(),
-                                                    plotOutput_h("comparisonPlot"), 
+                                                    plotOutput_h("comparisonPlot", hover = hoverOpts("comparisonPlot_hover", delay = 10, delayType = "debounce")), 
                                                     downloadButton("comparisonPlot_download_button", 
                                                                    "Save chart (.svg)")), 
                                            tabPanel("Data",
                                                     br(),
                                                     DT::dataTableOutput("comparisonPlot_data"))),
+                                         uiOutput("comparisonPlot_debug"), 
                                          br(),
                                          tabsetPanel(
                                            tabPanel("Woods plot",
                                                     br(),
-                                                    plotOutput_h("differentialPlot"),
+                                                    plotOutput_h("differentialPlot", hover = hoverOpts("differentialPlot_hover", delay = 10, delayType = "debounce")), 
                                                     downloadButton("differentialPlot_download_button", 
                                                                    "Save chart (.svg)")), 
                                            tabPanel("Data",
                                                     br(),
-                                                    DT::dataTableOutput("differentialPlot_data")))
+                                                    DT::dataTableOutput("differentialPlot_data"))),
+                                         uiOutput("differentialPlot_debug")
                                          
                                        )
                               ),
@@ -323,7 +319,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                      downloadButton("aminoDist_download_button",
                                                                     "Save chart (.svg)"),
                                                      p("Source: Kyte, J., and Doolittle, R.F. (1982). A simple method for displaying the hydropathic character of a protein. J Mol Biol 157, 105–132.")),
-                                           )
+                                         )
                                        )
                               ),
                               tabPanel("Kinetics",
@@ -349,7 +345,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          h5("Choose peptide:"),
                                          dataTableOutput_h("peptide_list_data"), ## !! 
                                          actionButton(inputId = "reset_peptide_list", 
-                                                       label = "Reset chosen peptides"),
+                                                      label = "Reset chosen peptides"),
                                          br(),
                                          br(),
                                          br(),
@@ -392,31 +388,40 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        )
                               ),
                               #
-                              # tabPanel("Quality control",
-                              #          br(),
-                              #          sidebarPanel(
-                              #            radioButtons_h(inputId = "qc_calc_type",
-                              #                           label = "Choose values type:",
-                              #                           choices = c("relative", "absolute"),
-                              #                           selected = "relative"),
-                              #            selectInput_h(inputId = "qc_in_time",
-                              #                          label = "Choose in time: ",
-                              #                          choices = c("0", "1", "5", "25", "1440")),
-                              #            selectInput_h(inputId = "qc_chosen_time",
-                              #                          label = "Choose time: ",
-                              #                          choices = c("0", "1", "5", "25", "1440")),
-                              #            selectInput_h(inputId = "qc_state_first",
-                              #                          label = "State 1",
-                              #                          choices = c("CD160", "CD160VEM")),
-                              #            selectInput_h(inputId = "qc_state_second",
-                              #                          label = "State 2", 
-                              #                          choices = c("CD160", "CD160VEM"))
-                              #          ),
-                              #          mainPanel(
-                              #            plotOutput_h("quality_control_plot", height = 600)
-                              #          )
-                              #          ),
-                              #
+                              tabPanel("Quality control",
+                                       br(),
+                                       sidebarPanel(
+                                         h3("Select parameters for the plot."),
+                                         h5("The plot can be rendered only for relative experimental values."),
+                                         selectInput_h(inputId = "qc_in_time",
+                                                       label = "Choose in time: ",
+                                                       choices = c("0", "1", "5", "25", "1440")),
+                                         selectInput_h(inputId = "qc_chosen_time",
+                                                       label = "Choose time: ",
+                                                       choices = c("0", "1", "5", "25", "1440")),
+                                         selectInput_h(inputId = "qc_state_first",
+                                                       label = "State 1",
+                                                       choices = c("CD160", "CD160VEM")),
+                                         selectInput_h(inputId = "qc_state_second",
+                                                       label = "State 2", 
+                                                       choices = c("CD160", "CD160VEM"))
+                                       ),
+                                       mainPanel(
+                                         tabsetPanel(
+                                           tabPanel("Quality control plot", 
+                                                    br(),
+                                                    plotOutput_h("quality_control_plot", height = 600),
+                                                    downloadButton("quality_control_plot_download_button", 
+                                                                   "Save chart (.svg)"),
+                                                    br(),
+                                                    h4("This function plots the change in the uncertainty of deuteration levels as a function of incubation time. The uncertainty is averaged over all peptides available at a given time point in a selected state. This chart has a double function: firstly, it allows checking if the measurement uncertainty is decreasing over time (which is the expected behaviour) and the second one helps to plan the appropriate incubation length for the tested protein (whether we obtain the desired data reliability values).")
+                                                    ), 
+                                           tabPanel("Data",
+                                                    br(),
+                                                    DT::dataTableOutput("quality_control_plot_data"))
+                                         )
+                                       )
+                              ),
                               tabPanel("Summary",
                                        br(),
                                        fluidRow(
@@ -453,6 +458,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                            value = FALSE),
                                                              checkboxInput(inputId = "export_theo_kin_plot",
                                                                            label = "Theoretical Kinetic Plot", 
+                                                                           value = FALSE),
+                                                             checkboxInput(inputId = "export_quality_control_plot",
+                                                                           label = "Quality Control Plot",
                                                                            value = FALSE)),
                                                       column(6, 
                                                              checkboxInput(inputId = "export_overlap_dist_data",
@@ -470,7 +478,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                              checkboxInput(input = "export_kin_plot_data", 
                                                                            label = "Kinetic Plot Data"),
                                                              checkboxInput(inputId = "export_theo_kin_plot_data", 
-                                                                           label = "Theoretical Kinetic Plot Data"))),
+                                                                           label = "Theoretical Kinetic Plot Data"),
+                                                             checkboxInput(inputId = "export_quality_control_plot_data",
+                                                                           label = "Quality Control Plot Data"))),
                                                     br(),
                                                     h5("Elements chosen for report have the same parameters as chosen in panel e.g. axis range and title. Adjust parameters for plots as needed in the report."),
                                                     br(),

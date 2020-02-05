@@ -4,11 +4,8 @@
 \alias{plot_position_frequency}
 \title{Plot position frequency}
 \usage{
-plot_position_frequency(
-  dat,
-  protein = dat[["Protein"]][1],
-  chosen_state = dat[["State"]][1]
-)
+plot_position_frequency(dat, protein = dat[["Protein"]][1],
+  chosen_state = dat[["State"]][1])
 }
 \arguments{
 \item{dat}{data as imported by the \code{\link{read_hdx}} function}

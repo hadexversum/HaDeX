@@ -785,6 +785,39 @@ if (input[["export_theo_kin_plot_data"]]){
 
 ```
 
+<!--- QUALITY CONTROL PLOT --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_quality_control_plot"]]){
+  
+  cat("## Quality Control Plot \n")
+  
+  cat("Quality control plot is based purely on experimental values.")
+  
+  qc_out()
+  
+}
+
+```
+
+<!--- QUALITY CONTROL PLOT DATA --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_quality_control_plot_data"]]){
+  
+  cat("## Quality Control Plot Data \n")
+  
+  cat("Quality control plot data is based purely on experimental values.")
+  
+  quality_control_plot_data_out()
+  
+}
+
+```
+
+
 # R Session
 
 ```{r, echo=FALSE}

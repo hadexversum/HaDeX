@@ -4,15 +4,8 @@
 \alias{prepare_dataset}
 \title{Calculate data}
 \usage{
-prepare_dataset(
-  dat,
-  in_state_first,
-  chosen_state_first,
-  out_state_first,
-  in_state_second,
-  chosen_state_second,
-  out_state_second
-)
+prepare_dataset(dat, in_state_first, chosen_state_first, out_state_first,
+  in_state_second, chosen_state_second, out_state_second)
 }
 \arguments{
 \item{dat}{data frame with data from DynamX file}
