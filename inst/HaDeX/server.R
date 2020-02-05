@@ -1640,8 +1640,7 @@ server <- function(input, output, session) {
                               state_first = input[["qc_state_first"]],
                               state_second = input[["qc_state_second"]], 
                               chosen_time = input[["qc_chosen_time"]], 
-                              in_time = input[["qc_in_time"]], 
-                              relative = TRUE) %>%
+                              in_time = input[["qc_in_time"]]) %>%
       # to get the percentages in readable form
       mutate(avg_err_state_first = 100 * avg_err_state_first,
              sd_err_state_first = 100 * sd_err_state_first,
