@@ -39,7 +39,7 @@ To show the novelty of HaDeX, we compare its functionalities with other relative
 ```{r echo=FALSE,results='asis'}
 read.csv2("comparison.csv") %>% 
   datatable(options = list(dom = "t", ordering = FALSE, paging = FALSE), rownames = FALSE, style = "bootstrap") %>%
-  formatStyle(c("MEMHDX", "Deuteros", "HaDeX"), backgroundColor = styleEqual(c("Yes", "No"), c("#00BFFF", "#FF8C91")))
+  formatStyle(c("MSTools", "MEMHDX", "Deuteros", "HaDeX"), backgroundColor = styleEqual(c("Yes", "No"), c("#00BFFF", "#FF8C91")))
 ```
 
 We have not considered HDX Workbench [@PascalHDXWorkbenchSoftware2012] as it deals with the preliminary steps of the analysis. This comparison also does not cover a versatile structural visualisation tool for HDX-MS results, HDX-Viewer [@BouyssieHDXViewerinteractive3D2019] as its scope is different from the tools mentioned above. 
