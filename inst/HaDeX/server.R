@@ -415,12 +415,12 @@ server <- function(input, output, session) {
     
     updateSelectInput(session, 
                       inputId = "chosen_time",
-                      choices = times_from_file,
+                      choices = times_from_file[times_from_file["Exposure"] < 99999],
                       selected = min(times_from_file[times_from_file["Exposure"] >= 1, ]))
     
     updateSelectInput(session, 
                       inputId = "in_time",
-                      choices = times_from_file,
+                      choices = times_from_file[times_from_file["Exposure"] < 99999],
                       selected = min(times_from_file[times_from_file["Exposure"] > 0, ]))
     
     updateSelectInput(session, 
