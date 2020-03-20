@@ -1,26 +1,26 @@
-Type;Name;MEMHDX;Deuteros;HaDeX
-Accessibility;Web server;Yes;No;Yes
-Accessibility;Programmatic access;No;No;Yes
-Accessibility;Desktop software;No;Yes;Yes
-Analysis;Multi-state analysis;No;No;Yes
-Analysis;ISO-based uncertainty;No;No;Yes
-Analysis;Coverage and peptide overlap;No;No;Yes
-Analysis;Kinetics analysis;Yes;No;Yes
-Analysis;Quality control;No;No;Yes
-Analysis;N- and C-terminal length corrections;No;Yes;Yes
-Analysis;Wald's test;Yes;No;No
-Analysis;Consolidation;Yes;No;No
-Visualization;Global visualization of deuterium uptake;Yes;Yes;Yes
-Visualization;Woods plot;No;Yes;Yes
-Visualization;Butterfly plot;Yes;No;No
-Visualization;Logit plot;Yes;Yes;No
-Visualization;Zooming of the Woods plot;No;Yes;Yes
-Visualization;Customizable label names and colors;No;No;Yes
-Visualization;Peptide kinetics chart;Yes;No;Yes
-Visualization;3D structure visualization;Yes;No;No
-Visualization;Downloadable charts;Yes;Yes;Yes
-Reporting;Deuterium uptake download;Yes;Yes;Yes
-Reporting;Downloadable results of intermediate computations;No;No;Yes
-Reporting;Report generation;No;No;Yes
-Reporting;PyMol export;No;Yes;No
-Reporting;HDX Data Summary;No;No;Yes
+Type;Name;MSTools;MEMHDX;Deuteros;HaDeX
+Accessibility;Web server;Yes;Yes;No;Yes
+Accessibility;Programmatic access;No;No;No;Yes
+Accessibility;Desktop software;No;No;Yes;Yes
+Analysis;Multi-state analysis;Yes;No;No;Yes
+Analysis;ISO-based uncertainty;No;No;No;Yes
+Analysis;Coverage and peptide overlap;Yes;No;No;Yes
+Analysis;Kinetics analysis;No;Yes;No;Yes
+Analysis;Quality control;No;No;No;Yes
+Analysis;N- and C-terminal length corrections;Yes;No;Yes;Yes
+Analysis;Wald's test;No;Yes;No;No
+Analysis;Consolidation;No;Yes;No;No
+Visualization;Global visualization of deuterium uptake;Yes;Yes;Yes;Yes
+Visualization;Woods plot;Yes;No;Yes;Yes
+Visualization;Butterfly plot;No;Yes;No;No
+Visualization;Logit plot;No;Yes;Yes;No
+Visualization;Zooming of the Woods plot;No;No;Yes;Yes
+Visualization;Customizable label names and colors;Yes;No;No;Yes
+Visualization;Peptide kinetics chart;Yes;Yes;No;Yes
+Visualization;3D structure visualization;Yes;Yes;No;No
+Visualization;Downloadable charts;Yes;Yes;Yes;Yes
+Reporting;Deuterium uptake download;No;Yes;Yes;Yes
+Reporting;Downloadable results of intermediate computations;No;No;No;Yes
+Reporting;Report generation;No;No;No;Yes
+Reporting;PyMol export;No;No;Yes;No
+Reporting;HDX Data Summary;No;No;No;Yes
