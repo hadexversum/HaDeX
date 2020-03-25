@@ -1317,8 +1317,8 @@ server <- function(input, output, session) {
     updateTextInput(session, 
                     inputId = "kin_plot_title",
                     value = case_when(
-                      input[["kin_theory"]] ~ paste0("Theoretical kinetic plot for chosen peptides for ", input[["chosen_protein"]]),
-                      !input[["kin_theory"]]  ~ paste0("Kinetic plot for chosen peptides for ", input[["chosen_protein"]])
+                      input[["kin_theory"]] ~ paste0("Theoretical uptake curve for chosen peptides for ", input[["chosen_protein"]]),
+                      !input[["kin_theory"]]  ~ paste0("Uptake curve for chosen peptides for ", input[["chosen_protein"]])
                     ))
     
     updateTextInput(session, 
