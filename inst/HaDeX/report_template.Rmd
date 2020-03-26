@@ -531,7 +531,7 @@ kin_valid <- length(input[["peptide_list_data_rows_selected"]]) > 0
 
 if (input[["export_kin_plot"]]){
   
-  cat("## Kinetic Plot \n")
+  cat("## Uptake curve \n")
   
   if (kin_valid) {
     
@@ -558,9 +558,10 @@ if (input[["export_kin_plot"]]){
     } else {
       
       p + 
-        labs(title = "Kinetic plot for chosen peptides",
+        labs(title = "Uptake curve for chosen peptides",
              x = "Time points [min]",
              y = "Deuteration [%]") +
+        scale_y_continuous(limits = c(0, 110)) + 
         theme(legend.position = "bottom",
               legend.title = element_blank())
       
@@ -568,7 +569,7 @@ if (input[["export_kin_plot"]]){
     
   } else {
     
-    "Kinetic plot cannot be shown - no peptides were selected"
+    "Uptake curve cannot be shown - no peptides were selected"
     
   }
   
@@ -599,7 +600,7 @@ if (input[["export_kin_plot"]]){
     } else {
       
       p + 
-        labs(title = "Kinetic plot for chosen peptides",
+        labs(title = "Uptake curve for chosen peptides",
              x = "Time points [min]",
              y = "Deuteration [Da]") +
         scale_y_continuous(limits = c(0, NA)) +
@@ -619,7 +620,7 @@ if (input[["export_kin_plot"]]){
 
 if (input[["export_kin_plot_data"]]){
   
-  cat("## Kinetic Plot Data \n")
+  cat("## Uptake curve Data \n")
   
   if (kin_valid){
     
@@ -635,7 +636,7 @@ if (input[["export_kin_plot_data"]]){
 
   } else {
     
-    "Kinetic plot data cannot be shown - no peptides were selected"
+    "Uptake curve data cannot be shown - no peptides were selected"
     
   }
 
@@ -665,7 +666,7 @@ if (input[["export_kin_plot_data"]]){
 
 if (input[["export_theo_kin_plot"]]){
   
-  cat("## Theoretical Kinetic Plot Data \n")
+  cat("## Theoretical Uptake curve Data \n")
   
   if (kin_valid){
     
@@ -688,9 +689,10 @@ if (input[["export_theo_kin_plot"]]){
     } else {
       
       p + 
-        labs(title = "Theoretical kinetic plot for chosen peptides",
+        labs(title = "Theoretical uptake curve for chosen peptides",
              x = "Time points [min]",
              y = "Deuteration [%]") +
+        scale_y_continuous(limits = c(0, 110)) + 
         theme(legend.position = "bottom",
               legend.title = element_blank())
         
@@ -698,7 +700,7 @@ if (input[["export_theo_kin_plot"]]){
     
   } else {
     
-    "Theoretical Kinetic plot cannot be shown - no peptides were selected"
+    "Theoretical uptake curve plot cannot be shown - no peptides were selected"
     
   }
 
@@ -729,7 +731,7 @@ if (input[["export_theo_kin_plot"]]){
     } else {
       
       p + 
-        labs(title = "Theoretical kinetic plot for chosen peptides",
+        labs(title = "Theoretical uptake curve for chosen peptides",
              x = "Time points [min]",
              y = "Deuteration [Da]") +
         scale_y_continuous(limits = c(0, NA)) +
@@ -749,7 +751,7 @@ if (input[["export_theo_kin_plot"]]){
 
 if (input[["export_theo_kin_plot_data"]]){
   
-  cat("## Theoretical Kinetic Plot Data \n")
+  cat("## Theoretical uptake curve Data \n")
   
   if (kin_valid){
     
@@ -761,7 +763,7 @@ if (input[["export_theo_kin_plot_data"]]){
   
   } else {
     
-    "Theoretical Kinetic plot data cannot be shown - no peptides were selected"
+    "Theoretical uptake curve data cannot be shown - no peptides were selected"
     
   }
   
