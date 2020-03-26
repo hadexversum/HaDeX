@@ -549,6 +549,46 @@ server <- function(input, output, session) {
   
   ##
   
+  observe({
+    
+    if(input[["theory"]]){
+      hide(id = "in_time_part")
+      hide(id = "out_time_part")
+    }
+    
+  })
+  
+  observe({
+    
+    if(!input[["theory"]]){
+      show(id = "in_time_part")
+      show(id = "out_time_part")
+    }
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    if(input[["calc_type"]] == "absolute"){
+      hide(id = "out_time_part")
+    } 
+    
+  })
+    
+  ##
+  
+  observe({
+      
+    if(input[["calc_type"]] == "relative"){
+      show(id = "out_time_part")
+    }
+    
+  })
+  
+  ##
+  
   comparison_plot_colors <- reactive({
     
     hcl.colors(length(states_from_file()), palette = "Set 2", alpha = NULL, rev = FALSE, fixup = TRUE)
@@ -1329,6 +1369,44 @@ server <- function(input, output, session) {
                       !input[["kin_theory"]] & input[["kin_calc_type"]] == "relative" ~ "Deuteration [%]",
                       !input[["kin_theory"]] & input[["kin_calc_type"]] == "absolute" ~ "Deuteration [Da]"
                     ))
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    if(input[["kin_theory"]]){
+      hide(id = "kin_time_part")
+    }
+    
+  })
+  
+  observe({
+    
+    if(!input[["kin_theory"]]){
+      show(id = "kin_time_part")
+    }
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    if(input[["kin_calc_type"]] == "absolute"){
+      hide(id = "kin_out_time_part")
+    } 
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    if(input[["kin_calc_type"]] == "relative"){
+      show(id = "kin_out_time_part")
+    }
     
   })
   

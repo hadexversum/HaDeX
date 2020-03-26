@@ -5,6 +5,7 @@ options(spinner.color="#715D91")
 ui <- fluidPage(theme = "HaDeX_theme.css",
                 #titlePanel("HaDeX"), #: analysis of data from hydrogen deuterium exchange-mass spectrometry"),
                 title = "HaDeX",
+                useShinyjs(),
                 tags$head(includeScript("ga.js"), 
                           tags$link(rel="stylesheet",
                                     href="mobile_version.css",
@@ -112,15 +113,19 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          h4("Comparison plot parameters:"),
                                          h5("Choose time parameters:"),
                                          splitLayout(
-                                           selectInput_h(inputId = "in_time",
-                                                         label = "IN",
-                                                         choices = c("0", "1", "5", "25", "1440")),
+                                           div(id = "in_time_part",
+                                               selectInput_h(inputId = "in_time",
+                                                             label = "IN",
+                                                             choices = c("0", "1", "5", "25", "1440"))
+                                               ),
                                            selectInput_h(inputId = "chosen_time",
                                                          label = "CHOSEN",
                                                          choices = c("0", "1", "5", "25", "1440")),
-                                           selectInput_h(inputId = "out_time",
-                                                         label = "OUT",
-                                                         choices = c("0", "1", "5", "25", "1440"))
+                                           div(id = "out_time_part",
+                                               selectInput_h(inputId = "out_time",
+                                                             label = "OUT",
+                                                             choices = c("0", "1", "5", "25", "1440"))
+                                               )
                                          ),
                                          ##
                                          fluidRow(
@@ -318,7 +323,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                            mainPanel(withSpinner(plotOutput("aminoDist")),
                                                      downloadButton("aminoDist_download_button",
                                                                     "Save chart (.svg)"),
-                                                     p("Source: Kyte, J., and Doolittle, R.F. (1982). A simple method for displaying the hydropathic character of a protein. J Mol Biol 157, 105–132.")),
+                                                     p("Source: Kyte, J., and Doolittle, R.F. (1982). A simple method for displaying the hydropathic character of a protein. J Mol Biol 157, 105–132."))
                                          )
                                        )
                               ),
@@ -334,14 +339,19 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                         label = "Choose values type:",
                                                         choices = c("relative", "absolute"),
                                                         selected = "relative"),
-                                         h5("Choose time parameters:"),
-                                         splitLayout(
-                                           selectInput_h(inputId = "kin_in_time",
-                                                         label = "IN",
-                                                         choices = c("0", "1", "5", "25", "1440")),
-                                           selectInput_h(inputId = "kin_out_time",
-                                                         label = "OUT",
-                                                         choices = c("0", "1", "5", "25", "1440"))),
+                                         div(id = "kin_time_part", 
+                                           h5("Choose time parameters:"),
+                                           splitLayout(
+                                             div(id = "kin_in_time_part",
+                                                 selectInput_h(inputId = "kin_in_time",
+                                                               label = "IN",
+                                                               choices = c("0", "1", "5", "25", "1440"))
+                                                 ),
+                                             div(id = "kin_out_time_part",
+                                                 selectInput_h(inputId = "kin_out_time",
+                                                               label = "OUT",
+                                                               choices = c("0", "1", "5", "25", "1440")))
+                                                 )),
                                          h5("Choose peptide:"),
                                          dataTableOutput_h("peptide_list_data"), ## !! 
                                          actionButton(inputId = "reset_peptide_list", 
