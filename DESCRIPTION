@@ -45,6 +45,7 @@ Suggests:
     rmarkdown,
     shinycssloaders,
     shinyhelper,
+    shinyjs,
     testthat,
     vdiffr
 VignetteBuilder: knitr
