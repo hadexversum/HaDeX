@@ -737,6 +737,13 @@
       "Repository": "CRAN",
       "Hash": "baef117734d5bd59373a561a15168679"
     },
+    "shinyjs": {
+      "Package": "shinyjs",
+      "Version": "1.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "b40a5207b6624f6e2b8cdb50689cdb69"
+    },
     "sourcetools": {
       "Package": "sourcetools",
       "Version": "0.1.7",
