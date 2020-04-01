@@ -1585,6 +1585,7 @@ server <- function(input, output, session) {
               x = input[["kin_plot_x_label"]],
               y = input[["kin_plot_y_label"]]) +
       coord_cartesian(ylim = c(input[["kin_plot_y_range"]][1], input[["kin_plot_y_range"]][2])) +
+      scale_x_log10() + 
       theme(legend.position = "bottom",
             legend.title = element_blank())
     
@@ -1596,6 +1597,50 @@ server <- function(input, output, session) {
     
     kp_out()
     
+  })
+  
+  ##
+  
+  output[["kinetic_plot_chosen_peptides_debug"]] <- renderUI({
+    
+    if(!is.null(input[["kinetic_plot_chosen_peptides_hover"]])) {
+      
+      plot_data <- kp_out()[["data"]]
+      hv <- input[["kinetic_plot_chosen_peptides_hover"]]
+      
+      hv_dat <- data.frame(x = hv[["x"]],
+                           y = hv[["y"]],
+                           Start = plot_data[["Start"]],
+                           End = plot_data[["End"]],
+                           y_plot = plot_data[[hv[["mapping"]][["y"]]]],
+                           Sequence = plot_data[["Sequence"]],
+                           State = plot_data[["State"]])
+      
+      tt_df <- filter(hv_dat, abs(y_plot - y) == min(abs(y_plot - y))) 
+      
+      if(nrow(tt_df) != 0) { 
+        
+        tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                             "left", "right")
+        
+        tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                         hv[["coords_css"]][["x"]], 
+                         hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+        
+        
+        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+                        tt_pos_adj, ":", tt_pos, 
+                        "px; top:", hv[["coords_css"]][["y"]], "px; padding: 0px;")
+        
+        div(
+          style = style,
+          p(HTML(paste0(tt_df[["Sequence"]], 
+                        "<br/> State: ", tt_df[["State"]],
+                        "<br/> Position: ", tt_df[["Start"]], "-", tt_df[["End"]], 
+                        "<br/> Value: ", round(tt_df[["y_plot"]], 2))))
+        )
+      }
+    }
   })
   
   ##

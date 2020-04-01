@@ -109,7 +109,6 @@ calculate_kinetics <- function(dat,
       mutate(time_chosen = time_point) 
     
   })) %>%
-    select(Protein, Sequence, Start, End, State, time_chosen, everything()) %>%
-    mutate(time_chosen = factor(time_chosen))
+    select(Protein, Sequence, Start, End, State, time_chosen, everything())
   
 }
