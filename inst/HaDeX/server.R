@@ -286,14 +286,15 @@ server <- function(input, output, session) {
       filter(State == input[["chosen_state"]]) %>%
       filter(Start >= input[["plot_range"]][[1]], End <= input[["plot_range"]][[2]]) %>%
       filter(!duplicated(.)) %>%
-      select(-State) %>%
-      dt_format(cols = c("Protein", "Sequence", "Start", "End"))
+      select(-State)
+      
     
   })
   
   output[["stateOverlap_data"]] <- DT::renderDataTable(server = FALSE, {
     
-    stateOverlap_data()
+    stateOverlap_data() %>%
+      dt_format(cols = c("Protein", "Sequence", "Start", "End"))
     
   })
   
@@ -301,7 +302,18 @@ server <- function(input, output, session) {
   
   stateOverlap_out <- reactive({
     
-    plot_coverage(dat = filter(dat(), Protein == input[["chosen_protein"]]), chosen_state = input[["chosen_state"]]) + 
+    stateOverlap_data() %>%
+      select(Sequence, Start, End) %>%
+      filter(!duplicated(.)) %>%
+      arrange(Start, End) %>%
+      mutate(ID = row_number()) %>%
+      ggplot() +
+      geom_segment(aes(x = Start, y = ID, xend = End, yend = ID)) +
+      labs(title = "Peptide coverage",
+           x = "Position",
+           y = "") +
+      theme(axis.ticks.y = element_blank(),
+            axis.text.y = element_blank()) +
       coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]]))
     
   })
