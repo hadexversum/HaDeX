@@ -271,7 +271,8 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          tabsetPanel(
                                            tabPanel("Peptide Coverage",
                                                     br(),
-                                                    withSpinner(plotOutput("stateOverlap")),
+                                                    withSpinner(plotOutput("stateOverlap", hover = hoverOpts("stateOverlap_hover", delay = 10, delayType = "debounce"))),
+                                                    uiOutput("stateOverlap_debug"), 
                                                     downloadButton("stateOverlap_download_button",
                                                                    "Save chart (.svg)")),
                                            
