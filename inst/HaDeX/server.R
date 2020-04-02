@@ -1782,9 +1782,10 @@ server <- function(input, output, session) {
     quality_control_dat() %>%
       gather(2:7, key = 'type', value = 'value') %>%
       filter(startsWith(type, "avg")) %>%
-      ggplot(aes(x = factor(out_time), y = value, group = type)) +
+      ggplot(aes(x = out_time, y = value, group = type)) +
       geom_line(aes(color = type)) +
       scale_colour_discrete(name = "Mean uncertainty of: ", labels = c("difference", "first state", "second state")) +
+      scale_x_log10() + 
       labs(x = "Out time [min]",
            y = "Mean uncertainty [%]",
            title = "Quality control plot for experiment")
@@ -1817,6 +1818,48 @@ server <- function(input, output, session) {
     quality_control_plot_data_out()
     
   })
+  
+  ##
+  
+  output[["quality_control_plot_debug"]] <- renderUI({
+    
+    if(!is.null(input[["quality_control_plot_hover"]])) {
+      
+      # browser()
+      plot_data <- qc_out()[["data"]]
+      hv <- input[["quality_control_plot_hover"]]
+      
+      hv_dat <- data.frame(x = hv[["x"]],
+                           y = hv[["y"]],
+                           x_plot = plot_data[[hv[["mapping"]][["x"]]]],
+                           y_plot = plot_data[[hv[["mapping"]][["y"]]]])
+      
+      tt_df <- filter(hv_dat, abs(y_plot - y) == min(abs(y_plot - y))) 
+      
+      if(nrow(tt_df) != 0) { 
+        
+        tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                             "left", "right")
+        
+        tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                         hv[["coords_css"]][["x"]], 
+                         hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+        
+        
+        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+                        tt_pos_adj, ":", tt_pos, 
+                        "px; top:", hv[["coords_css"]][["y"]], "px; padding: 0px;")
+        
+        div(
+          style = style,
+          p(HTML(paste0("<br/> x: ", round(tt_df[["x"]], 0), " [min]",
+                        "<br/> y: ", round(tt_df[["y"]], 2), " [%] ")))
+        )
+      }
+    }
+  })
+  
+  ##
   
   ##
   
