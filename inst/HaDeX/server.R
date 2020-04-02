@@ -778,7 +778,7 @@ server <- function(input, output, session) {
   ##
   
   output[["comparisonPlot"]] <- renderPlot({
-    #browser()
+
     cp_out() 
     
   })
@@ -788,8 +788,6 @@ server <- function(input, output, session) {
   output[["comparisonPlot_debug"]] <- renderUI({
     
     if(!is.null(input[["comparisonPlot_hover"]])) {
-      
-      # browser()
       
       plot_data <- cp_out()[["data"]]
       hv <- input[["comparisonPlot_hover"]]
@@ -1177,7 +1175,6 @@ server <- function(input, output, session) {
     
     if(!is.null(input[["differentialPlot_hover"]])) {
       
-      # browser()
       wp_plot_data <- wp_out()[["data"]]
       wp_hv <- input[["differentialPlot_hover"]]
       
@@ -1201,7 +1198,7 @@ server <- function(input, output, session) {
                             wp_hv[["coords_css"]][["x"]], 
                             wp_hv[["range"]][["right"]]/wp_hv[["img_css_ratio"]][["x"]] - wp_hv[["coords_css"]][["x"]])
         
-        # browser()
+       
         style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
                         wp_tt_pos_adj, ":", wp_tt_pos, "px; padding: 0px;",
                         "bottom:", wp_hv[["range"]][["bottom"]] - wp_hv[["coords_css"]][["y"]] , "px; ") 
@@ -1837,7 +1834,6 @@ server <- function(input, output, session) {
     
     if(!is.null(input[["quality_control_plot_hover"]])) {
       
-      # browser()
       plot_data <- qc_out()[["data"]]
       hv <- input[["quality_control_plot_hover"]]
       
