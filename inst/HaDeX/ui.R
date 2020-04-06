@@ -321,7 +321,8 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                )
                                              )
                                            ),
-                                           mainPanel(withSpinner(plotOutput("aminoDist")),
+                                           mainPanel(withSpinner(plotOutput("aminoDist", hover = hoverOpts("aminoDist_hover", delay = 10, delayType = "debounce"))),
+                                                     uiOutput("aminoDist_debug"), 
                                                      downloadButton("aminoDist_download_button",
                                                                     "Save chart (.svg)"),
                                                      p("Source: Kyte, J., and Doolittle, R.F. (1982). A simple method for displaying the hydropathic character of a protein. J Mol Biol 157, 105–132."))

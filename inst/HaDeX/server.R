@@ -248,10 +248,12 @@ server <- function(input, output, session) {
       mutate(affinity = ifelse(is_hydrophobic, "phobic", "philic")) %>% 
       filter(affinity %in% input[["hydro_prop"]]) %>%
       mutate(amino = factor(amino, levels = amino_groups)) %>%
-      ggplot(aes(x = amino, fill = charge)) + 
-      geom_bar() +
+      group_by(amino, charge, is_hydrophobic) %>%
+      summarise(cnt = n()) %>%
+      ggplot(aes(x = amino, y = cnt, fill = charge)) + 
+      geom_col() +
       scale_fill_manual("Charge", values = charge_colors) + 
-      labs(title = paste0('Amino acid composition for ', input[["chosen_protein"]]),
+      labs(title = paste0('Amino acid composition for ', chosen_protein),
            x = 'Amino acid',
            y = 'Count')
     
@@ -263,6 +265,55 @@ server <- function(input, output, session) {
     
     aminoDist_out()
     
+  })
+  
+  ##
+  
+  output[["aminoDist_debug"]] <- renderUI({
+    
+    if(!is.null(input[["aminoDist_hover"]])) {
+      
+      # browser()
+      
+      plot_data <- aminoDist_out()[["data"]] %>%
+        ungroup()
+      
+      hv <- input[["aminoDist_hover"]]
+      
+      hv_dat <- data.frame(x = hv[["x"]],
+                           y = hv[["y"]],
+                           x_plot = plot_data[[".group"]],
+                           y_plot = plot_data[[hv[["mapping"]][["y"]]]],
+                           amino = plot_data[["amino"]],
+                           charge = plot_data[["charge"]],
+                           is_hydrophobic = plot_data[["is_hydrophobic"]],
+                           count = plot_data[["cnt"]])
+      
+      tt_df <- filter(hv_dat, abs(x_plot - x) < 0.5) 
+      
+      if(nrow(tt_df) != 0) { 
+        
+        tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                             "left", "right")
+        
+        tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                         hv[["coords_css"]][["x"]], 
+                         hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+        
+        
+        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+                        tt_pos_adj, ":", tt_pos, 
+                        "px; top:", hv[["coords_css"]][["y"]], "px; padding: 0px;")
+        
+        div(
+          style = style,
+          p(HTML(paste0("<br/> Amino acid: ", tt_df[["amino"]],
+                        "<br/> Charge: ", tt_df[["charge"]],
+                        "<br/> Is hydrophobic? ", tt_df[["is_hydrophobic"]],
+                        "<br/> Count: ", tt_df[["count"]])))
+        )
+      }
+    }
   })
   
   ##
@@ -330,8 +381,6 @@ server <- function(input, output, session) {
   output[["stateOverlap_debug"]] <- renderUI({
     
     if(!is.null(input[["stateOverlap_hover"]])) {
-      
-      # browser()
       
       plot_data <- stateOverlap_out()[["data"]]
       hv <- input[["stateOverlap_hover"]]
@@ -434,7 +483,7 @@ server <- function(input, output, session) {
   })
   
   ##
-  
+ 
   output[["stateOverlapDist_download_button"]] <- downloadHandler("stateOverlapDist.svg",
                                                                   content = function(file){
                                                                     ggsave(file, stateOverlapDist(), device = svg,
