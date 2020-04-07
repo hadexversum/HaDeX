@@ -284,7 +284,8 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          tabsetPanel(
                                            tabPanel("Position Frequency",
                                                     br(),
-                                                    withSpinner(plotOutput("stateOverlapDist")),
+                                                    withSpinner(plotOutput("stateOverlapDist", hover = hoverOpts("stateOverlapDist_hover", delay = 10, delayType = "debounce"))),
+                                                    uiOutput("stateOverlapDist_debug"), 
                                                     downloadButton("stateOverlapDist_download_button",
                                                                    "Save chart (.svg)")
                                            ),

@@ -489,6 +489,49 @@ server <- function(input, output, session) {
   })
   
   ##
+  
+  output[["stateOverlapDist_debug"]] <- renderUI({
+    
+    if(!is.null(input[["stateOverlapDist_hover"]])) {
+      
+      # browser()
+      
+      plot_data <- stateOverlapDist()[["data"]]
+      hv <- input[["stateOverlapDist_hover"]]
+      
+      hv_dat <- data.frame(x = hv[["x"]],
+                           y = hv[["y"]],
+                           x_plot = plot_data[["pos"]],
+                           amino = plot_data[["amino"]],
+                           coverage = plot_data[["coverage"]])
+      
+      tt_df <- filter(hv_dat, abs(x - x_plot) < 0.5) 
+      
+      if(nrow(tt_df) != 0) { 
+        
+        tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                                "left", "right")
+        
+        tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                         hv[["coords_css"]][["x"]], 
+                         hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+        
+        
+        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+                        tt_pos_adj, ":", tt_pos, "px; padding: 0px;",
+                        "bottom:", hv[["range"]][["bottom"]] - hv[["coords_css"]][["y"]] , "px; ") 
+        
+        div(
+          style = style,
+          p(HTML(paste0("<br/> Position: ", tt_df[["x_plot"]],
+                        "<br/> Amino acid: ", tt_df[["amino"]], 
+                        "<br/> Coverage: ", tt_df[["coverage"]])))
+        )
+      }
+    }
+  })
+  
+  ##
  
   output[["stateOverlapDist_download_button"]] <- downloadHandler("stateOverlapDist.svg",
                                                                   content = function(file){
