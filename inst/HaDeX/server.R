@@ -253,7 +253,7 @@ server <- function(input, output, session) {
       ggplot(aes(x = amino, y = cnt, fill = charge)) + 
       geom_col() +
       scale_fill_manual("Charge", values = charge_colors) + 
-      labs(title = paste0('Amino acid composition for ', chosen_protein),
+      labs(title = paste0('Amino acid composition for ', input[["chosen_protein"]]),
            x = 'Amino acid',
            y = 'Count')
     
