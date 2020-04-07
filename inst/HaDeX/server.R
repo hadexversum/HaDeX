@@ -445,7 +445,10 @@ server <- function(input, output, session) {
       group_by(pos) %>%
       summarise(coverage = length(pos)) %>%
       right_join(data.frame(pos = seq(from = input[["plot_range"]][[1]], to = input[["plot_range"]][[2]]))) %>%
-      replace_na(list(coverage = 0))
+      replace_na(list(coverage = 0)) %>%
+      right_join(data.frame(amino = unlist(strsplit(protein_sequence(), "")), 
+                            pos = 1:str_length(protein_sequence()))) %>%
+      select(pos, amino, coverage)
     
   })
   
@@ -454,7 +457,7 @@ server <- function(input, output, session) {
   output[["stateOverlapDist_data"]] <- DT::renderDataTable(server = FALSE, {
     
     dt_format(stateOverlapDist_data(),
-              cols = c("Position", "Coverage"))
+              cols = c("Position", "Amino acid", "Coverage"))
     
   })
   
@@ -465,12 +468,15 @@ server <- function(input, output, session) {
     mean_coverage <- round(mean(stateOverlapDist_data()[["coverage"]], na.rm = TRUE), 2)
     display_position <- (input[["plot_range"]][[1]] + input[["plot_range"]][[2]])/2
     
-    plot_position_frequency(dat(), 
-                            protein = input[["chosen_protein"]],
-                            chosen_state = input[["chosen_state"]]) + 
+    stateOverlapDist_data() %>% 
+      ggplot(aes(x = pos, y = coverage)) +
+      geom_col(width = 1) +
+      labs(x = 'Position', y = 'Position frequency in peptides') +
+      theme(legend.position = "none") + 
       coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]])) +
       geom_hline(yintercept = mean_coverage, color = 'red') +
       geom_text(aes(x = display_position, y = mean_coverage), label = paste0("Average frequency: ", mean_coverage), color = 'red', vjust = -.5)
+    
     
   })
   
