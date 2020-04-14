@@ -120,7 +120,7 @@ server <- function(input, output, session) {
   ## create dat based on control
   
   dat <- reactive({
-    
+
     tmp <- dat_tmp() %>%
       filter(Protein == input[["chosen_protein"]], 
              State == strsplit(input[["chosen_control"]], " \\| ")[[1]][2], 
@@ -272,8 +272,6 @@ server <- function(input, output, session) {
   output[["aminoDist_debug"]] <- renderUI({
     
     if(!is.null(input[["aminoDist_hover"]])) {
-      
-      # browser()
       
       plot_data <- aminoDist_out()[["data"]] %>%
         ungroup()
@@ -494,8 +492,6 @@ server <- function(input, output, session) {
     
     if(!is.null(input[["stateOverlapDist_hover"]])) {
       
-      # browser()
-      
       plot_data <- stateOverlapDist()[["data"]]
       hv <- input[["stateOverlapDist_hover"]]
       
@@ -505,7 +501,7 @@ server <- function(input, output, session) {
                            amino = plot_data[["amino"]],
                            coverage = plot_data[["coverage"]])
       
-      tt_df <- filter(hv_dat, abs(x - x_plot) < 0.5) 
+      tt_df <- filter(hv_dat, abs(x - x_plot) < 0.5)  
       
       if(nrow(tt_df) != 0) { 
         
@@ -1680,6 +1676,7 @@ server <- function(input, output, session) {
   
   kin_plot_exp <- reactive({
     
+    
     kin_dat() %>% 
       mutate(prop = paste0(Sequence, "-", State)) %>%
       ggplot(aes(x = time_chosen, y = frac_exch_state, group = prop)) +
@@ -1934,6 +1931,7 @@ server <- function(input, output, session) {
       gather(2:7, key = 'type', value = 'value') %>%
       filter(startsWith(type, "avg")) %>%
       ggplot(aes(x = out_time, y = value, group = type)) +
+      geom_point() +
       geom_line(aes(color = type)) +
       scale_colour_discrete(name = "Mean uncertainty of: ", labels = c("difference", "first state", "second state")) +
       scale_x_log10() + 
@@ -1984,7 +1982,8 @@ server <- function(input, output, session) {
                            x_plot = plot_data[[hv[["mapping"]][["x"]]]],
                            y_plot = plot_data[[hv[["mapping"]][["y"]]]])
       
-      tt_df <- filter(hv_dat, abs(y_plot - y) == min(abs(y_plot - y))) 
+      tt_df <- hv_dat %>%
+        filter(abs(y_plot - y) == min(abs(y_plot - y)), abs(x_plot - x) < 10) 
       
       if(nrow(tt_df) != 0) { 
         
@@ -2002,8 +2001,8 @@ server <- function(input, output, session) {
         
         div(
           style = style,
-          p(HTML(paste0("<br/> x: ", round(tt_df[["x"]], 0), " [min]",
-                        "<br/> y: ", round(tt_df[["y"]], 2), " [%] ")))
+          p(HTML(paste0("<br/> x: ", round(tt_df[["x_plot"]], 0), " [min]",
+                        "<br/> y: ", round(tt_df[["y_plot"]], 2), " [%] ")))
         )
       }
     }
