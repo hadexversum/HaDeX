@@ -1729,7 +1729,9 @@ server <- function(input, output, session) {
       
     }
     
-    kp + labs(title = input[["kin_plot_title"]],
+    kp + 
+      geom_point() +
+      labs(title = input[["kin_plot_title"]],
               x = input[["kin_plot_x_label"]],
               y = input[["kin_plot_y_label"]]) +
       coord_cartesian(ylim = c(input[["kin_plot_y_range"]][1], input[["kin_plot_y_range"]][2])) +
@@ -1760,11 +1762,13 @@ server <- function(input, output, session) {
                            y = hv[["y"]],
                            Start = plot_data[["Start"]],
                            End = plot_data[["End"]],
+                           x_plot = plot_data[[hv[["mapping"]][["x"]]]],
                            y_plot = plot_data[[hv[["mapping"]][["y"]]]],
                            Sequence = plot_data[["Sequence"]],
                            State = plot_data[["State"]])
       
-      tt_df <- filter(hv_dat, abs(y_plot - y) == min(abs(y_plot - y))) 
+      tt_df <- filter(hv_dat, abs(y_plot - y) < 10, abs(y_plot - y) == min(abs(y_plot - y)),
+                      abs(x_plot - x) < 10, abs(x_plot - x) == min(abs(x_plot - x))) 
       
       if(nrow(tt_df) != 0) { 
         
