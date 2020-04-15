@@ -287,7 +287,8 @@ server <- function(input, output, session) {
                            is_hydrophobic = plot_data[["is_hydrophobic"]],
                            count = plot_data[["cnt"]])
       
-      tt_df <- filter(hv_dat, abs(x_plot - x) < 0.5) 
+      tt_df <- filter(hv_dat, abs(x_plot - x) < 0.5) %>%
+        filter(abs(x_plot -x ) == min(abs(x_plot - x)))
       
       if(nrow(tt_df) != 0) { 
         
@@ -391,6 +392,7 @@ server <- function(input, output, session) {
                            Sequence = plot_data[["Sequence"]])
       
       tt_df <- filter(hv_dat, Start < x, End > x) %>% 
+        filter(abs(y_plot - y) < 5) %>%
         filter(abs(y_plot - y) == min(abs(y_plot - y))) 
       
       if(nrow(tt_df) != 0) { 
@@ -939,6 +941,7 @@ server <- function(input, output, session) {
                            State = plot_data[["State"]])
       
       tt_df <- filter(hv_dat, Start < x, End > x) %>% 
+        filter(abs(y_plot - y) < 10) %>%
         filter(abs(y_plot - y) == min(abs(y_plot - y)))
    
       
@@ -1324,6 +1327,7 @@ server <- function(input, output, session) {
                            Sequence = wp_plot_data[["Sequence"]])
       
       wp_tt_df <- filter(wp_hv_dat, Start < x, End > x) %>% 
+        filter(abs(y_plot - y) < 10) %>%
         filter(abs(y_plot - y) == min(abs(y_plot - y)))
       
       
@@ -1767,8 +1771,8 @@ server <- function(input, output, session) {
                            Sequence = plot_data[["Sequence"]],
                            State = plot_data[["State"]])
       
-      tt_df <- filter(hv_dat, abs(y_plot - y) < 10, abs(y_plot - y) == min(abs(y_plot - y)),
-                      abs(x_plot - x) < 10, abs(x_plot - x) == min(abs(x_plot - x))) 
+      tt_df <- filter(hv_dat, abs(y_plot - y) < 10, abs(y_plot - y) == min(abs(y_plot - y))) %>%
+                      filter(abs(x_plot - x) < 10, abs(x_plot - x) == min(abs(x_plot - x))) 
       
       if(nrow(tt_df) != 0) { 
         
