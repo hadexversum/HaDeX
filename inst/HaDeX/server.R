@@ -131,7 +131,14 @@ server <- function(input, output, session) {
     
     bind_rows(dat_tmp(), 
               lapply(states_to_prepare, function(state){
-                mutate(tmp, State = state) 
+                peps <- tmp %>%
+                  filter(State == state) %>%
+                  select(Sequence) %>%
+                  unique(.) %>%
+                  unlist(.)
+                tmp %>%
+                  filter(Sequence %in% peps) %>%
+                  mutate(State = state) 
               }))
   })
   
@@ -1603,7 +1610,7 @@ server <- function(input, output, session) {
   kin_dat <- reactive({
     
     validate(need(input[["peptide_list_data_rows_selected"]], "Please select at least one peptide from the table on the left."))
-    
+
     bind_rows(apply(peptide_list()[input[["peptide_list_data_rows_selected"]], ], 1, function(peptide){
       calculate_kinetics(dat = dat(),
                          protein = input[["chosen_protein"]], 
