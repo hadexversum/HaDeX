@@ -131,7 +131,7 @@ server <- function(input, output, session) {
     
     bind_rows(dat_tmp(), 
               lapply(states_to_prepare, function(state){
-                peps <- tmp %>%
+                peps <- dat_tmp() %>%
                   filter(State == state) %>%
                   select(Sequence) %>%
                   unique(.) %>%
