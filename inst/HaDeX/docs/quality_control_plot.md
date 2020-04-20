@@ -4,4 +4,6 @@ The plot shows the change in the uncertainty of deuteration levels as a function
 
 Moreover, the user can use this chart to identify a time point after which the decrease of the deuteration uncertainty becomes too marginal to prolong the measurements. 
 
+Please keep in mind that the calculations are made for time points (shown on the plot as black dots) and the lines between them are just an approximation.
+
 To get more information, check the [documentation](https://hadexversum.github.io/HaDeX/articles/overview.html#quality-control).

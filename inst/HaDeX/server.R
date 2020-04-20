@@ -1741,7 +1741,7 @@ server <- function(input, output, session) {
     }
     
     kp + 
-      geom_point() +
+      geom_point(size = 3) +
       labs(title = input[["kin_plot_title"]],
               x = input[["kin_plot_x_label"]],
               y = input[["kin_plot_y_label"]]) +
@@ -1779,7 +1779,7 @@ server <- function(input, output, session) {
                            State = plot_data[["State"]])
       
       tt_df <- filter(hv_dat, abs(y_plot - y) < 10, abs(y_plot - y) == min(abs(y_plot - y))) %>%
-                      filter(abs(x_plot - x) < 10, abs(x_plot - x) == min(abs(x_plot - x))) 
+                      filter(abs(x_plot - x) < 0.1*x_plot, abs(x_plot - x) == min(abs(x_plot - x))) 
       
       if(nrow(tt_df) != 0) { 
         
@@ -1946,7 +1946,7 @@ server <- function(input, output, session) {
       gather(2:7, key = 'type', value = 'value') %>%
       filter(startsWith(type, "avg")) %>%
       ggplot(aes(x = out_time, y = value, group = type)) +
-      geom_point() +
+      geom_point(size = 3) +
       geom_line(aes(color = type)) +
       scale_colour_discrete(name = "Mean uncertainty of: ", labels = c("difference", "first state", "second state")) +
       scale_x_log10() + 
@@ -1998,7 +1998,7 @@ server <- function(input, output, session) {
                            y_plot = plot_data[[hv[["mapping"]][["y"]]]])
       
       tt_df <- hv_dat %>%
-        filter(abs(y_plot - y) == min(abs(y_plot - y)), abs(x_plot - x) < 10) 
+        filter(abs(y_plot - y) == min(abs(y_plot - y)), abs(x_plot - x) < 0.1*x_plot) 
       
       if(nrow(tt_df) != 0) { 
         
