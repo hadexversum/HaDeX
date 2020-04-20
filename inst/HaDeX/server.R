@@ -58,6 +58,34 @@ server <- function(input, output, session) {
     
   })
   
+  ## mark for modifications
+  
+  has_modifications <- reactive({
+    
+    any(!is.na(dat_tmp()[["Modification"]]))
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    if(has_modifications()){
+      hide("chosen_control")
+    }
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    if(!has_modifications()){
+      show("chosen_control")
+    }
+    
+  })
+  
   ##
   
   proteins_from_file <- reactive({
@@ -102,6 +130,9 @@ server <- function(input, output, session) {
   
   ##
   
+  
+  ##
+  
   observe({
     
     updateSelectInput(session, 
@@ -114,13 +145,14 @@ server <- function(input, output, session) {
     
   })
   
-  
   ##
   
   ## create dat based on control
   
   dat <- reactive({
 
+    # browser()
+    
     tmp <- dat_tmp() %>%
       filter(Protein == input[["chosen_protein"]], 
              State == strsplit(input[["chosen_control"]], " \\| ")[[1]][2], 
@@ -582,10 +614,23 @@ server <- function(input, output, session) {
                       choices = times_from_file[times_from_file["Exposure"] < 99999],
                       selected = min(times_from_file[times_from_file["Exposure"] > 0, ]))
     
-    updateSelectInput(session, 
-                      inputId = "out_time",
-                      choices = choose_time_out,
-                      selected = choose_time_out["chosen control"])
+    if(has_modifications()){
+      
+      updateSelectInput(session, 
+                        inputId = "out_time",
+                        choices = times_from_file[times_from_file["Exposure"] < 99999],
+                        selected = max(times_from_file["Exposure"]))
+      
+    }
+    
+    if(!has_modifications()){
+      
+      updateSelectInput(session, 
+                        inputId = "out_time",
+                        choices = choose_time_out,
+                        selected = choose_time_out["chosen control"])
+    }
+    
     
     updateSelectInput(session,
                       inputId = "state_first",
@@ -1498,13 +1543,25 @@ server <- function(input, output, session) {
     
     updateSelectInput(session, 
                       inputId = "kin_in_time",
-                      choices = times_from_file,
+                      choices = times_from_file[times_from_file["Exposure"] < 99999, ],
                       selected = min(times_from_file[times_from_file["Exposure"] > 0, ]))
     
-    updateSelectInput(session, 
-                      inputId = "kin_out_time",
-                      choices =  choose_time_out,
-                      selected = choose_time_out["chosen control"])
+    if(!has_modifications()){
+      
+      updateSelectInput(session, 
+                        inputId = "kin_out_time",
+                        choices =  choose_time_out,
+                        selected = choose_time_out["chosen control"])
+    }
+    
+    if(has_modifications()){
+      
+      updateSelectInput(session, 
+                        inputId = "kin_out_time",
+                        choices =  times_from_file[times_from_file["Exposure"] < 99999, ],
+                        selected = max(times_from_file[times_from_file["Exposure"] < 99999, ]))
+    }
+    
     
   })
   
@@ -1895,12 +1952,12 @@ server <- function(input, output, session) {
     
     updateSelectInput(session, 
                       inputId = "qc_chosen_time",
-                      choices = times_from_file,
+                      choices = times_from_file[times_from_file["Exposure"] < 99999, ],
                       selected = min(times_from_file[times_from_file["Exposure"] >= 1, ]))
     
     updateSelectInput(session, 
                       inputId = "qc_in_time",
-                      choices = times_from_file,
+                      choices = times_from_file[times_from_file["Exposure"] < 99999, ],
                       selected = min(times_from_file[times_from_file["Exposure"] > 0, ]))
     
     updateSelectInput(session,
