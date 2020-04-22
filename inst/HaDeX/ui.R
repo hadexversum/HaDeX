@@ -38,6 +38,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        h4("Currently HaDeX is limited to `cluster` files from DynamX 3.0 and 2.0"),
                                        h4("Accepted file extensions: .csv, .xsl, .xslx. "),
                                        h4("Supplied file should containt at least two repetitions of the measurement fot the uncertainty to be calculated."),
+                                       h4("If supplied file contains modificated peptides, maximal exchange control cannot be applied."),
                                        #
                                        fluidRow(
                                          column(3, 
