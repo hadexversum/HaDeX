@@ -1,6 +1,6 @@
 Package: HaDeX
 Title: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data 
-Version: 1.1
+Version: 1.2
 Authors@R: c(person("Weronika", "Puchala", 
            email = "puchala.weronika@gmail.com", 
            comment = c(ORCID = "0000-0003-2163-1429"),
