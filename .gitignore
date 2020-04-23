@@ -10,3 +10,4 @@ vignettes/overview.html
 codecov.yml
 hadex.Rproj
 HaDeX.Rproj
+renv
