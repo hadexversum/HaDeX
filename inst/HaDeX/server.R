@@ -58,6 +58,34 @@ server <- function(input, output, session) {
     
   })
   
+  ## mark for modifications
+  
+  has_modifications <- reactive({
+    
+    any(!is.na(dat_tmp()[["Modification"]]))
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    if(has_modifications()){
+      hide("chosen_control")
+    }
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    if(!has_modifications()){
+      show("chosen_control")
+    }
+    
+  })
+  
   ##
   
   proteins_from_file <- reactive({
@@ -102,6 +130,9 @@ server <- function(input, output, session) {
   
   ##
   
+  
+  ##
+  
   observe({
     
     updateSelectInput(session, 
@@ -114,12 +145,13 @@ server <- function(input, output, session) {
     
   })
   
-  
   ##
   
   ## create dat based on control
   
   dat <- reactive({
+
+    # browser()
     
     tmp <- dat_tmp() %>%
       filter(Protein == input[["chosen_protein"]], 
@@ -131,7 +163,14 @@ server <- function(input, output, session) {
     
     bind_rows(dat_tmp(), 
               lapply(states_to_prepare, function(state){
-                mutate(tmp, State = state) 
+                peps <- dat_tmp() %>%
+                  filter(State == state) %>%
+                  select(Sequence) %>%
+                  unique(.) %>%
+                  unlist(.)
+                tmp %>%
+                  filter(Sequence %in% peps) %>%
+                  mutate(State = state) 
               }))
   })
   
@@ -248,8 +287,10 @@ server <- function(input, output, session) {
       mutate(affinity = ifelse(is_hydrophobic, "phobic", "philic")) %>% 
       filter(affinity %in% input[["hydro_prop"]]) %>%
       mutate(amino = factor(amino, levels = amino_groups)) %>%
-      ggplot(aes(x = amino, fill = charge)) + 
-      geom_bar() +
+      group_by(amino, charge, is_hydrophobic) %>%
+      summarise(cnt = n()) %>%
+      ggplot(aes(x = amino, y = cnt, fill = charge)) + 
+      geom_col() +
       scale_fill_manual("Charge", values = charge_colors) + 
       labs(title = paste0('Amino acid composition for ', input[["chosen_protein"]]),
            x = 'Amino acid',
@@ -263,6 +304,54 @@ server <- function(input, output, session) {
     
     aminoDist_out()
     
+  })
+  
+  ##
+  
+  output[["aminoDist_debug"]] <- renderUI({
+    
+    if(!is.null(input[["aminoDist_hover"]])) {
+      
+      plot_data <- aminoDist_out()[["data"]] %>%
+        ungroup()
+      
+      hv <- input[["aminoDist_hover"]]
+      
+      hv_dat <- data.frame(x = hv[["x"]],
+                           y = hv[["y"]],
+                           x_plot = plot_data[[".group"]],
+                           y_plot = plot_data[[hv[["mapping"]][["y"]]]],
+                           amino = plot_data[["amino"]],
+                           charge = plot_data[["charge"]],
+                           is_hydrophobic = plot_data[["is_hydrophobic"]],
+                           count = plot_data[["cnt"]])
+      
+      tt_df <- filter(hv_dat, abs(x_plot - x) < 0.5) %>%
+        filter(abs(x_plot -x ) == min(abs(x_plot - x)))
+      
+      if(nrow(tt_df) != 0) { 
+        
+        tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                             "left", "right")
+        
+        tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                         hv[["coords_css"]][["x"]], 
+                         hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+        
+        
+        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+                        tt_pos_adj, ":", tt_pos, 
+                        "px; top:", hv[["coords_css"]][["y"]], "px; padding: 0px;")
+        
+        div(
+          style = style,
+          p(HTML(paste0("<br/> Amino acid: ", tt_df[["amino"]],
+                        "<br/> Charge: ", tt_df[["charge"]],
+                        "<br/> Is hydrophobic? ", tt_df[["is_hydrophobic"]],
+                        "<br/> Count: ", tt_df[["count"]])))
+        )
+      }
+    }
   })
   
   ##
@@ -286,14 +375,15 @@ server <- function(input, output, session) {
       filter(State == input[["chosen_state"]]) %>%
       filter(Start >= input[["plot_range"]][[1]], End <= input[["plot_range"]][[2]]) %>%
       filter(!duplicated(.)) %>%
-      select(-State) %>%
-      dt_format(cols = c("Protein", "Sequence", "Start", "End"))
+      select(-State)
+      
     
   })
   
   output[["stateOverlap_data"]] <- DT::renderDataTable(server = FALSE, {
     
-    stateOverlap_data()
+    stateOverlap_data() %>%
+      dt_format(cols = c("Protein", "Sequence", "Start", "End"))
     
   })
   
@@ -301,7 +391,18 @@ server <- function(input, output, session) {
   
   stateOverlap_out <- reactive({
     
-    plot_coverage(dat = filter(dat(), Protein == input[["chosen_protein"]]), chosen_state = input[["chosen_state"]]) + 
+    stateOverlap_data() %>%
+      select(Sequence, Start, End) %>%
+      filter(!duplicated(.)) %>%
+      arrange(Start, End) %>%
+      mutate(ID = row_number()) %>%
+      ggplot() +
+      geom_segment(aes(x = Start, y = ID, xend = End, yend = ID)) +
+      labs(title = "Peptide coverage",
+           x = "Position",
+           y = "") +
+      theme(axis.ticks.y = element_blank(),
+            axis.text.y = element_blank()) +
       coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]]))
     
   })
@@ -314,6 +415,49 @@ server <- function(input, output, session) {
       labs(title = paste0("Peptide coverage for ", input[["chosen_protein"]]))
     
   })
+  
+  output[["stateOverlap_debug"]] <- renderUI({
+    
+    if(!is.null(input[["stateOverlap_hover"]])) {
+      
+      plot_data <- stateOverlap_out()[["data"]]
+      hv <- input[["stateOverlap_hover"]]
+      
+      hv_dat <- data.frame(x = hv[["x"]],
+                           y = hv[["y"]],
+                           Start = plot_data[["Start"]],
+                           End = plot_data[["End"]],
+                           y_plot = plot_data[[hv[["mapping"]][["y"]]]],
+                           Sequence = plot_data[["Sequence"]])
+      
+      tt_df <- filter(hv_dat, Start < x, End > x) %>% 
+        filter(abs(y_plot - y) < 5) %>%
+        filter(abs(y_plot - y) == min(abs(y_plot - y))) 
+      
+      if(nrow(tt_df) != 0) { 
+        
+        tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                             "left", "right")
+        
+        tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                         hv[["coords_css"]][["x"]], 
+                         hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+        
+        
+        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+                        tt_pos_adj, ":", tt_pos, 
+                        "px; top:", hv[["coords_css"]][["y"]], "px; padding: 0px;")
+        
+        div(
+          style = style,
+          p(HTML(paste0(tt_df[["Sequence"]], 
+                        "<br/> Position: ", tt_df[["Start"]], "-", tt_df[["End"]])))
+        )
+      }
+    }
+  })
+  
+  ##
   
   ##
   
@@ -340,7 +484,10 @@ server <- function(input, output, session) {
       group_by(pos) %>%
       summarise(coverage = length(pos)) %>%
       right_join(data.frame(pos = seq(from = input[["plot_range"]][[1]], to = input[["plot_range"]][[2]]))) %>%
-      replace_na(list(coverage = 0))
+      replace_na(list(coverage = 0)) %>%
+      right_join(data.frame(amino = unlist(strsplit(protein_sequence(), "")), 
+                            pos = 1:str_length(protein_sequence()))) %>%
+      select(pos, amino, coverage)
     
   })
   
@@ -349,7 +496,7 @@ server <- function(input, output, session) {
   output[["stateOverlapDist_data"]] <- DT::renderDataTable(server = FALSE, {
     
     dt_format(stateOverlapDist_data(),
-              cols = c("Position", "Coverage"))
+              cols = c("Position", "Amino acid", "Coverage"))
     
   })
   
@@ -360,12 +507,15 @@ server <- function(input, output, session) {
     mean_coverage <- round(mean(stateOverlapDist_data()[["coverage"]], na.rm = TRUE), 2)
     display_position <- (input[["plot_range"]][[1]] + input[["plot_range"]][[2]])/2
     
-    plot_position_frequency(dat(), 
-                            protein = input[["chosen_protein"]],
-                            chosen_state = input[["chosen_state"]]) + 
+    stateOverlapDist_data() %>% 
+      ggplot(aes(x = pos, y = coverage)) +
+      geom_col(width = 1) +
+      labs(x = 'Position', y = 'Position frequency in peptides') +
+      theme(legend.position = "none") + 
       coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]])) +
       geom_hline(yintercept = mean_coverage, color = 'red') +
       geom_text(aes(x = display_position, y = mean_coverage), label = paste0("Average frequency: ", mean_coverage), color = 'red', vjust = -.5)
+    
     
   })
   
@@ -379,6 +529,47 @@ server <- function(input, output, session) {
   
   ##
   
+  output[["stateOverlapDist_debug"]] <- renderUI({
+    
+    if(!is.null(input[["stateOverlapDist_hover"]])) {
+      
+      plot_data <- stateOverlapDist()[["data"]]
+      hv <- input[["stateOverlapDist_hover"]]
+      
+      hv_dat <- data.frame(x = hv[["x"]],
+                           y = hv[["y"]],
+                           x_plot = plot_data[["pos"]],
+                           amino = plot_data[["amino"]],
+                           coverage = plot_data[["coverage"]])
+      
+      tt_df <- filter(hv_dat, abs(x - x_plot) < 0.5)  
+      
+      if(nrow(tt_df) != 0) { 
+        
+        tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                                "left", "right")
+        
+        tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                         hv[["coords_css"]][["x"]], 
+                         hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+        
+        
+        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+                        tt_pos_adj, ":", tt_pos, "px; padding: 0px;",
+                        "bottom:", hv[["range"]][["bottom"]] - hv[["coords_css"]][["y"]] , "px; ") 
+        
+        div(
+          style = style,
+          p(HTML(paste0("<br/> Position: ", tt_df[["x_plot"]],
+                        "<br/> Amino acid: ", tt_df[["amino"]], 
+                        "<br/> Coverage: ", tt_df[["coverage"]])))
+        )
+      }
+    }
+  })
+  
+  ##
+ 
   output[["stateOverlapDist_download_button"]] <- downloadHandler("stateOverlapDist.svg",
                                                                   content = function(file){
                                                                     ggsave(file, stateOverlapDist(), device = svg,
@@ -404,6 +595,33 @@ server <- function(input, output, session) {
     
   })
   
+  ## modification actions
+  
+  observe({
+    
+    times_from_file <- unique(round(dat()["Exposure"], 3))
+    
+    tmp <- unique(round(dat()["Exposure"], 3))[[1]]
+    choose_time_out <- setNames(tmp, c(head(tmp, -1), "chosen control"))
+    
+    if(has_modifications()){
+      
+      updateSelectInput(session, 
+                        inputId = "out_time",
+                        choices = times_from_file[times_from_file["Exposure"] < 99999],
+                        selected = max(times_from_file[times_from_file["Exposure"] < 99999]))
+      
+    }
+    
+    if(!has_modifications()){
+      
+      updateSelectInput(session, 
+                        inputId = "out_time",
+                        choices = choose_time_out,
+                        selected = choose_time_out["chosen control"])
+    }
+  })
+  
   ##
   
   observe({
@@ -422,11 +640,6 @@ server <- function(input, output, session) {
                       inputId = "in_time",
                       choices = times_from_file[times_from_file["Exposure"] < 99999],
                       selected = min(times_from_file[times_from_file["Exposure"] > 0, ]))
-    
-    updateSelectInput(session, 
-                      inputId = "out_time",
-                      choices = choose_time_out,
-                      selected = choose_time_out["chosen control"])
     
     updateSelectInput(session,
                       inputId = "state_first",
@@ -544,6 +757,46 @@ server <- function(input, output, session) {
                       !input[["theory"]] & input[["calc_type"]] == "relative" ~ "Delta Fraction exchanged between states [%]",
                       !input[["theory"]] & input[["calc_type"]] == "absolute" ~ "Delta Absolute value exchanged between states [Da]"
                     ))
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    if(input[["theory"]]){
+      hide(id = "in_time_part")
+      hide(id = "out_time_part")
+    }
+    
+  })
+  
+  observe({
+    
+    if(!input[["theory"]]){
+      show(id = "in_time_part")
+      show(id = "out_time_part")
+    }
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    if(input[["calc_type"]] == "absolute"){
+      hide(id = "out_time_part")
+    } 
+    
+  })
+    
+  ##
+  
+  observe({
+      
+    if(input[["calc_type"]] == "relative"){
+      show(id = "out_time_part")
+    }
     
   })
   
@@ -726,7 +979,7 @@ server <- function(input, output, session) {
   ##
   
   output[["comparisonPlot"]] <- renderPlot({
-    #browser()
+
     cp_out() 
     
   })
@@ -736,8 +989,6 @@ server <- function(input, output, session) {
   output[["comparisonPlot_debug"]] <- renderUI({
     
     if(!is.null(input[["comparisonPlot_hover"]])) {
-      
-      # browser()
       
       plot_data <- cp_out()[["data"]]
       hv <- input[["comparisonPlot_hover"]]
@@ -751,6 +1002,7 @@ server <- function(input, output, session) {
                            State = plot_data[["State"]])
       
       tt_df <- filter(hv_dat, Start < x, End > x) %>% 
+        filter(abs(y_plot - y) < 10) %>%
         filter(abs(y_plot - y) == min(abs(y_plot - y)))
    
       
@@ -1125,7 +1377,6 @@ server <- function(input, output, session) {
     
     if(!is.null(input[["differentialPlot_hover"]])) {
       
-      # browser()
       wp_plot_data <- wp_out()[["data"]]
       wp_hv <- input[["differentialPlot_hover"]]
       
@@ -1137,6 +1388,7 @@ server <- function(input, output, session) {
                            Sequence = wp_plot_data[["Sequence"]])
       
       wp_tt_df <- filter(wp_hv_dat, Start < x, End > x) %>% 
+        filter(abs(y_plot - y) < 10) %>%
         filter(abs(y_plot - y) == min(abs(y_plot - y)))
       
       
@@ -1149,7 +1401,7 @@ server <- function(input, output, session) {
                             wp_hv[["coords_css"]][["x"]], 
                             wp_hv[["range"]][["right"]]/wp_hv[["img_css_ratio"]][["x"]] - wp_hv[["coords_css"]][["x"]])
         
-        # browser()
+       
         style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
                         wp_tt_pos_adj, ":", wp_tt_pos, "px; padding: 0px;",
                         "bottom:", wp_hv[["range"]][["bottom"]] - wp_hv[["coords_css"]][["y"]] , "px; ") 
@@ -1300,13 +1552,25 @@ server <- function(input, output, session) {
     
     updateSelectInput(session, 
                       inputId = "kin_in_time",
-                      choices = times_from_file,
+                      choices = times_from_file[times_from_file["Exposure"] < 99999, ],
                       selected = min(times_from_file[times_from_file["Exposure"] > 0, ]))
     
-    updateSelectInput(session, 
-                      inputId = "kin_out_time",
-                      choices =  choose_time_out,
-                      selected = choose_time_out["chosen control"])
+    if(!has_modifications()){
+      
+      updateSelectInput(session, 
+                        inputId = "kin_out_time",
+                        choices =  choose_time_out,
+                        selected = choose_time_out["chosen control"])
+    }
+    
+    if(has_modifications()){
+      
+      updateSelectInput(session, 
+                        inputId = "kin_out_time",
+                        choices =  times_from_file[times_from_file["Exposure"] < 99999, ],
+                        selected = max(times_from_file[times_from_file["Exposure"] < 99999, ]))
+    }
+    
     
   })
   
@@ -1317,8 +1581,8 @@ server <- function(input, output, session) {
     updateTextInput(session, 
                     inputId = "kin_plot_title",
                     value = case_when(
-                      input[["kin_theory"]] ~ paste0("Theoretical kinetic plot for chosen peptides for ", input[["chosen_protein"]]),
-                      !input[["kin_theory"]]  ~ paste0("Kinetic plot for chosen peptides for ", input[["chosen_protein"]])
+                      input[["kin_theory"]] ~ paste0("Theoretical uptake curve for chosen peptides for ", input[["chosen_protein"]]),
+                      !input[["kin_theory"]]  ~ paste0("Uptake curve for chosen peptides for ", input[["chosen_protein"]])
                     ))
     
     updateTextInput(session, 
@@ -1329,6 +1593,44 @@ server <- function(input, output, session) {
                       !input[["kin_theory"]] & input[["kin_calc_type"]] == "relative" ~ "Deuteration [%]",
                       !input[["kin_theory"]] & input[["kin_calc_type"]] == "absolute" ~ "Deuteration [Da]"
                     ))
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    if(input[["kin_theory"]]){
+      hide(id = "kin_time_part")
+    }
+    
+  })
+  
+  observe({
+    
+    if(!input[["kin_theory"]]){
+      show(id = "kin_time_part")
+    }
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    if(input[["kin_calc_type"]] == "absolute"){
+      hide(id = "kin_out_time_part")
+    } 
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    if(input[["kin_calc_type"]] == "relative"){
+      show(id = "kin_out_time_part")
+    }
     
   })
   
@@ -1374,7 +1676,7 @@ server <- function(input, output, session) {
   kin_dat <- reactive({
     
     validate(need(input[["peptide_list_data_rows_selected"]], "Please select at least one peptide from the table on the left."))
-    
+
     bind_rows(apply(peptide_list()[input[["peptide_list_data_rows_selected"]], ], 1, function(peptide){
       calculate_kinetics(dat = dat(),
                          protein = input[["chosen_protein"]], 
@@ -1451,6 +1753,7 @@ server <- function(input, output, session) {
   
   kin_plot_exp <- reactive({
     
+    
     kin_dat() %>% 
       mutate(prop = paste0(Sequence, "-", State)) %>%
       ggplot(aes(x = time_chosen, y = frac_exch_state, group = prop)) +
@@ -1503,10 +1806,13 @@ server <- function(input, output, session) {
       
     }
     
-    kp + labs(title = input[["kin_plot_title"]],
+    kp + 
+      geom_point(size = 3) +
+      labs(title = input[["kin_plot_title"]],
               x = input[["kin_plot_x_label"]],
               y = input[["kin_plot_y_label"]]) +
       coord_cartesian(ylim = c(input[["kin_plot_y_range"]][1], input[["kin_plot_y_range"]][2])) +
+      scale_x_log10() + 
       theme(legend.position = "bottom",
             legend.title = element_blank())
     
@@ -1518,6 +1824,52 @@ server <- function(input, output, session) {
     
     kp_out()
     
+  })
+  
+  ##
+  
+  output[["kinetic_plot_chosen_peptides_debug"]] <- renderUI({
+    
+    if(!is.null(input[["kinetic_plot_chosen_peptides_hover"]])) {
+      
+      plot_data <- kp_out()[["data"]]
+      hv <- input[["kinetic_plot_chosen_peptides_hover"]]
+      
+      hv_dat <- data.frame(x = hv[["x"]],
+                           y = hv[["y"]],
+                           Start = plot_data[["Start"]],
+                           End = plot_data[["End"]],
+                           x_plot = plot_data[[hv[["mapping"]][["x"]]]],
+                           y_plot = plot_data[[hv[["mapping"]][["y"]]]],
+                           Sequence = plot_data[["Sequence"]],
+                           State = plot_data[["State"]])
+      
+      tt_df <- filter(hv_dat, abs(y_plot - y) < 10, abs(y_plot - y) == min(abs(y_plot - y))) %>%
+                      filter(abs(x_plot - x) < 0.1*x_plot, abs(x_plot - x) == min(abs(x_plot - x))) 
+      
+      if(nrow(tt_df) != 0) { 
+        
+        tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                             "left", "right")
+        
+        tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                         hv[["coords_css"]][["x"]], 
+                         hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+        
+        
+        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+                        tt_pos_adj, ":", tt_pos, 
+                        "px; top:", hv[["coords_css"]][["y"]], "px; padding: 0px;")
+        
+        div(
+          style = style,
+          p(HTML(paste0(tt_df[["Sequence"]], 
+                        "<br/> State: ", tt_df[["State"]],
+                        "<br/> Position: ", tt_df[["Start"]], "-", tt_df[["End"]], 
+                        "<br/> Value: ", round(tt_df[["y_plot"]], 2))))
+        )
+      }
+    }
   })
   
   ##
@@ -1609,12 +1961,12 @@ server <- function(input, output, session) {
     
     updateSelectInput(session, 
                       inputId = "qc_chosen_time",
-                      choices = times_from_file,
+                      choices = times_from_file[times_from_file["Exposure"] < 99999, ],
                       selected = min(times_from_file[times_from_file["Exposure"] >= 1, ]))
     
     updateSelectInput(session, 
                       inputId = "qc_in_time",
-                      choices = times_from_file,
+                      choices = times_from_file[times_from_file["Exposure"] < 99999, ],
                       selected = min(times_from_file[times_from_file["Exposure"] > 0, ]))
     
     updateSelectInput(session,
@@ -1659,9 +2011,11 @@ server <- function(input, output, session) {
     quality_control_dat() %>%
       gather(2:7, key = 'type', value = 'value') %>%
       filter(startsWith(type, "avg")) %>%
-      ggplot(aes(x = factor(out_time), y = value, group = type)) +
+      ggplot(aes(x = out_time, y = value, group = type)) +
+      geom_point(size = 3) +
       geom_line(aes(color = type)) +
       scale_colour_discrete(name = "Mean uncertainty of: ", labels = c("difference", "first state", "second state")) +
+      scale_x_log10() + 
       labs(x = "Out time [min]",
            y = "Mean uncertainty [%]",
            title = "Quality control plot for experiment")
@@ -1694,6 +2048,48 @@ server <- function(input, output, session) {
     quality_control_plot_data_out()
     
   })
+  
+  ##
+  
+  output[["quality_control_plot_debug"]] <- renderUI({
+    
+    if(!is.null(input[["quality_control_plot_hover"]])) {
+      
+      plot_data <- qc_out()[["data"]]
+      hv <- input[["quality_control_plot_hover"]]
+      
+      hv_dat <- data.frame(x = hv[["x"]],
+                           y = hv[["y"]],
+                           x_plot = plot_data[[hv[["mapping"]][["x"]]]],
+                           y_plot = plot_data[[hv[["mapping"]][["y"]]]])
+      
+      tt_df <- hv_dat %>%
+        filter(abs(y_plot - y) == min(abs(y_plot - y)), abs(x_plot - x) < 0.1*x_plot) 
+      
+      if(nrow(tt_df) != 0) { 
+        
+        tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                             "left", "right")
+        
+        tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                         hv[["coords_css"]][["x"]], 
+                         hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+        
+        
+        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+                        tt_pos_adj, ":", tt_pos, 
+                        "px; top:", hv[["coords_css"]][["y"]], "px; padding: 0px;")
+        
+        div(
+          style = style,
+          p(HTML(paste0("<br/> x: ", round(tt_df[["x_plot"]], 0), " [min]",
+                        "<br/> y: ", round(tt_df[["y_plot"]], 2), " [%] ")))
+        )
+      }
+    }
+  })
+  
+  ##
   
   ##
   
