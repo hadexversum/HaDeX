@@ -595,6 +595,33 @@ server <- function(input, output, session) {
     
   })
   
+  ## modification actions
+  
+  observe({
+    
+    times_from_file <- unique(round(dat()["Exposure"], 3))
+    
+    tmp <- unique(round(dat()["Exposure"], 3))[[1]]
+    choose_time_out <- setNames(tmp, c(head(tmp, -1), "chosen control"))
+    
+    if(has_modifications()){
+      
+      updateSelectInput(session, 
+                        inputId = "out_time",
+                        choices = times_from_file[times_from_file["Exposure"] < 99999],
+                        selected = max(times_from_file[times_from_file["Exposure"] < 99999]))
+      
+    }
+    
+    if(!has_modifications()){
+      
+      updateSelectInput(session, 
+                        inputId = "out_time",
+                        choices = choose_time_out,
+                        selected = choose_time_out["chosen control"])
+    }
+  })
+  
   ##
   
   observe({
@@ -613,24 +640,6 @@ server <- function(input, output, session) {
                       inputId = "in_time",
                       choices = times_from_file[times_from_file["Exposure"] < 99999],
                       selected = min(times_from_file[times_from_file["Exposure"] > 0, ]))
-    
-    if(has_modifications()){
-      
-      updateSelectInput(session, 
-                        inputId = "out_time",
-                        choices = times_from_file[times_from_file["Exposure"] < 99999],
-                        selected = max(times_from_file["Exposure"]))
-      
-    }
-    
-    if(!has_modifications()){
-      
-      updateSelectInput(session, 
-                        inputId = "out_time",
-                        choices = choose_time_out,
-                        selected = choose_time_out["chosen control"])
-    }
-    
     
     updateSelectInput(session,
                       inputId = "state_first",
