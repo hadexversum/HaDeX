@@ -220,7 +220,7 @@ As expected, the uncertainty associated with $D_{t}$ has the biggest impact on $
 
 ### Theoretical deuteration level 
 
-As opposed to the experimental deuteration levels, theoretical deuteration level only partially depends on the experimental data. Here, the maximum deuteration level is based on a hypothetical peptide where all hydrogens were replaced by deuters, as it is shown in equation 8:
+As opposed to the experimental deuteration levels, theoretical deuteration level only partially depends on the experimental data. Here, the maximum deuteration level is based on a hypothetical peptide where all hydrogens were replaced by deuterons, as it is shown in equation 8:
 
 $$D = \frac{D_{t}-MHP}{MaxUptake \times protonMass}\tag{8}$$
 

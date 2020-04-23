@@ -4,8 +4,13 @@
 \alias{comparison_plot}
 \title{Plot comparison plot}
 \usage{
-comparison_plot(calc_dat, theoretical = FALSE, relative = TRUE,
-  state_first = "state_first", state_second = "state_second")
+comparison_plot(
+  calc_dat,
+  theoretical = FALSE,
+  relative = TRUE,
+  state_first = "state_first",
+  state_second = "state_second"
+)
 }
 \arguments{
 \item{calc_dat}{processed data from DynamX file - using prepare_dataset}

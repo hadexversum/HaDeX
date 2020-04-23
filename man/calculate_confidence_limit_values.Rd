@@ -4,8 +4,12 @@
 \alias{calculate_confidence_limit_values}
 \title{Calculate the value of confidence limit}
 \usage{
-calculate_confidence_limit_values(calc_dat, confidence_limit = 0.98,
-  theoretical = FALSE, relative = TRUE)
+calculate_confidence_limit_values(
+  calc_dat,
+  confidence_limit = 0.98,
+  theoretical = FALSE,
+  relative = TRUE
+)
 }
 \arguments{
 \item{calc_dat}{processed data from DynamX file - using prepare_dataset}
