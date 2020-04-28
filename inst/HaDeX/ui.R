@@ -238,13 +238,15 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          tabsetPanel(
                                            tabPanel("Woods plot",
                                                     br(),
-                                                    plotOutput_h("differentialPlot", hover = hoverOpts("differentialPlot_hover", delay = 10, delayType = "debounce")), 
+                                                    div(style = "position:relative",
+                                                      plotOutput_h("differentialPlot", hover = hoverOpts("differentialPlot_hover", delay = 10, delayType = "debounce")), 
+                                                      uiOutput("differentialPlot_debug")),
                                                     downloadButton("differentialPlot_download_button", 
                                                                    "Save chart (.svg)")), 
                                            tabPanel("Data",
                                                     br(),
-                                                    DT::dataTableOutput("differentialPlot_data"))),
-                                         uiOutput("differentialPlot_debug")
+                                                    DT::dataTableOutput("differentialPlot_data")))
+                                         
                                          
                                        )
                               ),
@@ -285,8 +287,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          tabsetPanel(
                                            tabPanel("Position Frequency",
                                                     br(),
-                                                    withSpinner(plotOutput("stateOverlapDist", hover = hoverOpts("stateOverlapDist_hover", delay = 10, delayType = "debounce"))),
-                                                    uiOutput("stateOverlapDist_debug"), 
+                                                    div(style = "position:relative;",
+                                                        withSpinner(plotOutput("stateOverlapDist", hover = hoverOpts("stateOverlapDist_hover", delay = 10, delayType = "debounce"))),
+                                                        uiOutput("stateOverlapDist_debug")),
                                                     downloadButton("stateOverlapDist_download_button",
                                                                    "Save chart (.svg)")
                                            ),

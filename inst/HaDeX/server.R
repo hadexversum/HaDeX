@@ -339,7 +339,7 @@ server <- function(input, output, session) {
                          hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
         
         
-        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); pointer-events: none;",
                         tt_pos_adj, ":", tt_pos, 
                         "px; top:", hv[["coords_css"]][["y"]], "px; padding: 0px;")
         
@@ -444,7 +444,7 @@ server <- function(input, output, session) {
                          hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
         
         
-        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); pointer-events: none;",
                         tt_pos_adj, ":", tt_pos, 
                         "px; top:", hv[["coords_css"]][["y"]], "px; padding: 0px;")
         
@@ -554,9 +554,9 @@ server <- function(input, output, session) {
                          hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
         
         
-        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); pointer-events: none;",
                         tt_pos_adj, ":", tt_pos, "px; padding: 0px;",
-                        "bottom:", hv[["range"]][["bottom"]] - hv[["coords_css"]][["y"]] , "px; ") 
+                        "top:", hv[["coords_css"]][["y"]] , "px; ") 
         
         div(
           style = style,
@@ -1379,7 +1379,7 @@ server <- function(input, output, session) {
       
       wp_plot_data <- wp_out()[["data"]]
       wp_hv <- input[["differentialPlot_hover"]]
-      
+
       wp_hv_dat <- data.frame(x = wp_hv[["x"]],
                            y = wp_hv[["y"]],
                            Start = wp_plot_data[[wp_hv[["mapping"]][["x"]]]],
@@ -1391,9 +1391,8 @@ server <- function(input, output, session) {
         filter(abs(y_plot - y) < 10) %>%
         filter(abs(y_plot - y) == min(abs(y_plot - y)))
       
-      
-      if(nrow(wp_tt_df) != 0) { 
-        
+      if(nrow(wp_tt_df) != 0) {
+
         wp_tt_pos_adj <- ifelse(wp_hv[["coords_img"]][["x"]]/wp_hv[["range"]][["right"]] < 0.5,
                              "left", "right")
         
@@ -1402,18 +1401,17 @@ server <- function(input, output, session) {
                             wp_hv[["range"]][["right"]]/wp_hv[["img_css_ratio"]][["x"]] - wp_hv[["coords_css"]][["x"]])
         
        
-        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+        style <- paste0("position:absolute; z-index:1072; background-color: rgba(245, 245, 245, 1); pointer-events: none; ",
                         wp_tt_pos_adj, ":", wp_tt_pos, "px; padding: 0px;",
-                        "bottom:", wp_hv[["range"]][["bottom"]] - wp_hv[["coords_css"]][["y"]] , "px; ") 
+                        "top:", wp_hv[["coords_css"]][["y"]] , "px; ") 
         
-        # wp_hv[["coords_css"]][["y"]]
-        
-        div(
+        wellPanel(
           style = style,
-          p(HTML(paste0(wp_tt_df[["Sequence"]], 
-                        "<br/> Position: ", wp_tt_df[["Start"]], "-", wp_tt_df[["End"]], 
+          p(HTML(paste0(wp_tt_df[["Sequence"]],
+                        "<br/> Position: ", wp_tt_df[["Start"]], "-", wp_tt_df[["End"]],
                         "<br/> Value: ", round(wp_tt_df[["y_plot"]], 2))))
         )
+        
       }
     }
   })
@@ -1857,7 +1855,7 @@ server <- function(input, output, session) {
                          hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
         
         
-        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); pointer-events: none;",
                         tt_pos_adj, ":", tt_pos, 
                         "px; top:", hv[["coords_css"]][["y"]], "px; padding: 0px;")
         
@@ -1866,7 +1864,8 @@ server <- function(input, output, session) {
           p(HTML(paste0(tt_df[["Sequence"]], 
                         "<br/> State: ", tt_df[["State"]],
                         "<br/> Position: ", tt_df[["Start"]], "-", tt_df[["End"]], 
-                        "<br/> Value: ", round(tt_df[["y_plot"]], 2))))
+                        "<br/> Value: ", round(tt_df[["y_plot"]], 2),
+                        "<br/> Time point: ", tt_df[["x_plot"]], " min")))
         )
       }
     }
