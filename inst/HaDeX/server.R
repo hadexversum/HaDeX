@@ -1674,6 +1674,11 @@ server <- function(input, output, session) {
   kin_dat <- reactive({
     
     validate(need(input[["peptide_list_data_rows_selected"]], "Please select at least one peptide from the table on the left."))
+    
+    times_from_file <- round(unique(dat()["Exposure"]), 3)
+    validate(need(sum(times_from_file[["Exposure"]] < input[["kin_out_time"]] & times_from_file[["Exposure"]] > input[["kin_in_time"]]) > 2, "Not enough time points between in and out time. "))
+    
+    validate(need(input[["kin_out_time"]] > input[["kin_in_time"]], "Out time must be bigger than in time. "))
 
     bind_rows(apply(peptide_list()[input[["peptide_list_data_rows_selected"]], ], 1, function(peptide){
       calculate_kinetics(dat = dat(),
