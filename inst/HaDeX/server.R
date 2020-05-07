@@ -1676,21 +1676,43 @@ server <- function(input, output, session) {
     validate(need(input[["peptide_list_data_rows_selected"]], "Please select at least one peptide from the table on the left."))
     
     times_from_file <- round(unique(dat()["Exposure"]), 3)
-    validate(need(sum(times_from_file[["Exposure"]] < input[["kin_out_time"]] & times_from_file[["Exposure"]] > input[["kin_in_time"]]) > 2, "Not enough time points between in and out time. "))
     
-    validate(need(input[["kin_out_time"]] > input[["kin_in_time"]], "Out time must be bigger than in time. "))
-
-    bind_rows(apply(peptide_list()[input[["peptide_list_data_rows_selected"]], ], 1, function(peptide){
-      calculate_kinetics(dat = dat(),
-                         protein = input[["chosen_protein"]], 
-                         sequence = peptide[1],
-                         state = peptide[2],
-                         start = as.numeric(peptide[3]),
-                         end = as.numeric(peptide[4]),
-                         time_in = as.numeric(input[["kin_in_time"]]),
-                         time_out = as.numeric(input[["kin_out_time"]]),
-                         deut_part = 0.01*as.integer(input[["deut_concentration"]]))
-    }))
+    if(input[["kin_theory"]]){
+      
+      bind_rows(apply(peptide_list()[input[["peptide_list_data_rows_selected"]], ], 1, function(peptide){
+        calculate_kinetics(dat = dat(),
+                           protein = input[["chosen_protein"]], 
+                           sequence = peptide[1],
+                           state = peptide[2],
+                           start = as.numeric(peptide[3]),
+                           end = as.numeric(peptide[4]),
+                           time_in = min(times_from_file[times_from_file[["Exposure"]] > 0, ]),
+                           time_out = max(times_from_file[times_from_file[["Exposure"]] < 9999, ]),
+                           deut_part = 0.01*as.integer(input[["deut_concentration"]]))
+      }))
+      
+    } else {
+      
+      validate(need(sum(times_from_file[["Exposure"]] < as.numeric(input[["kin_out_time"]]) & times_from_file[["Exposure"]] > as.numeric(input[["kin_in_time"]])) > 1, "Not enough time points between in and out time. "))
+      
+      validate(need(input[["kin_out_time"]] > input[["kin_in_time"]], "Out time must be bigger than in time. "))
+      
+      bind_rows(apply(peptide_list()[input[["peptide_list_data_rows_selected"]], ], 1, function(peptide){
+        calculate_kinetics(dat = dat(),
+                           protein = input[["chosen_protein"]], 
+                           sequence = peptide[1],
+                           state = peptide[2],
+                           start = as.numeric(peptide[3]),
+                           end = as.numeric(peptide[4]),
+                           time_in = as.numeric(input[["kin_in_time"]]),
+                           time_out = as.numeric(input[["kin_out_time"]]),
+                           deut_part = 0.01*as.integer(input[["deut_concentration"]]))
+      }))
+      
+    }
+  
+    
+    
     
   })
   
