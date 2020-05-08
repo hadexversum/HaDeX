@@ -1687,16 +1687,16 @@ server <- function(input, output, session) {
                            start = as.numeric(peptide[3]),
                            end = as.numeric(peptide[4]),
                            time_in = min(times_from_file[times_from_file[["Exposure"]] > 0, ]),
-                           time_out = max(times_from_file[times_from_file[["Exposure"]] < 9999, ]),
+                           time_out = max(times_from_file),
                            deut_part = 0.01*as.integer(input[["deut_concentration"]]))
       }))
       
     } else {
       
+      validate(need(as.numeric(input[["kin_out_time"]]) > as.numeric(input[["kin_in_time"]]), "Out time must be bigger than in time. "))
+      
       validate(need(sum(times_from_file[["Exposure"]] < as.numeric(input[["kin_out_time"]]) & times_from_file[["Exposure"]] > as.numeric(input[["kin_in_time"]])) > 1, "Not enough time points between in and out time. "))
-      
-      validate(need(input[["kin_out_time"]] > input[["kin_in_time"]], "Out time must be bigger than in time. "))
-      
+
       bind_rows(apply(peptide_list()[input[["peptide_list_data_rows_selected"]], ], 1, function(peptide){
         calculate_kinetics(dat = dat(),
                            protein = input[["chosen_protein"]], 
@@ -2013,12 +2013,15 @@ server <- function(input, output, session) {
     
     qc_dat <- dat() %>%
       filter(Exposure < 99999)
-    
+ 
+    validate(need(as.numeric(input[["qc_chosen_time"]]) > as.numeric(input[["qc_in_time"]]), "Chosen time must be bigger than in time. "))
+    validate(need(sum(unique(qc_dat[["Exposure"]]) > as.numeric(input[["qc_chosen_time"]])) > 1, "Not enough time points (bigger than chosen time) to generate a plot. ")) 
+
     result <- quality_control(dat = qc_dat,
                               state_first = input[["qc_state_first"]],
                               state_second = input[["qc_state_second"]], 
-                              chosen_time = input[["qc_chosen_time"]], 
-                              in_time = input[["qc_in_time"]]) %>%
+                              chosen_time = as.numeric(input[["qc_chosen_time"]]), 
+                              in_time = as.numeric(input[["qc_in_time"]])) %>%
       # to get the percentages in readable form
       mutate(avg_err_state_first = 100 * avg_err_state_first,
              sd_err_state_first = 100 * sd_err_state_first,
