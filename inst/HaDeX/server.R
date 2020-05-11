@@ -794,7 +794,7 @@ server <- function(input, output, session) {
   
   observe({
       
-    if(input[["calc_type"]] == "relative"){
+    if(input[["calc_type"]] == "relative" & !input[["theory"]]){
       show(id = "out_time_part")
     }
     
@@ -863,6 +863,13 @@ server <- function(input, output, session) {
   ##
   
   all_dat <- reactive({
+    
+    if(!input[["theory"]]){
+      validate(need(as.numeric(input[["in_time"]]) < as.numeric(input[["chosen_time"]]), "In time must be smaller than chosen time."))
+      validate(need(as.numeric(input[["chosen_time"]]) < as.numeric(input[["out_time"]]), "Out time must be bigger than chosen time."))
+    }
+    
+    
     
     bind_rows(lapply(states_from_file(), function(i) calculate_state_deuteration(dat(), 
                                                                                  protein = input[["chosen_protein"]], 
@@ -1136,6 +1143,12 @@ server <- function(input, output, session) {
     
     validate(need(input[["compare_states"]], "Please select at least one state."))
     validate(need(length(unique(filter(dat(), !is.na("Modification"), Protein == input[["chosen_protein"]])[["State"]])) > 1, "Not sufficient number of states without modifications."))
+    
+    if(!input[["theory"]]){
+      validate(need(as.numeric(input[["in_time"]]) < as.numeric(input[["chosen_time"]]), "In time must be smaller than chosen time."))
+      validate(need(as.numeric(input[["chosen_time"]]) < as.numeric(input[["out_time"]]), "Out time must be bigger than chosen time."))
+    }
+    
     
     tmp <- bind_rows(lapply(c(input[["state_first"]], input[["state_second"]]), function(i) calculate_state_deuteration(dat(), 
                                                                                                                         protein = input[["chosen_protein"]], 
