@@ -130,6 +130,65 @@ server <- function(input, output, session) {
   
   ##
   
+  observe({
+    
+    tryCatch({
+      if(input[["deut_concentration"]] < 0)
+        updateNumericInput(session,
+                           inputId = "deut_concentration",
+                           value = 0)
+    }, error = function(e){
+        updateNumericInput(session,
+                           inputId = "deut_concentration",
+                           value = 0)
+    })
+  })
+  
+  observe({
+    
+    tryCatch({
+      if(input[["deut_concentration"]] > 100)
+        updateNumericInput(session,
+                           inputId = "deut_concentration",
+                           value = 100)
+    },
+    error = function(e){
+        updateNumericInput(session,
+                           inputId = "deut_concentration",
+                           value = 100)
+    })
+    
+  })
+  
+  observe({
+    
+    tryCatch({
+      if(input[["sequence_length"]] < max_range())
+        updateNumericInput(session,
+                           inputId = "sequence_length",
+                           value = max_range())
+    },
+    error = function(e){
+        updateNumericInput(session,
+                           inputId = "sequence_length",
+                           value = max_range())
+    })
+    
+  })
+  
+  observe({
+
+    tryCatch(
+    { if(input[["sequence_start_shift"]] < 0)
+        updateNumericInput(session,
+                           inputId = "sequence_start_shift",
+                           value = 1) },
+      error = function(e) {
+        message("You cannot shift it to minus values!")
+        updateNumericInput(session,
+                           inputId = "sequence_start_shift",
+                           value = 1) })
+  })
   
   ##
   
