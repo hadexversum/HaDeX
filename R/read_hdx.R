@@ -5,9 +5,11 @@
 #' @importFrom tools file_ext
 #' @importFrom readxl read_excel
 #' @importFrom readr read_csv read_tsv parse_logical parse_integer parse_double parse_character 
-#' cols col_character
-#' @importFrom data.table fread
+#' cols col_character parse_number
+#' @importFrom data.table fread setattr `:=`
 #' @importFrom dplyr %>%
+#' @importFrom Peptides mw
+#' @importFrom stringr str_count
 #' 
 #' @param filename a file supplied by the user. Formats allowed: .csv, .xlsx and .xls.
 #' 
@@ -31,12 +33,21 @@ read_hdx <- function(filename){
   
   dat <- switch(file_ext(filename),
                 "csv" = fread(filename),
-                # "csv" = read_csv(filename, col_names = TRUE, col_types = cols(Modification = col_character(), 
-                #                                                               Fragment = col_character())),
-                # "tsv" = read_tsv(filename, col_names = TRUE, col_types = cols(Modification = col_character(), 
-                #                                                               Fragment = col_character())),
                 "xlsx" = read_excel(filename),
                 "xls" = read_excel(filename))
+  
+  setattr(dat, "source", "Dynamx3.0")
+  
+  #check for hdexaminer file
+  colnames_exam <- c("Protein State",  "Deut Time", "Experiment", 
+                     "Start", "End", "Sequence", "Charge", "Search RT",
+                     "Actual RT", "# Spectra", "Peak Width", "m/z Shift",
+                     "Max Inty", "Exp Cent", "Theor Cent", "Score", "Cent Diff", 
+                     "# Deut", "Deut %", "Confidence")
+  
+  if(all(colnames_exam %in% colnames(dat))){
+    dat <- transform_examiner(dat)
+  }
   
   #check for dynamx2 file
   colnames_v_2 <- c("Protein", "Start", "End", "Sequence", 
@@ -48,6 +59,7 @@ read_hdx <- function(filename){
     dat <- upgrade_2_to_3(dat)
   }
   
+  #check for dynamx3 file
   colnames_v_3 <- c("Protein", "Start", "End", "Sequence", 
                   "Modification", "Fragment", "MaxUptake", 
                   "MHP", "State", "Exposure", "File", "z", 
@@ -56,8 +68,8 @@ read_hdx <- function(filename){
   colnames_presence <- colnames_v_3 %in% colnames(dat)
   
   if(!all(colnames_presence)) {
-    err_message <- paste0(ifelse(sum(!colnames_presence) > 0, 
-                                 "A supplied file does not have required columns: ", 
+    err_message <- paste0(ifelse(sum(!colnames_presence) > 0,
+                                 "A supplied file does not have required columns: ",
                                  "A supplied file does not have the required column "),
                           paste0(colnames_v_3[!colnames_presence], collapse = ", "), ".")
     stop(err_message)
@@ -83,9 +95,37 @@ read_hdx <- function(filename){
 
 upgrade_2_to_3 <- function(dat){
   
+  setattr(dat, "source", "Dynamx2.0")
+  
   colnames(dat)[6] <- "MaxUptake"
   dat[["Fragment"]] <- NA
   
   dat
   
+}
+
+transform_examiner <- function(dat){
+  
+  setattr(dat, "source", "HDeXaminer")
+  
+  # low confidence rows deleted
+  dat <- dat[Confidence != "Low"]
+  # choose only useful columns
+  dat <- dat[, c("Protein State", "Deut Time", "Experiment", "Start", "End", "Sequence", "Charge", "Search RT", "Max Inty", "Exp Cent")] 
+  # change names
+  colnames(dat) <- c("State", "Exposure", "File", "Start", "End", "Sequence", "z", "RT", "Inten", "Center")
+  # prepare Protein  column
+  dat[, "Protein"] <- dat[order(nchar(State)), State][[1]]
+  # change time from second to minutes
+  dat[Exposure == "FD", `:=`(Exposure = "5999880")] # flag for fully deuterated sample
+  dat[, `:=`(Exposure = parse_number(Exposure)/60)]
+  #calculate MaxUptake
+  dat[, `:=`(MaxUptake = nchar(Sequence) - 2 - str_count(Sequence, "P"))]
+  # calculate MPH
+  dat[, `:=`(MHP = mw(Sequence))]
+  # columns to fit the required format
+  dat[, `:=`(Fragment = NA,
+             Modification  = NA)]
+  
+  dat 
 }
