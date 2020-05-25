@@ -36,7 +36,7 @@ read_hdx <- function(filename){
                 "xlsx" = read_excel(filename),
                 "xls" = read_excel(filename))
   
-  setattr(dat, "source", "Dynamx3.0")
+  data_type <- "Dynamx3.0"
   
   #check for hdexaminer file
   colnames_exam <- c("Protein State",  "Deut Time", "Experiment", 
@@ -47,6 +47,7 @@ read_hdx <- function(filename){
   
   if(all(colnames_exam %in% colnames(dat))){
     dat <- transform_examiner(dat)
+    data_type <- "HDeXaminer"
   }
   
   #check for dynamx2 file
@@ -57,6 +58,7 @@ read_hdx <- function(filename){
   
   if(all(colnames_v_2 %in% colnames(dat))){
     dat <- upgrade_2_to_3(dat)
+    data_type <- "Dynamx2.0"
   }
   
   #check for dynamx3 file
@@ -87,15 +89,16 @@ read_hdx <- function(filename){
   
   dat[["Exposure"]] <- round(dat[["Exposure"]], 3)
   
-  dat <- mutate(dat, State = paste0(State, ifelse(!is.na(Modification), paste0(" - ", Modification), ""))) 
+  dat <- mutate(dat, State = paste0(State, ifelse(!is.na(Modification), paste0(" - ", Modification), "")))
+  
+  attr(dat, "source") <- data_type
   
   dat
+
   
 }
 
 upgrade_2_to_3 <- function(dat){
-  
-  setattr(dat, "source", "Dynamx2.0")
   
   colnames(dat)[6] <- "MaxUptake"
   dat[["Fragment"]] <- NA
@@ -105,9 +108,7 @@ upgrade_2_to_3 <- function(dat){
 }
 
 transform_examiner <- function(dat){
-  
-  setattr(dat, "source", "HDeXaminer")
-  
+ 
   # low confidence rows deleted
   dat <- dat[Confidence != "Low"]
   # choose only useful columns

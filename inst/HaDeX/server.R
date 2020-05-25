@@ -33,14 +33,56 @@ server <- function(input, output, session) {
     
   })
   
+  ##
+  
+  data_source <- reactive({
+    
+    attr(dat_in(), "source")
+    
+  })
+  
+  ##
+  
+  exam_protein_name_from_file <- reactive({ unique(dat_in()[["Protein"]]) })
+  exam_state_name_from_file <- reactive({ unique(dat_in()[["State"]]) })
+  
+  observe({
+    
+    if(data_source() == "HDeXaminer"){
+      shinyjs::show("examiner_settings")
+    }
+    
+    updateTextInput(session, 
+                    inputId = "exam_protein_name",
+                    value = exam_protein_name_from_file())
+    
+    updateTextInput(session, 
+                    inputId = "exam_state_name",
+                    value = exam_state_name_from_file())
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    if(data_source() != "HDeXaminer"){
+      shinyjs::hide("examiner_settings")
+    }
+    
+  })
+  
   output[["data_file_info"]] <- renderText({
     
+    status <- ""
     if (is.null(input[["data_file"]])){
-      "Example file: KD_180110_CD160_HVEM.csv"
+      status <- "Example file: KD_180110_CD160_HVEM.csv."
     } else {
       length(dat_in()[[1]])
-      "Supplied file is valid."
+      status <- "Supplied file is valid."
     }
+    
+    paste0(status, " Detected data source: ", data_source(), ".")
     
   })
   
@@ -50,9 +92,26 @@ server <- function(input, output, session) {
   
   ##
   
+  dat_exam <- eventReactive(input[["exam_apply_changes"]], {
+
+    update_hdexaminer_file(dat_in(),
+                           fd_time = input[["examiner_fd_timepoint"]],
+                           old_protein_name = exam_protein_name_from_file(),
+                           new_protein_name = input[["exam_protein_name"]],
+                           old_state_name = exam_state_name_from_file(),
+                           new_state_name = strsplit(input[["exam_state_name"]], ",")[[1]])
+    
+  })
+  
   dat_tmp <- reactive({
     
-    dat_in() %>%
+    if(data_source() == "HDeXaminer"){
+      dat_curr <- dat_exam()
+    } else {
+      dat_curr <- dat_in()
+    }
+    
+    dat_curr %>%
       mutate(Start = Start + input[["sequence_start_shift"]] -1,
              End = End + input[["sequence_start_shift"]] -1)
     
@@ -117,7 +176,7 @@ server <- function(input, output, session) {
   
   options_for_control <- reactive({
     
-    dat_in() %>%
+    dat_tmp() %>%
       filter(Protein == input[["chosen_protein"]]) %>%
       mutate(Exposure = round(Exposure, 3)) %>%
       select(Protein, State, Exposure) %>%
@@ -210,8 +269,6 @@ server <- function(input, output, session) {
   
   dat <- reactive({
 
-    # browser()
-    
     tmp <- dat_tmp() %>%
       filter(Protein == input[["chosen_protein"]], 
              State == strsplit(input[["chosen_control"]], " \\| ")[[1]][2], 
@@ -233,7 +290,7 @@ server <- function(input, output, session) {
               }))
   })
   
-  ##
+ 
   
   ### TAB: SEQUENCE DATA ###
   
