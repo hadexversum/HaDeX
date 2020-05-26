@@ -115,7 +115,11 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                 label = "States names:",
                                                                 width = "100%"),
                                                     actionButton(inputId = "exam_apply_changes",
-                                                                 label = "Apply changes to continue")))
+                                                                 label = "Apply changes to continue"),
+                                                    br(),
+                                                    br(),
+                                                    DT::dataTableOutput("exam_data_input")
+                                                    ))
                                        )),
                                        br(),
                                        br(),
@@ -254,7 +258,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                    "Save chart (.svg)")), 
                                            tabPanel("Data",
                                                     br(),
-                                                    DT::dataTableOutput("comparisonPlot_data"))),
+                                                    DT::dataTableOutput("comparisonPlot_data"),
+                                                    br(),
+                                                    h4("The empty values (e.q. `Frac Exch`) means there was not sufficient data for this peptide."))),
                                          uiOutput("comparisonPlot_debug"), 
                                          br(),
                                          tabsetPanel(
@@ -267,7 +273,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                    "Save chart (.svg)")), 
                                            tabPanel("Data",
                                                     br(),
-                                                    DT::dataTableOutput("differentialPlot_data")))
+                                                    DT::dataTableOutput("differentialPlot_data"),
+                                                    br(),
+                                                    h4("The empty values (e.q. `Diff Frac Exch`) means there was not sufficient data for this peptide.")))
                                          
                                          
                                        )

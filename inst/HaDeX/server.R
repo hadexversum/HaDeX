@@ -82,7 +82,12 @@ server <- function(input, output, session) {
       status <- "Supplied file is valid."
     }
     
-    paste0(status, " Detected data source: ", data_source(), ".")
+    if(data_source() == "HDeXaminer"){
+      paste0(status, " Detected data source: ", data_source(), ". User action needed below!")
+    } else {
+      paste0(status, " Detected data source: ", data_source(), ".")
+    }
+    
     
   })
   
@@ -102,6 +107,21 @@ server <- function(input, output, session) {
                            new_state_name = strsplit(input[["exam_state_name"]], ",")[[1]])
     
   })
+  
+  ##
+  
+  output[["exam_data_input"]] <- DT::renderDataTable(server = FALSE, {
+    
+    dat_exam() %>%
+      select(Protein, State, Sequence,  Start, End, MHP) %>%
+      unique(.) %>%
+      arrange(Start, End) %>%
+      dt_format()
+      
+    
+  })
+  
+  ##
   
   dat_tmp <- reactive({
     
