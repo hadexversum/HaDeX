@@ -121,7 +121,7 @@ server <- function(input, output, session) {
   
   has_modifications <- reactive({
     
-    any(!is.na(dat_tmp()[["Modification"]]))
+    any(!is.na(dat_in()[["Modification"]]))
     
   })
   
@@ -149,7 +149,7 @@ server <- function(input, output, session) {
   
   proteins_from_file <- reactive({
     
-    unique(dat_in()[["Protein"]])
+    unique(dat_tmp()[["Protein"]])
     
   })
   
@@ -157,7 +157,7 @@ server <- function(input, output, session) {
   
   max_range <- reactive({
     
-    max(filter(dat_in(), Protein == input[["chosen_protein"]])[['End']])
+    max(filter(dat_tmp(), Protein == input[["chosen_protein"]])[['End']])
     
   })
   
@@ -178,7 +178,7 @@ server <- function(input, output, session) {
     
     dat_tmp() %>%
       filter(Protein == input[["chosen_protein"]]) %>%
-      mutate(Exposure = round(Exposure, 3)) %>%
+      mutate(Exposure = round(Exposure, 4)) %>%
       select(Protein, State, Exposure) %>%
       arrange(State, desc(Exposure)) %>%
       unique(.) %>%
@@ -296,7 +296,7 @@ server <- function(input, output, session) {
   
   ##
   
-  observeEvent(input[["data_file"]], {
+  observe({
     
     possible_states <- unique(dat()[["State"]])
     
@@ -715,17 +715,18 @@ server <- function(input, output, session) {
   
   observe({
     
-    times_from_file <- unique(round(dat()["Exposure"], 3))
+    times_from_file <- unique(round(dat()["Exposure"], 4))
+    times_from_file <- times_from_file[order(times_from_file["Exposure"]), ]
     
-    tmp <- unique(round(dat()["Exposure"], 3))[[1]]
+    tmp <- sort(unique(round(dat()["Exposure"], 4))[[1]])
     choose_time_out <- setNames(tmp, c(head(tmp, -1), "chosen control"))
     
     if(has_modifications()){
       
       updateSelectInput(session, 
                         inputId = "out_time",
-                        choices = times_from_file[times_from_file["Exposure"] < 99999],
-                        selected = max(times_from_file[times_from_file["Exposure"] < 99999]))
+                        choices = times_from_file[times_from_file < 99999],
+                        selected = max(times_from_file[times_from_file < 99999]))
       
     }
     
@@ -742,20 +743,18 @@ server <- function(input, output, session) {
   
   observe({
     
-    times_from_file <- unique(round(dat()["Exposure"], 3))
-    
-    tmp <- unique(round(dat()["Exposure"], 3))[[1]]
-    choose_time_out <- setNames(tmp, c(head(tmp, -1), "chosen control"))
+    times_from_file <- unique(round(dat()["Exposure"], 4))
+    times_from_file <- times_from_file[order(times_from_file["Exposure"]), ]
     
     updateSelectInput(session, 
                       inputId = "chosen_time",
-                      choices = times_from_file[times_from_file["Exposure"] < 99999],
-                      selected = min(times_from_file[times_from_file["Exposure"] >= 1, ]))
+                      choices = times_from_file[times_from_file < 99999],
+                      selected = min(times_from_file[times_from_file > input[["in_time"]]]))
     
     updateSelectInput(session, 
                       inputId = "in_time",
-                      choices = times_from_file[times_from_file["Exposure"] < 99999],
-                      selected = min(times_from_file[times_from_file["Exposure"] > 0, ]))
+                      choices = times_from_file[times_from_file < 99999],
+                      selected = min(times_from_file[times_from_file > 0]))
     
     updateSelectInput(session,
                       inputId = "state_first",
@@ -1672,15 +1671,16 @@ server <- function(input, output, session) {
   
   observe({
     
-    times_from_file <- round(unique(dat()["Exposure"]), 3)
+    times_from_file <- round(unique(dat()["Exposure"]), 4)
+    times_from_file <- times_from_file[order(times_from_file["Exposure"]), ]
     
-    tmp <- unique(round(dat()["Exposure"], 3))[[1]]
+    tmp <- sort(unique(round(dat()["Exposure"], 3))[[1]])
     choose_time_out <- setNames(tmp, c(head(tmp, -1), "chosen control"))
     
     updateSelectInput(session, 
                       inputId = "kin_in_time",
-                      choices = times_from_file[times_from_file["Exposure"] < 99999, ],
-                      selected = min(times_from_file[times_from_file["Exposure"] > 0, ]))
+                      choices = times_from_file[times_from_file < 99999],
+                      selected = min(times_from_file[times_from_file > 0]))
     
     if(!has_modifications()){
       
@@ -1694,8 +1694,8 @@ server <- function(input, output, session) {
       
       updateSelectInput(session, 
                         inputId = "kin_out_time",
-                        choices =  times_from_file[times_from_file["Exposure"] < 99999, ],
-                        selected = max(times_from_file[times_from_file["Exposure"] < 99999, ]))
+                        choices =  times_from_file[times_from_file < 99999],
+                        selected = max(times_from_file[times_from_file < 99999]))
     }
     
     
@@ -1804,7 +1804,7 @@ server <- function(input, output, session) {
     
     validate(need(input[["peptide_list_data_rows_selected"]], "Please select at least one peptide from the table on the left."))
     
-    times_from_file <- round(unique(dat()["Exposure"]), 3)
+    times_from_file <- round(unique(dat()["Exposure"]), 4)
     
     if(input[["kin_theory"]]){
       
@@ -2112,17 +2112,18 @@ server <- function(input, output, session) {
   
   observe({
     
-    times_from_file <- round(unique(dat()["Exposure"]), 3)
+    times_from_file <- round(unique(dat()["Exposure"]), 4)
+    times_from_file <- times_from_file[order(times_from_file["Exposure"]), ]
     
     updateSelectInput(session, 
                       inputId = "qc_chosen_time",
-                      choices = times_from_file[times_from_file["Exposure"] < 99999, ],
-                      selected = min(times_from_file[times_from_file["Exposure"] >= 1, ]))
+                      choices = times_from_file[times_from_file < 99999],
+                      selected = min(times_from_file[times_from_file > input[["qc_in_time"]]]))
     
     updateSelectInput(session, 
                       inputId = "qc_in_time",
-                      choices = times_from_file[times_from_file["Exposure"] < 99999, ],
-                      selected = min(times_from_file[times_from_file["Exposure"] > 0, ]))
+                      choices = times_from_file[times_from_file < 99999],
+                      selected = min(times_from_file[times_from_file > 0]))
     
     updateSelectInput(session,
                       inputId = "qc_state_first",

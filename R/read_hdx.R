@@ -8,19 +8,25 @@
 #' cols col_character parse_number
 #' @importFrom data.table fread setattr `:=`
 #' @importFrom dplyr %>%
-#' @importFrom Peptides mw
 #' @importFrom stringr str_count
 #' 
 #' @param filename a file supplied by the user. Formats allowed: .csv, .xlsx and .xls.
 #' 
-#' @details First version accepts files produced by DynamX 3.0 and 2.0 in `cluster data` format. 
+#' @details First version accepts files produced by DynamX 3.0 or 2.0 in `cluster data` format
+#' and `tables` file from HDeXaminer. For further information check the documetation.
 #' The function checks if all necessary columns are provided in correct format. The file must 
 #' include at least two repetitions of the measurement for the uncertainty to be calculated.
+#' For the files of HDeXaminer origin, the rows with no complete information (e.q. missing
+#' `Exp Cent` value) or Low Confidence are removed. Moreover, those files need action from the
+#' user - to confirm data processing (e.q. FD time point) and make some change of the labels use 
+#' \code{\link{upadate_hdexaminer_file}} function.
 #' 
 #' @return \code{dat} - a \code{\link{data.frame}} with validated content.
 #' 
-#' @seealso \code{\link{calculate_kinetics}} \code{\link{calculate_state_deuteration}} \code{\link{plot_coverage}} \code{\link{plot_position_frequency}}
+#' @seealso \code{\link{calculate_kinetics}} \code{\link{calculate_state_deuteration}} 
+#' \code{\link{plot_coverage}} \code{\link{plot_position_frequency}}
 #' \code{\link{prepare_dataset}} \code{\link{quality_control}} \code{\link{reconstruct_sequence}}
+#' \code{\link{update_hdexaminer_file}}
 #' 
 #' @examples
 #' # read example data
@@ -109,6 +115,8 @@ upgrade_2_to_3 <- function(dat){
 
 transform_examiner <- function(dat){
  
+  # rows with missing data deleted
+  dat <- dat[!is.na(`Exp Cent`)]
   # low confidence rows deleted
   dat <- dat[Confidence != "Low"]
   # choose only useful columns
@@ -119,11 +127,11 @@ transform_examiner <- function(dat){
   dat[, "Protein"] <- dat[order(nchar(State)), State][[1]]
   # change time from second to minutes
   dat[Exposure == "FD", `:=`(Exposure = "5999880")] # flag for fully deuterated sample
-  dat[, `:=`(Exposure = parse_number(Exposure)/60)]
+  dat[, `:=`(Exposure = round(parse_number(Exposure)/60, 5))]
   #calculate MaxUptake
   dat[, `:=`(MaxUptake = nchar(Sequence) - 2 - str_count(Sequence, "P"))]
   # calculate MPH
-  dat[, `:=`(MHP = mw(Sequence))]
+  dat[, `:=`(MHP = calculate_MHP(Sequence, mono = FALSE))]
   # columns to fit the required format
   dat[, `:=`(Fragment = NA,
              Modification  = NA)]

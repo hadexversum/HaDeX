@@ -2,7 +2,7 @@
 #' 
 #' @description Updates data read from file with detected data source HDeXaminer 
 #' 
-#' @importFrom tools file_ext
+#' @importFrom data.table data.table
 #' 
 #' @param dat a data frame with data read from file by \code{\link{read_hdx}}
 #' @param fd_time time point (in minutes) for fully deuterated sample. Numeric value, bigger than other
