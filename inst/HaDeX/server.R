@@ -802,20 +802,22 @@ server <- function(input, output, session) {
   
   ##
   
+  # times from file defined as reactive below!
+  
   observe({
-    
-    times_from_file <- unique(round(dat()["Exposure"], 4))
-    times_from_file <- times_from_file[order(times_from_file["Exposure"]), ]
     
     updateSelectInput(session, 
                       inputId = "chosen_time",
-                      choices = times_from_file[times_from_file < 99999],
-                      selected = min(times_from_file[times_from_file > input[["in_time"]]]))
+                      choices = times_from_file()[times_from_file() < 99999],
+                      selected = min(times_from_file()[times_from_file() > input[["in_time"]]]))
+  })
+  
+  observe({
     
     updateSelectInput(session, 
                       inputId = "in_time",
-                      choices = times_from_file[times_from_file < 99999],
-                      selected = min(times_from_file[times_from_file > 0]))
+                      choices = times_from_file()[times_from_file() < 99999],
+                      selected = min(times_from_file()[times_from_file() > 0]))
     
     updateSelectInput(session,
                       inputId = "state_first",
@@ -2171,20 +2173,30 @@ server <- function(input, output, session) {
   
   ##
   
-  observe({
+  ## TODO: propagate it!
+  
+  times_from_file <- reactive({
     
     times_from_file <- round(unique(dat()["Exposure"]), 4)
-    times_from_file <- times_from_file[order(times_from_file["Exposure"]), ]
+    times_from_file[order(times_from_file["Exposure"]), ]
+    
+  })
+  
+  
+  observe({
     
     updateSelectInput(session, 
                       inputId = "qc_chosen_time",
-                      choices = times_from_file[times_from_file < 99999],
-                      selected = min(times_from_file[times_from_file > input[["qc_in_time"]]]))
+                      choices = times_from_file()[times_from_file() < 99999],
+                      selected = min(times_from_file()[times_from_file() > input[["qc_in_time"]]]))
+  })
+  
+  observe({
     
     updateSelectInput(session, 
                       inputId = "qc_in_time",
-                      choices = times_from_file[times_from_file < 99999],
-                      selected = min(times_from_file[times_from_file > 0]))
+                      choices = times_from_file()[times_from_file() < 99999],
+                      selected = min(times_from_file()[times_from_file() > 0]))
     
     updateSelectInput(session,
                       inputId = "qc_state_first",
