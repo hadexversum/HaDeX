@@ -118,7 +118,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                  label = "Apply changes to continue"),
                                                     br(),
                                                     br(),
-                                                    DT::dataTableOutput("exam_data_input")
+                                                    DT::dataTableOutput("checking_exam_data")
                                                     ))
                                        )),
                                        br(),
