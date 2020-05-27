@@ -166,6 +166,7 @@ server <- function(input, output, session) {
   dat_tmp <- reactive({
     
     if(data_source() == "HDeXaminer"){
+      validate(need(input[["exam_apply_changes"]][[1]] != 0, "Apply changes in `Input Data` tab."))
       dat_curr <- dat_exam()
     } else {
       dat_curr <- dat_in()
