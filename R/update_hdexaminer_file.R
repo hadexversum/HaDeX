@@ -15,6 +15,9 @@
 #' data from multiple states). Not obligatory
 #' @param new_state_name new names for old_state_name. String or string vector (if the file contains
 #' data from multiple states). Not obligatory
+#' @param confidence vector of accepted confidence values (internal flag from HDeXaminer). By default only
+#' accepted values are `Medium` and `High`, with `Low` excluded. The user can control that by specifying 
+#' this parameter
 #' 
 #' @details Data from HDeXaminer is condensed and automated data retrieving may be corrected by the user. 
 #' The original file has a mark "FD" for fully deuterated data instead of numerical value for time point 
@@ -41,7 +44,8 @@ update_hdexaminer_file <- function(dat,
                                    old_protein_name = NULL,
                                    new_protein_name = NULL,
                                    old_state_name = NULL,  
-                                   new_state_name = NULL){
+                                   new_state_name = NULL,
+                                   confidence = c("High", "Medium")){
   
   msg = ""
   
@@ -53,7 +57,11 @@ update_hdexaminer_file <- function(dat,
     stop("Supplied fd value is not numeric.")
   }
   
-  dat <- data.table(dat)
+  dat <- data.table(dat) 
+  
+  # validation of confidence values
+  
+  dat <- dat[Confidence %in% confidence]
   
   if(fd_time < max(dat[Exposure!=99998, Exposure])){
     stop("Supplied fd value is smaller than time point from file.")
@@ -87,6 +95,8 @@ update_hdexaminer_file <- function(dat,
   } else {
     msg <- paste0(msg, "State name not changed. ")
   }
+  
+  dat <- dat[, !"Confidence"]
   
   data.frame(dat)
   

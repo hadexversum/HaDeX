@@ -10,7 +10,8 @@ update_hdexaminer_file(
   old_protein_name = NULL,
   new_protein_name = NULL,
   old_state_name = NULL,
-  new_state_name = NULL
+  new_state_name = NULL,
+  confidence = c("High", "Medium")
 )
 }
 \arguments{
@@ -30,6 +31,10 @@ data from multiple states). Not obligatory}
 
 \item{new_state_name}{new names for old_state_name. String or string vector (if the file contains
 data from multiple states). Not obligatory}
+
+\item{confidence}{vector of accepted confidence values (internal flag from HDeXaminer). By default only
+accepted values are `Medium` and `High`, with `Low` excluded. The user can control that by specifying 
+this parameter}
 }
 \value{
 \code{dat} - a \code{\link{data.frame}} with validated and updated content.

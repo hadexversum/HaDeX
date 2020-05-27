@@ -21,9 +21,13 @@ and `tables` file from HDeXaminer. For further information check the documetatio
 The function checks if all necessary columns are provided in correct format. The file must 
 include at least two repetitions of the measurement for the uncertainty to be calculated.
 For the files of HDeXaminer origin, the rows with no complete information (e.q. missing
-`Exp Cent` value) or Low Confidence are removed. Moreover, those files need action from the
-user - to confirm data processing (e.q. FD time point) and make some change of the labels use 
-\code{\link{upadate_hdexaminer_file}} function.
+`Exp Cent` value) are removed. The `Confidence` column is preserved as the user should 
+have impact on accepting rows based on their Confidence flag. Moreover, those files need 
+action from the user - to confirm data processing (e.q. FD time point), choose accepted 
+confidence values and make some change of the labels use \code{\link{upadate_hdexaminer_file}}
+function. IMPORTANT! The files of HDeXaminer origin MUST be processed by hand or by 
+\code{\link{upadate_hdexaminer_file}} function to fit the input of processing functions 
+e.q. \code{\link{calculate_state_deuteration}} or \code{\link{calculate_kinetics}}.
 }
 \examples{
 # read example data

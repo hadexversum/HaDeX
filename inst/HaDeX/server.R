@@ -104,7 +104,8 @@ server <- function(input, output, session) {
                            old_protein_name = exam_protein_name_from_file(),
                            new_protein_name = input[["exam_protein_name"]],
                            old_state_name = exam_state_name_from_file(),
-                           new_state_name = strsplit(input[["exam_state_name"]], ",")[[1]])
+                           new_state_name = strsplit(input[["exam_state_name"]], ",")[[1]],
+                           confidence = input[["exam_confidence"]])
     
   })
   
