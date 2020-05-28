@@ -10,6 +10,8 @@ server <- function(input, output, session) {
   
   observe_helpers(help_dir = "docs", withMathJax = TRUE)
   
+  ##
+  
   ### TAB: START ###
   
   ##
@@ -99,13 +101,18 @@ server <- function(input, output, session) {
   
   dat_exam <- eventReactive(input[["exam_apply_changes"]], {
     
-    update_hdexaminer_file(dat_in(),
-                           fd_time = input[["examiner_fd_timepoint"]],
-                           old_protein_name = exam_protein_name_from_file(),
-                           new_protein_name = input[["exam_protein_name"]],
-                           old_state_name = exam_state_name_from_file(),
-                           new_state_name = strsplit(input[["exam_state_name"]], ",")[[1]],
-                           confidence = input[["exam_confidence"]])
+    tryCatch({
+      update_hdexaminer_file(dat_in(),
+                             fd_time = input[["examiner_fd_timepoint"]],
+                             old_protein_name = exam_protein_name_from_file(),
+                             new_protein_name = input[["exam_protein_name"]],
+                             old_state_name = exam_state_name_from_file(),
+                             new_state_name = strsplit(input[["exam_state_name"]], ",")[[1]],
+                             confidence = input[["exam_confidence"]])
+    },
+    error = function(e){
+      validate(need(FALSE, conditionMessage(e)))
+    })
     
   })
   

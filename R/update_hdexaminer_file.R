@@ -60,11 +60,18 @@ update_hdexaminer_file <- function(dat,
   dat <- data.table(dat) 
   
   # validation of confidence values
+  if(is.null(confidence)){
+    stop("No confidence values provided.")
+  }
+  
+  if(!all(confidence %in% c("High", "Medium", "Low"))){
+    stop("Not accetable condifdence values.")
+  }
   
   dat <- dat[Confidence %in% confidence]
   
   if(fd_time < max(dat[Exposure!=99998, Exposure])){
-    stop("Supplied fd value is smaller than time point from file.")
+    stop("Supplied fd value is smaller than time points from file.")
   }
   
   dat <- dat[Exposure == 99998, `:=`(Exposure = fd_time)]

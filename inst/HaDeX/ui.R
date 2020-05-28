@@ -29,8 +29,6 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        img(class='funding-icons',
                                            src='funding_icons.png'),
                                        br()
-                                       
-                                       
                               ),
                               tabPanel("Input data",
                                        br(),
@@ -41,7 +39,6 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        h4("If the supplied file contains modified peptides, maximal exchange control cannot be applied."),
                                        #
                                        fluidRow(
-                                         
                                          column(3, 
                                                 fileInput(
                                                   inputId = "data_file",
@@ -125,7 +122,10 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                     a(href="http://www.matrixscience.com/help/aa_help.html", "Used amino mass data"),
                                                     br(),
                                                     br(),
-                                                    DT::dataTableOutput("checking_exam_data")
+                                                    DT::dataTableOutput("checking_exam_data"),
+                                                    br(),
+                                                    br(),
+                                                    br()
                                                     ))
                                        )),
                                        br(),
