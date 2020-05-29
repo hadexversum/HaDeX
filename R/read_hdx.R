@@ -8,7 +8,7 @@
 #' cols col_character parse_number
 #' @importFrom data.table fread setattr `:=`
 #' @importFrom dplyr %>%
-#' @importFrom stringr str_count
+#' @importFrom stringi stri_count
 #' 
 #' @param filename a file supplied by the user. Formats allowed: .csv, .xlsx and .xls.
 #' 
@@ -97,9 +97,9 @@ read_hdx <- function(filename){
     err_message <- "There is no sufficient number of replicates."
   } 
   
-  dat[["Exposure"]] <- round(dat[["Exposure"]], 3)
-  
   dat <- mutate(dat, State = paste0(State, ifelse(!is.na(Modification), paste0(" - ", Modification), "")))
+  
+  dat[["Exposure"]] <- round(dat[["Exposure"]], 3)
   
   attr(dat, "source") <- data_type
   
@@ -118,7 +118,7 @@ upgrade_2_to_3 <- function(dat){
 }
 
 transform_examiner <- function(dat){
- 
+  
   # rows with missing data deleted
   dat <- dat[!is.na(`Exp Cent`)]
   # choose only useful columns
@@ -128,10 +128,10 @@ transform_examiner <- function(dat){
   # prepare Protein  column
   dat[, "Protein"] <- dat[order(nchar(State)), State][[1]]
   # change time from second to minutes
-  dat[Exposure == "FD", `:=`(Exposure = "5999880")] # flag for fully deuterated sample
-  dat[, `:=`(Exposure = round(parse_number(Exposure)/60, 5))]
+  dat[Exposure == "FD", `:=`(Exposure = "5999880")] # flag for fully deuterated sample # 99998
+  dat[, `:=`(Exposure = round(parse_number(Exposure)/60, 4))]
   #calculate MaxUptake
-  dat[, `:=`(MaxUptake = nchar(Sequence) - 2 - str_count(Sequence, "P"))]
+  dat[, `:=`(MaxUptake = nchar(Sequence) - 2 - stri_count(Sequence, fixed = "P"))]
   # calculate MPH
   dat[, `:=`(MHP = calculate_MHP(Sequence, mono = FALSE))]
   # columns to fit the required format

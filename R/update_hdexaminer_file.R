@@ -59,9 +59,13 @@ update_hdexaminer_file <- function(dat,
   
   dat <- data.table(dat) 
   
-  # validation of confidence values
   if(is.null(confidence)){
     stop("No confidence values provided.")
+  }
+  
+  #validate if there is confidence column
+  if(!("Confidence" %in% colnames(dat))){
+    stop("No Confidence column. Check the data!")
   }
   
   if(!all(confidence %in% c("High", "Medium", "Low"))){
