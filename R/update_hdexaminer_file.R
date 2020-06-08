@@ -59,6 +59,10 @@ update_hdexaminer_file <- function(dat,
   
   dat <- data.table(dat) 
   
+  if(fd_time < max(dat[Exposure!=99998, Exposure])){
+    stop("Supplied fd value is smaller than time points from file.")
+  }
+  
   if(is.null(confidence)){
     stop("No confidence values provided.")
   }
@@ -73,10 +77,6 @@ update_hdexaminer_file <- function(dat,
   }
   
   dat <- dat[Confidence %in% confidence]
-  
-  if(fd_time < max(dat[Exposure!=99998, Exposure])){
-    stop("Supplied fd value is smaller than time points from file.")
-  }
   
   dat <- dat[Exposure == 99998, `:=`(Exposure = fd_time)]
   msg <- paste0(msg, "FD value changed to ", fd_time, " min. ")

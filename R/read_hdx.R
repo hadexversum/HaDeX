@@ -130,6 +130,8 @@ transform_examiner <- function(dat){
   # change time from second to minutes
   dat[Exposure == "FD", `:=`(Exposure = "5999880")] # flag for fully deuterated sample # 99998
   dat[, `:=`(Exposure = round(parse_number(Exposure)/60, 4))]
+  # in time for better precision
+  dat[Exposure > 0 & Exposure < 0.001, `:=`(Exposure = 0.001)]
   #calculate MaxUptake
   dat[, `:=`(MaxUptake = nchar(Sequence) - 2 - stri_count(Sequence, fixed = "P"))]
   # calculate MPH
