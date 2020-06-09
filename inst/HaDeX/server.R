@@ -10,6 +10,8 @@ server <- function(input, output, session) {
   
   observe_helpers(help_dir = "docs", withMathJax = TRUE)
   
+  ##
+  
   ### TAB: START ###
   
   ##
@@ -33,14 +35,61 @@ server <- function(input, output, session) {
     
   })
   
+  ##
+  
+  data_source <- reactive({
+    
+    attr(dat_in(), "source")
+    
+  })
+  
+  ##
+  
+  exam_protein_name_from_file <- reactive({ unique(dat_in()[["Protein"]]) })
+  exam_state_name_from_file <- reactive({ unique(dat_in()[["State"]]) })
+  
+  observe({
+    
+    if(data_source() == "HDeXaminer"){
+      shinyjs::show("examiner_settings")
+    }
+    
+    updateTextInput(session, 
+                    inputId = "exam_protein_name",
+                    value = exam_protein_name_from_file())
+    
+    updateTextInput(session, 
+                    inputId = "exam_state_name",
+                    value = exam_state_name_from_file())
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    if(data_source() != "HDeXaminer"){
+      shinyjs::hide("examiner_settings")
+    }
+    
+  })
+  
   output[["data_file_info"]] <- renderText({
     
+    status <- ""
     if (is.null(input[["data_file"]])){
-      "Example file: KD_180110_CD160_HVEM.csv"
+      status <- "Example file: KD_180110_CD160_HVEM.csv."
     } else {
       length(dat_in()[[1]])
-      "Supplied file is valid."
+      status <- "Supplied file is valid."
     }
+    
+    if(data_source() == "HDeXaminer"){
+      paste0(status, " Detected data source: ", data_source(), ". User action needed below!")
+    } else {
+      paste0(status, " Detected data source: ", data_source(), ".")
+    }
+    
     
   })
   
@@ -50,9 +99,87 @@ server <- function(input, output, session) {
   
   ##
   
+  dat_exam <- eventReactive(input[["exam_apply_changes"]], {
+    
+    tryCatch({
+      update_hdexaminer_file(dat_in(),
+                             fd_time = input[["examiner_fd_timepoint"]],
+                             old_protein_name = exam_protein_name_from_file(),
+                             new_protein_name = input[["exam_protein_name"]],
+                             old_state_name = exam_state_name_from_file(),
+                             new_state_name = strsplit(input[["exam_state_name"]], ",")[[1]],
+                             confidence = input[["exam_confidence"]])
+    },
+    error = function(e){
+      validate(need(FALSE, conditionMessage(e)))
+    })
+    
+  })
+  
+  ##
+  #
+  # editable tables for later, after cleaning the rest of the code
+  #
+  # exam_data_proxy <- DT::dataTableProxy("checking_exam_data")
+  # 
+  # exam_dat_checking_previous <- reactiveValues()
+  # 
+  # observe({
+  #   
+  #   exam_dat_checking_previous[["dat"]] <- dat_exam() %>%
+  #     select(Protein, State, Sequence,  Start, End, MHP) %>%
+  #     unique(.) %>%
+  #     arrange(Start, End)
+  #   
+  # })
+  # 
+  # observeEvent(input[["checking_exam_data_cell_edit"]], {
+  #   
+  #   # browser()
+  #   
+  #   change <- input[["checking_exam_data_cell_edit"]]
+  #   row_name <- change[["row"]]
+  #   col_name <- change[["col"]]
+  #   new_value <- change[["value"]]
+  #   
+  #   exam_dat_checking_previous[["dat"]][row_name, col_name] <- isolate(DT::coerceValue(new_value, exam_dat_checking_previous[["dat"]][row_name, col_name]))
+  #     
+  #     #DT::coerceValue(new_value, exam_dat_checking_previous[["dat"]][row_name, col_name])
+  #   
+  #   replaceData(exam_data_proxy, exam_dat_checking_previous[["dat"]], resetPaging = FALSE)
+  #   
+  # })
+  # 
+  # exam_dat_checking_after <- reactive({
+  #   
+  #   
+  #   datatable(exam_dat_checking_previous[["dat"]], editable = TRUE)
+  #   
+  # })
+  
+  output[["checking_exam_data"]] <- DT::renderDataTable({
+    
+    # exam_dat_checking_after() 
+    
+    dat_exam() %>%
+         select(Protein, State, Sequence,  Start, End, MHP) %>%
+         unique(.) %>%
+         arrange(Start, End)
+    
+  })
+  
+  ##
+  
   dat_tmp <- reactive({
     
-    dat_in() %>%
+    if(data_source() == "HDeXaminer"){
+      validate(need(input[["exam_apply_changes"]][[1]] != 0, "Apply changes in `Input Data` tab."))
+      dat_curr <- dat_exam()
+    } else {
+      dat_curr <- dat_in()
+    }
+    
+    dat_curr %>%
       mutate(Start = Start + input[["sequence_start_shift"]] -1,
              End = End + input[["sequence_start_shift"]] -1)
     
@@ -62,7 +189,7 @@ server <- function(input, output, session) {
   
   has_modifications <- reactive({
     
-    any(!is.na(dat_tmp()[["Modification"]]))
+    any(!is.na(dat_in()[["Modification"]]))
     
   })
   
@@ -90,7 +217,7 @@ server <- function(input, output, session) {
   
   proteins_from_file <- reactive({
     
-    unique(dat_in()[["Protein"]])
+    unique(dat_tmp()[["Protein"]])
     
   })
   
@@ -98,7 +225,7 @@ server <- function(input, output, session) {
   
   max_range <- reactive({
     
-    max(filter(dat_in(), Protein == input[["chosen_protein"]])[['End']])
+    max(filter(dat_tmp(), Protein == input[["chosen_protein"]])[['End']])
     
   })
   
@@ -117,9 +244,9 @@ server <- function(input, output, session) {
   
   options_for_control <- reactive({
     
-    dat_in() %>%
+    dat_tmp() %>%
       filter(Protein == input[["chosen_protein"]]) %>%
-      mutate(Exposure = round(Exposure, 3)) %>%
+      mutate(Exposure = round(Exposure, 4)) %>%
       select(Protein, State, Exposure) %>%
       arrange(State, desc(Exposure)) %>%
       unique(.) %>%
@@ -138,9 +265,9 @@ server <- function(input, output, session) {
                            inputId = "deut_concentration",
                            value = 0)
     }, error = function(e){
-        updateNumericInput(session,
-                           inputId = "deut_concentration",
-                           value = 0)
+      updateNumericInput(session,
+                         inputId = "deut_concentration",
+                         value = 0)
     })
   })
   
@@ -153,9 +280,9 @@ server <- function(input, output, session) {
                            value = 100)
     },
     error = function(e){
-        updateNumericInput(session,
-                           inputId = "deut_concentration",
-                           value = 100)
+      updateNumericInput(session,
+                         inputId = "deut_concentration",
+                         value = 100)
     })
     
   })
@@ -169,17 +296,17 @@ server <- function(input, output, session) {
                            value = max_range())
     },
     error = function(e){
-        updateNumericInput(session,
-                           inputId = "sequence_length",
-                           value = max_range())
+      updateNumericInput(session,
+                         inputId = "sequence_length",
+                         value = max_range())
     })
     
   })
   
   observe({
-
+    
     tryCatch(
-    { if(input[["sequence_start_shift"]] < 0)
+      { if(input[["sequence_start_shift"]] < 0)
         updateNumericInput(session,
                            inputId = "sequence_start_shift",
                            value = 1) },
@@ -209,8 +336,6 @@ server <- function(input, output, session) {
   ## create dat based on control
   
   dat <- reactive({
-
-    # browser()
     
     tmp <- dat_tmp() %>%
       filter(Protein == input[["chosen_protein"]], 
@@ -233,13 +358,13 @@ server <- function(input, output, session) {
               }))
   })
   
-  ##
+  
   
   ### TAB: SEQUENCE DATA ###
   
   ##
   
-  observeEvent(input[["data_file"]], {
+  observe({
     
     possible_states <- unique(dat()[["State"]])
     
@@ -435,7 +560,7 @@ server <- function(input, output, session) {
       filter(Start >= input[["plot_range"]][[1]], End <= input[["plot_range"]][[2]]) %>%
       filter(!duplicated(.)) %>%
       select(-State)
-      
+    
     
   })
   
@@ -606,7 +731,7 @@ server <- function(input, output, session) {
       if(nrow(tt_df) != 0) { 
         
         tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
-                                "left", "right")
+                             "left", "right")
         
         tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
                          hv[["coords_css"]][["x"]], 
@@ -628,7 +753,7 @@ server <- function(input, output, session) {
   })
   
   ##
- 
+  
   output[["stateOverlapDist_download_button"]] <- downloadHandler("stateOverlapDist.svg",
                                                                   content = function(file){
                                                                     ggsave(file, stateOverlapDist(), device = svg,
@@ -658,17 +783,18 @@ server <- function(input, output, session) {
   
   observe({
     
-    times_from_file <- unique(round(dat()["Exposure"], 3))
+    times_from_file <- unique(round(dat()["Exposure"], 4))
+    times_from_file <- times_from_file[order(times_from_file["Exposure"]), ]
     
-    tmp <- unique(round(dat()["Exposure"], 3))[[1]]
+    tmp <- sort(unique(round(dat()["Exposure"], 4))[[1]])
     choose_time_out <- setNames(tmp, c(head(tmp, -1), "chosen control"))
     
     if(has_modifications()){
       
       updateSelectInput(session, 
                         inputId = "out_time",
-                        choices = times_from_file[times_from_file["Exposure"] < 99999],
-                        selected = max(times_from_file[times_from_file["Exposure"] < 99999]))
+                        choices = times_from_file[times_from_file < 99999],
+                        selected = max(times_from_file[times_from_file < 99999]))
       
     }
     
@@ -683,22 +809,22 @@ server <- function(input, output, session) {
   
   ##
   
+  # times from file defined as reactive below!
+  
   observe({
-    
-    times_from_file <- unique(round(dat()["Exposure"], 3))
-    
-    tmp <- unique(round(dat()["Exposure"], 3))[[1]]
-    choose_time_out <- setNames(tmp, c(head(tmp, -1), "chosen control"))
     
     updateSelectInput(session, 
                       inputId = "chosen_time",
-                      choices = times_from_file[times_from_file["Exposure"] < 99999],
-                      selected = min(times_from_file[times_from_file["Exposure"] >= 1, ]))
+                      choices = times_from_file()[times_from_file() < 99999],
+                      selected = min(times_from_file()[times_from_file() > input[["in_time"]]]))
+  })
+  
+  observe({
     
     updateSelectInput(session, 
                       inputId = "in_time",
-                      choices = times_from_file[times_from_file["Exposure"] < 99999],
-                      selected = min(times_from_file[times_from_file["Exposure"] > 0, ]))
+                      choices = times_from_file()[times_from_file() < 99999],
+                      selected = min(times_from_file()[times_from_file() > 0]))
     
     updateSelectInput(session,
                       inputId = "state_first",
@@ -848,11 +974,11 @@ server <- function(input, output, session) {
     } 
     
   })
-    
+  
   ##
   
   observe({
-      
+    
     if(input[["calc_type"]] == "relative" & !input[["theory"]]){
       show(id = "out_time_part")
     }
@@ -1045,7 +1171,7 @@ server <- function(input, output, session) {
   ##
   
   output[["comparisonPlot"]] <- renderPlot({
-
+    
     cp_out() 
     
   })
@@ -1070,7 +1196,7 @@ server <- function(input, output, session) {
       tt_df <- filter(hv_dat, Start < x, End > x) %>% 
         filter(abs(y_plot - y) < 10) %>%
         filter(abs(y_plot - y) == min(abs(y_plot - y)))
-   
+      
       
       if(nrow(tt_df) != 0) { 
         
@@ -1451,28 +1577,28 @@ server <- function(input, output, session) {
       
       wp_plot_data <- wp_out()[["data"]]
       wp_hv <- input[["differentialPlot_hover"]]
-
+      
       wp_hv_dat <- data.frame(x = wp_hv[["x"]],
-                           y = wp_hv[["y"]],
-                           Start = wp_plot_data[[wp_hv[["mapping"]][["x"]]]],
-                           End = wp_plot_data[["End"]],
-                           y_plot = wp_plot_data[[wp_hv[["mapping"]][["y"]]]],
-                           Sequence = wp_plot_data[["Sequence"]])
+                              y = wp_hv[["y"]],
+                              Start = wp_plot_data[[wp_hv[["mapping"]][["x"]]]],
+                              End = wp_plot_data[["End"]],
+                              y_plot = wp_plot_data[[wp_hv[["mapping"]][["y"]]]],
+                              Sequence = wp_plot_data[["Sequence"]])
       
       wp_tt_df <- filter(wp_hv_dat, Start < x, End > x) %>% 
         filter(abs(y_plot - y) < 10) %>%
         filter(abs(y_plot - y) == min(abs(y_plot - y)))
       
       if(nrow(wp_tt_df) != 0) {
-
+        
         wp_tt_pos_adj <- ifelse(wp_hv[["coords_img"]][["x"]]/wp_hv[["range"]][["right"]] < 0.5,
-                             "left", "right")
+                                "left", "right")
         
         wp_tt_pos <- ifelse(wp_hv[["coords_img"]][["x"]]/wp_hv[["range"]][["right"]] < 0.5,
                             wp_hv[["coords_css"]][["x"]], 
                             wp_hv[["range"]][["right"]]/wp_hv[["img_css_ratio"]][["x"]] - wp_hv[["coords_css"]][["x"]])
         
-       
+        
         style <- paste0("position:absolute; z-index:1072; background-color: rgba(245, 245, 245, 1); pointer-events: none; ",
                         wp_tt_pos_adj, ":", wp_tt_pos, "px; padding: 0px;",
                         "top:", wp_hv[["coords_css"]][["y"]] , "px; ") 
@@ -1615,15 +1741,16 @@ server <- function(input, output, session) {
   
   observe({
     
-    times_from_file <- round(unique(dat()["Exposure"]), 3)
+    times_from_file <- round(unique(dat()["Exposure"]), 4)
+    times_from_file <- times_from_file[order(times_from_file["Exposure"]), ]
     
-    tmp <- unique(round(dat()["Exposure"], 3))[[1]]
+    tmp <- sort(unique(round(dat()["Exposure"], 3))[[1]])
     choose_time_out <- setNames(tmp, c(head(tmp, -1), "chosen control"))
     
     updateSelectInput(session, 
                       inputId = "kin_in_time",
-                      choices = times_from_file[times_from_file["Exposure"] < 99999, ],
-                      selected = min(times_from_file[times_from_file["Exposure"] > 0, ]))
+                      choices = times_from_file[times_from_file < 99999],
+                      selected = min(times_from_file[times_from_file > 0]))
     
     if(!has_modifications()){
       
@@ -1637,8 +1764,8 @@ server <- function(input, output, session) {
       
       updateSelectInput(session, 
                         inputId = "kin_out_time",
-                        choices =  times_from_file[times_from_file["Exposure"] < 99999, ],
-                        selected = max(times_from_file[times_from_file["Exposure"] < 99999, ]))
+                        choices =  times_from_file[times_from_file < 99999],
+                        selected = max(times_from_file[times_from_file < 99999]))
     }
     
     
@@ -1731,13 +1858,13 @@ server <- function(input, output, session) {
   
   ##
   
-  DTproxy <- DT::dataTableProxy("peptide_list_data", session = session)
+  peptide_list_proxy <- DT::dataTableProxy("peptide_list_data", session = session)
   
   ##
   
   observeEvent(input[["reset_peptide_list"]], {
     
-    DT::selectRows(DTproxy, NULL)
+    DT::selectRows(peptide_list_proxy, NULL)
     
   })
   
@@ -1747,7 +1874,7 @@ server <- function(input, output, session) {
     
     validate(need(input[["peptide_list_data_rows_selected"]], "Please select at least one peptide from the table on the left."))
     
-    times_from_file <- round(unique(dat()["Exposure"]), 3)
+    times_from_file <- round(unique(dat()["Exposure"]), 4)
     
     if(input[["kin_theory"]]){
       
@@ -1768,7 +1895,7 @@ server <- function(input, output, session) {
       validate(need(as.numeric(input[["kin_out_time"]]) > as.numeric(input[["kin_in_time"]]), "Out time must be bigger than in time. "))
       
       validate(need(sum(times_from_file[["Exposure"]] < as.numeric(input[["kin_out_time"]]) & times_from_file[["Exposure"]] > as.numeric(input[["kin_in_time"]])) > 1, "Not enough time points between in and out time. "))
-
+      
       bind_rows(apply(peptide_list()[input[["peptide_list_data_rows_selected"]], ], 1, function(peptide){
         calculate_kinetics(dat = dat(),
                            protein = input[["chosen_protein"]], 
@@ -1782,7 +1909,7 @@ server <- function(input, output, session) {
       }))
       
     }
-  
+    
     
     
     
@@ -1906,8 +2033,8 @@ server <- function(input, output, session) {
     kp + 
       geom_point(size = 3) +
       labs(title = input[["kin_plot_title"]],
-              x = input[["kin_plot_x_label"]],
-              y = input[["kin_plot_y_label"]]) +
+           x = input[["kin_plot_x_label"]],
+           y = input[["kin_plot_y_label"]]) +
       coord_cartesian(ylim = c(input[["kin_plot_y_range"]][1], input[["kin_plot_y_range"]][2])) +
       scale_x_log10() + 
       theme(legend.position = "bottom",
@@ -1942,7 +2069,7 @@ server <- function(input, output, session) {
                            State = plot_data[["State"]])
       
       tt_df <- filter(hv_dat, abs(y_plot - y) < 10, abs(y_plot - y) == min(abs(y_plot - y))) %>%
-                      filter(abs(x_plot - x) < 0.1*x_plot, abs(x_plot - x) == min(abs(x_plot - x))) 
+        filter(abs(x_plot - x) < 0.1*x_plot, abs(x_plot - x) == min(abs(x_plot - x))) 
       
       if(nrow(tt_df) != 0) { 
         
@@ -2053,19 +2180,30 @@ server <- function(input, output, session) {
   
   ##
   
-  observe({
+  ## TODO: propagate it!
+  
+  times_from_file <- reactive({
     
-    times_from_file <- round(unique(dat()["Exposure"]), 3)
+    times_from_file <- round(unique(dat()["Exposure"]), 4)
+    times_from_file[order(times_from_file["Exposure"]), ]
+    
+  })
+  
+  
+  observe({
     
     updateSelectInput(session, 
                       inputId = "qc_chosen_time",
-                      choices = times_from_file[times_from_file["Exposure"] < 99999, ],
-                      selected = min(times_from_file[times_from_file["Exposure"] >= 1, ]))
+                      choices = times_from_file()[times_from_file() < 99999],
+                      selected = min(times_from_file()[times_from_file() > input[["qc_in_time"]]]))
+  })
+  
+  observe({
     
     updateSelectInput(session, 
                       inputId = "qc_in_time",
-                      choices = times_from_file[times_from_file["Exposure"] < 99999, ],
-                      selected = min(times_from_file[times_from_file["Exposure"] > 0, ]))
+                      choices = times_from_file()[times_from_file() < 99999],
+                      selected = min(times_from_file()[times_from_file() > 0]))
     
     updateSelectInput(session,
                       inputId = "qc_state_first",
@@ -2085,10 +2223,10 @@ server <- function(input, output, session) {
     
     qc_dat <- dat() %>%
       filter(Exposure < 99999)
- 
+    
     validate(need(as.numeric(input[["qc_chosen_time"]]) > as.numeric(input[["qc_in_time"]]), "Chosen time must be bigger than in time. "))
     validate(need(sum(unique(qc_dat[["Exposure"]]) > as.numeric(input[["qc_chosen_time"]])) > 1, "Not enough time points (bigger than chosen time) to generate a plot. ")) 
-
+    
     result <- quality_control(dat = qc_dat,
                               state_first = input[["qc_state_first"]],
                               state_second = input[["qc_state_second"]], 
@@ -2101,7 +2239,7 @@ server <- function(input, output, session) {
              sd_err_state_second = 100 * sd_err_state_second, 
              avg_diff = 100 * avg_diff, 
              sd_diff = 100 * sd_diff)
-      
+    
     
   })
   
