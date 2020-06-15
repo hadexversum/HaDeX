@@ -162,9 +162,9 @@ server <- function(input, output, session) {
     # exam_dat_checking_after() 
     
     dat_exam() %>%
-         select(Protein, State, Sequence,  Start, End, MHP) %>%
-         unique(.) %>%
-         arrange(Start, End)
+      select(Protein, State, Sequence,  Start, End, MHP) %>%
+      unique(.) %>%
+      arrange(Start, End)
     
   })
   
@@ -783,10 +783,10 @@ server <- function(input, output, session) {
   
   observe({
     
-    times_from_file <- unique(round(dat()["Exposure"], 4))
-    times_from_file <- times_from_file[order(times_from_file["Exposure"]), ]
+    times_from_file <- unique(round(dat()[["Exposure"]], 3))
+    times_from_file <- times_from_file[order(times_from_file)]
     
-    tmp <- sort(unique(round(dat()["Exposure"], 4))[[1]])
+    tmp <- sort(unique(round(dat()[["Exposure"]], 3)))
     choose_time_out <- setNames(tmp, c(head(tmp, -1), "chosen control"))
     
     if(has_modifications()){
@@ -825,6 +825,7 @@ server <- function(input, output, session) {
                       inputId = "in_time",
                       choices = times_from_file()[times_from_file() < 99999],
                       selected = min(times_from_file()[times_from_file() > 0]))
+    
     
     updateSelectInput(session,
                       inputId = "state_first",
@@ -1741,10 +1742,10 @@ server <- function(input, output, session) {
   
   observe({
     
-    times_from_file <- round(unique(dat()["Exposure"]), 4)
-    times_from_file <- times_from_file[order(times_from_file["Exposure"]), ]
+    times_from_file <- round(unique(dat()[["Exposure"]]), 3)
+    times_from_file <- times_from_file[order(times_from_file)]
     
-    tmp <- sort(unique(round(dat()["Exposure"], 3))[[1]])
+    tmp <- sort(unique(round(dat()[["Exposure"]], 3)))
     choose_time_out <- setNames(tmp, c(head(tmp, -1), "chosen control"))
     
     updateSelectInput(session, 
@@ -1874,7 +1875,7 @@ server <- function(input, output, session) {
     
     validate(need(input[["peptide_list_data_rows_selected"]], "Please select at least one peptide from the table on the left."))
     
-    times_from_file <- round(unique(dat()["Exposure"]), 4)
+    times_from_file <- unique(round(dat()[["Exposure"]], 3))
     
     if(input[["kin_theory"]]){
       
@@ -1885,7 +1886,7 @@ server <- function(input, output, session) {
                            state = peptide[2],
                            start = as.numeric(peptide[3]),
                            end = as.numeric(peptide[4]),
-                           time_in = min(times_from_file[times_from_file[["Exposure"]] > 0, ]),
+                           time_in = min(times_from_file[times_from_file > 0]),
                            time_out = max(times_from_file),
                            deut_part = 0.01*as.integer(input[["deut_concentration"]]))
       }))
@@ -1894,7 +1895,7 @@ server <- function(input, output, session) {
       
       validate(need(as.numeric(input[["kin_out_time"]]) > as.numeric(input[["kin_in_time"]]), "Out time must be bigger than in time. "))
       
-      validate(need(sum(times_from_file[["Exposure"]] < as.numeric(input[["kin_out_time"]]) & times_from_file[["Exposure"]] > as.numeric(input[["kin_in_time"]])) > 1, "Not enough time points between in and out time. "))
+      validate(need(sum(times_from_file < as.numeric(input[["kin_out_time"]]) & times_from_file > as.numeric(input[["kin_in_time"]])) > 1, "Not enough time points between in and out time. "))
       
       bind_rows(apply(peptide_list()[input[["peptide_list_data_rows_selected"]], ], 1, function(peptide){
         calculate_kinetics(dat = dat(),
@@ -2184,8 +2185,8 @@ server <- function(input, output, session) {
   
   times_from_file <- reactive({
     
-    times_from_file <- round(unique(dat()["Exposure"]), 4)
-    times_from_file[order(times_from_file["Exposure"]), ]
+    times_from_file <- round(unique(dat()[["Exposure"]]), 3)
+    times_from_file[order(times_from_file)]
     
   })
   
