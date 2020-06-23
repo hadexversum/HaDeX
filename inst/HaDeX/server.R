@@ -553,13 +553,11 @@ server <- function(input, output, session) {
   
   stateOverlap_data <- reactive({
     
-    dat() %>%
-      select(Protein, Sequence, Start, End, State) %>% 
-      filter(Protein == input[["chosen_protein"]]) %>%
-      filter(State == input[["chosen_state"]]) %>%
-      filter(Start >= input[["plot_range"]][[1]], End <= input[["plot_range"]][[2]]) %>%
-      filter(!duplicated(.)) %>%
-      select(-State)
+    generate_overlap_data(dat = dat(),
+                          protein = input[["chosen_protein"]],
+                          state = input[["chosen_state"]],
+                          start = input[["plot_range"]][[1]],
+                          end = input[["plot_range"]][[2]])
     
     
   })
@@ -575,20 +573,9 @@ server <- function(input, output, session) {
   
   stateOverlap_out <- reactive({
     
-    stateOverlap_data() %>%
-      select(Sequence, Start, End) %>%
-      filter(!duplicated(.)) %>%
-      arrange(Start, End) %>%
-      mutate(ID = row_number()) %>%
-      ggplot() +
-      geom_segment(aes(x = Start, y = ID, xend = End, yend = ID)) +
-      labs(title = "Peptide coverage",
-           x = "Position",
-           y = "") +
-      theme(axis.ticks.y = element_blank(),
-            axis.text.y = element_blank()) +
+    generate_overlap_plot(dat = stateOverlap_data()) +
       coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]]))
-    
+
   })
   
   ##
@@ -655,24 +642,13 @@ server <- function(input, output, session) {
   
   stateOverlapDist_data <- reactive({
     
-    dat() %>%
-      select(Protein, Start, End, State, Sequence) %>%
-      filter(Protein == input[["chosen_protein"]]) %>%
-      filter(State == input[["chosen_state"]]) %>%
-      filter(Start >= input[["plot_range"]][[1]], End <= input[["plot_range"]][[2]]) %>%
-      filter(!duplicated(.)) %>%
-      select(-State, -Protein) %>%
-      apply(1, function(i) i[1]:i[2]) %>%
-      unlist %>%
-      data.frame(pos = .) %>%
-      group_by(pos) %>%
-      summarise(coverage = length(pos)) %>%
-      right_join(data.frame(pos = seq(from = input[["plot_range"]][[1]], to = input[["plot_range"]][[2]]))) %>%
-      replace_na(list(coverage = 0)) %>%
-      right_join(data.frame(amino = unlist(strsplit(protein_sequence(), "")), 
-                            pos = 1:str_length(protein_sequence()))) %>%
-      select(pos, amino, coverage)
-    
+    generate_overlap_distribution_data(dat(),
+                                       protein = input[["chosen_protein"]],
+                                       state = input[["chosen_state"]],
+                                       start = input[["plot_range"]][[1]],
+                                       end = input[["plot_range"]][[2]],
+                                       protein_sequence = protein_sequence())
+   
   })
   
   ##
@@ -688,19 +664,9 @@ server <- function(input, output, session) {
   
   stateOverlapDist <- reactive({
     
-    mean_coverage <- round(mean(stateOverlapDist_data()[["coverage"]], na.rm = TRUE), 2)
-    display_position <- (input[["plot_range"]][[1]] + input[["plot_range"]][[2]])/2
-    
-    stateOverlapDist_data() %>% 
-      ggplot(aes(x = pos, y = coverage)) +
-      geom_col(width = 1) +
-      labs(x = 'Position', y = 'Position frequency in peptides') +
-      theme(legend.position = "none") + 
-      coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]])) +
-      geom_hline(yintercept = mean_coverage, color = 'red') +
-      geom_text(aes(x = display_position, y = mean_coverage), label = paste0("Average frequency: ", mean_coverage), color = 'red', vjust = -.5)
-    
-    
+    generate_overlap_distribution_plot(dat = stateOverlapDist_data(),
+                                       start = input[["plot_range"]][[1]],
+                                       end = input[["plot_range"]][[2]])
   })
   
   ##
