@@ -1845,17 +1845,8 @@ server <- function(input, output, session) {
     
     if(input[["kin_theory"]]){
       
-      bind_rows(apply(peptide_list()[input[["peptide_list_data_rows_selected"]], ], 1, function(peptide){
-        calculate_kinetics(dat = dat(),
-                           protein = input[["chosen_protein"]], 
-                           sequence = peptide[1],
-                           state = peptide[2],
-                           start = as.numeric(peptide[3]),
-                           end = as.numeric(peptide[4]),
-                           time_in = min(times_from_file[times_from_file > 0]),
-                           time_out = max(times_from_file),
-                           deut_part = 0.01*as.integer(input[["deut_concentration"]]))
-      }))
+      v_time_in <- min(times_from_file[times_from_file > 0])
+      v_time_out <- max(times_from_file)
       
     } else {
       
@@ -1863,22 +1854,17 @@ server <- function(input, output, session) {
       
       validate(need(sum(times_from_file < as.numeric(input[["kin_out_time"]]) & times_from_file > as.numeric(input[["kin_in_time"]])) > 1, "Not enough time points between in and out time. "))
       
-      bind_rows(apply(peptide_list()[input[["peptide_list_data_rows_selected"]], ], 1, function(peptide){
-        calculate_kinetics(dat = dat(),
-                           protein = input[["chosen_protein"]], 
-                           sequence = peptide[1],
-                           state = peptide[2],
-                           start = as.numeric(peptide[3]),
-                           end = as.numeric(peptide[4]),
-                           time_in = as.numeric(input[["kin_in_time"]]),
-                           time_out = as.numeric(input[["kin_out_time"]]),
-                           deut_part = 0.01*as.integer(input[["deut_concentration"]]))
-      }))
+      v_time_in <- as.numeric(input[["kin_in_time"]])
+      v_time_out <- as.numeric(input[["kin_out_time"]])
       
     }
     
-    
-    
+    generate_kinetic_data_set(dat = dat(),
+                              peptide_list = peptide_list()[input[["peptide_list_data_rows_selected"]], ],
+                              protein = input[["chosen_protein"]],
+                              deut_concentration = input[["deut_concentration"]],
+                              time_in = v_time_in,
+                              time_out = v_time_out)
     
   })
   
