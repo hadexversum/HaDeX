@@ -337,25 +337,12 @@ server <- function(input, output, session) {
   
   dat <- reactive({
     
-    tmp <- dat_tmp() %>%
-      filter(Protein == input[["chosen_protein"]], 
-             State == strsplit(input[["chosen_control"]], " \\| ")[[1]][2], 
-             Exposure == strsplit(input[["chosen_control"]], " \\| ")[[1]][3]) %>%
-      mutate(Exposure = 99999)
+    generate_general_dataset(dat = dat_tmp(),
+                             control_protein = input[["chosen_protein"]], 
+                             control_state = strsplit(input[["chosen_control"]], " \\| ")[[1]][2],
+                             control_exposure = strsplit(input[["chosen_control"]], " \\| ")[[1]][3])
+  
     
-    states_to_prepare <- unique(filter(dat_tmp(), Protein == input[["chosen_protein"]])[["State"]])
-    
-    bind_rows(dat_tmp(), 
-              lapply(states_to_prepare, function(state){
-                peps <- dat_tmp() %>%
-                  filter(State == state) %>%
-                  select(Sequence) %>%
-                  unique(.) %>%
-                  unlist(.)
-                tmp %>%
-                  filter(Sequence %in% peps) %>%
-                  mutate(State = state) 
-              }))
   })
   
   
@@ -465,20 +452,12 @@ server <- function(input, output, session) {
   
   aminoDist_out <- reactive({
     
-    charge_colors <- c("-1" = "#E41A1C", "0" = "#377EB8", "1" = "#4DAF4A")
+    generate_amino_distribution(position_in_sequence = position_in_sequence(),
+                                hydro_properties = input[["hydro_prop"]],
+                                protein = input[["chosen_protein"]],
+                                charge_colors = c("-1" = "#E41A1C", "0" = "#377EB8", "1" = "#4DAF4A"))
     
-    position_in_sequence() %>%
-      mutate(affinity = ifelse(is_hydrophobic, "phobic", "philic")) %>% 
-      filter(affinity %in% input[["hydro_prop"]]) %>%
-      mutate(amino = factor(amino, levels = amino_groups)) %>%
-      group_by(amino, charge, is_hydrophobic) %>%
-      summarise(cnt = n()) %>%
-      ggplot(aes(x = amino, y = cnt, fill = charge)) + 
-      geom_col() +
-      scale_fill_manual("Charge", values = charge_colors) + 
-      labs(title = paste0('Amino acid composition for ', input[["chosen_protein"]]),
-           x = 'Amino acid',
-           y = 'Count')
+    
     
   })
   
@@ -2200,17 +2179,7 @@ server <- function(input, output, session) {
   
   qc_out <- reactive({
     
-    quality_control_dat() %>%
-      gather(2:7, key = 'type', value = 'value') %>%
-      filter(startsWith(type, "avg")) %>%
-      ggplot(aes(x = out_time, y = value, group = type)) +
-      geom_point(size = 3) +
-      geom_line(aes(color = type)) +
-      scale_colour_discrete(name = "Mean uncertainty of: ", labels = c("difference", "first state", "second state")) +
-      scale_x_log10() + 
-      labs(x = "Out time [min]",
-           y = "Mean uncertainty [%]",
-           title = "Quality control plot for experiment")
+    generate_quality_control_plot(dat = quality_control_dat())
     
   })
   
@@ -2224,12 +2193,7 @@ server <- function(input, output, session) {
   
   quality_control_plot_data_out <- reactive({
     
-    quality_control_dat() %>%
-      select(out_time, avg_err_state_first, avg_err_state_second, avg_diff) %>%
-      mutate(avg_err_state_first = round(avg_err_state_first, 2),
-             avg_err_state_second = round(avg_err_state_second, 2),
-             avg_diff = round(avg_diff, 2)) %>%
-      dt_format(cols = c("Out time", "Mean error - first state [%]", "Mean error - second state [%]", "Mean error of difference [%]"))
+    generate_quality_control_data(dat = quality_control_dat())
     
   })
   
@@ -2295,32 +2259,10 @@ server <- function(input, output, session) {
   
   summary_data <- reactive({
     
-    n_reps <- group_by(dat(), Protein, Start, End, Sequence, Modification, State, Exposure) %>%
-      summarise(n_rep = length(unique(File))) %>%
-      ungroup() %>% 
-      pull(n_rep) %>% 
-      table() %>% 
-      sort(decreasing = TRUE) %>% 
-      names() %>% 
-      as.numeric()
-    
-    data.frame(Name = c("HDX time course", 
-                        "Number of peptides",
-                        "Sequence coverage",
-                        "Average peptide length",
-                        "Redundancy",
-                        "Replicates",
-                        #"Average standard deviation",
-                        "Significant differences in HDX"), 
-               Value = c(length(unique(dat()[["Exposure"]])) - 1, # we add control as an additional timepoint 
-                         length(unique(dat()[["Sequence"]])), 
-                         paste0(100*round(mean(stateOverlapDist_data()[["coverage"]] > 0), 4), "%"), 
-                         round(mean(nchar(unique(dat()[["Sequence"]]))), 4), 
-                         round(mean(stateOverlapDist_data()[["coverage"]]), 4), 
-                         n_reps[1], 
-                         #NA, 
-                         paste0(input[["confidence_limit"]], " | ", input[["confidence_limit_2"]]))
-    )
+    generate_summary_table(dat = dat(),
+                           confidence_limit_1 = input[["confidence_limit"]],
+                           confidence_limit_2 = input[["confidence_limit_2"]],
+                           overlap_distribution_data = stateOverlapDist_data())
     
   })
   
