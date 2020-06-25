@@ -15,15 +15,27 @@ generate_kinetic_data_set(
 }
 \arguments{
 \item{dat}{...}
+
+\item{peptide_list}{...}
+
+\item{protein}{...}
+
+\item{time_in}{...}
+
+\item{time_out}{...}
+
+\item{deut_concentration}{...}
 }
 \value{
 ...
 }
 \description{
-...
+Generates the data set of deuterium uptake between selected 
+time points based on supplied peptide list.
 }
 \details{
-...
+This is a wrapper for \code{\link{calculate_kinetics}}, but for
+the peptide list instead of one peptide.
 }
 \seealso{
 ...

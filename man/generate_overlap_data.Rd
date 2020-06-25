@@ -21,10 +21,11 @@ generate_overlap_data(dat, protein, state, start, end)
 ...
 }
 \description{
-...
+Generates data set for overlapping
+peptide plot.
 }
 \details{
-...
+This data is displayed in the GUI.
 }
 \seealso{
 ...

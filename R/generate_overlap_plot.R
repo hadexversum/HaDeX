@@ -1,10 +1,11 @@
 #' generate_overlap_plot
 #' 
-#' @description ...
+#' @description Generates the overlapping peptide plot. 
 #' 
-#' @param dat ...
+#' @param dat dataframe produced by \code{\link{generate_overlap_plot}}
+#' function
 #' 
-#' @details ...
+#' @details This plot is visible in the GUI.
 #' 
 #' @return ...
 #' 

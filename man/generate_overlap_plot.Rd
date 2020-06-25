@@ -7,16 +7,17 @@
 generate_overlap_plot(dat)
 }
 \arguments{
-\item{dat}{...}
+\item{dat}{dataframe produced by \code{\link{generate_overlap_plot}}
+function}
 }
 \value{
 ...
 }
 \description{
-...
+Generates the overlapping peptide plot.
 }
 \details{
-...
+This plot is visible in the GUI.
 }
 \seealso{
 ...

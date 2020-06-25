@@ -30,10 +30,11 @@ generate_overlap_distribution_data(
 ...
 }
 \description{
-...
+Generates the data set of frequency of overlap of
+each amino in the protein sequence.
 }
 \details{
-...
+This data is available in the GUI.
 }
 \seealso{
 ...
