@@ -999,9 +999,7 @@ server <- function(input, output, session) {
       validate(need(as.numeric(input[["in_time"]]) < as.numeric(input[["chosen_time"]]), "In time must be smaller than chosen time."))
       validate(need(as.numeric(input[["chosen_time"]]) < as.numeric(input[["out_time"]]), "Out time must be bigger than chosen time."))
     }
-    
-    
-    
+
     bind_rows(lapply(states_from_file(), function(i) calculate_state_deuteration(dat(), 
                                                                                  protein = input[["chosen_protein"]], 
                                                                                  state = i, 
@@ -1026,52 +1024,36 @@ server <- function(input, output, session) {
   
   comparison_plot_theo <- reactive({
     
-    ggplot(data = prep_dat()) +
-      geom_segment(data = prep_dat(), aes(x = Start, y = avg_theo_in_time, xend = End, yend = avg_theo_in_time, color = State)) +
-      geom_errorbar(data = prep_dat(), aes(x = Med_Sequence, ymin = avg_theo_in_time - err_avg_theo_in_time, ymax = avg_theo_in_time + err_avg_theo_in_time, color = State)) +
-      theme(legend.position = "bottom",
-            legend.title = element_blank()) +
-      scale_y_continuous(breaks = seq(-200, 200, 10), expand = c(0, 0))
-    
+    generate_comparison_plot(dat = prep_dat(),
+                             theoretical = TRUE, 
+                             relative = TRUE)
   })
   
   ##
   
   comparison_plot_theo_abs <- reactive({
     
-    ggplot(data = prep_dat()) +
-      geom_segment(data = prep_dat(), aes(x = Start, y = abs_avg_theo_in_time, xend = End, yend = abs_avg_theo_in_time, color = State)) +
-      geom_errorbar(data = prep_dat(), aes(x = Med_Sequence, ymin = abs_avg_theo_in_time - err_abs_avg_theo_in_time, ymax = abs_avg_theo_in_time + err_abs_avg_theo_in_time, color = State)) +
-      theme(legend.position = "bottom",
-            legend.title = element_blank()) +
-      scale_y_continuous(expand = c(0, 0))
-    
+    generate_comparison_plot(dat = prep_dat(),
+                             theoretical = TRUE, 
+                             relative = FALSE)
   })
   
   ##
   
   comparison_plot_exp <- reactive({
     
-    ggplot(data = prep_dat()) +
-      geom_segment(data = prep_dat(), aes(x = Start, y = frac_exch_state, xend = End, yend = frac_exch_state, color = State)) +
-      geom_errorbar(data = prep_dat(), aes(x = Med_Sequence, ymin = frac_exch_state - err_frac_exch_state, ymax = frac_exch_state + err_frac_exch_state, color = State)) +
-      theme(legend.position = "bottom",
-            legend.title = element_blank()) +
-      scale_y_continuous(breaks = seq(-200, 200, 10), expand = c(0, 0))
-    
+    generate_comparison_plot(dat = prep_dat(),
+                             theoretical = FALSE, 
+                             relative = TRUE)
   })
   
   ##
   
   comparison_plot_exp_abs <- reactive({
     
-    ggplot(data = prep_dat()) +
-      geom_segment(data = prep_dat(), aes(x = Start, y = abs_frac_exch_state, xend = End, yend = abs_frac_exch_state, color = State)) +
-      geom_errorbar(data = prep_dat(), aes(x = Med_Sequence, ymin = abs_frac_exch_state - err_abs_frac_exch_state, ymax = abs_frac_exch_state + err_abs_frac_exch_state, color = State)) +
-      theme(legend.position = "bottom",
-            legend.title = element_blank()) +
-      scale_y_continuous(expand = c(0, 0))
-    
+    generate_comparison_plot(dat = prep_dat(),
+                             theoretical = FALSE, 
+                             relative = FALSE)
   })
   
   ##
@@ -1181,63 +1163,36 @@ server <- function(input, output, session) {
   
   comparison_plot_data_theo <- reactive({
     
-    prep_dat() %>%
-      select(Protein, Sequence, State, Start, End, avg_theo_in_time, err_avg_theo_in_time) %>%
-      filter(Protein == input[["chosen_protein"]],
-             Start >= input[["plot_x_range"]][[1]],
-             End <= input[["plot_x_range"]][[2]]) %>%
-      mutate(avg_theo_in_time = round(avg_theo_in_time, 4),
-             err_avg_theo_in_time = round(err_avg_theo_in_time, 4)) %>%
-      arrange(Start, End) %>%
-      dt_format(cols = c("Protein", "Sequence", "State", "Start", "End", "Theo Frac Exch", "Err Theo Frac Exch"))
-    
+    generate_comparison_data(dat = prep_dat(), 
+                             theoretical = TRUE,
+                             relative = TRUE)
   })
   
   ##
   
   comparison_plot_data_theo_abs <- reactive({
     
-    prep_dat() %>%
-      select(Protein, Sequence, State, Start, End, abs_avg_theo_in_time, err_abs_avg_theo_in_time) %>%
-      filter(Protein == input[["chosen_protein"]],
-             Start >= input[["plot_x_range"]][[1]],
-             End <= input[["plot_x_range"]][[2]]) %>%
-      mutate(abs_avg_theo_in_time = round(abs_avg_theo_in_time, 4),
-             err_abs_avg_theo_in_time = round(abs_avg_theo_in_time, 4)) %>%
-      arrange(Start, End) %>%
-      dt_format(cols = c("Protein", "Sequence", "State", "Start", "End", "Theo Abs Val Exch", "Err Theo Abs Val Exch"))
+    generate_comparison_data(dat = prep_dat(), 
+                             theoretical = TRUE,
+                             relative = FALSE)
   })
   
   ## 
   
   comparison_plot_data_exp <- reactive({
     
-    prep_dat() %>%
-      select(Protein, Sequence, State, Start, End, frac_exch_state, err_frac_exch_state) %>%
-      filter(Protein == input[["chosen_protein"]],
-             Start >= input[["plot_x_range"]][[1]],
-             End <= input[["plot_x_range"]][[2]]) %>%
-      mutate(frac_exch_state = round(frac_exch_state, 4),
-             err_frac_exch_state = round(err_frac_exch_state, 4)) %>%
-      arrange(Start, End) %>%
-      dt_format(cols = c("Protein", "Sequence", "State", "Start", "End", "Frac Exch", "Err Frac Exch"))
-    
+    generate_comparison_data(dat = prep_dat(), 
+                             theoretical = FALSE,
+                             relative = TRUE)
   })
   
   ##
   
   comparison_plot_data_exp_abs <- reactive({
     
-    prep_dat() %>%
-      select(Protein, Sequence, State, Start, End, abs_frac_exch_state, err_abs_frac_exch_state) %>%
-      filter(Protein == input[["chosen_protein"]],
-             Start >= input[["plot_x_range"]][[1]],
-             End <= input[["plot_x_range"]][[2]]) %>%
-      mutate(abs_frac_exch_state = round(abs_frac_exch_state, 4),
-             err_abs_frac_exch_state = round(abs_frac_exch_state, 4)) %>%
-      arrange(Start, End) %>%
-      dt_format(cols = c("Protein", "Sequence", "State", "Start", "End", "Abs Val Exch", "Err Abs Val Exch"))
-    
+    generate_comparison_data(dat = prep_dat(), 
+                             theoretical = FALSE,
+                             relative = FALSE)
   })
   
   ##
@@ -1247,21 +1202,26 @@ server <- function(input, output, session) {
     if (input[["theory"]]) {
       
       if (input[["calc_type"]] == "relative") {
-        comparison_plot_data_theo()  
+        cp_data <- comparison_plot_data_theo()  
       } else {
-        comparison_plot_data_theo_abs()
+        cp_data <- comparison_plot_data_theo_abs()
       }
       
     } else {
       
       if (input[["calc_type"]] == "absolute") {
-        comparison_plot_data_exp_abs()
+        cp_data <- comparison_plot_data_exp_abs()
       } else {
-        comparison_plot_data_exp()
+        cp_data <- comparison_plot_data_exp()
       }
       
     }
     
+    cp_data %>%
+      filter(Protein == input[["chosen_protein"]],
+            Start >= input[["plot_x_range"]][[1]],
+                End <= input[["plot_x_range"]][[2]]) %>%
+      dt_format()
   })
   
   ##
