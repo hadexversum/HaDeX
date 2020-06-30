@@ -1240,33 +1240,18 @@ server <- function(input, output, session) {
       validate(need(as.numeric(input[["chosen_time"]]) < as.numeric(input[["out_time"]]), "Out time must be bigger than chosen time."))
     }
     
-    
-    tmp <- bind_rows(lapply(c(input[["state_first"]], input[["state_second"]]), function(i) calculate_state_deuteration(dat(), 
-                                                                                                                        protein = input[["chosen_protein"]], 
-                                                                                                                        state = i, 
-                                                                                                                        time_in = input[["in_time"]],
-                                                                                                                        time_chosen = input[["chosen_time"]], 
-                                                                                                                        time_out = input[["out_time"]],
-                                                                                                                        deut_part = 0.01*as.integer(input[["deut_concentration"]])))) %>%
-      droplevels() %>% 
-      mutate(State = factor(State, levels = c(input[["state_first"]], input[["state_second"]]), labels = c("1", "2"))) %>%
-      gather(variable, value, -c(Protein:End, State, Med_Sequence)) %>%
-      unite(tmp, variable, State) %>%
-      spread(tmp, value) 
-    
-    validate(need(!is.na(tmp[["frac_exch_state_1"]]), "First state data is not sufficient. Choose another state."))
-    validate(need(!is.na(tmp[["frac_exch_state_2"]]), "Second state data is not sufficient. Choose another state."))
-    
-    tmp %>%
-      mutate(diff_frac_exch = frac_exch_state_1 - frac_exch_state_2,
-             err_frac_exch = sqrt(err_frac_exch_state_1^2 + err_frac_exch_state_2^2),
-             abs_diff_frac_exch = abs_frac_exch_state_1 - abs_frac_exch_state_2,
-             err_abs_diff_frac_exch = sqrt(err_abs_frac_exch_state_1^2 + err_abs_frac_exch_state_2^2),
-             diff_theo_frac_exch = avg_theo_in_time_1 - avg_theo_in_time_2, 
-             err_diff_theo_frac_exch = sqrt(err_avg_theo_in_time_1^2 + err_avg_theo_in_time_2^2),
-             abs_diff_theo_frac_exch = abs_avg_theo_in_time_1 - abs_avg_theo_in_time_2,
-             err_abs_diff_theo_frac_exch = sqrt(err_abs_avg_theo_in_time_1^2 + err_abs_avg_theo_in_time_2^2)) %>%
-      select(Protein, Start, End, Med_Sequence, everything(), -contains("1"), -contains("2"))
+    tryCatch({
+      generate_differential_data(dat = dat(),
+                                 states = c(input[["state_first"]], input[["state_second"]]),
+                                 protein = input[["chosen_protein"]],
+                                 time_in = input[["in_time"]],
+                                 time_chosen = input[["chosen_time"]],
+                                 time_out = input[["out_time"]],
+                                 deut_part = 0.01*as.integer(input[["deut_concentration"]]))
+    },
+    error = function(e){
+      validate(need(FALSE), "Check chosen parameters - not sufficient data.")
+    })
     
   })
   
@@ -1274,156 +1259,44 @@ server <- function(input, output, session) {
   
   differential_plot_theo <- reactive({
     
-    confidence_limit <- as.double(input[["confidence_limit"]])
-    confidence_limit_2 <- as.double(input[["confidence_limit_2"]])
-    
-    interval <- calculate_confidence_limit_values(calc_dat = woods_plot_dat(),
-                                                  confidence_limit = confidence_limit,
-                                                  theoretical = TRUE,
-                                                  relative = TRUE)
-    
-    interval_2 <- calculate_confidence_limit_values(calc_dat = woods_plot_dat(),
-                                                    confidence_limit = confidence_limit_2,
-                                                    theoretical = TRUE,
-                                                    relative = TRUE)
-    
-    mutate(woods_plot_dat(), colour = case_when(
-      woods_plot_dat()[["diff_theo_frac_exch"]] < interval_2[1] ~ "deepskyblue3",
-      woods_plot_dat()[["diff_theo_frac_exch"]] < interval[1] ~ "deepskyblue1",
-      woods_plot_dat()[["diff_theo_frac_exch"]] > interval_2[2] ~ "firebrick3",
-      woods_plot_dat()[["diff_theo_frac_exch"]] > interval[2] ~ "firebrick1",
-      TRUE ~ "azure3")) %>%
-      ggplot() +
-      geom_segment(aes(x = Start, y = diff_theo_frac_exch, xend = End, yend = diff_theo_frac_exch, color = colour)) +
-      geom_errorbar(aes(x = Med_Sequence, ymin = diff_theo_frac_exch - err_diff_theo_frac_exch, ymax = diff_theo_frac_exch + err_diff_theo_frac_exch, color = colour)) +
-      geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
-      geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) + 
-      geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
-      geom_hline(aes(yintercept = interval_2[1], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "deepskyblue3", size = .7, show.legend = TRUE) +
-      geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
-      scale_linetype_manual(values = c("dashed", "dotdash")) + 
-      scale_colour_identity() +
-      scale_y_continuous(expand = c(0, 0), limits = c(-100, 100)) +
-      theme(legend.title = element_blank(),
-            legend.position = "bottom",
-            legend.direction = "vertical") 
+    generate_woods_plot(dat = woods_plot_dat(),
+                        theoretical = TRUE,
+                        relative = TRUE,
+                        confidence_limit = as.double(input[["confidence_limit"]]),
+                        confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
   
   ##
   
   differential_plot_theo_abs <- reactive({
     
-    confidence_limit <- as.double(input[["confidence_limit"]])
-    confidence_limit_2 <- as.double(input[["confidence_limit_2"]])
-    
-    interval <- calculate_confidence_limit_values(calc_dat = woods_plot_dat(),
-                                                  confidence_limit = confidence_limit,
-                                                  theoretical = TRUE,
-                                                  relative = FALSE)
-    
-    interval_2 <- calculate_confidence_limit_values(calc_dat = woods_plot_dat(),
-                                                    confidence_limit = confidence_limit_2,
-                                                    theoretical = TRUE,
-                                                    relative = FALSE)
-    
-    mutate(woods_plot_dat(), colour = case_when(
-      woods_plot_dat()[["abs_diff_theo_frac_exch"]] < interval_2[1] ~ "deepskyblue3",
-      woods_plot_dat()[["abs_diff_theo_frac_exch"]] < interval[1] ~ "deepskyblue1",
-      woods_plot_dat()[["abs_diff_theo_frac_exch"]] > interval_2[2] ~ "firebrick3",
-      woods_plot_dat()[["abs_diff_theo_frac_exch"]] > interval[2] ~ "firebrick1",
-      TRUE ~ "azure3")) %>%
-      ggplot() +
-      geom_segment(aes(x = Start, y = abs_diff_theo_frac_exch, xend = End, yend = abs_diff_theo_frac_exch, color = colour)) +
-      geom_errorbar(aes(x = Med_Sequence, ymin = abs_diff_theo_frac_exch - err_abs_diff_theo_frac_exch, ymax = abs_diff_theo_frac_exch + err_abs_diff_theo_frac_exch, color = colour)) +
-      geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
-      geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) + 
-      geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
-      geom_hline(aes(yintercept = interval_2[1], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "deepskyblue3", size = .7, show.legend = TRUE) +
-      geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
-      scale_linetype_manual(values = c("dashed", "dotdash")) + 
-      scale_colour_identity() +
-      scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
-      theme(legend.title = element_blank(),
-            legend.position = "bottom",
-            legend.direction = "vertical") 
+    generate_woods_plot(dat = woods_plot_dat(),
+                        theoretical = TRUE,
+                        relative = FALSE,
+                        confidence_limit = as.double(input[["confidence_limit"]]),
+                        confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
   
   ##
   
   differential_plot_exp <- reactive({
     
-    confidence_limit <- as.double(input[["confidence_limit"]])
-    confidence_limit_2 <- as.double(input[["confidence_limit_2"]])
-    
-    interval <- calculate_confidence_limit_values(calc_dat = woods_plot_dat(),
-                                                  confidence_limit = confidence_limit,
-                                                  theoretical = FALSE,
-                                                  relative = TRUE)
-    
-    interval_2 <- calculate_confidence_limit_values(calc_dat = woods_plot_dat(),
-                                                    confidence_limit = confidence_limit_2,
-                                                    theoretical = FALSE,
-                                                    relative = TRUE)
-    
-    mutate(woods_plot_dat(), colour = case_when(
-      woods_plot_dat()[["diff_frac_exch"]] < interval_2[1] ~ "deepskyblue3",
-      woods_plot_dat()[["diff_frac_exch"]] < interval[1] ~ "deepskyblue1",
-      woods_plot_dat()[["diff_frac_exch"]] > interval_2[2] ~ "firebrick3",
-      woods_plot_dat()[["diff_frac_exch"]] > interval[2] ~ "firebrick1",
-      TRUE ~ "azure3")) %>%
-      ggplot() +
-      geom_segment(aes(x = Start, y = diff_frac_exch, xend = End, yend = diff_frac_exch, color = colour)) +
-      geom_errorbar(aes(x = Med_Sequence, ymin = diff_frac_exch - err_frac_exch, ymax = diff_frac_exch + err_frac_exch, color = colour)) +
-      geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
-      geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) +
-      geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
-      geom_hline(aes(yintercept = interval_2[1], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "deepskyblue3", size = .7, show.legend = TRUE) +
-      geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
-      scale_linetype_manual(values = c("dashed", "dotdash")) +
-      scale_colour_identity() +
-      scale_y_continuous(expand = c(0, 0), limits = c(-100, 100)) +
-      theme(legend.title = element_blank(),
-            legend.position = "bottom",
-            legend.direction = "vertical") 
+    generate_woods_plot(dat = woods_plot_dat(),
+                        theoretical = FALSE,
+                        relative = TRUE,
+                        confidence_limit = as.double(input[["confidence_limit"]]),
+                        confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
   
   ##
   
   differential_plot_exp_abs <- reactive({
     
-    confidence_limit <- as.double(input[["confidence_limit"]])
-    confidence_limit_2 <- as.double(input[["confidence_limit_2"]])
-    
-    interval <- calculate_confidence_limit_values(calc_dat = woods_plot_dat(),
-                                                  confidence_limit = confidence_limit,
-                                                  theoretical = FALSE,
-                                                  relative = FALSE)
-    
-    interval_2 <- calculate_confidence_limit_values(calc_dat = woods_plot_dat(),
-                                                    confidence_limit = confidence_limit_2,
-                                                    theoretical = FALSE,
-                                                    relative = FALSE)
-    
-    mutate(woods_plot_dat(), colour = case_when(
-      woods_plot_dat()[["abs_diff_frac_exch"]] < interval_2[1] ~ "deepskyblue3",
-      woods_plot_dat()[["abs_diff_frac_exch"]] < interval[1] ~ "deepskyblue1",
-      woods_plot_dat()[["abs_diff_frac_exch"]] > interval_2[2] ~ "firebrick3",
-      woods_plot_dat()[["abs_diff_frac_exch"]] > interval[2] ~ "firebrick1",
-      TRUE ~ "azure3")) %>%
-      ggplot() +
-      geom_segment(aes(x = Start, y = abs_diff_frac_exch, xend = End, yend = abs_diff_frac_exch, color = colour)) +
-      geom_errorbar(aes(x = Med_Sequence, ymin = abs_diff_frac_exch - err_abs_diff_frac_exch, ymax = abs_diff_frac_exch + err_abs_diff_frac_exch, color = colour)) +
-      geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
-      geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) + 
-      geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
-      geom_hline(aes(yintercept = interval_2[1], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "deepskyblue3", size = .7, show.legend = TRUE) +
-      geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
-      scale_linetype_manual(values = c("dashed", "dotdash")) + 
-      scale_colour_identity() +
-      scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
-      theme(legend.title = element_blank(),
-            legend.position = "bottom",
-            legend.direction = "vertical") 
+    generate_woods_plot(dat = woods_plot_dat(),
+                        theoretical = FALSE,
+                        relative = FALSE,
+                        confidence_limit = as.double(input[["confidence_limit"]]),
+                        confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
   
   ##
@@ -1431,7 +1304,6 @@ server <- function(input, output, session) {
   wp_out <- reactive({
     
     validate(need(!(input[["state_first"]] == input[["state_second"]]), "Please select two different states."))
-    # validate(need(differential_plot_theo(), "Select different states."))
     
     if (input[["theory"]]) {
       
@@ -1532,87 +1404,44 @@ server <- function(input, output, session) {
   
   differential_plot_data_theo <- reactive({
     
-    woods_plot_dat() %>%
-      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit"]]),
-                          theoretical = TRUE, 
-                          relative = TRUE) %>%
-      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
-                          theoretical = TRUE, 
-                          relative = TRUE) %>%
-      select(Protein, Sequence, Start, End, diff_theo_frac_exch, err_diff_theo_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
-      filter(Protein == input[["chosen_protein"]],
-             Start >= input[["plot_x_range"]][[1]],
-             End <= input[["plot_x_range"]][[2]]) %>%
-      mutate(diff_theo_frac_exch = round(diff_theo_frac_exch, 4),
-             err_diff_theo_frac_exch = round(err_diff_theo_frac_exch, 4)) %>%
-      arrange(Start, End) %>%
-      dt_format(cols = unique(c("Protein", "Sequence", "Start", "End", "Theo Diff Frac Exch", "Err Theo Diff Frac Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
-    
+    generate_woods_data(dat = woods_plot_dat(),
+                        theoretical = TRUE,
+                        relative = TRUE,
+                        confidence_limit_1 = as.double(input[["confidence_limit"]]),
+                        confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
   
   ##
   
   differential_plot_data_theo_abs <- reactive({
     
-    woods_plot_dat() %>%
-      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit"]]),
-                          theoretical = TRUE, 
-                          relative = FALSE) %>%
-      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
-                          theoretical = TRUE, 
-                          relative = FALSE) %>%
-      select(Protein, Sequence, Start, End, abs_diff_theo_frac_exch, err_abs_diff_theo_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
-      filter(Protein == input[["chosen_protein"]],
-             Start >= input[["plot_x_range"]][[1]],
-             End <= input[["plot_x_range"]][[2]]) %>%
-      mutate(abs_diff_theo_frac_exch = round(abs_diff_theo_frac_exch, 4),
-             err_abs_diff_theo_frac_exch = round(err_abs_diff_theo_frac_exch, 4)) %>%
-      arrange(Start, End) %>%
-      dt_format(cols = unique(c("Protein", "Sequence", "Start", "End", "Theo Abs Value Diff", "Err Theo Abs Value Diff", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
-    
+    generate_woods_data(dat = woods_plot_dat(),
+                        theoretical = TRUE,
+                        relative = FALSE,
+                        confidence_limit_1 = as.double(input[["confidence_limit"]]),
+                        confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
   
   ##
   
   differential_plot_data_exp <- reactive({
     
-    woods_plot_dat() %>%
-      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit"]]),
-                          theoretical = FALSE, 
-                          relative = TRUE) %>%
-      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
-                          theoretical = FALSE, 
-                          relative = TRUE) %>%
-      select(Protein, Sequence, Start, End, diff_frac_exch, err_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
-      filter(Protein == input[["chosen_protein"]],
-             Start >= input[["plot_x_range"]][[1]],
-             End <= input[["plot_x_range"]][[2]]) %>%
-      mutate(diff_frac_exch = round(diff_frac_exch, 4),
-             err_frac_exch = round(err_frac_exch, 4)) %>%
-      arrange(Start, End) %>%
-      dt_format(cols = unique(c("Protein", "Sequence", "Start", "End", "Diff Frac Exch", "Err Diff Frac Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
-    
+    generate_woods_data(dat = woods_plot_dat(),
+                        theoretical = FALSE,
+                        relative = TRUE,
+                        confidence_limit_1 = as.double(input[["confidence_limit"]]),
+                        confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
   
   ##
   
   differential_plot_data_exp_abs <- reactive({
     
-    woods_plot_dat() %>%
-      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit"]]),
-                          theoretical = FALSE,
-                          relative = FALSE) %>%
-      add_stat_dependency(confidence_limit = as.double(input[["confidence_limit_2"]]),
-                          theoretical = FALSE, 
-                          relative = FALSE) %>%
-      select(Protein, Sequence, Start, End, abs_diff_frac_exch, err_abs_diff_frac_exch, paste0("valid_at_", input[["confidence_limit"]]), paste0("valid_at_", input[["confidence_limit_2"]])) %>%
-      filter(Protein == input[["chosen_protein"]],
-             Start >= input[["plot_x_range"]][[1]],
-             End <= input[["plot_x_range"]][[2]]) %>%
-      mutate(abs_diff_frac_exch = round(abs_diff_frac_exch, 4),
-             err_abs_diff_frac_exch = round(err_abs_diff_frac_exch, 4)) %>%
-      arrange(Start, End) %>%
-      dt_format(cols = unique(c("Protein", "Sequence", "Start", "End", "Diff Abs Value Exch", "Err Diff Abs Value Exch", paste0("Valid At ", input[["confidence_limit"]]), paste0("Valid At ", input[["confidence_limit_2"]]))))
+    generate_woods_data(dat = woods_plot_dat(),
+                        theoretical = FALSE,
+                        relative = FALSE,
+                        confidence_limit_1 = as.double(input[["confidence_limit"]]),
+                        confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
   
   ##
@@ -1622,20 +1451,26 @@ server <- function(input, output, session) {
     if (input[["theory"]]) {
       
       if(input[["calc_type"]] == "relative") {
-        differential_plot_data_theo()  
+        dp_data <- differential_plot_data_theo()  
       } else {
-        differential_plot_data_theo_abs()
+        dp_data <- differential_plot_data_theo_abs()
       }
       
     } else {
       
       if (input[["calc_type"]] == "relative") {
-        differential_plot_data_exp()  
+        dp_data <- differential_plot_data_exp()  
       } else {
-        differential_plot_data_exp_abs()
+        dp_data <- differential_plot_data_exp_abs()
       }
       
     }
+    
+    dp_data %>%
+      filter(Protein == input[["chosen_protein"]],
+             Start >= input[["plot_x_range"]][[1]],
+             End <= input[["plot_x_range"]][[2]]) %>%
+      dt_format()
     
   })
   
