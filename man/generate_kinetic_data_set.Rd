@@ -35,7 +35,8 @@ time points based on supplied peptide list.
 }
 \details{
 This is a wrapper for \code{\link{calculate_kinetics}}, but for
-the peptide list instead of one peptide.
+the peptide list instead of one peptide. The names of the parameters and 
+variables will be changed later after the glossary project.
 }
 \seealso{
 ...

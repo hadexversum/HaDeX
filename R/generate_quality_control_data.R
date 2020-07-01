@@ -1,11 +1,13 @@
 #' generate_quality_control_data
 #' 
-#' @description  Generates the quality control data in user-friendly way.
+#' @description  Generates quality control data, based on the supplied
+#' parameters.
 #' 
-#' @param dat data frame from \code{\link{quality_control}}, 
+#' @param dat custom format, produced by \code{\link{quality_control}}, 
 #' scaled if necessary.
 #' 
-#' @details This data is available from the GUI. May be internal.
+#' @details This data is available in the GUI. The names of the parameters
+#' and variables will be changed later after the glossary project.
 #' 
 #' @return ...
 #' 
@@ -20,6 +22,8 @@ generate_quality_control_data <- function(dat){
     mutate(avg_err_state_first = round(avg_err_state_first, 2),
            avg_err_state_second = round(avg_err_state_second, 2),
            avg_diff = round(avg_diff, 2)) %>%
-    dt_format(cols = c("Out time", "Mean error - first state [%]", "Mean error - second state [%]", "Mean error of difference [%]"))
-  
+    rename("Out time" = out_time,
+           "Mean error - first state [%]" = avg_err_state_first,
+           "Mean error - second state [%]" = avg_err_state_second,
+           "Mean error of difference [%]" = avg_diff)
 }

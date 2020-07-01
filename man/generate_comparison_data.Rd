@@ -17,11 +17,12 @@ generate_comparison_data(dat, theoretical, relative, protein)
 ...
 }
 \description{
-Generates data visible on the comparison plot.
+Generates comparison data, based on the supplied
+parameters.
 }
 \details{
 This data is available in the GUI. The names of the parameters
-will be changed later after the glossary project.
+and variables will be changed later after the glossary project.
 }
 \seealso{
 ...

@@ -1,7 +1,5 @@
 source("ui.R")
 
-
-
 #########################################
 
 server <- function(input, output, session) {
@@ -337,12 +335,10 @@ server <- function(input, output, session) {
   
   dat <- reactive({
     
-    generate_general_dataset(dat = dat_tmp(),
-                             control_protein = input[["chosen_protein"]], 
-                             control_state = strsplit(input[["chosen_control"]], " \\| ")[[1]][2],
-                             control_exposure = strsplit(input[["chosen_control"]], " \\| ")[[1]][3])
-  
-    
+    generate_general_data_set(dat = dat_tmp(),
+                              control_protein = input[["chosen_protein"]], 
+                              control_state = strsplit(input[["chosen_control"]], " \\| ")[[1]][2],
+                              control_exposure = strsplit(input[["chosen_control"]], " \\| ")[[1]][3])
   })
   
   
@@ -456,9 +452,6 @@ server <- function(input, output, session) {
                                 hydro_properties = input[["hydro_prop"]],
                                 protein = input[["chosen_protein"]],
                                 charge_colors = c("-1" = "#E41A1C", "0" = "#377EB8", "1" = "#4DAF4A"))
-    
-    
-    
   })
   
   ##
@@ -537,8 +530,6 @@ server <- function(input, output, session) {
                           state = input[["chosen_state"]],
                           start = input[["plot_range"]][[1]],
                           end = input[["plot_range"]][[2]])
-    
-    
   })
   
   output[["stateOverlap_data"]] <- DT::renderDataTable(server = FALSE, {
@@ -627,7 +618,6 @@ server <- function(input, output, session) {
                                        start = input[["plot_range"]][[1]],
                                        end = input[["plot_range"]][[2]],
                                        protein_sequence = protein_sequence())
-   
   })
   
   ##
@@ -1241,13 +1231,13 @@ server <- function(input, output, session) {
     }
     
     tryCatch({
-      generate_differential_data(dat = dat(),
-                                 states = c(input[["state_first"]], input[["state_second"]]),
-                                 protein = input[["chosen_protein"]],
-                                 time_in = input[["in_time"]],
-                                 time_chosen = input[["chosen_time"]],
-                                 time_out = input[["out_time"]],
-                                 deut_part = 0.01*as.integer(input[["deut_concentration"]]))
+      generate_differential_data_set(dat = dat(),
+                                    states = c(input[["state_first"]], input[["state_second"]]),
+                                    protein = input[["chosen_protein"]],
+                                    time_in = input[["in_time"]],
+                                    time_chosen = input[["chosen_time"]],
+                                    time_out = input[["out_time"]],
+                                    deut_part = 0.01*as.integer(input[["deut_concentration"]]))
     },
     error = function(e){
       validate(need(FALSE), "Check chosen parameters - not sufficient data.")
@@ -1259,44 +1249,44 @@ server <- function(input, output, session) {
   
   differential_plot_theo <- reactive({
     
-    generate_woods_plot(dat = woods_plot_dat(),
-                        theoretical = TRUE,
-                        relative = TRUE,
-                        confidence_limit = as.double(input[["confidence_limit"]]),
-                        confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
+    generate_differential_plot(dat = woods_plot_dat(),
+                               theoretical = TRUE,
+                               relative = TRUE,
+                               confidence_limit = as.double(input[["confidence_limit"]]),
+                               confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
   
   ##
   
   differential_plot_theo_abs <- reactive({
     
-    generate_woods_plot(dat = woods_plot_dat(),
-                        theoretical = TRUE,
-                        relative = FALSE,
-                        confidence_limit = as.double(input[["confidence_limit"]]),
-                        confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
+    generate_differential_plot(dat = woods_plot_dat(),
+                               theoretical = TRUE,
+                               relative = FALSE,
+                               confidence_limit = as.double(input[["confidence_limit"]]),
+                               confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
   
   ##
   
   differential_plot_exp <- reactive({
     
-    generate_woods_plot(dat = woods_plot_dat(),
-                        theoretical = FALSE,
-                        relative = TRUE,
-                        confidence_limit = as.double(input[["confidence_limit"]]),
-                        confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
+    generate_differential_plot(dat = woods_plot_dat(),
+                               theoretical = FALSE,
+                               relative = TRUE,
+                               confidence_limit = as.double(input[["confidence_limit"]]),
+                               confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
   
   ##
   
   differential_plot_exp_abs <- reactive({
     
-    generate_woods_plot(dat = woods_plot_dat(),
-                        theoretical = FALSE,
-                        relative = FALSE,
-                        confidence_limit = as.double(input[["confidence_limit"]]),
-                        confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
+    generate_differential_plot(dat = woods_plot_dat(),
+                               theoretical = FALSE,
+                               relative = FALSE,
+                               confidence_limit = as.double(input[["confidence_limit"]]),
+                               confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
   
   ##
@@ -1308,25 +1298,17 @@ server <- function(input, output, session) {
     if (input[["theory"]]) {
       
       if (input[["calc_type"]] == "relative") {
-        
         wp <- differential_plot_theo() 
-        
       } else {
-        
         wp <- differential_plot_theo_abs() 
-        
       }
       
     } else {
       
       if (input[["calc_type"]] == "relative") {
-        
         wp <- differential_plot_exp() 
-        
       } else {
-        
         wp <- differential_plot_exp_abs() 
-        
       }
       
     }
@@ -1404,44 +1386,44 @@ server <- function(input, output, session) {
   
   differential_plot_data_theo <- reactive({
     
-    generate_woods_data(dat = woods_plot_dat(),
-                        theoretical = TRUE,
-                        relative = TRUE,
-                        confidence_limit_1 = as.double(input[["confidence_limit"]]),
-                        confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
+    generate_differential_data(dat = woods_plot_dat(),
+                               theoretical = TRUE,
+                               relative = TRUE,
+                               confidence_limit_1 = as.double(input[["confidence_limit"]]),
+                               confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
   
   ##
   
   differential_plot_data_theo_abs <- reactive({
     
-    generate_woods_data(dat = woods_plot_dat(),
-                        theoretical = TRUE,
-                        relative = FALSE,
-                        confidence_limit_1 = as.double(input[["confidence_limit"]]),
-                        confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
+    generate_differential_data(dat = woods_plot_dat(),
+                               theoretical = TRUE,
+                               relative = FALSE,
+                               confidence_limit_1 = as.double(input[["confidence_limit"]]),
+                               confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
   
   ##
   
   differential_plot_data_exp <- reactive({
     
-    generate_woods_data(dat = woods_plot_dat(),
-                        theoretical = FALSE,
-                        relative = TRUE,
-                        confidence_limit_1 = as.double(input[["confidence_limit"]]),
-                        confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
+    generate_differential_data(dat = woods_plot_dat(),
+                               theoretical = FALSE,
+                               relative = TRUE,
+                               confidence_limit_1 = as.double(input[["confidence_limit"]]),
+                               confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
   
   ##
   
   differential_plot_data_exp_abs <- reactive({
     
-    generate_woods_data(dat = woods_plot_dat(),
-                        theoretical = FALSE,
-                        relative = FALSE,
-                        confidence_limit_1 = as.double(input[["confidence_limit"]]),
-                        confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
+    generate_differential_data(dat = woods_plot_dat(),
+                               theoretical = FALSE,
+                               relative = FALSE,
+                               confidence_limit_1 = as.double(input[["confidence_limit"]]),
+                               confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
   
   ##
@@ -1639,7 +1621,6 @@ server <- function(input, output, session) {
                               deut_concentration = input[["deut_concentration"]],
                               time_in = v_time_in,
                               time_out = v_time_out)
-    
   })
   
   ##
@@ -1678,53 +1659,36 @@ server <- function(input, output, session) {
   
   kin_plot_theo <- reactive({
     
-    kin_dat() %>% 
-      mutate(prop = paste0(Sequence, "-", State)) %>%
-      ggplot(aes(x = time_chosen, y = avg_theo_in_time, group = prop)) +
-      geom_point() + 
-      geom_ribbon(aes(ymin = avg_theo_in_time - err_avg_theo_in_time, ymax = avg_theo_in_time + err_avg_theo_in_time, fill = prop), alpha = 0.15) +
-      geom_line(aes(color = prop))
-    
+    generate_kinetic_plot(dat = kin_dat(),
+                          theoretical = TRUE,
+                          relative = TRUE)
   })
   
   ##
   
   kin_plot_theo_abs <- reactive({
-    
-    kin_dat() %>% 
-      mutate(prop = paste0(Sequence, "-", State)) %>%
-      ggplot(aes(x = time_chosen, y = abs_avg_theo_in_time, group = prop)) +
-      geom_point() + 
-      geom_ribbon(aes(ymin = abs_avg_theo_in_time - err_abs_avg_theo_in_time, ymax = abs_avg_theo_in_time + err_abs_avg_theo_in_time, fill = prop), alpha = 0.15) +
-      geom_line(aes(color = prop))
-    
+
+    generate_kinetic_plot(dat = kin_dat(),
+                          theoretical = TRUE,
+                          relative = FALSE)
   })
   
   ##
   
   kin_plot_exp <- reactive({
     
-    
-    kin_dat() %>% 
-      mutate(prop = paste0(Sequence, "-", State)) %>%
-      ggplot(aes(x = time_chosen, y = frac_exch_state, group = prop)) +
-      geom_point() + 
-      geom_ribbon(aes(ymin = frac_exch_state - err_frac_exch_state, ymax = frac_exch_state + err_frac_exch_state, fill = prop), alpha = 0.15) +
-      geom_line(aes(color = prop))
-    
+    generate_kinetic_plot(dat = kin_dat(),
+                          theoretical = FALSE,
+                          relative = TRUE)
   })
   
   ##
   
   kin_plot_exp_abs <- reactive({
     
-    kin_dat() %>% 
-      mutate(prop = paste0(Sequence, "-", State)) %>%
-      ggplot(aes(x = time_chosen, y = abs_frac_exch_state, group = prop)) +
-      geom_point() + 
-      geom_ribbon(aes(ymin = abs_frac_exch_state - err_abs_frac_exch_state, ymax = abs_frac_exch_state + err_abs_frac_exch_state, fill = prop), alpha = 0.15) +
-      geom_line(aes(color = prop))
-    
+    generate_kinetic_plot(dat = kin_dat(),
+                          theoretical = FALSE,
+                          relative = FALSE)
   })
   
   ##
@@ -1833,50 +1797,38 @@ server <- function(input, output, session) {
                                                              })
   ##
   
-  kin_plot_exp_data <- reactive({
-    
-    kin_dat() %>%
-      select(Protein, Sequence, State, Start, End, time_chosen, frac_exch_state, err_frac_exch_state) %>%
-      mutate(frac_exch_state = round(frac_exch_state, 4), 
-             err_frac_exch_state = round(err_frac_exch_state, 4)) %>%
-      dt_format(cols = c("Protein", "Sequence", "State", "Start", "End", "Time Point", "Frac Exch", "Err Frac Exch"))
-    
-  })
-  
-  ##
-  
-  kin_plot_exp_abs_data <- reactive({
-    
-    kin_dat() %>%
-      select(Protein, Sequence, State, Start, End, time_chosen, abs_frac_exch_state, err_abs_frac_exch_state) %>%
-      mutate(abs_frac_exch_state = round(abs_frac_exch_state, 4), 
-             err_abs_frac_exch_state = round(err_abs_frac_exch_state, 4)) %>%
-      dt_format(cols = c("Protein", "Sequence", "State", "Start", "End", "Time Point", "Abs Val Exch", "Err Abs Val Exch"))
-    
-  })
-  
-  ## 
-  
   kin_plot_theo_data <- reactive({
     
-    kin_dat() %>%
-      select(Protein, Sequence, State, Start, End, time_chosen, avg_theo_in_time, err_avg_theo_in_time) %>%
-      mutate(avg_theo_in_time = round(avg_theo_in_time, 4), 
-             err_avg_theo_in_time = round(err_avg_theo_in_time, 4)) %>%
-      dt_format(cols = c("Protein", "Sequence", "State", "Start", "End", "Time Point", "Theo Frac Exch", "Theo Err Frac Exch"))
-    
+    generate_kinetic_data(dat = kin_dat(),
+                          theoretical = TRUE, 
+                          relative = TRUE)
   })
   
   ##
   
   kin_plot_theo_abs_data <- reactive({
     
-    kin_dat() %>%
-      select(Protein, Sequence, State, Start, End, time_chosen, abs_avg_theo_in_time, err_abs_avg_theo_in_time) %>%
-      mutate(abs_avg_theo_in_time = round(abs_avg_theo_in_time, 4), 
-             err_abs_avg_theo_in_time = round(err_abs_avg_theo_in_time, 4)) %>%
-      dt_format(cols = c("Protein", "Sequence", "State", "Start", "End", "Time Point", "Theo Abs Val Exch", "Theo Err Abs Val Exch"))
+    generate_kinetic_data(dat = kin_dat(),
+                          theoretical = TRUE, 
+                          relative = FALSE)
+  })
+  
+  ##
+  
+  kin_plot_exp_data <- reactive({
     
+    generate_kinetic_data(dat = kin_dat(),
+                          theoretical = FALSE, 
+                          relative = TRUE)
+  })
+  
+  ##
+  
+  kin_plot_exp_abs_data <- reactive({
+    
+    generate_kinetic_data(dat = kin_dat(),
+                          theoretical = FALSE, 
+                          relative = FALSE)
   })
   
   ##
@@ -1886,20 +1838,23 @@ server <- function(input, output, session) {
     if (input[["kin_theory"]]) {
       
       if (input[["kin_calc_type"]] == "relative") {
-        kin_plot_theo_data()
+        kp_data <- kin_plot_theo_data()
       } else {
-        kin_plot_theo_abs_data()
+        kp_data <- kin_plot_theo_abs_data()
       } 
       
     } else {
       
       if (input[["kin_calc_type"]] == "relative") {
-        kin_plot_exp_data()
+        kp_data <- kin_plot_exp_data()
       } else {
-        kin_plot_exp_abs_data()
+        kp_data <- kin_plot_exp_abs_data()
       } 
       
     }
+    
+    kp_data %>%
+      dt_format()
     
   })
   
@@ -1988,7 +1943,8 @@ server <- function(input, output, session) {
   
   quality_control_plot_data_out <- reactive({
     
-    generate_quality_control_data(dat = quality_control_dat())
+    generate_quality_control_data(dat = quality_control_dat()) %>%
+      dt_format()
     
   })
   
@@ -2058,7 +2014,6 @@ server <- function(input, output, session) {
                            confidence_limit_1 = input[["confidence_limit"]],
                            confidence_limit_2 = input[["confidence_limit_2"]],
                            overlap_distribution_data = stateOverlapDist_data())
-    
   })
   
   

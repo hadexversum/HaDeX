@@ -6,41 +6,34 @@
 \usage{
 generate_differential_data(
   dat,
-  states,
-  protein,
-  time_in,
-  time_chosen,
-  time_out,
-  deut_part
+  theoretical,
+  relative,
+  confidence_limit_1,
+  confidence_limit_2
 )
 }
 \arguments{
-\item{dat}{...}
+\item{dat}{custom format, produced by 
+\code{\link{generate_differential_data_set}}}
 
-\item{states}{vector of two states to calculate difference between them, 
-the order is important}
+\item{theoretical}{...}
 
-\item{protein}{...}
+\item{relative}{...}
 
-\item{time_in}{...}
+\item{confidence_limit_1}{...}
 
-\item{time_chosen}{...}
-
-\item{time_out}{...}
-
-\item{deut_part}{...}
+\item{confidence_limit_2}{...}
 }
 \value{
 ...
 }
 \description{
-Generate the data frame with differential data from two
-provided states - experimental/relative calculations with the
-uncertainty
+Generates differential data, based on the supplied
+parameters.
 }
 \details{
-The names of the parameters will be changed to more descriptive 
-ones after the glossary project.
+This data is available in the GUI. The names of the parameters
+and variables will be changed later after the glossary project.
 }
 \seealso{
 ...

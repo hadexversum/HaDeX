@@ -7,7 +7,7 @@
 generate_comparison_plot(dat, theoretical, relative)
 }
 \arguments{
-\item{dat}{custom data format, produced by \code{\link{calculate_state_deuteration}}}
+\item{dat}{produced by \code{\link{calculate_state_deuteration}} function}
 
 \item{theoretical}{...}
 
@@ -18,11 +18,11 @@ generate_comparison_plot(dat, theoretical, relative)
 }
 \description{
 Generates comparison plot based on supplied data
-and parameters: theoretical/relative
+and parameters.
 }
 \details{
 This plot is visible in GUI. The names of the parameters
-will be changed later after the glossary project.
+and variables will be changed later after the glossary project.
 }
 \seealso{
 ...

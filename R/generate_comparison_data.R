@@ -1,13 +1,14 @@
 #' generate_comparison_data
 #' 
-#' @description Generates data visible on the comparison plot.
+#' @description Generates comparison data, based on the supplied
+#' parameters.
 #' 
 #' @param dat custom data format, produced by \code{\link{calculate_state_deuteration}}
 #' @param theoretical ...
 #' @param relative ...
 #' 
 #' @details This data is available in the GUI. The names of the parameters
-#' will be changed later after the glossary project.
+#' and variables will be changed later after the glossary project.
 #' 
 #' @importFrom dplyr rename
 #' 

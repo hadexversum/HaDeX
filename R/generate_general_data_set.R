@@ -1,25 +1,26 @@
-#' generate_general_dataset
+#' generate_general_data_set
 #' 
-#' @description Generates the dataset with control sample 
-#' based on supplied parameters.
+#' @description Generates the data set with control sample, based on 
+#' supplied parameters.
 #' 
 #' @param dat ...
 #' @param control_protein ...
 #' @param control_state ...
 #' @param control_exposure ...
 #' 
-#' @details ...
+#' @details The names of the parameters and variables will be changed 
+#' later after the glossary project.
 #' 
 #' @return ...
 #' 
 #' @seealso ... 
 #' 
-#' @export generate_general_dataset
+#' @export generate_general_data_set
 
-generate_general_dataset <- function(dat,
-                                     control_protein,
-                                     control_state,
-                                     control_exposure){
+generate_general_data_set <- function(dat,
+                                      control_protein,
+                                      control_state,
+                                      control_exposure){
   
   tmp <- dat %>%
     filter(Protein == control_protein, 

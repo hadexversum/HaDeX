@@ -7,17 +7,17 @@
 generate_quality_control_plot(dat)
 }
 \arguments{
-\item{dat}{data frame from \code{\link{quality_control}}, 
+\item{dat}{produced by \code{\link{quality_control}} function, 
 scaled if necessary.}
 }
 \value{
 ...
 }
 \description{
-Generates quality control plot.
+Generates quality control plot based on supplied data.
 }
 \details{
-This plot is visible in the GUI.
+This plot is visible in GUI.
 }
 \seealso{
 ...

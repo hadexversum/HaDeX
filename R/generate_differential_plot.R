@@ -1,27 +1,28 @@
-#' generate_woods_plot
+#' generate_differential_plot
 #' 
-#' @description Generates Woods Plot with confidence values based 
-#' on supplied parameters 
+#' @description Generates differential (Woods) plot with confidence values
+#' based on supplied data and parameters.
 #' 
-#' @param dat custom format
+#' @param dat produced by \code{\link{generate_differential_data_set}} function
 #' @param theoretical ...
 #' @param relative ...
 #' @param confidence_limit ...
 #' @param confidence_limit_2 ...
 #' 
-#' @details This plot is visible in GUI.
+#' @details This plot is visible in GUI. The names of the parameters
+#' and variables will be changed later after the glossary project.
 #' 
 #' @return ...
 #' 
 #' @seealso ... 
 #' 
-#' @export generate_woods_plot
+#' @export generate_differential_plot
 
-generate_woods_plot <- function(dat, 
-                                theoretical, 
-                                relative,
-                                confidence_limit, 
-                                confidence_limit_2){ 
+generate_differential_plot <- function(dat, 
+                                       theoretical, 
+                                       relative,
+                                       confidence_limit, 
+                                       confidence_limit_2){ 
   
   if(theoretical){
     

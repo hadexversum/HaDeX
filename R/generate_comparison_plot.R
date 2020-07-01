@@ -1,14 +1,14 @@
 #' generate_comparison_plot
 #' 
 #' @description Generates comparison plot based on supplied data
-#' and parameters: theoretical/relative
+#' and parameters.
 #' 
-#' @param dat custom data format, produced by \code{\link{calculate_state_deuteration}}
+#' @param dat produced by \code{\link{calculate_state_deuteration}} function
 #' @param theoretical ...
 #' @param relative ...
 #' 
 #' @details This plot is visible in GUI. The names of the parameters
-#' will be changed later after the glossary project.
+#' and variables will be changed later after the glossary project.
 #' 
 #' @return ...
 #' 

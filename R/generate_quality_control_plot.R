@@ -1,11 +1,11 @@
 #' generate_quality_control_plot
 #' 
-#' @description Generates quality control plot.
+#' @description Generates quality control plot based on supplied data.
 #' 
-#' @param dat data frame from \code{\link{quality_control}}, 
+#' @param dat produced by \code{\link{quality_control}} function, 
 #' scaled if necessary.
 #' 
-#' @details This plot is visible in the GUI.
+#' @details This plot is visible in GUI. 
 #' 
 #' @return ...
 #' 

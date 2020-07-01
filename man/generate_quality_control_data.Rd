@@ -7,17 +7,19 @@
 generate_quality_control_data(dat)
 }
 \arguments{
-\item{dat}{data frame from \code{\link{quality_control}}, 
+\item{dat}{custom format, produced by \code{\link{quality_control}}, 
 scaled if necessary.}
 }
 \value{
 ...
 }
 \description{
-Generates the quality control data in user-friendly way.
+Generates quality control data, based on the supplied
+parameters.
 }
 \details{
-This data is available from the GUI. May be internal.
+This data is available in the GUI. The names of the parameters
+and variables will be changed later after the glossary project.
 }
 \seealso{
 ...

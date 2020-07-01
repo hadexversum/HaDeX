@@ -1,7 +1,7 @@
 #' generate_overlap_data
 #' 
-#' @description Generates data set for overlapping
-#' peptide plot.
+#' @description Generates overlap data, based on the supplied
+#' parameters.
 #' 
 #' @param dat ...
 #' @param protein ...
@@ -9,7 +9,7 @@
 #' @param start ...
 #' @param end ...
 #' 
-#' @details This data is displayed in the GUI.
+#' @details This data is available in the GUI. 
 #' 
 #' @return ...
 #' 
