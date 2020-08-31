@@ -1,0 +1,32 @@
+---
+title: "Glossary"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Terms and variables
+
+time_t : chosen time point
+
+time_0 : minimal exchange control
+
+time_100 : maximal exchange control
+
+deut_uptake :	deuterium uptake [Da]
+
+err_deut_uptake :	error associated with deuterium uptake [Da]
+
+frac_deut_uptake : fractional deuterium uptake [%]
+
+err_frac_deut_uptake : error associated with fractional deuterium uptake [%]
+
+theo_deut_uptake : theoretical deuterium uptake [Da]
+
+err_theo_deut_uptake : error associated with theoretical deuterium uptake [Da]
+
+theo_frac_deut_uptake : theoretical fractional deuterium uptake [%]
+
+err_theo_frac_deut_uptake : error associated with theoretical fractional deuterium uptake [%]

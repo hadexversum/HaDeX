@@ -396,29 +396,29 @@ add_stat_dependency(calc_dat,
 By the term *kinetics* we understand deuteration change in time. To calculate deuteration values per peptide for different time points is used function [calculate_kinetics()](https://hadexversum.github.io/HaDeX/reference/calculate_kinetics.html). This function uses the [calculate_state_deuteration()](https://hadexversum.github.io/HaDeX/reference/calculate_state_deuteration.html) function.
 
 
-```{r warning = FALSE}
+<!-- ```{r warning = FALSE} -->
 
-(kin_YYDEYL_gg_Nucb2_CaCl2 <- calculate_kinetics(dat = dat, 
-                                                protein = "db_Nucb2", 
-                                                sequence = "YYDEYL",
-                                                state = "gg_Nucb2_CaCl2", 
-                                                start = 45, 
-                                                end = 50, 
-                                                time_in = 0.001, 
-                                                time_out = 1440))
-```
+<!-- (kin_YYDEYL_gg_Nucb2_CaCl2 <- calculate_kinetics(dat = dat,  -->
+<!--                                                 protein = "db_Nucb2",  -->
+<!--                                                 sequence = "YYDEYL", -->
+<!--                                                 state = "gg_Nucb2_CaCl2",  -->
+<!--                                                 start = 45,  -->
+<!--                                                 end = 50,  -->
+<!--                                                 time_in = 0.001,  -->
+<!--                                                 time_out = 1440)) -->
+<!-- ``` -->
 
-```{r warning = FALSE}
+<!-- ```{r warning = FALSE} -->
 
-(kin_YYDEYL_gg_Nucb2_EDTA <- calculate_kinetics(dat = dat, 
-                                              protein = "db_Nucb2", 
-                                              sequence = "YYDEYL",
-                                              state = "gg_Nucb2_EDTA", 
-                                              start = 45, 
-                                              end = 50, 
-                                              time_in = 0.001, 
-                                              time_out = 1440))
-```
+<!-- (kin_YYDEYL_gg_Nucb2_EDTA <- calculate_kinetics(dat = dat,  -->
+<!--                                               protein = "db_Nucb2",  -->
+<!--                                               sequence = "YYDEYL", -->
+<!--                                               state = "gg_Nucb2_EDTA",  -->
+<!--                                               start = 45,  -->
+<!--                                               end = 50,  -->
+<!--                                               time_in = 0.001,  -->
+<!--                                               time_out = 1440)) -->
+<!-- ``` -->
 
 Calculated data can be shown next to each other on the plot for comparison. To visualize kinetic data we recommend  [plot_kinetics()](https://hadexversum.github.io/HaDeX/reference/plot_kinetics.html) function:
 
@@ -426,45 +426,45 @@ Calculated data can be shown next to each other on the plot for comparison. To v
 
 - relative values:
 
-```{r warning = FALSE}
+<!-- ```{r warning = FALSE} -->
 
-bind_rows(kin_YYDEYL_gg_Nucb2_CaCl2, kin_YYDEYL_gg_Nucb2_EDTA) %>%
-  plot_kinetics(theoretical = TRUE, 
-                relative = TRUE)
+<!-- bind_rows(kin_YYDEYL_gg_Nucb2_CaCl2, kin_YYDEYL_gg_Nucb2_EDTA) %>% -->
+<!--   plot_kinetics(theoretical = TRUE,  -->
+<!--                 relative = TRUE) -->
 
-```
+<!-- ``` -->
 
 - absolute values:
 
-```{r warning = FALSE}
+<!-- ```{r warning = FALSE} -->
 
-bind_rows(kin_YYDEYL_gg_Nucb2_CaCl2, kin_YYDEYL_gg_Nucb2_EDTA) %>%
-  plot_kinetics(theoretical = TRUE, 
-                relative = FALSE)
+<!-- bind_rows(kin_YYDEYL_gg_Nucb2_CaCl2, kin_YYDEYL_gg_Nucb2_EDTA) %>% -->
+<!--   plot_kinetics(theoretical = TRUE,  -->
+<!--                 relative = FALSE) -->
 
-```
+<!-- ``` -->
 
 -- experimental:
 
 - relative values:
 
-```{r warning = FALSE}
+<!-- ```{r warning = FALSE} -->
 
-bind_rows(kin_YYDEYL_gg_Nucb2_CaCl2, kin_YYDEYL_gg_Nucb2_EDTA) %>%
-  plot_kinetics(theoretical = FALSE, 
-                relative = TRUE)
+<!-- bind_rows(kin_YYDEYL_gg_Nucb2_CaCl2, kin_YYDEYL_gg_Nucb2_EDTA) %>% -->
+<!--   plot_kinetics(theoretical = FALSE,  -->
+<!--                 relative = TRUE) -->
 
-```
+<!-- ``` -->
 
 - absolute values:
 
-```{r warning = FALSE}
+<!-- ```{r warning = FALSE} -->
 
-bind_rows(kin_YYDEYL_gg_Nucb2_CaCl2, kin_YYDEYL_gg_Nucb2_EDTA) %>%
-  plot_kinetics(theoretical = FALSE, 
-                relative = FALSE)
+<!-- bind_rows(kin_YYDEYL_gg_Nucb2_CaCl2, kin_YYDEYL_gg_Nucb2_EDTA) %>% -->
+<!--   plot_kinetics(theoretical = FALSE,  -->
+<!--                 relative = FALSE) -->
 
-```
+<!-- ``` -->
 
 ## Additional tools
 

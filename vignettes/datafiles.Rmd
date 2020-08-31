@@ -1,0 +1,15 @@
+---
+title: "Processing the datafiles"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Processing data from DynamX
+`cluster` files from DynamX 3.0 or 2.0 
+
+
+## Processing data from HDeXaminer
+`tables` file from HDeXaminer
