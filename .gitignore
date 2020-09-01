@@ -11,3 +11,4 @@ codecov.yml
 hadex.Rproj
 HaDeX.Rproj
 renv
+docs/*
