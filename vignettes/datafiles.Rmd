@@ -7,9 +7,22 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Currently, HaDeX is limited to the `cluster` file from DynamX 3.0 or 2.0 and `tables` file from HDeXaminer. Each data file type needs a different way of processing, as explained below.
+
 ## Processing data from DynamX
-`cluster` files from DynamX 3.0 or 2.0 
+
+Let's investigate how the data processing of the `cluster` file from DynamX is conducted on the example file from the package.
+
+```{r}
+library(HaDeX)
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+head(dat, 10)
+```
+
+As you can see, the data file has a very specific structure and is not informative yet. In the file we have `m/z` values for each `z` value (charge) for each time point for each state of each peptide, repeated as many times as measurement was repeated (each measurement should be repeated at least 3 times). The process of measurement and the basics of HDX experiment is described in `Basics of the HDX-MS` article.
+
+
 
 
 ## Processing data from HDeXaminer
-`tables` file from HDeXaminer
+TO BE WRITTEN

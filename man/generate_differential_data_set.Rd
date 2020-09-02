@@ -8,25 +8,25 @@ generate_differential_data_set(
   dat,
   states,
   protein,
-  time_in,
-  time_chosen,
-  time_out,
-  deut_part
+  time_0,
+  time_t,
+  time_100,
+  deut_part = 1
 )
 }
 \arguments{
 \item{dat}{...}
 
 \item{states}{vector of two states to calculate difference between them, 
-the order is important}
+the order is important (state first - state second)}
 
 \item{protein}{...}
 
-\item{time_in}{...}
+\item{time_0}{...}
 
-\item{time_chosen}{...}
+\item{time_t}{...}
 
-\item{time_out}{...}
+\item{time_100}{...}
 
 \item{deut_part}{...}
 }
@@ -41,6 +41,15 @@ uncertainty, based on supplied parameters.
 \details{
 The names of the parameters and variables will be changed 
 later after the glossary project.
+}
+\examples{
+# load example data
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+
+# calculate differential values between states "CD160" and "CD160_HVEM" for protein "db_CD160"
+generate_differential_data_set(dat = dat, states = c("CD160", "CD160_HVEM"), protein = "db_CD160", 
+                               time_0 = 0.001, time_t = 5.000, time_100 = 1440.000)
+
 }
 \seealso{
 ...
