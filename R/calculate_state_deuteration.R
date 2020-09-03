@@ -5,8 +5,8 @@
 #' @param dat data as imported by the \code{\link{read_hdx}} function
 #' @param protein protein included in calculations
 #' @param state state included in calculations
-#' @param time_0 experimental `time_in`
-#' @param time_100 experimental `time_out`
+#' @param time_0 minimal exchange control
+#' @param time_100 maximal exchange control 
 #' @param time_t chosen time point 
 #' @param deut_part percentage of deuterium the protein was exposed to, value in range [0, 1]
 #' 

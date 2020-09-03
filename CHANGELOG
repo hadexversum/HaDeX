@@ -1,12 +1,17 @@
-Changes from Version 0.1 to 1.0.
-* Added tooltips to the GUI.
-* Renamed kinetics to deuterium uptake
+Changes from Version 1.1 to 1.2.1
+* added tooltips to all of the plots
+* improved the processing of peptides with modification
+* renamed `kinetics` to `uptake curve`
+* improved visibility of elements depending on the chosen calculation method
 
-Changes from Version 1.1 to 1.1.
-* Reorganized GUI.
-* Major additions to the vignette.
+Changes from Version 1.0 to 1.1
+* added `Input Data` tab with uploaded file settings
+* added plot theme
+* added descriptions of the elements
+* added `Quality Control` section
+* added tooltips to Comparison & Woods plots
 
-Changes from Version 0.1 to 1.0.
-* Added functions for kinetic calculations and plots.
-* Added kinetic module for GUI.
-* Improved documentation.
+Changes from Version 0.1 to 1.0
+* added functions for kinetic calculations and plots.
+* added kinetic module for GUI.
+* improved documentation.
