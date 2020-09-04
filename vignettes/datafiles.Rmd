@@ -25,7 +25,10 @@ As you can see, the data file has a very specific structure and is not informati
 
 Our aim is to have one result with uncertainty of the measurement per each peptide in each biological state in each measured time point - data in this format allows further calculations e.q. calculating deuterium uptake values.
 
-... missing part ...
+Within each replicate of the measurement (we recognize each replicate by the `File` value) the `m/z` values are provided for each possible `z` value. The `m/z` values are in the `Center` column, as it is a centroid calculated from the spectrum. Firstly, we have to calculate mass value, measured experimentally:
+
+$$expMass = z \times (Center-protonMass)\tag{1}$$
+The value is reduced by ... because ...
 
 After this operation there are as many results as there are replicates of the measurement. To aggregate it, let's calcultate the mean weighted by intensity (because ...) .
 
