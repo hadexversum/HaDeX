@@ -32,8 +32,8 @@ Generates differential data, based on the supplied
 parameters.
 }
 \details{
-This data is available in the GUI. The names of the parameters
-and variables will be changed later after the glossary project.
+This data is available in the GUI. 
+All of the numerical values are rounded to 4 places after the dot!!
 }
 \seealso{
 ...

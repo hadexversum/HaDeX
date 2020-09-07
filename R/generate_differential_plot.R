@@ -9,8 +9,7 @@
 #' @param confidence_limit ...
 #' @param confidence_limit_2 ...
 #' 
-#' @details This plot is visible in GUI. The names of the parameters
-#' and variables will be changed later after the glossary project.
+#' @details This plot is visible in GUI. 
 #' 
 #' @return ...
 #' 
@@ -39,14 +38,14 @@ generate_differential_plot <- function(dat,
                                                       relative = TRUE)
       
       mutate(dat, colour = case_when(
-        dat[["diff_theo_frac_exch"]] < interval_2[1] ~ "deepskyblue3",
-        dat[["diff_theo_frac_exch"]] < interval[1] ~ "deepskyblue1",
-        dat[["diff_theo_frac_exch"]] > interval_2[2] ~ "firebrick3",
-        dat[["diff_theo_frac_exch"]] > interval[2] ~ "firebrick1",
+        dat[["diff_theo_frac_deut_uptake"]] < interval_2[1] ~ "deepskyblue3",
+        dat[["diff_theo_frac_deut_uptake"]] < interval[1] ~ "deepskyblue1",
+        dat[["diff_theo_frac_deut_uptake"]] > interval_2[2] ~ "firebrick3",
+        dat[["diff_theo_frac_deut_uptake"]] > interval[2] ~ "firebrick1",
         TRUE ~ "azure3")) %>%
         ggplot() +
-        geom_segment(aes(x = Start, y = diff_theo_frac_exch, xend = End, yend = diff_theo_frac_exch, color = colour)) +
-        geom_errorbar(aes(x = Med_Sequence, ymin = diff_theo_frac_exch - err_diff_theo_frac_exch, ymax = diff_theo_frac_exch + err_diff_theo_frac_exch, color = colour)) +
+        geom_segment(aes(x = Start, y = diff_theo_frac_deut_uptake, xend = End, yend = diff_theo_frac_deut_uptake, color = colour)) +
+        geom_errorbar(aes(x = Med_Sequence, ymin = diff_theo_frac_deut_uptake - err_diff_theo_frac_deut_uptake, ymax = diff_theo_frac_deut_uptake + err_diff_theo_frac_deut_uptake, color = colour)) +
         geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
         geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) + 
         geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
@@ -72,14 +71,14 @@ generate_differential_plot <- function(dat,
                                                       relative = FALSE)
       
       mutate(dat, colour = case_when(
-        dat[["abs_diff_theo_frac_exch"]] < interval_2[1] ~ "deepskyblue3",
-        dat[["abs_diff_theo_frac_exch"]] < interval[1] ~ "deepskyblue1",
-        dat[["abs_diff_theo_frac_exch"]] > interval_2[2] ~ "firebrick3",
-        dat[["abs_diff_theo_frac_exch"]] > interval[2] ~ "firebrick1",
+        dat[["diff_theo_deut_uptake"]] < interval_2[1] ~ "deepskyblue3",
+        dat[["diff_theo_deut_uptake"]] < interval[1] ~ "deepskyblue1",
+        dat[["diff_theo_deut_uptake"]] > interval_2[2] ~ "firebrick3",
+        dat[["diff_theo_deut_uptake"]] > interval[2] ~ "firebrick1",
         TRUE ~ "azure3")) %>%
         ggplot() +
-        geom_segment(aes(x = Start, y = abs_diff_theo_frac_exch, xend = End, yend = abs_diff_theo_frac_exch, color = colour)) +
-        geom_errorbar(aes(x = Med_Sequence, ymin = abs_diff_theo_frac_exch - err_abs_diff_theo_frac_exch, ymax = abs_diff_theo_frac_exch + err_abs_diff_theo_frac_exch, color = colour)) +
+        geom_segment(aes(x = Start, y = diff_theo_deut_uptake, xend = End, yend = diff_theo_deut_uptake, color = colour)) +
+        geom_errorbar(aes(x = Med_Sequence, ymin = diff_theo_deut_uptake - err_diff_theo_deut_uptake, ymax = diff_theo_deut_uptake + err_diff_theo_deut_uptake, color = colour)) +
         geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
         geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) + 
         geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
@@ -108,14 +107,14 @@ generate_differential_plot <- function(dat,
                                                       relative = TRUE)
       
       mutate(dat, colour = case_when(
-        dat[["diff_frac_exch"]] < interval_2[1] ~ "deepskyblue3",
-        dat[["diff_frac_exch"]] < interval[1] ~ "deepskyblue1",
-        dat[["diff_frac_exch"]] > interval_2[2] ~ "firebrick3",
-        dat[["diff_frac_exch"]] > interval[2] ~ "firebrick1",
+        dat[["diff_frac_deut_uptake"]] < interval_2[1] ~ "deepskyblue3",
+        dat[["diff_frac_deut_uptake"]] < interval[1] ~ "deepskyblue1",
+        dat[["diff_frac_deut_uptake"]] > interval_2[2] ~ "firebrick3",
+        dat[["diff_frac_deut_uptake"]] > interval[2] ~ "firebrick1",
         TRUE ~ "azure3")) %>%
         ggplot() +
-        geom_segment(aes(x = Start, y = diff_frac_exch, xend = End, yend = diff_frac_exch, color = colour)) +
-        geom_errorbar(aes(x = Med_Sequence, ymin = diff_frac_exch - err_frac_exch, ymax = diff_frac_exch + err_frac_exch, color = colour)) +
+        geom_segment(aes(x = Start, y = diff_frac_deut_uptake, xend = End, yend = diff_frac_deut_uptake, color = colour)) +
+        geom_errorbar(aes(x = Med_Sequence, ymin = diff_frac_deut_uptake - err_diff_frac_deut_uptake, ymax = diff_frac_deut_uptake + err_diff_frac_deut_uptake, color = colour)) +
         geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
         geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) +
         geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
@@ -141,14 +140,14 @@ generate_differential_plot <- function(dat,
                                                       relative = FALSE)
       
       mutate(dat, colour = case_when(
-        dat[["abs_diff_frac_exch"]] < interval_2[1] ~ "deepskyblue3",
-        dat[["abs_diff_frac_exch"]] < interval[1] ~ "deepskyblue1",
-        dat[["abs_diff_frac_exch"]] > interval_2[2] ~ "firebrick3",
-        dat[["abs_diff_frac_exch"]] > interval[2] ~ "firebrick1",
+        dat[["diff_deut_uptake"]] < interval_2[1] ~ "deepskyblue3",
+        dat[["diff_deut_uptake"]] < interval[1] ~ "deepskyblue1",
+        dat[["diff_deut_uptake"]] > interval_2[2] ~ "firebrick3",
+        dat[["diff_deut_uptake"]] > interval[2] ~ "firebrick1",
         TRUE ~ "azure3")) %>%
         ggplot() +
-        geom_segment(aes(x = Start, y = abs_diff_frac_exch, xend = End, yend = abs_diff_frac_exch, color = colour)) +
-        geom_errorbar(aes(x = Med_Sequence, ymin = abs_diff_frac_exch - err_abs_diff_frac_exch, ymax = abs_diff_frac_exch + err_abs_diff_frac_exch, color = colour)) +
+        geom_segment(aes(x = Start, y = diff_deut_uptake, xend = End, yend = diff_deut_uptake, color = colour)) +
+        geom_errorbar(aes(x = Med_Sequence, ymin = diff_deut_uptake - err_diff_deut_uptake, ymax = diff_deut_uptake + err_diff_deut_uptake, color = colour)) +
         geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
         geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) + 
         geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +

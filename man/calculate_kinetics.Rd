@@ -11,8 +11,8 @@ calculate_kinetics(
   state,
   start,
   end,
-  time_in,
-  time_out,
+  time_0,
+  time_100,
   deut_part = 1
 )
 }
@@ -29,9 +29,9 @@ calculate_kinetics(
 
 \item{end}{end of given sequence}
 
-\item{time_in}{time in for experimental calculations}
+\item{time_0}{time in for experimental calculations}
 
-\item{time_out}{time out for experimental calculations}
+\item{time_100}{time out for experimental calculations}
 
 \item{deut_part}{percentage of deuterium the protein was exposed to, value in range [0, 1]}
 }
@@ -68,8 +68,8 @@ dat <- read_hdx(system.file(package = "HaDeX",
                    state = "CD160",
                    start = 1, 
                    end = 15,
-                   time_in = 0.001, 
-                   time_out = 1440))
+                   time_0 = 0.001, 
+                   time_100 = 1440))
                    
 # calculate data for sequence INITSSASQEGTRLN in state CD160_HVEM
 (kin2 <- calculate_kinetics(dat, 
@@ -78,8 +78,8 @@ dat <- read_hdx(system.file(package = "HaDeX",
                    state = "CD160_HVEM",
                    start = 1, 
                    end = 15,
-                   time_in = 0.001, 
-                   time_out = 1440))
+                   time_0 = 0.001, 
+                   time_100 = 1440))
                    
 # load extra libraries
 library(dplyr)

@@ -73,9 +73,9 @@ plot_kinetics <- function(kin_dat,
       
       kin_dat %>% 
         mutate(prop = paste0(Sequence, "-", State)) %>%
-        ggplot(aes(x = time_chosen, y = avg_theo_in_time, group = prop)) +
+        ggplot(aes(x = time_chosen, y = theo_frac_deut_uptake, group = prop)) +
         geom_point() + 
-        geom_ribbon(aes(ymin = avg_theo_in_time - err_avg_theo_in_time, ymax = avg_theo_in_time + err_avg_theo_in_time, fill = prop), alpha = 0.15) +
+        geom_ribbon(aes(ymin = theo_frac_deut_uptake - err_theo_frac_deut_uptake, ymax = theo_frac_deut_uptake + err_theo_frac_deut_uptake, fill = prop), alpha = 0.15) +
         geom_line(aes(color = prop)) +
         theme(legend.position = "bottom",
               legend.title = element_blank()) +
@@ -87,9 +87,9 @@ plot_kinetics <- function(kin_dat,
       
       kin_dat %>% 
         mutate(prop = paste0(Sequence, "-", State)) %>%
-        ggplot(aes(x = time_chosen, y = abs_avg_theo_in_time, group = prop)) +
+        ggplot(aes(x = time_chosen, y = theo_deut_uptake, group = prop)) +
         geom_point() + 
-        geom_ribbon(aes(ymin = abs_avg_theo_in_time - err_abs_avg_theo_in_time, ymax = abs_avg_theo_in_time + err_abs_avg_theo_in_time, fill = prop), alpha = 0.15) +
+        geom_ribbon(aes(ymin = theo_deut_uptake - err_theo_deut_uptake, ymax = theo_deut_uptake + err_theo_deut_uptake, fill = prop), alpha = 0.15) +
         geom_line(aes(color = prop)) +
         theme(legend.position = "bottom",
               legend.title = element_blank()) +
@@ -105,9 +105,9 @@ plot_kinetics <- function(kin_dat,
       
       kin_dat %>% 
         mutate(prop = paste0(Sequence, "-", State)) %>%
-        ggplot(aes(x = time_chosen, y = frac_exch_state, group = prop)) +
+        ggplot(aes(x = time_chosen, y = frac_deut_uptake, group = prop)) +
         geom_point() + 
-        geom_ribbon(aes(ymin = frac_exch_state - err_frac_exch_state, ymax = frac_exch_state + err_frac_exch_state, fill = prop), alpha = 0.15) +
+        geom_ribbon(aes(ymin = frac_deut_uptake - err_frac_deut_uptake, ymax = frac_deut_uptake + err_frac_deut_uptake, fill = prop), alpha = 0.15) +
         geom_line(aes(color = prop)) +
         theme(legend.position = "bottom",
               legend.title = element_blank()) +
@@ -119,9 +119,9 @@ plot_kinetics <- function(kin_dat,
       
       kin_dat %>% 
         mutate(prop = paste0(Sequence, "-", State)) %>%
-        ggplot(aes(x = time_chosen, y = abs_frac_exch_state, group = prop)) +
+        ggplot(aes(x = time_chosen, y = deut_uptake, group = prop)) +
         geom_point() + 
-        geom_ribbon(aes(ymin = abs_frac_exch_state - err_abs_frac_exch_state, ymax = abs_frac_exch_state + err_abs_frac_exch_state, fill = prop), alpha = 0.15) +
+        geom_ribbon(aes(ymin = deut_uptake - err_deut_uptake, ymax = deut_uptake + err_deut_uptake, fill = prop), alpha = 0.15) +
         geom_line(aes(color = prop)) +
         theme(legend.position = "bottom",
               legend.title = element_blank()) +

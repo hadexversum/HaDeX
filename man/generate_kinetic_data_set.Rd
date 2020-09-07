@@ -8,9 +8,9 @@ generate_kinetic_data_set(
   dat,
   peptide_list,
   protein,
-  time_in,
-  time_out,
-  deut_concentration
+  time_0,
+  time_100,
+  deut_part
 )
 }
 \arguments{
@@ -20,11 +20,11 @@ generate_kinetic_data_set(
 
 \item{protein}{...}
 
-\item{time_in}{...}
+\item{time_0}{...}
 
-\item{time_out}{...}
+\item{time_100}{...}
 
-\item{deut_concentration}{...}
+\item{deut_part}{...}
 }
 \value{
 ...

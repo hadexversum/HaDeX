@@ -7,8 +7,7 @@
 #' @param theoretical ...
 #' @param relative ...
 #' 
-#' @details This plot is visible in GUI. The names of the parameters
-#' and variables will be changed later after the glossary project.
+#' @details This plot is visible in GUI. 
 #' 
 #' @return ...
 #' 
@@ -25,8 +24,8 @@ generate_comparison_plot <- function(dat,
     if (relative) {
       # theoretical & relative
       ggplot(data = dat) +
-        geom_segment(data = dat, aes(x = Start, y = avg_theo_in_time, xend = End, yend = avg_theo_in_time, color = State)) +
-        geom_errorbar(data = dat, aes(x = Med_Sequence, ymin = avg_theo_in_time - err_avg_theo_in_time, ymax = avg_theo_in_time + err_avg_theo_in_time, color = State)) +
+        geom_segment(data = dat, aes(x = Start, y = theo_frac_deut_uptake, xend = End, yend = theo_frac_deut_uptake, color = State)) +
+        geom_errorbar(data = dat, aes(x = Med_Sequence, ymin = theo_frac_deut_uptake - err_theo_frac_deut_uptake, ymax = theo_frac_deut_uptake + err_theo_frac_deut_uptake, color = State)) +
         theme(legend.position = "bottom",
               legend.title = element_blank()) +
         scale_y_continuous(breaks = seq(-200, 200, 10), expand = c(0, 0))
@@ -34,8 +33,8 @@ generate_comparison_plot <- function(dat,
     } else {
       # theoretical & absolute
       ggplot(data = dat) +
-        geom_segment(data = dat, aes(x = Start, y = abs_avg_theo_in_time, xend = End, yend = abs_avg_theo_in_time, color = State)) +
-        geom_errorbar(data = dat, aes(x = Med_Sequence, ymin = abs_avg_theo_in_time - err_abs_avg_theo_in_time, ymax = abs_avg_theo_in_time + err_abs_avg_theo_in_time, color = State)) +
+        geom_segment(data = dat, aes(x = Start, y = theo_deut_uptake, xend = End, yend = theo_deut_uptake, color = State)) +
+        geom_errorbar(data = dat, aes(x = Med_Sequence, ymin = theo_deut_uptake - err_theo_deut_uptake, ymax = theo_deut_uptake + err_theo_deut_uptake, color = State)) +
         theme(legend.position = "bottom",
               legend.title = element_blank()) +
         scale_y_continuous(expand = c(0, 0))
@@ -46,8 +45,8 @@ generate_comparison_plot <- function(dat,
     if (relative) {
       # experimantal & relative
       ggplot(data = dat) +
-        geom_segment(data = dat, aes(x = Start, y = frac_exch_state, xend = End, yend = frac_exch_state, color = State)) +
-        geom_errorbar(data = dat, aes(x = Med_Sequence, ymin = frac_exch_state - err_frac_exch_state, ymax = frac_exch_state + err_frac_exch_state, color = State)) +
+        geom_segment(data = dat, aes(x = Start, y = frac_deut_uptake, xend = End, yend = frac_deut_uptake, color = State)) +
+        geom_errorbar(data = dat, aes(x = Med_Sequence, ymin = frac_deut_uptake - err_frac_deut_uptake, ymax = frac_deut_uptake + err_frac_deut_uptake, color = State)) +
         theme(legend.position = "bottom",
               legend.title = element_blank()) +
         scale_y_continuous(breaks = seq(-200, 200, 10), expand = c(0, 0))
@@ -55,8 +54,8 @@ generate_comparison_plot <- function(dat,
     } else {
       # experimental & absolute 
       ggplot(data = dat) +
-        geom_segment(data = dat, aes(x = Start, y = abs_frac_exch_state, xend = End, yend = abs_frac_exch_state, color = State)) +
-        geom_errorbar(data = dat, aes(x = Med_Sequence, ymin = abs_frac_exch_state - err_abs_frac_exch_state, ymax = abs_frac_exch_state + err_abs_frac_exch_state, color = State)) +
+        geom_segment(data = dat, aes(x = Start, y = deut_uptake, xend = End, yend = deut_uptake, color = State)) +
+        geom_errorbar(data = dat, aes(x = Med_Sequence, ymin = deut_uptake - err_deut_uptake, ymax = deut_uptake + err_deut_uptake, color = State)) +
         theme(legend.position = "bottom",
               legend.title = element_blank()) +
         scale_y_continuous(expand = c(0, 0))

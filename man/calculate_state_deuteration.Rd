@@ -21,11 +21,11 @@ calculate_state_deuteration(
 
 \item{state}{state included in calculations}
 
-\item{time_0}{experimental `time_in`}
+\item{time_0}{minimal exchange control}
 
 \item{time_t}{chosen time point}
 
-\item{time_100}{experimental `time_out`}
+\item{time_100}{maximal exchange control}
 
 \item{deut_part}{percentage of deuterium the protein was exposed to, value in range [0, 1]}
 }

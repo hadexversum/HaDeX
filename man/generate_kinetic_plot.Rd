@@ -21,8 +21,7 @@ Generates deuterium uptake curve based on supplied data
 and parameters.
 }
 \details{
-This plot is visible in GUI. The names of the parameters
-and variables will be changed later after the glossary project.
+This plot is visible in GUI.
 }
 \seealso{
 ...

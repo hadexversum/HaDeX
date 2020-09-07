@@ -7,8 +7,8 @@
 #' @param theoretical ...
 #' @param relative ...
 #' 
-#' @details This data is available in the GUI. The names of the parameters
-#' and variables will be changed later after the glossary project.
+#' @details This data is available in the GUI. 
+#' All of the numerical values are rounded to 4 places after the dot!!
 #' 
 #' @importFrom dplyr rename
 #' 
@@ -27,22 +27,22 @@ generate_comparison_data <- function(dat,
     if (relative){
       # theoretical & relative
       dat %>%
-        select(Protein, Sequence, State, Start, End, avg_theo_in_time, err_avg_theo_in_time) %>%
-        mutate(avg_theo_in_time = round(avg_theo_in_time, 4),
-               err_avg_theo_in_time = round(err_avg_theo_in_time, 4)) %>%
+        select(Protein, Sequence, State, Start, End, theo_frac_deut_uptake, err_theo_frac_deut_uptake) %>%
+        mutate(theo_frac_deut_uptake  = round(theo_frac_deut_uptake , 4),
+               err_theo_frac_deut_uptake = round(err_theo_frac_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
-        rename("Theo Frac Exch" = avg_theo_in_time, 
-               "Err Theo Frac Exch" = err_avg_theo_in_time)
+        rename("Theo Frac Exch" = theo_frac_deut_uptake , 
+               "Err Theo Frac Exch" = err_theo_frac_deut_uptake)
       
     } else {
       # theoretical & absolute
       dat %>%
-        select(Protein, Sequence, State, Start, End, abs_avg_theo_in_time, err_abs_avg_theo_in_time) %>%
-        mutate(abs_avg_theo_in_time = round(abs_avg_theo_in_time, 4),
-               err_abs_avg_theo_in_time = round(err_abs_avg_theo_in_time, 4)) %>%
+        select(Protein, Sequence, State, Start, End, theo_deut_uptake, err_theo_deut_uptake) %>%
+        mutate(theo_deut_uptake = round(theo_deut_uptake, 4),
+               err_theo_deut_uptake = round(err_theo_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
-        rename("Theo Abs Val Exch" = abs_avg_theo_in_time,
-               "Err Theo Abs Val Exch" = err_abs_avg_theo_in_time)
+        rename("Theo Abs Val Exch" = theo_deut_uptake,
+               "Err Theo Abs Val Exch" = err_theo_deut_uptake)
     }
     
   } else {
@@ -50,22 +50,22 @@ generate_comparison_data <- function(dat,
     if (relative){
       # experimental & relative
       dat %>%
-        select(Protein, Sequence, State, Start, End, frac_exch_state, err_frac_exch_state) %>%
-        mutate(frac_exch_state = round(frac_exch_state, 4),
-               err_frac_exch_state = round(err_frac_exch_state, 4)) %>%
+        select(Protein, Sequence, State, Start, End, frac_deut_uptake, err_frac_deut_uptake) %>%
+        mutate(frac_deut_uptake = round(frac_deut_uptake, 4),
+               err_frac_deut_uptake = round(err_frac_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
-        rename("Frac Exch" = frac_exch_state,
-               "Err Frac Exch" = err_frac_exch_state)
+        rename("Frac Exch" = frac_deut_uptake,
+               "Err Frac Exch" = err_frac_deut_uptake)
       
     } else {
       # experimental & absolute
       dat %>%
-        select(Protein, Sequence, State, Start, End, abs_frac_exch_state, err_abs_frac_exch_state) %>%
-        mutate(abs_frac_exch_state = round(abs_frac_exch_state, 4),
-               err_abs_frac_exch_state = round(abs_frac_exch_state, 4)) %>%
+        select(Protein, Sequence, State, Start, End, deut_uptake, err_deut_uptake) %>%
+        mutate(deut_uptake = round(deut_uptake, 4),
+               err_deut_uptake = round(err_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
-        rename("Abs Val Exch" = abs_frac_exch_state,
-               "Err Abs Val Exch" = err_abs_frac_exch_state)
+        rename("Abs Val Exch" = deut_uptake,
+               "Err Abs Val Exch" = err_deut_uptake)
       
     }
     

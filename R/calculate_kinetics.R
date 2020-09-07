@@ -11,8 +11,8 @@
 #' @param state state of given sequence
 #' @param start end of given sequence
 #' @param end end of given sequence
-#' @param time_in time in for experimental calculations
-#' @param time_out time out for experimental calculations
+#' @param time_0 time in for experimental calculations
+#' @param time_100 time out for experimental calculations
 #' @param deut_part percentage of deuterium the protein was exposed to, value in range [0, 1]
 #' 
 #' @details The function calculates deuteration data for all available data points 
@@ -45,8 +45,8 @@
 #'                    state = "CD160",
 #'                    start = 1, 
 #'                    end = 15,
-#'                    time_in = 0.001, 
-#'                    time_out = 1440))
+#'                    time_0 = 0.001, 
+#'                    time_100 = 1440))
 #'                    
 #' # calculate data for sequence INITSSASQEGTRLN in state CD160_HVEM
 #' (kin2 <- calculate_kinetics(dat, 
@@ -55,8 +55,8 @@
 #'                    state = "CD160_HVEM",
 #'                    start = 1, 
 #'                    end = 15,
-#'                    time_in = 0.001, 
-#'                    time_out = 1440))
+#'                    time_0 = 0.001, 
+#'                    time_100 = 1440))
 #'                    
 #' # load extra libraries
 #' library(dplyr)
@@ -82,8 +82,8 @@ calculate_kinetics <- function(dat,
                                state, 
                                start, 
                                end,
-                               time_in, 
-                               time_out, 
+                               time_0, 
+                               time_100, 
                                deut_part = 1) {
   
   prep_dat <- dat %>%
@@ -95,16 +95,16 @@ calculate_kinetics <- function(dat,
   
   time_points <- unique(prep_dat[["Exposure"]])
   
-  time_points_to_iterate <- time_points[time_points > time_in & time_points < time_out]
+  time_points_to_iterate <- time_points[time_points > time_0 & time_points < time_100]
   
   bind_rows(lapply(time_points_to_iterate, function(time_point){
     
     calculate_state_deuteration(dat = prep_dat, 
                                 protein = protein,
                                 state = state, 
-                                time_in = time_in, 
-                                time_chosen = time_point, 
-                                time_out = time_out,
+                                time_0 = time_0, 
+                                time_t = time_point, 
+                                time_100 = time_100,
                                 deut_part = deut_part) %>%
       mutate(time_chosen = time_point) 
     
