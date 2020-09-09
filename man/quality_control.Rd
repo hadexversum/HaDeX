@@ -4,21 +4,33 @@
 \alias{quality_control}
 \title{Experiment quality control}
 \usage{
-quality_control(dat, state_first, state_second, chosen_time, in_time)
+quality_control(
+  dat,
+  protein,
+  state_first,
+  state_second,
+  time_t,
+  time_0,
+  deut_part
+)
 }
 \arguments{
 \item{dat}{data read by \code{\link{read_hdx}}}
+
+\item{protein}{...}
 
 \item{state_first}{state of the first peptide}
 
 \item{state_second}{state of the second peptide}
 
-\item{chosen_time}{chosen time point}
+\item{time_t}{chosen time point}
 
-\item{in_time}{`in` time}
+\item{time_0}{`in` time}
+
+\item{deut_part}{...}
 }
 \value{
-\code{data.frame} with mean uncertainty per different `out_time` value
+\code{data.frame} with mean uncertainty per different `out_time` value. The values are shown as percentages.
 }
 \description{
 Checks how the uncertainty changes in a function of `out_time`.
@@ -36,10 +48,12 @@ dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.
 
 # calculate mean uncertainty 
 (result <- quality_control(dat = dat,
+                           protein = "db_CD160",
                            state_first = "CD160",
                            state_second = "CD160_HVEM", 
-                           chosen_time = 1, 
-                           in_time = 0.001))    
+                           time_t = 1, 
+                           time_0 = 0.001,
+                           deut_part = 1))    
                            
 # load extra libraries
 library(ggplot2)

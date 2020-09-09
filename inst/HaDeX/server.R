@@ -1659,36 +1659,36 @@ server <- function(input, output, session) {
   
   kin_plot_theo <- reactive({
     
-    generate_kinetic_plot(dat = kin_dat(),
-                          theoretical = TRUE,
-                          relative = TRUE)
+    plot_kinetics(kin_dat = kin_dat(),
+                  theoretical = TRUE,
+                  relative = TRUE)
   })
   
   ##
   
   kin_plot_theo_abs <- reactive({
 
-    generate_kinetic_plot(dat = kin_dat(),
-                          theoretical = TRUE,
-                          relative = FALSE)
+    plot_kinetics(kin_dat = kin_dat(),
+                  theoretical = TRUE,
+                  relative = FALSE)
   })
   
   ##
   
   kin_plot_exp <- reactive({
     
-    generate_kinetic_plot(dat = kin_dat(),
-                          theoretical = FALSE,
-                          relative = TRUE)
+    plot_kinetics(kin_dat = kin_dat(),
+                  theoretical = FALSE,
+                  relative = TRUE)
   })
   
   ##
   
   kin_plot_exp_abs <- reactive({
     
-    generate_kinetic_plot(dat = kin_dat(),
-                          theoretical = FALSE,
-                          relative = FALSE)
+    plot_kinetics(kin_dat = kin_dat(),
+                  theoretical = FALSE,
+                  relative = FALSE)
   })
   
   ##
@@ -1912,16 +1912,10 @@ server <- function(input, output, session) {
     result <- quality_control(dat = qc_dat,
                               state_first = input[["qc_state_first"]],
                               state_second = input[["qc_state_second"]], 
-                              chosen_time = as.numeric(input[["qc_chosen_time"]]), 
-                              in_time = as.numeric(input[["qc_in_time"]])) %>%
-      # to get the percentages in readable form
-      mutate(avg_err_state_first = 100 * avg_err_state_first,
-             sd_err_state_first = 100 * sd_err_state_first,
-             avg_err_state_second = 100 * avg_err_state_second,
-             sd_err_state_second = 100 * sd_err_state_second, 
-             avg_diff = 100 * avg_diff, 
-             sd_diff = 100 * sd_diff)
-    
+                              time_t = as.numeric(input[["qc_chosen_time"]]), 
+                              time_0 = as.numeric(input[["qc_in_time"]]),
+                              protein = input[["chosen_protein"]],
+                              deut_part = 0.01*as.integer(input[["deut_concentration"]]))
     
   })
   

@@ -21,7 +21,7 @@ a \code{\link[ggplot2]{ggplot}} object.
 Plots kinetics of the hydrogen-deuterium exchange for specific peptides.
 }
 \details{
-This function visualises the output of the  
+This function visualizes the output of the  
 \code{\link{calculate_kinetics}} function. 
 Based on supplied parameters appropriate columns are chosen for the plot. 
 The uncertainty associated with each peptide is shown as a ribbon. 

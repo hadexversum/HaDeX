@@ -12,7 +12,7 @@
 #' 
 #' @seealso \code{\link{calculate_kinetics}}
 #' 
-#' @details This function visualises the output of the  
+#' @details This function visualizes the output of the  
 #' \code{\link{calculate_kinetics}} function. 
 #' Based on supplied parameters appropriate columns are chosen for the plot. 
 #' The uncertainty associated with each peptide is shown as a ribbon. 
@@ -81,7 +81,7 @@ plot_kinetics <- function(kin_dat,
               legend.title = element_blank()) +
         scale_y_continuous(limits = c(0, 110)) + 
         labs(x = "Time points [min]", 
-             y = "Theoretical deuteration [%]")
+             y = "Theoretical fractional deuterium uptake [%]")
       
       } else {
       
@@ -95,7 +95,7 @@ plot_kinetics <- function(kin_dat,
               legend.title = element_blank()) +
         scale_y_continuous(limits = c(0, NA)) + 
         labs(x = "Time points [min]", 
-             y = "Theoretical deuteration [Da]")
+             y = "Theoretical deuterium uptake [Da]")
       
     }
     
@@ -113,7 +113,7 @@ plot_kinetics <- function(kin_dat,
               legend.title = element_blank()) +
         scale_y_continuous(limits = c(0, 110)) + 
         labs(x = "Time points [min]", 
-             y = "Deuteration [%]")
+             y = "Fractional deuterium uptake [%]")
       
     } else {
       
@@ -127,7 +127,7 @@ plot_kinetics <- function(kin_dat,
               legend.title = element_blank()) +
         scale_y_continuous(limits = c(0, NA)) + 
         labs(x = "Time points [min]", 
-             y = "Deuteration [Da]")
+             y = "Deuterium uptake [Da]")
       
     }
     
