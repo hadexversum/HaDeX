@@ -32,7 +32,7 @@ The value is reduced by ... because ...
 
 After this operation there are as many results as there are replicates of the measurement. To aggregate it, let's calcultate the mean weighted by intensity (because ...) .
 
-$$aggMass = \sum_{k = 1}^{N}\frac{Inten_k}{N}{\times}pepMass_k\tag{2}$$.
+$$aggMass = \frac{1}{N}\sum_{k = 1}^{N}Inten_k{\cdot}pepMass_k\tag{2}$$.
 
 Where:
 
@@ -42,12 +42,12 @@ Where:
 
 As we use the aggregated result from the replicates, we need to calculate an uncertainty associated with the measurement. We use the mean value as the final result, so we need to calculate error as a standard deviation of the mean, according to the Equation 3:
 
-$$u(x) = \sqrt{\frac{ \sum_{i=1}^n \left( x_{i} - \overline{x} \right)^2}{n(n-1)}}\tag{3}$$.
+$$u(\vec{x}) = \sqrt{\frac{ \sum_{i=1}^n \left( x_{i} - \overline{x} \right)^2}{n(n-1)}}\tag{3}$$.
 
 Where:
 
-* $x_{i}$ - measured value,
-* $\overline{x}$ - mean value,
+* $x_{i}$ - measured value from a replicate,
+* $\overline{x}$ - mean value from all of the replicates,
 * $n$ - number of replicates.
 
 Now we have the format we want for further calculations.
