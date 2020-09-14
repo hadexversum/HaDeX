@@ -34,6 +34,7 @@ Imports:
 		readxl,
 		shiny,
 		stringr,
+		stringi,
 		tidyr
 Suggests:
     spelling, 

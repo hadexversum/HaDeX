@@ -4,6 +4,7 @@
 #' for given peptide.
 #' 
 #' @importFrom dplyr %>% bind_rows mutate everything
+#' @importFrom checkmate assert_data_frame assert_string assert_number
 #' 
 #' @param dat dat data read by \code{\link{read_hdx}}
 #' @param protein protein value for chosen peptide
@@ -87,8 +88,14 @@ calculate_kinetics <- function(dat,
                                time_100, 
                                deut_part = 1) {
   
-  
-  
+  assert_data_frame(dat)
+  assert_string(protein)
+  assert_string(sequence)
+  assert_number(start, lower = 0, upper = end)
+  assert_number(end, lower = start)
+  assert_number(time_0, lower = 0, upper = time_100)
+  assert_number(time_100, lower = time_0)
+  assert_number(deut_part, lower = 0, upper = 1)
   
   prep_dat <- dat %>%
     filter(Protein == protein,
