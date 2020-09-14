@@ -2,6 +2,8 @@
 #' 
 #' @description Calculates deuteration uptake based on supplied parameters.
 #' 
+#' @importFrom dplyr %>% select mutate group_by coalesce
+#' 
 #' @param dat data as imported by the \code{\link{read_hdx}} function
 #' @param protein protein included in calculations
 #' @param state state included in calculations

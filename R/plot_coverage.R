@@ -2,7 +2,7 @@
 #' 
 #' @description Plots the peptide coverage of the protein sequence.
 #' 
-#' @importFrom ggplot2 ggplot geom_line
+#' @importFrom ggplot2 ggplot geom_line labs theme element_blank
 #' @importFrom reshape2 melt
 #' @importFrom dplyr filter arrange
 #' 

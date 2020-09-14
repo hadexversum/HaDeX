@@ -76,6 +76,7 @@
 #'        
 #' 
 #' @export calculate_kinetics
+
 calculate_kinetics <- function(dat, 
                                protein = dat[["Protein"]][1], 
                                sequence, 
@@ -85,6 +86,9 @@ calculate_kinetics <- function(dat,
                                time_0, 
                                time_100, 
                                deut_part = 1) {
+  
+  
+  
   
   prep_dat <- dat %>%
     filter(Protein == protein,

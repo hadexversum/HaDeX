@@ -11,7 +11,7 @@ quality_control(
   state_second,
   time_t,
   time_0,
-  deut_part
+  deut_part = 1
 )
 }
 \arguments{

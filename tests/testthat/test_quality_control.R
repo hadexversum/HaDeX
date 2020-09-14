@@ -7,16 +7,20 @@ dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.
 
 test_that("class is right",
           expect_is(quality_control(dat = dat,
-                          state_first = "CD160",
-                          state_second = "CD160_HVEM", 
-                          chosen_time = 1, 
-                          in_time = 0.001),
+                                    protein = "db_CD160", 
+                                    state_first = "CD160",
+                                    state_second = "CD160_HVEM", 
+                                    time_t = 1, 
+                                    time_0 = 0.001, 
+                                    deut_part = 1),
                     "data.frame"))
 
 test_that("size is right",
           expect_equal(length(colnames(quality_control(dat = dat,
-                                 state_first = "CD160",
-                                 state_second = "CD160_HVEM", 
-                                 chosen_time = 1, 
-                                 in_time = 0.001))),
+                                                       protein = "db_CD160", 
+                                                       state_first = "CD160",
+                                                       state_second = "CD160_HVEM", 
+                                                       time_t = 1, 
+                                                       time_0 = 0.001, 
+                                                       deut_part = 1))),
                        7))

@@ -3,7 +3,7 @@
 #' @description Checks how the uncertainty changes in a function of `out_time`.
 #' 
 #' @importFrom dplyr bind_rows
-#' @importFrom tidyr spread
+#' @importFrom tidyr spread unite
 #' 
 #' @param dat data read by \code{\link{read_hdx}}
 #' @param protein ...
@@ -57,7 +57,7 @@ quality_control <- function(dat,
                             state_second, 
                             time_t, 
                             time_0, 
-                            deut_part){
+                            deut_part = 1){
   
   
   times <- unique(dat[["Exposure"]][dat[["Exposure"]] > time_t])
