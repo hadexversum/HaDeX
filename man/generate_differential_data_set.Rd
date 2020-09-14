@@ -35,7 +35,7 @@ the order is important (state first - state second)}
 }
 \description{
 Generate the data frame with differential data from two
-provided states - experimental/relative calculations with the
+provided states - experimental/fractional calculations with the
 uncertainty, based on supplied parameters.
 }
 \details{

@@ -41,8 +41,7 @@ calculate_state_deuteration <- function(dat,
                                         time_0,
                                         time_t, 
                                         time_100,
-                                        deut_part = 1
-                                        ){
+                                        deut_part = 1){
   proton_mass <- 1.00727647
   dat <- dat[dat[["Protein"]] == protein & dat[["State"]] == state & dat[["Exposure"]] %in% c(time_0, time_t, time_100), ]
   
@@ -63,13 +62,13 @@ calculate_state_deuteration <- function(dat,
               err_time_t_mean = coalesce(sd(time_t, na.rm = TRUE)/sqrt(length(time_t)), 0),
               time_100_mean = mean(time_100, na.rm = TRUE),
               err_time_100_mean = coalesce(sd(time_100, na.rm = TRUE)/sqrt(length(time_100)), 0)) %>%
-    mutate(# experimental calculations below - relative
+    mutate(# experimental calculations below - fractional
       frac_deut_uptake = 100*(time_t_mean - time_0_mean)/(time_100_mean - time_0_mean),
       err_frac_deut_uptake = 100*sqrt((err_time_t_mean*(1/(time_100_mean - time_0_mean)))^2 + (err_time_0_mean*((time_t_mean - time_100_mean )/((time_100_mean - time_0_mean)^2)))^2 + (err_time_100_mean*((time_0_mean - time_t_mean)/((time_100_mean - time_0_mean)^2)))^2),
       # experimental calculations below - absolute
       deut_uptake = (time_t_mean - time_0_mean),
       err_deut_uptake = sqrt(err_time_t_mean^2 + err_time_0_mean^2),
-      # theoretical calculations below - relative
+      # theoretical calculations below - fractional
       theo_frac_deut_uptake  = 100*(time_t_mean - MHP)/(MaxUptake * proton_mass * deut_part),
       err_theo_frac_deut_uptake  = 100*abs(err_time_t_mean)*(1/(MaxUptake * proton_mass * deut_part)),
       # theoeretical calculations below - absolute

@@ -7,8 +7,9 @@
 #' 
 #' @param calc_dat processed data from DynamX file - using prepare_dataset
 #' @param confidence_limit confidence limit chosen by user - from range [0, 1]. 
-#' @param theoretical logical value to determine if plot is theoretical or not. 
-#' @param relative logical value to determine if values are relative or absolute. 
+#' @param theoretical \code{logical}, determines if values are theoretical
+#' @param fractional \code{logical}, determines if values are fractional
+#' 
 #' @references Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). 
 #' The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in 
 #' Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
@@ -30,16 +31,16 @@
 calculate_confidence_limit_values <- function(calc_dat,
                                               confidence_limit = 0.98,
                                               theoretical = FALSE,
-                                              relative = TRUE) {
+                                              fractional = TRUE) {
   
   alpha <- 1 - confidence_limit
   t_value <- qt(c(alpha/2, 1-alpha/2), df = 2)[2]
   
   err_column <- case_when(
-    theoretical & relative ~ "err_diff_theo_frac_deut_uptake",
-    theoretical & !(relative) ~ "err_diff_theo_deut_uptake",
-    !(theoretical) & relative ~ "err_diff_frac_deut_uptake",
-    !(theoretical) & !(relative) ~ "err_diff_deut_uptake"
+    theoretical & fractional ~ "err_diff_theo_frac_deut_uptake",
+    theoretical & !(fractional) ~ "err_diff_theo_deut_uptake",
+    !(theoretical) & fractional ~ "err_diff_frac_deut_uptake",
+    !(theoretical) & !(fractional) ~ "err_diff_deut_uptake"
   )
   
   confidence_limit_value <- t_value * mean(calc_dat[[err_column]], na.rm = TRUE)/sqrt(length(calc_dat))

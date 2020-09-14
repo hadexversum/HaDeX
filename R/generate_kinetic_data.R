@@ -5,8 +5,8 @@
 #' 
 #' @param dat custom format, produced by 
 #' \code{\link{generate_kinetic_data_set}}
-#' @param theoretical ...
-#' @param relative ...
+#' @param theoretical \code{logical}, determines if plot shows theoretical values
+#' @param fractional \code{logical}, determines if plot shows fractional values
 #' 
 #' @details This data is available in the GUI. 
 #' All of the numerical values are rounded to 4 places after the dot!!
@@ -19,12 +19,12 @@
 
 generate_kinetic_data <- function(dat, 
                                   theoretical, 
-                                  relative){
+                                  fractional){
   
   if(theoretical){
     
-    if(relative){
-      # theoretical & relative  
+    if(fractional){
+      # theoretical & fractional  
       dat %>%
         select(Protein, Sequence, State, Start, End, time_chosen, theo_frac_deut_uptake, err_avg_theo_in_time) %>%
         mutate(theo_frac_deut_uptake = round(theo_frac_deut_uptake, 4), 
@@ -46,8 +46,8 @@ generate_kinetic_data <- function(dat,
     
   } else {
     
-    if(relative){
-      # experimental & relative
+    if(fractional){
+      # experimental & fractional
       dat %>%
         select(Protein, Sequence, State, Start, End, time_chosen, frac_deut_uptake, err_frac_deut_uptake) %>%
         mutate(frac_deut_uptake = round(frac_deut_uptake, 4), 

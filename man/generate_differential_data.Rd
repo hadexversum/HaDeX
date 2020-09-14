@@ -7,7 +7,7 @@
 generate_differential_data(
   dat,
   theoretical,
-  relative,
+  fractional,
   confidence_limit_1,
   confidence_limit_2
 )
@@ -16,9 +16,9 @@ generate_differential_data(
 \item{dat}{custom format, produced by 
 \code{\link{generate_differential_data_set}}}
 
-\item{theoretical}{...}
+\item{theoretical}{\code{logical}, determines if values are theoretical}
 
-\item{relative}{...}
+\item{fractional}{\code{logical}, determines if values are fractional}
 
 \item{confidence_limit_1}{...}
 

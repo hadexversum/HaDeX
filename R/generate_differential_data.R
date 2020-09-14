@@ -5,8 +5,8 @@
 #' 
 #' @param dat custom format, produced by 
 #' \code{\link{generate_differential_data_set}}
-#' @param theoretical ...
-#' @param relative ...
+#' @param theoretical \code{logical}, determines if values are theoretical
+#' @param fractional \code{logical}, determines if values are fractional
 #' @param confidence_limit_1 ...
 #' @param confidence_limit_2 ...
 #' 
@@ -21,7 +21,7 @@
 
 generate_differential_data <- function(dat, 
                                        theoretical, 
-                                       relative,
+                                       fractional,
                                        confidence_limit_1,
                                        confidence_limit_2){
   
@@ -30,15 +30,15 @@ generate_differential_data <- function(dat,
   
   if(theoretical){
     
-    if(relative){
-      # theoretical & relative  
+    if(fractional){
+      # theoretical & fractional  
       dat %>%
         add_stat_dependency(confidence_limit = confidence_limit_1,
                             theoretical = TRUE, 
-                            relative = TRUE) %>%
+                            fractional = TRUE) %>%
         add_stat_dependency(confidence_limit = confidence_limit_2,
                             theoretical = TRUE, 
-                            relative = TRUE) %>%
+                            fractional = TRUE) %>%
         select(Protein, Sequence, Start, End, diff_theo_frac_deut_uptake, err_diff_theo_frac_deut_uptake, paste0("valid_at_", confidence_limit_1), paste0("valid_at_", confidence_limit_2)) %>%
         mutate(diff_theo_frac_deut_uptake = round(diff_theo_frac_deut_uptake, 4),
                err_diff_theo_frac_deut_uptake = round(err_diff_theo_frac_deut_uptake, 4)) %>%
@@ -53,10 +53,10 @@ generate_differential_data <- function(dat,
       dat %>%
         add_stat_dependency(confidence_limit = confidence_limit_1,
                             theoretical = TRUE, 
-                            relative = FALSE) %>%
+                            fractional = FALSE) %>%
         add_stat_dependency(confidence_limit = confidence_limit_2,
                             theoretical = TRUE, 
-                            relative = FALSE) %>%
+                            fractional = FALSE) %>%
         select(Protein, Sequence, Start, End, diff_theo_deut_uptake, err_diff_theo_deut_uptake, paste0("valid_at_", confidence_limit_1), paste0("valid_at_", confidence_limit_2)) %>%
         mutate(diff_theo_deut_uptake = round(diff_theo_deut_uptake, 4),
                err_diff_theo_deut_uptake = round(err_diff_theo_deut_uptake, 4)) %>%
@@ -69,15 +69,15 @@ generate_differential_data <- function(dat,
     
   } else {
     
-    if(relative){
-      # experimental & relative
+    if(fractional){
+      # experimental & fractional
       dat %>%
         add_stat_dependency(confidence_limit = confidence_limit_1,
                             theoretical = FALSE, 
-                            relative = TRUE) %>%
+                            fractional = TRUE) %>%
         add_stat_dependency(confidence_limit = confidence_limit_2,
                             theoretical = FALSE, 
-                            relative = TRUE) %>%
+                            fractional = TRUE) %>%
         select(Protein, Sequence, Start, End, diff_frac_deut_uptake, err_diff_frac_deut_uptake, paste0("valid_at_", confidence_limit_1), paste0("valid_at_", confidence_limit_2)) %>%
         mutate(diff_frac_deut_uptake = round(diff_frac_deut_uptake, 4),
                err_diff_frac_deut_uptake = round(err_diff_frac_deut_uptake, 4)) %>%
@@ -92,10 +92,10 @@ generate_differential_data <- function(dat,
       dat %>%
         add_stat_dependency(confidence_limit = confidence_limit_1,
                             theoretical = FALSE,
-                            relative = FALSE) %>%
+                            fractional = FALSE) %>%
         add_stat_dependency(confidence_limit = confidence_limit_2,
                             theoretical = FALSE, 
-                            relative = FALSE) %>%
+                            fractional = FALSE) %>%
         select(Protein, Sequence, Start, End, diff_deut_uptake, err_diff_deut_uptake, paste0("valid_at_", confidence_limit_1), paste0("valid_at_", confidence_limit_2)) %>%
         mutate(diff_deut_uptake = round(diff_deut_uptake, 4),
                err_diff_deut_uptake = round(err_diff_deut_uptake, 4)) %>%

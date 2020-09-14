@@ -4,8 +4,8 @@
 #' based on supplied data and parameters.
 #' 
 #' @param dat produced by \code{\link{generate_differential_data_set}} function
-#' @param theoretical ...
-#' @param relative ...
+#' @param theoretical \code{logical}, determines if values are theoretical
+#' @param fractional \code{logical}, determines if values are fractional
 #' @param confidence_limit ...
 #' @param confidence_limit_2 ...
 #' 
@@ -19,23 +19,23 @@
 
 generate_differential_plot <- function(dat, 
                                        theoretical, 
-                                       relative,
+                                       fractional,
                                        confidence_limit, 
                                        confidence_limit_2){ 
   
   if(theoretical){
     
-    if(relative){
-      # theoretical & relative  
+    if(fractional){
+      # theoretical & fractional  
       interval <- calculate_confidence_limit_values(calc_dat = dat,
                                                     confidence_limit = confidence_limit,
                                                     theoretical = TRUE,
-                                                    relative = TRUE)
+                                                    fractional = TRUE)
       
       interval_2 <- calculate_confidence_limit_values(calc_dat = dat,
                                                       confidence_limit = confidence_limit_2,
                                                       theoretical = TRUE,
-                                                      relative = TRUE)
+                                                      fractional = TRUE)
       
       mutate(dat, colour = case_when(
         dat[["diff_theo_frac_deut_uptake"]] < interval_2[1] ~ "deepskyblue3",
@@ -63,12 +63,12 @@ generate_differential_plot <- function(dat,
       interval <- calculate_confidence_limit_values(calc_dat = dat,
                                                     confidence_limit = confidence_limit,
                                                     theoretical = TRUE,
-                                                    relative = FALSE)
+                                                    fractional = FALSE)
       
       interval_2 <- calculate_confidence_limit_values(calc_dat = dat,
                                                       confidence_limit = confidence_limit_2,
                                                       theoretical = TRUE,
-                                                      relative = FALSE)
+                                                      fractional = FALSE)
       
       mutate(dat, colour = case_when(
         dat[["diff_theo_deut_uptake"]] < interval_2[1] ~ "deepskyblue3",
@@ -94,17 +94,17 @@ generate_differential_plot <- function(dat,
     
   } else {
     
-    if(relative){
-      # experimental & relative
+    if(fractional){
+      # experimental & fractional
       interval <- calculate_confidence_limit_values(calc_dat = dat,
                                                     confidence_limit = confidence_limit,
                                                     theoretical = FALSE,
-                                                    relative = TRUE)
+                                                    fractional = TRUE)
       
       interval_2 <- calculate_confidence_limit_values(calc_dat = dat,
                                                       confidence_limit = confidence_limit_2,
                                                       theoretical = FALSE,
-                                                      relative = TRUE)
+                                                      fractional = TRUE)
       
       mutate(dat, colour = case_when(
         dat[["diff_frac_deut_uptake"]] < interval_2[1] ~ "deepskyblue3",
@@ -132,12 +132,12 @@ generate_differential_plot <- function(dat,
       interval <- calculate_confidence_limit_values(calc_dat = dat,
                                                     confidence_limit = confidence_limit,
                                                     theoretical = FALSE,
-                                                    relative = FALSE)
+                                                    fractional = FALSE)
       
       interval_2 <- calculate_confidence_limit_values(calc_dat = dat,
                                                       confidence_limit = confidence_limit_2,
                                                       theoretical = FALSE,
-                                                      relative = FALSE)
+                                                      fractional = FALSE)
       
       mutate(dat, colour = case_when(
         dat[["diff_deut_uptake"]] < interval_2[1] ~ "deepskyblue3",

@@ -8,7 +8,7 @@ add_stat_dependency(
   calc_dat,
   confidence_limit = 0.98,
   theoretical = FALSE,
-  relative = TRUE
+  fractional = TRUE
 )
 }
 \arguments{
@@ -16,13 +16,14 @@ add_stat_dependency(
 
 \item{confidence_limit}{confidence limit chosen by user - from range [0, 1].}
 
-\item{theoretical}{logical value to determine if the plot is theoretical or not.}
+\item{theoretical}{\code{logical}, determines if values are theoretical}
 
-\item{relative}{logical value to determine if values are relative or absolute.}
+\item{fractional}{\code{logical}, determines if values are fractional}
 }
 \value{
 calc_dat extended by column specifying if given peptide is relevant in given confidence limit. 
-The value of the confidence limit is added as an attribute - as well as parameters used to calculate (theoretical/relative)
+The value of the confidence limit is added as an attribute - as well as parameters used to calculate 
+(theoretical/fractional)
 }
 \description{
 Returns relation with confidence limits for each peptide.
@@ -36,7 +37,6 @@ dat <- read_hdx(system.file(package = "HaDeX",
                             "HaDeX/data/KD_180110_CD160_HVEM.csv"))
                             
 # TODO
-                     
 
 }
 \seealso{

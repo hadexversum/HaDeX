@@ -1,7 +1,7 @@
 #' generate_differential_data_set
 #' 
 #' @description Generate the data frame with differential data from two
-#' provided states - experimental/relative calculations with the
+#' provided states - experimental/fractional calculations with the
 #' uncertainty, based on supplied parameters.
 #' 
 #' @importFrom tidyr gather

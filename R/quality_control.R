@@ -15,7 +15,7 @@
 #' 
 #' @details The function calculates mean uncertainty of all peptides and its uncertainty (standard error) based on given `in_time` and `chosen_time` 
 #' as a function of `out_time`. Both theoretical and experimental results for each state and their difference are supplied for comparison but only 
-#' experimental calculations depends on `out_time` variable. The results are either in form of relative or absolute values depending on the `relative` 
+#' experimental calculations depends on `out_time` variable. The results are either in form of fractional or absolute values depending on the `fractional` 
 #' parameter supplied by the user. 
 #' This data can be useful for general overview of the experiment and analyse of the chosen time parameters. 
 #' 

@@ -7,7 +7,7 @@
 generate_differential_plot(
   dat,
   theoretical,
-  relative,
+  fractional,
   confidence_limit,
   confidence_limit_2
 )
@@ -15,9 +15,9 @@ generate_differential_plot(
 \arguments{
 \item{dat}{produced by \code{\link{generate_differential_data_set}} function}
 
-\item{theoretical}{...}
+\item{theoretical}{\code{logical}, determines if values are theoretical}
 
-\item{relative}{...}
+\item{fractional}{\code{logical}, determines if values are fractional}
 
 \item{confidence_limit}{...}
 

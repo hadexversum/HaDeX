@@ -4,8 +4,8 @@
 #' and parameters.
 #' 
 #' @param dat produced by \code{\link{calculate_state_deuteration}} function
-#' @param theoretical ...
-#' @param relative ...
+#' @param theoretical \code{logical}, determines if values are theoretical
+#' @param fractional \code{logical}, determines if values are fractional
 #' 
 #' @details This plot is visible in GUI. 
 #' 
@@ -17,12 +17,12 @@
 
 generate_comparison_plot <- function(dat, 
                                      theoretical, 
-                                     relative){
+                                     fractional){
   
   if (theoretical) {
     
-    if (relative) {
-      # theoretical & relative
+    if (fractional) {
+      # theoretical & fractional
       ggplot(data = dat) +
         geom_segment(data = dat, aes(x = Start, y = theo_frac_deut_uptake, xend = End, yend = theo_frac_deut_uptake, color = State)) +
         geom_errorbar(data = dat, aes(x = Med_Sequence, ymin = theo_frac_deut_uptake - err_theo_frac_deut_uptake, ymax = theo_frac_deut_uptake + err_theo_frac_deut_uptake, color = State)) +
@@ -42,8 +42,8 @@ generate_comparison_plot <- function(dat,
     
   } else {
     
-    if (relative) {
-      # experimantal & relative
+    if (fractional) {
+      # experimantal & fractional
       ggplot(data = dat) +
         geom_segment(data = dat, aes(x = Start, y = frac_deut_uptake, xend = End, yend = frac_deut_uptake, color = State)) +
         geom_errorbar(data = dat, aes(x = Med_Sequence, ymin = frac_deut_uptake - err_frac_deut_uptake, ymax = frac_deut_uptake + err_frac_deut_uptake, color = State)) +

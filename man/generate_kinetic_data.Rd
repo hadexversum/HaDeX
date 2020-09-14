@@ -4,15 +4,15 @@
 \alias{generate_kinetic_data}
 \title{generate_kinetic_data}
 \usage{
-generate_kinetic_data(dat, theoretical, relative)
+generate_kinetic_data(dat, theoretical, fractional)
 }
 \arguments{
 \item{dat}{custom format, produced by 
 \code{\link{generate_kinetic_data_set}}}
 
-\item{theoretical}{...}
+\item{theoretical}{\code{logical}, determines if plot shows theoretical values}
 
-\item{relative}{...}
+\item{fractional}{\code{logical}, determines if plot shows fractional values}
 }
 \value{
 ...

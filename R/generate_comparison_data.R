@@ -4,8 +4,8 @@
 #' parameters.
 #' 
 #' @param dat custom data format, produced by \code{\link{calculate_state_deuteration}}
-#' @param theoretical ...
-#' @param relative ...
+#' @param theoretical \code{logical}, determines if values are theoretical
+#' @param fractional \code{logical}, determines if values are fractional
 #' 
 #' @details This data is available in the GUI. 
 #' All of the numerical values are rounded to 4 places after the dot!!
@@ -20,12 +20,12 @@
 
 generate_comparison_data <- function(dat, 
                                      theoretical, 
-                                     relative,
+                                     fractional,
                                      protein){
   if (theoretical){
     
-    if (relative){
-      # theoretical & relative
+    if (fractional){
+      # theoretical & fractional
       dat %>%
         select(Protein, Sequence, State, Start, End, theo_frac_deut_uptake, err_theo_frac_deut_uptake) %>%
         mutate(theo_frac_deut_uptake  = round(theo_frac_deut_uptake , 4),
@@ -47,8 +47,8 @@ generate_comparison_data <- function(dat,
     
   } else {
     
-    if (relative){
-      # experimental & relative
+    if (fractional){
+      # experimental & fractional
       dat %>%
         select(Protein, Sequence, State, Start, End, frac_deut_uptake, err_frac_deut_uptake) %>%
         mutate(frac_deut_uptake = round(frac_deut_uptake, 4),

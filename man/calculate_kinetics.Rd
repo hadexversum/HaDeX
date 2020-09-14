@@ -88,13 +88,13 @@ library(ggplot2)
 # plot example - experimental and relative 
 bind_rows(kin1, kin2) \%>\% 
  plot_kinetics(theoretical = FALSE, 
-               relative = TRUE) +
- labs(title = "Kinetic plot for INITSSASQEGTRLN")
+               fractional = TRUE) +
+ labs(title = "Kinetic fractional plot for INITSSASQEGTRLN")
  
 # plot example - theoretical and absolute
 bind_rows(kin1, kin2) \%>\%
   plot_kinetics(theoretical = TRUE, 
-               relative = FALSE) +
+                fractional = FALSE) +
   labs(title = "Theoretical kinetics plot for INITSSASQEGTRLN")
        
 

@@ -4,7 +4,7 @@
 \alias{plot_kinetics}
 \title{Plot kinetics data}
 \usage{
-plot_kinetics(kin_dat, theoretical = FALSE, relative = TRUE)
+plot_kinetics(kin_dat, theoretical = FALSE, fractional = TRUE)
 }
 \arguments{
 \item{kin_dat}{calculated kinetic data by \code{\link{calculate_kinetics}} 
@@ -12,7 +12,7 @@ function}
 
 \item{theoretical}{\code{logical}, determines if plot shows theoretical values}
 
-\item{relative}{\code{logical}, determines if values are relative or absolute}
+\item{fractional}{\code{logical}, determines if plot shows fractional values}
 }
 \value{
 a \code{\link[ggplot2]{ggplot}} object.
@@ -58,15 +58,15 @@ dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.
 # load extra packages 
 library(dplyr)
   
-# plot a single peptide - theoretical and relative
+# plot a single peptide - theoretical and fractional
 plot_kinetics(kin_dat = kin1, 
               theoretical = TRUE, 
-              relative = TRUE)
+              fractional = TRUE)
                 
 # plot joined data - experimental and absolute
 bind_rows(kin1, kin2) \%>\%
   plot_kinetics(theoretical = FALSE, 
-                relative = FALSE)
+                fractional = FALSE)
                 
 }
 \seealso{

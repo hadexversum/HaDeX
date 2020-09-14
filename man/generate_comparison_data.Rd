@@ -4,14 +4,14 @@
 \alias{generate_comparison_data}
 \title{generate_comparison_data}
 \usage{
-generate_comparison_data(dat, theoretical, relative, protein)
+generate_comparison_data(dat, theoretical, fractional, protein)
 }
 \arguments{
 \item{dat}{custom data format, produced by \code{\link{calculate_state_deuteration}}}
 
-\item{theoretical}{...}
+\item{theoretical}{\code{logical}, determines if values are theoretical}
 
-\item{relative}{...}
+\item{fractional}{\code{logical}, determines if values are fractional}
 }
 \value{
 ...

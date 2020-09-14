@@ -4,14 +4,14 @@
 \alias{generate_comparison_plot}
 \title{generate_comparison_plot}
 \usage{
-generate_comparison_plot(dat, theoretical, relative)
+generate_comparison_plot(dat, theoretical, fractional)
 }
 \arguments{
 \item{dat}{produced by \code{\link{calculate_state_deuteration}} function}
 
-\item{theoretical}{...}
+\item{theoretical}{\code{logical}, determines if values are theoretical}
 
-\item{relative}{...}
+\item{fractional}{\code{logical}, determines if values are fractional}
 }
 \value{
 ...

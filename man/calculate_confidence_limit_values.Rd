@@ -8,7 +8,7 @@ calculate_confidence_limit_values(
   calc_dat,
   confidence_limit = 0.98,
   theoretical = FALSE,
-  relative = TRUE
+  fractional = TRUE
 )
 }
 \arguments{
@@ -16,9 +16,9 @@ calculate_confidence_limit_values(
 
 \item{confidence_limit}{confidence limit chosen by user - from range [0, 1].}
 
-\item{theoretical}{logical value to determine if plot is theoretical or not.}
+\item{theoretical}{\code{logical}, determines if values are theoretical}
 
-\item{relative}{logical value to determine if values are relative or absolute.}
+\item{fractional}{\code{logical}, determines if values are fractional}
 }
 \value{
 range of confidence limit interval

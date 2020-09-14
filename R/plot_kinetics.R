@@ -8,7 +8,7 @@
 #' @param kin_dat calculated kinetic data by \code{\link{calculate_kinetics}} 
 #' function
 #' @param theoretical \code{logical}, determines if plot shows theoretical values
-#' @param relative \code{logical}, determines if values are relative or absolute
+#' @param fractional \code{logical}, determines if plot shows fractional values
 #' 
 #' @seealso \code{\link{calculate_kinetics}}
 #' 
@@ -51,25 +51,25 @@
 #' # load extra packages 
 #' library(dplyr)
 #'   
-#' # plot a single peptide - theoretical and relative
+#' # plot a single peptide - theoretical and fractional
 #' plot_kinetics(kin_dat = kin1, 
 #'               theoretical = TRUE, 
-#'               relative = TRUE)
+#'               fractional = TRUE)
 #'                 
 #' # plot joined data - experimental and absolute
 #' bind_rows(kin1, kin2) %>%
 #'   plot_kinetics(theoretical = FALSE, 
-#'                 relative = FALSE)
+#'                 fractional = FALSE)
 #'                 
 #' @export plot_kinetics
 #' 
 plot_kinetics <- function(kin_dat, 
                           theoretical = FALSE, 
-                          relative = TRUE){
+                          fractional = TRUE){
   
   if (theoretical){
     
-    if (relative){
+    if (fractional){
       
       kin_dat %>% 
         mutate(prop = paste0(Sequence, "-", State)) %>%
@@ -101,7 +101,7 @@ plot_kinetics <- function(kin_dat,
     
   } else {
     
-    if (relative){
+    if (fractional){
       
       kin_dat %>% 
         mutate(prop = paste0(Sequence, "-", State)) %>%
