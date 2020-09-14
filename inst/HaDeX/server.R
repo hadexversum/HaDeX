@@ -258,13 +258,13 @@ server <- function(input, output, session) {
   observe({
     
     tryCatch({
-      if(input[["deut_concentration"]] < 0)
+      if(input[["deut_part"]] < 0)
         updateNumericInput(session,
-                           inputId = "deut_concentration",
+                           inputId = "deut_part",
                            value = 0)
     }, error = function(e){
       updateNumericInput(session,
-                         inputId = "deut_concentration",
+                         inputId = "deut_part",
                          value = 0)
     })
   })
@@ -272,14 +272,14 @@ server <- function(input, output, session) {
   observe({
     
     tryCatch({
-      if(input[["deut_concentration"]] > 100)
+      if(input[["deut_part"]] > 100)
         updateNumericInput(session,
-                           inputId = "deut_concentration",
+                           inputId = "deut_part",
                            value = 100)
     },
     error = function(e){
       updateNumericInput(session,
-                         inputId = "deut_concentration",
+                         inputId = "deut_part",
                          value = 100)
     })
     
@@ -722,12 +722,12 @@ server <- function(input, output, session) {
     times_from_file <- times_from_file[order(times_from_file)]
     
     tmp <- sort(unique(round(dat()[["Exposure"]], 3)))
-    choose_time_out <- setNames(tmp, c(head(tmp, -1), "chosen control"))
+    choose_time_100 <- setNames(tmp, c(head(tmp, -1), "chosen control"))
     
     if(has_modifications()){
       
       updateSelectInput(session, 
-                        inputId = "out_time",
+                        inputId = "time_100",
                         choices = times_from_file[times_from_file < 99999],
                         selected = max(times_from_file[times_from_file < 99999]))
       
@@ -736,9 +736,9 @@ server <- function(input, output, session) {
     if(!has_modifications()){
       
       updateSelectInput(session, 
-                        inputId = "out_time",
-                        choices = choose_time_out,
-                        selected = choose_time_out["chosen control"])
+                        inputId = "time_100",
+                        choices = choose_time_100,
+                        selected = choose_time_100["chosen control"])
     }
   })
   
@@ -749,15 +749,15 @@ server <- function(input, output, session) {
   observe({
     
     updateSelectInput(session, 
-                      inputId = "chosen_time",
+                      inputId = "time_t",
                       choices = times_from_file()[times_from_file() < 99999],
-                      selected = min(times_from_file()[times_from_file() > input[["in_time"]]]))
+                      selected = min(times_from_file()[times_from_file() > input[["time_0"]]]))
   })
   
   observe({
     
     updateSelectInput(session, 
-                      inputId = "in_time",
+                      inputId = "time_0",
                       choices = times_from_file()[times_from_file() < 99999],
                       selected = min(times_from_file()[times_from_file() > 0]))
     
@@ -800,8 +800,8 @@ server <- function(input, output, session) {
     
     if (input[["calc_type"]] == "absolute") {
       
-      min_comparison_abs <- round_any(min(prep_dat()[c("abs_frac_exch_state", "abs_avg_theo_in_time")], na.rm = TRUE), 5, floor)
-      max_comparison_abs <- round_any(max(prep_dat()[c("abs_frac_exch_state", "abs_avg_theo_in_time")], na.rm = TRUE), 5, ceiling)
+      min_comparison_abs <- round_any(min(prep_dat()[c("deut_uptake", "theo_deut_uptake")], na.rm = TRUE), 5, floor)
+      max_comparison_abs <- round_any(max(prep_dat()[c("deut_uptake", "theo_deut_uptake")], na.rm = TRUE), 5, ceiling)
       
       updateSliderInput(session,
                         inputId = "comp_plot_y_range",
@@ -810,8 +810,8 @@ server <- function(input, output, session) {
                         value = c(min_comparison_abs, max_comparison_abs),
                         step = 1)
       
-      min_woods_abs <- round_any(min(woods_plot_dat()[c("abs_diff_frac_exch", "abs_diff_theo_frac_exch")], na.rm = TRUE), 2, floor)
-      max_woods_abs <- round_any(max(woods_plot_dat()[c("abs_diff_frac_exch", "abs_diff_theo_frac_exch")], na.rm = TRUE), 2, ceiling)
+      min_woods_abs <- round_any(min(woods_plot_dat()[c("diff_deut_uptake", "diff_theo_deut_uptake")], na.rm = TRUE), 2, floor)
+      max_woods_abs <- round_any(max(woods_plot_dat()[c("diff_deut_uptake", "diff_theo_deut_uptake")], na.rm = TRUE), 2, ceiling)
       
       updateSliderInput(session,
                         inputId = "woods_plot_y_range",
@@ -846,36 +846,36 @@ server <- function(input, output, session) {
     updateTextInput(session, 
                     inputId = "comparison_plot_title",
                     value = case_when(
-                      input[["theory"]] & input[["calc_type"]] == "relative" ~ paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min for ", input[["chosen_protein"]]),
-                      input[["theory"]] & input[["calc_type"]] == "absolute" ~ paste0("Theoretical absolute value exchanged in state comparison in ", input[["chosen_time"]], " min for ", input[["chosen_protein"]]),
-                      !input[["theory"]] & input[["calc_type"]] == "relative" ~ paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min for ", input[["chosen_protein"]]),
-                      !input[["theory"]] & input[["calc_type"]] == "absolute" ~ paste0("Absolute value exchanged in state comparison in ", input[["chosen_time"]], " min for ", input[["chosen_protein"]])
+                      input[["theory"]] & input[["calc_type"]] == "fractional" ~ paste0("Theoretical fractional fraction exchanged in state comparison in ", input[["time_t"]], " min for ", input[["chosen_protein"]]),
+                      input[["theory"]] & input[["calc_type"]] == "absolute" ~ paste0("Theoretical absolute value exchanged in state comparison in ", input[["time_t"]], " min for ", input[["chosen_protein"]]),
+                      !input[["theory"]] & input[["calc_type"]] == "fractional" ~ paste0("Fractional fraction exchanged in state comparison in ", input[["time_t"]], " min for ", input[["chosen_protein"]]),
+                      !input[["theory"]] & input[["calc_type"]] == "absolute" ~ paste0("Absolute value exchanged in state comparison in ", input[["time_t"]], " min for ", input[["chosen_protein"]])
                     ))
     
     updateTextInput(session, 
                     inputId = "woods_plot_title",
                     value = case_when(
-                      input[["theory"]] & input[["calc_type"]] == "relative" ~ paste0("Delta Theoretical fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]), " for ", input[["chosen_protein"]]),
-                      input[["theory"]] & input[["calc_type"]] == "absolute" ~ paste0("Delta Theoretical fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]), " for ", input[["chosen_protein"]]),
-                      !input[["theory"]] & input[["calc_type"]] == "relative" ~ paste0("Delta Fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]), " for ", input[["chosen_protein"]]),
-                      !input[["theory"]] & input[["calc_type"]] == "absolute" ~ paste0("Delta Fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]), " for ", input[["chosen_protein"]])
+                      input[["theory"]] & input[["calc_type"]] == "fractional" ~ paste0("Delta Theoretical fractional fraction exchanged in ", input[["time_t"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]), " for ", input[["chosen_protein"]]),
+                      input[["theory"]] & input[["calc_type"]] == "absolute" ~ paste0("Delta Theoretical fraction exchanged in ", input[["time_t"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]), " for ", input[["chosen_protein"]]),
+                      !input[["theory"]] & input[["calc_type"]] == "fractional" ~ paste0("Delta Fractional fraction exchanged in ", input[["time_t"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]), " for ", input[["chosen_protein"]]),
+                      !input[["theory"]] & input[["calc_type"]] == "absolute" ~ paste0("Delta Fraction exchanged in ", input[["time_t"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]), " for ", input[["chosen_protein"]])
                     ))
     
     updateTextInput(session, 
                     inputId = "comparison_plot_y_label", 
                     value = case_when(
-                      input[["theory"]] & input[["calc_type"]] == "relative" ~ "Theoretical fraction exchanged [%]",
+                      input[["theory"]] & input[["calc_type"]] == "fractional" ~ "Theoretical fractional fraction exchanged [%]",
                       input[["theory"]] & input[["calc_type"]] == "absolute" ~ "Theoretical absolute value exchanged [Da]",
-                      !input[["theory"]] & input[["calc_type"]] == "relative" ~ "Fraction exchanged [%]",
+                      !input[["theory"]] & input[["calc_type"]] == "fractional" ~ "Fractional fraction exchanged [%]",
                       !input[["theory"]] & input[["calc_type"]] == "absolute" ~ "Absolute value exchanged [Da]"
                     ))
     
     updateTextInput(session, 
                     inputId = "woods_plot_y_label", 
                     value = case_when(
-                      input[["theory"]] & input[["calc_type"]] == "relative" ~ "Delta Theoretical fraction exchanged between states [%]",
+                      input[["theory"]] & input[["calc_type"]] == "fractional" ~ "Delta Theoretical fractional fraction exchanged between states [%]",
                       input[["theory"]] & input[["calc_type"]] == "absolute" ~ "Delta Theoretical absolute value exchanged between states [Da]",
-                      !input[["theory"]] & input[["calc_type"]] == "relative" ~ "Delta Fraction exchanged between states [%]",
+                      !input[["theory"]] & input[["calc_type"]] == "fractional" ~ "Delta Fractional fraction exchanged between states [%]",
                       !input[["theory"]] & input[["calc_type"]] == "absolute" ~ "Delta Absolute value exchanged between states [Da]"
                     ))
     
@@ -886,8 +886,8 @@ server <- function(input, output, session) {
   observe({
     
     if(input[["theory"]]){
-      hide(id = "in_time_part")
-      hide(id = "out_time_part")
+      hide(id = "time_0_part")
+      hide(id = "time_100_part")
     }
     
   })
@@ -895,8 +895,8 @@ server <- function(input, output, session) {
   observe({
     
     if(!input[["theory"]]){
-      show(id = "in_time_part")
-      show(id = "out_time_part")
+      show(id = "time_0_part")
+      show(id = "time_100_part")
     }
     
   })
@@ -906,7 +906,7 @@ server <- function(input, output, session) {
   observe({
     
     if(input[["calc_type"]] == "absolute"){
-      hide(id = "out_time_part")
+      hide(id = "time_100_part")
     } 
     
   })
@@ -915,8 +915,8 @@ server <- function(input, output, session) {
   
   observe({
     
-    if(input[["calc_type"]] == "relative" & !input[["theory"]]){
-      show(id = "out_time_part")
+    if(input[["calc_type"]] == "fractional" & !input[["theory"]]){
+      show(id = "time_100_part")
     }
     
   })
@@ -986,17 +986,17 @@ server <- function(input, output, session) {
   all_dat <- reactive({
     
     if(!input[["theory"]]){
-      validate(need(as.numeric(input[["in_time"]]) < as.numeric(input[["chosen_time"]]), "In time must be smaller than chosen time."))
-      validate(need(as.numeric(input[["chosen_time"]]) < as.numeric(input[["out_time"]]), "Out time must be bigger than chosen time."))
+      validate(need(as.numeric(input[["time_0"]]) < as.numeric(input[["time_t"]]), "In time must be smaller than chosen time."))
+      validate(need(as.numeric(input[["time_t"]]) < as.numeric(input[["time_100"]]), "Out time must be bigger than chosen time."))
     }
 
     bind_rows(lapply(states_from_file(), function(i) calculate_state_deuteration(dat(), 
                                                                                  protein = input[["chosen_protein"]], 
                                                                                  state = i, 
-                                                                                 time_in = input[["in_time"]],
-                                                                                 time_chosen = input[["chosen_time"]], 
-                                                                                 time_out = input[["out_time"]],
-                                                                                 deut_part = 0.01*as.integer(input[["deut_concentration"]]))))
+                                                                                 time_0 = input[["time_0"]],
+                                                                                 time_t = input[["time_t"]], 
+                                                                                 time_100 = input[["time_100"]],
+                                                                                 deut_part = 0.01*as.integer(input[["deut_part"]]))))
   })
   
   ##
@@ -1016,7 +1016,7 @@ server <- function(input, output, session) {
     
     generate_comparison_plot(dat = prep_dat(),
                              theoretical = TRUE, 
-                             relative = TRUE)
+                             fractional = TRUE)
   })
   
   ##
@@ -1025,7 +1025,7 @@ server <- function(input, output, session) {
     
     generate_comparison_plot(dat = prep_dat(),
                              theoretical = TRUE, 
-                             relative = FALSE)
+                             fractional = FALSE)
   })
   
   ##
@@ -1034,7 +1034,7 @@ server <- function(input, output, session) {
     
     generate_comparison_plot(dat = prep_dat(),
                              theoretical = FALSE, 
-                             relative = TRUE)
+                             fractional = TRUE)
   })
   
   ##
@@ -1043,7 +1043,7 @@ server <- function(input, output, session) {
     
     generate_comparison_plot(dat = prep_dat(),
                              theoretical = FALSE, 
-                             relative = FALSE)
+                             fractional = FALSE)
   })
   
   ##
@@ -1054,7 +1054,7 @@ server <- function(input, output, session) {
     
     if (input[["theory"]]) {
       
-      if (input[["calc_type"]] == "relative") {
+      if (input[["calc_type"]] == "fractional") {
         
         cp <- comparison_plot_theo() 
         
@@ -1065,7 +1065,7 @@ server <- function(input, output, session) {
       
     } else {
       
-      if (input[["calc_type"]] == "relative") {
+      if (input[["calc_type"]] == "fractional") {
         
         cp <- comparison_plot_exp() 
         
@@ -1155,7 +1155,7 @@ server <- function(input, output, session) {
     
     generate_comparison_data(dat = prep_dat(), 
                              theoretical = TRUE,
-                             relative = TRUE)
+                             fractional = TRUE)
   })
   
   ##
@@ -1164,7 +1164,7 @@ server <- function(input, output, session) {
     
     generate_comparison_data(dat = prep_dat(), 
                              theoretical = TRUE,
-                             relative = FALSE)
+                             fractional = FALSE)
   })
   
   ## 
@@ -1173,7 +1173,7 @@ server <- function(input, output, session) {
     
     generate_comparison_data(dat = prep_dat(), 
                              theoretical = FALSE,
-                             relative = TRUE)
+                             fractional = TRUE)
   })
   
   ##
@@ -1182,7 +1182,7 @@ server <- function(input, output, session) {
     
     generate_comparison_data(dat = prep_dat(), 
                              theoretical = FALSE,
-                             relative = FALSE)
+                             fractional = FALSE)
   })
   
   ##
@@ -1191,7 +1191,7 @@ server <- function(input, output, session) {
     
     if (input[["theory"]]) {
       
-      if (input[["calc_type"]] == "relative") {
+      if (input[["calc_type"]] == "fractional") {
         cp_data <- comparison_plot_data_theo()  
       } else {
         cp_data <- comparison_plot_data_theo_abs()
@@ -1226,18 +1226,18 @@ server <- function(input, output, session) {
     validate(need(length(unique(filter(dat(), !is.na("Modification"), Protein == input[["chosen_protein"]])[["State"]])) > 1, "Not sufficient number of states without modifications."))
     
     if(!input[["theory"]]){
-      validate(need(as.numeric(input[["in_time"]]) < as.numeric(input[["chosen_time"]]), "In time must be smaller than chosen time."))
-      validate(need(as.numeric(input[["chosen_time"]]) < as.numeric(input[["out_time"]]), "Out time must be bigger than chosen time."))
+      validate(need(as.numeric(input[["time_0"]]) < as.numeric(input[["time_t"]]), "In time must be smaller than chosen time."))
+      validate(need(as.numeric(input[["time_t"]]) < as.numeric(input[["time_100"]]), "Out time must be bigger than chosen time."))
     }
     
     tryCatch({
       generate_differential_data_set(dat = dat(),
                                     states = c(input[["state_first"]], input[["state_second"]]),
                                     protein = input[["chosen_protein"]],
-                                    time_in = input[["in_time"]],
-                                    time_chosen = input[["chosen_time"]],
-                                    time_out = input[["out_time"]],
-                                    deut_part = 0.01*as.integer(input[["deut_concentration"]]))
+                                    time_0 = input[["time_0"]],
+                                    time_t = input[["time_t"]],
+                                    time_100 = input[["time_100"]],
+                                    deut_part = 0.01*as.integer(input[["deut_part"]]))
     },
     error = function(e){
       validate(need(FALSE), "Check chosen parameters - not sufficient data.")
@@ -1251,7 +1251,7 @@ server <- function(input, output, session) {
     
     generate_differential_plot(dat = woods_plot_dat(),
                                theoretical = TRUE,
-                               relative = TRUE,
+                               fractional = TRUE,
                                confidence_limit = as.double(input[["confidence_limit"]]),
                                confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
@@ -1262,7 +1262,7 @@ server <- function(input, output, session) {
     
     generate_differential_plot(dat = woods_plot_dat(),
                                theoretical = TRUE,
-                               relative = FALSE,
+                               fractional = FALSE,
                                confidence_limit = as.double(input[["confidence_limit"]]),
                                confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
@@ -1273,7 +1273,7 @@ server <- function(input, output, session) {
     
     generate_differential_plot(dat = woods_plot_dat(),
                                theoretical = FALSE,
-                               relative = TRUE,
+                               fractional = TRUE,
                                confidence_limit = as.double(input[["confidence_limit"]]),
                                confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
@@ -1284,7 +1284,7 @@ server <- function(input, output, session) {
     
     generate_differential_plot(dat = woods_plot_dat(),
                                theoretical = FALSE,
-                               relative = FALSE,
+                               fractional = FALSE,
                                confidence_limit = as.double(input[["confidence_limit"]]),
                                confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
@@ -1297,7 +1297,7 @@ server <- function(input, output, session) {
     
     if (input[["theory"]]) {
       
-      if (input[["calc_type"]] == "relative") {
+      if (input[["calc_type"]] == "fractional") {
         wp <- differential_plot_theo() 
       } else {
         wp <- differential_plot_theo_abs() 
@@ -1305,7 +1305,7 @@ server <- function(input, output, session) {
       
     } else {
       
-      if (input[["calc_type"]] == "relative") {
+      if (input[["calc_type"]] == "fractional") {
         wp <- differential_plot_exp() 
       } else {
         wp <- differential_plot_exp_abs() 
@@ -1388,7 +1388,7 @@ server <- function(input, output, session) {
     
     generate_differential_data(dat = woods_plot_dat(),
                                theoretical = TRUE,
-                               relative = TRUE,
+                               fractional = TRUE,
                                confidence_limit_1 = as.double(input[["confidence_limit"]]),
                                confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
@@ -1399,7 +1399,7 @@ server <- function(input, output, session) {
     
     generate_differential_data(dat = woods_plot_dat(),
                                theoretical = TRUE,
-                               relative = FALSE,
+                               fractional = FALSE,
                                confidence_limit_1 = as.double(input[["confidence_limit"]]),
                                confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
@@ -1410,7 +1410,7 @@ server <- function(input, output, session) {
     
     generate_differential_data(dat = woods_plot_dat(),
                                theoretical = FALSE,
-                               relative = TRUE,
+                               fractional = TRUE,
                                confidence_limit_1 = as.double(input[["confidence_limit"]]),
                                confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
@@ -1421,7 +1421,7 @@ server <- function(input, output, session) {
     
     generate_differential_data(dat = woods_plot_dat(),
                                theoretical = FALSE,
-                               relative = FALSE,
+                               fractional = FALSE,
                                confidence_limit_1 = as.double(input[["confidence_limit"]]),
                                confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
   })
@@ -1432,7 +1432,7 @@ server <- function(input, output, session) {
     
     if (input[["theory"]]) {
       
-      if(input[["calc_type"]] == "relative") {
+      if(input[["calc_type"]] == "fractional") {
         dp_data <- differential_plot_data_theo()  
       } else {
         dp_data <- differential_plot_data_theo_abs()
@@ -1440,7 +1440,7 @@ server <- function(input, output, session) {
       
     } else {
       
-      if (input[["calc_type"]] == "relative") {
+      if (input[["calc_type"]] == "fractional") {
         dp_data <- differential_plot_data_exp()  
       } else {
         dp_data <- differential_plot_data_exp_abs()
@@ -1468,25 +1468,25 @@ server <- function(input, output, session) {
     times_from_file <- times_from_file[order(times_from_file)]
     
     tmp <- sort(unique(round(dat()[["Exposure"]], 3)))
-    choose_time_out <- setNames(tmp, c(head(tmp, -1), "chosen control"))
+    choose_time_100 <- setNames(tmp, c(head(tmp, -1), "chosen control"))
     
     updateSelectInput(session, 
-                      inputId = "kin_in_time",
+                      inputId = "kin_time_0",
                       choices = times_from_file[times_from_file < 99999],
                       selected = min(times_from_file[times_from_file > 0]))
     
     if(!has_modifications()){
       
       updateSelectInput(session, 
-                        inputId = "kin_out_time",
-                        choices =  choose_time_out,
-                        selected = choose_time_out["chosen control"])
+                        inputId = "kin_time_100",
+                        choices =  choose_time_100,
+                        selected = choose_time_100["chosen control"])
     }
     
     if(has_modifications()){
       
       updateSelectInput(session, 
-                        inputId = "kin_out_time",
+                        inputId = "kin_time_100",
                         choices =  times_from_file[times_from_file < 99999],
                         selected = max(times_from_file[times_from_file < 99999]))
     }
@@ -1508,9 +1508,9 @@ server <- function(input, output, session) {
     updateTextInput(session, 
                     inputId = "kin_plot_y_label", 
                     value = case_when(
-                      input[["kin_theory"]] & input[["kin_calc_type"]] == "relative" ~ "Theoretical deuteration [%]",
+                      input[["kin_theory"]] & input[["kin_calc_type"]] == "fractional" ~ "Theoretical fractional deuterium uptake [%]",
                       input[["kin_theory"]] & input[["kin_calc_type"]] == "absolute" ~ "Theoretical deuteration [Da]",
-                      !input[["kin_theory"]] & input[["kin_calc_type"]] == "relative" ~ "Deuteration [%]",
+                      !input[["kin_theory"]] & input[["kin_calc_type"]] == "fractional" ~ "Fractional deuteratium uptake [%]",
                       !input[["kin_theory"]] & input[["kin_calc_type"]] == "absolute" ~ "Deuteration [Da]"
                     ))
     
@@ -1539,7 +1539,7 @@ server <- function(input, output, session) {
   observe({
     
     if(input[["kin_calc_type"]] == "absolute"){
-      hide(id = "kin_out_time_part")
+      hide(id = "kin_time_100_part")
     } 
     
   })
@@ -1548,8 +1548,8 @@ server <- function(input, output, session) {
   
   observe({
     
-    if(input[["kin_calc_type"]] == "relative"){
-      show(id = "kin_out_time_part")
+    if(input[["kin_calc_type"]] == "fractional"){
+      show(id = "kin_time_100_part")
     }
     
   })
@@ -1601,26 +1601,26 @@ server <- function(input, output, session) {
     
     if(input[["kin_theory"]]){
       
-      v_time_in <- min(times_from_file[times_from_file > 0])
-      v_time_out <- max(times_from_file)
+      v_time_0 <- min(times_from_file[times_from_file > 0])
+      v_time_100 <- max(times_from_file)
       
     } else {
       
-      validate(need(as.numeric(input[["kin_out_time"]]) > as.numeric(input[["kin_in_time"]]), "Out time must be bigger than in time. "))
+      validate(need(as.numeric(input[["kin_time_100"]]) > as.numeric(input[["kin_time_0"]]), "Out time must be bigger than in time. "))
       
-      validate(need(sum(times_from_file < as.numeric(input[["kin_out_time"]]) & times_from_file > as.numeric(input[["kin_in_time"]])) > 1, "Not enough time points between in and out time. "))
+      validate(need(sum(times_from_file < as.numeric(input[["kin_time_100"]]) & times_from_file > as.numeric(input[["kin_time_0"]])) > 1, "Not enough time points between in and out time. "))
       
-      v_time_in <- as.numeric(input[["kin_in_time"]])
-      v_time_out <- as.numeric(input[["kin_out_time"]])
+      v_time_0 <- as.numeric(input[["kin_time_0"]])
+      v_time_100 <- as.numeric(input[["kin_time_100"]])
       
     }
     
     generate_kinetic_data_set(dat = dat(),
                               peptide_list = peptide_list()[input[["peptide_list_data_rows_selected"]], ],
                               protein = input[["chosen_protein"]],
-                              deut_concentration = input[["deut_concentration"]],
-                              time_in = v_time_in,
-                              time_out = v_time_out)
+                              deut_part = input[["deut_part"]],
+                              time_0 = v_time_0,
+                              time_100 = v_time_100)
   })
   
   ##
@@ -1629,8 +1629,8 @@ server <- function(input, output, session) {
     
     if (input[["kin_calc_type"]] == "absolute") {
       
-      min_kin_abs <- round_any(min(kin_dat()[c("abs_frac_exch_state", "abs_avg_theo_in_time")], na.rm = TRUE), 5, floor)
-      max_kin_abs <- round_any(max(kin_dat()[c("abs_frac_exch_state", "abs_avg_theo_in_time")], na.rm = TRUE), 5, ceiling)
+      min_kin_abs <- round_any(min(kin_dat()[c("deut_uptake", "theo_deut_uptake")], na.rm = TRUE), 5, floor)
+      max_kin_abs <- round_any(max(kin_dat()[c("deut_uptake", "theo_deut_uptake")], na.rm = TRUE), 5, ceiling)
       
       updateSliderInput(session,
                         inputId = "kin_plot_y_range",
@@ -1661,7 +1661,7 @@ server <- function(input, output, session) {
     
     plot_kinetics(kin_dat = kin_dat(),
                   theoretical = TRUE,
-                  relative = TRUE)
+                  fractional = TRUE)
   })
   
   ##
@@ -1670,7 +1670,7 @@ server <- function(input, output, session) {
 
     plot_kinetics(kin_dat = kin_dat(),
                   theoretical = TRUE,
-                  relative = FALSE)
+                  fractional = FALSE)
   })
   
   ##
@@ -1679,7 +1679,7 @@ server <- function(input, output, session) {
     
     plot_kinetics(kin_dat = kin_dat(),
                   theoretical = FALSE,
-                  relative = TRUE)
+                  fractional = TRUE)
   })
   
   ##
@@ -1688,7 +1688,7 @@ server <- function(input, output, session) {
     
     plot_kinetics(kin_dat = kin_dat(),
                   theoretical = FALSE,
-                  relative = FALSE)
+                  fractional = FALSE)
   })
   
   ##
@@ -1697,7 +1697,7 @@ server <- function(input, output, session) {
     
     if (input[["kin_theory"]]) {
       
-      if (input[["kin_calc_type"]] == "relative") {
+      if (input[["kin_calc_type"]] == "fractional") {
         
         kp <- kin_plot_theo()
         
@@ -1709,7 +1709,7 @@ server <- function(input, output, session) {
       
     } else {
       
-      if (input[["kin_calc_type"]] == "relative"){
+      if (input[["kin_calc_type"]] == "fractional"){
         
         kp <- kin_plot_exp()
         
@@ -1801,7 +1801,7 @@ server <- function(input, output, session) {
     
     generate_kinetic_data(dat = kin_dat(),
                           theoretical = TRUE, 
-                          relative = TRUE)
+                          fractional = TRUE)
   })
   
   ##
@@ -1810,7 +1810,7 @@ server <- function(input, output, session) {
     
     generate_kinetic_data(dat = kin_dat(),
                           theoretical = TRUE, 
-                          relative = FALSE)
+                          fractional = FALSE)
   })
   
   ##
@@ -1819,7 +1819,7 @@ server <- function(input, output, session) {
     
     generate_kinetic_data(dat = kin_dat(),
                           theoretical = FALSE, 
-                          relative = TRUE)
+                          fractional = TRUE)
   })
   
   ##
@@ -1828,7 +1828,7 @@ server <- function(input, output, session) {
     
     generate_kinetic_data(dat = kin_dat(),
                           theoretical = FALSE, 
-                          relative = FALSE)
+                          fractional = FALSE)
   })
   
   ##
@@ -1837,7 +1837,7 @@ server <- function(input, output, session) {
     
     if (input[["kin_theory"]]) {
       
-      if (input[["kin_calc_type"]] == "relative") {
+      if (input[["kin_calc_type"]] == "fractional") {
         kp_data <- kin_plot_theo_data()
       } else {
         kp_data <- kin_plot_theo_abs_data()
@@ -1845,7 +1845,7 @@ server <- function(input, output, session) {
       
     } else {
       
-      if (input[["kin_calc_type"]] == "relative") {
+      if (input[["kin_calc_type"]] == "fractional") {
         kp_data <- kin_plot_exp_data()
       } else {
         kp_data <- kin_plot_exp_abs_data()
@@ -1875,15 +1875,15 @@ server <- function(input, output, session) {
   observe({
     
     updateSelectInput(session, 
-                      inputId = "qc_chosen_time",
+                      inputId = "qc_time_t",
                       choices = times_from_file()[times_from_file() < 99999],
-                      selected = min(times_from_file()[times_from_file() > input[["qc_in_time"]]]))
+                      selected = min(times_from_file()[times_from_file() > input[["qc_time_0"]]]))
   })
   
   observe({
     
     updateSelectInput(session, 
-                      inputId = "qc_in_time",
+                      inputId = "qc_time_0",
                       choices = times_from_file()[times_from_file() < 99999],
                       selected = min(times_from_file()[times_from_file() > 0]))
     
@@ -1906,16 +1906,16 @@ server <- function(input, output, session) {
     qc_dat <- dat() %>%
       filter(Exposure < 99999)
     
-    validate(need(as.numeric(input[["qc_chosen_time"]]) > as.numeric(input[["qc_in_time"]]), "Chosen time must be bigger than in time. "))
-    validate(need(sum(unique(qc_dat[["Exposure"]]) > as.numeric(input[["qc_chosen_time"]])) > 1, "Not enough time points (bigger than chosen time) to generate a plot. ")) 
+    validate(need(as.numeric(input[["qc_time_t"]]) > as.numeric(input[["qc_time_0"]]), "Chosen time must be bigger than in time. "))
+    validate(need(sum(unique(qc_dat[["Exposure"]]) > as.numeric(input[["qc_time_t"]])) > 1, "Not enough time points (bigger than chosen time) to generate a plot. ")) 
     
     result <- quality_control(dat = qc_dat,
                               state_first = input[["qc_state_first"]],
                               state_second = input[["qc_state_second"]], 
-                              time_t = as.numeric(input[["qc_chosen_time"]]), 
-                              time_0 = as.numeric(input[["qc_in_time"]]),
+                              time_t = as.numeric(input[["qc_time_t"]]), 
+                              time_0 = as.numeric(input[["qc_time_0"]]),
                               protein = input[["chosen_protein"]],
-                              deut_part = 0.01*as.integer(input[["deut_concentration"]]))
+                              deut_part = 0.01*as.integer(input[["deut_part"]]))
     
   })
   

@@ -60,7 +60,7 @@ quality_control <- function(dat,
                             deut_part){
   
   
-  times <- unique(dat[["Exposure"]][dat[["Exposure"]] > chosen_time])
+  times <- unique(dat[["Exposure"]][dat[["Exposure"]] > time_t])
   
   result <- lapply(times, function(t){
     

@@ -44,7 +44,7 @@ add_stat_dependency <- function(calc_dat,
   calc_dat[[paste0("valid_at_", confidence_limit)]] <- calc_dat[[value_column]] > confidence_values[2] | calc_dat[[value_column]] < confidence_values[1]
   
   attr(calc_dat, paste0("confidence_limit_at_", confidence_limit)) <- confidence_values
-  attr(calc_dat, paste0("confidence_limit_at_", confidence_limit, "_prop")) <- data.frame("theoretical" = theoretical, "relative" = relative)
+  attr(calc_dat, paste0("confidence_limit_at_", confidence_limit, "_prop")) <- data.frame("theoretical" = theoretical, "fractional" = fractional)
 
   calc_dat
   
