@@ -9,6 +9,7 @@
 #' @importFrom data.table fread setattr `:=`
 #' @importFrom dplyr %>%
 #' @importFrom stringi stri_count
+#' @importFrom dplyr group_by ungroup summarize
 #' 
 #' @param filename a file supplied by the user. Formats allowed: .csv, .xlsx and .xls.
 #' 
