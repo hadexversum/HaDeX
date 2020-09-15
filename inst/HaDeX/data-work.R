@@ -83,10 +83,10 @@ for(ith_fun_id in 1L:length(func_list)) {
   
 # get("selectInput", envir = "package::shiny")
 
-get_internal_messages <- function(func, ...){
+get_internal_messages <- function(expr){
   
   tryCatch({
-    func(...)
+    expr
   },
   error = function(e){
     validate(need(FALSE, conditionMessage(e)))

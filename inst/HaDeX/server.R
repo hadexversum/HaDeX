@@ -99,14 +99,14 @@ server <- function(input, output, session) {
   
   dat_exam <- eventReactive(input[["exam_apply_changes"]], {
     
-    get_internal_messages(update_hdexaminer_file, 
-                          dat = dat_in(),
-                          fd_time = input[["examiner_fd_timepoint"]],
-                          old_protein_name = exam_protein_name_from_file(),
-                          new_protein_name = input[["exam_protein_name"]],
-                          old_state_name = exam_state_name_from_file(),
-                          new_state_name = strsplit(input[["exam_state_name"]], ",")[[1]],
-                          confidence = input[["exam_confidence"]])
+    get_internal_messages(update_hdexaminer_file(
+                                    dat = dat_in(),
+                                    fd_time = input[["examiner_fd_timepoint"]],
+                                    old_protein_name = exam_protein_name_from_file(),
+                                    new_protein_name = input[["exam_protein_name"]],
+                                    old_state_name = exam_state_name_from_file(),
+                                    new_state_name = strsplit(input[["exam_state_name"]], ",")[[1]],
+                                    confidence = input[["exam_confidence"]]))
     
   })
   
