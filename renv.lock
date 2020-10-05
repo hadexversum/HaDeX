@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "3.6.3",
+    "Version": "3.6.1",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -107,6 +107,13 @@
       "Repository": "CRAN",
       "Hash": "f61dbaec772ccd2e17705c1e872e9e7c"
     },
+    "checkmate": {
+      "Package": "checkmate",
+      "Version": "2.0.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "a667800d5f0350371bedeb8b8b950289"
+    },
     "cli": {
       "Package": "cli",
       "Version": "2.0.2",
@@ -207,10 +214,10 @@
     },
     "dplyr": {
       "Package": "dplyr",
-      "Version": "1.0.1",
+      "Version": "1.0.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "018b2fc43cb25d9f07241986c53fbf8e"
+      "Hash": "4011f62581a34080e44105d4aa05a97f"
     },
     "ellipsis": {
       "Package": "ellipsis",
@@ -662,10 +669,10 @@
     },
     "rlang": {
       "Package": "rlang",
-      "Version": "0.4.7",
+      "Version": "0.4.6",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "c06d2a6887f4b414f8e927afd9ee976a"
+      "Hash": "aa263e3ce17b177c49e0daade2ee3cdc"
     },
     "rmarkdown": {
       "Package": "rmarkdown",
@@ -837,10 +844,10 @@
     },
     "vctrs": {
       "Package": "vctrs",
-      "Version": "0.3.2",
+      "Version": "0.3.1",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "5ba3006888ac62fd5e97b208d00d3317"
+      "Hash": "1739235995f08583db4095a28c357207"
     },
     "vdiffr": {
       "Package": "vdiffr",
