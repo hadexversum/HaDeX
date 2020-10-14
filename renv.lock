@@ -1,10 +1,10 @@
 {
   "R": {
-    "Version": "3.6.1",
+    "Version": "4.0.2",
     "Repositories": [
       {
         "Name": "CRAN",
-        "URL": "https://cloud.r-project.org"
+        "URL": "https://cran.rstudio.com"
       }
     ]
   },
@@ -247,6 +247,13 @@
       "Repository": "CRAN",
       "Hash": "dad6793a5a1f73c8e91f1a1e3e834b05"
     },
+    "fastmap": {
+      "Package": "fastmap",
+      "Version": "1.0.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "83ab58a0518afe3d17e41da01af13b60"
+    },
     "fontBitstreamVera": {
       "Package": "fontBitstreamVera",
       "Version": "0.1.1",
@@ -354,10 +361,10 @@
     },
     "htmltools": {
       "Package": "htmltools",
-      "Version": "0.3.6",
+      "Version": "0.5.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "74aa264d2e3b6214529cd33a5850a07f"
+      "Hash": "7d651b7131794fe007b1ad6f21aaa401"
     },
     "htmlwidgets": {
       "Package": "htmlwidgets",
@@ -648,10 +655,10 @@
     },
     "renv": {
       "Package": "renv",
-      "Version": "0.9.3",
+      "Version": "0.11.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "c1a367437d8a8a44bec4b9d4974cb20c"
+      "Hash": "1c3ef87cbb81c23ac96797781ec7aecc"
     },
     "reshape2": {
       "Package": "reshape2",
@@ -725,10 +732,10 @@
     },
     "shiny": {
       "Package": "shiny",
-      "Version": "1.3.2",
+      "Version": "1.5.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "67d22f2e1e16eeb8d9b24a3036169ab4"
+      "Hash": "ee4ed72d7a5047d9e73cf922ad66e9c9"
     },
     "shinycssloaders": {
       "Package": "shinycssloaders",
@@ -886,10 +893,10 @@
     },
     "xml2": {
       "Package": "xml2",
-      "Version": "1.3.2",
+      "Version": "1.2.5",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "d4d71a75dd3ea9eb5fa28cc21f9585e2"
+      "Hash": "13efdfe4c591af40c1c29dc6408281ed"
     },
     "xopen": {
       "Package": "xopen",

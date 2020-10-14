@@ -12,3 +12,5 @@ hadex.Rproj
 HaDeX.Rproj
 renv
 docs/*
+vignettes/*.html
+vignettes/*.R
