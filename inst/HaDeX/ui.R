@@ -3,16 +3,16 @@ source("data-work.R")
 options(spinner.color="#715D91")
 
 ui <- fluidPage(theme = "HaDeX_theme.css",
-                #titlePanel("HaDeX"), #: analysis of data from hydrogen deuterium exchange-mass spectrometry"),
+#                 #titlePanel("HaDeX"), #: analysis of data from hydrogen deuterium exchange-mass spectrometry"),
                 title = "HaDeX",
                 useShinyjs(),
-                tags$head(includeScript("ga.js"), 
+                tags$head(includeScript("ga.js"),
                           tags$link(rel="stylesheet",
                                     href="mobile_version.css",
                                     media="screen and (max-width: 600px)"),
                           tags$script(type="text/javascript",
                                       src="detect-element-resize.js")),
-                
+
                 tags$div(
                   class = "site-backbone",
                   tags$div(
@@ -24,7 +24,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        h3("Welcome to HaDeX!"),
                                        h4("Thank you for using our tool."),
                                        #h4("For any additional information, please see the documnetation available online.", a(href = "https://hadexversum.github.io/HaDeX/", "Check it out!")),
-                                       h4("Questions/feature requests/commercial applications: hadex@ibb.waw.pl"), 
+                                       h4("Questions/feature requests/commercial applications: hadex@ibb.waw.pl"),
                                        includeMarkdown("readmes/about.md"),
                                        img(class='funding-icons',
                                            src='funding_icons.png'),
@@ -39,14 +39,14 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        h4("If the supplied file contains modified peptides, maximal exchange control cannot be applied."),
                                        #
                                        fluidRow(
-                                         column(3, 
+                                         column(3,
                                                 fileInput(
                                                   inputId = "data_file",
                                                   label = "Choose file:",
                                                   multiple = FALSE,
                                                   accept = c(".csv", ".xlsx", ".xls"),
                                                   placeholder = "No file selected")),
-                                         column(4, 
+                                         column(4,
                                                 h5("File status:"),
                                                 tags$div(
                                                   class = "file-status-message",
@@ -56,10 +56,10 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        #
                                        h4("Please be aware that loading data (including example file) may take a while. Be patient."),
                                        h4("For the program to behave correctly, please make sure supplied file fulfills following requirements:"),
-                                       tags$button("Show requirements", 
-                                                   class = "collapse-button", 
+                                       tags$button("Show requirements",
+                                                   class = "collapse-button",
                                                    style = "width: unset",
-                                                   `data-toggle`="collapse", 
+                                                   `data-toggle`="collapse",
                                                    `data-target`="#reqs"),
                                        tags$div(
                                          id = "reqs",
@@ -69,7 +69,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        h3("Settings"),
                                        h4("Values chosen here are propagated into all of the tables for coherent results."),
                                        fluidRow(
-                                         column(4, 
+                                         column(4,
                                                 selectInput_h(inputId = "chosen_protein",
                                                               label = "Choose protein: ",
                                                               choices = c("db_CD160"),
@@ -93,41 +93,41 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                width = "100%"),
                                                 textOutput("sequence_length_exp_info")
                                          ),
-                                         column(2, 
+                                         column(2,
                                                 br()),
                                          column(4,
                                                 hidden(div(id = "examiner_settings",
-                                                    h3("File from HDeXaminer detected!"),
-                                                    h4("Some of the information from the data file requires your confirmation."),
-                                                    h4("For the additional information on how the data from HDeXaminer is processed, check the requirements above. Keep in mind that the MHP value is generated based on the peptide sequence and therefore, may differ from actual value in case of the modifications."),
-                                                    numericInput_h(inputId = "examiner_fd_timepoint",
-                                                                   label = "FD timepoint [min]:",
-                                                                   value = 1440,
-                                                                   min = 0,
-                                                                   width = "100%"),
-                                                    textInput_h(inputId = "exam_protein_name",
-                                                                label = "Protein name:",
-                                                                width = "100%"),
-                                                    textInput_h(inputId = "exam_state_name",
-                                                                label = "States names:",
-                                                                width = "100%"),
-                                                    checkboxGroupInput_h(inputId = "exam_confidence", 
-                                                                         label = "Accepted confidence values:",
-                                                                         choices = c("High", "Medium", "Low"),
-                                                                         selected = c("Medium", "High")),
-                                                    actionButton(inputId = "exam_apply_changes",
-                                                                 label = "Apply changes to continue"),
-                                                    br(),
-                                                    h5("The calculated values of MPH might slightly differ based on data used and its precision."),
-                                                    a(href="http://www.matrixscience.com/help/aa_help.html", "Used amino mass data"),
-                                                    br(),
-                                                    br(),
-                                                    DT::dataTableOutput("checking_exam_data"),
-                                                    br(),
-                                                    br(),
-                                                    br()
-                                                    ))
-                                       )),
+                                                           h3("File from HDeXaminer detected!"),
+                                                           h4("Some of the information from the data file requires your confirmation."),
+                                                           h4("For the additional information on how the data from HDeXaminer is processed, check the requirements above. Keep in mind that the MHP value is generated based on the peptide sequence and therefore, may differ from actual value in case of the modifications."),
+                                                           numericInput_h(inputId = "examiner_fd_timepoint",
+                                                                          label = "FD timepoint [min]:",
+                                                                          value = 1440,
+                                                                          min = 0,
+                                                                          width = "100%"),
+                                                           textInput_h(inputId = "exam_protein_name",
+                                                                       label = "Protein name:",
+                                                                       width = "100%"),
+                                                           textInput_h(inputId = "exam_state_name",
+                                                                       label = "States names:",
+                                                                       width = "100%"),
+                                                           checkboxGroupInput_h(inputId = "exam_confidence",
+                                                                                label = "Accepted confidence values:",
+                                                                                choices = c("High", "Medium", "Low"),
+                                                                                selected = c("Medium", "High")),
+                                                           actionButton(inputId = "exam_apply_changes",
+                                                                        label = "Apply changes to continue"),
+                                                           br(),
+                                                           h5("The calculated values of MPH might slightly differ based on data used and its precision."),
+                                                           a(href="http://www.matrixscience.com/help/aa_help.html", "Used amino mass data"),
+                                                           br(),
+                                                           br(),
+                                                           DT::dataTableOutput("checking_exam_data"),
+                                                           br(),
+                                                           br(),
+                                                           br()
+                                                ))
+                                         )),
                                        br(),
                                        br(),
                                        br()
@@ -151,7 +151,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                selectInput_h(inputId = "time_0",
                                                              label = "IN",
                                                              choices = c("0", "1", "5", "25", "1440"))
-                                               ),
+                                           ),
                                            selectInput_h(inputId = "time_t",
                                                          label = "CHOSEN",
                                                          choices = c("0", "1", "5", "25", "1440")),
@@ -159,11 +159,11 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                selectInput_h(inputId = "time_100",
                                                              label = "OUT",
                                                              choices = c("0", "1", "5", "25", "1440"))
-                                               )
+                                           )
                                          ),
                                          ##
                                          fluidRow(
-                                           column(6, 
+                                           column(6,
                                                   h5("Choose states for comparison:"),
                                                   checkboxGroupInput_h(inputId = "compare_states",
                                                                        label = "",
@@ -175,7 +175,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                      class = "collapse-button",
                                                                      `data-toggle`="collapse",
                                                                      `data-target`="#colorss"),
-                                                         content = "adjust_colors", type = "markdown", buttonLabel = "Okay", 
+                                                         content = "adjust_colors", type = "markdown", buttonLabel = "Okay",
                                                          easyClose = TRUE, colour = "#F8F1FF"),
                                                   tags$div(
                                                     class = "hideable",
@@ -184,7 +184,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                   ),
                                                   class = "states-colors-column"
                                            )
-                                           
+
                                          ),
                                          ##
                                          h4("Woods plot parameters:"),
@@ -193,7 +193,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                          label = "State 1",
                                                          choices = c("CD160", "CD160VEM")),
                                            selectInput_h(inputId = "state_second",
-                                                         label = "State 2", 
+                                                         label = "State 2",
                                                          choices = c("CD160", "CD160VEM"))
                                          ),
                                          splitLayout(
@@ -226,9 +226,10 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                      min = 0,
                                                      max = 300,
                                                      value = c(0, 300),
-                                                     ticks = seq(0, 300, 1)),
+                                                     # ticks = seq(0, 300, 1) # this breaks shiny 1.5
+                                                     ),
                                          ##
-                                         tags$button("Adjust labels", 
+                                         tags$button("Adjust labels",
                                                      class = "collapse-button",
                                                      `data-toggle`="collapse",
                                                      `data-target`="#labs"),
@@ -258,36 +259,36 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        mainPanel(
                                          class = "scrollable",
                                          tabsetPanel(
-                                           tabPanel("Comparison plot", 
+                                           tabPanel("Comparison plot",
                                                     br(),
-                                                    plotOutput_h("comparisonPlot", hover = hoverOpts("comparisonPlot_hover", delay = 10, delayType = "debounce")), 
-                                                    downloadButton("comparisonPlot_download_button", 
-                                                                   "Save chart (.svg)")), 
+                                                    plotOutput_h("comparisonPlot", hover = hoverOpts("comparisonPlot_hover", delay = 10, delayType = "debounce")),
+                                                    downloadButton("comparisonPlot_download_button",
+                                                                   "Save chart (.svg)")),
                                            tabPanel("Data",
                                                     br(),
                                                     DT::dataTableOutput("comparisonPlot_data"),
                                                     br(),
                                                     h4("The empty values (e.q. `Frac Exch`) means there was not sufficient data for this peptide."))),
-                                         uiOutput("comparisonPlot_debug"), 
+                                         uiOutput("comparisonPlot_debug"),
                                          br(),
                                          tabsetPanel(
                                            tabPanel("Woods plot",
                                                     br(),
                                                     div(style = "position:relative",
-                                                      plotOutput_h("differentialPlot", hover = hoverOpts("differentialPlot_hover", delay = 10, delayType = "debounce")), 
-                                                      uiOutput("differentialPlot_debug")),
-                                                    downloadButton("differentialPlot_download_button", 
-                                                                   "Save chart (.svg)")), 
+                                                        plotOutput_h("differentialPlot", hover = hoverOpts("differentialPlot_hover", delay = 10, delayType = "debounce")),
+                                                        uiOutput("differentialPlot_debug")),
+                                                    downloadButton("differentialPlot_download_button",
+                                                                   "Save chart (.svg)")),
                                            tabPanel("Data",
                                                     br(),
                                                     DT::dataTableOutput("differentialPlot_data"),
                                                     br(),
                                                     h4("The empty values (e.q. `Diff Frac Exch`) means there was not sufficient data for this peptide.")))
-                                         
-                                         
+
+
                                        )
                               ),
-                              tabPanel("Coverage", 
+                              tabPanel("Coverage",
                                        br(),
                                        sidebarPanel(
                                          class = "scrollable",
@@ -303,7 +304,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                            min = 1,
                                            max = 300,
                                            value = c(1, 300),
-                                           ticks = seq(1, 300, 1)
+                                           # ticks = seq(1, 300, 1) # this breaks shiny 1.5
                                          )
                                        ),
                                        mainPanel(
@@ -312,10 +313,10 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                            tabPanel("Peptide Coverage",
                                                     br(),
                                                     withSpinner(plotOutput("stateOverlap", hover = hoverOpts("stateOverlap_hover", delay = 10, delayType = "debounce"))),
-                                                    uiOutput("stateOverlap_debug"), 
+                                                    uiOutput("stateOverlap_debug"),
                                                     downloadButton("stateOverlap_download_button",
                                                                    "Save chart (.svg)")),
-                                           
+
                                            tabPanel("Data",
                                                     br(),
                                                     DT::dataTableOutput("stateOverlap_data"))
@@ -334,7 +335,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                     br(),
                                                     DT::dataTableOutput("stateOverlapDist_data"))
                                          )
-                                         
+
                                        )
                               ),
                               tabPanel("Sequence data",
@@ -347,7 +348,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          sidebarLayout(
                                            sidebarPanel(
                                              fluidRow(
-                                               column(6, 
+                                               column(6,
                                                       tableOutput("protein_stats"),
                                                       br(),
                                                       checkboxGroupInput(
@@ -364,7 +365,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                              )
                                            ),
                                            mainPanel(withSpinner(plotOutput("aminoDist", hover = hoverOpts("aminoDist_hover", delay = 10, delayType = "debounce"))),
-                                                     uiOutput("aminoDist_debug"), 
+                                                     uiOutput("aminoDist_debug"),
                                                      downloadButton("aminoDist_download_button",
                                                                     "Save chart (.svg)"),
                                                      p("Source: Kyte, J., and Doolittle, R.F. (1982). A simple method for displaying the hydropathic character of a protein. J Mol Biol 157, 105–132."))
@@ -383,22 +384,22 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                         label = "Choose values type:",
                                                         choices = c("fractional", "absolute"),
                                                         selected = "fractional"),
-                                         div(id = "kin_time_part", 
-                                           h5("Choose time parameters:"),
-                                           splitLayout(
-                                             div(id = "kin_time_0_part",
-                                                 selectInput_h(inputId = "kin_time_0",
-                                                               label = "IN",
-                                                               choices = c("0", "1", "5", "25", "1440"))
-                                                 ),
-                                             div(id = "kin_time_100_part",
-                                                 selectInput_h(inputId = "kin_time_100",
-                                                               label = "OUT",
-                                                               choices = c("0", "1", "5", "25", "1440")))
-                                                 )),
+                                         div(id = "kin_time_part",
+                                             h5("Choose time parameters:"),
+                                             splitLayout(
+                                               div(id = "kin_time_0_part",
+                                                   selectInput_h(inputId = "kin_time_0",
+                                                                 label = "IN",
+                                                                 choices = c("0", "1", "5", "25", "1440"))
+                                               ),
+                                               div(id = "kin_time_100_part",
+                                                   selectInput_h(inputId = "kin_time_100",
+                                                                 label = "OUT",
+                                                                 choices = c("0", "1", "5", "25", "1440")))
+                                             )),
                                          h5("Choose peptide:"),
-                                         dataTableOutput_h("peptide_list_data"), ## !! 
-                                         actionButton(inputId = "reset_peptide_list", 
+                                         dataTableOutput_h("peptide_list_data"), ## !!
+                                         actionButton(inputId = "reset_peptide_list",
                                                       label = "Reset chosen peptides"),
                                          br(),
                                          br(),
@@ -409,7 +410,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                      max = 200,
                                                      value = c(-10, 100),
                                                      step = 10),
-                                         tags$button("Adjust labels", 
+                                         tags$button("Adjust labels",
                                                      class = "collapse-button",
                                                      `data-toggle`="collapse",
                                                      `data-target`="#kin-labs"),
@@ -433,15 +434,15 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                              "Uptake curve",
                                              br(),
                                              plotOutput_h("kinetic_plot_chosen_peptides", hover = hoverOpts("kinetic_plot_chosen_peptides_hover", delay = 10, delayType = "debounce"), height = 600),
-                                             uiOutput("kinetic_plot_chosen_peptides_debug"), 
-                                             downloadButton("kineticPlot_download_button", 
+                                             uiOutput("kinetic_plot_chosen_peptides_debug"),
+                                             downloadButton("kineticPlot_download_button",
                                                             "Save chart (.svg)")),
-                                           tabPanel("Data", 
-                                                    br(), 
-                                                    DT::dataTableOutput("kin_plot_data")) 
+                                           tabPanel("Data",
+                                                    br(),
+                                                    DT::dataTableOutput("kin_plot_data"))
                                          )
                                        )
-                              ),
+                              ) ,
                               #
                               tabPanel("Quality control",
                                        br(),
@@ -458,20 +459,20 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                        label = "State 1",
                                                        choices = c("CD160", "CD160VEM")),
                                          selectInput_h(inputId = "qc_state_second",
-                                                       label = "State 2", 
+                                                       label = "State 2",
                                                        choices = c("CD160", "CD160VEM"))
                                        ),
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Quality control plot", 
+                                           tabPanel("Quality control plot",
                                                     br(),
                                                     plotOutput_h("quality_control_plot", hover = hoverOpts("quality_control_plot_hover", delay = 10, delayType = "debounce"), height = 600),
-                                                    uiOutput("quality_control_plot_debug"), 
-                                                    downloadButton("quality_control_plot_download_button", 
+                                                    uiOutput("quality_control_plot_debug"),
+                                                    downloadButton("quality_control_plot_download_button",
                                                                    "Save chart (.svg)"),
                                                     br(),
                                                     h4("This function plots the change in the uncertainty of deuteration levels as a function of incubation time. The uncertainty is averaged over all peptides available at a given time point in a selected state. This chart has a double function: firstly, it allows checking if the measurement uncertainty is decreasing over time (which is the expected behavior). Secondly, it helps to plan the appropriate incubation length for the tested protein (whether we obtain the desired data reliability values).")
-                                                    ), 
+                                           ),
                                            tabPanel("Data",
                                                     br(),
                                                     DT::dataTableOutput("quality_control_plot_data"))
@@ -513,12 +514,12 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                            label = "Uptake Curve",
                                                                            value = FALSE),
                                                              checkboxInput(inputId = "export_theo_kin_plot",
-                                                                           label = "Theoretical Uptake Curve", 
+                                                                           label = "Theoretical Uptake Curve",
                                                                            value = FALSE),
                                                              checkboxInput(inputId = "export_quality_control_plot",
                                                                            label = "Quality Control Plot",
                                                                            value = FALSE)),
-                                                      column(6, 
+                                                      column(6,
                                                              checkboxInput(inputId = "export_overlap_dist_data",
                                                                            label = "Position Frequency Data"),
                                                              checkboxInput(inputId = "export_overlap_graph_data",
@@ -531,9 +532,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                            label = "Woods Plot Data"),
                                                              checkboxInput(inputId = "export_theo_woods_plot_data",
                                                                            label = "Theoretical Woods Plot Data"),
-                                                             checkboxInput(input = "export_kin_plot_data", 
+                                                             checkboxInput(input = "export_kin_plot_data",
                                                                            label = "Uptake Curve Data"),
-                                                             checkboxInput(inputId = "export_theo_kin_plot_data", 
+                                                             checkboxInput(inputId = "export_theo_kin_plot_data",
                                                                            label = "Theoretical Uptake Curve Data"),
                                                              checkboxInput(inputId = "export_quality_control_plot_data",
                                                                            label = "Quality Control Plot Data"))),
@@ -563,8 +564,3 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                 tags$script(type="text/javascript",
                             src="resize-logo-panel.js")
 )
-
-
-
-#tags$div(class = "logo-container",
-#         tags$img(source = "www/mock_logo.png"))
