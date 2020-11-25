@@ -15,3 +15,4 @@
 ^pkgdown$
 appveyor.yml
 ^appveyor\.yml$
+^\.github$
