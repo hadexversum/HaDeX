@@ -482,7 +482,7 @@ reconstruct_sequence(dat)
 
 Additionally, the coverage of peptides can be presented on a chart using the [plot_coverage()](https://hadexversum.github.io/HaDeX/reference/plot_coverage.html) and [plot_position_frequency()](https://hadexversum.github.io/HaDeX/reference/plot_position_frequency.html) functions. 
 
-```{r warning=FALSE}
+```{r warning=FALSE, eval=FALSE}
 
 plot_coverage(dat, chosen_state = "gg_Nucb2_CaCl2")
 
@@ -525,7 +525,7 @@ Example:
 
 The chart below shows how we interpret the three most common results of quality control.
 
-```{r warning=FALSE,echo=FALSE}
+```{r warning=FALSE,echo=FALSE, eval=FALSE}
 example_qc <- rbind(data.frame(x = c(10, 25, 60, 1440),
                                y = c(0.008, 0.0075, 0.007, 0.0065),
                                type = "Uncertainty decreases too slowly\nExperiment should be prolonged",
@@ -568,7 +568,7 @@ dat_1 <- read_hdx(system.file(package = "HaDeX",
 
 Then, we reconstruct the protein sequence from the peptides measured during the experiment. We observe the region from amino acid 107 till amino acid 124 is not covered by any peptide.
 
-```{r warning=FALSE}
+```{r warning=FALSE, eval=FALSE}
 reconstruct_sequence(dat_1)
 
 plot_position_frequency(dat_1, chosen_state = "CD160")

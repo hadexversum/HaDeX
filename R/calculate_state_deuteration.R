@@ -59,11 +59,11 @@ calculate_state_deuteration <- function(dat,
     spread(key = Exposure, value = avg_exp_mass) %>%
     group_by(Sequence, Start, End, MaxUptake, MHP, Protein, State) %>%
     summarize(time_0_mean = mean(time_0, na.rm = TRUE),
-              err_time_0_mean = coalesce(sd(time_0, na.rm = TRUE)/sqrt(length(time_0)), 0),
+              err_time_0_mean = coalesce(sd(time_0, na.rm = TRUE)/sqrt(sum(!is.na(time_0))), 0),
               time_t_mean = mean(time_t, na.rm = TRUE),
-              err_time_t_mean = coalesce(sd(time_t, na.rm = TRUE)/sqrt(length(time_t)), 0),
+              err_time_t_mean = coalesce(sd(time_t, na.rm = TRUE)/sqrt(sum(!is.na(time_t))), 0),
               time_100_mean = mean(time_100, na.rm = TRUE),
-              err_time_100_mean = coalesce(sd(time_100, na.rm = TRUE)/sqrt(length(time_100)), 0)) %>%
+              err_time_100_mean = coalesce(sd(time_100, na.rm = TRUE)/sqrt(sum(!is.na(time_100))), 0)) %>%
     mutate(# experimental calculations below - fractional
       frac_deut_uptake = 100*(time_t_mean - time_0_mean)/(time_100_mean - time_0_mean),
       err_frac_deut_uptake = 100*sqrt((err_time_t_mean*(1/(time_100_mean - time_0_mean)))^2 + (err_time_0_mean*((time_t_mean - time_100_mean )/((time_100_mean - time_0_mean)^2)))^2 + (err_time_100_mean*((time_0_mean - time_t_mean)/((time_100_mean - time_0_mean)^2)))^2),
