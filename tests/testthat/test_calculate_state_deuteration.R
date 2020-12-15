@@ -98,20 +98,3 @@ lapply(times, function(chosen_time){
   
   
 })
-
-# 
-# ref_dat[chosen_time, ]["frac_deut_uptake"][[1]]
-# 
-# 
-# calculate_state_deuteration(dat,
-#                             protein = chosen_protein,
-#                             state = chosen_state,
-#                             time_in = chosen_time_0,
-#                             time_chosen = chosen_time,
-#                             time_out = chosen_time_100) %>%
-#   filter(Sequence == chosen_peptide) %>%
-#   select(frac_exch_state) %>%
-#   .[[1]]
-
-
-## testthat::test_file("tests/testthat/test_calculate_state_deuteration.R")
