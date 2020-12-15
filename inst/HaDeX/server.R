@@ -1129,7 +1129,7 @@ server <- function(input, output, session) {
              Start >= input[["plot_x_range"]][[1]],
              End <= input[["plot_x_range"]][[2]]) %>%
       mutate(abs_avg_theo_in_time = round(abs_avg_theo_in_time, 4),
-             err_abs_avg_theo_in_time = round(abs_avg_theo_in_time, 4)) %>%
+             err_abs_avg_theo_in_time = round(err_abs_avg_theo_in_time, 4)) %>%
       arrange(Start, End) %>%
       dt_format(cols = c("Protein", "Sequence", "State", "Start", "End", "Theo Abs Val Exch", "Err Theo Abs Val Exch"))
   })
@@ -1160,7 +1160,7 @@ server <- function(input, output, session) {
              Start >= input[["plot_x_range"]][[1]],
              End <= input[["plot_x_range"]][[2]]) %>%
       mutate(abs_frac_exch_state = round(abs_frac_exch_state, 4),
-             err_abs_frac_exch_state = round(abs_frac_exch_state, 4)) %>%
+             err_abs_frac_exch_state = round(err_abs_frac_exch_state, 4)) %>%
       arrange(Start, End) %>%
       dt_format(cols = c("Protein", "Sequence", "State", "Start", "End", "Abs Val Exch", "Err Abs Val Exch"))
     

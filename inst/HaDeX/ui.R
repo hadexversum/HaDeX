@@ -192,8 +192,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                      label = 'Choose x range for both plots:',
                                                      min = 0,
                                                      max = 300,
-                                                     value = c(0, 300),
-                                                     ticks = seq(0, 300, 1)),
+                                                     value = c(0, 300) #,
+                                                     # ticks = seq(0, 300, 1) # fix for new shiny
+                                                     ),
                                          ##
                                          tags$button("Adjust labels", 
                                                      class = "collapse-button",
@@ -265,8 +266,8 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                            label = 'Choose range:',
                                            min = 1,
                                            max = 300,
-                                           value = c(1, 300),
-                                           ticks = seq(1, 300, 1)
+                                           value = c(1, 300) #,
+                                           # ticks = seq(1, 300, 1) fix for shiny
                                          )
                                        ),
                                        mainPanel(
