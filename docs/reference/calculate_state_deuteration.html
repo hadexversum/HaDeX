@@ -15,21 +15,29 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -37,10 +45,10 @@
 
 
 
-<meta property="og:title" content="Calculate deuteration — calculate_state_deuteration" />
 
+<meta property="og:title" content="Calculate deuteration — calculate_state_deuteration" />
 <meta property="og:description" content="Calculates deuteration uptake based on supplied parameters." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -54,9 +62,10 @@
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -70,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">HaDeX</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -78,9 +87,12 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
+</li>
+<li>
+  <a href="../articles/HaDeX.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -93,12 +105,17 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/overview.html">Supplement to: "HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data"</a>
+      <a href="../articles/datafiles.html">Data processing</a>
+    </li>
+    <li>
+      <a href="../articles/mass_comparison.html">Mass calculation</a>
+    </li>
+    <li>
+      <a href="../articles/transformation.html">Data aggregation</a>
     </li>
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -108,6 +125,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -119,14 +137,19 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Calculates deuteration uptake based on supplied parameters.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>calculate_state_deuteration</span>(<span class='no'>dat</span>, <span class='no'>protein</span>, <span class='no'>state</span>, <span class='no'>time_in</span>, <span class='no'>time_chosen</span>,
-  <span class='no'>time_out</span>, <span class='kw'>deut_part</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>calculate_state_deuteration</span><span class='op'>(</span>
+  <span class='va'>dat</span>,
+  <span class='va'>protein</span>,
+  <span class='va'>state</span>,
+  <span class='va'>time_in</span>,
+  <span class='va'>time_chosen</span>,
+  <span class='va'>time_out</span>,
+  deut_part <span class='op'>=</span> <span class='fl'>1</span>
+<span class='op'>)</span></pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -159,11 +182,10 @@
       <td><p>percentage of deuterium the protein was exposed to, value in range [0, 1]</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a <code><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></code> object</p>
-    
+    <p>a <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></code> object</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The function <code>calculate_state_deuteration</code> calculates deuteration for peptides in given protein in given state based
@@ -171,53 +193,43 @@ on supplied parameters: `time_in`, `time_out` and `time_chosen`. All four varian
 supplied (mean values and uncertainty). Manual correction of percentage of deuterium the protein was exposed to during the exchange
 in theoretical calculations is provided.</p>
 <p>Methods of calculation and uncertainty are profoundly discussed in the vignette.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='read_hdx.html'>read_hdx</a></code> <code><a href='calculate_confidence_limit_values.html'>calculate_confidence_limit_values</a></code> <code><a href='add_stat_dependency.html'>add_stat_dependency</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># load example data</span>
-<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_hdx.html'>read_hdx</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"HaDeX"</span>, <span class='st'>"HaDeX/data/KD_180110_CD160_HVEM.csv"</span>))
+<span class='va'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_hdx.html'>read_hdx</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span>package <span class='op'>=</span> <span class='st'>"HaDeX"</span>, <span class='st'>"HaDeX/data/KD_180110_CD160_HVEM.csv"</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># calculate deuteration for state "CD160"</span>
-<span class='fu'>calculate_state_deuteration</span>(<span class='no'>dat</span>, <span class='kw'>protein</span> <span class='kw'>=</span> <span class='st'>"db_CD160"</span>, <span class='kw'>state</span> <span class='kw'>=</span> <span class='st'>"CD160"</span>,
-                            <span class='kw'>time_in</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>time_chosen</span> <span class='kw'>=</span> <span class='fl'>5.000</span>, <span class='kw'>time_out</span> <span class='kw'>=</span> <span class='fl'>1440.000</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 41 x 14</span><span>
-#&gt;    Protein Sequence Start   End State frac_exch_state err_frac_exch_s…
+<span class='fu'>calculate_state_deuteration</span><span class='op'>(</span><span class='va'>dat</span>, protein <span class='op'>=</span> <span class='st'>"db_CD160"</span>, state <span class='op'>=</span> <span class='st'>"CD160"</span>,
+                            time_in <span class='op'>=</span> <span class='fl'>0</span>, time_chosen <span class='op'>=</span> <span class='fl'>5.000</span>, time_out <span class='op'>=</span> <span class='fl'>1440.000</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 41 x 14</span><span>
+#&gt;    Protein Sequence Start   End State frac_exch_state err_frac_exch_s~
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> db_CD1… INITSSA…     1    15 CD160            87.6            0.395
-#&gt; </span><span style='color: #555555;'> 2</span><span> db_CD1… LICTVW      16    21 CD160            41.7            0.346
-#&gt; </span><span style='color: #555555;'> 3</span><span> db_CD1… LICTVWH…    16    29 CD160            72.1            0.711
-#&gt; </span><span style='color: #555555;'> 4</span><span> db_CD1… ICTVWHK…    17    29 CD160            75.6            0.520
-#&gt; </span><span style='color: #555555;'> 5</span><span> db_CD1… FVVFL       30    34 CD160            40.1            1.23 
-#&gt; </span><span style='color: #555555;'> 6</span><span> db_CD1… LCKDRSG…    34    48 CD160            97.6            0.368
-#&gt; </span><span style='color: #555555;'> 7</span><span> db_CD1… LCKDRSG…    34    49 CD160            97.2            0.331
-#&gt; </span><span style='color: #555555;'> 8</span><span> db_CD1… LCKDRSG…    34    51 CD160            95.3            0.240
-#&gt; </span><span style='color: #555555;'> 9</span><span> db_CD1… LCKDRSG…    34    69 CD160            93.6            0.222
-#&gt; </span><span style='color: #555555;'>10</span><span> db_CD1… CKDRSGD…    35    48 CD160            97.2            0.462
-#&gt; </span><span style='color: #555555;'># … with 31 more rows, and 7 more variables: abs_frac_exch_state </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
-#&gt; #   err_abs_frac_exch_state </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, avg_theo_in_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
-#&gt; #   err_avg_theo_in_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, abs_avg_theo_in_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
-#&gt; #   err_abs_avg_theo_in_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, Med_Sequence </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'> 1</span><span> db_CD1~ INITSSA~     1    15 CD160            87.6            0.592
+#&gt; </span><span style='color: #555555;'> 2</span><span> db_CD1~ LICTVW      16    21 CD160            41.7            0.581
+#&gt; </span><span style='color: #555555;'> 3</span><span> db_CD1~ LICTVWH~    16    29 CD160            72.1            1.07 
+#&gt; </span><span style='color: #555555;'> 4</span><span> db_CD1~ ICTVWHK~    17    29 CD160            75.6            0.780
+#&gt; </span><span style='color: #555555;'> 5</span><span> db_CD1~ FVVFL       30    34 CD160            40.1            1.85 
+#&gt; </span><span style='color: #555555;'> 6</span><span> db_CD1~ LCKDRSG~    34    48 CD160            97.6            0.552
+#&gt; </span><span style='color: #555555;'> 7</span><span> db_CD1~ LCKDRSG~    34    49 CD160            97.2            0.497
+#&gt; </span><span style='color: #555555;'> 8</span><span> db_CD1~ LCKDRSG~    34    51 CD160            95.3            0.359
+#&gt; </span><span style='color: #555555;'> 9</span><span> db_CD1~ LCKDRSG~    34    69 CD160            93.6            0.336
+#&gt; </span><span style='color: #555555;'>10</span><span> db_CD1~ CKDRSGD~    35    48 CD160            97.2            0.693
+#&gt; </span><span style='color: #555555;'># ... with 31 more rows, and 7 more variables: abs_frac_exch_state </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   err_abs_frac_exch_state </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, avg_theo_in_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   err_avg_theo_in_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, abs_avg_theo_in_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   err_abs_avg_theo_in_time </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, Med_Sequence </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
 </div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -225,13 +237,16 @@ in theoretical calculations is provided.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

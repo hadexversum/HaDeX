@@ -1,0 +1,117 @@
+---
+title: "Data aggregation"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"))
+```
+
+The aggregation of the data is complex. This article describes the process step by step for a better understanding of the data transformation.
+
+## Aggregation of the data - visualization
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(HaDeX)
+library(dplyr) 
+library(ggplot2)
+
+tmp_seq <- "LCKDRSGDCSPETSLKQLRLKRDPGIDGVGEISSQL"
+tmp_state <- "CD160"
+tmp_time <- "1 min"
+proton_mass <- 1.00727647
+
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv")) %>%
+  filter(Exposure == 1, State == "CD160", Sequence ==  "LCKDRSGDCSPETSLKQLRLKRDPGIDGVGEISSQL") 
+```
+
+Let's see how the data is transformed. We will use the example file "KD_180110_CD160_HVEM.csv" from the HaDeX package and focus on just one peptide - "LCKDRSGDCSPETSLKQLRLKRDPGIDGVGEISSQL" in the state "CD160". The measurement was made for timepoint 1 min. 
+
+Below is shown the original and unaggregated data for chosen peptide.
+
+```{r}
+dat
+```
+
+As we can see from the `File` column, there are four replicates of the experiment. Each measurement of a replicate provide values for different possible charge values for each peptide. The result of a measurement is in column `Center` - this is a geometrical centroid of an isotopic envelope - the product of the measurement from a mass spectrometer. 
+
+Let's take a look for values for each replicate.
+
+```{r echo=FALSE}
+dat %>%
+  filter(File == "KD_160530_CD160_1min_01") %>%
+ggplot() +
+  geom_segment(aes(x = Start, xend = End, y = Center, yend = Center, colour = z)) +
+  coord_cartesian( xlim = c(30, 75)) +
+  labs(title = paste0("Measurements for sequence in ", tmp_state, " state"),
+       x = "Position in the sequence")
+```
+
+The centroid values for different charge values are not useful. We have to transform it to the mass values, according to an equation:
+
+$$ aggMass = z*(Center - protonMass)$$
+The results are shown below.
+
+```{r echo=FALSE}
+dat %>%
+  filter(File == "KD_160530_CD160_1min_01") %>%
+mutate(exp_mass = z*(Center - proton_mass)) %>%
+  ggplot() +
+  geom_segment(aes(x = Start, xend = End, y = exp_mass, yend = exp_mass, colour = z)) +
+  coord_cartesian( xlim = c(30, 75)) +
+  labs(title = "", # paste0("Measurements for sequence in ", tmp_state, " state"),
+       x = "Position in the sequence",
+       y = "Measured mass [Da]")
+```
+
+This results are just for one repetition. We have four of them:
+
+```{r echo=FALSE}
+dat %>%
+mutate(exp_mass = z*(Center - proton_mass)) %>%
+  ggplot() +
+  geom_segment(aes(x = Start, xend = End, y = exp_mass, yend = exp_mass, colour = z, linetype = File)) +
+  coord_cartesian( xlim = c(30, 75)) +
+  labs(title = "", # paste0("Measurements for sequence in ", tmp_state, " state"),
+       x = "Position in the sequence",
+       y = "Measured mass [Da]")
+```
+
+Values from each replicate are aggregated into one value, using weighted mean (with intencity value as weight):
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+dat %>%
+  mutate(exp_mass = z*(Center - proton_mass)) %>%
+  group_by(Sequence, Start, End, File) %>%
+  summarize(avg_exp_mass = weighted.mean(exp_mass, Inten, na.rm = TRUE)) %>%
+  ungroup(.) %>%
+  ggplot() +
+  geom_segment(aes(x = Start, xend = End, y = avg_exp_mass, yend = avg_exp_mass, linetype = File)) +
+  coord_cartesian( xlim = c(30, 75), ylim = c(3920.3, 3920.6)) +
+  labs(title = "", # paste0("Measurements for sequence in ", tmp_state, " state"),
+       x = "Position in the sequence",
+       y = "Measured mass [Da]")
+```
+
+The results from replicates are aggregated into the final result (mean), and the uncertainty (standard deviation of the mean) is calculated.
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+dat %>%
+  mutate(exp_mass = z*(Center - proton_mass)) %>%
+  group_by(Sequence, Start, End, File) %>%
+  summarize(avg_exp_mass = weighted.mean(exp_mass, Inten, na.rm = TRUE)) %>%
+  ungroup(.) %>%
+  group_by(Sequence, Start, End) %>%
+  summarize(aggMass = mean(avg_exp_mass),
+            err_aggMass = sd(avg_exp_mass)) %>%
+  ggplot() +
+  geom_segment(aes(x = Start, xend = End, y = aggMass, yend = aggMass)) +
+  geom_errorbar(aes(x = 51.5, ymin = aggMass - err_aggMass, ymax = aggMass + err_aggMass)) + 
+  coord_cartesian( xlim = c(30, 75), ylim = c(3920.3, 3920.6)) +
+  labs(title = paste0("Measurements for sequence in ", tmp_state, " state"),
+       x = "Position in the sequence",
+       y = "Measured mass [Da]")
+```
+
+Now we have the mass value for chosen peptide in the chosen state, measured in the chosen time point. This calculation is done for every other peptide, and these values of mass and uncertainty are used in the calculation of deuterium uptake, as described in the `Data processing` article.

@@ -1,0 +1,132 @@
+---
+title: "Data processing"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<!-- Currently, HaDeX is limited to the `cluster` file from DynamX 3.0 or 2.0 and `tables` file from HDeXaminer. Each data file type needs a different way of processing, as explained below. -->
+
+Currently, HaDeX is limited to the `cluster` file from DynamX 3.0 or 2.0. Below we explain how the data file is processed. 
+
+## Processing data from DynamX
+
+Let's investigate how the data processing of the `cluster` file from DynamX is conducted on the example file from the package.
+
+### Differences between files
+
+What is the difference between `cluster` files from DynamX 3.0 and 2.0?
+The datafiles from DynamX 2.0 don't include `Modification` and  `Fragment` columns. The variations of the experiment were limited, while the DynamX 2.0 was the latest version. 
+
+### Initial processing of the data 
+
+Let's start with a glimpse of the datafile. 
+
+```{r warning=FALSE}
+library(HaDeX)
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+head(dat, 10)
+```
+
+As you can see, the data file has a very specific structure and is not informative yet. In the file, we have `m/z` values for each `z` value (charge) for each time point for each state of each peptide, repeated as many times as measurement was repeated (each measurement should be repeated at least three times). 
+
+<!-- The process of measurement and the basics of HDX experiment is described in `Basics of the HDX-MS` article. -->
+
+Our aim is to have one result with an uncertainty of the measurement per each peptide in each biological state in each measured time point - data in this format allows further calculations, e.q. calculating deuterium uptake values.
+
+For a better understanding of the process of aggregating the data, see the `Data aggregation` article.
+
+Within each replicate of the measurement (we recognize each replicate by the `File` value), the `m/z` values are provided for each possible `z` value. The `m/z` values are in the `Center` column, as it is a geometrical centroid calculated from the isotopic envelope. Firstly, we have to calculate the mass value, measured experimentally:
+
+$$expMass = z \times (Center-protonMass)\tag{1}$$
+<!-- The value is reduced by ... because ... -->
+
+To aggregate data from different `z` values, we have to calculate the mean mass weighted by intensity. Additional information about this step and how the weighted mean impacts the results can be found in `Mass calculation` article. 
+
+$$aggMass = \frac{1}{N}\sum_{k = 1}^{N}Inten_k{\cdot}pepMass_k\tag{2}$$.
+
+Where:
+
+* $aggMass$ - mass of the peptide [Da], average from replicates,
+* $Inten_k$ - intensity of the measurement,
+* $pepMass$ - mass of the peptide, calculated using Equation 1.
+
+As we use the aggregated result from the replicates, we need to calculate an uncertainty associated with the measurement. We use the mean value as the final result, so we need to calculate error as a standard deviation of the mean, according to the Equation 3:
+
+$$u(\vec{x}) = \sqrt{\frac{ \sum_{i=1}^n \left( x_{i} - \overline{x} \right)^2}{n(n-1)}}\tag{3}$$.
+
+Where:
+
+* $x_{i}$ - measured value from a replicate,
+* $\overline{x}$ - mean value from all of the replicates,
+* $n$ - number of replicates.
+
+Now we have the format we want for further calculations.
+
+### Calculation of the deuterium uptake
+
+HaDeX package provides the calculated values in different forms. All of them are provided with associated uncertainty of the measurement. All of the uncertainties are derived from the formula - the Law of propagation of uncertainty:
+
+$$u_{c}(y) = \sqrt{\sum_{k} \left[ \frac{\partial y}{\partial x_{k}} u(x_{k}) \right]^2}$$
+
+#### Deuterium uptake
+
+Deuterium uptake is the increase of the mass of the peptide in time $t$. The minimal exchange control $m_{t_0}$ is mass measured directly after adding the buffer (before the start of the exchange), and $m_t$ is the mass measured in chosen time point $t$. The value is in Daltons [Da].
+
+$$D = m_{t} - m_{t_0}$$
+The uncertainty associated with deuterium uptake [Da] (based on equation 3):
+
+$$u_c(D) = \sqrt{u(m_t)^2 + u(m_{t_0})^2}$$
+
+#### Fractional deuterium uptake
+
+Fractional deuterium uptake is the ratio of the increase of the mass in time $t$ to the maximal exchange control. The maximal exchange control $m_{t_{100}}$ is measured after a long time (chosen by the experimenter, usually 1440 min = 24 h). It is assumed that after this long time, the exchange is finished. The minimal exchange control $m_{t_0}$ is mass measured directly after adding the buffer (before the start of the exchange), and $m_t$ is the mass measured in chosen time point $t$. This value is a percentage value [%]. 
+
+$$D_{frac} = \frac{m_{t} - m_{t_0}}{m_{t_{100}} - m_{t_0}}$$
+
+The uncertainty associated with fractional deuterium uptake [%] (based on equation 3):
+
+$$u_{c}(D_{frac}) = \sqrt{ \left[ 
+\frac{1}{m_{t_{100}}-m_{t_0}} u(m_{t}) \right]^2 + 
+\left[ \frac{m_{t} - m_{t_{100}}}{(m_{t_{100}}-m_{t_0})^2} u(m_{t_0}) \right]^2 + 
+\left[ \frac{m_{t_0} - m_{t}}{(m_{t_{100}}-m_{t_0})^2} u (m_{t_{100}}) \right]^2}$$
+
+#### Theoretical deuterium uptake
+
+Theoretical deuterium uptake is the increase of mass in time $t$ compared with the theoretical value of the peptide mass without any exchange ($MHP$ - a mass of the singly charged monoisotopic molecular ion), and $m_t$ is the mass measured in chosen time point $t$. This value is in daltons [Da]:
+
+$$D_{theo} = m_{t} - MHP$$
+
+The uncertainty associated with theoretical deuterium uptake [Da] (the $MHP$ value is a constant without measurement uncertainty - based on the equation 3):
+
+$$u(D_{theo}) = u(m_t)$$
+
+#### Theoretical fractional deuterium uptake
+
+Theoretical fractional deuterium uptake is the ratio of the increase of mass in time $t$ compared with a theoretical value of the mass of the peptide without any exchange to the possible theoretical increase of the mass, based on the maximal potential uptake of the peptide (based on the peptide sequence). This value is a percentage value [%].
+
+$$D_{theo, frac} = \frac{m_{t}-MHP}{MaxUptake \times protonMass}$$
+
+The uncertainty associated with theoretical fractional deuterium uptake [%] (based on the equation 3):
+
+$$u(D_{theo, frac}) = \left|\frac{1}{MaxUptake \times protonMass} u(D_{t}) \right|$$
+
+#### Differential values
+
+Differential value is the way to see how the deuterium uptake differs between two biological states. It allows seeing if the possible difference is statistically important (more information below). This value is calculated as the difference between the previously described (in a chosen form) deuterium uptake of the first and second states. 
+
+$$diff = D_{1} - D_{2}$$
+The uncertainty associated with the difference of deuterium uptake (based on the equation 3):
+
+$$u_{c}(diff) = \sqrt{u(D_{1})^2 + u(D_{2})^2}$$
+
+The convenient way to present results calculated as described is the comparison plot and differential plot (Woods' plot).
+
+### Additional information 
+
+If the file contains modified peptides - the value from column `Modification` is added to the value from column `State` and is treated as a new biological state. The further aspects of the analysis are the same as for non-modified peptides.
+
+<!-- ## Processing data from HDeXaminer -->
+<!-- TO BE WRITTEN -->

@@ -1,0 +1,143 @@
+---
+title: "Mass calculation"
+output: html_document
+---
+
+## Comparison of results with weighted mean and without
+
+As it is described in `Data processing` article, the data within each replicate of the experiment is aggregated using weighted mean. Below we present the effect it has on the results.
+
+The whole workflow is described in the mentioned article. Here the focus is on the first aspect of the processing.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"))
+
+options(digits=3)
+
+library(tidyr)
+library(dplyr)
+
+calculate_mass <- function(dat){
+  
+  proton_mass <- 1.00727647
+  
+  dat %>%
+    mutate(exp_mass = Center*z - z*proton_mass) %>%
+    select(-Center, -z, -Modification, -Fragment) %>%
+    group_by(Sequence, Start, End, MHP, MaxUptake, State, Exposure, Protein, File) %>%
+    summarize(avg_exp_mass = weighted.mean(exp_mass, Inten, na.rm = TRUE)) %>%
+    ungroup(.) %>% 
+    group_by(Sequence, Start, End, MHP, MaxUptake, State, Exposure, Protein) %>%
+    summarize(mass = mean(avg_exp_mass, na.rm = TRUE),
+              err_mass = coalesce(sd(avg_exp_mass, na.rm = TRUE)/sqrt(sum(!is.na(avg_exp_mass))), 0),
+              num = (sum(!is.na(avg_exp_mass)))) %>%
+    ungroup(.) %>%
+    arrange(Start, End, Start, Exposure) %>%
+    as.data.frame()
+  
+}
+
+calculate_mass_no_inten <- function(dat){
+  
+  proton_mass <- 1.00727647
+  
+  dat %>%
+    mutate(exp_mass = Center*z - z*proton_mass) %>%
+    select(-Center, -z, -Modification, -Fragment) %>%
+    group_by(Sequence, Start, End, MHP, MaxUptake, State, Exposure, Protein, File) %>%
+    summarize(avg_exp_mass = mean(exp_mass, na.rm = TRUE)) %>%
+    ungroup(.) %>% 
+    group_by(Sequence, Start, End, MHP, MaxUptake, State, Exposure, Protein) %>%
+    summarize(mass = mean(avg_exp_mass, na.rm = TRUE),
+              err_mass = coalesce(sd(avg_exp_mass, na.rm = TRUE)/sqrt(sum(!is.na(avg_exp_mass))), 0)) %>%
+    ungroup(.) %>%
+    arrange(Start, End, Start, Exposure) %>%
+    as.data.frame()
+  
+}
+
+```
+
+For the analysis, we use the example file from HaDeX.
+
+```{r}
+library(HaDeX)
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+```
+
+As described, the first step is to transform the Center value (geometric centroid of the isotopic envelope for given peptide in a given state in given time point) and then to aggregate the values measured for different charge values. This is all done within each replicate.
+
+The aggregation in our workflow is a weighted mean, with Inten (intensity) values as weights, as shown below.
+
+```{r eval=FALSE}
+avg_exp_mass = weighted.mean(exp_mass, Inten, na.rm = TRUE)
+```
+
+Later, the results from replicates are aggregated using the mean, and their uncertainty is calculated as the standard deviation of the mean. 
+
+How the weighted mean change the result in comparison with the simple mean? Let's see.
+
+```{r include=FALSE}
+dat_no_weight <- calculate_mass_no_inten(dat) %>%
+  arrange(Start, End, State, Exposure) %>%
+  mutate(source = "no_weight") %>%
+  select(Sequence, Start, End, State, Exposure, mass, err_mass, source)
+
+dat_weight <- calculate_mass(dat) %>%
+  arrange(Start, End, State, Exposure) %>%
+  mutate(source = "weight") %>%
+  select(Sequence, Start, End, State, Exposure, mass, err_mass, source)
+
+tmp <- bind_rows(dat_no_weight, dat_weight) %>%
+  gather(type, value, -Sequence, -Start, -End, -source, -State, -Exposure) %>%
+  spread(source, value) %>%
+  mutate(diff = (weight-no_weight))
+```
+
+Below are calculated values of mass in two approaches and the difference between them for the example peptide. 
+
+```{r echo=FALSE}
+tmp %>%
+  filter(type == "mass") %>%
+  select(-type) %>%
+  filter(Sequence == "ARSQKSGIRLQGHF")
+```
+
+Below are calculated values of the uncertainty of mass in two approaches and the difference between them for the example peptide. 
+
+```{r echo=FALSE}
+tmp %>%
+  filter(type == "err_mass") %>%
+  select(-type) %>%
+  filter(Sequence == "ARSQKSGIRLQGHF")
+```
+
+And for the whole set of peptides, the average mass difference is:
+
+```{r echo=FALSE}
+mean(tmp[ tmp[["type"]] == "mass" , "diff"])
+```
+and uncertainty difference is:
+
+```{r echo=FALSE}
+mean(tmp[ tmp[["type"]] == "err_mass" , "diff"])
+```
+Below are the histograms of these differences.
+
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+library(gridExtra)
+library(ggplot2)
+
+p1 <- ggplot(filter(tmp, type == "mass"), aes(diff)) +
+  geom_histogram() +
+  labs(title = "Differences between mass",
+       x = "Difference")
+
+p2 <- ggplot(filter(tmp, type == "err_mass"), aes(diff)) +
+  geom_histogram() +
+  labs(title = "Differences between uncertainties of mass",
+       x = "Difference")
+
+grid.arrange(p1, p2, ncol=2)
+```
