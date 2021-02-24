@@ -2,7 +2,7 @@
 title: "Mass calculation"
 output: html_document
 vignette: >
-  %\VignetteIndexEntry{HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data}
+  %\VignetteIndexEntry{Mass calculation}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

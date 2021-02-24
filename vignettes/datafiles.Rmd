@@ -2,7 +2,7 @@
 title: "Data processing"
 output: html_document
 vignette: >
-  %\VignetteIndexEntry{HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data}
+  %\VignetteIndexEntry{Data processing}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
