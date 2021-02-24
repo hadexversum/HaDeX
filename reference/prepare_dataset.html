@@ -92,6 +92,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/HaDeX.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -102,7 +105,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/overview.html">Supplement to: "HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data"</a>
+      <a href="../articles/datafiles.html">Data processing</a>
+    </li>
+    <li>
+      <a href="../articles/mass_comparison.html">Mass calculation</a>
+    </li>
+    <li>
+      <a href="../articles/transformation.html">Data aggregation</a>
     </li>
   </ul>
 </li>
@@ -197,30 +206,30 @@
                 in_state_second <span class='op'>=</span> <span class='st'>"CD160_HVEM_0.001"</span>,
                 chosen_state_second <span class='op'>=</span> <span class='st'>"CD160_HVEM_1"</span>,
                 out_state_second <span class='op'>=</span> <span class='st'>"CD160_HVEM_1440"</span><span class='op'>)</span> 
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 41 x 28</span><span>
-#&gt;    Sequence Start   End Med_Sequence frac_exch_state… err_frac_exch_s…
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> INITSSA…     1    15          8              0.842         0.001</span><span style='text-decoration: underline;'>73</span><span> 
-#&gt; </span><span style='color: #555555;'> 2</span><span> LICTVW      16    21         18.5            0.320         0.004</span><span style='text-decoration: underline;'>69</span><span> 
-#&gt; </span><span style='color: #555555;'> 3</span><span> LICTVWH…    16    29         22.5            0.680         0.002</span><span style='text-decoration: underline;'>26</span><span> 
-#&gt; </span><span style='color: #555555;'> 4</span><span> ICTVWHK…    17    29         23              0.733         0.001</span><span style='text-decoration: underline;'>63</span><span> 
-#&gt; </span><span style='color: #555555;'> 5</span><span> FVVFL       30    34         32              0.250         0.002</span><span style='text-decoration: underline;'>56</span><span> 
-#&gt; </span><span style='color: #555555;'> 6</span><span> LCKDRSG…    34    48         41              0.941         0.001</span><span style='text-decoration: underline;'>07</span><span> 
-#&gt; </span><span style='color: #555555;'> 7</span><span> LCKDRSG…    34    49         41.5            0.922         0.000</span><span style='text-decoration: underline;'>863</span><span>
-#&gt; </span><span style='color: #555555;'> 8</span><span> LCKDRSG…    34    51         42.5            0.883         0.000</span><span style='text-decoration: underline;'>639</span><span>
-#&gt; </span><span style='color: #555555;'> 9</span><span> LCKDRSG…    34    69         51.5            0.902         0.001</span><span style='text-decoration: underline;'>00</span><span> 
-#&gt; </span><span style='color: #555555;'>10</span><span> CKDRSGD…    35    48         41.5            0.940         0.001</span><span style='text-decoration: underline;'>70</span><span> 
-#&gt; </span><span style='color: #555555;'># … with 31 more rows, and 22 more variables: frac_exch_state_2 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   err_frac_exch_state_2 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, diff_frac_exch </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, err_frac_exch </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   abs_frac_exch_state_1 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, err_abs_frac_exch_state_1 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   abs_frac_exch_state_2 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, err_abs_frac_exch_state_2 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   abs_diff_frac_exch </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, err_abs_diff_frac_exch </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   avg_theo_in_time_1 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, err_avg_theo_in_time_1 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   avg_theo_in_time_2 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, err_avg_theo_in_time_2 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   diff_theo_frac_exch </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, err_diff_theo_frac_exch </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   abs_avg_theo_in_time_1 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, err_abs_avg_theo_in_time_1 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   abs_avg_theo_in_time_2 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, err_abs_avg_theo_in_time_2 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   abs_diff_theo_frac_exch </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, err_abs_diff_theo_frac_exch </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 41 x 28</span><span>
+#&gt;    Sequence          Start   End Med_Sequence frac_exch_state… err_frac_exch_st…
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> INITSSASQEGTRLN       1    15          8              0.842          0.001</span><span style='text-decoration: underline;'>73</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> LICTVW               16    21         18.5            0.320          0.004</span><span style='text-decoration: underline;'>69</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> LICTVWHKKEEAEG       16    29         22.5            0.680          0.002</span><span style='text-decoration: underline;'>26</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> ICTVWHKKEEAEG        17    29         23              0.733          0.001</span><span style='text-decoration: underline;'>63</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> FVVFL                30    34         32              0.250          0.002</span><span style='text-decoration: underline;'>56</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> LCKDRSGDCSPETSL      34    48         41              0.941          0.001</span><span style='text-decoration: underline;'>07</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> LCKDRSGDCSPETSLK     34    49         41.5            0.922          0.000</span><span style='text-decoration: underline;'>863</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> LCKDRSGDCSPETSLK…    34    51         42.5            0.883          0.000</span><span style='text-decoration: underline;'>639</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> LCKDRSGDCSPETSLK…    34    69         51.5            0.902          0.001</span><span style='text-decoration: underline;'>00</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> CKDRSGDCSPETSL       35    48         41.5            0.940          0.001</span><span style='text-decoration: underline;'>70</span><span> 
+#&gt; </span><span style='color: #949494;'># … with 31 more rows, and 22 more variables: frac_exch_state_2 &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   err_frac_exch_state_2 &lt;dbl&gt;, diff_frac_exch &lt;dbl&gt;, err_frac_exch &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   abs_frac_exch_state_1 &lt;dbl&gt;, err_abs_frac_exch_state_1 &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   abs_frac_exch_state_2 &lt;dbl&gt;, err_abs_frac_exch_state_2 &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   abs_diff_frac_exch &lt;dbl&gt;, err_abs_diff_frac_exch &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   avg_theo_in_time_1 &lt;dbl&gt;, err_avg_theo_in_time_1 &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   avg_theo_in_time_2 &lt;dbl&gt;, err_avg_theo_in_time_2 &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   diff_theo_frac_exch &lt;dbl&gt;, err_diff_theo_frac_exch &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   abs_avg_theo_in_time_1 &lt;dbl&gt;, err_abs_avg_theo_in_time_1 &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   abs_avg_theo_in_time_2 &lt;dbl&gt;, err_abs_avg_theo_in_time_2 &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   abs_diff_theo_frac_exch &lt;dbl&gt;, err_abs_diff_theo_frac_exch &lt;dbl&gt;</span><span></div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

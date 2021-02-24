@@ -2,6 +2,9 @@ pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
-  overview: overview.html
-last_built: 2020-12-15T13:14Z
+  HaDeX: HaDeX.html
+  datafiles: datafiles.html
+  mass_comparison: mass_comparison.html
+  transformation: transformation.html
+last_built: 2021-02-24T19:37Z
 
