@@ -1,6 +1,10 @@
 ---
 title: "Mass calculation"
 output: html_document
+vignette: >
+  %\VignetteIndexEntry{HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ## Comparison of results with weighted mean and without
