@@ -30,9 +30,9 @@ dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.
   filter(Exposure == 1, State == "CD160", Sequence ==  "LCKDRSGDCSPETSLKQLRLKRDPGIDGVGEISSQL") 
 ```
 
-Let's see how the data is transformed. We will use the example file "KD_180110_CD160_HVEM.csv" from the HaDeX package and focus on just one peptide - "LCKDRSGDCSPETSLKQLRLKRDPGIDGVGEISSQL" in the state "CD160". The measurement was made for timepoint 1 min. 
+Let's see how the data is transformed. We will use the example file "KD_180110_CD160_HVEM.csv" from the HaDeX package and focus on just one peptide - "LCKDRSGDCSPETSLKQLRLKRDPGIDGVGEISSQL" in the state "CD160". The measurement was made for time point 1 min. 
 
-Below is shown the original and unaggregated data for chosen peptide.
+Below is shown the original and not aggregated data for chosen peptide.
 
 ```{r}
 dat
@@ -82,7 +82,7 @@ mutate(exp_mass = z*(Center - proton_mass)) %>%
        y = "Measured mass [Da]")
 ```
 
-Values from each replicate are aggregated into one value, using weighted mean (with intencity value as weight):
+Values from each replicate are aggregated into one value, using weighted mean (with intensity value as weight):
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 dat %>%
