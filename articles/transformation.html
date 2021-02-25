@@ -101,8 +101,8 @@
 <div id="aggregation-of-the-data---visualization" class="section level2">
 <h2 class="hasAnchor">
 <a href="#aggregation-of-the-data---visualization" class="anchor"></a>Aggregation of the data - visualization</h2>
-<p>Let’s see how the data is transformed. We will use the example file “KD_180110_CD160_HVEM.csv” from the HaDeX package and focus on just one peptide - “LCKDRSGDCSPETSLKQLRLKRDPGIDGVGEISSQL” in the state “CD160”. The measurement was made for timepoint 1 min.</p>
-<p>Below is shown the original and unaggregated data for chosen peptide.</p>
+<p>Let’s see how the data is transformed. We will use the example file “KD_180110_CD160_HVEM.csv” from the HaDeX package and focus on just one peptide - “LCKDRSGDCSPETSLKQLRLKRDPGIDGVGEISSQL” in the state “CD160”. The measurement was made for time point 1 min.</p>
+<p>Below is shown the original and not aggregated data for chosen peptide.</p>
 <pre><code>##      Protein Start End                             Sequence Modification
 ##  1: db_CD160    34  69 LCKDRSGDCSPETSLKQLRLKRDPGIDGVGEISSQL           NA
 ##  2: db_CD160    34  69 LCKDRSGDCSPETSLKQLRLKRDPGIDGVGEISSQL           NA
@@ -174,7 +174,7 @@
 <p><img src="transformation_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 <p>This results are just for one repetition. We have four of them:</p>
 <p><img src="transformation_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
-<p>Values from each replicate are aggregated into one value, using weighted mean (with intencity value as weight):</p>
+<p>Values from each replicate are aggregated into one value, using weighted mean (with intensity value as weight):</p>
 <p><img src="transformation_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 <p>The results from replicates are aggregated into the final result (mean), and the uncertainty (standard deviation of the mean) is calculated.</p>
 <p><img src="transformation_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
