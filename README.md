@@ -22,7 +22,7 @@ To run HaDeX GUI locally on Windows, install it using the following binary file:
 You can install the latest development version of the package:
 
 ```R
-source("https://install-github.me/hadexversum/HaDeX")
+devtools::install_github("hadexversum/HaDeX")
 ```
 or the latest version available on CRAN:
 
