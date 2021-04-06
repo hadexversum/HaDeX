@@ -43,7 +43,7 @@
 read_hdx <- function(filename){
   
   dat <- switch(file_ext(filename),
-                "csv" = fread(filename),
+                "csv" = fread(filename, data.table = FALSE),
                 "xlsx" = read_excel(filename),
                 "xls" = read_excel(filename))
   
