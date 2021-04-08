@@ -1453,6 +1453,175 @@ server <- function(input, output, session) {
   })
 
   ##
+  
+  ### TAB: BUTTERFLY ###
+  
+  ##
+  
+  butterfly_plot_theo <- reactive({
+    
+    generate_butterfly_plot(dat = dat(),
+                             theoretical = TRUE,
+                             fractional = TRUE)
+  })
+  
+  ##
+  
+  butterfly_plot_theo_abs <- reactive({
+    
+    generate_butterfly_plot(dat = dat(),
+                             theoretical = TRUE,
+                             fractional = FALSE)
+  })
+  
+  ##
+  
+  butterfly_plot_exp <- reactive({
+    
+    generate_butterfly_plot(dat = dat(),
+                             theoretical = FALSE,
+                             fractional = TRUE)
+  })
+  
+  ##
+  
+  butterfly_plot_exp_abs <- reactive({
+    
+    generate_butterfly_plot(dat = dat(),
+                             theoretical = FALSE,
+                             fractional = FALSE)
+  })
+  
+  ##
+  
+  buttp_out <- reactive({
+    
+    if (input[["butt_theory"]]) {
+      
+      if (input[["butt_calc_type"]] == "fractional") {
+        
+        buttp <- butterfly_plot_theo()
+        
+      } else {
+        
+        buttp <- butterfly_plot_theo_abs()
+      }
+      
+    } else {
+      
+      if (input[["butt_calc_type"]] == "fractional") {
+        
+        buttp <- butterfly_plot_exp()
+        
+      } else {
+        
+        buttp <- butterfly_plot_exp_abs()
+        
+      }
+      
+    }
+    
+    buttp
+    
+    # + coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
+    #                      ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
+    #   labs(title = input[["comparison_plot_title"]],
+    #        x = input[["comparison_plot_x_label"]],
+    #        y = input[["comparison_plot_y_label"]]) +
+    #   scale_color_manual(values = comparison_plot_colors_chosen())
+    # 
+  })
+  
+  ##
+  
+  output[["butterflyPlot"]] <- renderPlot({
+    
+    buttp_out()
+    
+  })
+  
+  
+  output[["butterflyPlot_debug"]] <- renderUI({
+    
+    if(!is.null(input[["butterflyPlot_hover"]])) {
+      
+      plot_data <- buttp_out()[["data"]]
+      hv <- input[["butterflyPlot_hover"]]
+      
+      hv_dat <- data.frame(x = hv[["x"]],
+                           y = hv[["y"]],
+                           Start = plot_data[[hv[["mapping"]][["x"]]]],
+                           End = plot_data[["End"]],
+                           y_plot = plot_data[[hv[["mapping"]][["y"]]]],
+                           Sequence = plot_data[["Sequence"]],
+                           State = plot_data[["State"]])
+      
+      tt_df <- filter(hv_dat, Start < x, End > x) %>%
+        filter(abs(y_plot - y) < 10) %>%
+        filter(abs(y_plot - y) == min(abs(y_plot - y)))
+      
+      
+      if(nrow(tt_df) != 0) {
+        
+        tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                             "left", "right")
+        
+        tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                         hv[["coords_css"]][["x"]],
+                         hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+        
+        
+        style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+                        tt_pos_adj, ":", tt_pos,
+                        "px; top:", hv[["coords_css"]][["y"]], "px; padding: 0px;")
+        
+        div(
+          style = style,
+          p(HTML(paste0(tt_df[["Sequence"]],
+                        "<br/> Position: ", tt_df[["Start"]], "-", tt_df[["End"]],
+                        "<br/> Value: ", round(tt_df[["y_plot"]], 2),
+                        "<br/> State: ", tt_df[["State"]])))
+        )
+      }
+    }
+  })
+  
+  ##
+  
+  ### TAB: VULCANO ###
+  
+  ##
+  
+  vulcano_data <- reactive({
+    
+    generate_vulcano_data(dat())
+    
+  })
+  
+  vp_out <- reactive({
+    
+    states <- unique(dat()[["State"]])
+    
+    state_1 <- states[1]
+    state_2 <- states[2]
+    
+    generate_vulcano_plot(vulcano_data(), state_1, state_2)
+    
+  })
+  
+  output[["vulcanoPlot"]] <- renderPlot({
+    
+    vp_out()
+    
+  })
+  
+  output[["vulcanoPlot_download_button"]] <- downloadHandler("vulcanoPlot.svg",
+                                                                content = function(file) {
+                                                                  ggsave(file, vp_out(), device = svg,
+                                                                         height = 300, width = 400, units = "mm")
+                                                                })
+  
+  ##
 
   ### TAB: KINETICS ###
 

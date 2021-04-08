@@ -288,6 +288,60 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
 
                                        )
                               ),
+                              tabPanel("Butterfly plot",
+                                       br(),
+                                       sidebarPanel(
+                                         class = "scrollable",
+                                         h3("Select parameters for the plot."),
+                                         fluidRow(checkboxInput_h(inputId = "butt_theory",
+                                                                  label = "Theoretical calculations",
+                                                                  value = FALSE)),
+                                         radioButtons_h(inputId = "butt_calc_type",
+                                                        label = "Choose values type:",
+                                                        choices = c("fractional", "absolute"),
+                                                        selected = "fractional")
+                                       ),
+                                       mainPanel(
+                                         class = "scrollable",
+                                         tabsetPanel(
+                                           tabPanel("Butterfly plot",
+                                                    br(),
+                                                    plotOutput_h("butterflyPlot", hover = hoverOpts("butterflyPlott_hover", delay = 10, delayType = "debounce")),
+                                                    downloadButton("butterflyPlot_download_button",
+                                                                   "Save chart (.svg)")),
+                                           tabPanel("Data",
+                                                    br(),
+                                                    DT::dataTableOutput("butterflyPlot_data"),
+                                                    br(),
+                                                    h4("The empty values (e.q. `Frac Exch`) means there was not sufficient data for this peptide."))),
+                                         uiOutput("butterflyPlot_debug"),
+                                         br()
+                                       )),
+                              tabPanel("Vulcano plot",
+                                       br(),
+                                       sidebarPanel(
+                                         class = "scrollable",
+                                         h3("Select parameters for the plot."),
+                                         selectInput_h(inputId = "vul_state_first",
+                                                       label = "State 1",
+                                                       choices = c("CD160", "CD160VEM")),
+                                         selectInput_h(inputId = "vul_state_second",
+                                                       label = "State 2",
+                                                       choices = c("CD160", "CD160VEM"))
+                                       ),
+                                       mainPanel(
+                                         class = "scrollable",
+                                         tabsetPanel(
+                                           tabPanel("Vulcano plot",
+                                                    br(),
+                                                    plotOutput_h("vulcanoPlot", width = "80%", height = "800px", hover = hoverOpts("vulcanoPlott_hover", delay = 10, delayType = "debounce")),
+                                                    downloadButton("vulcanoPlot_download_button",
+                                                                   "Save chart (.svg)")
+                                                    ),
+                                           tabPanel("Data",
+                                                    br())
+                                         )
+                                       )),
                               tabPanel("Coverage",
                                        br(),
                                        sidebarPanel(
