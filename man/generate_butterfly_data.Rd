@@ -4,14 +4,14 @@
 \alias{generate_butterfly_data}
 \title{generate_butterfly_data}
 \usage{
-generate_butterfly_data(dat, theoretical, fractional)
+generate_butterfly_data(butterfly_dat, theoretical = FALSE, fractional = FALSE)
 }
 \arguments{
-\item{dat}{data as imported by the \code{\link{read_hdx}} function}
-
 \item{theoretical}{\code{logical}, determines if values are theoretical}
 
 \item{fractional}{\code{logical}, determines if values are fractional}
+
+\item{dat}{data as imported by the \code{\link{read_hdx}} function}
 }
 \value{
 ...

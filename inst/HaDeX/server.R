@@ -1458,38 +1458,69 @@ server <- function(input, output, session) {
   
   ##
   
+  
+  butterfly_dataset <- reactive({
+    
+    generate_butterfly_dataset(dat(),
+                               protein = input[["chosen_protein"]],
+                               state = input[["butt_state"]],
+                               time_0 = as.numeric(input[["butt_time_0"]]),
+                               time_100 = as.numeric(input[["butt_time_100"]]),
+                               deut_part = input[["deut_part"]]) 
+    
+  })
+  
+  
   butterfly_plot_theo <- reactive({
     
-    generate_butterfly_plot(dat = dat(),
-                             theoretical = TRUE,
-                             fractional = TRUE)
+    butterfly_dataset() %>%
+      filter(Exposure %in% input[["butt_timepoints"]]) %>%
+      generate_butterfly_plot(theoretical = TRUE,
+                              fractional = TRUE)
+    
   })
   
   ##
   
   butterfly_plot_theo_abs <- reactive({
     
-    generate_butterfly_plot(dat = dat(),
-                             theoretical = TRUE,
-                             fractional = FALSE)
+    butterfly_dataset() %>%
+      filter(Exposure %in% input[["butt_timepoints"]]) %>%
+      generate_butterfly_plot(theoretical = TRUE,
+                              fractional = FALSE)
   })
   
   ##
   
   butterfly_plot_exp <- reactive({
     
-    generate_butterfly_plot(dat = dat(),
-                             theoretical = FALSE,
-                             fractional = TRUE)
+    butterfly_dataset() %>%
+      filter(Exposure %in% input[["butt_timepoints"]]) %>%
+      generate_butterfly_plot(theoretical = FALSE,
+                              fractional = TRUE)
   })
   
   ##
   
   butterfly_plot_exp_abs <- reactive({
     
-    generate_butterfly_plot(dat = dat(),
-                             theoretical = FALSE,
-                             fractional = FALSE)
+    butterfly_dataset() %>%
+      filter(Exposure %in% input[["butt_timepoints"]]) %>%
+      generate_butterfly_plot(theoretical = FALSE,
+                              fractional = FALSE)
+  })
+  
+  ##
+  
+  observe({
+    
+    ## TODO update butt_state
+    ## TODO update butt_timepoints
+    ## TODO update butt_x_range
+    ## TODO update butt_y_range
+    ## TODO update butterfly_plot_title
+    ## TODO update butterfly_y_label
+    
   })
   
   ##
@@ -1498,7 +1529,7 @@ server <- function(input, output, session) {
     
     if (input[["butt_theory"]]) {
       
-      if (input[["butt_calc_type"]] == "fractional") {
+      if (input[["butt_fractional"]]) {
         
         buttp <- butterfly_plot_theo()
         
@@ -1509,7 +1540,7 @@ server <- function(input, output, session) {
       
     } else {
       
-      if (input[["butt_calc_type"]] == "fractional") {
+      if (input[["butt_fractional"]]) {
         
         buttp <- butterfly_plot_exp()
         
@@ -1521,15 +1552,13 @@ server <- function(input, output, session) {
       
     }
     
-    buttp
+    buttp + 
+      coord_cartesian(xlim = c(input[["butt_x_range"]][[1]], input[["butt_x_range"]][[2]]),
+                      ylim = c(input[["butt_y_range"]][[1]], input[["butt_y_range"]][[2]])) +
+      labs(title = input[["butterfly_plot_title"]],
+           x = input[["butterfly_plot_x_label"]],
+           y = input[["butterfly_plot_y_label"]])
     
-    # + coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-    #                      ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
-    #   labs(title = input[["comparison_plot_title"]],
-    #        x = input[["comparison_plot_x_label"]],
-    #        y = input[["comparison_plot_y_label"]]) +
-    #   scale_color_manual(values = comparison_plot_colors_chosen())
-    # 
   })
   
   ##
@@ -1540,8 +1569,11 @@ server <- function(input, output, session) {
     
   })
   
+  ##
   
   output[["butterflyPlot_debug"]] <- renderUI({
+    
+    ## update
     
     if(!is.null(input[["butterflyPlot_hover"]])) {
       
@@ -1588,6 +1620,80 @@ server <- function(input, output, session) {
   
   ##
   
+  butterfly_data_theo <- reactive({
+    
+    butterfly_dataset() %>%
+      generate_butterfly_data(theoretical = TRUE,
+                              fractional = FALSE)
+    
+  })
+  
+  ##
+  
+  butterfly_data_theo_frac <- reactive({
+    
+    butterfly_dataset() %>%
+      generate_butterfly_data(theoretical = TRUE,
+                              fractional = TRUE)
+    
+  })
+  
+  ##
+  
+  butterfly_data_exp <- reactive({
+    
+    butterfly_dataset() %>%
+      generate_butterfly_data(theoretical = FALSE,
+                              fractional = FALSE)
+    
+  })
+  
+  ##
+  
+  butterfly_data_exp_frac <- reactive({
+    
+    butterfly_dataset() %>%
+      generate_butterfly_data(theoretical = FALSE,
+                              fractional = TRUE)
+    
+  })
+  
+  ##
+  
+  output[["butterflyPlot_data"]] <- DT::renderDataTable(server = FALSE, {
+    
+    if(input[["butt_theory"]]){
+      
+      if(input[["butt_fractional"]]) {
+        
+        bp_data <- butterfly_data_theo_frac()
+          
+      } else {
+        
+        bp_data <- butterfly_data_theo()
+          
+      }
+      
+    } else {
+      
+      if(input[["butt_fractional"]]) {
+        
+        bp_data <- butterfly_data_exp_frac()
+        
+      } else {
+        
+        bp_data <- butterfly_data_exp()
+      }
+      
+    }
+
+    bp_data %>%
+      filter(Exposure %in% input[["butt_timepoints"]])
+    
+  })
+  
+  ##
+  
   ### TAB: VOLCANO ###
   
   ##
@@ -1598,11 +1704,11 @@ server <- function(input, output, session) {
                     inputId = "volcano_plot_title",
                     value = paste0("Deuterium uptake difference between ", input[["vol_state_first"]], " and ", input[["vol_state_second"]]))
     
-    ## update state 1 
-    ## update state 2
+    ## TODO update state 1 
+    ## TODO update state 2
     
-    ## update time points
-    ## update confidence limit for time points
+    ## TODO update time points
+    ## TODO update confidence limit for time points
     
   })
   
@@ -1654,7 +1760,12 @@ server <- function(input, output, session) {
     
     generate_volcano_plot(volcano_data(), 
                           state_1 = input[["vol_state_first"]], 
-                          state_2 = input[["vol_state_second"]])
+                          state_2 = input[["vol_state_second"]]) +
+      labs(title = input[["volcano_plot_title"]],
+           x = input[["volcano_plot_x_label"]],
+           y = input[["volcano_plot_y_label"]]) +
+      coord_cartesian(xlim = c(input[["vol_x_range"]][[1]], input[["vol_x_range"]][[2]]),
+                      ylim = c(input[["vol_y_range"]][[1]], input[["vol_y_range"]][[2]]))
     
   })
   
@@ -1662,12 +1773,7 @@ server <- function(input, output, session) {
   
   output[["volcanoPlot"]] <- renderPlot({
    
-    vp_out() + 
-      labs(title = input[["volcano_plot_title"]],
-           x = input[["volcano_plot_x_label"]],
-           y = input[["volcano_plot_y_label"]]) +
-      coord_cartesian(xlim = c(input[["vol_x_range"]][[1]], input[["vol_x_range"]][[2]]),
-                      ylim = c(input[["vol_y_range"]][[1]], input[["vol_y_range"]][[2]]))
+    vp_out() 
 
   })
   

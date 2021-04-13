@@ -4,10 +4,10 @@
 \alias{generate_butterfly_plot}
 \title{generate_butterfly_plot}
 \usage{
-generate_butterfly_plot(dat, theoretical, fractional)
+generate_butterfly_plot(butterfly_dat, theoretical = FALSE, fractional = FALSE)
 }
 \arguments{
-\item{dat}{data as imported by the \code{\link{read_hdx}} function}
+\item{butterfly_dat}{data as imported by the \code{\link{read_hdx}} function}
 
 \item{theoretical}{\code{logical}, determines if values are theoretical}
 
