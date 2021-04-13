@@ -132,6 +132,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        br(),
                                        br()
                               ),
+                              ##
                               tabPanel("Woods plot",
                                        br(),
                                        sidebarPanel(
@@ -288,6 +289,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
 
                                        )
                               ),
+                              ##
                               tabPanel("Butterfly plot",
                                        br(),
                                        sidebarPanel(
@@ -317,31 +319,88 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          uiOutput("butterflyPlot_debug"),
                                          br()
                                        )),
-                              tabPanel("Vulcano plot",
+                              ##
+                              tabPanel("Volcano plot",
                                        br(),
                                        sidebarPanel(
                                          class = "scrollable",
                                          h3("Select parameters for the plot."),
-                                         selectInput_h(inputId = "vul_state_first",
-                                                       label = "State 1",
-                                                       choices = c("CD160", "CD160VEM")),
-                                         selectInput_h(inputId = "vul_state_second",
-                                                       label = "State 2",
-                                                       choices = c("CD160", "CD160VEM"))
+                                         h5("Volcano plot presents the difference between values in State 1 and State 2."),
+                                         splitLayout(selectInput_h(inputId = "vol_state_first",
+                                                                   label = "State 1",
+                                                                   choices = c("CD160", "CD160_HVEM")),
+                                                     selectInput_h(inputId = "vol_state_second",
+                                                                   label = "State 2",
+                                                                   choices = c("CD160_HVEM", "CD160"))
+                                                     ),
+                                         fluidRow(
+                                           column(width = 6,
+                                                  selectInput_h(inputId = "vol_confidence_limit",
+                                                                label = "Confidence limit:",
+                                                                choices = c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
+                                                                selected = 0.98),
+                                                  checkboxInput_h(inputId = "vol_p_adjustment",
+                                                                  label = "Adjust p value?",
+                                                                  value = FALSE)
+                                                  )
+                                         ),
+                                         splitLayout(checkboxGroupInput_h(inputId = "vol_timepoints",
+                                                                          label = "Show time points: ",
+                                                                          choices = c(0.167, 1, 5, 25, 120, 1440),
+                                                                          selected = c(0.167, 1, 5, 25, 120, 1440)),
+                                                     selectInput_h(inputId = "vol_interval",
+                                                                   label = "Show confidence limit for: ",
+                                                                   choices = c("All time points" = 99999, "0.167 min" = 0.167, "1 min" = 1, "5 min" = 5, "25 min" = 25, "120 min" = 120, "1440 min" = 1440),
+                                                                   selected = 99999)),
+                                         h4("Zoom:"),
+                                         sliderInput(inputId = "vol_x_range",
+                                                     label = "Choose x range for volcano plot:",
+                                                     min = -1,
+                                                     max = 1,
+                                                     value = c(-1, 1),
+                                                     step = 0.1),
+                                         sliderInput(inputId = "vol_y_range",
+                                                     label = "Choose y range for volcano plot:",
+                                                     min = 0,
+                                                     max = 15,
+                                                     value = c(0, 15),
+                                                     step = 1),
+                                         tags$button("Adjust labels",
+                                                     class = "collapse-button",
+                                                     `data-toggle`="collapse",
+                                                     `data-target`="#vol_labs"),
+                                         tags$div(
+                                           class = "hideable",
+                                           id = "vol_labs",
+                                           textInput(inputId = "volcano_plot_title",
+                                                     label = "Volcano plot title:",
+                                                     value = ""),
+                                           textInput(inputId = "volcano_plot_x_label",
+                                                     label = "Volcano plot axis x label:",
+                                                     value = "Mass difference [Da]"),
+                                           textInput(inputId = "volcano_plot_y_label",
+                                                     label = "Volcano plot axis y label:",
+                                                     value = "-log(P value)")
+                                         )
                                        ),
                                        mainPanel(
                                          class = "scrollable",
                                          tabsetPanel(
-                                           tabPanel("Vulcano plot",
+                                           tabPanel("Volcano plot",
                                                     br(),
-                                                    plotOutput_h("vulcanoPlot", width = "80%", height = "800px", hover = hoverOpts("vulcanoPlott_hover", delay = 10, delayType = "debounce")),
-                                                    downloadButton("vulcanoPlot_download_button",
+                                                    plotOutput_h("volcanoPlot", width = "80%", height = "800px", hover = hoverOpts("volcanoPlott_hover", delay = 10, delayType = "debounce")),
+                                                    downloadButton("volcanoPlot_download_button",
                                                                    "Save chart (.svg)")
-                                                    ),
+                                           ),
                                            tabPanel("Data",
-                                                    br())
+                                                    br(),
+                                                    DT::dataTableOutput("volcanoPlot_data"),
+                                                    br()
+                                           )
                                          )
-                                       )),
+                                       )
+                                      ),
+                              ##
                               tabPanel("Coverage",
                                        br(),
                                        sidebarPanel(
@@ -392,6 +451,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
 
                                        )
                               ),
+                              ##
                               tabPanel("Sequence data",
                                        h3('Protein name'),
                                        h4(textOutput("protein_name"), class  = "monospaced"),
@@ -426,6 +486,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          )
                                        )
                               ),
+                              ##
                               tabPanel("Uptake curves",
                                        br(),
                                        sidebarPanel(
@@ -572,6 +633,15 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                            value = FALSE),
                                                              checkboxInput(inputId = "export_quality_control_plot",
                                                                            label = "Quality Control Plot",
+                                                                           value = FALSE),
+                                                             checkboxInput(inputId = "export_butterfly_plot",
+                                                                           label = "Butterfly Plot",
+                                                                           value = FALSE),
+                                                             checkboxInput(inputId = "export_butterfly_differential_plot",
+                                                                           label = "Butterfly Differential Plot",
+                                                                           value = FALSE),
+                                                             checkboxInput(inputId = "export_volcano_plot",
+                                                                           label = "Volcano Plot",
                                                                            value = FALSE)),
                                                       column(6,
                                                              checkboxInput(inputId = "export_overlap_dist_data",
@@ -591,7 +661,14 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                              checkboxInput(inputId = "export_theo_kin_plot_data",
                                                                            label = "Theoretical Uptake Curve Data"),
                                                              checkboxInput(inputId = "export_quality_control_plot_data",
-                                                                           label = "Quality Control Plot Data"))),
+                                                                           label = "Quality Control Plot Data"),
+                                                             checkboxInput(inputId = "export_butterfly_plot_data",
+                                                                           label = "Butterfly Plot Data"),
+                                                             checkboxInput(inputId = "export_butterfly_differential_plot_data",
+                                                                           label = "Butterfly Differential Plot Data"),
+                                                             checkboxInput(inputId = "export_volcano_plot_data",
+                                                                           label = "Volcano Plot Data")
+                                                             )),
                                                     br(),
                                                     h5("Elements chosen for report have the same parameters as chosen in panel e.g. axis range and title. Adjust parameters for plots as needed in the report."),
                                                     br(),

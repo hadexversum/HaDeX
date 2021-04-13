@@ -1588,38 +1588,104 @@ server <- function(input, output, session) {
   
   ##
   
-  ### TAB: VULCANO ###
+  ### TAB: VOLCANO ###
   
   ##
   
-  vulcano_data <- reactive({
+  observe({
     
-    generate_vulcano_data(dat())
+    updateTextInput(session, 
+                    inputId = "volcano_plot_title",
+                    value = paste0("Deuterium uptake difference between ", input[["vol_state_first"]], " and ", input[["vol_state_second"]]))
+    
+    ## update state 1 
+    ## update state 2
+    
+    ## update time points
+    ## update confidence limit for time points
     
   })
+  
+  ##
+  
+  volcano_dataset <- reactive({
+    
+    dat() %>%
+      filter(Protein == input[["chosen_protein"]]) %>%
+      generate_volcano_dataset(state_1 = input[["vol_state_first"]],
+                               state_2 = input[["vol_state_second"]])
+    
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    max_x <- ceiling(max(abs(volcano_dataset()[["D_diff"]])))
+    
+    updateSliderInput(session,
+                      inputId = "vol_x_range",
+                      max = max_x,
+                      min = -max_x,
+                      value = c(-max_x, max_x))
+    
+    max_y <- ceiling(max(volcano_dataset()[["log_p_value"]]))
+    
+    updateSliderInput(session,
+                      inputId = "vol_y_range",
+                      max = max_y,
+                      value = c(0, max_y))
+    
+  })
+  
+  ##
+  
+  volcano_data <- reactive({
+    
+    volcano_dataset() %>%
+      filter(Exposure %in% input[["vol_timepoints"]])
+    
+  })
+  
+  ##
   
   vp_out <- reactive({
     
-    states <- unique(dat()[["State"]])
-    
-    state_1 <- states[1]
-    state_2 <- states[2]
-    
-    generate_vulcano_plot(vulcano_data(), state_1, state_2)
+    generate_volcano_plot(volcano_data(), 
+                          state_1 = input[["vol_state_first"]], 
+                          state_2 = input[["vol_state_second"]])
     
   })
   
-  output[["vulcanoPlot"]] <- renderPlot({
-    
-    vp_out()
-    
+  ##
+  
+  output[["volcanoPlot"]] <- renderPlot({
+   
+    vp_out() + 
+      labs(title = input[["volcano_plot_title"]],
+           x = input[["volcano_plot_x_label"]],
+           y = input[["volcano_plot_y_label"]]) +
+      coord_cartesian(xlim = c(input[["vol_x_range"]][[1]], input[["vol_x_range"]][[2]]),
+                      ylim = c(input[["vol_y_range"]][[1]], input[["vol_y_range"]][[2]]))
+
   })
   
-  output[["vulcanoPlot_download_button"]] <- downloadHandler("vulcanoPlot.svg",
+  ##
+  
+  output[["volcanoPlot_download_button"]] <- downloadHandler("volcanoPlot.svg",
                                                                 content = function(file) {
                                                                   ggsave(file, vp_out(), device = svg,
                                                                          height = 300, width = 400, units = "mm")
                                                                 })
+  ##
+  
+  output[["volcanoPlot_data"]] <- DT::renderDataTable(server = FALSE, {
+    
+    generate_volcano_data(volcano_data()) %>%
+      dt_format()
+
+  })
   
   ##
 
