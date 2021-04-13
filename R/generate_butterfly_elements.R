@@ -1,6 +1,11 @@
 #' generate_butterfly_dataset
 #' 
 #' @param dat data as imported by the \code{\link{read_hdx}} function
+#' @param protein ...
+#' @param state ...
+#' @param time_0 ...
+#' @param time_100 ...
+#' @param deut_part ...
 #' 
 #' @details ... 
 #' 
@@ -111,7 +116,7 @@ generate_butterfly_plot <- function(butterfly_dat,
 #' @description Generates butterfly data, based on the supplied
 #' parameters.
 #' 
-#' @param dat data as imported by the \code{\link{read_hdx}} function
+#' @param butterfly_dat data as imported by the \code{\link{read_hdx}} function
 #' @param theoretical \code{logical}, determines if values are theoretical
 #' @param fractional \code{logical}, determines if values are fractional
 #' 

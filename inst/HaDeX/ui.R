@@ -323,13 +323,13 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                            column(width = 6,
                                                                   div(id = "butt_time_0_part",
                                                                       selectInput_h(inputId = "butt_time_0",
-                                                                                    label = "IN",
+                                                                                    label = "TIME IN",
                                                                                     choices = c(0, 0.001, 1, 5, 25, 1440),
                                                                                     selected = 0.001)
                                                                   ),
                                                                   div(id = "butt_time_100_part",
                                                                       selectInput_h(inputId = "butt_time_100",
-                                                                                    label = "OUT",
+                                                                                    label = "TIME OUT",
                                                                                     choices = c(0, 0.001, 1, 5, 25, 1440),
                                                                                     selected = 1440)
                                                                   )
@@ -382,7 +382,102 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                          uiOutput("butterflyPlot_debug"),
                                                          br()
                                                        )),
-                                              tabPanel("Butterfly Differential Plot")),
+                                              tabPanel("Butterfly Differential Plot",
+                                                       br(),
+                                                       sidebarPanel(
+                                                         class = "scrollable",
+                                                         h3("Select parameters for the plot."),
+                                                         fluidRow(
+                                                           column(width = 6,
+                                                                  checkboxInput_h(inputId = "butt_diff_theory",
+                                                                                  label = "Theoretical calculations",
+                                                                                  value = FALSE),
+                                                                  checkboxInput_h(inputId = "butt_diff_fractional",
+                                                                                  label = "Fractional values",
+                                                                                  value = FALSE)
+                                                           )
+                                                         ),
+                                                         h5("Differential plot presents the difference between values in State 1 and State 2."),
+                                                         splitLayout(selectInput_h(inputId = "butt_diff_state_first",
+                                                                                   label = "State 1",
+                                                                                   choices = c("CD160", "CD160_HVEM")),
+                                                                     selectInput_h(inputId = "butt_diff_state_second",
+                                                                                   label = "State 2",
+                                                                                   choices = c("CD160_HVEM", "CD160"))
+                                                         ),
+                                                         fluidRow(
+                                                           column(width = 6,
+                                                                  checkboxGroupInput_h(inputId = "butt_diff_timepoints",
+                                                                                       label = "Show time points: ",
+                                                                                       choices = c(0.167, 1, 5, 25, 120, 1440),
+                                                                                       selected = c(0.167, 1, 5, 25, 120, 1440))
+                                                           ),
+                                                           column(width = 6,
+                                                                  div(id = "butt_diff_time_0_part",
+                                                                      selectInput_h(inputId = "butt_diff_time_0",
+                                                                                    label = "TIME IN",
+                                                                                    choices = c(0, 0.001, 1, 5, 25, 1440),
+                                                                                    selected = 0.001)
+                                                                  ),
+                                                                  div(id = "butt_diff_time_100_part",
+                                                                      selectInput_h(inputId = "butt_diff_time_100",
+                                                                                    label = "TIME OUT",
+                                                                                    choices = c(0, 0.001, 1, 5, 25, 1440),
+                                                                                    selected = 1440)
+                                                                  )
+                                                           )
+                                                         ),
+                                                         h4("Zoom:"),
+                                                         sliderInput(inputId = "butt_diff_x_range",
+                                                                     label = "Choose x range for butterfly plot:",
+                                                                     min = 1,
+                                                                     max = 41,
+                                                                     value = c(1, 41),
+                                                                     step = 1),
+                                                         sliderInput(inputId = "butt_diff_y_range",
+                                                                     label = "Choose y range for butterfly plot:",
+                                                                     min = -2,
+                                                                     max = 2,
+                                                                     value = c(-2, 2),
+                                                                     step = 1),
+                                                         tags$button("Adjust labels",
+                                                                     class = "collapse-button",
+                                                                     `data-toggle`="collapse",
+                                                                     `data-target`="#butt_diff_labs"),
+                                                         tags$div(
+                                                           class = "hideable",
+                                                           id = "butt_diff_labs",
+                                                           textInput(inputId = "butterflyDifferential_plot_title",
+                                                                     label = "Butterfly plot title:",
+                                                                     value = ""),
+                                                           textInput(inputId = "butterflyDifferential_plot_x_label",
+                                                                     label = "Butterfly plot axis x label:",
+                                                                     value = "Peptide ID"),
+                                                           textInput(inputId = "butterflyDifferential_plot_y_label",
+                                                                     label = "Butterfly plot axis y label:",
+                                                                     value = "Deuterium uptake difference [Da])")
+                                                         )
+                                                       ),
+                                                       mainPanel(
+                                                         class = "scrollable",
+                                                         tabsetPanel(
+                                                           tabPanel("Butterfly differential plot",
+                                                                    br(),
+                                                                    plotOutput_h("butterflyDifferentialPlot", hover = hoverOpts("butterflyDifferentialPlot_hover", delay = 10, delayType = "debounce")),
+                                                                    downloadButton("butterflyDifferentialPlot_download_button",
+                                                                                   "Save chart (.svg)")
+                                                           ),
+                                                           tabPanel("Data",
+                                                                    br(),
+                                                                    DT::dataTableOutput("butterflyDifferentialPlot_data"),
+                                                                    br()
+                                                             
+                                                           )
+                                                         )
+                                                       )
+                                              )
+                                              
+                                          ),
                                               
                                        ),
                               ##

@@ -15,6 +15,16 @@ generate_butterfly_dataset(
 }
 \arguments{
 \item{dat}{data as imported by the \code{\link{read_hdx}} function}
+
+\item{protein}{...}
+
+\item{state}{...}
+
+\item{time_0}{...}
+
+\item{time_100}{...}
+
+\item{deut_part}{...}
 }
 \value{
 ...

@@ -1458,6 +1458,7 @@ server <- function(input, output, session) {
   
   ##
   
+  ## BUTTERFLY
   
   butterfly_dataset <- reactive({
     
@@ -1688,7 +1689,188 @@ server <- function(input, output, session) {
     }
 
     bp_data %>%
-      filter(Exposure %in% input[["butt_timepoints"]])
+      filter(Exposure %in% input[["butt_timepoints"]]) %>%
+      filter(ID > input[["butt_x_range"]][[1]] & ID < input[["butt_x_range"]][[2]])
+    
+  })
+  
+  ## BUTTERFLY DIFFERENTIAL
+  
+  observe({
+    
+    ## TODO update butt_diff_state_first
+    ## TODO update butt_diff_state_second
+    ## TODO update butt_diff_timepoints
+    ## TODO update butt_diff_x_range
+    ## TODO update butt_diff_y_range
+    ## TODO update butterflyDifferential_plot_title
+    ## TODO update butterflyDifferential_plot_y_label
+  
+  })
+  
+  ##
+  
+  butt_diff_dataset <- reactive({
+    
+    generate_butterfly_differential_dataset(dat(),
+                                            protein = input[["chosen_protein"]],
+                                            state_1 = input[["butt_diff_state_first"]],
+                                            state_2 = input[["butt_diff_state_second"]],
+                                            time_0 = as.numeric(input[["butt_diff_time_0"]]),
+                                            time_100 = as.numeric(input[["butt_diff_time_100"]]),
+                                            deut_part = input[["deut_part"]])
+    
+  })
+  
+  butt_diff_plot <- reactive({
+    
+    generate_butterfly_differential_plot(butt_diff_dataset(),
+                                         theoretical = FALSE,
+                                         fractional = FALSE)
+  })
+  
+  ##
+  
+  butt_diff_plot_frac  <- reactive({
+    
+    generate_butterfly_differential_plot(butt_diff_dataset(),
+                                         theoretical = FALSE,
+                                         fractional = TRUE)
+  })
+  
+  ##
+  
+  butt_diff_plot_theo  <- reactive({
+    
+    generate_butterfly_differential_plot(butt_diff_dataset(),
+                                         theoretical = TRUE,
+                                         fractional = FALSE)
+  })
+  
+  ##
+  
+  butt_diff_plot_theo_frac  <- reactive({
+    
+    generate_butterfly_differential_plot(butt_diff_dataset(),
+                                         theoretical = TRUE,
+                                         fractional = TRUE)
+  })
+  
+  ##
+  
+  bdp_out <- reactive({
+    
+    if(input[["butt_diff_theory"]]){
+      
+      if(input[["butt_diff_fractional"]]){
+        
+        bdp <- butt_diff_plot_theo_frac()
+        
+      } else {
+        
+        bdp <- butt_diff_plot_theo()
+        
+      }
+      
+    } else {
+      
+      if(input[["butt_diff_fractional"]]){
+        
+        bdp <- butt_diff_plot_frac()
+        
+      } else {
+        
+        bdp <- butt_diff_plot()
+        
+      }
+      
+    }
+    
+    bdp +
+      coord_cartesian(xlim = c(input[["butt_diff_x_range"]][[1]], input[["butt_diff_x_range"]][[2]]),
+                      ylim = c(input[["butt_diff_y_range"]][[1]], input[["butt_diff_y_range"]][[2]])) +
+      labs(title = input[["butterflyDifferential_plot_title"]],
+           x = input[["butterflyDifferential_plot_x_label"]],
+           y = input[["butterflyDifferential_plot_y_label"]])
+    
+  })
+  
+  
+  output[["butterflyDifferentialPlot"]] <- renderPlot({
+    
+    bdp_out()
+    
+  })
+  
+  ##
+  
+  butt_diff_plot_data_theo <- reactive({
+    
+    generate_butterfly_differential_data(butt_diff_dataset(),
+                                         theoretical = TRUE,
+                                         fractional = FALSE)
+  })
+  
+  ##
+  
+  butt_diff_plot_data_theo_frac <- reactive({
+    
+    generate_butterfly_differential_data(butt_diff_dataset(),
+                                         theoretical = TRUE,
+                                         fractional = TRUE)
+  })
+  
+  ##
+  
+  butt_diff_plot_data <- reactive({
+    
+    generate_butterfly_differential_data(butt_diff_dataset(),
+                                         theoretical = FALSE,
+                                         fractional = FALSE)
+  })
+  
+  ##
+  
+  butt_diff_plot_data_frac <- reactive({
+    
+    generate_butterfly_differential_data(butt_diff_dataset(),
+                                         theoretical = FALSE,
+                                         fractional = TRUE)
+  })
+  
+  ##
+  
+  output[["butterflyDifferentialPlot_data"]] <- DT::renderDataTable(server = FALSE, {
+    
+    if(input[["butt_diff_theory"]]){
+      
+      if(input[["butt_diff_fractional"]]){
+        
+        bdp_data <- butt_diff_plot_data_theo_frac()
+        
+      } else {
+        
+        bdp_data <- butt_diff_plot_data_theo()
+        
+      }
+      
+    } else {
+      
+      if(input[["butt_diff_fractional"]]){
+        
+        bdp_data <- butt_diff_plot_data_frac()
+        
+      } else {
+        
+        bdp_data <- butt_diff_plot_data()
+        
+      }
+      
+    }
+    
+    bdp_data %>%
+      filter(Exposure %in% input[["butt_diff_timepoints"]]) %>%
+      dt_format()
     
   })
   
