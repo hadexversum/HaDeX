@@ -1461,7 +1461,7 @@ server <- function(input, output, session) {
   ## BUTTERFLY
   
   butterfly_dataset <- reactive({
-    
+
     generate_butterfly_dataset(dat(),
                                protein = input[["chosen_protein"]],
                                state = input[["butt_state"]],
@@ -1515,13 +1515,91 @@ server <- function(input, output, session) {
   
   observe({
     
-    ## TODO update butt_state
-    ## TODO update butt_timepoints
-    ## TODO update butt_x_range
-    ## TODO update butt_y_range
-    ## TODO update butterfly_plot_title
-    ## TODO update butterfly_y_label
+    updateSelectInput(session,
+                      inputId = "butt_state",
+                      choices = states_from_file(),
+                      selected = states_from_file()[1])
     
+    if(input[["butt_fractional"]]){
+      
+      times_t <- times_from_file()[times_from_file() > input[["butt_time_0"]] & times_from_file() < as.numeric(input[["butt_time_100"]])]
+      
+    } else {
+      
+      times_t <- times_from_file()[times_from_file() > input[["butt_time_0"]] & times_from_file() < 99999] 
+      
+    }
+    
+    updateCheckboxGroupInput(session,
+                      inputId = "butt_timepoints",
+                      choices = times_t,
+                      selected = times_t)
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    updateSelectInput(session, 
+                      inputId = "butt_time_0",
+                      choices = times_from_file()[times_from_file() < 99999],
+                      selected = min(times_from_file()[times_from_file() > 0]))
+    
+    updateSelectInput(session, 
+                      inputId = "butt_time_100",
+                      choices = times_from_file(),
+                      selected = max(times_from_file()[times_from_file() < 99999]))
+  })
+  
+  ##
+  
+  observe({
+    
+    if(input[["butt_fractional"]]){
+
+      max_y <- ceiling(max(butterfly_dataset()[["frac_deut_uptake"]], butterfly_dataset()[["theo_frac_deut_uptake"]])) + 1
+      min_y <- floor(min(butterfly_dataset()[["frac_deut_uptake"]], butterfly_dataset()[["theo_frac_deut_uptake"]])) - 1
+
+    } else {
+
+      max_y <- ceiling(max(butterfly_dataset()[["deut_uptake"]], butterfly_dataset()[["theo_deut_uptake"]])) + 1
+      min_y <- floor(min(butterfly_dataset()[["deut_uptake"]], butterfly_dataset()[["theo_deut_uptake"]])) - 1
+    }
+    
+    max_x <- max(butterfly_dataset()[["ID"]])
+    min_x <- min(butterfly_dataset()[["ID"]])
+    
+    updateSliderInput(session, 
+                      inputId = "butt_x_range",
+                      min = min_x,
+                      max = max_x,
+                      value = c(min_x, max_x))
+    
+    updateSliderInput(session, 
+                      inputId = "butt_y_range",
+                      min = min_y,
+                      max = max_y,
+                      value = c(min_y, max_y))
+  })
+  
+  ##
+  
+  observe({
+    
+    updateTextInput(session,
+                    inputId = "butterfly_plot_title",
+                    value = case_when(
+                      input[["butt_diff_theory"]] ~ paste0("Thereotical butterfly plot for ", input[["butt_state"]]),
+                      !input[["butt_diff_theory"]] ~ paste0("Butterfly plot for ", input[["butt_state"]])
+                    ))
+    
+    updateTextInput(session,
+                    inputId = "butterfly_y_label",
+                    value = case_when(
+                      input[["butt_fractional"]] ~ "Fractional deuterium uptake [%]",
+                      !input[["butt_fractional"]] ~ "Deuterium uptake [Da]"
+                    ))
   })
   
   ##
@@ -1690,27 +1768,119 @@ server <- function(input, output, session) {
 
     bp_data %>%
       filter(Exposure %in% input[["butt_timepoints"]]) %>%
-      filter(ID > input[["butt_x_range"]][[1]] & ID < input[["butt_x_range"]][[2]])
+      filter(ID >= input[["butt_x_range"]][[1]] & ID <= input[["butt_x_range"]][[2]]) %>%
+      dt_format()
     
   })
   
   ## BUTTERFLY DIFFERENTIAL
   
+  ## times_from_file() - all timepoints from file
+
+  ##
+  
   observe({
     
-    ## TODO update butt_diff_state_first
-    ## TODO update butt_diff_state_second
-    ## TODO update butt_diff_timepoints
-    ## TODO update butt_diff_x_range
-    ## TODO update butt_diff_y_range
-    ## TODO update butterflyDifferential_plot_title
-    ## TODO update butterflyDifferential_plot_y_label
+    updateSelectInput(session,
+                      inputId = "butt_diff_state_first",
+                      choices = states_from_file(),
+                      selected = states_from_file()[1])
+    
+    updateSelectInput(session,
+                      inputId = "butt_diff_state_second",
+                      choices = states_from_file(),
+                      selected = states_from_file()[2])
+    
+    if(input[["butt_diff_fractional"]]){
+      
+      times_t <- times_from_file()[times_from_file() > input[["butt_diff_time_0"]] & times_from_file() < as.numeric(input[["butt_diff_time_100"]])]
+      
+    } else {
+      
+      times_t <- times_from_file()[times_from_file() > input[["butt_diff_time_0"]] & times_from_file() < 99999] 
+      
+    }
+    
+    updateCheckboxGroupInput(session,
+                             inputId = "butt_diff_timepoints",
+                             choices = times_t,
+                             selected = times_t)
+  })
   
+  ##
+  
+  observe({
+    
+    updateSelectInput(session, 
+                      inputId = "butt_diff_time_0",
+                      choices = times_from_file()[times_from_file() < 99999],
+                      selected = min(times_from_file()[times_from_file() > 0]))
+    
+    updateSelectInput(session, 
+                      inputId = "butt_diff_time_100",
+                      choices = times_from_file(),
+                      selected = max(times_from_file()[times_from_file() < 99999]))
+  })
+  
+  ##
+  
+  observe({
+    
+    if(input[["butt_diff_fractional"]]){
+
+      max_y <- ceiling(max(butt_diff_dataset()[["diff_frac_deut_uptake"]], butt_diff_dataset()[["diff_theo_frac_deut_uptake"]])) + 1
+      min_y <- floor(min(butt_diff_dataset()[["diff_frac_deut_uptake"]], butt_diff_dataset()[["diff_theo_frac_deut_uptake"]])) - 1
+
+    } else {
+
+      max_y <- ceiling(max(butt_diff_dataset()[["diff_deut_uptake"]], butt_diff_dataset()[["diff_theo_deut_uptake"]])) + 1
+      min_y <- floor(min(butt_diff_dataset()[["diff_deut_uptake"]], butt_diff_dataset()[["diff_theo_deut_uptake"]])) - 1
+      
+
+    }
+    
+    max_x <- max(butt_diff_dataset()[["ID"]])
+    min_x <- min(butt_diff_dataset()[["ID"]])
+    
+    updateSliderInput(session, 
+                      inputId = "butt_diff_x_range",
+                      min = min_x,
+                      max = max_x,
+                      value = c(min_x, max_x))
+    
+    updateSliderInput(session, 
+                      inputId = "butt_diff_y_range",
+                      min = min_y,
+                      max = max_y,
+                      value = c(min_y, max_y))
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    updateTextInput(session,
+                    inputId = "butterflyDifferential_plot_title",
+                    value = case_when(
+                      input[["butt_diff_theory"]] ~ paste0("Thereotical butterfly differential plot between ", input[["butt_diff_state_first"]], " and ", input[["butt_diff_state_second"]]),
+                      !input[["butt_diff_theory"]] ~ paste0("Butterfly differential plot between ", input[["butt_diff_state_first"]], " and ", input[["butt_diff_state_second"]])
+                    ))
+    
+    updateTextInput(session,
+                    inputId = "butterflyDifferential_plot_y_label",
+                    value = case_when(
+                      input[["butt_diff_fractional"]] ~ "Fractional deuterium uptake difference [%]",
+                      !input[["butt_diff_fractional"]] ~ "Deuterium uptake difference [Da]"
+                    ))
+    
   })
   
   ##
   
   butt_diff_dataset <- reactive({
+    
+    validate(need(input[["butt_diff_state_first"]]!=input[["butt_diff_state_second"]], "There is no difference between the same state, choose different second state."))
     
     generate_butterfly_differential_dataset(dat(),
                                             protein = input[["chosen_protein"]],
@@ -1719,12 +1889,20 @@ server <- function(input, output, session) {
                                             time_0 = as.numeric(input[["butt_diff_time_0"]]),
                                             time_100 = as.numeric(input[["butt_diff_time_100"]]),
                                             deut_part = input[["deut_part"]])
+  })
+  
+  ##
+  
+  butt_diff_dat <- reactive({
+    
+    butt_diff_dataset() %>%
+      filter(Exposure %in% input[["butt_diff_timepoints"]])
     
   })
   
   butt_diff_plot <- reactive({
     
-    generate_butterfly_differential_plot(butt_diff_dataset(),
+    generate_butterfly_differential_plot(butt_diff_dat(),
                                          theoretical = FALSE,
                                          fractional = FALSE)
   })
@@ -1733,7 +1911,7 @@ server <- function(input, output, session) {
   
   butt_diff_plot_frac  <- reactive({
     
-    generate_butterfly_differential_plot(butt_diff_dataset(),
+    generate_butterfly_differential_plot(butt_diff_dat(),
                                          theoretical = FALSE,
                                          fractional = TRUE)
   })
@@ -1742,7 +1920,7 @@ server <- function(input, output, session) {
   
   butt_diff_plot_theo  <- reactive({
     
-    generate_butterfly_differential_plot(butt_diff_dataset(),
+    generate_butterfly_differential_plot(butt_diff_dat(),
                                          theoretical = TRUE,
                                          fractional = FALSE)
   })
@@ -1751,7 +1929,7 @@ server <- function(input, output, session) {
   
   butt_diff_plot_theo_frac  <- reactive({
     
-    generate_butterfly_differential_plot(butt_diff_dataset(),
+    generate_butterfly_differential_plot(butt_diff_dat(),
                                          theoretical = TRUE,
                                          fractional = TRUE)
   })
@@ -1806,7 +1984,7 @@ server <- function(input, output, session) {
   
   butt_diff_plot_data_theo <- reactive({
     
-    generate_butterfly_differential_data(butt_diff_dataset(),
+    generate_butterfly_differential_data(butt_diff_dat(),
                                          theoretical = TRUE,
                                          fractional = FALSE)
   })
@@ -1815,7 +1993,7 @@ server <- function(input, output, session) {
   
   butt_diff_plot_data_theo_frac <- reactive({
     
-    generate_butterfly_differential_data(butt_diff_dataset(),
+    generate_butterfly_differential_data(butt_diff_dat(),
                                          theoretical = TRUE,
                                          fractional = TRUE)
   })
@@ -1824,7 +2002,7 @@ server <- function(input, output, session) {
   
   butt_diff_plot_data <- reactive({
     
-    generate_butterfly_differential_data(butt_diff_dataset(),
+    generate_butterfly_differential_data(butt_diff_dat(),
                                          theoretical = FALSE,
                                          fractional = FALSE)
   })
@@ -1833,7 +2011,7 @@ server <- function(input, output, session) {
   
   butt_diff_plot_data_frac <- reactive({
     
-    generate_butterfly_differential_data(butt_diff_dataset(),
+    generate_butterfly_differential_data(butt_diff_dat(),
                                          theoretical = FALSE,
                                          fractional = TRUE)
   })
@@ -1869,7 +2047,7 @@ server <- function(input, output, session) {
     }
     
     bdp_data %>%
-      filter(Exposure %in% input[["butt_diff_timepoints"]]) %>%
+      filter(ID >= input[["butt_diff_x_range"]][[1]] & ID <= input[["butt_diff_x_range"]][[2]]) %>%
       dt_format()
     
   })
@@ -1886,11 +2064,35 @@ server <- function(input, output, session) {
                     inputId = "volcano_plot_title",
                     value = paste0("Deuterium uptake difference between ", input[["vol_state_first"]], " and ", input[["vol_state_second"]]))
     
-    ## TODO update state 1 
-    ## TODO update state 2
+    updateSelectInput(session, 
+                      inputId = "vol_state_first",
+                      choices = states_from_file(),
+                      selected = states_from_file()[1])
     
-    ## TODO update time points
-    ## TODO update confidence limit for time points
+    updateSelectInput(session, 
+                      inputId = "vol_state_second",
+                      choices = states_from_file(),
+                      selected = states_from_file()[2])
+
+    times_t <- times_from_file()[times_from_file() > 0 & times_from_file()<99999]
+    
+    updateCheckboxGroupInput(session,
+                             inputId = "vol_timepoints",
+                             choices = times_t,
+                             selected = times_t)
+  })
+  
+  ##
+  
+  observe({
+    
+    times_t <- times_from_file()[times_from_file() > 0]
+    intervals_t <- setNames(times_t, c(head(times_t, -1), "All time points"))
+    
+    updateSelectInput(session,
+                      inputId = "vol_interval",
+                      choices = intervals_t,
+                      selected = 99999)
     
   })
   
@@ -2529,7 +2731,8 @@ server <- function(input, output, session) {
                            overlap_distribution_data = stateOverlapDist_data())
   })
 
-
+  ##
+  
   output[["summary_table"]] <- DT::renderDataTable(server = FALSE, {
 
     datatable(data = summary_data(),

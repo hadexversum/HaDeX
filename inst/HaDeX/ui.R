@@ -456,7 +456,8 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                            textInput(inputId = "butterflyDifferential_plot_y_label",
                                                                      label = "Butterfly plot axis y label:",
                                                                      value = "Deuterium uptake difference [Da])")
-                                                         )
+                                                         ),
+                                                         br()
                                                        ),
                                                        mainPanel(
                                                          class = "scrollable",
@@ -470,6 +471,8 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                            tabPanel("Data",
                                                                     br(),
                                                                     DT::dataTableOutput("butterflyDifferentialPlot_data"),
+                                                                    br(),
+                                                                    h4("The table presents data from the chosen x plot range."),
                                                                     br()
                                                              
                                                            )
