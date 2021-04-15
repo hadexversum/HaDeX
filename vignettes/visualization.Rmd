@@ -1,0 +1,42 @@
+---
+title: "Data visualization"
+output: html_document
+vignette: >
+  %\VignetteIndexEntry{Data visualization}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+  
+```{r setup, include=FALSE}
+  knitr::opts_chunk$set(echo = FALSE)
+  knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"))
+```
+
+```{r, echo = FALSE}
+library(HaDeX)
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+```
+
+Data visualization is a very important part of analysis of the data as it allows to interpret the results.
+
+In this article we present methods of data visualization available in the package.
+We focus on already processed data and plot types. For more information on how the results are calculated
+see the other articles in the documentation. 
+
+## Sequence data
+
+## Coverage of the sequence
+
+## Comparison plot
+
+## Woods plot
+
+## Butterfly plot
+
+## Butterfly differential plot
+
+## Volcano plot
+
+## Uptake curve
+
+## Quality control

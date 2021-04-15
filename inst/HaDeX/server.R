@@ -1313,7 +1313,12 @@ server <- function(input, output, session) {
                          ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
       labs(title = input[["woods_plot_title"]],
            x = input[["woods_plot_x_label"]],
-           y = input[["woods_plot_y_label"]])
+           y = input[["woods_plot_y_label"]]) + 
+      theme(plot.title = element_text(size = input[["woods_plot_title_size"]]),
+            axis.text.x = element_text(size = input[["woods_plot_x_label_size"]]),
+            axis.title.x = element_text(size = input[["woods_plot_x_label_size"]]),
+            axis.title.y = element_text(size = input[["woods_plot_y_label_size"]]),
+            axis.text.y = element_text(size = input[["woods_plot_y_label_size"]]))
 
   })
 
@@ -1462,13 +1467,13 @@ server <- function(input, output, session) {
   
   butterfly_dataset <- reactive({
 
-    generate_butterfly_dataset(dat(),
+     generate_butterfly_dataset(dat(),
                                protein = input[["chosen_protein"]],
                                state = input[["butt_state"]],
                                time_0 = as.numeric(input[["butt_time_0"]]),
                                time_100 = as.numeric(input[["butt_time_100"]]),
-                               deut_part = input[["deut_part"]]) 
-    
+                               deut_part = input[["deut_part"]])
+
   })
   
   
@@ -1519,17 +1524,17 @@ server <- function(input, output, session) {
                       inputId = "butt_state",
                       choices = states_from_file(),
                       selected = states_from_file()[1])
-    
+
     if(input[["butt_fractional"]]){
-      
+
       times_t <- times_from_file()[times_from_file() > input[["butt_time_0"]] & times_from_file() < as.numeric(input[["butt_time_100"]])]
-      
+
     } else {
-      
-      times_t <- times_from_file()[times_from_file() > input[["butt_time_0"]] & times_from_file() < 99999] 
-      
+
+      times_t <- times_from_file()[times_from_file() > input[["butt_time_0"]] & times_from_file() < 99999]
+
     }
-    
+
     updateCheckboxGroupInput(session,
                       inputId = "butt_timepoints",
                       choices = times_t,
@@ -1566,17 +1571,17 @@ server <- function(input, output, session) {
       max_y <- ceiling(max(butterfly_dataset()[["deut_uptake"]], butterfly_dataset()[["theo_deut_uptake"]])) + 1
       min_y <- floor(min(butterfly_dataset()[["deut_uptake"]], butterfly_dataset()[["theo_deut_uptake"]])) - 1
     }
-    
+
     max_x <- max(butterfly_dataset()[["ID"]])
     min_x <- min(butterfly_dataset()[["ID"]])
-    
-    updateSliderInput(session, 
+
+    updateSliderInput(session,
                       inputId = "butt_x_range",
                       min = min_x,
                       max = max_x,
                       value = c(min_x, max_x))
-    
-    updateSliderInput(session, 
+
+    updateSliderInput(session,
                       inputId = "butt_y_range",
                       min = min_y,
                       max = max_y,
@@ -1785,22 +1790,22 @@ server <- function(input, output, session) {
                       inputId = "butt_diff_state_first",
                       choices = states_from_file(),
                       selected = states_from_file()[1])
-    
+
     updateSelectInput(session,
                       inputId = "butt_diff_state_second",
                       choices = states_from_file(),
                       selected = states_from_file()[2])
-    
+
     if(input[["butt_diff_fractional"]]){
-      
+
       times_t <- times_from_file()[times_from_file() > input[["butt_diff_time_0"]] & times_from_file() < as.numeric(input[["butt_diff_time_100"]])]
-      
+
     } else {
-      
-      times_t <- times_from_file()[times_from_file() > input[["butt_diff_time_0"]] & times_from_file() < 99999] 
-      
+
+      times_t <- times_from_file()[times_from_file() > input[["butt_diff_time_0"]] & times_from_file() < 99999]
+
     }
-    
+
     updateCheckboxGroupInput(session,
                              inputId = "butt_diff_timepoints",
                              choices = times_t,
@@ -1826,33 +1831,39 @@ server <- function(input, output, session) {
   
   observe({
     
-    if(input[["butt_diff_fractional"]]){
-
-      max_y <- ceiling(max(butt_diff_dataset()[["diff_frac_deut_uptake"]], butt_diff_dataset()[["diff_theo_frac_deut_uptake"]])) + 1
-      min_y <- floor(min(butt_diff_dataset()[["diff_frac_deut_uptake"]], butt_diff_dataset()[["diff_theo_frac_deut_uptake"]])) - 1
+    if (input[["butt_diff_fractional"]]) {
+      max_y <-
+        ceiling(max(butt_diff_dataset()[["diff_frac_deut_uptake"]], butt_diff_dataset()[["diff_theo_frac_deut_uptake"]])) + 1
+      min_y <-
+        floor(min(butt_diff_dataset()[["diff_frac_deut_uptake"]], butt_diff_dataset()[["diff_theo_frac_deut_uptake"]])) - 1
 
     } else {
+      max_y <-
+        ceiling(max(butt_diff_dataset()[["diff_deut_uptake"]], butt_diff_dataset()[["diff_theo_deut_uptake"]])) + 1
+      min_y <-
+        floor(min(butt_diff_dataset()[["diff_deut_uptake"]], butt_diff_dataset()[["diff_theo_deut_uptake"]])) - 1
 
-      max_y <- ceiling(max(butt_diff_dataset()[["diff_deut_uptake"]], butt_diff_dataset()[["diff_theo_deut_uptake"]])) + 1
-      min_y <- floor(min(butt_diff_dataset()[["diff_deut_uptake"]], butt_diff_dataset()[["diff_theo_deut_uptake"]])) - 1
-      
 
     }
-    
+
     max_x <- max(butt_diff_dataset()[["ID"]])
     min_x <- min(butt_diff_dataset()[["ID"]])
-    
-    updateSliderInput(session, 
-                      inputId = "butt_diff_x_range",
-                      min = min_x,
-                      max = max_x,
-                      value = c(min_x, max_x))
-    
-    updateSliderInput(session, 
-                      inputId = "butt_diff_y_range",
-                      min = min_y,
-                      max = max_y,
-                      value = c(min_y, max_y))
+
+    updateSliderInput(
+      session,
+      inputId = "butt_diff_x_range",
+      min = min_x,
+      max = max_x,
+      value = c(min_x, max_x)
+    )
+
+    updateSliderInput(
+      session,
+      inputId = "butt_diff_y_range",
+      min = min_y,
+      max = max_y,
+      value = c(min_y, max_y)
+    )
     
   })
   
@@ -1882,7 +1893,7 @@ server <- function(input, output, session) {
     
     validate(need(input[["butt_diff_state_first"]]!=input[["butt_diff_state_second"]], "There is no difference between the same state, choose different second state."))
     
-    generate_butterfly_differential_dataset(dat(),
+   generate_butterfly_differential_dataset(dat(),
                                             protein = input[["chosen_protein"]],
                                             state_1 = input[["butt_diff_state_first"]],
                                             state_2 = input[["butt_diff_state_second"]],
@@ -2104,8 +2115,8 @@ server <- function(input, output, session) {
       filter(Protein == input[["chosen_protein"]]) %>%
       generate_volcano_dataset(state_1 = input[["vol_state_first"]],
                                state_2 = input[["vol_state_second"]])
-    
-    
+
+
   })
   
   ##
@@ -2113,15 +2124,15 @@ server <- function(input, output, session) {
   observe({
     
     max_x <- ceiling(max(abs(volcano_dataset()[["D_diff"]])))
-    
+
     updateSliderInput(session,
                       inputId = "vol_x_range",
                       max = max_x,
                       min = -max_x,
                       value = c(-max_x, max_x))
-    
+
     max_y <- ceiling(max(volcano_dataset()[["log_p_value"]]))
-    
+
     updateSliderInput(session,
                       inputId = "vol_y_range",
                       max = max_y,
