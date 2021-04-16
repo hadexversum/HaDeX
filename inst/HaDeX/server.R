@@ -20,6 +20,9 @@ server <- function(input, output, session) {
 
   })
 
+
+  ##
+  
   dat_in <- reactive({
 
     inFile <- input[["data_file"]]
@@ -46,6 +49,8 @@ server <- function(input, output, session) {
   exam_protein_name_from_file <- reactive({ unique(dat_in()[["Protein"]]) })
   exam_state_name_from_file <- reactive({ unique(dat_in()[["State"]]) })
 
+  ##
+  
   observe({
 
     if(data_source() == "HDeXaminer"){
@@ -179,6 +184,34 @@ server <- function(input, output, session) {
 
   })
 
+  ##
+  
+  observe({
+    
+    updateSelectInput(session,
+                      inputId = "chosen_protein",
+                      choices = proteins_from_file(),
+                      selected = proteins_from_file()[1])
+    
+  })
+  
+  ## GENERAL INFO
+  
+  states_from_file <- reactive({
+    
+    unique(dat()[["State"]])
+    
+  })
+  
+  ##
+  
+  times_from_file <- reactive({
+    
+    times_from_file <- round(unique(dat()[["Exposure"]]), 3)
+    times_from_file[order(times_from_file)]
+    
+  })
+  
   ## mark for modifications
 
   has_modifications <- reactive({
@@ -223,16 +256,7 @@ server <- function(input, output, session) {
 
   })
 
-  ##
-
-  observe({
-
-    updateSelectInput(session,
-                      inputId = "chosen_protein",
-                      choices = proteins_from_file(),
-                      selected = proteins_from_file()[1])
-
-  })
+  
 
   ##
 
@@ -703,12 +727,6 @@ server <- function(input, output, session) {
   })
 
   ##
-
-  states_from_file <- reactive({
-
-    unique(dat()[["State"]])
-
-  })
 
   ## modification actions
 
@@ -1473,9 +1491,52 @@ server <- function(input, output, session) {
   
   ## BUTTERFLY
   
+  observe({
+    
+    updateSelectInput(session,
+                      inputId = "butt_state",
+                      choices = states_from_file(),
+                      selected = states_from_file()[1])
+    
+    if(input[["butt_fractional"]]){
+      
+      times_t <- times_from_file()[times_from_file() > input[["butt_time_0"]] & times_from_file() < as.numeric(input[["butt_time_100"]])]
+      
+    } else {
+      
+      times_t <- times_from_file()[times_from_file() > input[["butt_time_0"]] & times_from_file() < 99999]
+      
+    }
+    
+    updateCheckboxGroupInput(session,
+                             inputId = "butt_timepoints",
+                             choices = times_t,
+                             selected = times_t)
+    
+  })
+  
+  ##
+  
+  observe({
+    
+    updateSelectInput(session, 
+                      inputId = "butt_time_0",
+                      choices = times_from_file()[times_from_file() < 99999],
+                      selected = min(times_from_file()[times_from_file() > 0]))
+    
+    updateSelectInput(session, 
+                      inputId = "butt_time_100",
+                      choices = times_from_file(),
+                      selected = max(times_from_file()[times_from_file() < 99999]))
+  })
+  
+  ##
+  
   butterfly_dataset <- reactive({
 
-     generate_butterfly_dataset(dat(),
+    validate(need(input[["chosen_protein"]] %in% unique(dat()[["Protein"]]), "Wait for the parameters to be loaded."))
+    
+    generate_butterfly_dataset(dat(),
                                protein = input[["chosen_protein"]],
                                state = input[["butt_state"]],
                                time_0 = as.numeric(input[["butt_time_0"]]),
@@ -1527,47 +1588,7 @@ server <- function(input, output, session) {
   ##
   
   observe({
-    
-    updateSelectInput(session,
-                      inputId = "butt_state",
-                      choices = states_from_file(),
-                      selected = states_from_file()[1])
 
-    if(input[["butt_fractional"]]){
-
-      times_t <- times_from_file()[times_from_file() > input[["butt_time_0"]] & times_from_file() < as.numeric(input[["butt_time_100"]])]
-
-    } else {
-
-      times_t <- times_from_file()[times_from_file() > input[["butt_time_0"]] & times_from_file() < 99999]
-
-    }
-
-    updateCheckboxGroupInput(session,
-                      inputId = "butt_timepoints",
-                      choices = times_t,
-                      selected = times_t)
-    
-  })
-  
-  ##
-  
-  observe({
-    
-    updateSelectInput(session, 
-                      inputId = "butt_time_0",
-                      choices = times_from_file()[times_from_file() < 99999],
-                      selected = min(times_from_file()[times_from_file() > 0]))
-    
-    updateSelectInput(session, 
-                      inputId = "butt_time_100",
-                      choices = times_from_file(),
-                      selected = max(times_from_file()[times_from_file() < 99999]))
-  })
-  
-  ##
-  
-  observe({
     
     if(input[["butt_fractional"]]){
 
@@ -1847,19 +1868,57 @@ server <- function(input, output, session) {
   
   observe({
     
+    updateTextInput(session,
+                    inputId = "butterflyDifferential_plot_title",
+                    value = case_when(
+                      input[["butt_diff_theory"]] ~ paste0("Thereotical butterfly differential plot between ", input[["butt_diff_state_first"]], " and ", input[["butt_diff_state_second"]]),
+                      !input[["butt_diff_theory"]] ~ paste0("Butterfly differential plot between ", input[["butt_diff_state_first"]], " and ", input[["butt_diff_state_second"]])
+                    ))
+    
+    updateTextInput(session,
+                    inputId = "butterflyDifferential_plot_y_label",
+                    value = case_when(
+                      input[["butt_diff_fractional"]] ~ "Fractional deuterium uptake difference [%]",
+                      !input[["butt_diff_fractional"]] ~ "Deuterium uptake difference [Da]"
+                    ))
+    
+  })
+  
+  ##
+  
+  butt_diff_dataset <- reactive({
+    
+   validate(need(input[["butt_diff_state_first"]]!=input[["butt_diff_state_second"]], "There is no difference between the same state, choose different second state."))
+   validate(need(input[["chosen_protein"]] %in% unique(dat()[["Protein"]]), "Wait for the parameters to be loaded."))
+    
+   generate_butterfly_differential_dataset(dat(),
+                                            protein = input[["chosen_protein"]],
+                                            state_1 = input[["butt_diff_state_first"]],
+                                            state_2 = input[["butt_diff_state_second"]],
+                                            time_0 = as.numeric(input[["butt_diff_time_0"]]),
+                                            time_100 = as.numeric(input[["butt_diff_time_100"]]),
+                                            deut_part = input[["deut_part"]])
+  })
+  
+  ##
+  
+  ##
+  
+  observe({
+    
     if (input[["butt_diff_fractional"]]) {
-      max_y <-
-        ceiling(max(butt_diff_dataset()[["diff_frac_deut_uptake"]], butt_diff_dataset()[["diff_theo_frac_deut_uptake"]])) + 1
-      min_y <-
-        floor(min(butt_diff_dataset()[["diff_frac_deut_uptake"]], butt_diff_dataset()[["diff_theo_frac_deut_uptake"]])) - 1
+      
+      max_y <- ceiling(max(butt_diff_dataset()[!is.na(butt_diff_dataset()[["diff_frac_deut_uptake"]]), ][["diff_frac_deut_uptake"]], 
+                           butt_diff_dataset()[!is.na(butt_diff_dataset()[["diff_theo_frac_deut_uptake"]]), ][["diff_theo_frac_deut_uptake"]])) + 1
+      min_y <- floor(min(butt_diff_dataset()[!is.na(butt_diff_dataset()[["diff_frac_deut_uptake"]]), ][["diff_frac_deut_uptake"]], 
+                         butt_diff_dataset()[!is.na(butt_diff_dataset()[["diff_theo_frac_deut_uptake"]]), ][["diff_theo_frac_deut_uptake"]])) - 1
 
     } else {
-      max_y <-
-        ceiling(max(butt_diff_dataset()[["diff_deut_uptake"]], butt_diff_dataset()[["diff_theo_deut_uptake"]])) + 1
-      min_y <-
-        floor(min(butt_diff_dataset()[["diff_deut_uptake"]], butt_diff_dataset()[["diff_theo_deut_uptake"]])) - 1
 
-
+      max_y <- ceiling(max(butt_diff_dataset()[!is.na(butt_diff_dataset()[["diff_deut_uptake"]]), ][["diff_deut_uptake"]], 
+                           butt_diff_dataset()[!is.na(butt_diff_dataset()[["diff_theo_deut_uptake"]]), ][["diff_theo_deut_uptake"]])) + 1
+      min_y <- floor(min(butt_diff_dataset()[!is.na(butt_diff_dataset()[["diff_deut_uptake"]]), ][["diff_deut_uptake"]], 
+                         butt_diff_dataset()[!is.na(butt_diff_dataset()[["diff_theo_deut_uptake"]]), ][["diff_theo_deut_uptake"]])) - 1
     }
 
     max_x <- max(butt_diff_dataset()[["ID"]])
@@ -1881,41 +1940,6 @@ server <- function(input, output, session) {
       value = c(min_y, max_y)
     )
     
-  })
-  
-  ##
-  
-  observe({
-    
-    updateTextInput(session,
-                    inputId = "butterflyDifferential_plot_title",
-                    value = case_when(
-                      input[["butt_diff_theory"]] ~ paste0("Thereotical butterfly differential plot between ", input[["butt_diff_state_first"]], " and ", input[["butt_diff_state_second"]]),
-                      !input[["butt_diff_theory"]] ~ paste0("Butterfly differential plot between ", input[["butt_diff_state_first"]], " and ", input[["butt_diff_state_second"]])
-                    ))
-    
-    updateTextInput(session,
-                    inputId = "butterflyDifferential_plot_y_label",
-                    value = case_when(
-                      input[["butt_diff_fractional"]] ~ "Fractional deuterium uptake difference [%]",
-                      !input[["butt_diff_fractional"]] ~ "Deuterium uptake difference [Da]"
-                    ))
-    
-  })
-  
-  ##
-  
-  butt_diff_dataset <- reactive({
-    
-    validate(need(input[["butt_diff_state_first"]]!=input[["butt_diff_state_second"]], "There is no difference between the same state, choose different second state."))
-    
-   generate_butterfly_differential_dataset(dat(),
-                                            protein = input[["chosen_protein"]],
-                                            state_1 = input[["butt_diff_state_first"]],
-                                            state_2 = input[["butt_diff_state_second"]],
-                                            time_0 = as.numeric(input[["butt_diff_time_0"]]),
-                                            time_100 = as.numeric(input[["butt_diff_time_100"]]),
-                                            deut_part = input[["deut_part"]])
   })
   
   ##
@@ -2092,11 +2116,7 @@ server <- function(input, output, session) {
   
   ##
   
-  observe({
-    
-    updateTextInput(session, 
-                    inputId = "volcano_plot_title",
-                    value = paste0("Deuterium uptake difference between ", input[["vol_state_first"]], " and ", input[["vol_state_second"]]))
+  observe({ 
     
     updateSelectInput(session, 
                       inputId = "vol_state_first",
@@ -2107,7 +2127,15 @@ server <- function(input, output, session) {
                       inputId = "vol_state_second",
                       choices = states_from_file(),
                       selected = states_from_file()[2])
-
+    
+  })
+  
+  observe({
+    
+    updateTextInput(session, 
+                    inputId = "volcano_plot_title",
+                    value = paste0("Deuterium uptake difference between ", input[["vol_state_first"]], " and ", input[["vol_state_second"]]))
+    
     times_t <- times_from_file()[times_from_file() > 0 & times_from_file()<99999]
     
     updateCheckboxGroupInput(session,
@@ -2133,6 +2161,8 @@ server <- function(input, output, session) {
   ##
   
   volcano_dataset <- reactive({
+    
+    validate(need(input[["chosen_protein"]] %in% unique(dat()[["Protein"]]), "Wait for the parameters to be loaded."))
     
     dat() %>%
       filter(Protein == input[["chosen_protein"]]) %>%
@@ -2629,16 +2659,6 @@ server <- function(input, output, session) {
   ### TAB: QUALITY CONTROL
 
   ##
-
-  ## TODO: propagate it!
-
-  times_from_file <- reactive({
-
-    times_from_file <- round(unique(dat()[["Exposure"]]), 3)
-    times_from_file[order(times_from_file)]
-
-  })
-
 
   observe({
 
