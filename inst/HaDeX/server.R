@@ -1078,7 +1078,14 @@ server <- function(input, output, session) {
       labs(title = input[["comparison_plot_title"]],
            x = input[["comparison_plot_x_label"]],
            y = input[["comparison_plot_y_label"]]) +
-      scale_color_manual(values = comparison_plot_colors_chosen())
+      scale_color_manual(values = comparison_plot_colors_chosen()) +
+      theme(plot.title = element_text(size = input[["comparison_plot_title_size"]]),
+            axis.text.x = element_text(size = input[["comparison_plot_x_label_size"]]),
+            axis.title.x = element_text(size = input[["comparison_plot_x_label_size"]]),
+            axis.title.y = element_text(size = input[["comparison_plot_y_label_size"]]),
+            axis.text.y = element_text(size = input[["comparison_plot_y_label_size"]]),
+            legend.text = element_text(size = input[["comparison_plot_x_label_size"]]),
+            legend.title = element_text(size = input[["comparison_plot_x_label_size"]]))
 
   })
 
@@ -1318,7 +1325,8 @@ server <- function(input, output, session) {
             axis.text.x = element_text(size = input[["woods_plot_x_label_size"]]),
             axis.title.x = element_text(size = input[["woods_plot_x_label_size"]]),
             axis.title.y = element_text(size = input[["woods_plot_y_label_size"]]),
-            axis.text.y = element_text(size = input[["woods_plot_y_label_size"]]))
+            axis.text.y = element_text(size = input[["woods_plot_y_label_size"]]),
+            legend.text = element_text(size = input[["woods_plot_x_label_size"]]))
 
   })
 
@@ -1595,7 +1603,7 @@ server <- function(input, output, session) {
     updateTextInput(session,
                     inputId = "butterfly_plot_title",
                     value = case_when(
-                      input[["butt_diff_theory"]] ~ paste0("Thereotical butterfly plot for ", input[["butt_state"]]),
+                      input[["butt_diff_theory"]] ~ paste0("Thereotical butterfly plot for ", input[["butt_state"]], " state"),
                       !input[["butt_diff_theory"]] ~ paste0("Butterfly plot for ", input[["butt_state"]])
                     ))
     
@@ -1641,7 +1649,15 @@ server <- function(input, output, session) {
                       ylim = c(input[["butt_y_range"]][[1]], input[["butt_y_range"]][[2]])) +
       labs(title = input[["butterfly_plot_title"]],
            x = input[["butterfly_plot_x_label"]],
-           y = input[["butterfly_plot_y_label"]])
+           y = input[["butterfly_plot_y_label"]]) +
+      theme(plot.title = element_text(size = input[["butterfly_plot_title_size"]]),
+            axis.text.x = element_text(size = input[["butterfly_plot_x_label_size"]]),
+            axis.title.x = element_text(size = input[["butterfly_plot_x_label_size"]]),
+            axis.title.y = element_text(size = input[["butterfly_plot_y_label_size"]]),
+            axis.text.y = element_text(size = input[["butterfly_plot_y_label_size"]]),
+            legend.text = element_text(size = input[["butterfly_plot_x_label_size"]]),
+            legend.title = element_text(size = input[["butterfly_plot_x_label_size"]]))
+    
     
   })
   
@@ -1980,7 +1996,14 @@ server <- function(input, output, session) {
                       ylim = c(input[["butt_diff_y_range"]][[1]], input[["butt_diff_y_range"]][[2]])) +
       labs(title = input[["butterflyDifferential_plot_title"]],
            x = input[["butterflyDifferential_plot_x_label"]],
-           y = input[["butterflyDifferential_plot_y_label"]])
+           y = input[["butterflyDifferential_plot_y_label"]]) +
+      theme(plot.title = element_text(size = input[["butterflyDifferential_plot_title_size"]]),
+            axis.text.x = element_text(size = input[["butterflyDifferential_plot_x_label_size"]]),
+            axis.title.x = element_text(size = input[["butterflyDifferential_plot_x_label_size"]]),
+            axis.title.y = element_text(size = input[["butterflyDifferential_plot_y_label_size"]]),
+            axis.text.y = element_text(size = input[["butterflyDifferential_plot_y_label_size"]]),
+            legend.text = element_text(size = input[["butterflyDifferential_plot_x_label_size"]]),
+            legend.title = element_text(size = input[["butterflyDifferential_plot_x_label_size"]]))
     
   })
   
@@ -2137,7 +2160,7 @@ server <- function(input, output, session) {
                       inputId = "vol_y_range",
                       max = max_y,
                       value = c(0, max_y))
-    
+
   })
   
   ##
@@ -2160,7 +2183,14 @@ server <- function(input, output, session) {
            x = input[["volcano_plot_x_label"]],
            y = input[["volcano_plot_y_label"]]) +
       coord_cartesian(xlim = c(input[["vol_x_range"]][[1]], input[["vol_x_range"]][[2]]),
-                      ylim = c(input[["vol_y_range"]][[1]], input[["vol_y_range"]][[2]]))
+                      ylim = c(input[["vol_y_range"]][[1]], input[["vol_y_range"]][[2]])) +
+      theme(plot.title = element_text(size = input[["volcano_plot_title_size"]]),
+            axis.text.x = element_text(size = input[["volcano_plot_x_label_size"]]),
+            axis.title.x = element_text(size = input[["volcano_plot_x_label_size"]]),
+            axis.title.y = element_text(size = input[["volcano_plot_y_label_size"]]),
+            axis.text.y = element_text(size = input[["volcano_plot_y_label_size"]]),
+            legend.text = element_text(size = input[["volcano_plot_x_label_size"]]),
+            legend.title = element_text(size = input[["volcano_plot_x_label_size"]]))
     
   })
   
@@ -2461,7 +2491,13 @@ server <- function(input, output, session) {
       coord_cartesian(ylim = c(input[["kin_plot_y_range"]][1], input[["kin_plot_y_range"]][2])) +
       scale_x_log10() +
       theme(legend.position = "bottom",
-            legend.title = element_blank())
+            legend.title = element_blank(),
+            plot.title = element_text(size = input[["kin_plot_title_size"]]),
+            axis.text.x = element_text(size = input[["kin_plot_x_label_size"]]),
+            axis.title.x = element_text(size = input[["kin_plot_x_label_size"]]),
+            axis.title.y = element_text(size = input[["kin_plot_y_label_size"]]),
+            axis.text.y = element_text(size = input[["kin_plot_y_label_size"]]),
+            legend.text = element_text(size = input[["kin_plot_x_label_size"]]))
 
   })
 
