@@ -45,9 +45,10 @@ generate_butterfly_dataset <- function(dat,
 #' @description Generates butterfly plot based on supplied data
 #' and parameters.
 #' 
-#' @param butterfly_dat data as imported by the \code{\link{read_hdx}} function
+#' @param butterfly_dat ...
 #' @param theoretical \code{logical}, determines if values are theoretical
 #' @param fractional \code{logical}, determines if values are fractional
+#' @param uncertainty_type ...
 #' 
 #' @details This plot is visible in GUI. 
 #' 
@@ -59,7 +60,8 @@ generate_butterfly_dataset <- function(dat,
 
 generate_butterfly_plot <- function(butterfly_dat, 
                                     theoretical = FALSE, 
-                                    fractional = FALSE){
+                                    fractional = FALSE,
+                                    uncertainty_type = c("ribbon", "bars")){
   if (theoretical) {
     
     if (fractional) {

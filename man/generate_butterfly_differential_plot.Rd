@@ -7,7 +7,8 @@
 generate_butterfly_differential_plot(
   butterfly_diff_dat,
   theoretical = FALSE,
-  fractional = FALSE
+  fractional = FALSE,
+  uncertainty_type = c("ribbon", "bars")
 )
 }
 \arguments{
@@ -16,6 +17,8 @@ generate_butterfly_differential_plot(
 \item{theoretical}{\code{logical}, determines if values are theoretical}
 
 \item{fractional}{\code{logical}, determines if values are fractional}
+
+\item{uncertainty_type}{...}
 }
 \value{
 

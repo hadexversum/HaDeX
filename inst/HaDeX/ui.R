@@ -3,7 +3,6 @@ source("data-work.R")
 options(spinner.color="#715D91")
 
 ui <- fluidPage(theme = "HaDeX_theme.css",
-#                 #titlePanel("HaDeX"), #: analysis of data from hydrogen deuterium exchange-mass spectrometry"),
                 title = "HaDeX",
                 useShinyjs(),
                 tags$head(includeScript("ga.js"),
@@ -20,16 +19,25 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                     img(src = "mock_logo.png", class = "logo")
                   ),
                   tabsetPanel(type = "pills",
+                              
+                              ##################################
+                              ############ START ###############
+                              ##################################
+                              
                               tabPanel("Start",
                                        h3("Welcome to HaDeX!"),
                                        h4("Thank you for using our tool."),
-                                       #h4("For any additional information, please see the documnetation available online.", a(href = "https://hadexversum.github.io/HaDeX/", "Check it out!")),
                                        h4("Questions/feature requests/commercial applications: hadex@ibb.waw.pl"),
                                        includeMarkdown("readmes/about.md"),
                                        img(class='funding-icons',
                                            src='funding_icons.png'),
                                        br()
                               ),
+                              
+                              ##################################
+                              ########## INPUT DATA ############
+                              ##################################
+                              
                               tabPanel("Input data",
                                        br(),
                                        h4("Upload your file. Otherwise, you will see the example data."),
@@ -132,19 +140,29 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        br(),
                                        br()
                               ),
-                              ##
+                              
+                              ##################################
+                              ########## WOODS PLOT ############
+                              ##################################
+                              
                               tabPanel("Woods plot",
                                        br(),
                                        sidebarPanel(
                                          class = "scrollable",
+                                         
+                                         ##### SETTINGS ##### 
+                                         
                                          h3("Select parameters for the plot."),
-                                         fluidRow(checkboxInput_h(inputId = "theory",
+                                         fluidRow(
+                                           column(width = 6,
+                                                  checkboxInput_h(inputId = "theory",
                                                                   label = "Theoretical calculations",
-                                                                  value = FALSE)),
-                                         radioButtons_h(inputId = "calc_type",
-                                                        label = "Choose values type:",
-                                                        choices = c("fractional", "absolute"),
-                                                        selected = "fractional"),
+                                                                  value = FALSE),
+                                                  checkboxInput_h(inputId = "comp_fractional", 
+                                                                       label = "Fractional values",
+                                                                       value = FALSE)
+                                           )
+                                         ),
                                          h4("Comparison plot parameters:"),
                                          h5("Choose time parameters:"),
                                          splitLayout(
@@ -298,6 +316,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        ),
                                        mainPanel(
                                          class = "scrollable",
+                                         
+                                         ##### COMPARISON PLOT ##### 
+                                         
                                          tabsetPanel(
                                            tabPanel("Comparison plot",
                                                     br(),
@@ -311,6 +332,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                     h4("The empty values (e.q. `Frac Exch`) means there was not sufficient data for this peptide."))),
                                          uiOutput("comparisonPlot_debug"),
                                          br(),
+                                         
+                                         ##### WOODS PLOT ##### 
+                                         
                                          tabsetPanel(
                                            tabPanel("Woods plot",
                                                     br(),
@@ -328,14 +352,24 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
 
                                        )
                               ),
-                              ##
+                              
+                              ##################################
+                              ######### BUTTERFLY PLOT #########
+                              ##################################
+                              
                               tabPanel("Butterfly plot",
                                        br(),
                                        tabsetPanel(
+                                         
+                                              ##### BUTTERFLY #####
+                                              
                                               tabPanel("Butterfly Plot",
                                                        br(),
                                                        sidebarPanel(
                                                          class = "scrollable",
+                                                         
+                                                         ##### SETTINGS ##### 
+                                                         
                                                          h3("Select parameters for the plot."),
                                                          fluidRow(
                                                            column(width = 6,
@@ -359,6 +393,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                               label = "Show time points: ",
                                                                               choices = c(0.167, 1, 5, 25, 120, 1440),
                                                                               selected = c(0.167, 1, 5, 25, 120, 1440)),
+                                                            h4("Visualization:"),
                                                             selectInput_h(inputId = "butt_uncertainty",
                                                                           label = "Show uncertainty as:",
                                                                           choices = c("ribbon", "bars"),
@@ -429,6 +464,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                        mainPanel(
                                                          class = "scrollable",
                                                          tabsetPanel(
+                                                           
+                                                           ##### BUTTERFLY PLOT ##### 
+                                                           
                                                            tabPanel("Butterfly plot",
                                                                     br(),
                                                                     plotOutput_h("butterflyPlot", hover = hoverOpts("butterflyPlot_hover", delay = 10, delayType = "debounce")),
@@ -442,10 +480,16 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                          uiOutput("butterflyPlot_debug"),
                                                          br()
                                                        )),
+                                              
+                                              ##### BUTTERFLY DIFFERENTIAL ##### 
+                                              
                                               tabPanel("Butterfly Differential Plot",
                                                        br(),
                                                        sidebarPanel(
                                                          class = "scrollable",
+                                                         
+                                                         ##### SETTINGS ##### 
+                                                         
                                                          h3("Select parameters for the plot."),
                                                          fluidRow(
                                                            column(width = 6,
@@ -471,6 +515,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                                        label = "Show time points: ",
                                                                                        choices = c(0.167, 1, 5, 25, 120, 1440),
                                                                                        selected = c(0.167, 1, 5, 25, 120, 1440)),
+                                                                  h4("Visualization:"),
                                                                   selectInput_h(inputId = "butt_diff_uncertainty",
                                                                                 label = "Show uncertainty as:",
                                                                                 choices = c("ribbon", "bars"),
@@ -543,6 +588,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                        mainPanel(
                                                          class = "scrollable",
                                                          tabsetPanel(
+                                                           
+                                                           ##### BUTTERFLT DIFFERENTIAL PLOT #####  
+                                                           
                                                            tabPanel("Butterfly differential plot",
                                                                     br(),
                                                                     plotOutput_h("butterflyDifferentialPlot", hover = hoverOpts("butterflyDifferentialPlot_hover", delay = 10, delayType = "debounce")),
@@ -564,11 +612,18 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                           ),
                                               
                                        ),
-                              ##
+                              
+                              ##################################
+                              ########## VOLCANO PLOT ##########
+                              ##################################
+                              
                               tabPanel("Volcano plot",
                                        br(),
                                        sidebarPanel(
                                          class = "scrollable",
+                                         
+                                         ##### SETTINGS ##### 
+                                         
                                          h3("Select parameters for the plot."),
                                          h5("Volcano plot presents the difference between values in State 1 and State 2."),
                                          splitLayout(selectInput_h(inputId = "vol_state_first",
@@ -580,23 +635,26 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                      ),
                                          fluidRow(
                                            column(width = 6,
+                                                  checkboxGroupInput_h(inputId = "vol_timepoints",
+                                                                       label = "Show time points: ",
+                                                                       choices = c(0.167, 1, 5, 25, 120, 1440),
+                                                                       selected = c(0.167, 1, 5, 25, 120, 1440))
+                                           ),
+                                           column(width = 6,
                                                   selectInput_h(inputId = "vol_confidence_limit",
                                                                 label = "Confidence limit:",
                                                                 choices = c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
                                                                 selected = 0.98),
                                                   checkboxInput_h(inputId = "vol_p_adjustment",
                                                                   label = "Adjust p value?",
-                                                                  value = FALSE)
-                                                  )
+                                                                  value = FALSE),
+                                                  selectInput_h(inputId = "vol_interval",
+                                                                label = "Show confidence limit for: ",
+                                                                choices = c("All time points" = 99999, "0.167 min" = 0.167, "1 min" = 1, "5 min" = 5, "25 min" = 25, "120 min" = 120, "1440 min" = 1440),
+                                                                selected = 99999)
+                                             
+                                           )
                                          ),
-                                         splitLayout(checkboxGroupInput_h(inputId = "vol_timepoints",
-                                                                          label = "Show time points: ",
-                                                                          choices = c(0.167, 1, 5, 25, 120, 1440),
-                                                                          selected = c(0.167, 1, 5, 25, 120, 1440)),
-                                                     selectInput_h(inputId = "vol_interval",
-                                                                   label = "Show confidence limit for: ",
-                                                                   choices = c("All time points" = 99999, "0.167 min" = 0.167, "1 min" = 1, "5 min" = 5, "25 min" = 25, "120 min" = 120, "1440 min" = 1440),
-                                                                   selected = 99999)),
                                          h4("Zoom:"),
                                          sliderInput(inputId = "vol_x_range",
                                                      label = "Choose x range for volcano plot:",
@@ -648,6 +706,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        mainPanel(
                                          class = "scrollable",
                                          tabsetPanel(
+                                           
+                                           ##### VOLCANO PLOT ##### 
+                                           
                                            tabPanel("Volcano plot",
                                                     br(),
                                                     plotOutput_h("volcanoPlot", width = "80%", height = "800px", hover = hoverOpts("volcanoPlott_hover", delay = 10, delayType = "debounce")),
@@ -662,11 +723,18 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          )
                                        )
                                       ),
-                              ##
+                              
+                              ##################################
+                              ############ COVERAGE ############
+                              ##################################
+                              
                               tabPanel("Coverage",
                                        br(),
                                        sidebarPanel(
                                          class = "scrollable",
+                                         
+                                         ##### SETTINGS ##### 
+                                         
                                          radioButtons(
                                            inputId = 'chosen_state',
                                            label = 'Choose state:',
@@ -685,6 +753,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        mainPanel(
                                          class = "scrollable",
                                          tabsetPanel(
+                                           
+                                           ##### PEPTIDE COVERAGE ##### 
+                                      
                                            tabPanel("Peptide Coverage",
                                                     br(),
                                                     withSpinner(plotOutput("stateOverlap", hover = hoverOpts("stateOverlap_hover", delay = 10, delayType = "debounce"))),
@@ -698,6 +769,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          ),
                                          br(),
                                          tabsetPanel(
+                                           
+                                           ##### POSITION FREQUENCY ##### 
+                                           
                                            tabPanel("Position Frequency",
                                                     br(),
                                                     div(style = "position:relative;",
@@ -713,7 +787,11 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
 
                                        )
                               ),
-                              ##
+                              
+                              ##################################
+                              ######## SEQUENCE DATA ###########
+                              ##################################
+                              
                               tabPanel("Sequence data",
                                        h3('Protein name'),
                                        h4(textOutput("protein_name"), class  = "monospaced"),
@@ -748,19 +826,29 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          )
                                        )
                               ),
-                              ##
+                              
+                              ##################################
+                              ###### UPTAKE CURVES #############
+                              ##################################
+                              
                               tabPanel("Uptake curves",
                                        br(),
                                        sidebarPanel(
                                          class = "scrollable",
+                                         
+                                         ##### SETTINGS ##### 
+                                      
                                          h3("Select parameters for the plot."),
-                                         checkboxInput_h(inputId = "kin_theory",
-                                                         label = "Theoretical calculations",
-                                                         value = FALSE),
-                                         radioButtons_h(inputId = "kin_calc_type",
-                                                        label = "Choose values type:",
-                                                        choices = c("fractional", "absolute"),
-                                                        selected = "fractional"),
+                                         fluidRow(
+                                           column(width = 6,
+                                                  checkboxInput_h(inputId = "kin_theory",
+                                                                  label = "Theoretical calculations",
+                                                                  value = FALSE),
+                                                  checkboxInput_h(inputId = "kin_fractional",
+                                                                  label = "Fractional values",
+                                                                  value = FALSE)
+                                           )
+                                         ),
                                          div(id = "kin_time_part",
                                              h5("Choose time parameters:"),
                                              splitLayout(
@@ -824,6 +912,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        ),
                                        mainPanel(
                                          tabsetPanel(
+                                           
+                                           ##### UPTAKE CURVE ##### 
+                                           
                                            tabPanel(
                                              "Uptake curve",
                                              br(),
@@ -836,11 +927,18 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                     DT::dataTableOutput("kin_plot_data"))
                                          )
                                        )
-                              ) ,
-                              #
+                              ),
+                              
+                              ##################################
+                              ####### QUALITY CONTROL ##########
+                              ##################################
+                              
                               tabPanel("Quality control",
                                        br(),
                                        sidebarPanel(
+                                         
+                                         ##### SETTINGS ##### 
+                                         
                                          h3("Select parameters for the plot."),
                                          h5("The plot can be rendered only for fractional experimental values."),
                                          selectInput_h(inputId = "qc_time_0",
@@ -858,6 +956,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        ),
                                        mainPanel(
                                          tabsetPanel(
+                                           
+                                           ##### QUALITY CONTROL PLOT ##### 
+                                           
                                            tabPanel("Quality control plot",
                                                     br(),
                                                     plotOutput_h("quality_control_plot", hover = hoverOpts("quality_control_plot_hover", delay = 10, delayType = "debounce"), height = 600),
@@ -873,6 +974,11 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          )
                                        )
                               ),
+                              
+                              ##################################
+                              ############ SUMMARY #############
+                              ##################################
+                              
                               tabPanel("Summary",
                                        br(),
                                        fluidRow(
@@ -880,6 +986,11 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        ),
                                        includeMarkdown("./readmes/summary.md")
                               ),
+                              
+                              ##################################
+                              ############ REPORT ##############
+                              ##################################
+                              
                               tabPanel("Report",
                                        br(),
                                        sidebarPanel(width = 8,
@@ -958,6 +1069,11 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                               )
                   )
                 ),
+                
+                ##################################
+                ########## MOBILE ###############
+                ##################################
+                
                 tags$div(
                   class = "mobile-site-backbone",
                   tags$div(

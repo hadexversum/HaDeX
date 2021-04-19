@@ -4,14 +4,21 @@
 \alias{generate_butterfly_plot}
 \title{generate_butterfly_plot}
 \usage{
-generate_butterfly_plot(butterfly_dat, theoretical = FALSE, fractional = FALSE)
+generate_butterfly_plot(
+  butterfly_dat,
+  theoretical = FALSE,
+  fractional = FALSE,
+  uncertainty_type = c("ribbon", "bars")
+)
 }
 \arguments{
-\item{butterfly_dat}{data as imported by the \code{\link{read_hdx}} function}
+\item{butterfly_dat}{...}
 
 \item{theoretical}{\code{logical}, determines if values are theoretical}
 
 \item{fractional}{\code{logical}, determines if values are fractional}
+
+\item{uncertainty_type}{...}
 }
 \value{
 ...

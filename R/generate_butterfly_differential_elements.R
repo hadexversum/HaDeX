@@ -49,6 +49,7 @@ generate_butterfly_differential_dataset <- function(dat,
 #' @param butterfly_diff_dat ...
 #' @param theoretical \code{logical}, determines if values are theoretical
 #' @param fractional \code{logical}, determines if values are fractional
+#' @param uncertainty_type ...
 #' 
 #' @details This plot is visible in GUI.
 #' 
@@ -60,7 +61,8 @@ generate_butterfly_differential_dataset <- function(dat,
 
 generate_butterfly_differential_plot <- function(butterfly_diff_dat, 
                                                  theoretical = FALSE, 
-                                                 fractional = FALSE){
+                                                 fractional = FALSE,
+                                                 uncertainty_type = c("ribbon", "bars")){
   
   if(theoretical){
     

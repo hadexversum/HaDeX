@@ -9,9 +9,9 @@
 #' @export generate_volcano_dataset
 
 generate_volcano_dataset <- function(dat,
-                                  protein = unique(dat[["Protein"]])[1],
-                                  state_1 = unique(dat[["State"]])[1],
-                                  state_2 = unique(dat[["State"]])[2]){
+                                     protein = unique(dat[["Protein"]])[1],
+                                     state_1 = unique(dat[["State"]])[1],
+                                     state_2 = unique(dat[["State"]])[2]){
   
   proton_mass <- 1.00727647
   
@@ -94,21 +94,33 @@ generate_volcano_dataset <- function(dat,
 #' Generates volcano plot based on supplied volcano data
 #' 
 #' @param vol_data ...
+#' @param state_1 ...
+#' @param state_2 ...
+#' @param adjust_axes ...
 #' 
 #' @export generate_volcano_plot
  
-generate_volcano_plot <- function(vol_data, state_1 = "", state_2 = "") {
+generate_volcano_plot <- function(vol_data, 
+                                  state_1 = "", 
+                                  state_2 = "",
+                                  adjust_axes = TRUE) {
   
-  x_max <- ceiling(max(abs(vol_data[["D_diff"]])))
-  y_max <- ceiling(max(vol_data[["log_p_value"]])) + 2
-  
-  ggplot(vol_data, aes(x = D_diff, y = log_p_value)) + 
+  volcano_plot <- ggplot(vol_data, aes(x = D_diff, y = log_p_value)) + 
     geom_point() + 
     geom_errorbar(aes(xmin = D_diff - Uncertainty, xmax = D_diff + Uncertainty), alpha = 0.2) + 
-    coord_cartesian(xlim = c(-x_max, x_max), ylim = c(0, y_max), expand = FALSE) + 
     labs(title = paste0("Volcano Plot ", state_1, " " , state_2),  
          x = "Mass difference [Da]",
          y = "-log(P value)")
+  
+  if(adjust_axes){
+    
+    x_max <- ceiling(max(abs(vol_data[["D_diff"]])))
+    y_max <- ceiling(max(vol_data[["log_p_value"]])) + 2
+    
+    volcano_plot + 
+      coord_cartesian(xlim = c(-x_max, x_max), ylim = c(0, y_max), expand = FALSE) 
+    
+  }
   
 }
 
