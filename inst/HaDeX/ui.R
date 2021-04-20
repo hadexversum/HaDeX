@@ -605,7 +605,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                     br()
                                                              
                                                            )
-                                                         )
+                                                         ),
+                                                         uiOutput("butterflyDifferentialPlot_debug"),
+                                                         br()
                                                        )
                                               )
                                               
@@ -711,7 +713,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                            
                                            tabPanel("Volcano plot",
                                                     br(),
-                                                    plotOutput_h("volcanoPlot", width = "80%", height = "800px", hover = hoverOpts("volcanoPlott_hover", delay = 10, delayType = "debounce")),
+                                                    plotOutput_h("volcanoPlot", width = "80%", height = "800px", hover = hoverOpts("volcanoPlot_hover", delay = 10, delayType = "debounce")),
                                                     downloadButton("volcanoPlot_download_button",
                                                                    "Save chart (.svg)")
                                            ),
@@ -720,7 +722,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                     DT::dataTableOutput("volcanoPlot_data"),
                                                     br()
                                            )
-                                         )
+                                         ),
+                                         uiOutput("volcanoPlot_debug"),
+                                         br()
                                        )
                                       ),
                               

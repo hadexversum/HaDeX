@@ -16,15 +16,7 @@ generate_volcano_dataset <- function(dat,
   proton_mass <- 1.00727647
   
   tmp_dat <- dat %>%
-    ## mass calculation
-    filter(Protein == protein) %>%
-    select(Sequence, Start, End, State, Exposure, File, z, Inten, Center) %>%
-    mutate(exp_mass = Center*z - z*proton_mass) %>%
-    group_by(Sequence, Start, End, State, Exposure, File) %>%
-    summarize(avg_exp_mass = weighted.mean(exp_mass, Inten, na.rm = TRUE)) %>%
-    ungroup(.) %>%
-    ## end of mass calculation
-    # filter(Exposure != 0, Exposure != 0.001) %>%
+    calculate_exp_masses_per_replicate(.) %>%
     group_by(Sequence, Start, End, State, Exposure) %>%
     summarize(avg_mass = mean(avg_exp_mass),
               err_avg_mass = sd(avg_exp_mass)/sqrt(length(Exposure)),

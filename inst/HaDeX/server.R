@@ -213,6 +213,15 @@ server <- function(input, output, session) {
     
   })
   
+  times_with_control <- reactive({
+    
+    tmp <- sort(unique(round(dat()[["Exposure"]], 3)))
+    choose_time_100 <- setNames(tmp, c(head(tmp, -1), "chosen control"))
+    
+    choose_time_100
+    
+  })
+  
   ## mark for modifications
 
   has_modifications <- reactive({

@@ -94,7 +94,7 @@ volcano_data <- reactive({
 ######### PLOT ##################
 #################################
 
-vp_out <- reactive({
+volcano_plot_out <- reactive({
   
   generate_volcano_plot(volcano_data(), 
                         state_1 = input[["vol_state_first"]], 
@@ -118,7 +118,7 @@ vp_out <- reactive({
 
 output[["volcanoPlot"]] <- renderPlot({
   
-  vp_out() 
+  volcano_plot_out() 
   
 })
 
@@ -126,9 +126,63 @@ output[["volcanoPlot"]] <- renderPlot({
 
 output[["volcanoPlot_download_button"]] <- downloadHandler("volcanoPlot.svg",
                                                            content = function(file) {
-                                                             ggsave(file, vp_out(), device = svg,
+                                                             ggsave(file, volcano_plot_out(), device = svg,
                                                                     height = 300, width = 400, units = "mm")
                                                            })
+
+##
+
+output[["volcanoPlot_debug"]] <- renderUI({
+  
+  if(!is.null(input[["volcanoPlot_hover"]])) {
+    
+    # browser()
+    
+    plot_data <- volcano_plot_out()[["data"]]
+    hv <- input[["volcanoPlot_hover"]]
+    
+    hv_dat <- data.frame(x = hv[["x"]],
+                         y = hv[["y"]],
+                         x_plot = plot_data[[hv[["mapping"]][["x"]]]],
+                         y_plot = plot_data[[hv[["mapping"]][["y"]]]],
+                         Sequence = plot_data[["Sequence"]],
+                         Start = plot_data[["Start"]],
+                         End = plot_data[["End"]],
+                         Exposure = plot_data[["Exposure"]])
+    
+    tt_df <- filter(hv_dat) %>%
+      filter(abs(x_plot - x) < 0.5) %>%
+      filter(abs(y_plot - y) < 10) %>%
+      filter(abs(y_plot - y) == min(abs(y_plot - y)))
+    
+    
+    if(nrow(tt_df) != 0) {
+      
+      tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                           "left", "right")
+      
+      tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                       hv[["coords_css"]][["x"]],
+                       hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+      
+      
+      style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); pointer-events: none;",
+                      tt_pos_adj, ":", tt_pos, "px; padding: 0px;",
+                      "top:", hv[["coords_css"]][["y"]] , "px; ")
+      
+      div(
+        style = style,
+        p(HTML(paste0(tt_df[["Sequence"]],
+                      "<br/> Position: ", tt_df[["Start"]], "-", tt_df[["End"]],
+                      "<br/> Exposure: ", tt_df[["Exposure"]], " min",
+                      "<br/> Difference: ", round(tt_df[["x_plot"]], 2),
+                      "<br/> -log(P value): ", round(tt_df[["y_plot"]], 2)
+        )))
+      )
+    }
+  }
+})
+
 #################################
 ######### DATA ##################
 #################################

@@ -39,10 +39,10 @@ observe({
                     choices = times_from_file()[times_from_file() < 99999],
                     selected = min(times_from_file()[times_from_file() > 0]))
   
-  updateSelectInput(session, 
+  updateSelectInput(session,
                     inputId = "butt_diff_time_100",
-                    choices = times_from_file(),
-                    selected = max(times_from_file()[times_from_file() < 99999]))
+                    choices = times_with_control(),
+                    selected = max(times_with_control()[times_with_control() < 99999]))
 })
 
 ##
@@ -106,6 +106,47 @@ observe({
   
 })
 
+##
+
+observe({
+  
+  if(input[["butt_diff_theory"]]){
+    hide(id = "butt_diff_time_0_part")
+    hide(id = "butt_diff_time_100_part")
+  }
+  
+})
+
+##
+
+observe({
+  
+  if(!input[["butt_diff_theory"]]){
+    show(id = "butt_diff_time_0_part")
+    show(id = "butt_diff_time_100_part")
+  }
+  
+})
+
+##
+
+observe({
+  
+  if(!input[["butt_diff_fractional"]]){
+    hide(id = "butt_diff_time_100_part")
+  }
+  
+})
+
+##
+
+observe({
+  
+  if(input[["butt_diff_fractional"]] & !input[["butt_diff_theory"]]){
+    show(id = "butt_diff_time_100_part")
+  }
+  
+})
 
 #################################
 ######### DATASET ###############
@@ -122,7 +163,7 @@ butt_diff_dataset <- reactive({
                                           state_2 = input[["butt_diff_state_second"]],
                                           time_0 = as.numeric(input[["butt_diff_time_0"]]),
                                           time_100 = as.numeric(input[["butt_diff_time_100"]]),
-                                          deut_part = input[["deut_part"]])
+                                          deut_part = as.numeric(input[["deut_part"]])/100)
 })
 
 ##
@@ -165,6 +206,64 @@ output[["butterflyDifferentialPlot"]] <- renderPlot({
   
   butterfly_differential_plot_out()
   
+})
+
+##
+
+output[["butterflyDifferentialPlot_download_button"]] <- downloadHandler("butterflyDifferentialPlot.svg",
+                                                             content = function(file) {
+                                                               ggsave(file, butterfly_differential_plot_out(), device = svg,
+                                                                      height = 300, width = 400, units = "mm")
+                                                             })
+##
+
+output[["butterflyDifferentialPlot_debug"]] <- renderUI({
+  
+  if(!is.null(input[["butterflyDifferentialPlot_hover"]])) {
+    
+    plot_data <- butterfly_differential_plot_out()[["data"]]
+    hv <- input[["butterflyDifferentialPlot_hover"]]
+    
+    hv_dat <- data.frame(x = hv[["x"]],
+                         y = hv[["y"]],
+                         x_plot = plot_data[[hv[["mapping"]][["x"]]]],
+                         y_plot = plot_data[[hv[["mapping"]][["y"]]]],
+                         Sequence = plot_data[["Sequence"]],
+                         Start = plot_data[["Start"]],
+                         End = plot_data[["End"]],
+                         Exposure = plot_data[["Exposure"]],
+                         ID = plot_data[["ID"]])
+    
+    tt_df <- filter(hv_dat) %>%
+      filter(abs(ID - x) < 0.5) %>%
+      filter(abs(y_plot - y) < 10) %>%
+      filter(abs(y_plot - y) == min(abs(y_plot - y)))
+    
+    
+    if(nrow(tt_df) != 0) {
+      
+      tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                           "left", "right")
+      
+      tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                       hv[["coords_css"]][["x"]],
+                       hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+      
+      
+      style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+                      tt_pos_adj, ":", tt_pos,
+                      "px; top:", hv[["coords_css"]][["y"]], "px; padding: 0px;")
+      
+      div(
+        style = style,
+        p(HTML(paste0(tt_df[["Sequence"]],
+                      "<br/> Position: ", tt_df[["Start"]], "-", tt_df[["End"]],
+                      "<br/> Value: ", round(tt_df[["y_plot"]], 2),
+                      "<br/> Exposure: ", tt_df[["Exposure"]], " min"
+        )))
+      )
+    }
+  }
 })
 
 #################################
