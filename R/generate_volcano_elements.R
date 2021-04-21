@@ -5,7 +5,8 @@
 #' @param dat ...
 #' @param protein ...
 #' @param states ...
-#' @param p_adjustment ...
+#' @param p_adjustment_method ...
+#' @param confidence_level ...
 #' 
 #' @export generate_volcano_dataset
 
@@ -13,7 +14,10 @@ generate_volcano_dataset <- function(dat,
                                      protein = unique(dat[["Protein"]])[1],
                                      state_1 = unique(dat[["State"]])[1],
                                      state_2 = unique(dat[["State"]])[2],
-                                     p_adjustment = FALSE){
+                                     p_adjustment_method = "none",
+                                     confidence_level = 0.98){
+  
+  p_adjustment_method <- match.arg(p_adjustment_method, c("none", "BH", "bonferroni"))
   
   proton_mass <- 1.00727647
   
@@ -43,8 +47,6 @@ generate_volcano_dataset <- function(dat,
   
   vol_dat <- merge(tmp_dat_1, tmp_dat_2, by = c("Sequence", "Start", "End", "Exposure"))
   
-  
-  
   res_volcano <- lapply(1:nrow(vol_dat), function(i){
     
     diff_d <- vol_dat[i, "avg_mass_1"] - vol_dat[i, "avg_mass_2"]
@@ -53,18 +55,13 @@ generate_volcano_dataset <- function(dat,
     st_1 <- vol_dat[i, "masses_1"][[1]]
     st_2 <- vol_dat[i, "masses_2"][[1]]
     
-    if(length(st_1)!=length(st_2)){
-      len = min(length(st_1), length(st_2))
-      st_1 <- st_1[1:len]
-      st_2 <- st_2[1:len]
-    }
-    
-    if(length(st_1) == 1 & length(st_2) == 1){
-      p_value = -1
+    if(length(st_1) == 1) {
+      p_value <- -1
+    } else if (length(st_2) == 1){
+      p_value <- -1
     } else {
-      p_value <- t.test(st_1, st_2)$p.value
+      p_value <- t.test(x = st_1, y = st_2, paired = FALSE, alternative = "two.sided", conf.level = confidence_level)$p.value
     }
-    
     
     data.frame(Sequence = vol_dat[i, "Sequence"],
                Exposure = vol_dat[i, "Exposure"],
@@ -74,7 +71,10 @@ generate_volcano_dataset <- function(dat,
                Start = vol_dat[i, "Start"],
                End = vol_dat[i, "End"])
     
-  }) %>% bind_rows()
+  }) %>% bind_rows() %>%
+    filter(P_value > 0)
+  
+  res_volcano[["P_value"]] <- p.adjust(res_volcano[["P_value"]], method = p_adjustment_method)
   
   res_volcano %>%
     filter(P_value!=-1) %>%

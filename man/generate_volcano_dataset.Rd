@@ -9,7 +9,8 @@ generate_volcano_dataset(
   protein = unique(dat[["Protein"]])[1],
   state_1 = unique(dat[["State"]])[1],
   state_2 = unique(dat[["State"]])[2],
-  p_adjustment = FALSE
+  p_adjustment_method = "none",
+  confidence_level = 0.98
 )
 }
 \arguments{
@@ -17,7 +18,9 @@ generate_volcano_dataset(
 
 \item{protein}{...}
 
-\item{p_adjustment}{...}
+\item{p_adjustment_method}{...}
+
+\item{confidence_level}{...}
 
 \item{states}{...}
 }

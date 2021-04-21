@@ -62,7 +62,8 @@ volcano_dataset <- reactive({
     filter(Protein == input[["chosen_protein"]]) %>%
     generate_volcano_dataset(state_1 = input[["vol_state_1"]],
                              state_2 = input[["vol_state_2"]],
-                             p_adjustment = input[["vol_p_adjustment"]])
+                             p_adjustment_method = input[["vol_p_adjustment_method"]],
+                             confidence_level = as.numeric(input[["vol_confidence_level"]]))
   
   
 })
@@ -120,7 +121,7 @@ chosen_timepoints_data <- reactive({
 houde_intervals <- reactive({
   
   chosen_timepoints_data() %>%
-    calculate_confidence_limit_values(confidence_limit = as.numeric(input[["vol_confidence_limit"]]),
+    calculate_confidence_limit_values(confidence_limit = as.numeric(input[["vol_confidence_level"]]),
                                       theoretical = FALSE,
                                       fractional = FALSE)
   
@@ -130,7 +131,7 @@ houde_intervals <- reactive({
 
 alpha_interval <- reactive({
   
-  -log(1 - as.numeric(input[["vol_confidence_limit"]]))
+  -log(1 - as.numeric(input[["vol_confidence_level"]]))
   
 })
 
