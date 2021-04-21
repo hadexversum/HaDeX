@@ -63,7 +63,7 @@ generate_butterfly_plot <- function(butterfly_dat,
                                     fractional = FALSE,
                                     uncertainty_type = "ribbon"){
   
-  uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars"))
+  uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars", "bars + line"))
   state <- unique(butterfly_dat[["State"]])
   
   if(uncertainty_type == "ribbon"){

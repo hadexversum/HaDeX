@@ -8,7 +8,7 @@ generate_butterfly_differential_plot(
   butterfly_diff_dat,
   theoretical = FALSE,
   fractional = FALSE,
-  uncertainty_type = c("ribbon", "bars")
+  uncertainty_type = "ribbon"
 )
 }
 \arguments{

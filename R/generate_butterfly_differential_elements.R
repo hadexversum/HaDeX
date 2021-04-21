@@ -62,9 +62,9 @@ generate_butterfly_differential_dataset <- function(dat,
 generate_butterfly_differential_plot <- function(butterfly_diff_dat, 
                                                  theoretical = FALSE, 
                                                  fractional = FALSE,
-                                                 uncertainty_type = c("ribbon", "bars")){
+                                                 uncertainty_type = "ribbon"){
   
-  uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars"))
+  uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars", "bars + line"))
   
   if(uncertainty_type == "ribbon"){
     
