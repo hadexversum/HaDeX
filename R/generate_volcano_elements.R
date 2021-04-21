@@ -43,9 +43,9 @@ generate_volcano_dataset <- function(dat,
   
   vol_dat <- merge(tmp_dat_1, tmp_dat_2, by = c("Sequence", "Start", "End", "Exposure"))
   
-  res_volcano <- data.frame()
   
-  lapply(1:nrow(vol_dat), function(i){
+  
+  res_volcano <- lapply(1:nrow(vol_dat), function(i){
     
     diff_d <- vol_dat[i, "avg_mass_1"] - vol_dat[i, "avg_mass_2"]
     uncertainty <- sqrt(vol_dat[i, "err_avg_mass_1"]^2 + vol_dat[i, "err_avg_mass_2"]^2 )
@@ -66,15 +66,15 @@ generate_volcano_dataset <- function(dat,
     }
     
     
-    res_volcano <<- bind_rows(res_volcano, data.frame(Sequence = vol_dat[i, "Sequence"],
-                                                      Exposure = vol_dat[i, "Exposure"],
-                                                      D_diff = diff_d,
-                                                      P_value = p_value,
-                                                      Uncertainty = uncertainty,
-                                                      Start = vol_dat[i, "Start"],
-                                                      End = vol_dat[i, "End"]))
+    data.frame(Sequence = vol_dat[i, "Sequence"],
+               Exposure = vol_dat[i, "Exposure"],
+               D_diff = diff_d,
+               P_value = p_value,
+               Uncertainty = uncertainty,
+               Start = vol_dat[i, "Start"],
+               End = vol_dat[i, "End"])
     
-  })
+  }) %>% bind_rows()
   
   res_volcano %>%
     filter(P_value!=-1) %>%
@@ -93,7 +93,7 @@ generate_volcano_dataset <- function(dat,
 #' @param adjust_axes ...
 #' 
 #' @export generate_volcano_plot
- 
+
 generate_volcano_plot <- function(vol_data, 
                                   state_1 = "", 
                                   state_2 = "",
