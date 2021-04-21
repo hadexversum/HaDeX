@@ -210,13 +210,14 @@ output[["butterflyPlot_debug"]] <- renderUI({
     
     hv_dat <- data.frame(x = hv[["x"]],
                          y = hv[["y"]],
-                         x_plot = plot_data[[hv[["mapping"]][["x"]]]],
-                         y_plot = plot_data[[hv[["mapping"]][["y"]]]],
+                         x_plot = plot_data[[ hv[["mapping"]][["x"]] ]],
+                         y_plot = plot_data[[ hv[["mapping"]][["y"]] ]],
                          Sequence = plot_data[["Sequence"]],
                          Start = plot_data[["Start"]],
                          End = plot_data[["End"]],
                          Exposure = plot_data[["Exposure"]],
-                         ID = plot_data[["ID"]])
+                         ID = plot_data[["ID"]]
+                         )
     
     tt_df <- filter(hv_dat) %>%
       filter(abs(ID - x) < 0.5) %>%

@@ -5,13 +5,15 @@
 #' @param dat ...
 #' @param protein ...
 #' @param states ...
+#' @param p_adjustment ...
 #' 
 #' @export generate_volcano_dataset
 
 generate_volcano_dataset <- function(dat,
                                      protein = unique(dat[["Protein"]])[1],
                                      state_1 = unique(dat[["State"]])[1],
-                                     state_2 = unique(dat[["State"]])[2]){
+                                     state_2 = unique(dat[["State"]])[2],
+                                     p_adjustment = FALSE){
   
   proton_mass <- 1.00727647
   

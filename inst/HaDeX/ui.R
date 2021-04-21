@@ -628,10 +628,10 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          
                                          h3("Select parameters for the plot."),
                                          h5("Volcano plot presents the difference between values in State 1 and State 2."),
-                                         splitLayout(selectInput_h(inputId = "vol_state_first",
+                                         splitLayout(selectInput_h(inputId = "vol_state_1",
                                                                    label = "State 1",
                                                                    choices = c("CD160", "CD160_HVEM")),
-                                                     selectInput_h(inputId = "vol_state_second",
+                                                     selectInput_h(inputId = "vol_state_2",
                                                                    label = "State 2",
                                                                    choices = c("CD160_HVEM", "CD160"))
                                                      ),
@@ -652,8 +652,8 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                   value = FALSE),
                                                   selectInput_h(inputId = "vol_interval",
                                                                 label = "Show confidence limit for: ",
-                                                                choices = c("All time points" = 99999, "0.167 min" = 0.167, "1 min" = 1, "5 min" = 5, "25 min" = 25, "120 min" = 120, "1440 min" = 1440),
-                                                                selected = 99999)
+                                                                choices = c("All time points", "Selected time points"),
+                                                                selected = "All time points")
                                              
                                            )
                                          ),
@@ -714,6 +714,8 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                            tabPanel("Volcano plot",
                                                     br(),
                                                     plotOutput_h("volcanoPlot", width = "80%", height = "800px", hover = hoverOpts("volcanoPlot_hover", delay = 10, delayType = "debounce")),
+                                                    h5(textOutput("vol_thresholds")),
+                                                    h5("For more information see: "),
                                                     downloadButton("volcanoPlot_download_button",
                                                                    "Save chart (.svg)")
                                            ),

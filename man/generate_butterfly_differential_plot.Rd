@@ -18,7 +18,7 @@ generate_butterfly_differential_plot(
 
 \item{fractional}{\code{logical}, determines if values are fractional}
 
-\item{uncertainty_type}{...}
+\item{uncertainty_type}{ribbon / bars}
 }
 \value{
 

@@ -8,13 +8,16 @@ generate_volcano_dataset(
   dat,
   protein = unique(dat[["Protein"]])[1],
   state_1 = unique(dat[["State"]])[1],
-  state_2 = unique(dat[["State"]])[2]
+  state_2 = unique(dat[["State"]])[2],
+  p_adjustment = FALSE
 )
 }
 \arguments{
 \item{dat}{...}
 
 \item{protein}{...}
+
+\item{p_adjustment}{...}
 
 \item{states}{...}
 }

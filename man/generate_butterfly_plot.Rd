@@ -8,7 +8,7 @@ generate_butterfly_plot(
   butterfly_dat,
   theoretical = FALSE,
   fractional = FALSE,
-  uncertainty_type = c("ribbon", "bars")
+  uncertainty_type = "ribbon"
 )
 }
 \arguments{
@@ -18,7 +18,7 @@ generate_butterfly_plot(
 
 \item{fractional}{\code{logical}, determines if values are fractional}
 
-\item{uncertainty_type}{...}
+\item{uncertainty_type}{ribbon / bars}
 }
 \value{
 ...

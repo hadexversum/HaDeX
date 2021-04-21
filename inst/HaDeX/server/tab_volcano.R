@@ -5,12 +5,12 @@
 observe({ 
   
   updateSelectInput(session, 
-                    inputId = "vol_state_first",
+                    inputId = "vol_state_1",
                     choices = states_from_file(),
                     selected = states_from_file()[1])
   
   updateSelectInput(session, 
-                    inputId = "vol_state_second",
+                    inputId = "vol_state_2",
                     choices = states_from_file(),
                     selected = states_from_file()[2])
   
@@ -20,28 +20,12 @@ observe({
   
   updateTextInput(session, 
                   inputId = "volcano_plot_title",
-                  value = paste0("Deuterium uptake difference between ", input[["vol_state_first"]], " and ", input[["vol_state_second"]]))
-  
-  times_t <- times_from_file()[times_from_file() > 0 & times_from_file()<99999]
+                  value = paste0("Deuterium uptake difference between ", input[["vol_state_1"]], " and ", input[["vol_state_2"]]))
   
   updateCheckboxGroupInput(session,
                            inputId = "vol_timepoints",
-                           choices = times_t,
-                           selected = times_t)
-})
-
-##
-
-observe({
-  
-  times_t <- times_from_file()[times_from_file() > 0]
-  intervals_t <- setNames(times_t, c(head(times_t, -1), "All time points"))
-  
-  updateSelectInput(session,
-                    inputId = "vol_interval",
-                    choices = intervals_t,
-                    selected = 99999)
-  
+                           choices = times_t(),
+                           selected = times_t())
 })
 
 ##
@@ -52,15 +36,15 @@ observe({
   
   updateSliderInput(session,
                     inputId = "vol_x_range",
-                    max = max_x,
-                    min = -max_x,
+                    max = max_x + 2,
+                    min = -max_x - 2,
                     value = c(-max_x, max_x))
   
-  max_y <- ceiling(max(volcano_dataset()[["log_p_value"]]))
+  max_y <- ceiling(max(volcano_dataset()[["log_p_value"]])) 
   
   updateSliderInput(session,
                     inputId = "vol_y_range",
-                    max = max_y,
+                    max = max_y + 2,
                     value = c(0, max_y))
   
 })
@@ -71,12 +55,14 @@ observe({
 
 volcano_dataset <- reactive({
   
+  validate(need(input[["vol_state_1"]]!=input[["vol_state_2"]], "There is no difference between the same state, choose different second state."))
   validate(need(input[["chosen_protein"]] %in% unique(dat()[["Protein"]]), "Wait for the parameters to be loaded."))
   
   dat() %>%
     filter(Protein == input[["chosen_protein"]]) %>%
-    generate_volcano_dataset(state_1 = input[["vol_state_first"]],
-                             state_2 = input[["vol_state_second"]])
+    generate_volcano_dataset(state_1 = input[["vol_state_1"]],
+                             state_2 = input[["vol_state_2"]],
+                             p_adjustment = input[["vol_p_adjustment"]])
   
   
 })
@@ -94,16 +80,79 @@ volcano_data <- reactive({
 ######### PLOT ##################
 #################################
 
+all_timepoints_data <- reactive({
+  
+  lapply(times_t(), function(t){
+    
+    generate_differential_data_set(dat(), 
+                                   states = c(input[["vol_state_1"]], input[["vol_state_2"]]),
+                                   protein = input[["chosen_protein"]],
+                                   time_0 = times_from_file()[1],
+                                   time_t = t,
+                                   time_100 = times_from_file()[length(times_from_file())],
+                                   deut_part = as.numeric(input[["deut_part"]])/100) %>%
+      mutate(Exposure = t)
+    
+  }) %>% bind_rows()
+  
+})
+
+##
+
+chosen_timepoints_data <- reactive({
+  
+  if(input[["vol_interval"]] == "Selected time points"){
+    
+    all_timepoints_data() %>%
+      filter(Exposure %in% as.numeric(input[["vol_timepoints"]]))
+    
+  } else {
+    
+    all_timepoints_data()
+    
+  }
+  
+  
+})
+
+##
+
+houde_intervals <- reactive({
+  
+  chosen_timepoints_data() %>%
+    calculate_confidence_limit_values(confidence_limit = as.numeric(input[["vol_confidence_limit"]]),
+                                      theoretical = FALSE,
+                                      fractional = FALSE)
+  
+})
+
+##
+
+alpha_interval <- reactive({
+  
+  -log(1 - as.numeric(input[["vol_confidence_limit"]]))
+  
+})
+
+##
+
 volcano_plot_out <- reactive({
   
   generate_volcano_plot(volcano_data(), 
-                        state_1 = input[["vol_state_first"]], 
-                        state_2 = input[["vol_state_second"]]) +
+                        state_1 = input[["vol_state_1"]], 
+                        state_2 = input[["vol_state_2"]]) +
+    # ## statistics
+    geom_segment(aes(x = houde_intervals()[1], xend = houde_intervals()[1], y = alpha_interval(), yend = input[["vol_y_range"]][2]), linetype = "dashed", color = "red") +
+    geom_segment(aes(x = houde_intervals()[2], xend = houde_intervals()[2], y = alpha_interval(), yend = input[["vol_y_range"]][2]), linetype = "dashed", color = "red") +
+    geom_segment(aes(y = alpha_interval(), yend = alpha_interval(), x = input[["vol_x_range"]][1], xend = houde_intervals()[1]), linetype = "dashed", color = "red") +
+    geom_segment(aes(y = alpha_interval(), yend = alpha_interval(), x = houde_intervals()[2], xend = input[["vol_x_range"]][2]), linetype = "dashed", color = "red") +
+    ## visualization
     labs(title = input[["volcano_plot_title"]],
          x = input[["volcano_plot_x_label"]],
          y = input[["volcano_plot_y_label"]]) +
     coord_cartesian(xlim = c(input[["vol_x_range"]][[1]], input[["vol_x_range"]][[2]]),
-                    ylim = c(input[["vol_y_range"]][[1]], input[["vol_y_range"]][[2]])) +
+                    ylim = c(input[["vol_y_range"]][[1]], input[["vol_y_range"]][[2]]),
+                    expand = FALSE) +
     theme(plot.title = element_text(size = input[["volcano_plot_title_size"]]),
           axis.text.x = element_text(size = input[["volcano_plot_x_label_size"]]),
           axis.title.x = element_text(size = input[["volcano_plot_x_label_size"]]),
@@ -119,6 +168,14 @@ volcano_plot_out <- reactive({
 output[["volcanoPlot"]] <- renderPlot({
   
   volcano_plot_out() 
+  
+})
+
+##
+
+output[["vol_thresholds"]] <- renderText({
+  
+  paste0("Based on the chosen criteria, the threshold of -log(P value) is ", round(alpha_interval(), 4), " and threshold on deuterium uptake difference is ", round(houde_intervals()[1], 4), " and ", round(houde_intervals()[2], 4), " [Da]. ") 
   
 })
 

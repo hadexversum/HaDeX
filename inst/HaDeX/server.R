@@ -222,6 +222,12 @@ server <- function(input, output, session) {
     
   })
   
+  times_t <- reactive({
+    
+    times_from_file()[times_from_file() > 0 & times_from_file()<99999]
+    
+  })
+  
   ## mark for modifications
 
   has_modifications <- reactive({
