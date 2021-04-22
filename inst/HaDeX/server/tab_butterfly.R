@@ -205,6 +205,8 @@ output[["butterflyPlot_debug"]] <- renderUI({
   
   if(!is.null(input[["butterflyPlot_hover"]])) {
     
+    # browser()
+    
     plot_data <- butterfly_plot_out()[["data"]]
     hv <- input[["butterflyPlot_hover"]]
     

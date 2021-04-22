@@ -66,169 +66,84 @@ generate_butterfly_plot <- function(butterfly_dat,
   uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars", "bars + line"))
   state <- unique(butterfly_dat[["State"]])
   
+  if (theoretical) {
+
+    if (fractional) {
+
+      # theoretical & fractional
+      value <- "theo_frac_deut_uptake"
+      err_value <- "err_theo_frac_deut_uptake"
+      y_label <- "Fractional deuterium uptake [%]"
+      title <- paste0("Theoretical butterfly plot for ", state, " state")
+
+    } else {
+
+      # theoretical & absolute
+      value <- "theo_deut_uptake"
+      err_value <- "err_theo_deut_uptake"
+      y_label <- "Deuterium uptake [Da]"
+      title <- paste0("Theoretical butterfly plot for ", state, " state")
+
+    }
+
+  } else {
+
+    if (fractional) {
+
+      # experimental & fractional
+      value <- "frac_deut_uptake"
+      err_value <- "err_frac_deut_uptake"
+      y_label <- "Fractional deuterium uptake [%]"
+      title <- paste0("Butterfly plot for ", state, " state")
+
+    } else {
+
+      # experimental & absolute
+      value <- "deut_uptake"
+      err_value <- "err_deut_uptake"
+      y_label <- "Deuterium uptake [Da]"
+      title <- paste0("Butterfly plot for ", state, " state")
+
+    }
+
+  }
+
+  
+  plot_dat <- data.frame(ID = butterfly_dat[["ID"]],
+                         Exposure = butterfly_dat[["Exposure"]],
+                         value = butterfly_dat[[value]],
+                         err_value = butterfly_dat[[err_value]],
+                         Sequence = butterfly_dat[["Sequence"]],
+                         Start = butterfly_dat[["Start"]],
+                         End = butterfly_dat[["End"]])
+  
+  
+  butterfly_plot <- ggplot(plot_dat, aes(x = ID, y = value, color = Exposure)) +
+    geom_point(aes(group = Exposure, color = Exposure)) +
+    coord_cartesian(ylim = c(0, NA)) +
+    labs(x = "Peptide ID",
+         y = y_label) +
+    theme(legend.position = "bottom")
+
   if(uncertainty_type == "ribbon"){
+
+    butterfly_plot <- butterfly_plot +
+    geom_ribbon(aes(x = ID, ymin = value - err_value, ymax = value + err_value, fill = Exposure), alpha = 0.5, size = 0, linetype = "blank")
+
+  } else if (uncertainty_type == "bars") {
+
+    butterfly_plot <- butterfly_plot +
+      geom_errorbar(aes(x = ID, ymin = value - err_value, ymax = value + err_value, color = Exposure), width = 0.25, alpha = 0.5)
+
+  } else if (uncertainty_type == "bars + line"){
     
-    if (theoretical) {
-      
-      if (fractional) {
-        # theoretical & fractional
-        ggplot(butterfly_dat, aes(x = ID, y = theo_frac_deut_uptake, color = Exposure)) + 
-          geom_point(aes(group = Exposure, color = Exposure)) + 
-          geom_ribbon(aes(x = ID, ymin = theo_frac_deut_uptake - err_theo_frac_deut_uptake, ymax = theo_frac_deut_uptake + err_theo_frac_deut_uptake, fill = Exposure), alpha = 0.3, size = 0, linetype = "blank") + 
-          coord_cartesian(ylim = c(0, NA)) +
-          labs(x = "Peptide ID",
-               y = "Theoretical fractional deuterium uptake [%]") +
-          theme(legend.position = "bottom")
-        
-      } else {
-        # theoretical & absolute
-        ggplot(butterfly_dat, aes(x = ID, y = theo_deut_uptake, color = Exposure)) + 
-          geom_point(aes(group = Exposure, color = Exposure)) + 
-          geom_ribbon(aes(x = ID, ymin = theo_deut_uptake - err_theo_deut_uptake, ymax = theo_deut_uptake + err_theo_deut_uptake, fill = Exposure), alpha = 0.3, size = 0, linetype = "blank") + 
-          coord_cartesian(ylim = c(0, NA)) +
-          labs(x = "Peptide ID",
-               y = "Theoretical deuterium uptake [Da]") +
-          theme(legend.position = "bottom")
-      } 
-      
-    } else {
-      
-      if (fractional) {
-        # experimental & fractional
-        ggplot(butterfly_dat, aes(x = ID, y = frac_deut_uptake, color = Exposure)) + 
-          geom_point(aes(group = Exposure, color = Exposure)) + 
-          geom_ribbon(aes(x = ID, ymin = frac_deut_uptake - err_frac_deut_uptake, ymax = frac_deut_uptake + err_frac_deut_uptake, fill = Exposure), alpha = 0.3, size = 0, linetype = "blank") + 
-          coord_cartesian(ylim = c(0, NA)) +
-          labs(x = "Peptide ID",
-               y = "Fractional deuterium uptake [%]") +
-          theme(legend.position = "bottom")
-        
-      } else {
-        # experimental & absolute 
-        ggplot(butterfly_dat, aes(x = ID, y = deut_uptake, color = Exposure)) + 
-          geom_point(aes(group = Exposure, color = Exposure)) + 
-          geom_ribbon(aes(x = ID, ymin = deut_uptake - err_deut_uptake, ymax = deut_uptake + err_deut_uptake, fill = Exposure), alpha = 0.3, size = 0, linetype = "blank") + 
-          coord_cartesian(ylim = c(0, NA)) +
-          labs(x = "Peptide ID",
-               y = "Deuterium uptake [Da]") +
-          theme(legend.position = "bottom")
-      }
-      
-    }
-    
-  } else if(uncertainty_type == "bars"){
-    
-    if (theoretical) {
-      
-      if (fractional) {
-        # theoretical & fractional
-        ggplot(butterfly_dat, aes(x = ID, y = theo_frac_deut_uptake, color = Exposure)) + 
-          geom_point(aes(group = Exposure, color = Exposure)) + 
-          geom_errorbar(aes(x = ID, ymin = theo_frac_deut_uptake - err_theo_frac_deut_uptake, ymax = theo_frac_deut_uptake + err_theo_frac_deut_uptake, color = Exposure), width = 0.25, alpha = 0.5) +
-          coord_cartesian(ylim = c(0, NA)) +
-          labs(x = "Peptide ID",
-               y = "Theoretical fractional deuterium uptake [%]") +
-          theme(legend.position = "bottom")
-        
-      } else {
-        # theoretical & absolute
-        ggplot(butterfly_dat, aes(x = ID, y = theo_deut_uptake, color = Exposure)) + 
-          geom_point(aes(group = Exposure, color = Exposure)) + 
-          geom_errorbar(aes(x = ID, ymin = theo_deut_uptake - err_theo_deut_uptake, ymax = theo_deut_uptake + err_theo_deut_uptake, color = Exposure), width = 0.25, alpha = 0.5) +
-          coord_cartesian(ylim = c(0, NA)) +
-          labs(x = "Peptide ID",
-               y = "Theoretical deuterium uptake [Da]") +
-          theme(legend.position = "bottom")
-      } 
-      
-    } else {
-      
-      if (fractional) {
-        # experimental & fractional
-        ggplot(butterfly_dat, aes(x = ID, y = frac_deut_uptake, color = Exposure)) + 
-          geom_point(aes(group = Exposure, color = Exposure)) + 
-          geom_errorbar(aes(x = ID, ymin = frac_deut_uptake - err_frac_deut_uptake, ymax = frac_deut_uptake + err_frac_deut_uptake, color = Exposure), width = 0.25, alpha = 0.5) +
-          coord_cartesian(ylim = c(0, NA)) +
-          labs(x = "Peptide ID",
-               y = "Fractional deuterium uptake [%]") +
-          theme(legend.position = "bottom")
-        
-      } else {
-        # experimental & absolute 
-        ggplot(butterfly_dat, aes(x = ID, y = deut_uptake, color = Exposure)) + 
-          geom_point(aes(group = Exposure, color = Exposure)) + 
-          geom_errorbar(aes(x = ID, ymin = deut_uptake - err_deut_uptake, ymax = deut_uptake + err_deut_uptake, color = Exposure), width = 0.25, alpha = 0.5) +
-          coord_cartesian(ylim = c(0, NA)) +
-          labs(x = "Peptide ID",
-               y = "Deuterium uptake [Da]") +
-          theme(legend.position = "bottom")
-      }
-      
-    }
+    butterfly_plot <- butterfly_plot +
+      geom_errorbar(aes(x = ID, ymin = value - err_value, ymax = value + err_value, color = Exposure), width = 0.25, alpha = 0.5) +
+      geom_line()
     
   }
   
-  # if (theoretical) {
-  #   
-  #   if (fractional) {
-  #     
-  #     # theoretical & fractional
-  #     value <- "theo_frac_deut_uptake"
-  #     err_value <- "err_theo_frac_deut_uptake"
-  #     y_label <- "Fractional deuterium uptake [%]"
-  #     title <- paste0("Theoretical butterfly plot for ", state, " state")
-  #     
-  #   } else {
-  #     
-  #     # theoretical & absolute
-  #     value <- "theo_deut_uptake"
-  #     err_value <- "err_theo_deut_uptake"
-  #     y_label <- "Deuterium uptake [Da]"
-  #     title <- paste0("Theoretical butterfly plot for ", state, " state")
-  #     
-  #   } 
-  #   
-  # } else {
-  #   
-  #   if (fractional) {
-  #     
-  #     # experimental & fractional
-  #     value <- "frac_deut_uptake"
-  #     err_value <- "err_frac_deut_uptake"
-  #     y_label <- "Fractional deuterium uptake [%]"
-  #     title <- paste0("Butterfly plot for ", state, " state")
-  #     
-  #   } else {
-  #     
-  #     # experimental & absolute 
-  #     value <- "deut_uptake"
-  #     err_value <- "err_deut_uptake"
-  #     y_label <- "Deuterium uptake [Da]"
-  #     title <- paste0("Butterfly plot for ", state, " state")
-  #     
-  #   }
-  #   
-  # }
-  # 
-  # butterfly_plot <- ggplot(butterfly_dat, aes_string(x = "ID", y = value, color = "Exposure")) + 
-  #   geom_point(aes(group = Exposure, color = Exposure)) + 
-  #   coord_cartesian(ylim = c(0, NA)) +
-  #   labs(x = "Peptide ID",
-  #        y = y_label) +
-  #   theme(legend.position = "bottom")
-  
-  # if(uncertainty_type == "ribbon"){
-  #   
-  #   butterfly_plot <- butterfly_plot +
-  #   geom_ribbon(aes_string(x = ID, ymin = value - err_value, ymax = value + err_value, fill = Exposure), alpha = 0.5, size = 0, linetype = "blank") 
-  #     
-  # } else if (uncertainty_type == "bars") {
-  #   
-  #   butterfly_plot <- butterfly_plot + 
-  #     geom_errorbar(aes(x = ID, ymin = get(value) - get(err_value), ymax = get(value) + get(err_value), color = Exposure), width = 0.25, alpha = 0.5) 
-  #   
-  # }
-  # return(butterfly_plot)
+  return(butterfly_plot)
   
 }
 
