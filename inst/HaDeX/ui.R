@@ -270,15 +270,15 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                              column(width = 2,
                                                     numericInput_h(inputId = "comparison_plot_title_size",
                                                                    label = "Size:",
-                                                                   value = 12,
+                                                                   value = 15,
                                                                    min = 5),
                                                     numericInput_h(inputId = "comparison_plot_x_label_size",
                                                                    label = "Size:",
-                                                                   value = 12,
+                                                                   value = 15,
                                                                    min = 5),
                                                     numericInput_h(inputId = "comparison_plot_y_label_size",
                                                                    label = "Size:",
-                                                                   value = 12,
+                                                                   value = 15,
                                                                    min = 5)
                                                
                                              )
@@ -298,15 +298,15 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                              column(width = 2,
                                                     numericInput_h(inputId = "woods_plot_title_size",
                                                                  label = "Size:",
-                                                                 value = 12,
+                                                                 value = 15,
                                                                  min = 5),
                                                     numericInput_h(inputId = "woods_plot_x_label_size",
                                                                  label = "Size:",
-                                                                 value = 12,
+                                                                 value = 15,
                                                                  min = 5),
                                                     numericInput_h(inputId = "woods_plot_y_label_size",
                                                                  label = "Size:",
-                                                                 value = 12,
+                                                                 value = 15,
                                                                  min = 5)
 
                                              )
@@ -447,15 +447,15 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                              column(width = 2,
                                                                     numericInput_h(inputId = "butterfly_plot_title_size",
                                                                                    label = "Size:",
-                                                                                   value = 12,
+                                                                                   value = 15,
                                                                                    min = 5),
                                                                     numericInput_h(inputId = "butterfly_plot_x_label_size",
                                                                                    label = "Size:",
-                                                                                   value = 12,
+                                                                                   value = 15,
                                                                                    min = 5),
                                                                     numericInput_h(inputId = "butterfly_plot_y_label_size",
                                                                                    label = "Size:",
-                                                                                   value = 12,
+                                                                                   value = 15,
                                                                                    min = 5))
                                                            ),
                                                            h4("The axis ticks have the same size as the axis label. The legend text size is the same as the x axis label.")
@@ -570,15 +570,15 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                              column(width = 2,
                                                                     numericInput_h(inputId = "butterflyDifferential_plot_title_size",
                                                                                    label = "Size:",
-                                                                                   value = 12,
+                                                                                   value = 15,
                                                                                    min = 5),
                                                                     numericInput_h(inputId = "butterflyDifferential_plot_x_label_size",
                                                                                    label = "Size:",
-                                                                                   value = 12,
+                                                                                   value = 15,
                                                                                    min = 5),
                                                                     numericInput_h(inputId = "butterflyDifferential_plot_y_label_size",
                                                                                    label = "Size:",
-                                                                                   value = 12,
+                                                                                   value = 15,
                                                                                    min = 5))
                                                            ),
                                                            h4("The axis ticks have the same size as the axis label. The legend text size is the same as the x axis label.")
@@ -692,15 +692,15 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                              column(width = 2,
                                                     numericInput_h(inputId = "volcano_plot_title_size",
                                                                    label = "Size:",
-                                                                   value = 12,
+                                                                   value = 15,
                                                                    min = 5),
                                                     numericInput_h(inputId = "volcano_plot_x_label_size",
                                                                    label = "Size:",
-                                                                   value = 12,
+                                                                   value = 15,
                                                                    min = 5),
                                                     numericInput_h(inputId = "volcano_plot_y_label_size",
                                                                    label = "Size:",
-                                                                   value = 12,
+                                                                   value = 15,
                                                                    min = 5))
                                            ),
                                            h4("The axis ticks have the same size as the axis label. The legend text size is the same as the x axis label.")
@@ -730,6 +730,88 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          br()
                                        )
                                       ),
+                              
+                              ##################################
+                              ########## REPLICATES ############
+                              ##################################
+                              
+                              tabPanel("Replicates",
+                                       br(),
+                                       sidebarPanel(
+                                         class = "scrollable",
+                                         
+                                         ##### SETTINGS #####
+                                         h3("Select parameters for the plots"),
+                                         splitLayout(
+                                           selectInput_h(inputId = "rep_time",
+                                                         label = "Select time point: ",
+                                                         choices = c(0, 0.001, 0.167, 1, 5, 25, 120, 1440),
+                                                         selected = 1),
+                                           selectInput_h(inputId = "rep_state",
+                                                         label = "Select state: ",
+                                                         choices = c("CD160", "CD160_HVEM"),
+                                                         selected = "CD160")
+                                         ),
+                                         br(),
+                                         dataTableOutput_h("rep_sequence"),
+                                         br(),
+                                         tags$button("Adjust labels",
+                                                     class = "collapse-button",
+                                                     `data-toggle`="collapse",
+                                                     `data-target`="#rep-labs"),
+                                         tags$div(
+                                           class = "hideable",
+                                           id = "rep-labs",
+                                           fluidRow(
+                                             column(width = 10,
+                                                    textInput(inputId = "rep_plot_title",
+                                                              label = "Plot title:",
+                                                              value = ""),
+                                                    textInput(inputId = "rep_plot_x_label",
+                                                              label = "Plot x label:",
+                                                              value = "Measured mass [Da]"),
+                                                    textInput(inputId = "rep_plot_y_label",
+                                                              label = "Plot y label:",
+                                                              value = "")),
+                                             column(width = 2,
+                                                    numericInput_h(inputId = "rep_plot_title_size",
+                                                                   label = "Size:",
+                                                                   value = 15,
+                                                                   min = 5),
+                                                    numericInput_h(inputId = "rep_plot_x_label_size",
+                                                                   label = "Size:",
+                                                                   value = 15,
+                                                                   min = 5),
+                                                    numericInput_h(inputId = "rep_plot_y_label_size",
+                                                                   label = "Size:",
+                                                                   value = 15,
+                                                                   min = 5))
+                                           ),                                                                               
+                                           h4("The axis ticks have the same size as the axis label.") 
+                                         )
+                                         
+                                       ),
+                                       mainPanel(
+                                         class = "scrollable",
+                                         tabsetPanel(
+                                          tabPanel("Plots",
+                                                   br(),
+                                                   plotOutput_h("replicatesPlot", hover = hoverOpts("replicatesPlot_hover", delay = 10, delayType = "debounce")),
+                                                   uiOutput("replicatesPlot_debug"),
+                                                   downloadButton("replicatesPlot_download_button",
+                                                                  "Save chart (.svg)"),
+                                                   br()
+                                          ),
+                                          tabPanel("Data",
+                                                   br(),
+                                                   DT::dataTableOutput("replicatesPlot_data"),
+                                                   br()
+                                          )
+                                         )
+                                         
+                                       )
+                                
+                              ),
                               
                               ##################################
                               ############ COVERAGE ############
@@ -903,15 +985,15 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                              column(width = 2,
                                                     numericInput_h(inputId = "kin_plot_title_size",
                                                                    label = "Size:",
-                                                                   value = 12,
+                                                                   value = 15,
                                                                    min = 5),
                                                     numericInput_h(inputId = "kin_plot_x_label_size",
                                                                    label = "Size:",
-                                                                   value = 12,
+                                                                   value = 15,
                                                                    min = 5),
                                                     numericInput_h(inputId = "kin_plot_y_label_size",
                                                                    label = "Size:",
-                                                                   value = 12,
+                                                                   value = 15,
                                                                    min = 5))
                                            ),                                                                               
                                            h4("The axis ticks have the same size as the axis label. The legend text size is the same as the x axis label.") 

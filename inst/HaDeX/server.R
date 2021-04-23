@@ -198,6 +198,14 @@ server <- function(input, output, session) {
   #### VALUES #### 
   ################
   
+  peptides_from_file <- reactive({
+    
+    unique(dat()[["Sequence"]])
+    
+  })
+  
+  #
+  
   states_from_file <- reactive({
     
     unique(dat()[["State"]])
@@ -400,6 +408,10 @@ server <- function(input, output, session) {
   ### TAB: VOLCANO ###
   
   source("server/tab_volcano.R", local = TRUE)
+  
+  ### TAB: REPLICATES ###
+  
+  source("server/tab_replicates.R", local = TRUE)
 
   ### TAB: KINETICS ###
 
