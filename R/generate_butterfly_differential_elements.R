@@ -66,180 +66,85 @@ generate_butterfly_differential_plot <- function(butterfly_diff_dat,
   
   uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars", "bars + line"))
   
-  if(uncertainty_type == "ribbon"){
-    
-    if(theoretical){
-      
-      if(fractional){
-        
-        ggplot(butterfly_diff_dat, aes(x = ID, y = diff_theo_frac_deut_uptake, color = Exposure)) + 
-          geom_point(aes(group = Exposure, color = Exposure)) + 
-          geom_ribbon(aes(x = ID, ymin = diff_theo_frac_deut_uptake - err_diff_theo_frac_deut_uptake, ymax = diff_theo_frac_deut_uptake + err_diff_theo_frac_deut_uptake, fill = Exposure), alpha = 0.3, size = 0, linetype = "blank") + 
-          coord_cartesian(ylim = c(-.5, 1)) +
-          labs(title = "Theoretical butterfly differential plot",
-               x = "Peptide ID",
-               y = "Delta fractional deuterium uptake [%]") +
-          theme(legend.position = "bottom")
-        
-      } else {
-        
-        ggplot(butterfly_diff_dat, aes(x = ID, y = diff_theo_deut_uptake, color = Exposure)) + 
-          geom_point(aes(group = Exposure, color = Exposure)) + 
-          geom_ribbon(aes(x = ID, ymin = diff_theo_deut_uptake - err_diff_theo_deut_uptake, ymax = diff_theo_deut_uptake + err_diff_theo_deut_uptake, fill = Exposure), alpha = 0.3, size = 0, linetype = "blank") + 
-          coord_cartesian(ylim = c(-.5, 1)) +
-          labs(title = "Theoretical butterfly differential plot",
-               x = "Peptide ID",
-               y = "Delta deuterium uptake [Da]") +
-          theme(legend.position = "bottom")
-      }
-      
+
+
+  if (theoretical) {
+
+    if (fractional) {
+
+      # theoretical & fractional
+      value <- "diff_theo_frac_deut_uptake"
+      err_value <- "err_diff_theo_frac_deut_uptake"
+      y_label <- "Fractional deuterium uptake difference [%]"
+      title <- "Theoretical butterfly differential plot"
+
     } else {
-      
-      if(fractional){
-        
-        ggplot(butterfly_diff_dat, aes(x = ID, y = diff_frac_deut_uptake, color = Exposure)) + 
-          geom_point(aes(group = Exposure, color = Exposure)) + 
-          geom_ribbon(aes(x = ID, ymin = diff_frac_deut_uptake - err_diff_frac_deut_uptake, ymax = diff_frac_deut_uptake + err_diff_frac_deut_uptake, fill = Exposure), alpha = 0.3, size = 0, linetype = "blank") + 
-          coord_cartesian(ylim = c(-.5, 1)) +
-          labs(title = "Butterfly differential plot",
-               x = "Peptide ID",
-               y = "Delta fractional deuterium uptake [%]") +
-          theme(legend.position = "bottom")
-        
-      } else {
-        
-        ggplot(butterfly_diff_dat, aes(x = ID, y = diff_deut_uptake, color = Exposure)) + 
-          geom_point(aes(group = Exposure, color = Exposure)) + 
-          geom_ribbon(aes(x = ID, ymin = diff_deut_uptake - err_diff_deut_uptake, ymax = diff_deut_uptake + err_diff_deut_uptake, fill = Exposure), alpha = 0.3, size = 0, linetype = "blank") + 
-          coord_cartesian(ylim = c(-.5, 1)) +
-          labs(title = "Butterfly differential plot",
-               x = "Peptide ID",
-               y = "Delta deuterium uptake [Da]") +
-          theme(legend.position = "bottom")
-        
-      }
-      
+
+      # theoretical & absolute
+      value <- "diff_theo_deut_uptake"
+      err_value <- "err_diff_theo_deut_uptake"
+      y_label <- "Deuterium uptake difference [Da]"
+      title <- "Theoretical butterfly differential plot"
+
     }
-    
-  } else if (uncertainty_type == "bars"){
-    
-    if(theoretical){
-      
-      if(fractional){
-        
-        ggplot(butterfly_diff_dat, aes(x = ID, y = diff_theo_frac_deut_uptake, color = Exposure)) + 
-          geom_point(aes(group = Exposure, color = Exposure)) + 
-          geom_errorbar(aes(x = ID, ymin = diff_theo_frac_deut_uptake - err_diff_theo_frac_deut_uptake, ymax = diff_theo_frac_deut_uptake + err_diff_theo_frac_deut_uptake, color = Exposure), width = 0.25, alpha = 0.5) +
-          coord_cartesian(ylim = c(-.5, 1)) +
-          labs(title = "Theoretical butterfly differential plot",
-               x = "Peptide ID",
-               y = "Delta fractional deuterium uptake [%]") +
-          theme(legend.position = "bottom")
-        
-      } else {
-        
-        ggplot(butterfly_diff_dat, aes(x = ID, y = diff_theo_deut_uptake, color = Exposure)) + 
-          geom_point(aes(group = Exposure, color = Exposure)) + 
-          geom_errorbar(aes(x = ID, ymin = diff_theo_deut_uptake - err_diff_theo_deut_uptake, ymax = diff_theo_deut_uptake + err_diff_theo_deut_uptake, color = Exposure), width = 0.25, alpha = 0.5) +
-          coord_cartesian(ylim = c(-.5, 1)) +
-          labs(title = "Theoretical butterfly differential plot",
-               x = "Peptide ID",
-               y = "Delta deuterium uptake [Da]") +
-          theme(legend.position = "bottom")
-      }
-      
+
+  } else {
+
+    if (fractional) {
+
+      # experimental & fractional
+      value <- "diff_frac_deut_uptake"
+      err_value <- "err_diff_frac_deut_uptake"
+      y_label <- "Fractional deuterium uptake difference [%]"
+      title <- "Butterfly differential plot"
+
     } else {
-      
-      if(fractional){
-        
-        ggplot(butterfly_diff_dat, aes(x = ID, y = diff_frac_deut_uptake, color = Exposure)) + 
-          geom_point(aes(group = Exposure, color = Exposure)) + 
-          geom_errorbar(aes(x = ID, ymin = diff_frac_deut_uptake - err_diff_frac_deut_uptake, ymax = diff_frac_deut_uptake + err_diff_frac_deut_uptake, color = Exposure), width = 0.25, alpha = 0.5) +
-          coord_cartesian(ylim = c(-.5, 1)) +
-          labs(title = "Butterfly differential plot",
-               x = "Peptide ID",
-               y = "Delta fractional deuterium uptake [%]") +
-          theme(legend.position = "bottom")
-        
-      } else {
-        
-        ggplot(butterfly_diff_dat, aes(x = ID, y = diff_deut_uptake, color = Exposure)) + 
-          geom_point(aes(group = Exposure, color = Exposure)) + 
-          geom_errorbar(aes(x = ID, ymin = diff_deut_uptake - err_diff_deut_uptake, ymax = diff_deut_uptake + err_diff_deut_uptake, color = Exposure), width = 0.25, alpha = 0.5) +
-          coord_cartesian(ylim = c(-.5, 1)) +
-          labs(title = "Butterfly differential plot",
-               x = "Peptide ID",
-               y = "Delta deuterium uptake [Da]") +
-          theme(legend.position = "bottom")
-        
-      }
-      
+
+      # experimental & absolute
+      value <- "diff_deut_uptake"
+      err_value <- "err_diff_deut_uptake"
+      y_label <- "Deuterium uptake difference [Da]"
+      title <- "Butterfly differential plot"
+
     }
+
   }
+
+  plot_dat <- data.frame(ID = butterfly_diff_dat[["ID"]],
+                         Exposure = butterfly_diff_dat[["Exposure"]],
+                         value = butterfly_diff_dat[[value]],
+                         err_value = butterfly_diff_dat[[err_value]],
+                         Sequence = butterfly_diff_dat[["Sequence"]],
+                         Start = butterfly_diff_dat[["Start"]],
+                         End = butterfly_diff_dat[["End"]])
   
-  # if (theoretical) {
-  # 
-  #   if (fractional) {
-  # 
-  #     # theoretical & fractional
-  #     value <- "diff_theo_frac_deut_uptake"
-  #     err_value <- "err_diff_theo_frac_deut_uptake"
-  #     y_label <- "Fractional deuterium uptake difference [%]"
-  #     title <- "Theoretical butterfly differential plot"
-  # 
-  #   } else {
-  # 
-  #     # theoretical & absolute
-  #     value <- "diff_theo_deut_uptake"
-  #     err_value <- "err_diff_theo_deut_uptake"
-  #     y_label <- "Deuterium uptake difference [Da]"
-  #     title <- "Theoretical butterfly differential plot"
-  # 
-  #   }
-  # 
-  # } else {
-  # 
-  #   if (fractional) {
-  # 
-  #     # experimental & fractional
-  #     value <- "diff_frac_deut_uptake"
-  #     err_value <- "err_diff_frac_deut_uptake"
-  #     y_label <- "Fractional deuterium uptake difference [%]"
-  #     title <- "Butterfly differential plot"
-  # 
-  #   } else {
-  # 
-  #     # experimental & absolute
-  #     value <- "diff_deut_uptake"
-  #     err_value <- "err_diff_deut_uptake"
-  #     y_label <- "Deuterium uptake difference [Da]"
-  #     title <- "Butterfly differential plot"
-  # 
-  #   }
-  # 
-  # }
-  # 
-  # butterfly_differential_plot <- ggplot(butterfly_diff_dat, aes(x = ID, y = get(value), color = Exposure)) +
-  #     geom_point(aes(group = Exposure, color = Exposure)) +
-  #     coord_cartesian(ylim = c(-.5, 1)) +
-  #     labs(title = title,
-  #          x = "Peptide ID",
-  #          y = y_label) +
-  #     theme(legend.position = "bottom")
-  # 
-  # if(uncertainty_type == "ribbon"){
-  # 
-  #   butterfly_differential_plot <- butterfly_differential_plot +
-  #     geom_ribbon(aes(x = ID, ymin = get(value) - get(err_value), ymax = get(value) + get(err_value), fill = Exposure), alpha = 0.5, size = 0, linetype = "blank")
-  # 
-  # } else if (uncertainty_type == "bars"){
-  # 
-  #   butterfly_differential_plot <- butterfly_differential_plot +
-  #     geom_errorbar(aes(x = ID, ymin = get(value) - get(err_value), ymax = get(value) + get(err_value), color = Exposure), width = 0.25, alpha = 0.5)
-  # 
-  # }
-  # 
-  # return(butterfly_differential_plot)
+  butterfly_differential_plot <- ggplot(plot_dat, aes(x = ID, y = value, color = Exposure)) +
+      geom_point(aes(group = Exposure, color = Exposure)) +
+      coord_cartesian(ylim = c(-.5, 1)) +
+      labs(title = title,
+           x = "Peptide ID",
+           y = y_label) +
+      theme(legend.position = "bottom")
+
+  if(uncertainty_type == "ribbon"){
+
+    butterfly_differential_plot <- butterfly_differential_plot +
+      geom_ribbon(aes(x = ID, ymin = value - err_value, ymax = value + err_value, fill = Exposure), alpha = 0.5, size = 0, linetype = "blank")
+
+  } else if (uncertainty_type == "bars"){
+
+    butterfly_differential_plot <- butterfly_differential_plot +
+      geom_errorbar(aes(x = ID, ymin = value - err_value, ymax = value + err_value, color = Exposure), width = 0.25, alpha = 0.5)
+
+  } else if (uncertainty_type == "bars + line"){
+    
+    butterfly_differential_plot <- butterfly_differential_plot +
+      geom_errorbar(aes(x = ID, ymin = value - err_value, ymax = value + err_value, color = Exposure), width = 0.25, alpha = 0.5) +
+      geom_line()
+    
+  }
+
+  return(butterfly_differential_plot)
     
 }
 
