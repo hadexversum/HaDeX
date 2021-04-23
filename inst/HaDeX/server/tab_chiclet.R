@@ -45,29 +45,6 @@ observe({
 
 observe({
   
-  if(input[["chic_fractional"]]){
-    
-    max_y <- ceiling(max(chiclet_dataset()[["frac_deut_uptake"]], chiclet_dataset()[["theo_frac_deut_uptake"]])) + 1
-    min_y <- floor(min(chiclet_dataset()[["frac_deut_uptake"]], chiclet_dataset()[["theo_frac_deut_uptake"]])) - 1
-    
-  } else {
-    
-    max_y <- ceiling(max(chiclet_dataset()[["deut_uptake"]], chiclet_dataset()[["theo_deut_uptake"]])) + 1
-    min_y <- floor(min(chiclet_dataset()[["deut_uptake"]], chiclet_dataset()[["theo_deut_uptake"]])) - 1
-  }
-
-  updateSliderInput(session,
-                    inputId = "chic_y_range",
-                    min = min_y,
-                    max = max_y,
-                    value = c(min_y, max_y))
-  
-})
-
-##
-
-observe({
-  
   max_x <- max(chiclet_dataset()[["ID"]])
   min_x <- min(chiclet_dataset()[["ID"]])
   
@@ -87,8 +64,8 @@ observe({
   updateTextInput(session,
                   inputId = "chiclet_plot_title",
                   value = case_when(
-                    input[["butt_theory"]] ~ paste0("Theoreotical chiclet plot for ", input[["chic_state"]], " state for ", input[["chosen_protein"]]),
-                    !input[["butt_theory"]] ~ paste0("Chiclet plot for ", input[["chic_state"]], " state for ", input[["chosen_protein"]])
+                    input[["chic_theory"]] ~ paste0("Theoreotical chiclet plot for ", input[["chic_state"]], " state for ", input[["chosen_protein"]]),
+                    !input[["chic_theory"]] ~ paste0("Chiclet plot for ", input[["chic_state"]], " state for ", input[["chosen_protein"]])
                   ))
 })
 
@@ -161,7 +138,9 @@ chiclet_dataset_timepoints <- reactive({
   
 })
 
-##
+#################################
+######### PLOT ##################
+#################################
 
 chiclet_plot_out <- reactive({
   
@@ -170,7 +149,6 @@ chiclet_plot_out <- reactive({
                         fractional = input[["chic_fractional"]],
                         show_uncertainty = input[["chic_show_uncertainty"]]) +
     coord_cartesian(xlim = c(input[["chic_x_range"]][[1]], input[["chic_x_range"]][[2]])) +
-                    # ylim = c(input[["chic_y_range"]][[1]], input[["chic_y_range"]][[2]])) +
     labs(title = input[["chiclet_plot_title"]],
          x = input[["chiclet_plot_x_label"]],
          y = input[["chiclet_plot_y_label"]]) +
@@ -189,5 +167,89 @@ chiclet_plot_out <- reactive({
 output[["chicletPlot"]] <- renderPlot({
   
   chiclet_plot_out()
+  
+})
+
+##
+
+output[["chicletPlot_download_button"]] <- downloadHandler("chicletPlot.svg",
+                                                           content = function(file) {
+                                                               ggsave(file, chiclet_plot_out(), device = svg,
+                                                                      height = 300, width = 400, units = "mm")
+})
+
+##
+
+output[["chicletPlot_debug"]] <- renderUI({
+  
+  if(!is.null(input[["chicletPlot_hover"]])) {
+    
+    ## TO FIX
+    
+    plot_data <- chiclet_plot_out()[["data"]]
+    hv <- input[["chicletPlot_hover"]]
+    
+    hv_dat <- data.frame(x = hv[["x"]],
+                         y = hv[["y"]],
+                         x_plot = plot_data[[ hv[["mapping"]][["x"]] ]],
+                         y_plot = plot_data[[ "Exposure" ]], 
+                         Sequence = plot_data[["Sequence"]],
+                         Start = plot_data[["Start"]],
+                         End = plot_data[["End"]],
+                         ID = plot_data[["ID"]],
+                         value = plot_data[["value"]],
+                         err_value = plot_data[["err_value"]])
+    
+    tt_df <- filter(hv_dat) %>%
+      filter(abs(ID - x) < 0.5) %>%
+      filter(abs(y_plot - y) < 10) %>%
+      filter(abs(y_plot - y) == min(abs(y_plot - y)))
+    
+    
+    if(nrow(tt_df) != 0) {
+      
+      tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                           "left", "right")
+      
+      tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                       hv[["coords_css"]][["x"]],
+                       hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+      
+      
+      style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+                      tt_pos_adj, ":", tt_pos,
+                      "px; top:", hv[["coords_css"]][["y"]], "px; padding: 0px;")
+      
+      div(
+        style = style,
+        p(HTML(paste0(tt_df[["Sequence"]],
+                      "<br/> Position: ", tt_df[["Start"]], "-", tt_df[["End"]],
+                      "<br/> Value: ", round(tt_df[["y_plot"]], 2),
+                      "<br/> Exposure: ", tt_df[["Exposure"]], " min"
+        )))
+      )
+    }
+  }
+})
+
+#################################
+######### DATA ##################
+#################################
+
+chiclet_plot_data_out <- reactive({
+  
+  chiclet_dataset_timepoints() %>%
+    generate_chiclet_data(theoretical = input[["chic_theory"]],
+                          fractional = input[["chic_fractional"]]) %>%
+    filter(ID >= input[["chic_x_range"]][[1]] & ID <= input[["chic_x_range"]][[2]]) 
+    
+})
+
+##
+
+output[["chicletPlot_data"]] <- DT::renderDataTable(server = FALSE, {
+  
+  chiclet_plot_data_out() %>%
+    dt_format()
   
 })
