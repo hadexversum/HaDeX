@@ -198,11 +198,11 @@ server <- function(input, output, session) {
   #### VALUES #### 
   ################
   
-  peptides_from_file <- reactive({
-    
-    unique(dat()[["Sequence"]])
-    
-  })
+  # peptides_from_file <- reactive({
+  #   
+  #   unique(dat()[["Sequence"]])
+  #   
+  # })
   
   #
   
@@ -412,6 +412,12 @@ server <- function(input, output, session) {
   ### TAB: REPLICATES ###
   
   source("server/tab_replicates.R", local = TRUE)
+  
+  ### TAB: CHICLET ###
+  
+  source("server/tab_chiclet.R", local = TRUE)
+  
+  source("server/tab_chiclet_differential.R", local = TRUE)
 
   ### TAB: KINETICS ###
 

@@ -16,17 +16,19 @@ observe({
     
   } else {
     
+    # browser()
+    
     min_comparison_abs <- round_any(min(prep_dat()[c("deut_uptake", "theo_deut_uptake")], na.rm = TRUE), 5, floor)
     max_comparison_abs <- round_any(max(prep_dat()[c("deut_uptake", "theo_deut_uptake")], na.rm = TRUE), 5, ceiling)
-    
+
     updateSliderInput(session,
                       inputId = "comp_plot_y_range",
                       min = min_comparison_abs - 5,
                       max = max_comparison_abs + 5,
                       value = c(min_comparison_abs, max_comparison_abs),
                       step = 1)
-    
-  }
+
+   }
   
 })
 
