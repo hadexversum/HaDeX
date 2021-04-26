@@ -1,5 +1,6 @@
 # HaDeX (development version)
 
+* added volcano, butterfly and chiclet plots
 * accepting the data files from HDeXaminer
 * the variable names are coherent and described in the glossary 
 
