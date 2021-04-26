@@ -6,11 +6,11 @@
 \usage{
 generate_differential_data_set(
   dat,
-  states,
-  protein,
-  time_0,
-  time_t,
-  time_100,
+  states = unique(dat[["State"]])[1:2],
+  protein = unique(dat[["Protein"]][1]),
+  time_0 = 0.001,
+  time_t = 1,
+  time_100 = 1440,
   deut_part = 1
 )
 }

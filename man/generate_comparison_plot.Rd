@@ -4,7 +4,7 @@
 \alias{generate_comparison_plot}
 \title{generate_comparison_plot}
 \usage{
-generate_comparison_plot(dat, theoretical, fractional)
+generate_comparison_plot(dat, theoretical = FALSE, fractional = FALSE)
 }
 \arguments{
 \item{dat}{produced by \code{\link{calculate_state_deuteration}} function}

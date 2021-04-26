@@ -6,10 +6,10 @@
 \usage{
 generate_differential_data(
   dat,
-  theoretical,
-  fractional,
-  confidence_limit_1,
-  confidence_limit_2
+  theoretical = FALSE,
+  fractional = FALSE,
+  confidence_limit_1 = 0.98,
+  confidence_limit_2 = 0.99
 )
 }
 \arguments{

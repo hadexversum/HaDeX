@@ -62,8 +62,8 @@ generate_kinetic_data_set <- function(dat,
 #' @export generate_kinetic_data
 
 generate_kinetic_data <- function(dat, 
-                                  theoretical, 
-                                  fractional){
+                                  theoretical = FALSE, 
+                                  fractional = FALSE){
   
   if(theoretical){
     

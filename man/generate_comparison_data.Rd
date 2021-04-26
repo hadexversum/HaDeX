@@ -4,7 +4,7 @@
 \alias{generate_comparison_data}
 \title{generate_comparison_data}
 \usage{
-generate_comparison_data(dat, theoretical, fractional, protein)
+generate_comparison_data(dat, theoretical = FALSE, fractional = FALSE, protein)
 }
 \arguments{
 \item{dat}{custom data format, produced by \code{\link{calculate_state_deuteration}}}

@@ -33,11 +33,11 @@
 #' @export generate_differential_data_set
 
 generate_differential_data_set <- function(dat,
-                                           states,
-                                           protein,
-                                           time_0,
-                                           time_t,
-                                           time_100,
+                                           states = unique(dat[["State"]])[1:2],
+                                           protein = unique(dat[["Protein"]][1]),
+                                           time_0 = 0.001,
+                                           time_t = 1,
+                                           time_100 = 1440,
                                            deut_part = 1){
   
   bind_rows(lapply(states, function(i) calculate_state_deuteration(dat, 
@@ -87,10 +87,10 @@ generate_differential_data_set <- function(dat,
 #' @export generate_differential_data
 
 generate_differential_data <- function(dat, 
-                                       theoretical, 
-                                       fractional,
-                                       confidence_limit_1,
-                                       confidence_limit_2){
+                                       theoretical = FALSE, 
+                                       fractional = FALSE,
+                                       confidence_limit_1 = 0.98,
+                                       confidence_limit_2 = 0.99){
   
   column_name_cl1 <- paste0("Valid At ", confidence_limit_1)
   column_name_cl2 <- paste0("Valid At ", confidence_limit_2)
@@ -198,10 +198,10 @@ generate_differential_data <- function(dat,
 #' @export generate_differential_plot
 
 generate_differential_plot <- function(dat, 
-                                       theoretical, 
-                                       fractional,
-                                       confidence_limit, 
-                                       confidence_limit_2){ 
+                                       theoretical = FALSE, 
+                                       fractional = FALSE,
+                                       confidence_limit = 0.98, 
+                                       confidence_limit_2 = 0.99){ 
   
   if(theoretical){
     

@@ -1,3 +1,47 @@
+#' generate_comparison_dataset
+#' 
+#' @description Generates data set for given states
+#' 
+#' @param dat ...
+#' @param states ...
+#' @param protein ...
+#' @param time_0 ...
+#' @param time_t ...
+#' @param time_100 ...
+#' @param deut_part ...
+#' 
+#' @details This is internal function, not used in the application.
+#' This function is a wrapper for \code{\link{calculate_state_deuteration}}.
+#' 
+#' @return ..
+#'
+#' @seealso ...
+#'
+#' @export generate_comparison_dataset
+
+generate_comparison_dataset <- function(dat,
+                                        states = unique(dat[["State"]]),
+                                        protein = unique(dat[["Protein"]])[1],
+                                        time_0 = 0.001,
+                                        time_t = 1,
+                                        time_100 = 1440,
+                                        deut_part = 1){
+  
+  
+  lapply(states, function(state){
+    
+    calculate_state_deuteration(dat,
+                                protein = protein,
+                                state = state,
+                                time_0 = time_0,
+                                time_t = time_t,
+                                time_100 = time_100,
+                                deut_part = deut_part)
+    
+  }) %>% bind_rows
+  
+}
+
 #' generate_comparison_plot
 #' 
 #' @description Generates comparison plot based on supplied data
@@ -7,6 +51,7 @@
 #' @param theoretical \code{logical}, determines if values are theoretical
 #' @param fractional \code{logical}, determines if values are fractional
 #' 
+#' @importFrom ggplot2 ggplot geom_segment geom_errorbar theme scale_y_continuous
 #' @details This plot is visible in GUI. 
 #' 
 #' @return ...
@@ -16,8 +61,8 @@
 #' @export generate_comparison_plot
 
 generate_comparison_plot <- function(dat, 
-                                     theoretical, 
-                                     fractional){
+                                     theoretical = FALSE, 
+                                     fractional = FALSE){
   
   if (theoretical) {
     
@@ -87,8 +132,8 @@ generate_comparison_plot <- function(dat,
 #' @export generate_comparison_data
 
 generate_comparison_data <- function(dat, 
-                                     theoretical, 
-                                     fractional,
+                                     theoretical = FALSE, 
+                                     fractional = FALSE,
                                      protein){
   if (theoretical){
     

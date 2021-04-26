@@ -1,5 +1,5 @@
 ---
-title: "Data visualization"
+title: "Data visualization in HaDeX package"
 output: html_document
 vignette: >
   %\VignetteIndexEntry{Data visualization}
@@ -7,36 +7,248 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
   
-```{r setup, include=FALSE}
+```{r setup, include = FALSE, echo = FALSE, warning = FALSE}
   knitr::opts_chunk$set(echo = FALSE)
   knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"))
 ```
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, warning = FALSE}
 library(HaDeX)
+library(ggplot2)
+library(dplyr)
+
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+
+comp_dat <- generate_comparison_dataset(dat, time_t = 1)
+woods_dat <- generate_differential_data_set(dat)
+butt_dat <- generate_butterfly_dataset(dat)
+butt_diff_dat <- generate_butterfly_differential_dataset(dat)
 ```
 
 Data visualization is a very important part of analysis of the data as it allows to interpret the results.
 
-In this article we present methods of data visualization available in the package.
-We focus on already processed data and plot types. For more information on how the results are calculated
-see the other articles in the documentation. 
+In this article we present methods of data visualization available in the package. Some of the features can be 
+unchecked in the GUI, but we focus on the plots with the maximum of elements.
+We use already processed data (calculated deuterium uptake, not measured masses). For more information on how the results
+are calculated see the other articles in the documentation. 
+
+All of the examples of the plot use the example file *KD_180110_CD160_HVEM.csv*.
 
 ## Sequence data
 
+*Example*
+```{r}
+
+```
+
 ## Coverage of the sequence
+
+*Example*
+```{r}
+
+```
 
 ## Comparison plot
 
+The comparison plot shows deuterium uptake of the peptides in a given time point, with information on the length of the peptide and its position in the protein sequence. It allows comparing the results of different biological states.
+
+*Example* In the comparison plot below, we see the deuterium uptake for two states CD160 and CD160_HVEM of protein db_CD160. THe valus are calculated for the time point 1 min. The length of the segments represents the length of the peptide and the position in the protein sequence. The error bars indicates the uncertainty of the measurement. 
+
+```{r}
+generate_comparison_plot(comp_dat) + 
+  labs(x = "Position in sequence",
+       y = "Deuterium uptake [Da]",
+       title = "Measurement - 1 min")
+```
+
+
+*Pros* The peptide deuterium uptake of each peptide can be related to its position of the protein. The changes in a specific regions of the protein are visible,  and how it changes between the biological state in the time of the measurement.
+
+*Cons* The information of the changes in time is lost. Some regions may be hard to read due to the overlap of peptides.
+
+*Uncertainty* The uncertainty of the deuterium uptake measurement is indicated by the error bars associated with each peptide. 
+
+*Values* The values on the plot can be presented as deuterium uptake (in Daltons) or fractional deuterium uptake (in percentage). The calculation of the deuterium uptake is done with respect to experimentally measured minimal/maximal exchange control or tabular values (MHP and Max Uptake).
+
 ## Woods plot
+
+Woods plot presents the deuterium uptake difference between two biological states for the peptides. The results are presented with respect to the length of the peptide and its position in the protein seqeunce for given time point of the measurement. The statistical test is applied to determine the confidence limits values at chosen level.
+
+*Example*
+
+```{r}
+generate_differential_plot(woods_dat) +
+  labs(x = "Position in seqence",
+       y = "Deuterium uptake difference [Da]",
+       title = "Measurement - 1 min")
+```
+
+
+*Pros* The peptide deuterium uptake difference between two biological states of each peptide can be related to its position of the protein. The changes in a specific regions of the protein are visible. The confidence limits indicates if the result is statistially significant. 
+
+*Cons* The information of the changes in time is lost. Some regions may be hard to read due to the overlap of peptides.
+
+*Uncertainty* The uncertainty of the deuterium uptake difference (uncertainty of the measurement combined and propagated) is indicated by the error bars associated with each peptide. 
+
+*Values* The values on the plot can be presented as deuterium uptake difference (in Daltons) or fractional deuterium uptake difference (in percentage). The calculation of the deuterium uptake difference is done with respect to experimentally measured minimal/maximal exchange control or tabular values (MHP and Max Uptake).
 
 ## Butterfly plot
 
+Butterfly plot presents the deuterium uptake for all peptides in given state in different time points at once.
+
+*Example*
+
+```{r}
+generate_butterfly_plot(butt_dat)
+```
+
+*Pros* Show the changes of deuterium uptake in time, ad allows to see how the exchange changes. It shows the results only for one biological state.
+
+*Cons* The information of the length of the peptide and the protein region is lost.
+
+*Uncertainty* Shown as a ribbon or error bars, indicates uncertainty of the deuterium uptake for each peptide.
+
+*Values* The values on the plot can be presented as deuterium uptake (in Daltons) or fractional deuterium uptake (in percentage). The calculation of the deuterium uptake is done with respect to experimentally measured minimal/maximal exchange control or tabular values (MHP and Max Uptake).
+
 ## Butterfly differential plot
+
+Butterfly differential plot shows the deuterium uptake difference between two biological states in a form of a butterfly plot. It shows the results for a peptide ID (peptides are numbered arrangeby by the start position). The results are shown for different time points at once.
+
+*Example*
+
+```{r}
+generate_butterfly_differential_plot(butt_diff_dat)
+```
+
+*Pros* It shows the results for different time points at the same time. 
+
+*Cons* The readability of the plot is very small due to small and overlapping values.
+
+*Uncertainty*  Shown as a ribbon or error bars, indicates uncertainty of the deuterium uptake difference for each peptide.
+
+*Values* The values on the plot can be presented as deuterium uptake difference (in Daltons) or fractional deuterium uptake difference (in percentage). The calculation of the deuterium uptake difference is done with respect to experimentally measured minimal/maximal exchange control or tabular values (MHP and Max Uptake).
+
+## Chiclet plot
+
+Chiclet plot shows the deuterium uptake values in a form of a heatmap for the peptides in given biological state.
+
+*Example*
+
+```{r}
+generate_chiclet_plot(butt_dat, show_uncertainty = T)
+```
+
+*Pros*
+
+*Cons* This plot shows the values only for one biological state. 
+
+*Uncertainty*  Uncertainty is shown as the cross symbols of each tile. The legend is placed under the plot. 
+
+*Values* The values on the plot can be presented as deuterium uptake (in Daltons) or fractional deuterium uptake (in percentage). The calculation of the deuterium uptake is done with respect to experimentally measured minimal/maximal exchange control or tabular values (MHP and Max Uptake).
+
+## Chiclet differential
+
+*Example*
+
+```{r}
+generate_chiclet_differential_plot(butt_diff_dat, show_uncertainty = TRUE)
+```
+
+*Pros*
+
+*Cons*
+
+*Uncertainty*  
+
+*Values*
 
 ## Volcano plot
 
+*Example*
+
+```{r}
+vol_dat <- generate_volcano_dataset(dat)
+generate_volcano_plot(vol_dat)
+```
+
+*Pros*
+
+*Cons*
+
+*Uncertainty*  
+
+*Values*
+
 ## Uptake curve
 
+*Example*
+
+```{r}
+kin_dat <- bind_rows(calculate_kinetics(dat,
+                              sequence = "INITSSASQEGTRLN",
+                              start = 1, end = 15,
+                              state = "CD160",
+                              time_0 = 0.001,
+                              time_100 = 1440),
+                     calculate_kinetics(dat,
+                              sequence = "INITSSASQEGTRLN",
+                              start = 1, end = 15,
+                              state = "CD160_HVEM",
+                              time_0 = 0.001,
+                              time_100 = 1440))
+
+plot_kinetics(kin_dat) +
+  scale_x_log10()
+```
+*Pros*
+
+*Cons*
+
+*Uncertainty*  
+
+*Values* The values on the plot can be presented as deuterium uptake (in Daltons) or fractional deuterium uptake (in percentage). The calculation of the deuterium uptake is done with respect to experimentally measured minimal/maximal exchange control or tabular values (MHP and Max Uptake).
+
 ## Quality control
+
+*Example*
+
+```{r}
+
+```
+
+*Pros*
+
+*Cons*
+
+*Uncertainty*  
+
+*Values*
+
+## Summary of the uptake plots
+
+Below we compare the aspects of the plots. 
+
+```{r}
+
+summary_plots <- data.frame(types = c("comparison", "Woods (differential)", "butterfly", "butterfly differential", "volcano", "chiclet", "chiclet differential", "uptake curve"),
+                            `time course` = c(F, F, T, T, T, T, T, T),
+                            `length of the peptide` = c(T, T, F, F, F, F, F, F),
+                            uncertainty = c(T, T, T, T, T, T, T, T),
+                            `all peptides` = c(T, T, T, T, T, T, T, F),
+                            `different states` = c(T, T, F, T, T, F, T, T))
+
+knitr::kable(summary_plots)
+```
+
+
+The columns indicate:
+
+* time course - does this plot show the results from different time points?
+* length of the peptide - does the plot show the information of the length of the peptide?
+* uncertainty - does this plot show the uncertainty of the measurement?
+* all peptides - does this plot show the results for all of the peptides?
+* different states - does this plot show the results for different states?
+
+## New features
+
+We believe that the new ways of visualization of the HDX-MS data can be developed. If so, we will be happy to include them in HaDeX package and update this article. 

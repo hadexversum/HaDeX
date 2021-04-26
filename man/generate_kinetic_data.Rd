@@ -4,7 +4,7 @@
 \alias{generate_kinetic_data}
 \title{generate_kinetic_data}
 \usage{
-generate_kinetic_data(dat, theoretical, fractional)
+generate_kinetic_data(dat, theoretical = FALSE, fractional = FALSE)
 }
 \arguments{
 \item{dat}{custom format, produced by 
