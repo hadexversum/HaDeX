@@ -52,12 +52,12 @@ All of the examples of the plot use the example file *KD_180110_CD160_HVEM.csv*.
 
 The comparison plot shows deuterium uptake of the peptides in a given time point, with information on the length of the peptide and its position in the protein sequence. It allows comparing the results of different biological states.
 
-*Example* In the comparison plot below, we see the deuterium uptake for two states CD160 and CD160_HVEM, of protein db_CD160. The values are calculated for the time point 1 min. The length of the segments represents the length of the peptide and the position in the protein sequence. The error bars indicate the uncertainty of the measurement. 
+*Example* In the comparison plot below, we see the fractional deuterium uptake for two states CD160 and CD160_HVEM, of protein db_CD160. The values are calculated for the time point 1 min. The length of the segments represents the length of the peptide and the position in the protein sequence. The error bars indicate the uncertainty of the measurement. 
 
 ```{r}
-generate_comparison_plot(comp_dat) + 
+generate_comparison_plot(comp_dat, fractional = TRUE) + 
   labs(x = "Position in sequence",
-       y = "Deuterium uptake [Da]",
+       y = "Fractional deuterium uptake [%]",
        title = "Measurement - 1 min")
 ```
 
@@ -74,12 +74,13 @@ generate_comparison_plot(comp_dat) +
 
 Woods plot presents the deuterium uptake difference between two biological states for the peptides. The results are presented with respect to the length of the peptide and its position in the protein sequence for a given time point of the measurement. The statistical test (Houde et al., the confidence level is calculated based on the measurements in chosen time point of the measurement) is applied to determine the confidence limits values at the chosen level.
 
-*Example* On the Woods plot below, we see deuterium uptake difference between two biological states CD160 and CD160_HVEM for protein db_CD160. The confidence limits indicate which differences are statistically significant at levels 98% and 99%. There are regions (e.q. 60-80) that were protected in the second state, and regions (50-70) deprotected. Also, in region 50-70, results for some peptides were not big enough to be significant. 
+*Example* On the Woods plot below, we see fractional deuterium uptake difference between two biological states CD160 and CD160_HVEM for protein db_CD160. The confidence limits indicate which differences are statistically significant at levels 98% and 99%. There are regions that were protected in the second state, and regions deprotected. Also, in region 40-800, results for some peptides were not big enough to be significant. 
 
 ```{r}
-generate_differential_plot(woods_dat) +
+generate_differential_plot(woods_dat, fractional = TRUE) +
+  coord_cartesian(ylim = c(-6, 15)) + 
   labs(x = "Position in seqence",
-       y = "Deuterium uptake difference [Da]",
+       y = "Fractional deuterium uptake difference [%]",
        title = "Measurement - 1 min")
 ```
 
@@ -96,10 +97,10 @@ generate_differential_plot(woods_dat) +
 
 Butterfly plot presents the deuterium uptake for all peptides in a given state at different time points at once. Each time point of measurement is indicated by a different color. Peptides are identified by their ID (peptides are numbered arranged by the start position). 
 
-*Example* Below, on the butterfly plot, we see how the deuterium uptake changes in time for state CD160 for protein db_CD160. We see the different exchange speed - for some peptides, the change is stable in time, and for some peptides (e.q. ID = 39 or 41), there is no visible change in time.
+*Example* Below, on the butterfly plot, we see how the fractional deuterium uptake changes in time for state CD160 for protein db_CD160. We see the different exchange speed - for some peptides, the change is stable in time, and for some peptides, there is no visible change in time.
 
 ```{r}
-generate_butterfly_plot(butt_dat)
+generate_butterfly_plot(butt_dat, fractional = TRUE)
 ```
 
 *Pros* Shows the changes of deuterium uptake in time and allows to see how the exchange goes. 
@@ -114,10 +115,11 @@ generate_butterfly_plot(butt_dat)
 
 Butterfly differential plot shows the deuterium uptake difference between two biological states in the form of a butterfly plot. It shows the results for a peptide ID (peptides are numbered arranged by the start position). The results are shown for different time points at once (time points of measurement are indicated by the color).
 
-*Example* Below, we see how the deuterium uptake difference between states CD160 and CD160_HVEM changes over time. We see that for some peptides, the difference is smaller with time - perhaps because of the back exchange.
+*Example* Below, we see how the fractional deuterium uptake difference between states CD160 and CD160_HVEM changes over time. We see that for some peptides, the difference is smaller with time - perhaps because of the back exchange.
 
 ```{r}
-generate_butterfly_differential_plot(butt_diff_dat)
+generate_butterfly_differential_plot(butt_diff_dat, fractional = TRUE) +
+  coord_cartesian(ylim = c(-10, 20))
 ```
 
 *Pros* It shows the results for different time points of the measurement. 
@@ -130,12 +132,12 @@ generate_butterfly_differential_plot(butt_diff_dat)
 
 ## Chiclet plot
 
-Chiclet plot shows the deuterium uptake in the form of a heatmap for the peptides in a given biological state. One tile indicates the peptide (identified by its ID - number arranged by the start position) in a time point of measurement. The color of the tile indicates the deuterium uptake (according to the legend below the plot). 
+Chiclet plot shows the fractional deuterium uptake in the form of a heatmap for the peptides in a given biological state. One tile indicates the peptide (identified by its ID - number arranged by the start position) in a time point of measurement. The color of the tile indicates the fractinal deuterium uptake (according to the legend below the plot). 
 
 *Example*
 
 ```{r}
-generate_chiclet_plot(butt_dat, show_uncertainty = T)
+generate_chiclet_plot(butt_dat, show_uncertainty = T, fractional = TRUE)
 ```
 
 *Pros* The plot shows how the deuterium uptake changes over time. 
@@ -150,10 +152,10 @@ generate_chiclet_plot(butt_dat, show_uncertainty = T)
 
 Chiclet differential plot shows the deuterium uptake difference between two biological states in the form of a heatmap. One tile indicates the peptide (identified by its ID - number arranged by the start position) in a time point of measurement. The color of the tile indicates the deuterium uptake difference (according to the legend below the plot). 
 
-*Example* On the chiclet differential plot below, we see the deuterium uptake difference between states CD160 and CD160_HVEM for protein db_CD160. We see that some peptides are protected (red), and some are deprotected (blue). 
+*Example* On the chiclet differential plot below, we see the fractional deuterium uptake difference between states CD160 and CD160_HVEM for protein db_CD160. We see that some peptides are protected (red), and some are deprotected (blue). 
 
 ```{r}
-generate_chiclet_differential_plot(butt_diff_dat, show_uncertainty = TRUE)
+generate_chiclet_differential_plot(butt_diff_dat, show_uncertainty = TRUE, fractional = TRUE)
 ```
 
 *Pros* The plot shows the results for different time points of the measurement.
@@ -166,7 +168,11 @@ generate_chiclet_differential_plot(butt_diff_dat, show_uncertainty = TRUE)
 
 ## Volcano plot
 
-The volcano plot shows the deuterium uptake difference for two biological states for peptide and its p-value for double testing on statistical significance (Weis et al.). On the x-axis, there is a deuterium uptake difference with its uncertainty (combined and propagated). On the y-axis, there is a P-value calculated for each peptide in a specifc time point of a measurement as a un-paired t-test on given significance level (on mass measurement from the replicates to indicate if the measured mean is significantly different between two states, as the deuterium uptake difference between states can be rewritten as $ D_A - D_B = m_t_A - m_0 - ( m_t_B - m_0) = m_t_A - m_t_B $ for states A and B. The values of deuterium uptake difference from all time points are shown on the plot.
+The volcano plot shows the deuterium uptake difference for two biological states for peptide and its p-value for double testing on statistical significance (Weis et al.). On the x-axis, there is a deuterium uptake difference with its uncertainty (combined and propagated). On the y-axis, there is a P-value calculated for each peptide in a specifc time point of a measurement as a un-paired t-test on given significance level (on mass measurement from the replicates to indicate if the measured mean is significantly different between two states, as the deuterium uptake difference between states can be rewritten as 
+
+$$\Delta D = D_{A} - D_{B} = m_{t, A} - m_{0} - (m_{t, B} - m_{0}) = m_{t, A} - m_{t, B} $$
+
+for states A and B. The values of deuterium uptake difference from all time points are shown on the plot.
 
 The dotted red lines indicate confidence limits for the values. The horizontal line indicates the confidence limit based on chosen confidence level to give a threshold on a P-value. The vertical lines indicate the confidence limit from Houde test for all time points and indicate a threshold on deuterium uptake difference. The statistically significant points are in the top left and right corners of the plot.
 
@@ -220,7 +226,7 @@ generate_volcano_plot(vol_dat) + geom_segment(aes(x = houde_intervals[1], xend =
 
 Uptake curves show the changes in exchange in time for a specific peptide for its state.
 
-*Example* On the uptake curve below, we see how the exchange goes for peptide INITSSASQEGTRLN in states CD160 and CD160_HVEM for protein db_CD160. We can see that the exchange in state CD160_HVEM is smaller than in state CD160. 
+*Example* On the uptake curve below, we see how the exchange goes for peptide INITSSASQEGTRLN in states CD160 and CD160_HVEM for protein db_CD160. We can see that the fractional deuterium uptake in state CD160_HVEM is smaller than in state CD160. 
 
 ```{r}
 kin_dat <- bind_rows(calculate_kinetics(dat,
@@ -236,7 +242,7 @@ kin_dat <- bind_rows(calculate_kinetics(dat,
                               time_0 = 0.001,
                               time_100 = 1440))
 
-plot_kinetics(kin_dat, fractional = FALSE) +
+plot_kinetics(kin_dat, fractional = TRUE) +
   scale_x_log10()
 ```
 
