@@ -15,32 +15,43 @@ generate_comparison_dataset(
 )
 }
 \arguments{
-\item{dat}{...}
+\item{dat}{data imported by the \code{\link{read_hdx}} function.}
 
-\item{protein}{...}
+\item{protein}{chosen protein. Default value - first protein name from 
+the data.}
 
-\item{states}{vector of two states (for chosen protein). The deuterium 
-uptake difference is calculates as first state - second state, so the 
-order of states matter.}
+\item{states}{vector of states (for chosen protein), for which the 
+calculations are done. Default value - vector of all states from the
+data.}
 
-\item{time_0}{minimal exchange control}
+\item{time_0}{minimal exchange control. Default value - 0.001.}
 
-\item{time_t}{maximal exchange control}
+\item{time_t}{time point of the measurement for which the calculations
+are done. Default value - 1.}
 
-\item{time_100}{...}
+\item{time_100}{maximal exchange control. Default value - 1440.}
 
-\item{deut_part}{...}
+\item{deut_part}{deuterium percentage in solution used in experiment.
+Default value - 1.}
 }
 \value{
-..
+a data frame with calculated deuterium uptake, fractional deuterium 
+uptake, theoretical deuterium uptake, theoretical fractional deuterium uptake
+and their uncertainty, based on supplied parameters.
 }
 \description{
-Generates data set for given states
+Generates comparison data set for given states
 }
 \details{
 This is internal function, not used in the application.
-This function is a wrapper for \code{\link{calculate_state_deuteration}}.
+This function is a wrapper for \code{\link{calculate_state_deuteration}}
+function, calls this function for all states in states vector.
+}
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+generate_comparison_dataset(dat)
+
 }
 \seealso{
-...
+\code{\link{calculate_state_deuteration}}
 }

@@ -41,10 +41,10 @@ Generates volcano plot based on supplied volcano data
 }
 \details{
 The data produced by \code{\link{generate_volcano_dataset}} are plotted
-in a form of a volcano plot. The generation of the data is described in documentation
+in the form of a volcano plot. The generation of the data is described in the documentation
 of \code{\link{generate_volcano_dataset}} function. The confidence limit on 
-P-value is calculated based on confidence level. The confidence limit on deuterium 
-uptake difference is calculated using Houde test for the time point of measurement
+P-value is calculated based on the confidence level. The confidence limit on deuterium 
+uptake difference is calculated using the Houde test for the time point of measurement
 from the provided data. The confidence limits are indicated by the red dotted
 lines. The points above confidence limits (upper right and left corner) are 
 statistically significant in hybrid testing. 

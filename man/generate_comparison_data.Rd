@@ -7,23 +7,33 @@
 generate_comparison_data(dat, theoretical = FALSE, fractional = FALSE, protein)
 }
 \arguments{
-\item{dat}{custom data format, produced by \code{\link{calculate_state_deuteration}}}
+\item{dat}{produced by \code{\link{calculate_state_deuteration}} or
+\code{\link{generate_comparison_dataset}} function.}
 
-\item{theoretical}{\code{logical}, determines if values are theoretical}
+\item{theoretical}{\code{logical}, determines if values are theoretical.
+Default value - FALSE.}
 
-\item{fractional}{\code{logical}, determines if values are fractional}
+\item{fractional}{\code{logical}, determines if values are fractional
+Default value - FALSE.}
 }
 \value{
-...
+a \code{data.frame} object.
 }
 \description{
 Generates comparison data, based on the supplied
 parameters.
 }
 \details{
-This data is available in the GUI. 
-All of the numerical values are rounded to 4 places after the dot!!
+This function rounds the numerical values (4 places) and 
+changes the column names to user-friendly ones. 
+This data is available in the GUI.
+}
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+comparison_dat <- generate_comparison_dataset(dat)
+generate_comparison_data(comparison_dat)
+
 }
 \seealso{
-...
+\code{\link{calculate_state_deuteration}}
 }

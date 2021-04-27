@@ -48,12 +48,12 @@ and maximal exchange control) the deuterium uptake difference between state_1
 and state_2 is calculated, with its uncertainty (combined and propagated as
 described in `Data processing` article). For each peptide in time point the 
 P-value is calculated using unpaired t-test - the deuterium uptake difference
-is calculated as the difference of measured masses in given time point for two 
+is calculated as the difference of measured masses in a given time point for two 
 states. The tested hypothesis is that the mean masses for states from the 
 replicates of the experiment are similar. The P-values indicates if the null
 hypothesis can be rejected - rejection of the hypothesis means that the 
 difference between states is statistically significant at provided confidence
-level. The P-values can be adjusted using provided method.
+level. The P-values can be adjusted using the provided method.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))

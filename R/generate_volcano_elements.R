@@ -25,12 +25,12 @@
 #' and state_2 is calculated, with its uncertainty (combined and propagated as
 #' described in `Data processing` article). For each peptide in time point the 
 #' P-value is calculated using unpaired t-test - the deuterium uptake difference
-#' is calculated as the difference of measured masses in given time point for two 
+#' is calculated as the difference of measured masses in a given time point for two 
 #' states. The tested hypothesis is that the mean masses for states from the 
 #' replicates of the experiment are similar. The P-values indicates if the null
 #' hypothesis can be rejected - rejection of the hypothesis means that the 
 #' difference between states is statistically significant at provided confidence
-#' level. The P-values can be adjusted using provided method.
+#' level. The P-values can be adjusted using the provided method.
 #' 
 #' @references Hageman, T. S. & Weis, D. D. Reliable Identification of Significant 
 #' Differences in Differential Hydrogen Exchange-Mass Spectrometry Measurements 
@@ -148,10 +148,10 @@ generate_volcano_dataset <- function(dat,
 #' Default value - 0.98.
 #' 
 #' @details The data produced by \code{\link{generate_volcano_dataset}} are plotted
-#' in a form of a volcano plot. The generation of the data is described in documentation
+#' in the form of a volcano plot. The generation of the data is described in the documentation
 #' of \code{\link{generate_volcano_dataset}} function. The confidence limit on 
-#' P-value is calculated based on confidence level. The confidence limit on deuterium 
-#' uptake difference is calculated using Houde test for the time point of measurement
+#' P-value is calculated based on the confidence level. The confidence limit on deuterium 
+#' uptake difference is calculated using the Houde test for the time point of measurement
 #' from the provided data. The confidence limits are indicated by the red dotted
 #' lines. The points above confidence limits (upper right and left corner) are 
 #' statistically significant in hybrid testing. 
@@ -211,7 +211,7 @@ generate_volcano_plot <- function(vol_data,
       geom_segment(aes(x = x_threshold, xend = x_threshold, y = y_threshold, yend = Inf), linetype = "dashed", color = "red") +
       geom_segment(aes(y = y_threshold, yend = y_threshold, x = -Inf, xend = -x_threshold), linetype = "dashed", color = "red") +
       geom_segment(aes(y = y_threshold, yend = y_threshold, x = x_threshold, xend = Inf), linetype = "dashed", color = "red") 
-  
+    
   }
   
   return(volcano_plot)
@@ -225,8 +225,10 @@ generate_volcano_plot <- function(vol_data,
 #' function.
 #'
 #' @details This function rounds the numerical values (4 places) and 
-#' changes the column names to user friendly ones. 
+#' changes the column names to user-friendly ones. 
 #' This data is available in the GUI. 
+#' 
+#' @return a \code{data.frame} object.
 #'
 #' @seealso \code{\link{generate_volcano_dataset}} \code{\link{generate_volcano_plot}} 
 #' 

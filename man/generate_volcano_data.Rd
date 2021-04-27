@@ -10,12 +10,15 @@ generate_volcano_data(vol_data)
 \item{vol_data}{data produced by the \code{\link{generate_volcano_dataset}} 
 function.}
 }
+\value{
+a \code{data.frame} object.
+}
 \description{
 Generates a nice data frame
 }
 \details{
 This function rounds the numerical values (4 places) and 
-changes the column names to user friendly ones. 
+changes the column names to user-friendly ones. 
 This data is available in the GUI.
 }
 \examples{

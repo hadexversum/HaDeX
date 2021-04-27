@@ -7,14 +7,17 @@
 generate_comparison_plot(dat, theoretical = FALSE, fractional = FALSE)
 }
 \arguments{
-\item{dat}{produced by \code{\link{calculate_state_deuteration}} function}
+\item{dat}{produced by \code{\link{calculate_state_deuteration}} or
+\code{\link{generate_comparison_dataset}} function}
 
-\item{theoretical}{\code{logical}, determines if values are theoretical}
+\item{theoretical}{\code{logical}, determines if values are theoretical. 
+Default value - FALSE.}
 
-\item{fractional}{\code{logical}, determines if values are fractional}
+\item{fractional}{\code{logical}, determines if values are fractional.
+Default value - FALSE.}
 }
 \value{
-...
+a \code{ggplot} object.
 }
 \description{
 Generates comparison plot based on supplied data
@@ -23,6 +26,13 @@ and parameters.
 \details{
 This plot is visible in GUI.
 }
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+comparison_dat <- generate_comparison_dataset(dat)
+generate_comparison_plot(comparison_dat)
+
+}
 \seealso{
-...
+\code{\link{calculate_state_deuteration}}  \code{\link{generate_comparison_dataset}}
+\code{\link{generate_comparison_data}}
 }

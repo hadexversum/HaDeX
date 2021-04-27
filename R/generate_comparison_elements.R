@@ -1,23 +1,33 @@
 #' generate_comparison_dataset
 #' 
-#' @description Generates data set for given states
+#' @description Generates comparison data set for given states
 #' 
-#' @param dat ...
-#' @param protein ...
-#' @param states vector of two states (for chosen protein). The deuterium 
-#' uptake difference is calculates as first state - second state, so the 
-#' order of states matter.
-#' @param time_0 minimal exchange control
-#' @param time_t maximal exchange control
-#' @param time_100 ...
-#' @param deut_part ...
+#' @param dat data imported by the \code{\link{read_hdx}} function.
+#' @param protein chosen protein. Default value - first protein name from 
+#' the data.
+#' @param states vector of states (for chosen protein), for which the 
+#' calculations are done. Default value - vector of all states from the
+#' data.
+#' @param time_0 minimal exchange control. Default value - 0.001.
+#' @param time_t time point of the measurement for which the calculations
+#' are done. Default value - 1.
+#' @param time_100 maximal exchange control. Default value - 1440.
+#' @param deut_part deuterium percentage in solution used in experiment.
+#' Default value - 1.
 #' 
 #' @details This is internal function, not used in the application.
-#' This function is a wrapper for \code{\link{calculate_state_deuteration}}.
+#' This function is a wrapper for \code{\link{calculate_state_deuteration}}
+#' function, calls this function for all states in states vector.
 #' 
-#' @return ..
+#' @return a data frame with calculated deuterium uptake, fractional deuterium 
+#' uptake, theoretical deuterium uptake, theoretical fractional deuterium uptake
+#' and their uncertainty, based on supplied parameters. 
 #'
-#' @seealso ...
+#' @seealso \code{\link{calculate_state_deuteration}}
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' generate_comparison_dataset(dat)
 #'
 #' @export generate_comparison_dataset
 
@@ -49,16 +59,26 @@ generate_comparison_dataset <- function(dat,
 #' @description Generates comparison plot based on supplied data
 #' and parameters.
 #' 
-#' @param dat produced by \code{\link{calculate_state_deuteration}} function
-#' @param theoretical \code{logical}, determines if values are theoretical
-#' @param fractional \code{logical}, determines if values are fractional
+#' @param dat produced by \code{\link{calculate_state_deuteration}} or
+#' \code{\link{generate_comparison_dataset}} function
+#' @param theoretical \code{logical}, determines if values are theoretical. 
+#' Default value - FALSE.
+#' @param fractional \code{logical}, determines if values are fractional.
+#' Default value - FALSE.
 #' 
 #' @importFrom ggplot2 ggplot geom_segment geom_errorbar theme scale_y_continuous
+#' 
 #' @details This plot is visible in GUI. 
 #' 
-#' @return ...
+#' @return a \code{ggplot} object.
 #' 
-#' @seealso ... 
+#' @seealso \code{\link{calculate_state_deuteration}}  \code{\link{generate_comparison_dataset}}
+#' \code{\link{generate_comparison_data}}
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' comparison_dat <- generate_comparison_dataset(dat)
+#' generate_comparison_plot(comparison_dat)
 #' 
 #' @export generate_comparison_plot
 
@@ -68,47 +88,62 @@ generate_comparison_plot <- function(dat,
   
   if (theoretical) {
     
+    title <- "Theoretical comparison plot"
+    
     if (fractional) {
+      
       # theoretical & fractional
-      ggplot(data = dat) +
-        geom_segment(data = dat, aes(x = Start, y = theo_frac_deut_uptake, xend = End, yend = theo_frac_deut_uptake, color = State)) +
-        geom_errorbar(data = dat, aes(x = Med_Sequence, ymin = theo_frac_deut_uptake - err_theo_frac_deut_uptake, ymax = theo_frac_deut_uptake + err_theo_frac_deut_uptake, color = State)) +
-        theme(legend.position = "bottom",
-              legend.title = element_blank()) +
-        scale_y_continuous(breaks = seq(-200, 200, 10), expand = c(0, 0))
+      value <- "theo_frac_deut_uptake"
+      err_value <- "err_theo_frac_deut_uptake"
+      y_label <- "fractional deuterium uptake [%]"
       
     } else {
+      
       # theoretical & absolute
-      ggplot(data = dat) +
-        geom_segment(data = dat, aes(x = Start, y = theo_deut_uptake, xend = End, yend = theo_deut_uptake, color = State)) +
-        geom_errorbar(data = dat, aes(x = Med_Sequence, ymin = theo_deut_uptake - err_theo_deut_uptake, ymax = theo_deut_uptake + err_theo_deut_uptake, color = State)) +
-        theme(legend.position = "bottom",
-              legend.title = element_blank()) +
-        scale_y_continuous(expand = c(0, 0))
+      value <- "theo_deut_uptake"
+      err_value <- "err_theo_deut_uptake"
+      y_label <- "Deuterium uptake [Da]"
+      
     } 
     
   } else {
     
+    title <- "Comparison plot"
+    
     if (fractional) {
+      
       # experimantal & fractional
-      ggplot(data = dat) +
-        geom_segment(data = dat, aes(x = Start, y = frac_deut_uptake, xend = End, yend = frac_deut_uptake, color = State)) +
-        geom_errorbar(data = dat, aes(x = Med_Sequence, ymin = frac_deut_uptake - err_frac_deut_uptake, ymax = frac_deut_uptake + err_frac_deut_uptake, color = State)) +
-        theme(legend.position = "bottom",
-              legend.title = element_blank()) +
-        scale_y_continuous(breaks = seq(-200, 200, 10), expand = c(0, 0))
+      value <- "frac_deut_uptake"
+      err_value <- "err_frac_deut_uptake"
+      y_label <- "fractional deuterium uptake [%]"
       
     } else {
+      
       # experimental & absolute 
-      ggplot(data = dat) +
-        geom_segment(data = dat, aes(x = Start, y = deut_uptake, xend = End, yend = deut_uptake, color = State)) +
-        geom_errorbar(data = dat, aes(x = Med_Sequence, ymin = deut_uptake - err_deut_uptake, ymax = deut_uptake + err_deut_uptake, color = State)) +
-        theme(legend.position = "bottom",
-              legend.title = element_blank()) +
-        scale_y_continuous(expand = c(0, 0))
+      value <- "deut_uptake"
+      err_value <- "err_deut_uptake"
+      y_label <- "Deuterium uptake [Da]"
+      
     }
     
   }
+  
+  plot_dat <- data.frame(Sequence = dat[["Sequence"]],
+                         Start = dat[["Start"]],
+                         End = dat[["End"]],
+                         Med_Sequence = dat[["Med_Sequence"]],
+                         State = dat[["State"]],
+                         value = dat[[value]],
+                         err_value = dat[[err_value]])
+  
+  ggplot(data = plot_dat) +
+    geom_segment(data = plot_dat, aes(x = Start, y = value, xend = End, yend = value, color = State)) +
+    geom_errorbar(data = plot_dat, aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value, color = State)) +
+    labs(title = title,
+         x = "Position in the sequence",
+         y = y_label) +
+    theme(legend.position = "bottom",
+          legend.title = element_blank())
   
 }
 
@@ -118,18 +153,27 @@ generate_comparison_plot <- function(dat,
 #' @description Generates comparison data, based on the supplied
 #' parameters.
 #' 
-#' @param dat custom data format, produced by \code{\link{calculate_state_deuteration}}
-#' @param theoretical \code{logical}, determines if values are theoretical
-#' @param fractional \code{logical}, determines if values are fractional
-#' 
-#' @details This data is available in the GUI. 
-#' All of the numerical values are rounded to 4 places after the dot!!
-#' 
 #' @importFrom dplyr rename
+#'  
+#' @param dat produced by \code{\link{calculate_state_deuteration}} or
+#' \code{\link{generate_comparison_dataset}} function.
+#' @param theoretical \code{logical}, determines if values are theoretical.
+#' Default value - FALSE.
+#' @param fractional \code{logical}, determines if values are fractional
+#' Default value - FALSE.
 #' 
-#' @return ...
+#' @details This function rounds the numerical values (4 places) and 
+#' changes the column names to user-friendly ones. 
+#' This data is available in the GUI. 
 #' 
-#' @seealso ... 
+#' @return a \code{data.frame} object.
+#' 
+#' @seealso \code{\link{calculate_state_deuteration}} 
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' comparison_dat <- generate_comparison_dataset(dat)
+#' generate_comparison_data(comparison_dat)
 #' 
 #' @export generate_comparison_data
 
@@ -140,6 +184,7 @@ generate_comparison_data <- function(dat,
   if (theoretical){
     
     if (fractional){
+      
       # theoretical & fractional
       dat %>%
         select(Protein, Sequence, State, Start, End, theo_frac_deut_uptake, err_theo_frac_deut_uptake) %>%
@@ -150,6 +195,7 @@ generate_comparison_data <- function(dat,
                "Err Theo Frac Exch" = err_theo_frac_deut_uptake)
       
     } else {
+      
       # theoretical & absolute
       dat %>%
         select(Protein, Sequence, State, Start, End, theo_deut_uptake, err_theo_deut_uptake) %>%
@@ -163,6 +209,7 @@ generate_comparison_data <- function(dat,
   } else {
     
     if (fractional){
+      
       # experimental & fractional
       dat %>%
         select(Protein, Sequence, State, Start, End, frac_deut_uptake, err_frac_deut_uptake) %>%
@@ -173,6 +220,7 @@ generate_comparison_data <- function(dat,
                "Err Frac Exch" = err_frac_deut_uptake)
       
     } else {
+      
       # experimental & absolute
       dat %>%
         select(Protein, Sequence, State, Start, End, deut_uptake, err_deut_uptake) %>%
