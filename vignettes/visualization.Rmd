@@ -181,36 +181,7 @@ The dotted red lines indicate confidence limits for the values. The horizontal l
 ```{r}
 vol_dat <- generate_volcano_dataset(dat)
 
-confidence_limit <- 0.98
-
-times_t <- dat %>%
-  select(Exposure) %>%
-  unique(.) %>%
-  filter(Exposure > 0.001, Exposure < 1440) %>%
-  unlist(.)
-
-houde_intervals <-  lapply(times_t, function(t){
-    
-    generate_differential_data_set(dat, 
-                                   states = c("CD160", "CD160_HVEM"),
-                                   protein = "db_CD160",
-                                   time_0 = 0.001,
-                                   time_t = t,
-                                   time_100 = 1440,
-                                   deut_part = 1) %>%
-      mutate(Exposure = t)
-    
-  }) %>% bind_rows() %>%
-    calculate_confidence_limit_values(confidence_limit = confidence_limit,
-                                      theoretical = FALSE,
-                                      fractional = FALSE)
-
-alpha_interval <- -log(1 - confidence_limit)
-
-generate_volcano_plot(vol_dat) + geom_segment(aes(x = houde_intervals[1], xend = houde_intervals[1], y = alpha_interval, yend = 16), linetype = "dashed", color = "red") +
-    geom_segment(aes(x = houde_intervals[2], xend = houde_intervals[2], y = alpha_interval, yend = 16), linetype = "dashed", color = "red") +
-    geom_segment(aes(y = alpha_interval, yend = alpha_interval, x = -10, xend = houde_intervals[1]), linetype = "dashed", color = "red") +
-    geom_segment(aes(y = alpha_interval, yend = alpha_interval, x = houde_intervals[2], xend = 10), linetype = "dashed", color = "red") 
+generate_volcano_plot(vol_dat, show_confidence_limits = T) 
 
 ```
 

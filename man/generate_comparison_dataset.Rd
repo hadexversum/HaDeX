@@ -6,8 +6,8 @@
 \usage{
 generate_comparison_dataset(
   dat,
-  states = unique(dat[["State"]]),
   protein = unique(dat[["Protein"]])[1],
+  states = unique(dat[["State"]]),
   time_0 = 0.001,
   time_t = 1,
   time_100 = 1440,
@@ -17,13 +17,15 @@ generate_comparison_dataset(
 \arguments{
 \item{dat}{...}
 
-\item{states}{...}
-
 \item{protein}{...}
 
-\item{time_0}{...}
+\item{states}{vector of two states (for chosen protein). The deuterium 
+uptake difference is calculates as first state - second state, so the 
+order of states matter.}
 
-\item{time_t}{...}
+\item{time_0}{minimal exchange control}
+
+\item{time_t}{maximal exchange control}
 
 \item{time_100}{...}
 

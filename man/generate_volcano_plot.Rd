@@ -4,7 +4,14 @@
 \alias{generate_volcano_plot}
 \title{generate_volcano_plot}
 \usage{
-generate_volcano_plot(vol_data, state_1 = "", state_2 = "", adjust_axes = TRUE)
+generate_volcano_plot(
+  vol_data,
+  state_1 = "",
+  state_2 = "",
+  adjust_axes = TRUE,
+  show_confidence_limits = FALSE,
+  confidence_level = 0.98
+)
 }
 \arguments{
 \item{vol_data}{...}
@@ -14,6 +21,10 @@ generate_volcano_plot(vol_data, state_1 = "", state_2 = "", adjust_axes = TRUE)
 \item{state_2}{...}
 
 \item{adjust_axes}{...}
+
+\item{show_confidence_limits}{...}
+
+\item{confidence_level}{...}
 }
 \description{
 Generates volcano plot based on supplied volcano data

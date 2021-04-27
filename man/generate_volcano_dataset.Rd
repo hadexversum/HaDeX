@@ -14,16 +14,62 @@ generate_volcano_dataset(
 )
 }
 \arguments{
-\item{dat}{...}
+\item{dat}{data imported by the \code{\link{read_hdx}} function}
 
-\item{protein}{...}
+\item{protein}{chosen protein. Default value - first protein name from 
+the data}
 
-\item{p_adjustment_method}{...}
+\item{state_1}{biological state for chosen protein. From this state values
+the second state values are subtracted to get the deuterium uptake difference.
+Default value - first state found in the data}
 
-\item{confidence_level}{...}
+\item{state_2}{biological state for chosen protein. This state values are 
+subtracted from the first state values to get the deuterium uptake diference.
+Default value - second state found in the data}
 
-\item{states}{...}
+\item{p_adjustment_method}{method of adjustment P-values for multiple 
+comparisons. Possible methods: "BH" (Benjamini & Hochberg correction), 
+"bonferroni" (Bonferroni correction) and "none" (default)}
+
+\item{confidence_level}{confidence level for the t-test}
+}
+\value{
+a data frame with calculated deuterium uptake difference, uncertainty,
+P-value and -log(P-value) for the peptides from the provided data.
 }
 \description{
 Generates data set for volcano plot
+}
+\details{
+The volcano plot shows the deuterium uptake difference in time 
+for the peptides. This function prepares data for the plot.
+For peptides in all of the time points of measurement (except for minimal
+and maximal exchange control) the deuterium uptake difference between state_1
+and state_2 is calculated, with its uncertainty (combined and propagated as
+described in `Data processing` article). For each peptide in time point the 
+P-value is calculated using unpaired t-test - the deuterium uptake difference
+is calculated as the difference of measured masses in given time point for two 
+states. The tested hypothesis is that the mean masses for states from the 
+replicates of the experiment are similar. The P-values indicates if the null
+hypothesis can be rejected - rejection of the hypothesis means that the 
+difference between states is statistically significant at provided confidence
+level. The P-values can be adjusted using provided method.
+}
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+generate_volcano_dataset(dat,
+                         protein = "db_CD160", 
+                         state_1 = "CD160",
+                         state_2 = "CD160_HVEM",
+                         p_adjustment_method = "none",
+                         confidence_level = 0.99)
+
+}
+\references{
+Hageman, T. S. & Weis, D. D. Reliable Identification of Significant 
+Differences in Differential Hydrogen Exchange-Mass Spectrometry Measurements 
+Using a Hybrid Significance Testing Approach. Anal Chem 91, 8008–8016 (2019).
+}
+\seealso{
+\code{\link{generate_volcano_plot}}  \code{\link{generate_volcano_data}}
 }

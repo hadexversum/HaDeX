@@ -3,10 +3,12 @@
 #' @description Generates data set for given states
 #' 
 #' @param dat ...
-#' @param states ...
 #' @param protein ...
-#' @param time_0 ...
-#' @param time_t ...
+#' @param states vector of two states (for chosen protein). The deuterium 
+#' uptake difference is calculates as first state - second state, so the 
+#' order of states matter.
+#' @param time_0 minimal exchange control
+#' @param time_t maximal exchange control
 #' @param time_100 ...
 #' @param deut_part ...
 #' 
@@ -20,8 +22,8 @@
 #' @export generate_comparison_dataset
 
 generate_comparison_dataset <- function(dat,
-                                        states = unique(dat[["State"]]),
                                         protein = unique(dat[["Protein"]])[1],
+                                        states = unique(dat[["State"]]),
                                         time_0 = 0.001,
                                         time_t = 1,
                                         time_100 = 1440,
