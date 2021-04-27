@@ -7,8 +7,23 @@
 generate_volcano_data(vol_data)
 }
 \arguments{
-\item{vol_data}{...}
+\item{vol_data}{data produced by the \code{\link{generate_volcano_dataset}} 
+function.}
 }
 \description{
-generate_volcano_data
+Generates a nice data frame
+}
+\details{
+This function rounds the numerical values (4 places) and 
+changes the column names to user friendly ones. 
+This data is available in the GUI.
+}
+\examples{
+dat <-  dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+vol_dat <- generate_volcano_dataset(dat)
+generate_volcano_data(vol_dat, show_confidence_limits = T)
+
+}
+\seealso{
+\code{\link{generate_volcano_dataset}} \code{\link{generate_volcano_plot}}
 }

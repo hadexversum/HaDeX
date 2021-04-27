@@ -168,6 +168,11 @@ generate_volcano_dataset <- function(dat,
 #' 
 #' @seealso \code{\link{generate_volcano_dataset}} \code{\link{generate_volcano_data}} 
 #' 
+#' @examples 
+#' dat <-  dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' vol_dat <- generate_volcano_dataset(dat)
+#' generate_volcano_plot(vol_dat, show_confidence_limits = T)
+#' 
 #' @export generate_volcano_plot
 
 generate_volcano_plot <- function(vol_data, 
@@ -225,6 +230,11 @@ generate_volcano_plot <- function(vol_data,
 #'
 #' @seealso \code{\link{generate_volcano_dataset}} \code{\link{generate_volcano_plot}} 
 #' 
+#' @examples 
+#' dat <-  dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' vol_dat <- generate_volcano_dataset(dat)
+#' generate_volcano_data(vol_dat, show_confidence_limits = T)
+#' 
 #' @export generate_volcano_data
 
 generate_volcano_data <- function(vol_data){
@@ -233,7 +243,7 @@ generate_volcano_data <- function(vol_data){
     mutate(D_diff  = round(D_diff , 4),
            Uncertainty = round(Uncertainty, 4),
            log_p_value = round(log_p_value, 4)) %>%
-    arrange(Exposure) %>%
+    arrange(Exposure, Start, End) %>%
     rename("Deuterium uptake difference" = D_diff , 
            "-log(P value)" = log_p_value)
   

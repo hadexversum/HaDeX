@@ -14,18 +14,57 @@ generate_volcano_plot(
 )
 }
 \arguments{
-\item{vol_data}{...}
+\item{vol_data}{data produced by the \code{\link{generate_volcano_dataset}} 
+function.}
 
-\item{state_1}{...}
+\item{state_1}{biological state for chosen protein. It is used in the title.
+Default value - "".}
 
-\item{state_2}{...}
+\item{state_2}{biological state for chosen protein. It is used in the title.
+Default value - "".}
 
-\item{adjust_axes}{...}
+\item{adjust_axes}{logical, indicating if the X-axis is symmetrical in 
+relation to 0. Default value - TRUE.}
 
-\item{show_confidence_limits}{...}
+\item{show_confidence_limits}{logical, indicates if the hybrid testing 
+confidence intervals are shown. Default value - FALSE.}
 
-\item{confidence_level}{...}
+\item{confidence_level}{confidence level for the confidence intervals. It 
+should be the same as used in \code{\link{generate_volcano_dataset}} function.
+Default value - 0.98.}
+}
+\value{
+a ggplot object.
 }
 \description{
 Generates volcano plot based on supplied volcano data
+}
+\details{
+The data produced by \code{\link{generate_volcano_dataset}} are plotted
+in a form of a volcano plot. The generation of the data is described in documentation
+of \code{\link{generate_volcano_dataset}} function. The confidence limit on 
+P-value is calculated based on confidence level. The confidence limit on deuterium 
+uptake difference is calculated using Houde test for the time point of measurement
+from the provided data. The confidence limits are indicated by the red dotted
+lines. The points above confidence limits (upper right and left corner) are 
+statistically significant in hybrid testing. 
+This plot is visible in GUI.
+}
+\examples{
+dat <-  dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+vol_dat <- generate_volcano_dataset(dat)
+generate_volcano_plot(vol_dat, show_confidence_limits = T)
+
+}
+\references{
+Hageman, T. S. & Weis, D. D. Reliable Identification of Significant 
+Differences in Differential Hydrogen Exchange-Mass Spectrometry Measurements 
+Using a Hybrid Significance Testing Approach. Anal Chem 91, 8008–8016 (2019).
+
+Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). 
+The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in 
+Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
+}
+\seealso{
+\code{\link{generate_volcano_dataset}} \code{\link{generate_volcano_data}}
 }

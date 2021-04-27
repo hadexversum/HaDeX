@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_volcano_elements.R
 \name{generate_volcano_dataset}
 \alias{generate_volcano_dataset}
-\title{generate_volcano_data}
+\title{generate_volcano_dataset}
 \usage{
 generate_volcano_dataset(
   dat,
@@ -14,24 +14,24 @@ generate_volcano_dataset(
 )
 }
 \arguments{
-\item{dat}{data imported by the \code{\link{read_hdx}} function}
+\item{dat}{data imported by the \code{\link{read_hdx}} function.}
 
 \item{protein}{chosen protein. Default value - first protein name from 
-the data}
+the data.}
 
 \item{state_1}{biological state for chosen protein. From this state values
 the second state values are subtracted to get the deuterium uptake difference.
-Default value - first state found in the data}
+Default value - first state found in the data.}
 
 \item{state_2}{biological state for chosen protein. This state values are 
 subtracted from the first state values to get the deuterium uptake diference.
-Default value - second state found in the data}
+Default value - second state found in the data.}
 
 \item{p_adjustment_method}{method of adjustment P-values for multiple 
 comparisons. Possible methods: "BH" (Benjamini & Hochberg correction), 
-"bonferroni" (Bonferroni correction) and "none" (default)}
+"bonferroni" (Bonferroni correction) and "none" (default).}
 
-\item{confidence_level}{confidence level for the t-test}
+\item{confidence_level}{confidence level for the t-test. Default value - 0.98.}
 }
 \value{
 a data frame with calculated deuterium uptake difference, uncertainty,
