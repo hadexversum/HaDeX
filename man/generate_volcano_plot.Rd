@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_volcano_elements.R
 \name{generate_volcano_plot}
 \alias{generate_volcano_plot}
-\title{generate_volcano_plot}
+\title{Generates volcano plot}
 \usage{
 generate_volcano_plot(
   vol_data,
@@ -17,27 +17,24 @@ generate_volcano_plot(
 \item{vol_data}{data produced by the \code{\link{generate_volcano_dataset}} 
 function.}
 
-\item{state_1}{biological state for chosen protein. It is used in the title.
-Default value - "".}
+\item{state_1}{biological state for chosen protein. It is used in the title.}
 
-\item{state_2}{biological state for chosen protein. It is used in the title.
-Default value - "".}
+\item{state_2}{biological state for chosen protein. It is used in the title.}
 
 \item{adjust_axes}{logical, indicating if the X-axis is symmetrical in 
-relation to 0. Default value - TRUE.}
+relation to 0.}
 
 \item{show_confidence_limits}{logical, indicates if the hybrid testing 
-confidence intervals are shown. Default value - FALSE.}
+confidence intervals are shown.}
 
 \item{confidence_level}{confidence level for the confidence intervals. It 
-should be the same as used in \code{\link{generate_volcano_dataset}} function.
-Default value - 0.98.}
+should be the same as used in \code{\link{generate_volcano_dataset}} function.}
 }
 \value{
-a ggplot object.
+a \code{\link{ggplot}} object.
 }
 \description{
-Generates volcano plot based on supplied volcano data
+Generates volcano plot
 }
 \details{
 The data produced by \code{\link{generate_volcano_dataset}} are plotted
@@ -66,5 +63,6 @@ The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in
 Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
 }
 \seealso{
-\code{\link{generate_volcano_dataset}} \code{\link{generate_volcano_data}}
+\code{\link{generate_volcano_dataset}} 
+\code{\link{generate_volcano_data}}
 }

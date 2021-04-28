@@ -2,25 +2,32 @@
 #' 
 #' @description Returns relation with confidence limits for each peptide.
 #' 
-#' @param calc_dat processed data from DynamX file - using \code{\link{prepare_dataset}}
-#' @param confidence_limit confidence limit chosen by user - from range [0, 1]. 
-#' @param theoretical \code{logical}, determines if values are theoretical
-#' @param fractional \code{logical}, determines if values are fractional
+#' @param calc_dat data produced by \code{\link{generate_differential_data_set}}
+#' funcion.
+#' @param confidence_limit confidence limit - from range [0, 1]. 
+#' @param theoretical \code{logical}, determines if values are theoretical.
+#' @param fractional \code{logical}, determines if values are fractional.
 #' 
-#' @details ...
+#' @details This function checks if the values are statistically significant based 
+#' on provided criteria using Houde test. 
 #' 
-#' @return calc_dat extended by column specifying if given peptide is relevant in given confidence limit. 
-#' The value of the confidence limit is added as an attribute - as well as parameters used to calculate 
-#' (theoretical/fractional)
+#' @return calc_dat extended by column specifying if given peptide is relevant in
+#' given confidence limit. The value of the confidence limit is added as an attribute 
+#' - as well as parameters used to calculate (theoretical/fractional).
 #' 
-#' @seealso \code{\link{read_hdx}} \code{\link{prepare_dataset}}
+#' @references Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). 
+#' The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in 
+#' Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
+#' 
+#' @seealso \code{\link{read_hdx}} \code{\link{generate_differential_data_set}}
 #' 
 #' @examples 
-#' #load example data
 #' dat <- read_hdx(system.file(package = "HaDeX", 
 #'                             "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#'                             
-#' # TODO
+#' calc_dat <- generate_differential_data_set(dat)
+#' result <- add_stat_dependency(calc_dat)
+#' head(result)                            
+#' 
 #' 
 #' @export add_stat_dependency
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_volcano_elements.R
 \name{generate_volcano_data}
 \alias{generate_volcano_data}
-\title{generate_volcano_data}
+\title{Generates volcano data}
 \usage{
 generate_volcano_data(vol_data)
 }
@@ -11,22 +11,24 @@ generate_volcano_data(vol_data)
 function.}
 }
 \value{
-a \code{data.frame} object.
+a \code{\link{data.frame}} object.
 }
 \description{
-Generates a nice data frame
+Generates volcano data
 }
 \details{
-This function rounds the numerical values (4 places) and 
-changes the column names to user-friendly ones. 
+This function subsets the dataset based on provided criteria,
+rounds the numerical values (4 places) and changes the column names 
+to user-friendly ones. 
 This data is available in the GUI.
 }
 \examples{
 dat <-  dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 vol_dat <- generate_volcano_dataset(dat)
-generate_volcano_data(vol_dat, show_confidence_limits = T)
+head(generate_volcano_data(vol_dat))
 
 }
 \seealso{
-\code{\link{generate_volcano_dataset}} \code{\link{generate_volcano_plot}}
+\code{\link{generate_volcano_dataset}} 
+\code{\link{generate_volcano_plot}}
 }

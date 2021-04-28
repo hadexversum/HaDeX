@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_differential_elements.R
 \name{generate_differential_plot}
 \alias{generate_differential_plot}
-\title{generate_differential_plot}
+\title{Generate differential plot}
 \usage{
 generate_differential_plot(
   dat,
@@ -24,15 +24,29 @@ generate_differential_plot(
 \item{confidence_limit_2}{...}
 }
 \value{
-...
+a \code{\link{ggplot}} object.
 }
 \description{
-Generates differential (Woods) plot with confidence values
-based on supplied data and parameters.
+Generate differential plot
 }
 \details{
+Function \code{\link{generate_differential_plot}} presents
+provided data in a form of differential (Woods) plot. The plot show 
+difference in exchange for two biological states, selected in 
+generation of dataset at one time point of measurement .On X-axis 
+there is a position in a sequence, with length of a segment of each 
+peptide representing its length. On Y-axis there 
+is deuterium uptake difference in chosen form. Error bars represents 
+the combined and propagated uncertainty. 
 This plot is visible in GUI.
 }
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+diff_dat <- generate_differential_data_set(dat)
+generate_differential_plot(diff_dat)
+
+}
 \seealso{
-...
+\code{\link{generate_differential_data_set}}
+\code{\link{generate_differential_data}}
 }

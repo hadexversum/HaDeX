@@ -1,17 +1,33 @@
-#' generate_butterfly_dataset
+#' Generates butterfly dataset
 #' 
-#' @param dat data as imported by the \code{\link{read_hdx}} function
-#' @param protein ...
-#' @param state ...
-#' @param time_0 ...
-#' @param time_100 ...
-#' @param deut_part ...
+#' @param dat data imported by the \code{\link{read_hdx}} function.
+#' @param protein chosen protein. 
+#' @param state biological state for chosen protein.
+#' @param time_0 minimal exchange control time point of measurement.
+#' @param time_100 maximal exchange control time point of measurement. 
+#' @param deut_part deuterium percentage in solution used in experiment, 
+#' value from range [0, 1].
 #' 
-#' @details ... 
+#' @details The function \code{\link{generate_butterfly_dataset}} generates 
+#' a dataset what can be plotted in a form of a butterfly plot. For each
+#' peptide in chosen protein in chosen state for time points of measurement
+#' between minimal and maximal control time points of measurement deuterium 
+#' uptake, fractional deuterium uptake with respect to controls or theoretical
+#' tabular values are calculated, with combined and propagated uncertainty. 
+#' Each peptide has an ID, based on its start position.
 #' 
-#' @return ...
+#' @return a \code{\link{data.frame}} object.
 #' 
-#' @seealso ...
+#' @seealso 
+#' \code{\link{read_hdx}}
+#' \code{\link{calculate_state_deuteration}}
+#' \code{\link{generate_butterfly_plot}} 
+#' \code{\link{generate_butterfly_data}}
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' butterfly_dat <- generate_butterfly_dataset(dat)
+#' head(butterfly_dat)
 #' 
 #' @export generate_butterfly_dataset
 
@@ -40,21 +56,32 @@ generate_butterfly_dataset <- function(dat,
   
 }
 
-#' generate_butterfly_plot
+
+#' Generate butterfly plot
 #' 
-#' @description Generates butterfly plot based on supplied data
-#' and parameters.
+#' @param butterfly_dat data produced by \code{\link{generate_butterfly_dataset}} 
+#' function.
+#' @param theoretical \code{logical}, determines if values are theoretical.
+#' @param fractional \code{logical}, determines if values are fractional.
+#' @param uncertainty_type type of presenting uncertainty, possible values:
+#' "ribbon", "bars" or "bars + line".
 #' 
-#' @param butterfly_dat ... 
-#' @param theoretical \code{logical}, determines if values are theoretical
-#' @param fractional \code{logical}, determines if values are fractional
-#' @param uncertainty_type ribbon / bars
+#' @details Function \code{\link{generate_butterfly_plot}} generates butterfly plot
+#' based on provided data and parameters. On X-axis there is peptide ID. On the Y-axis
+#' there is deuterium uptake in chosen form. Data from multiple time points of 
+#' measurement is presented.
+#' This plot is visible in GUI. 
 #' 
-#' @details This plot is visible in GUI. 
+#' @return a \code{\link{ggplot}} object.
 #' 
-#' @return ...
+#' @seealso 
+#' \code{\link{generate_butterfly_dataset}} 
+#' \code{\link{generate_butterfly_data}}
 #' 
-#' @seealso ... 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' butterfly_dat <- generate_butterfly_dataset(dat)
+#' generate_butterfly_plot(butterfly_dat)
 #' 
 #' @export generate_butterfly_plot
 
@@ -107,7 +134,6 @@ generate_butterfly_plot <- function(butterfly_dat,
     }
 
   }
-
   
   plot_dat <- data.frame(ID = butterfly_dat[["ID"]],
                          Exposure = butterfly_dat[["Exposure"]],
@@ -116,7 +142,6 @@ generate_butterfly_plot <- function(butterfly_dat,
                          Sequence = butterfly_dat[["Sequence"]],
                          Start = butterfly_dat[["Start"]],
                          End = butterfly_dat[["End"]])
-  
   
   butterfly_plot <- ggplot(plot_dat, aes(x = ID, y = value, color = Exposure)) +
     geom_point(aes(group = Exposure, color = Exposure)) +
@@ -148,23 +173,30 @@ generate_butterfly_plot <- function(butterfly_dat,
 }
 
 
-#' generate_butterfly_data
+#' Generate butterfly data
 #' 
-#' @description Generates butterfly data, based on the supplied
-#' parameters.
+#' @param butterfly_dat data produced by \code{\link{generate_butterfly_dataset}} 
+#' function.
+#' @param theoretical \code{logical}, determines if values are theoretical.
+#' @param fractional \code{logical}, determines if values are fractional.
 #' 
-#' @param butterfly_dat data as imported by the \code{\link{read_hdx}} function
-#' @param theoretical \code{logical}, determines if values are theoretical
-#' @param fractional \code{logical}, determines if values are fractional
-#' 
-#' @details This data is available in the GUI. 
-#' All of the numerical values are rounded to 4 places after the dot!!
+#' @details This function subsets the dataset based on provided criteria,
+#' rounds the numerical values (4 places) and changes the column names 
+#' to user-friendly ones. 
+#' This data is available in the GUI. 
 #' 
 #' @importFrom dplyr rename %>%
 #' 
-#' @return ...
+#' @return a \code{\link{data.frame}} object.
 #' 
-#' @seealso ... 
+#' @seealso 
+#' \code{\link{generate_butterfly_dataset}} 
+#' \code{\link{generate_butterfly_plot}} 
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' butterfly_dat <- generate_butterfly_dataset(dat)
+#' generate_butterfly_data(butterfly_dat)
 #' 
 #' @export generate_butterfly_data
 
@@ -176,6 +208,7 @@ generate_butterfly_data <- function(butterfly_dat,
   if (theoretical){
     
     if (fractional){
+      
       # theoretical & fractional
       butterfly_dat %>%
         select(Protein, Sequence, ID, State, Start, End, Exposure, theo_frac_deut_uptake, err_theo_frac_deut_uptake) %>%
@@ -186,6 +219,7 @@ generate_butterfly_data <- function(butterfly_dat,
                "Err Theo Frac Exch" = err_theo_frac_deut_uptake)
       
     } else {
+      
       # theoretical & absolute
       butterfly_dat %>%
         select(Protein, Sequence, ID, State, Start, End, Exposure, theo_deut_uptake, err_theo_deut_uptake) %>%
@@ -199,6 +233,7 @@ generate_butterfly_data <- function(butterfly_dat,
   } else {
     
     if (fractional){
+      
       # experimental & fractional
       butterfly_dat %>%
         select(Protein, Sequence, ID, State, Start, End, Exposure, frac_deut_uptake, err_frac_deut_uptake) %>%
@@ -209,6 +244,7 @@ generate_butterfly_data <- function(butterfly_dat,
                "Err Frac Exch" = err_frac_deut_uptake)
       
     } else {
+      
       # experimental & absolute
       butterfly_dat %>%
         select(Protein, Sequence, ID, State, Start, End, Exposure, deut_uptake, err_deut_uptake) %>%

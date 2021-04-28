@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_butterfly_differential_elements.R
 \name{generate_butterfly_differential_dataset}
 \alias{generate_butterfly_differential_dataset}
-\title{generate_butterfly_differential_dataset}
+\title{Generate butterfly differential dataset}
 \usage{
 generate_butterfly_differential_dataset(
   dat,
@@ -15,29 +15,48 @@ generate_butterfly_differential_dataset(
 )
 }
 \arguments{
-\item{dat}{...}
+\item{dat}{data imported by the \code{\link{read_hdx}} function.}
 
-\item{protein}{...}
+\item{protein}{chosen protein.}
 
-\item{state_1}{...}
+\item{state_1}{biological state for chosen protein. From this state values
+the second state values are subtracted to get the deuterium uptake difference.}
 
-\item{state_2}{...}
+\item{state_2}{biological state for chosen protein. This state values are 
+subtracted from the first state values to get the deuterium uptake difference.}
 
-\item{time_0}{...}
+\item{time_0}{minimal exchange control time point of measurement.}
 
-\item{time_100}{...}
+\item{time_100}{maximal exchange control time point of measurement.}
 
-\item{deut_part}{...}
+\item{deut_part}{deuterium percentage in solution used in experiment, 
+value from range [0, 1].}
 }
 \value{
-
+a \code{\link{data.frame}} object.
 }
 \description{
-generate_butterfly_differential_dataset
+Generate butterfly differential dataset
 }
 \details{
+The function \code{\link{generate_butterfly_differential_dataset}} 
+generates a dataset what can be plotted in a form of a butterfly differential 
+plot. For each peptide in chosen protein for time points of measurement
+between minimal and maximal control time points of measurement deuterium 
+uptake difference, fractional deuterium uptake difference with respect to 
+controls or theoretical tabular values are calculated, with combined and 
+propagated uncertainty. Each peptide has an ID, based on its start
+position.
+}
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+butterfly_diff_dat <- generate_butterfly_differential_dataset(dat)
+head(butterfly_diff_dat)
 
 }
 \seealso{
-
+\code{\link{read_hdx}}
+\code{\link{generate_differential_data_set}}
+\code{\link{generate_butterfly_differential_plot}}
+\code{\link{generate_butterfly_differential_data}}
 }

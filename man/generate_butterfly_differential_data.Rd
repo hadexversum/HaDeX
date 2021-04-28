@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_butterfly_differential_elements.R
 \name{generate_butterfly_differential_data}
 \alias{generate_butterfly_differential_data}
-\title{generate_butterfly_differential_data}
+\title{Generate butterfly differential data}
 \usage{
 generate_butterfly_differential_data(
   butterfly_diff_dat,
@@ -11,21 +11,34 @@ generate_butterfly_differential_data(
 )
 }
 \arguments{
-\item{butterfly_diff_dat}{...}
+\item{butterfly_diff_dat}{data produced by 
+\code{\link{generate_butterfly_differential_dataset}} function.}
 
-\item{theoretical}{\code{logical}, determines if values are theoretical}
+\item{theoretical}{\code{logical}, determines if values are theoretical.}
 
-\item{fractional}{\code{logical}, determines if values are fractional}
+\item{fractional}{\code{logical}, determines if values are fractional.}
 }
 \value{
-
+a \code{\link{data.frame}} object.
 }
 \description{
-generate_butterfly_differential_data
+Generate butterfly differential data
 }
 \details{
+This function subsets the dataset based on provided criteria,
+rounds the numerical values (4 places) and changes the column names 
+to user-friendly ones. 
+This data is available in the GUI.
+}
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+butterfly_diff_dat <- generate_butterfly_differential_dataset(dat)
+head(generate_butterfly_differential_data(butterfly_diff_dat))
 
 }
 \seealso{
-
+\code{\link{read_hdx}}
+\code{\link{generate_differential_data_set}}
+\code{\link{generate_butterfly_differential_plot}}
+\code{\link{generate_butterfly_differential_dataset}}
 }

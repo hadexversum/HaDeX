@@ -1,18 +1,33 @@
-#' generate_chiclet_plot
+#' Generate chiclet plot
+#'  
+#' @importFrom ggplot2 geom_tile scale_fill_gradient2 guide_legend
 #' 
-#' @description Generates chiclet plot based on supplied data
-#' and parameters.
+#' @param chiclet_dat produced by \code{\link{generate_butterfly_dataset}}
+#' function. 
+#' @param theoretical \code{logical}, determines if values are theoretical.
+#' @param fractional \code{logical}, determines if values are fractional.
+#' @param show_uncertainty \code{logical}, determines if the
+#' uncertainty is shown. 
 #' 
-#' @param chiclet_dat produced by generate_butterfly_dataset 
-#' @param theoretical \code{logical}, determines if values are theoretical
-#' @param fractional \code{logical}, determines if values are fractional
-#' @param show_uncertainty ...
+#' @details Function \code{\link{generate_chiclet_plot}} produces a chiclet
+#' plot based on the same dataset as butterfly plot, as it is the different
+#' form of presenting the same data. On X-axis there is a peptide ID. On 
+#' Y-axis are time points of measurement. Each tile for a peptide in time has
+#' a color value representing the deuterium uptake, in a form based on 
+#' provided criteria (e.q. fractional). Each tile has a plus sign, which size 
+#' represent the uncertainty of measurement for chosen value.
+#' This plot is visible in GUI.
 #' 
-#' @details This plot is visible in GUI. 
+#' @return a \code{\link{ggplot}} object.
 #' 
-#' @return ...
+#' @seealso 
+#' \code{\link{generate_butterfly_dataset}}
+#' \code{\link{generate_chiclet_data}} 
 #' 
-#' @seealso ... 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' chic_dat <- generate_butterfly_dataset(dat)
+#' generate_chiclet_plot(chic_dat)
 #' 
 #' @export generate_chiclet_plot
 
@@ -94,23 +109,30 @@ generate_chiclet_plot <- function(chiclet_dat,
   
 }
 
-#' generate_chiclet_data
-#' 
-#' @description Generates chiclet data, based on the supplied
-#' parameters.
-#' 
-#' @param chiclet_dat ...
-#' @param theoretical \code{logical}, determines if values are theoretical
-#' @param fractional \code{logical}, determines if values are fractional
-#' 
-#' @details This data is available in the GUI. 
-#' All of the numerical values are rounded to 4 places after the dot!!
+#' Generate chiclet data
 #' 
 #' @importFrom dplyr rename %>%
 #' 
-#' @return ...
+#' @param chiclet_dat produced by \code{\link{generate_butterfly_dataset}}
+#' function. 
+#' @param theoretical \code{logical}, determines if values are theoretical.
+#' @param fractional \code{logical}, determines if values are fractional.
 #' 
-#' @seealso ... 
+#' @details This function subsets the dataset based on provided criteria,
+#' rounds the numerical values (4 places) and changes the column names 
+#' to user-friendly ones. 
+#' This data is available in the GUI. 
+#' 
+#' @return a \code{\link{data.frame}} object.
+#' 
+#' @seealso 
+#' \code{\link{generate_butterfly_dataset}}
+#' \code{\link{generate_chiclet_plot}} 
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' chic_dat <- generate_butterfly_dataset(dat)
+#' generate_chiclet_data(chic_dat)
 #' 
 #' @export generate_chiclet_data
 

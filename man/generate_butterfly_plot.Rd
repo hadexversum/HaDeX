@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_butterfly_elements.R
 \name{generate_butterfly_plot}
 \alias{generate_butterfly_plot}
-\title{generate_butterfly_plot}
+\title{Generate butterfly plot}
 \usage{
 generate_butterfly_plot(
   butterfly_dat,
@@ -12,24 +12,36 @@ generate_butterfly_plot(
 )
 }
 \arguments{
-\item{butterfly_dat}{...}
+\item{butterfly_dat}{data produced by \code{\link{generate_butterfly_dataset}} 
+function.}
 
-\item{theoretical}{\code{logical}, determines if values are theoretical}
+\item{theoretical}{\code{logical}, determines if values are theoretical.}
 
-\item{fractional}{\code{logical}, determines if values are fractional}
+\item{fractional}{\code{logical}, determines if values are fractional.}
 
-\item{uncertainty_type}{ribbon / bars}
+\item{uncertainty_type}{type of presenting uncertainty, possible values:
+"ribbon", "bars" or "bars + line".}
 }
 \value{
-...
+a \code{\link{ggplot}} object.
 }
 \description{
-Generates butterfly plot based on supplied data
-and parameters.
+Generate butterfly plot
 }
 \details{
+Function \code{\link{generate_butterfly_plot}} generates butterfly plot
+based on provided data and parameters. On X-axis there is peptide ID. On the Y-axis
+there is deuterium uptake in chosen form. Data from multiple time points of 
+measurement is presented.
 This plot is visible in GUI.
 }
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+butterfly_dat <- generate_butterfly_dataset(dat)
+generate_butterfly_plot(butterfly_dat)
+
+}
 \seealso{
-...
+\code{\link{generate_butterfly_dataset}} 
+\code{\link{generate_butterfly_data}}
 }

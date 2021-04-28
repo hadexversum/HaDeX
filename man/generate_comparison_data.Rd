@@ -2,30 +2,28 @@
 % Please edit documentation in R/generate_comparison_elements.R
 \name{generate_comparison_data}
 \alias{generate_comparison_data}
-\title{generate_comparison_data}
+\title{Generate comparison data}
 \usage{
 generate_comparison_data(dat, theoretical = FALSE, fractional = FALSE, protein)
 }
 \arguments{
-\item{dat}{produced by \code{\link{calculate_state_deuteration}} or
+\item{dat}{data produced by \code{\link{calculate_state_deuteration}} or
 \code{\link{generate_comparison_dataset}} function.}
 
-\item{theoretical}{\code{logical}, determines if values are theoretical.
-Default value - FALSE.}
+\item{theoretical}{\code{logical}, determines if values are theoretical.}
 
-\item{fractional}{\code{logical}, determines if values are fractional
-Default value - FALSE.}
+\item{fractional}{\code{logical}, determines if values are fractional}
 }
 \value{
 a \code{data.frame} object.
 }
 \description{
-Generates comparison data, based on the supplied
-parameters.
+Generate comparison data
 }
 \details{
-This function rounds the numerical values (4 places) and 
-changes the column names to user-friendly ones. 
+This function subsets the dataset based on provided criteria,
+rounds the numerical values (4 places) and changes the column names 
+to user-friendly ones. 
 This data is available in the GUI.
 }
 \examples{
@@ -35,5 +33,7 @@ generate_comparison_data(comparison_dat)
 
 }
 \seealso{
-\code{\link{calculate_state_deuteration}}
+\code{\link{calculate_state_deuteration}} 
+\code{\link{generate_comparison_dataset}}
+\code{\link{generate_comparison_plot}}
 }

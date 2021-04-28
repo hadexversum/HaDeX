@@ -1,40 +1,44 @@
-#' generate_differential_data_set
-#' 
-#' @description Generate the data frame with differential data from two
-#' provided states - experimental/fractional calculations with the
-#' uncertainty, based on supplied parameters.
+#' Generate differential dataset
 #' 
 #' @importFrom tidyr gather
 #' 
-#' @param dat ...
-#' @param states vector of two states to calculate difference between them, 
-#' the order is important (state first - state second)
-#' @param protein ...
-#' @param time_0 ...
-#' @param time_t ...
-#' @param time_100 ...
-#' @param deut_part ...
+#' @param dat data imported by the \code{\link{read_hdx}} function.
+#' @param protein chosen protein. 
+#' @param states vector of two states for chosen protein. Order is important, as the 
+#' deuterium uptake difference is calculated as state_1 - state_2.
+#' @param time_0 minimal exchange control time point of measurement.
+#' @param time_t time point of the measurement for which the calculations
+#' are done. 
+#' @param time_100 maximal exchange control time point of measurement.
+#' @param deut_part deuterium percentage in solution used in experiment, 
+#' value from range [0, 1].
 #' 
-#' @details The names of the parameters and variables will be changed 
-#' later after the glossary project.
+#' @details Function \code{\link{generate_differential_data_set}} calculates
+#' differential values based on provided criteria for peptides for chosen
+#' protein in selected states. The methods of calculation of deuterium uptake
+#' difference, fractional deuterium uptake difference with respect to 
+#' minimal/maximal exchange controls or theoretical tabular values are
+#' thoroughly described in the `Data processing` article, as well as 
+#' law of propagation of uncertainty, used to calculate uncertainty. 
 #' 
-#' @return ...
+#' @return a \code{\link{data.frame}} object.
 #' 
-#' @seealso ... 
+#' @seealso 
+#' \code{\link{read_hdx}}
+#' \code{\link{calculate_state_deuteration}}
+#' \code{\link{generate_differential_data}}
+#' \code{\link{generate_differential_plot}}
 #' 
 #' @examples
-#' # load example data
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' 
-#' # calculate differential values between states "CD160" and "CD160_HVEM" for protein "db_CD160"
-#' generate_differential_data_set(dat = dat, states = c("CD160", "CD160_HVEM"), protein = "db_CD160", 
-#'                                time_0 = 0.001, time_t = 5.000, time_100 = 1440.000)
+#' diff_dat <- generate_differential_data_set(dat)
+#' head(diff_dat)
 #' 
 #' @export generate_differential_data_set
 
 generate_differential_data_set <- function(dat,
-                                           states = unique(dat[["State"]])[1:2],
                                            protein = unique(dat[["Protein"]][1]),
+                                           states = unique(dat[["State"]])[1:2],
                                            time_0 = 0.001,
                                            time_t = 1,
                                            time_100 = 1440,
@@ -65,24 +69,30 @@ generate_differential_data_set <- function(dat,
 }
 
 
-#' generate_differential_data
+#' Generate differential data
 #' 
-#' @description Generates differential data, based on the supplied
-#' parameters.
-#' 
-#' @param dat custom format, produced by 
-#' \code{\link{generate_differential_data_set}}
-#' @param theoretical \code{logical}, determines if values are theoretical
-#' @param fractional \code{logical}, determines if values are fractional
+#' @param dat data produced by \code{\link{generate_differential_data_set}}
+#' function.
+#' @param theoretical \code{logical}, determines if values are theoretical.
+#' @param fractional \code{logical}, determines if values are fractional.
 #' @param confidence_limit_1 ...
 #' @param confidence_limit_2 ...
 #' 
-#' @details This data is available in the GUI. 
-#' All of the numerical values are rounded to 4 places after the dot!!
+#' @details This function subsets the dataset based on provided criteria,
+#' rounds the numerical values (4 places) and changes the column names 
+#' to user-friendly ones. 
+#' This data is available in the GUI. 
 #' 
-#' @return ...
+#' @return a \code{\link{data.frame}} object.
 #' 
-#' @seealso ... 
+#' @seealso 
+#' \code{\link{generate_differential_data_set}}
+#' \code{\link{generate_differential_plot}}
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' diff_dat <- generate_differential_data_set(dat)
+#' generate_differential_data(diff_dat)
 #' 
 #' @export generate_differential_data
 
@@ -178,10 +188,7 @@ generate_differential_data <- function(dat,
 }
 
 
-#' generate_differential_plot
-#' 
-#' @description Generates differential (Woods) plot with confidence values
-#' based on supplied data and parameters.
+#' Generate differential plot
 #' 
 #' @param dat produced by \code{\link{generate_differential_data_set}} function
 #' @param theoretical \code{logical}, determines if values are theoretical
@@ -189,11 +196,26 @@ generate_differential_data <- function(dat,
 #' @param confidence_limit ...
 #' @param confidence_limit_2 ...
 #' 
-#' @details This plot is visible in GUI. 
+#' @details Function \code{\link{generate_differential_plot}} presents
+#' provided data in a form of differential (Woods) plot. The plot show 
+#' difference in exchange for two biological states, selected in 
+#' generation of dataset at one time point of measurement .On X-axis 
+#' there is a position in a sequence, with length of a segment of each 
+#' peptide representing its length. On Y-axis there 
+#' is deuterium uptake difference in chosen form. Error bars represents 
+#' the combined and propagated uncertainty. 
+#' This plot is visible in GUI. 
 #' 
-#' @return ...
+#' @return a \code{\link{ggplot}} object.
 #' 
-#' @seealso ... 
+#' @seealso 
+#' \code{\link{generate_differential_data_set}}
+#' \code{\link{generate_differential_data}} 
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' diff_dat <- generate_differential_data_set(dat)
+#' generate_differential_plot(diff_dat)
 #' 
 #' @export generate_differential_plot
 
@@ -203,144 +225,88 @@ generate_differential_plot <- function(dat,
                                        confidence_limit = 0.98, 
                                        confidence_limit_2 = 0.99){ 
   
+  interval <- calculate_confidence_limit_values(calc_dat = dat,
+                                                confidence_limit = confidence_limit,
+                                                theoretical = theoretical,
+                                                fractional = fractional)
+  
+  interval_2 <- calculate_confidence_limit_values(calc_dat = dat,
+                                                  confidence_limit = confidence_limit_2,
+                                                  theoretical = theoretical,
+                                                  fractional = fractional)
+  
   if(theoretical){
     
+    title <- "Theoretical differential plot"
+    
     if(fractional){
+      
       # theoretical & fractional  
-      interval <- calculate_confidence_limit_values(calc_dat = dat,
-                                                    confidence_limit = confidence_limit,
-                                                    theoretical = TRUE,
-                                                    fractional = TRUE)
-      
-      interval_2 <- calculate_confidence_limit_values(calc_dat = dat,
-                                                      confidence_limit = confidence_limit_2,
-                                                      theoretical = TRUE,
-                                                      fractional = TRUE)
-      
-      mutate(dat, colour = case_when(
-        dat[["diff_theo_frac_deut_uptake"]] < interval_2[1] ~ "deepskyblue3",
-        dat[["diff_theo_frac_deut_uptake"]] < interval[1] ~ "deepskyblue1",
-        dat[["diff_theo_frac_deut_uptake"]] > interval_2[2] ~ "firebrick3",
-        dat[["diff_theo_frac_deut_uptake"]] > interval[2] ~ "firebrick1",
-        TRUE ~ "azure3")) %>%
-        ggplot() +
-        geom_segment(aes(x = Start, y = diff_theo_frac_deut_uptake, xend = End, yend = diff_theo_frac_deut_uptake, color = colour)) +
-        geom_errorbar(aes(x = Med_Sequence, ymin = diff_theo_frac_deut_uptake - err_diff_theo_frac_deut_uptake, ymax = diff_theo_frac_deut_uptake + err_diff_theo_frac_deut_uptake, color = colour)) +
-        geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
-        geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) + 
-        geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
-        geom_hline(aes(yintercept = interval_2[1], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "deepskyblue3", size = .7, show.legend = TRUE) +
-        geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
-        scale_linetype_manual(values = c("dashed", "dotdash")) + 
-        scale_colour_identity() +
-        scale_y_continuous(expand = c(0, 0), limits = c(-100, 100)) +
-        theme(legend.title = element_blank(),
-              legend.position = "bottom",
-              legend.direction = "vertical") 
+      value <- "diff_theo_frac_deut_uptake"
+      err_value <- "err_diff_theo_frac_deut_uptake"
+      y_label <- "Fractional deuterium uptake difference [%]"
       
     } else {
+      
       # theoretical & absolute
-      interval <- calculate_confidence_limit_values(calc_dat = dat,
-                                                    confidence_limit = confidence_limit,
-                                                    theoretical = TRUE,
-                                                    fractional = FALSE)
-      
-      interval_2 <- calculate_confidence_limit_values(calc_dat = dat,
-                                                      confidence_limit = confidence_limit_2,
-                                                      theoretical = TRUE,
-                                                      fractional = FALSE)
-      
-      mutate(dat, colour = case_when(
-        dat[["diff_theo_deut_uptake"]] < interval_2[1] ~ "deepskyblue3",
-        dat[["diff_theo_deut_uptake"]] < interval[1] ~ "deepskyblue1",
-        dat[["diff_theo_deut_uptake"]] > interval_2[2] ~ "firebrick3",
-        dat[["diff_theo_deut_uptake"]] > interval[2] ~ "firebrick1",
-        TRUE ~ "azure3")) %>%
-        ggplot() +
-        geom_segment(aes(x = Start, y = diff_theo_deut_uptake, xend = End, yend = diff_theo_deut_uptake, color = colour)) +
-        geom_errorbar(aes(x = Med_Sequence, ymin = diff_theo_deut_uptake - err_diff_theo_deut_uptake, ymax = diff_theo_deut_uptake + err_diff_theo_deut_uptake, color = colour)) +
-        geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
-        geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) + 
-        geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
-        geom_hline(aes(yintercept = interval_2[1], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "deepskyblue3", size = .7, show.legend = TRUE) +
-        geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
-        scale_linetype_manual(values = c("dashed", "dotdash")) + 
-        scale_colour_identity() +
-        scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
-        theme(legend.title = element_blank(),
-              legend.position = "bottom",
-              legend.direction = "vertical") 
+      value <- "diff_theo_deut_uptake"
+      err_value <- "err_diff_theo_deut_uptake"
+      y_label <- "Deuterium uptake difference [Da]"
+
     }
     
   } else {
     
+    title <- "Differential plot"
+    
     if(fractional){
+      
       # experimental & fractional
-      interval <- calculate_confidence_limit_values(calc_dat = dat,
-                                                    confidence_limit = confidence_limit,
-                                                    theoretical = FALSE,
-                                                    fractional = TRUE)
-      
-      interval_2 <- calculate_confidence_limit_values(calc_dat = dat,
-                                                      confidence_limit = confidence_limit_2,
-                                                      theoretical = FALSE,
-                                                      fractional = TRUE)
-      
-      mutate(dat, colour = case_when(
-        dat[["diff_frac_deut_uptake"]] < interval_2[1] ~ "deepskyblue3",
-        dat[["diff_frac_deut_uptake"]] < interval[1] ~ "deepskyblue1",
-        dat[["diff_frac_deut_uptake"]] > interval_2[2] ~ "firebrick3",
-        dat[["diff_frac_deut_uptake"]] > interval[2] ~ "firebrick1",
-        TRUE ~ "azure3")) %>%
-        ggplot() +
-        geom_segment(aes(x = Start, y = diff_frac_deut_uptake, xend = End, yend = diff_frac_deut_uptake, color = colour)) +
-        geom_errorbar(aes(x = Med_Sequence, ymin = diff_frac_deut_uptake - err_diff_frac_deut_uptake, ymax = diff_frac_deut_uptake + err_diff_frac_deut_uptake, color = colour)) +
-        geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
-        geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) +
-        geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
-        geom_hline(aes(yintercept = interval_2[1], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "deepskyblue3", size = .7, show.legend = TRUE) +
-        geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
-        scale_linetype_manual(values = c("dashed", "dotdash")) +
-        scale_colour_identity() +
-        scale_y_continuous(expand = c(0, 0), limits = c(-100, 100)) +
-        theme(legend.title = element_blank(),
-              legend.position = "bottom",
-              legend.direction = "vertical") 
+      value <- "diff_frac_deut_uptake"
+      err_value <- "err_diff_frac_deut_uptake"
+      y_label <- "Fractional deuterium uptake difference [%]"
       
     } else {
+      
       # experimental & absolute
-      interval <- calculate_confidence_limit_values(calc_dat = dat,
-                                                    confidence_limit = confidence_limit,
-                                                    theoretical = FALSE,
-                                                    fractional = FALSE)
-      
-      interval_2 <- calculate_confidence_limit_values(calc_dat = dat,
-                                                      confidence_limit = confidence_limit_2,
-                                                      theoretical = FALSE,
-                                                      fractional = FALSE)
-      
-      mutate(dat, colour = case_when(
-        dat[["diff_deut_uptake"]] < interval_2[1] ~ "deepskyblue3",
-        dat[["diff_deut_uptake"]] < interval[1] ~ "deepskyblue1",
-        dat[["diff_deut_uptake"]] > interval_2[2] ~ "firebrick3",
-        dat[["diff_deut_uptake"]] > interval[2] ~ "firebrick1",
-        TRUE ~ "azure3")) %>%
-        ggplot() +
-        geom_segment(aes(x = Start, y = diff_deut_uptake, xend = End, yend = diff_deut_uptake, color = colour)) +
-        geom_errorbar(aes(x = Med_Sequence, ymin = diff_deut_uptake - err_diff_deut_uptake, ymax = diff_deut_uptake + err_diff_deut_uptake, color = colour)) +
-        geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
-        geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) + 
-        geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
-        geom_hline(aes(yintercept = interval_2[1], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "deepskyblue3", size = .7, show.legend = TRUE) +
-        geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
-        scale_linetype_manual(values = c("dashed", "dotdash")) + 
-        scale_colour_identity() +
-        scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
-        theme(legend.title = element_blank(),
-              legend.position = "bottom",
-              legend.direction = "vertical") 
+      value <- "diff_deut_uptake"
+      err_value <- "err_diff_deut_uptake"
+      y_label <- "Deuterium uptake difference [Da]"
       
     }
   }
+  
+  plot_dat <- data.frame(Protein = dat[["Protein"]],
+                         Sequence = dat[["Sequence"]],
+                         Start = dat[["Start"]],
+                         End = dat[["End"]],
+                         Med_Sequence = dat[["Med_Sequence"]],
+                         value = dat[[value]],
+                         err_value = dat[[err_value]])
+  
+  mutate(plot_dat, colour = case_when(
+    value < interval_2[1] ~ "deepskyblue3",
+    value < interval[1] ~ "deepskyblue1",
+    value > interval_2[2] ~ "firebrick3",
+    value > interval[2] ~ "firebrick1",
+    TRUE ~ "azure3")) %>%
+    ggplot() +
+    geom_segment(aes(x = Start, y = value, xend = End, yend = value, color = colour)) +
+    geom_errorbar(aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value, color = colour)) +
+    geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
+    ## intervals
+    geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) + 
+    geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
+    geom_hline(aes(yintercept = interval_2[1], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "deepskyblue3", size = .7, show.legend = TRUE) +
+    geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
+    scale_linetype_manual(values = c("dashed", "dotdash")) + 
+    ## other
+    scale_colour_identity() +
+    labs(title = title,
+         x_label = "Position in the sequence",
+         y_label = y_label) + 
+    theme(legend.title = element_blank(),
+          legend.position = "bottom",
+          legend.direction = "vertical") 
   
 }

@@ -2,28 +2,31 @@
 % Please edit documentation in R/generate_comparison_elements.R
 \name{generate_comparison_plot}
 \alias{generate_comparison_plot}
-\title{generate_comparison_plot}
+\title{Generate comparison plot}
 \usage{
 generate_comparison_plot(dat, theoretical = FALSE, fractional = FALSE)
 }
 \arguments{
-\item{dat}{produced by \code{\link{calculate_state_deuteration}} or
-\code{\link{generate_comparison_dataset}} function}
+\item{dat}{data produced by \code{\link{calculate_state_deuteration}} or
+\code{\link{generate_comparison_dataset}} function.}
 
-\item{theoretical}{\code{logical}, determines if values are theoretical. 
-Default value - FALSE.}
+\item{theoretical}{\code{logical}, determines if values are theoretical.}
 
-\item{fractional}{\code{logical}, determines if values are fractional.
-Default value - FALSE.}
+\item{fractional}{\code{logical}, determines if values are fractional.}
 }
 \value{
 a \code{ggplot} object.
 }
 \description{
-Generates comparison plot based on supplied data
-and parameters.
+Generate comparison plot
 }
 \details{
+Function \code{\link{generate_comparison_plot}} presents provided 
+data in a form of comparison plot, for peptides for chosen protein in chosen states,
+at one time point of measurement at once. On X-axis there is a position in a sequence, 
+with length of a segment of each peptide representing its length. On Y-axis there 
+is deuterium uptake in chosen form. Error bars represents the combined and propagated
+uncertainty. 
 This plot is visible in GUI.
 }
 \examples{
@@ -33,6 +36,7 @@ generate_comparison_plot(comparison_dat)
 
 }
 \seealso{
-\code{\link{calculate_state_deuteration}}  \code{\link{generate_comparison_dataset}}
+\code{\link{calculate_state_deuteration}}  
+\code{\link{generate_comparison_dataset}}
 \code{\link{generate_comparison_data}}
 }

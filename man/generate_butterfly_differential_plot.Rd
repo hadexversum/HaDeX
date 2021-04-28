@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_butterfly_differential_elements.R
 \name{generate_butterfly_differential_plot}
 \alias{generate_butterfly_differential_plot}
-\title{generate_butterfly_differential_plot}
+\title{Generate butterfly differential plot}
 \usage{
 generate_butterfly_differential_plot(
   butterfly_diff_dat,
@@ -12,23 +12,38 @@ generate_butterfly_differential_plot(
 )
 }
 \arguments{
-\item{butterfly_diff_dat}{...}
+\item{butterfly_diff_dat}{data produced by 
+\code{\link{generate_butterfly_differential_dataset}} function.}
 
 \item{theoretical}{\code{logical}, determines if values are theoretical}
 
 \item{fractional}{\code{logical}, determines if values are fractional}
 
-\item{uncertainty_type}{ribbon / bars}
+\item{uncertainty_type}{type of presenting uncertainty, possible values: 
+"ribbon", "bars" or "bars + line".}
 }
 \value{
-
+a \code{\link{ggplot}} object.
 }
 \description{
-generate_butterfly_differential_plot
+Generate butterfly differential plot
 }
 \details{
+Function \code{\link{generate_butterfly_differential_plot}} generates 
+butterfly differential plot based on provided data and parameters. On X-axis 
+there is peptide ID. On the Y-axis there is deuterium uptake difference in 
+chosen form. Data from multiple time points of measurement is presented.
 This plot is visible in GUI.
 }
-\seealso{
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+butterfly_diff_dat <- generate_butterfly_differential_dataset(dat)
+generate_butterfly_differential_plot(butterfly_diff_dat)
 
+}
+\seealso{
+\code{\link{read_hdx}}
+\code{\link{generate_differential_data_set}}
+\code{\link{generate_butterfly_differential_dataset}}
+\code{\link{generate_butterfly_differential_data}}
 }

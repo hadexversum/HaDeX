@@ -2,12 +2,12 @@
 % Please edit documentation in R/generate_differential_elements.R
 \name{generate_differential_data_set}
 \alias{generate_differential_data_set}
-\title{generate_differential_data_set}
+\title{Generate differential dataset}
 \usage{
 generate_differential_data_set(
   dat,
-  states = unique(dat[["State"]])[1:2],
   protein = unique(dat[["Protein"]][1]),
+  states = unique(dat[["State"]])[1:2],
   time_0 = 0.001,
   time_t = 1,
   time_100 = 1440,
@@ -15,42 +15,47 @@ generate_differential_data_set(
 )
 }
 \arguments{
-\item{dat}{...}
+\item{dat}{data imported by the \code{\link{read_hdx}} function.}
 
-\item{states}{vector of two states to calculate difference between them, 
-the order is important (state first - state second)}
+\item{protein}{chosen protein.}
 
-\item{protein}{...}
+\item{states}{vector of two states for chosen protein. Order is important, as the 
+deuterium uptake difference is calculated as state_1 - state_2.}
 
-\item{time_0}{...}
+\item{time_0}{minimal exchange control time point of measurement.}
 
-\item{time_t}{...}
+\item{time_t}{time point of the measurement for which the calculations
+are done.}
 
-\item{time_100}{...}
+\item{time_100}{maximal exchange control time point of measurement.}
 
-\item{deut_part}{...}
+\item{deut_part}{deuterium percentage in solution used in experiment, 
+value from range [0, 1].}
 }
 \value{
-...
+a \code{\link{data.frame}} object.
 }
 \description{
-Generate the data frame with differential data from two
-provided states - experimental/fractional calculations with the
-uncertainty, based on supplied parameters.
+Generate differential dataset
 }
 \details{
-The names of the parameters and variables will be changed 
-later after the glossary project.
+Function \code{\link{generate_differential_data_set}} calculates
+differential values based on provided criteria for peptides for chosen
+protein in selected states. The methods of calculation of deuterium uptake
+difference, fractional deuterium uptake difference with respect to 
+minimal/maximal exchange controls or theoretical tabular values are
+thoroughly described in the `Data processing` article, as well as 
+law of propagation of uncertainty, used to calculate uncertainty.
 }
 \examples{
-# load example data
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-
-# calculate differential values between states "CD160" and "CD160_HVEM" for protein "db_CD160"
-generate_differential_data_set(dat = dat, states = c("CD160", "CD160_HVEM"), protein = "db_CD160", 
-                               time_0 = 0.001, time_t = 5.000, time_100 = 1440.000)
+diff_dat <- generate_differential_data_set(dat)
+head(diff_dat)
 
 }
 \seealso{
-...
+\code{\link{read_hdx}}
+\code{\link{calculate_state_deuteration}}
+\code{\link{generate_differential_data}}
+\code{\link{generate_differential_plot}}
 }

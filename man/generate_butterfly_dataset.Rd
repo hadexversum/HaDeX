@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_butterfly_elements.R
 \name{generate_butterfly_dataset}
 \alias{generate_butterfly_dataset}
-\title{generate_butterfly_dataset}
+\title{Generates butterfly dataset}
 \usage{
 generate_butterfly_dataset(
   dat,
@@ -14,27 +14,43 @@ generate_butterfly_dataset(
 )
 }
 \arguments{
-\item{dat}{data as imported by the \code{\link{read_hdx}} function}
+\item{dat}{data imported by the \code{\link{read_hdx}} function.}
 
-\item{protein}{...}
+\item{protein}{chosen protein.}
 
-\item{state}{...}
+\item{state}{biological state for chosen protein.}
 
-\item{time_0}{...}
+\item{time_0}{minimal exchange control time point of measurement.}
 
-\item{time_100}{...}
+\item{time_100}{maximal exchange control time point of measurement.}
 
-\item{deut_part}{...}
+\item{deut_part}{deuterium percentage in solution used in experiment, 
+value from range [0, 1].}
 }
 \value{
-...
+a \code{\link{data.frame}} object.
 }
 \description{
-generate_butterfly_dataset
+Generates butterfly dataset
 }
 \details{
-...
+The function \code{\link{generate_butterfly_dataset}} generates 
+a dataset what can be plotted in a form of a butterfly plot. For each
+peptide in chosen protein in chosen state for time points of measurement
+between minimal and maximal control time points of measurement deuterium 
+uptake, fractional deuterium uptake with respect to controls or theoretical
+tabular values are calculated, with combined and propagated uncertainty. 
+Each peptide has an ID, based on its start position.
+}
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+butterfly_dat <- generate_butterfly_dataset(dat)
+head(butterfly_dat)
+
 }
 \seealso{
-...
+\code{\link{read_hdx}}
+\code{\link{calculate_state_deuteration}}
+\code{\link{generate_butterfly_plot}} 
+\code{\link{generate_butterfly_data}}
 }

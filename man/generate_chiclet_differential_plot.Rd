@@ -2,33 +2,51 @@
 % Please edit documentation in R/generate_chiclet_differential_elements.R
 \name{generate_chiclet_differential_plot}
 \alias{generate_chiclet_differential_plot}
-\title{generate_chiclet_differential_plot}
+\title{Generate chiclet differential plot}
 \usage{
 generate_chiclet_differential_plot(
   chiclet_diff_dat,
   theoretical = FALSE,
   fractional = FALSE,
-  show_uncertainty = "ribbon"
+  show_uncertainty = FALSE
 )
 }
 \arguments{
-\item{chiclet_diff_dat}{...}
+\item{chiclet_diff_dat}{produced by 
+\code{\link{generate_butterfly_differential_dataset}} function.}
 
-\item{theoretical}{\code{logical}, determines if values are theoretical}
+\item{theoretical}{\code{logical}, determines if values are theoretical.}
 
-\item{fractional}{\code{logical}, determines if values are fractional}
+\item{fractional}{\code{logical}, determines if values are fractional.}
 
-\item{show_uncertainty}{...}
+\item{show_uncertainty}{\code{logical}, determines if the
+uncertainty is shown.}
 }
 \value{
-
+a \code{\link{ggplot}} object.
 }
 \description{
-generate_chiclet_differential_plot
+Generate chiclet differential plot
 }
 \details{
+Function \code{\link{generate_chiclet_differential_plot}} 
+produces a chiclet differential plot based on the same dataset as 
+butterfly differential plot, as it is the different form of presenting 
+the same data. On X-axis there is a peptide ID. On Y-axis are time points 
+of measurement. Each tile for a peptide in time has a color value 
+representing the deuterium uptake difference between chosen states, 
+in a form based on provided criteria (e.q. fractional). Each tile has 
+a plus sign, which size represent the uncertainty of measurement for 
+chosen value.
 This plot is visible in GUI.
 }
-\seealso{
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+chic_diff_dat <- generate_butterfly_differential_dataset(dat)
+generate_chiclet_differential_plot(chic_diff_dat)
 
+}
+\seealso{
+\code{\link{generate_butterfly_differential_dataset}}
+\code{\link{generate_chiclet_differential_data}}
 }

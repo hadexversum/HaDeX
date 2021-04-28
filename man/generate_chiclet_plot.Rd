@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_chiclet_elements.R
 \name{generate_chiclet_plot}
 \alias{generate_chiclet_plot}
-\title{generate_chiclet_plot}
+\title{Generate chiclet plot}
 \usage{
 generate_chiclet_plot(
   chiclet_dat,
@@ -12,24 +12,39 @@ generate_chiclet_plot(
 )
 }
 \arguments{
-\item{chiclet_dat}{produced by generate_butterfly_dataset}
+\item{chiclet_dat}{produced by \code{\link{generate_butterfly_dataset}}
+function.}
 
-\item{theoretical}{\code{logical}, determines if values are theoretical}
+\item{theoretical}{\code{logical}, determines if values are theoretical.}
 
-\item{fractional}{\code{logical}, determines if values are fractional}
+\item{fractional}{\code{logical}, determines if values are fractional.}
 
-\item{show_uncertainty}{...}
+\item{show_uncertainty}{\code{logical}, determines if the
+uncertainty is shown.}
 }
 \value{
-...
+a \code{\link{ggplot}} object.
 }
 \description{
-Generates chiclet plot based on supplied data
-and parameters.
+Generate chiclet plot
 }
 \details{
+Function \code{\link{generate_chiclet_plot}} produces a chiclet
+plot based on the same dataset as butterfly plot, as it is the different
+form of presenting the same data. On X-axis there is a peptide ID. On 
+Y-axis are time points of measurement. Each tile for a peptide in time has
+a color value representing the deuterium uptake, in a form based on 
+provided criteria (e.q. fractional). Each tile has a plus sign, which size 
+represent the uncertainty of measurement for chosen value.
 This plot is visible in GUI.
 }
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+chic_dat <- generate_butterfly_dataset(dat)
+generate_chiclet_plot(chic_dat)
+
+}
 \seealso{
-...
+\code{\link{generate_butterfly_dataset}}
+\code{\link{generate_chiclet_data}}
 }

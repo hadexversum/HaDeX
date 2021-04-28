@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_differential_elements.R
 \name{generate_differential_data}
 \alias{generate_differential_data}
-\title{generate_differential_data}
+\title{Generate differential data}
 \usage{
 generate_differential_data(
   dat,
@@ -13,28 +13,36 @@ generate_differential_data(
 )
 }
 \arguments{
-\item{dat}{custom format, produced by 
-\code{\link{generate_differential_data_set}}}
+\item{dat}{data produced by \code{\link{generate_differential_data_set}}
+function.}
 
-\item{theoretical}{\code{logical}, determines if values are theoretical}
+\item{theoretical}{\code{logical}, determines if values are theoretical.}
 
-\item{fractional}{\code{logical}, determines if values are fractional}
+\item{fractional}{\code{logical}, determines if values are fractional.}
 
 \item{confidence_limit_1}{...}
 
 \item{confidence_limit_2}{...}
 }
 \value{
-...
+a \code{\link{data.frame}} object.
 }
 \description{
-Generates differential data, based on the supplied
-parameters.
+Generate differential data
 }
 \details{
-This data is available in the GUI. 
-All of the numerical values are rounded to 4 places after the dot!!
+This function subsets the dataset based on provided criteria,
+rounds the numerical values (4 places) and changes the column names 
+to user-friendly ones. 
+This data is available in the GUI.
+}
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+diff_dat <- generate_differential_data_set(dat)
+generate_differential_data(diff_dat)
+
 }
 \seealso{
-...
+\code{\link{generate_differential_data_set}}
+\code{\link{generate_differential_plot}}
 }

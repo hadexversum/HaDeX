@@ -1,22 +1,40 @@
-#' generate_chiclet_differential_plot
+#' Generate chiclet differential plot
 #' 
-#' @param chiclet_diff_dat ...
-#' @param theoretical \code{logical}, determines if values are theoretical
-#' @param fractional \code{logical}, determines if values are fractional
-#' @param show_uncertainty ...
+#' @param chiclet_diff_dat produced by 
+#' \code{\link{generate_butterfly_differential_dataset}} function. 
+#' @param theoretical \code{logical}, determines if values are theoretical.
+#' @param fractional \code{logical}, determines if values are fractional.
+#' @param show_uncertainty \code{logical}, determines if the
+#' uncertainty is shown. 
 #' 
-#' @details This plot is visible in GUI.
+#' @details Function \code{\link{generate_chiclet_differential_plot}} 
+#' produces a chiclet differential plot based on the same dataset as 
+#' butterfly differential plot, as it is the different form of presenting 
+#' the same data. On X-axis there is a peptide ID. On Y-axis are time points 
+#' of measurement. Each tile for a peptide in time has a color value 
+#' representing the deuterium uptake difference between chosen states, 
+#' in a form based on provided criteria (e.q. fractional). Each tile has 
+#' a plus sign, which size represent the uncertainty of measurement for 
+#' chosen value.
+#' This plot is visible in GUI.
 #' 
-#' @return 
+#' @return a \code{\link{ggplot}} object.
 #' 
 #' @seealso 
+#' \code{\link{generate_butterfly_differential_dataset}}
+#' \code{\link{generate_chiclet_differential_data}}
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' chic_diff_dat <- generate_butterfly_differential_dataset(dat)
+#' generate_chiclet_differential_plot(chic_diff_dat)
 #' 
 #' @export generate_chiclet_differential_plot
 
 generate_chiclet_differential_plot <- function(chiclet_diff_dat, 
                                                theoretical = FALSE, 
                                                fractional = FALSE,
-                                               show_uncertainty = "ribbon"){
+                                               show_uncertainty = FALSE){
   
  
   if (theoretical) {
@@ -91,17 +109,28 @@ generate_chiclet_differential_plot <- function(chiclet_diff_dat,
   
 }
 
-#' generate_chiclet_differential_data
+#' Generate chiclet differential data
 #' 
-#' @param chiclet_diff_dat ...
-#' @param theoretical \code{logical}, determines if values are theoretical
-#' @param fractional \code{logical}, determines if values are fractional
+#' @param chiclet_diff_dat produced by 
+#' \code{\link{generate_butterfly_differential_dataset}} function. 
+#' @param theoretical \code{logical}, determines if values are theoretical.
+#' @param fractional \code{logical}, determines if values are fractional.
 #' 
-#' @details 
+#' @details This function subsets the dataset based on provided criteria,
+#' rounds the numerical values (4 places) and changes the column names 
+#' to user-friendly ones. 
+#' This data is available in the GUI. 
 #' 
-#' @return 
+#' @return a \code{\link{data.frame}} object.
 #' 
-#' @seealso 
+#' @seealso
+#' \code{\link{generate_butterfly_differential_dataset}}
+#' \code{\link{generate_chiclet_differential_plot}} 
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' chic_diff_dat <- generate_butterfly_differential_dataset(dat)
+#' head(generate_chiclet_differential_data(chic_diff_dat))
 #' 
 #' @export generate_chiclet_differential_data
 

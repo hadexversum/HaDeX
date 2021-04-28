@@ -1,18 +1,37 @@
-#' generate_butterfly_differential_dataset
+#' Generate butterfly differential dataset
 #' 
-#' @param dat ...
-#' @param protein ...
-#' @param state_1 ...
-#' @param state_2 ...
-#' @param time_0 ...
-#' @param time_100 ...
-#' @param deut_part ...
+#' @param dat data imported by the \code{\link{read_hdx}} function.
+#' @param protein chosen protein. 
+#' @param state_1 biological state for chosen protein. From this state values
+#' the second state values are subtracted to get the deuterium uptake difference.
+#' @param state_2 biological state for chosen protein. This state values are 
+#' subtracted from the first state values to get the deuterium uptake difference.
+#' @param time_0 minimal exchange control time point of measurement.
+#' @param time_100 maximal exchange control time point of measurement. 
+#' @param deut_part deuterium percentage in solution used in experiment, 
+#' value from range [0, 1].
 #' 
-#' @details 
+#' @details The function \code{\link{generate_butterfly_differential_dataset}} 
+#' generates a dataset what can be plotted in a form of a butterfly differential 
+#' plot. For each peptide in chosen protein for time points of measurement
+#' between minimal and maximal control time points of measurement deuterium 
+#' uptake difference, fractional deuterium uptake difference with respect to 
+#' controls or theoretical tabular values are calculated, with combined and 
+#' propagated uncertainty. Each peptide has an ID, based on its start
+#' position.
 #' 
-#' @return 
+#' @return a \code{\link{data.frame}} object.
 #' 
 #' @seealso 
+#' \code{\link{read_hdx}}
+#' \code{\link{generate_differential_data_set}}
+#' \code{\link{generate_butterfly_differential_plot}}
+#' \code{\link{generate_butterfly_differential_data}}
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' butterfly_diff_dat <- generate_butterfly_differential_dataset(dat)
+#' head(butterfly_diff_dat)
 #' 
 #' @export generate_butterfly_differential_dataset
 
@@ -44,18 +63,33 @@ generate_butterfly_differential_dataset <- function(dat,
 }
 
 
-#' generate_butterfly_differential_plot
+#' Generate butterfly differential plot
 #' 
-#' @param butterfly_diff_dat ...
+#' @param butterfly_diff_dat data produced by 
+#' \code{\link{generate_butterfly_differential_dataset}} function.
 #' @param theoretical \code{logical}, determines if values are theoretical
 #' @param fractional \code{logical}, determines if values are fractional
-#' @param uncertainty_type ribbon / bars
+#' @param uncertainty_type type of presenting uncertainty, possible values: 
+#' "ribbon", "bars" or "bars + line".
 #' 
-#' @details This plot is visible in GUI.
+#' @details Function \code{\link{generate_butterfly_differential_plot}} generates 
+#' butterfly differential plot based on provided data and parameters. On X-axis 
+#' there is peptide ID. On the Y-axis there is deuterium uptake difference in 
+#' chosen form. Data from multiple time points of measurement is presented.
+#' This plot is visible in GUI. 
 #' 
-#' @return 
+#' @return a \code{\link{ggplot}} object. 
 #' 
 #' @seealso 
+#' \code{\link{read_hdx}}
+#' \code{\link{generate_differential_data_set}}
+#' \code{\link{generate_butterfly_differential_dataset}}
+#' \code{\link{generate_butterfly_differential_data}}
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' butterfly_diff_dat <- generate_butterfly_differential_dataset(dat)
+#' generate_butterfly_differential_plot(butterfly_diff_dat)
 #' 
 #' @export generate_butterfly_differential_plot
 
@@ -148,17 +182,30 @@ generate_butterfly_differential_plot <- function(butterfly_diff_dat,
     
 }
 
-#' generate_butterfly_differential_data
+#' Generate butterfly differential data
 #' 
-#' @param butterfly_diff_dat ...
-#' @param theoretical \code{logical}, determines if values are theoretical
-#' @param fractional \code{logical}, determines if values are fractional
+#' @param butterfly_diff_dat data produced by 
+#' \code{\link{generate_butterfly_differential_dataset}} function.
+#' @param theoretical \code{logical}, determines if values are theoretical.
+#' @param fractional \code{logical}, determines if values are fractional.
 #' 
-#' @details 
+#' @details This function subsets the dataset based on provided criteria,
+#' rounds the numerical values (4 places) and changes the column names 
+#' to user-friendly ones. 
+#' This data is available in the GUI. 
 #' 
-#' @return 
+#' @return a \code{\link{data.frame}} object.
 #' 
 #' @seealso 
+#' \code{\link{read_hdx}}
+#' \code{\link{generate_differential_data_set}}
+#' \code{\link{generate_butterfly_differential_plot}}
+#' \code{\link{generate_butterfly_differential_dataset}}
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' butterfly_diff_dat <- generate_butterfly_differential_dataset(dat)
+#' head(generate_butterfly_differential_data(butterfly_diff_dat))
 #' 
 #' @export generate_butterfly_differential_data
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_comparison_elements.R
 \name{generate_comparison_dataset}
 \alias{generate_comparison_dataset}
-\title{generate_comparison_dataset}
+\title{Generates comparison dataset}
 \usage{
 generate_comparison_dataset(
   dat,
@@ -17,22 +17,20 @@ generate_comparison_dataset(
 \arguments{
 \item{dat}{data imported by the \code{\link{read_hdx}} function.}
 
-\item{protein}{chosen protein. Default value - first protein name from 
-the data.}
+\item{protein}{chosen protein.}
 
 \item{states}{vector of states (for chosen protein), for which the 
-calculations are done. Default value - vector of all states from the
-data.}
+calculations are done.}
 
-\item{time_0}{minimal exchange control. Default value - 0.001.}
+\item{time_0}{minimal exchange control time point of measurement.}
 
 \item{time_t}{time point of the measurement for which the calculations
-are done. Default value - 1.}
+are done.}
 
-\item{time_100}{maximal exchange control. Default value - 1440.}
+\item{time_100}{maximal exchange control time point of measurement.}
 
-\item{deut_part}{deuterium percentage in solution used in experiment.
-Default value - 1.}
+\item{deut_part}{deuterium percentage in solution used in experiment, 
+value from range [0, 1].}
 }
 \value{
 a data frame with calculated deuterium uptake, fractional deuterium 
@@ -40,18 +38,21 @@ uptake, theoretical deuterium uptake, theoretical fractional deuterium uptake
 and their uncertainty, based on supplied parameters.
 }
 \description{
-Generates comparison data set for given states
+Generates comparison dataset
 }
 \details{
-This is internal function, not used in the application.
-This function is a wrapper for \code{\link{calculate_state_deuteration}}
-function, calls this function for all states in states vector.
+Function \code{\link{generate_comparison_dataset}} is a 
+wrapper for \code{\link{calculate_state_deuteration}} function, calls 
+this function for all states in states vector.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-generate_comparison_dataset(dat)
+comparison_dat <- generate_comparison_dataset(dat)
+head(comparison_dat)
 
 }
 \seealso{
 \code{\link{calculate_state_deuteration}}
+\code{\link{generate_comparison_plot}}
+\code{\link{generate_comparison_data}}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_chiclet_differential_elements.R
 \name{generate_chiclet_differential_data}
 \alias{generate_chiclet_differential_data}
-\title{generate_chiclet_differential_data}
+\title{Generate chiclet differential data}
 \usage{
 generate_chiclet_differential_data(
   chiclet_diff_dat,
@@ -11,21 +11,32 @@ generate_chiclet_differential_data(
 )
 }
 \arguments{
-\item{chiclet_diff_dat}{...}
+\item{chiclet_diff_dat}{produced by 
+\code{\link{generate_butterfly_differential_dataset}} function.}
 
-\item{theoretical}{\code{logical}, determines if values are theoretical}
+\item{theoretical}{\code{logical}, determines if values are theoretical.}
 
-\item{fractional}{\code{logical}, determines if values are fractional}
+\item{fractional}{\code{logical}, determines if values are fractional.}
 }
 \value{
-
+a \code{\link{data.frame}} object.
 }
 \description{
-generate_chiclet_differential_data
+Generate chiclet differential data
 }
 \details{
+This function subsets the dataset based on provided criteria,
+rounds the numerical values (4 places) and changes the column names 
+to user-friendly ones. 
+This data is available in the GUI.
+}
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+chic_diff_dat <- generate_butterfly_differential_dataset(dat)
+head(generate_chiclet_differential_data(chic_diff_dat))
 
 }
 \seealso{
-
+\code{\link{generate_butterfly_differential_dataset}}
+\code{\link{generate_chiclet_differential_plot}}
 }

@@ -2,28 +2,37 @@
 % Please edit documentation in R/generate_chiclet_elements.R
 \name{generate_chiclet_data}
 \alias{generate_chiclet_data}
-\title{generate_chiclet_data}
+\title{Generate chiclet data}
 \usage{
 generate_chiclet_data(chiclet_dat, theoretical = FALSE, fractional = FALSE)
 }
 \arguments{
-\item{chiclet_dat}{...}
+\item{chiclet_dat}{produced by \code{\link{generate_butterfly_dataset}}
+function.}
 
-\item{theoretical}{\code{logical}, determines if values are theoretical}
+\item{theoretical}{\code{logical}, determines if values are theoretical.}
 
-\item{fractional}{\code{logical}, determines if values are fractional}
+\item{fractional}{\code{logical}, determines if values are fractional.}
 }
 \value{
-...
+a \code{\link{data.frame}} object.
 }
 \description{
-Generates chiclet data, based on the supplied
-parameters.
+Generate chiclet data
 }
 \details{
-This data is available in the GUI. 
-All of the numerical values are rounded to 4 places after the dot!!
+This function subsets the dataset based on provided criteria,
+rounds the numerical values (4 places) and changes the column names 
+to user-friendly ones. 
+This data is available in the GUI.
+}
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+chic_dat <- generate_butterfly_dataset(dat)
+generate_chiclet_data(chic_dat)
+
 }
 \seealso{
-...
+\code{\link{generate_butterfly_dataset}}
+\code{\link{generate_chiclet_plot}}
 }

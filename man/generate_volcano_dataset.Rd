@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_volcano_elements.R
 \name{generate_volcano_dataset}
 \alias{generate_volcano_dataset}
-\title{generate_volcano_dataset}
+\title{Generates volcano dataset}
 \usage{
 generate_volcano_dataset(
   dat,
@@ -16,29 +16,26 @@ generate_volcano_dataset(
 \arguments{
 \item{dat}{data imported by the \code{\link{read_hdx}} function.}
 
-\item{protein}{chosen protein. Default value - first protein name from 
-the data.}
+\item{protein}{chosen protein.}
 
 \item{state_1}{biological state for chosen protein. From this state values
-the second state values are subtracted to get the deuterium uptake difference.
-Default value - first state found in the data.}
+the second state values are subtracted to get the deuterium uptake difference.}
 
 \item{state_2}{biological state for chosen protein. This state values are 
-subtracted from the first state values to get the deuterium uptake diference.
-Default value - second state found in the data.}
+subtracted from the first state values to get the deuterium uptake difference.}
 
 \item{p_adjustment_method}{method of adjustment P-values for multiple 
 comparisons. Possible methods: "BH" (Benjamini & Hochberg correction), 
 "bonferroni" (Bonferroni correction) and "none" (default).}
 
-\item{confidence_level}{confidence level for the t-test. Default value - 0.98.}
+\item{confidence_level}{confidence level for the t-test.}
 }
 \value{
-a data frame with calculated deuterium uptake difference, uncertainty,
-P-value and -log(P-value) for the peptides from the provided data.
+a \code{\link{data.frame}} object with calculated deuterium uptake difference, 
+uncertainty, P-value and -log(P-value) for the peptides from the provided data.
 }
 \description{
-Generates data set for volcano plot
+Generates volcano dataset
 }
 \details{
 The volcano plot shows the deuterium uptake difference in time 
@@ -54,15 +51,12 @@ replicates of the experiment are similar. The P-values indicates if the null
 hypothesis can be rejected - rejection of the hypothesis means that the 
 difference between states is statistically significant at provided confidence
 level. The P-values can be adjusted using the provided method.
+This plot is visible in GUI.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-generate_volcano_dataset(dat,
-                         protein = "db_CD160", 
-                         state_1 = "CD160",
-                         state_2 = "CD160_HVEM",
-                         p_adjustment_method = "none",
-                         confidence_level = 0.99)
+vol_dat <- generate_volcano_dataset(dat)
+head(vol_dat)
 
 }
 \references{
@@ -71,5 +65,8 @@ Differences in Differential Hydrogen Exchange-Mass Spectrometry Measurements
 Using a Hybrid Significance Testing Approach. Anal Chem 91, 8008–8016 (2019).
 }
 \seealso{
-\code{\link{generate_volcano_plot}}  \code{\link{generate_volcano_data}}
+\code{\link{read_hdx}}
+\code{\link{calculate_exp_masses_per_replicate}}
+\code{\link{generate_volcano_plot}}  
+\code{\link{generate_volcano_data}}
 }
