@@ -48,7 +48,7 @@ statistically significant in hybrid testing.
 This plot is visible in GUI.
 }
 \examples{
-dat <-  dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+dat <-  read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 vol_dat <- generate_volcano_dataset(dat)
 generate_volcano_plot(vol_dat, show_confidence_limits = T)
 
