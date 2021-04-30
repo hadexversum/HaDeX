@@ -8,7 +8,9 @@ generate_butterfly_differential_plot(
   butterfly_diff_dat,
   theoretical = FALSE,
   fractional = FALSE,
-  uncertainty_type = "ribbon"
+  uncertainty_type = "ribbon",
+  show_confidence_limit = FALSE,
+  confidence_level = 0.98
 )
 }
 \arguments{
@@ -21,6 +23,12 @@ generate_butterfly_differential_plot(
 
 \item{uncertainty_type}{type of presenting uncertainty, possible values: 
 "ribbon", "bars" or "bars + line".}
+
+\item{show_confidence_limit}{\code{logical}, determines if confidence limits
+are visible on the plot.}
+
+\item{confidence_level}{confidence level for confidence limit, if chosen
+show_confidence_limit.}
 }
 \value{
 a \code{\link{ggplot}} object.
@@ -33,6 +41,8 @@ Function \code{\link{generate_butterfly_differential_plot}} generates
 butterfly differential plot based on provided data and parameters. On X-axis 
 there is peptide ID. On the Y-axis there is deuterium uptake difference in 
 chosen form. Data from multiple time points of measurement is presented.
+If chosen, there are confidence limits based on Houde test on provided 
+confidence level.
 This plot is visible in GUI.
 }
 \examples{
@@ -40,6 +50,11 @@ dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.
 butterfly_diff_dat <- generate_butterfly_differential_dataset(dat)
 generate_butterfly_differential_plot(butterfly_diff_dat)
 
+}
+\references{
+Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). 
+The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in 
+Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
 }
 \seealso{
 \code{\link{read_hdx}}

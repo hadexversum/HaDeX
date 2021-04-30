@@ -71,11 +71,17 @@ generate_butterfly_differential_dataset <- function(dat,
 #' @param fractional \code{logical}, determines if values are fractional
 #' @param uncertainty_type type of presenting uncertainty, possible values: 
 #' "ribbon", "bars" or "bars + line".
+#' @param show_confidence_limit \code{logical}, determines if confidence limits
+#' are visible on the plot. 
+#' @param confidence_level confidence level for confidence limit, if chosen
+#' show_confidence_limit.
 #' 
 #' @details Function \code{\link{generate_butterfly_differential_plot}} generates 
 #' butterfly differential plot based on provided data and parameters. On X-axis 
 #' there is peptide ID. On the Y-axis there is deuterium uptake difference in 
 #' chosen form. Data from multiple time points of measurement is presented.
+#' If chosen, there are confidence limits based on Houde test on provided 
+#' confidence level.
 #' This plot is visible in GUI. 
 #' 
 #' @return a \code{\link{ggplot}} object. 
@@ -85,6 +91,10 @@ generate_butterfly_differential_dataset <- function(dat,
 #' \code{\link{generate_differential_data_set}}
 #' \code{\link{generate_butterfly_differential_dataset}}
 #' \code{\link{generate_butterfly_differential_data}}
+#' 
+#' @references Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). 
+#' The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in 
+#' Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
@@ -96,7 +106,9 @@ generate_butterfly_differential_dataset <- function(dat,
 generate_butterfly_differential_plot <- function(butterfly_diff_dat, 
                                                  theoretical = FALSE, 
                                                  fractional = FALSE,
-                                                 uncertainty_type = "ribbon"){
+                                                 uncertainty_type = "ribbon",
+                                                 show_confidence_limit = FALSE,
+                                                 confidence_level = 0.98){
   
   uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars", "bars + line"))
   
@@ -104,13 +116,14 @@ generate_butterfly_differential_plot <- function(butterfly_diff_dat,
 
   if (theoretical) {
 
+    title <- "Theoretical butterfly differential plot"
+    
     if (fractional) {
 
       # theoretical & fractional
       value <- "diff_theo_frac_deut_uptake"
       err_value <- "err_diff_theo_frac_deut_uptake"
       y_label <- "Fractional deuterium uptake difference [%]"
-      title <- "Theoretical butterfly differential plot"
 
     } else {
 
@@ -118,19 +131,19 @@ generate_butterfly_differential_plot <- function(butterfly_diff_dat,
       value <- "diff_theo_deut_uptake"
       err_value <- "err_diff_theo_deut_uptake"
       y_label <- "Deuterium uptake difference [Da]"
-      title <- "Theoretical butterfly differential plot"
 
     }
 
   } else {
 
+    title <- "Butterfly differential plot"
+    
     if (fractional) {
 
       # experimental & fractional
       value <- "diff_frac_deut_uptake"
       err_value <- "err_diff_frac_deut_uptake"
       y_label <- "Fractional deuterium uptake difference [%]"
-      title <- "Butterfly differential plot"
 
     } else {
 
@@ -138,7 +151,6 @@ generate_butterfly_differential_plot <- function(butterfly_diff_dat,
       value <- "diff_deut_uptake"
       err_value <- "err_diff_deut_uptake"
       y_label <- "Deuterium uptake difference [Da]"
-      title <- "Butterfly differential plot"
 
     }
 
@@ -175,9 +187,19 @@ generate_butterfly_differential_plot <- function(butterfly_diff_dat,
     butterfly_differential_plot <- butterfly_differential_plot +
       geom_errorbar(aes(x = ID, ymin = value - err_value, ymax = value + err_value, color = Exposure), width = 0.25, alpha = 0.5) +
       geom_line()
-    
   }
-
+  
+  if(show_confidence_limit){
+    
+    t_value <- qt(c((1 - confidence_level)/2, 1-(1 - confidence_level)/2), df = 2)[2]
+    x_threshold <- t_value * mean(plot_dat[["err_value"]], na.rm = TRUE)/sqrt(length(plot_dat))  
+    
+    butterfly_differential_plot <- butterfly_differential_plot +
+      geom_hline(aes(yintercept = x_threshold), linetype = "dashed", color = "black", size = .7) + 
+      geom_hline(aes(yintercept = -x_threshold), linetype = "dashed", color = "black", size = .7) 
+      
+  }
+  
   return(butterfly_differential_plot)
     
 }

@@ -117,8 +117,8 @@ Butterfly differential plot shows the deuterium uptake difference between two bi
 
 *Example* Below, we see how the fractional deuterium uptake difference between states CD160 and CD160_HVEM changes over time. We see that for some peptides, the difference is smaller with time - perhaps because of the back exchange.
 
-```{r}
-generate_butterfly_differential_plot(butt_diff_dat, fractional = TRUE) +
+```{r message=FALSE}
+generate_butterfly_differential_plot(butt_diff_dat, fractional = TRUE, show_confidence_limit = TRUE) +
   coord_cartesian(ylim = c(-10, 20))
 ```
 
