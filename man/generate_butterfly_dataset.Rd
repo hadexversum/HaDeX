@@ -10,7 +10,7 @@ generate_butterfly_dataset(
   state = (dat[["State"]])[1],
   time_0 = 0.001,
   time_100 = 1440,
-  deut_part = 1
+  deut_part = 0.9
 )
 }
 \arguments{

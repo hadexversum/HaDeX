@@ -43,7 +43,7 @@ calculate_state_deuteration <- function(dat,
                                         time_0,
                                         time_t, 
                                         time_100,
-                                        deut_part = 1){
+                                        deut_part = 0.9){
   proton_mass <- 1.00727647
   dat <- dat[dat[["Protein"]] == protein & dat[["State"]] == state & dat[["Exposure"]] %in% c(time_0, time_t, time_100), ]
   

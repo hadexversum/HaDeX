@@ -11,7 +11,7 @@ generate_butterfly_differential_dataset(
   state_2 = unique(dat[["State"]])[2],
   time_0 = 0.001,
   time_100 = 1440,
-  deut_part = 1
+  deut_part = 0.9
 )
 }
 \arguments{

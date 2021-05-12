@@ -86,7 +86,7 @@ calculate_kinetics <- function(dat,
                                end,
                                time_0, 
                                time_100, 
-                               deut_part = 1) {
+                               deut_part = 0.9) {
   
   assert_data_frame(dat)
   assert_string(protein)

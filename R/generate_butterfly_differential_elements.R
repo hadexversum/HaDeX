@@ -41,7 +41,7 @@ generate_butterfly_differential_dataset <- function(dat,
                                                     state_2 = unique(dat[["State"]])[2], 
                                                     time_0 = 0.001,
                                                     time_100 = 1440,
-                                                    deut_part = 1){
+                                                    deut_part = 0.9){
   
   all_times <- unique(dat[["Exposure"]])
   times <- all_times[all_times > time_0 & all_times < time_100]

@@ -1,5 +1,5 @@
 ---
-title: "Data visualization in HaDeX package"
+title: "Data visualization"
 output: html_document
 vignette: >
   %\VignetteIndexEntry{Data visualization}
@@ -34,19 +34,19 @@ are calculated see the other articles in the documentation.
 
 All of the examples of the plot use the example file *KD_180110_CD160_HVEM.csv*. The examples show the deuterium uptake values, the different forms of presented data are described under each plot. HaDeX package allows to produce a data frame with presented data for each plot.
 
-## Sequence data
+<!-- ## Sequence data -->
 
-*Example*
-```{r}
+<!-- *Example* -->
+<!-- ```{r} -->
 
-```
+<!-- ``` -->
 
-## Coverage of the sequence
+<!-- ## Coverage of the sequence -->
 
-*Example*
-```{r}
+<!-- *Example* -->
+<!-- ```{r} -->
 
-```
+<!-- ``` -->
 
 ## Comparison plot
 
@@ -225,21 +225,21 @@ plot_kinetics(kin_dat, fractional = TRUE) +
 
 *Values* The values on the plot can be presented as deuterium uptake (in Daltons) or fractional deuterium uptake (in percentage). The calculation of the deuterium uptake is done with respect to experimentally measured minimal/maximal exchange control or tabular values (MHP and Max Uptake).
 
-## Quality control
+<!-- ## Quality control -->
 
-*Example*
+<!-- *Example* -->
 
-```{r}
+<!-- ```{r} -->
 
-```
+<!-- ``` -->
 
-*Pros*
+<!-- *Pros* -->
 
-*Cons*
+<!-- *Cons* -->
 
-*Uncertainty*  
+<!-- *Uncertainty*   -->
 
-*Values*
+<!-- *Values* -->
 
 ## Summary of the uptake plots
 
@@ -269,8 +269,4 @@ The columns indicate:
 ## New features
 
 We believe that new ways of visualization of the HDX-MS data can be developed. If so, we will be happy to include them in HaDeX package and update this article. 
-
-Ideas to be implemented:
-
-- Houde test on butterfly differential plot
 

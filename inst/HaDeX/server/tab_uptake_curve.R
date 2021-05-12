@@ -401,3 +401,7 @@ output[["kin_plot_data"]] <- DT::renderDataTable(server = FALSE, {
     dt_format()
   
 })
+
+#################################
+######### DOWNLOAD ##############
+#################################

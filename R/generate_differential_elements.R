@@ -42,7 +42,7 @@ generate_differential_data_set <- function(dat,
                                            time_0 = 0.001,
                                            time_t = 1,
                                            time_100 = 1440,
-                                           deut_part = 1){
+                                           deut_part = 0.9){
   
   bind_rows(lapply(states, function(i) calculate_state_deuteration(dat, 
                                                                    protein = protein, 

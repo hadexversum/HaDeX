@@ -11,7 +11,7 @@ calculate_state_deuteration(
   time_0,
   time_t,
   time_100,
-  deut_part = 1
+  deut_part = 0.9
 )
 }
 \arguments{
