@@ -514,7 +514,8 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                   checkboxGroupInput_h(inputId = "butt_diff_timepoints",
                                                                                        label = "Show time points: ",
                                                                                        choices = c(0.167, 1, 5, 25, 120, 1440),
-                                                                                       selected = c(0.167, 1, 5, 25, 120, 1440)),
+                                                                                       selected = c(0.167, 1, 5, 25, 120, 1440)
+                                                                  ),
                                                                   h4("Visualization:"),
                                                                   selectInput_h(inputId = "butt_diff_uncertainty",
                                                                                 label = "Show uncertainty as:",
@@ -536,6 +537,19 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                   )
                                                            )
                                                          ),
+                                                         
+                                                         splitLayout(
+                                                           checkboxInput_h(inputId = "butt_diff_show_test",
+                                                                           label = "Show confidence limit",
+                                                                           value = FALSE),
+                                                           div(id = "butt_diff_confidence_level_part",
+                                                               selectInput_h(inputId = "butt_diff_confidence_level",
+                                                                             label = "Select confidence level:",
+                                                                             choices = c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
+                                                                             selected = 0.98)
+                                                          )
+                                                         ),
+                                                       
                                                          h4("Zoom:"),
                                                          sliderInput(inputId = "butt_diff_x_range",
                                                                      label = "Choose x range for butterfly plot:",

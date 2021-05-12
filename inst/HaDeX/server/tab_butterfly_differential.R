@@ -148,6 +148,26 @@ observe({
   
 })
 
+##
+
+observe({
+  
+  if(input[["butt_diff_show_test"]]){
+    show(id = "butt_diff_confidence_level_part")
+  }
+  
+})
+
+##
+
+observe({
+  
+  if(!input[["butt_diff_show_test"]]){
+    hide(id = "butt_diff_confidence_level_part")
+  }
+  
+})
+
 #################################
 ######### DATASET ###############
 #################################
@@ -184,7 +204,9 @@ butterfly_differential_plot_out <- reactive({
   generate_butterfly_differential_plot(butt_diff_dat(),
                                        theoretical = input[["butt_diff_theory"]],
                                        fractional = input[["butt_diff_fractional"]],
-                                       uncertainty_type = input[["butt_diff_uncertainty"]]) + 
+                                       uncertainty_type = input[["butt_diff_uncertainty"]],
+                                       show_confidence_limit = input[["butt_diff_show_test"]],
+                                       confidence_level = as.numeric(input[["butt_diff_confidence_level"]])) + 
     coord_cartesian(xlim = c(input[["butt_diff_x_range"]][[1]], input[["butt_diff_x_range"]][[2]]),
                     ylim = c(input[["butt_diff_y_range"]][[1]], input[["butt_diff_y_range"]][[2]])) +
     labs(title = input[["butterflyDifferential_plot_title"]],
