@@ -177,3 +177,27 @@ output[["replicatesPlot_data"]] <- DT::renderDataTable(server = FALSE, {
     dt_format()
   
 })
+
+#################################
+######## HISTOGRAM ##############
+#################################
+
+output[["replicates_histogram"]] <- renderPlot({
+  
+  replicate_masses() %>%
+    filter(Exposure == input[["rep_time"]],
+           Protein == input[["chosen_protein"]],
+           State == input[["rep_state"]]) %>%
+    select(Sequence, Start, End, ID) %>%
+    group_by(Sequence, Start, End, ID) %>%
+    summarize(n = n()) %>%
+    ggplot() + 
+      geom_col(aes(x = ID, y = n, fill = n)) +
+    labs(title = paste0("Number of replicates for each peptide in ", input[["rep_state"]], " in ", input[["rep_time"]], " min"),
+         x = "Peptide ID",
+         y = "Number of replicates") +
+    theme(legend.position = "none")
+  
+})
+
+

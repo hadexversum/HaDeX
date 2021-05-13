@@ -160,6 +160,7 @@ butterfly_dataset <- reactive({
 ######### PLOT ##################
 #################################
 
+
 butterfly_plot_out <- reactive({
   
   butterfly_dataset() %>%

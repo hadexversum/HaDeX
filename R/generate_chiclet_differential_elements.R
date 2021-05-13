@@ -87,7 +87,7 @@ generate_chiclet_differential_plot <- function(chiclet_diff_dat,
                          Start = chiclet_diff_dat[["Start"]],
                          End = chiclet_diff_dat[["End"]])
   
-  chiclet_differential_plot <- ggplot(plot_dat, aes(y = as.factor(Exposure), x = ID)) +
+  chiclet_differential_plot <- ggplot(plot_dat, aes(y = Exposure, x = ID)) +
     geom_tile(aes(fill = value)) +
     scale_fill_gradient2(low = "blue", mid = "white", high = "red", guide = guide_legend(keywidth = 3)) +
     labs(title = title,
@@ -95,7 +95,8 @@ generate_chiclet_differential_plot <- function(chiclet_diff_dat,
          x = "Peptide ID",
          fill = fill) +
     theme(legend.position = "bottom",
-          legend.box = "vertical")
+          legend.box = "vertical",
+          legend.key = element_rect(colour = 'black', size = 1))
   
   if(show_uncertainty){
     

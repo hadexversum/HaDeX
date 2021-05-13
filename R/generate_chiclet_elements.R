@@ -95,7 +95,8 @@ generate_chiclet_plot <- function(chiclet_dat,
          x = "Peptide ID",
          fill = fill) +
     theme(legend.position = "bottom",
-          legend.box = "vertical")
+          legend.box = "vertical",
+          legend.key = element_rect(colour = 'black', size = 1)) 
   
   if(show_uncertainty){
     
