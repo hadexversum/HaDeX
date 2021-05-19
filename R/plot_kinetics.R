@@ -9,6 +9,9 @@
 #' function
 #' @param theoretical \code{logical}, determines if plot shows theoretical values
 #' @param fractional \code{logical}, determines if plot shows fractional values
+#' @param uncertainty_type type of presenting uncertainty, possible values:
+#' "ribbon", "bars" or "bars + line".
+#' @param log_x \code{logical}, determines if x axis shows logarithmic values.
 #' 
 #' @seealso \code{\link{calculate_kinetics}}
 #' 
@@ -65,72 +68,94 @@
 #' 
 plot_kinetics <- function(kin_dat, 
                           theoretical = FALSE, 
-                          fractional = TRUE){
+                          fractional = FALSE,
+                          uncertainty_type = "ribbon",
+                          log_x = TRUE){
+  
+  uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars", "bars + line"))
   
   if (theoretical){
     
+    title <- "Theoretical uptake curve"
+    
     if (fractional){
       
-      kin_dat %>% 
-        mutate(prop = paste0(Sequence, "-", State)) %>%
-        ggplot(aes(x = time_chosen, y = theo_frac_deut_uptake, group = prop)) +
-        geom_point() + 
-        geom_ribbon(aes(ymin = theo_frac_deut_uptake - err_theo_frac_deut_uptake, ymax = theo_frac_deut_uptake + err_theo_frac_deut_uptake, fill = prop), alpha = 0.15) +
-        geom_line(aes(color = prop)) +
-        theme(legend.position = "bottom",
-              legend.title = element_blank()) +
-        scale_y_continuous(limits = c(0, 110)) + 
-        labs(x = "Time points [min]", 
-             y = "Theoretical fractional deuterium uptake [%]")
-      
+      value <- "theo_frac_deut_uptake"
+      err_value <- "err_theo_frac_deut_uptake"
+      y_label <- "Fractional deuterium uptake [%]"
+
       } else {
       
-      kin_dat %>% 
-        mutate(prop = paste0(Sequence, "-", State)) %>%
-        ggplot(aes(x = time_chosen, y = theo_deut_uptake, group = prop)) +
-        geom_point() + 
-        geom_ribbon(aes(ymin = theo_deut_uptake - err_theo_deut_uptake, ymax = theo_deut_uptake + err_theo_deut_uptake, fill = prop), alpha = 0.15) +
-        geom_line(aes(color = prop)) +
-        theme(legend.position = "bottom",
-              legend.title = element_blank()) +
-        scale_y_continuous(limits = c(0, NA)) + 
-        labs(x = "Time points [min]", 
-             y = "Theoretical deuterium uptake [Da]")
+        value <- "theo_deut_uptake"
+        err_value <- "err_theo_deut_uptake"
+        y_label <- "Deuterium uptake [Da]"
       
     }
     
   } else {
     
+    title <- "Uptake curve"
+    
     if (fractional){
       
-      kin_dat %>% 
-        mutate(prop = paste0(Sequence, "-", State)) %>%
-        ggplot(aes(x = time_chosen, y = frac_deut_uptake, group = prop)) +
-        geom_point() + 
-        geom_ribbon(aes(ymin = frac_deut_uptake - err_frac_deut_uptake, ymax = frac_deut_uptake + err_frac_deut_uptake, fill = prop), alpha = 0.15) +
-        geom_line(aes(color = prop)) +
-        theme(legend.position = "bottom",
-              legend.title = element_blank()) +
-        scale_y_continuous(limits = c(0, 110)) + 
-        labs(x = "Time points [min]", 
-             y = "Fractional deuterium uptake [%]")
+      value <- "frac_deut_uptake"
+      err_value <- "err_frac_deut_uptake"
+      y_label <- "Fractional deuterium uptake [%]"
       
     } else {
       
-      kin_dat %>% 
-        mutate(prop = paste0(Sequence, "-", State)) %>%
-        ggplot(aes(x = time_chosen, y = deut_uptake, group = prop)) +
-        geom_point() + 
-        geom_ribbon(aes(ymin = deut_uptake - err_deut_uptake, ymax = deut_uptake + err_deut_uptake, fill = prop), alpha = 0.15) +
-        geom_line(aes(color = prop)) +
-        theme(legend.position = "bottom",
-              legend.title = element_blank()) +
-        scale_y_continuous(limits = c(0, NA)) + 
-        labs(x = "Time points [min]", 
-             y = "Deuterium uptake [Da]")
+      value <- "deut_uptake"
+      err_value <- "err_deut_uptake"
+      y_label <- "Deuterium uptake [Da]"
       
     }
     
   }
   
+  plot_dat <- data.frame(Sequence = kin_dat[["Sequence"]],
+                         Start = kin_dat[["Start"]],
+                         End = kin_dat[["End"]],
+                         State = kin_dat[["State"]],
+                         time_chosen = kin_dat[["time_chosen"]],
+                         value = kin_dat[[value]],
+                         err_value = kin_dat[[err_value]],
+                         prop = paste0(kin_dat[["Sequence"]], "-", kin_dat[["State"]]))
+  
+  kin_plot <- plot_dat %>% 
+    ggplot(aes(x = time_chosen, y = value, group = prop)) +
+    geom_point(aes(color = prop)) + 
+    theme(legend.position = "bottom",
+          legend.title = element_blank()) +
+    scale_y_continuous(limits = c(0, NA)) + 
+    labs(x = "Time points [min]", 
+         y = y_label,
+         title = title)
+  
+  if(uncertainty_type == "ribbon"){
+    
+    kin_plot <- kin_plot +
+      geom_ribbon(aes(ymin = value - err_value, ymax = value + err_value, fill = prop), alpha = 0.15) +
+      geom_line(aes(color = prop)) 
+    
+  } else if (uncertainty_type == "bars") {
+    
+    kin_plot <- kin_plot +
+      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = prop))
+    
+  } else if (uncertainty_type == "bars + line"){
+    
+    kin_plot <- kin_plot +
+      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = prop)) + 
+      geom_line(aes(color = prop))
+    
+  }
+  
+  if(log_x){
+    
+    kin_plot <- kin_plot + 
+      scale_x_log10()
+    
+  }
+  
+  kin_plot
 }
