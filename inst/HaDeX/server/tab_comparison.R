@@ -25,7 +25,7 @@ observe({
   
   if(!input[["comp_fractional"]]) {
     
-    if(as.numeric(input[["time_0"]]) < as.numeric(input[["time_t"]])){
+    if(as.numeric(input[["time_0"]]) < as.numeric(input[["time_t"]]) | input[["theory"]]){
       
       # browser()
       
@@ -272,39 +272,13 @@ prep_dat <- reactive({
 ######### PLOT ##################
 #################################
 
-comparison_plot_theo <- reactive({
+comparison_plot <- reactive({
   
   generate_comparison_plot(dat = prep_dat(),
-                           theoretical = TRUE,
-                           fractional = TRUE)
+                           theoretical = input[["theory"]],
+                           fractional = input[["comp_fractional"]])
 })
 
-##
-
-comparison_plot_theo_abs <- reactive({
-  
-  generate_comparison_plot(dat = prep_dat(),
-                           theoretical = TRUE,
-                           fractional = FALSE)
-})
-
-##
-
-comparison_plot_exp <- reactive({
-  
-  generate_comparison_plot(dat = prep_dat(),
-                           theoretical = FALSE,
-                           fractional = TRUE)
-})
-
-##
-
-comparison_plot_exp_abs <- reactive({
-  
-  generate_comparison_plot(dat = prep_dat(),
-                           theoretical = FALSE,
-                           fractional = FALSE)
-})
 
 ##
 
@@ -312,32 +286,8 @@ cp_out <- reactive({
   
   comparison_plot_colors_chosen()
   
-  if (input[["theory"]]) {
-    
-    if (input[["comp_fractional"]]) {
-      
-      cp <- comparison_plot_theo()
-      
-    } else {
-      
-      cp <- comparison_plot_theo_abs()
-    }
-    
-  } else {
-    
-    if (input[["comp_fractional"]]) {
-      
-      cp <- comparison_plot_exp()
-      
-    } else {
-      
-      cp <- comparison_plot_exp_abs()
-      
-    }
-    
-  }
-  
-  cp + coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
+  comparison_plot() +
+    coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
                        ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
     labs(title = input[["comparison_plot_title"]],
          x = input[["comparison_plot_x_label"]],
@@ -419,63 +369,18 @@ output[["comparisonPlot_download_button"]] <- downloadHandler("comparisonPlot.sv
 ######### DATA ##################
 #################################
 
-comparison_plot_data_theo <- reactive({
+comparison_plot_data <- reactive({
   
   generate_comparison_data(dat = prep_dat(),
-                           theoretical = TRUE,
-                           fractional = TRUE)
-})
-
-##
-
-comparison_plot_data_theo_abs <- reactive({
-  
-  generate_comparison_data(dat = prep_dat(),
-                           theoretical = TRUE,
-                           fractional = FALSE)
-})
-
-##
-
-comparison_plot_data_exp <- reactive({
-  
-  generate_comparison_data(dat = prep_dat(),
-                           theoretical = FALSE,
-                           fractional = TRUE)
-})
-
-##
-
-comparison_plot_data_exp_abs <- reactive({
-  
-  generate_comparison_data(dat = prep_dat(),
-                           theoretical = FALSE,
-                           fractional = FALSE)
+                           theoretical = input[["theory"]],
+                           fractional = input[["comp_fractional"]])
 })
 
 ##
 
 output[["comparisonPlot_data"]] <- DT::renderDataTable(server = FALSE, {
   
-  if (input[["theory"]]) {
-    
-    if (input[["comp_fractional"]]) {
-      cp_data <- comparison_plot_data_theo()
-    } else {
-      cp_data <- comparison_plot_data_theo_abs()
-    }
-    
-  } else {
-    
-    if (input[["comp_fractional"]]) {
-      cp_data <- comparison_plot_data_exp()
-    } else {
-      cp_data <- comparison_plot_data_exp_abs()
-    }
-    
-  }
-  
-  cp_data %>%
+  comparison_plot_data() %>%
     filter(Protein == input[["chosen_protein"]],
            Start >= input[["plot_x_range"]][[1]],
            End <= input[["plot_x_range"]][[2]]) %>%
