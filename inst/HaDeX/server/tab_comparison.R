@@ -14,23 +14,42 @@ observe({
                       step = 10)
     
     
-  } else {
-    
-    # browser()
-    
-    min_comparison_abs <- round_any(min(prep_dat()[c("deut_uptake", "theo_deut_uptake")], na.rm = TRUE), 5, floor)
-    max_comparison_abs <- round_any(max(prep_dat()[c("deut_uptake", "theo_deut_uptake")], na.rm = TRUE), 5, ceiling)
+  }
+  
+})
 
+
+##
+
+observe({
+  
+  if(!input[["comp_fractional"]]) {
+    
+    if(as.numeric(input[["time_0"]]) < as.numeric(input[["time_t"]])){
+      
+      # browser()
+      
+      min_comparison_abs <- if (nrow(prep_dat()) > 0) round_any(min(prep_dat()[c("deut_uptake", "theo_deut_uptake")], na.rm = TRUE), 5, floor)  else -1
+      max_comparison_abs <- if (nrow(prep_dat()) > 0) round_any(max(prep_dat()[c("deut_uptake", "theo_deut_uptake")], na.rm = TRUE), 5, ceiling) else 1
+      
+    } else {
+      
+      min_comparison_abs <- -1
+      max_comparison_abs <- 1
+      
+    }
+    
     updateSliderInput(session,
                       inputId = "comp_plot_y_range",
                       min = min_comparison_abs - 5,
                       max = max_comparison_abs + 5,
                       value = c(min_comparison_abs, max_comparison_abs),
                       step = 1)
-
-   }
+    
+  }
   
 })
+
 
 ##
 
@@ -242,13 +261,12 @@ all_dat <- reactive({
 ##
 
 prep_dat <- reactive({
-  
+
   validate(need(input[["compare_states"]], "Please select at least one state."))
   
   filter(all_dat(), State %in% input[["compare_states"]])
   
 })
-
 
 #################################
 ######### PLOT ##################

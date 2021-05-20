@@ -1036,7 +1036,6 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                            ),                                                                               
                                            h4("The axis ticks have the same size as the axis label.") 
                                          )
-                                         
                                        ),
                                        mainPanel(
                                          class = "scrollable",
@@ -1049,9 +1048,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                   "Save chart (.svg)"),
                                                    br(),
                                                    br(),
-                                                   br(),
                                                    plotOutput_h("replicates_histogram")
-                                                   
                                           ),
                                           tabPanel("Data",
                                                    br(),

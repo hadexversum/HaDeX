@@ -4,7 +4,13 @@
 \alias{plot_kinetics}
 \title{Plot kinetics data}
 \usage{
-plot_kinetics(kin_dat, theoretical = FALSE, fractional = TRUE)
+plot_kinetics(
+  kin_dat,
+  theoretical = FALSE,
+  fractional = FALSE,
+  uncertainty_type = "ribbon",
+  log_x = TRUE
+)
 }
 \arguments{
 \item{kin_dat}{calculated kinetic data by \code{\link{calculate_kinetics}} 
@@ -13,6 +19,11 @@ function}
 \item{theoretical}{\code{logical}, determines if plot shows theoretical values}
 
 \item{fractional}{\code{logical}, determines if plot shows fractional values}
+
+\item{uncertainty_type}{type of presenting uncertainty, possible values:
+"ribbon", "bars" or "bars + line".}
+
+\item{log_x}{\code{logical}, determines if x axis shows logarithmic values.}
 }
 \value{
 a \code{\link[ggplot2]{ggplot}} object.
