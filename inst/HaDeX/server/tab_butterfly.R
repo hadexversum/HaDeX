@@ -147,12 +147,12 @@ butterfly_dataset <- reactive({
   
   validate(need(input[["chosen_protein"]] %in% unique(dat()[["Protein"]]), "Wait for the parameters to be loaded."))
   
-  generate_butterfly_dataset(dat(),
-                             protein = input[["chosen_protein"]],
-                             state = input[["butt_state"]],
-                             time_0 = as.numeric(input[["butt_time_0"]]),
-                             time_100 = as.numeric(input[["butt_time_100"]]),
-                             deut_part = as.numeric(input[["deut_part"]])/100)
+  create_state_uptake_dataset(dat(),
+                              protein = input[["chosen_protein"]],
+                              state = input[["butt_state"]],
+                              time_0 = as.numeric(input[["butt_time_0"]]),
+                              time_100 = as.numeric(input[["butt_time_100"]]),
+                              deut_part = as.numeric(input[["deut_part"]])/100)
   
 })
 
@@ -165,9 +165,9 @@ butterfly_plot_out <- reactive({
   
   butterfly_dataset() %>%
     filter(Exposure %in% input[["butt_timepoints"]]) %>%
-    generate_butterfly_plot(theoretical = input[["butt_theory"]],
-                            fractional = input[["butt_fractional"]],
-                            uncertainty_type = input[["butt_uncertainty"]]) + 
+    plot_butterfly(theoretical = input[["butt_theory"]],
+                   fractional = input[["butt_fractional"]],
+                   uncertainty_type = input[["butt_uncertainty"]]) + 
     coord_cartesian(xlim = c(input[["butt_x_range"]][[1]], input[["butt_x_range"]][[2]]),
                     ylim = c(input[["butt_y_range"]][[1]], input[["butt_y_range"]][[2]])) +
     labs(title = input[["butterfly_plot_title"]],

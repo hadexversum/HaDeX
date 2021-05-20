@@ -120,12 +120,12 @@ chiclet_dataset <- reactive({
   
   validate(need(input[["chosen_protein"]] %in% unique(dat()[["Protein"]]), "Wait for the parameters to be loaded."))
   
-  generate_butterfly_dataset(dat(),
-                             protein = input[["chosen_protein"]],
-                             state = input[["chic_state"]],
-                             time_0 = as.numeric(input[["chic_time_0"]]),
-                             time_100 = as.numeric(input[["chic_time_100"]]),
-                             deut_part = as.numeric(input[["deut_part"]])/100)
+  create_state_uptake_dataset(dat(),
+                              protein = input[["chosen_protein"]],
+                              state = input[["chic_state"]],
+                              time_0 = as.numeric(input[["chic_time_0"]]),
+                              time_100 = as.numeric(input[["chic_time_100"]]),
+                              deut_part = as.numeric(input[["deut_part"]])/100)
   
 })
 
@@ -144,10 +144,10 @@ chiclet_dataset_timepoints <- reactive({
 
 chiclet_plot_out <- reactive({
   
-  generate_chiclet_plot(chiclet_dataset_timepoints(),
-                        theoretical = input[["chic_theory"]],
-                        fractional = input[["chic_fractional"]],
-                        show_uncertainty = input[["chic_show_uncertainty"]]) +
+  plot_chiclet(chiclet_dataset_timepoints(),
+               theoretical = input[["chic_theory"]],
+               fractional = input[["chic_fractional"]],
+               show_uncertainty = input[["chic_show_uncertainty"]]) +
     coord_cartesian(xlim = c(input[["chic_x_range"]][[1]], input[["chic_x_range"]][[2]])) +
     labs(title = input[["chiclet_plot_title"]],
          x = input[["chiclet_plot_x_label"]],

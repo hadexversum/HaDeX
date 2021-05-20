@@ -1,72 +1,13 @@
-#' Generates butterfly dataset
-#' 
-#' @param dat data imported by the \code{\link{read_hdx}} function.
-#' @param protein chosen protein. 
-#' @param state biological state for chosen protein.
-#' @param time_0 minimal exchange control time point of measurement.
-#' @param time_100 maximal exchange control time point of measurement. 
-#' @param deut_part deuterium percentage in solution used in experiment, 
-#' value from range [0, 1].
-#' 
-#' @details The function \code{\link{generate_butterfly_dataset}} generates 
-#' a dataset what can be plotted in a form of a butterfly plot. For each
-#' peptide in chosen protein in chosen state for time points of measurement
-#' between minimal and maximal control time points of measurement deuterium 
-#' uptake, fractional deuterium uptake with respect to controls or theoretical
-#' tabular values are calculated, with combined and propagated uncertainty. 
-#' Each peptide has an ID, based on its start position.
-#' 
-#' @return a \code{\link{data.frame}} object.
-#' 
-#' @seealso 
-#' \code{\link{read_hdx}}
-#' \code{\link{calculate_state_deuteration}}
-#' \code{\link{generate_butterfly_plot}} 
-#' \code{\link{generate_butterfly_data}}
-#' 
-#' @examples 
-#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' butterfly_dat <- generate_butterfly_dataset(dat)
-#' head(butterfly_dat)
-#' 
-#' @export generate_butterfly_dataset
-
-generate_butterfly_dataset <- function(dat, 
-                                       protein = unique(dat[["Protein"]])[1],
-                                       state = (dat[["State"]])[1], 
-                                       time_0 = 0.001,
-                                       time_100 = 1440,
-                                       deut_part = 0.9){
-  
-  all_times <- unique(dat[["Exposure"]])
-  times <- all_times[all_times > time_0 & all_times < time_100]
-  
-  butterfly_dat <- lapply(times, function(t){
-    
-    calculate_state_deuteration(dat, protein = protein, state = state,
-                                time_0 = time_0, time_t = t, time_100 = time_100, deut_part = deut_part) %>%
-      arrange(Start, End) %>%
-      mutate(ID = 1L:nrow(.),
-             Exposure = factor(t)) %>%
-      select(ID, Exposure, everything()) 
-    
-  }) %>% bind_rows()
-  
-  return(butterfly_dat)
-  
-}
-
-
 #' Generate butterfly plot
 #' 
-#' @param butterfly_dat data produced by \code{\link{generate_butterfly_dataset}} 
+#' @param uptake_dat data produced by \code{\link{create_state_uptake_dataset}} 
 #' function.
 #' @param theoretical \code{logical}, determines if values are theoretical.
 #' @param fractional \code{logical}, determines if values are fractional.
 #' @param uncertainty_type type of presenting uncertainty, possible values:
 #' "ribbon", "bars" or "bars + line".
 #' 
-#' @details Function \code{\link{generate_butterfly_plot}} generates butterfly plot
+#' @details Function \code{\link{plot_butterfly}} generates butterfly plot
 #' based on provided data and parameters. On X-axis there is peptide ID. On the Y-axis
 #' there is deuterium uptake in chosen form. Data from multiple time points of 
 #' measurement is presented.
@@ -75,20 +16,20 @@ generate_butterfly_dataset <- function(dat,
 #' @return a \code{\link{ggplot}} object.
 #' 
 #' @seealso 
-#' \code{\link{generate_butterfly_dataset}} 
+#' \code{\link{create_state_uptake_dataset}} 
 #' \code{\link{generate_butterfly_data}}
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' butterfly_dat <- generate_butterfly_dataset(dat)
-#' generate_butterfly_plot(butterfly_dat)
+#' butterfly_dat <- create_state_uptake_dataset(dat)
+#' plot_butterfly(butterfly_dat)
 #' 
-#' @export generate_butterfly_plot
+#' @export plot_butterfly
 
-generate_butterfly_plot <- function(butterfly_dat, 
-                                    theoretical = FALSE, 
-                                    fractional = FALSE,
-                                    uncertainty_type = "ribbon"){
+plot_butterfly <- function(butterfly_dat, 
+                           theoretical = FALSE, 
+                           fractional = FALSE,
+                           uncertainty_type = "ribbon"){
   
   uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars", "bars + line"))
   state <- unique(butterfly_dat[["State"]])

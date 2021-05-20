@@ -2,14 +2,14 @@
 #'  
 #' @importFrom ggplot2 geom_tile scale_fill_gradient2 guide_legend
 #' 
-#' @param chiclet_dat produced by \code{\link{generate_butterfly_dataset}}
+#' @param chiclet_dat produced by \code{\link{create_state_uptake_dataset}}
 #' function. 
 #' @param theoretical \code{logical}, determines if values are theoretical.
 #' @param fractional \code{logical}, determines if values are fractional.
 #' @param show_uncertainty \code{logical}, determines if the
 #' uncertainty is shown. 
 #' 
-#' @details Function \code{\link{generate_chiclet_plot}} produces a chiclet
+#' @details Function \code{\link{plot_chiclet}} produces a chiclet
 #' plot based on the same dataset as butterfly plot, as it is the different
 #' form of presenting the same data. On X-axis there is a peptide ID. On 
 #' Y-axis are time points of measurement. Each tile for a peptide in time has
@@ -21,20 +21,20 @@
 #' @return a \code{\link{ggplot}} object.
 #' 
 #' @seealso 
-#' \code{\link{generate_butterfly_dataset}}
+#' \code{\link{create_state_uptake_dataset}}
 #' \code{\link{generate_chiclet_data}} 
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' chic_dat <- generate_butterfly_dataset(dat)
-#' generate_chiclet_plot(chic_dat)
+#' chic_dat <- create_state_uptake_dataset(dat)
+#' plot_chiclet(chic_dat)
 #' 
-#' @export generate_chiclet_plot
+#' @export plot_chiclet
 
-generate_chiclet_plot <- function(chiclet_dat, 
-                                  theoretical = FALSE, 
-                                  fractional = FALSE,
-                                  show_uncertainty = FALSE){
+plot_chiclet <- function(chiclet_dat, 
+                         theoretical = FALSE, 
+                         fractional = FALSE,
+                         show_uncertainty = FALSE){
 
   state <- unique(chiclet_dat[["State"]])
   
