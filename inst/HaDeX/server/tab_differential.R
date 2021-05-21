@@ -107,74 +107,24 @@ woods_plot_dat <- reactive({
 ######### PLOT ##################
 #################################
 
-differential_plot_theo <- reactive({
+differential_plot <- reactive({
   
-  generate_differential_plot(dat = woods_plot_dat(),
-                             theoretical = TRUE,
-                             fractional = TRUE,
-                             confidence_limit = as.double(input[["confidence_limit"]]),
-                             confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
+  plot_differential(dat = woods_plot_dat(),
+                    theoretical = input[["theory"]],
+                    fractional = input[["comp_fractional"]],
+                    confidence_limit = as.double(input[["confidence_limit"]]),
+                    confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
 })
 
 ##
 
-differential_plot_theo_abs <- reactive({
-  
-  generate_differential_plot(dat = woods_plot_dat(),
-                             theoretical = TRUE,
-                             fractional = FALSE,
-                             confidence_limit = as.double(input[["confidence_limit"]]),
-                             confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
-})
-
-##
-
-differential_plot_exp <- reactive({
-  
-  generate_differential_plot(dat = woods_plot_dat(),
-                             theoretical = FALSE,
-                             fractional = TRUE,
-                             confidence_limit = as.double(input[["confidence_limit"]]),
-                             confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
-})
-
-##
-
-differential_plot_exp_abs <- reactive({
-  
-  generate_differential_plot(dat = woods_plot_dat(),
-                             theoretical = FALSE,
-                             fractional = FALSE,
-                             confidence_limit = as.double(input[["confidence_limit"]]),
-                             confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
-})
-
-##
-
-wp_out <- reactive({
+differential_plot_out <- reactive({
   
   validate(need(!(input[["state_first"]] == input[["state_second"]]), "Please select two different states."))
   
-  if (input[["theory"]]) {
-    
-    if (input[["comp_fractional"]]) {
-      wp <- differential_plot_theo()
-    } else {
-      wp <- differential_plot_theo_abs()
-    }
-    
-  } else {
-    
-    if (input[["comp_fractional"]]) {
-      wp <- differential_plot_exp()
-    } else {
-      wp <- differential_plot_exp_abs()
-    }
-    
-  }
-  
-  wp + coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-                       ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
+  differential_plot() + 
+    coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
+                    ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]])) +
     labs(title = input[["woods_plot_title"]],
          x = input[["woods_plot_x_label"]],
          y = input[["woods_plot_y_label"]]) + 
@@ -191,7 +141,7 @@ wp_out <- reactive({
 
 output[["differentialPlot"]] <- renderPlot({
   
-  wp_out()
+  differential_plot_out()
   
 })
 
@@ -201,7 +151,7 @@ output[["differentialPlot_debug"]] <- renderUI({
   
   if(!is.null(input[["differentialPlot_hover"]])) {
     
-    wp_plot_data <- wp_out()[["data"]]
+    wp_plot_data <- differential_plot_out()[["data"]]
     wp_hv <- input[["differentialPlot_hover"]]
     
     wp_hv_dat <- data.frame(x = wp_hv[["x"]],
@@ -244,7 +194,7 @@ output[["differentialPlot_debug"]] <- renderUI({
 
 output[["differentialPlot_download_button"]] <- downloadHandler("differentialPlot.svg",
                                                                 content = function(file) {
-                                                                  ggsave(file, wp_out(), device = svg,
+                                                                  ggsave(file, differential_plot_out(), device = svg,
                                                                          height = 300, width = 400, units = "mm")
                                                                 })
 
@@ -252,44 +202,11 @@ output[["differentialPlot_download_button"]] <- downloadHandler("differentialPlo
 ######### DATA ##################
 #################################
 
-differential_plot_data_theo <- reactive({
+differential_plot_data <- reactive({
   
   generate_differential_data(dat = woods_plot_dat(),
-                             theoretical = TRUE,
-                             fractional = TRUE,
-                             confidence_limit_1 = as.double(input[["confidence_limit"]]),
-                             confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
-})
-
-##
-
-differential_plot_data_theo_abs <- reactive({
-  
-  generate_differential_data(dat = woods_plot_dat(),
-                             theoretical = TRUE,
-                             fractional = FALSE,
-                             confidence_limit_1 = as.double(input[["confidence_limit"]]),
-                             confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
-})
-
-##
-
-differential_plot_data_exp <- reactive({
-  
-  generate_differential_data(dat = woods_plot_dat(),
-                             theoretical = FALSE,
-                             fractional = TRUE,
-                             confidence_limit_1 = as.double(input[["confidence_limit"]]),
-                             confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
-})
-
-##
-
-differential_plot_data_exp_abs <- reactive({
-  
-  generate_differential_data(dat = woods_plot_dat(),
-                             theoretical = FALSE,
-                             fractional = FALSE,
+                             theoretical = input[["theory"]],
+                             fractional = input[["comp_fractional"]],
                              confidence_limit_1 = as.double(input[["confidence_limit"]]),
                              confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
 })
@@ -298,25 +215,7 @@ differential_plot_data_exp_abs <- reactive({
 
 output[["differentialPlot_data"]] <- DT::renderDataTable(server = FALSE, {
   
-  if (input[["theory"]]) {
-    
-    if(input[["comp_fractional"]]) {
-      dp_data <- differential_plot_data_theo()
-    } else {
-      dp_data <- differential_plot_data_theo_abs()
-    }
-    
-  } else {
-    
-    if (input[["comp_fractional"]]) {
-      dp_data <- differential_plot_data_exp()
-    } else {
-      dp_data <- differential_plot_data_exp_abs()
-    }
-    
-  }
-  
-  dp_data %>%
+  differential_plot_data() %>%
     filter(Protein == input[["chosen_protein"]],
            Start >= input[["plot_x_range"]][[1]],
            End <= input[["plot_x_range"]][[2]]) %>%

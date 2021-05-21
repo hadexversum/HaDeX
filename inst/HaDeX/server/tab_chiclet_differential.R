@@ -139,7 +139,6 @@ chiclet_diff_dataset <- reactive({
 
 chiclet_diff_dataset_timepoints <- reactive({
   
-  
   chiclet_diff_dataset() %>%
     filter(Exposure %in% input[["chic_diff_timepoints"]])
   
@@ -153,10 +152,10 @@ chiclet_differential_plot_out <- reactive({
   
   # browser()
   
-  generate_chiclet_differential_plot(chiclet_diff_dataset_timepoints(),
-                                     theoretical = input[["chic_diff_theory"]],
-                                     fractional = input[["chic_diff_fractional"]],
-                                     show_uncertainty = input[["chic_diff_show_uncertainty"]]) + 
+  plot_chiclet_differential(chiclet_diff_dataset_timepoints(),
+                            theoretical = input[["chic_diff_theory"]],
+                            fractional = input[["chic_diff_fractional"]],
+                            show_uncertainty = input[["chic_diff_show_uncertainty"]]) + 
     coord_cartesian(xlim = c(input[["chic_diff_x_range"]][[1]], input[["chic_diff_x_range"]][[2]])) +
     labs(title = input[["chicletDifferential_plot_title"]],
          x = input[["chicletDifferential_plot_x_label"]],
