@@ -177,13 +177,13 @@ butt_diff_dataset <- reactive({
   validate(need(input[["butt_diff_state_first"]]!=input[["butt_diff_state_second"]], "There is no difference between the same state, choose different second state."))
   validate(need(input[["chosen_protein"]] %in% unique(dat()[["Protein"]]), "Wait for the parameters to be loaded."))
   
-  generate_butterfly_differential_dataset(dat(),
-                                          protein = input[["chosen_protein"]],
-                                          state_1 = input[["butt_diff_state_first"]],
-                                          state_2 = input[["butt_diff_state_second"]],
-                                          time_0 = as.numeric(input[["butt_diff_time_0"]]),
-                                          time_100 = as.numeric(input[["butt_diff_time_100"]]),
-                                          deut_part = as.numeric(input[["deut_part"]])/100)
+  create_diff_uptake_dataset(dat(),
+                            protein = input[["chosen_protein"]],
+                            state_1 = input[["butt_diff_state_first"]],
+                            state_2 = input[["butt_diff_state_second"]],
+                            time_0 = as.numeric(input[["butt_diff_time_0"]]),
+                            time_100 = as.numeric(input[["butt_diff_time_100"]]),
+                            deut_part = as.numeric(input[["deut_part"]])/100)
 })
 
 ##
@@ -199,14 +199,21 @@ butt_diff_dat <- reactive({
 ######### PLOT ##################
 #################################
 
+butterfly_differential_plot <- reactive({
+  
+  plot_butterfly_differential(butt_diff_dat(),
+                              theoretical = input[["butt_diff_theory"]],
+                              fractional = input[["butt_diff_fractional"]],
+                              uncertainty_type = input[["butt_diff_uncertainty"]],
+                              show_confidence_limit = input[["butt_diff_show_test"]],
+                              confidence_level = as.numeric(input[["butt_diff_confidence_level"]]))
+})
+
+##
+
 butterfly_differential_plot_out <- reactive({
   
-  generate_butterfly_differential_plot(butt_diff_dat(),
-                                       theoretical = input[["butt_diff_theory"]],
-                                       fractional = input[["butt_diff_fractional"]],
-                                       uncertainty_type = input[["butt_diff_uncertainty"]],
-                                       show_confidence_limit = input[["butt_diff_show_test"]],
-                                       confidence_level = as.numeric(input[["butt_diff_confidence_level"]])) + 
+  butterfly_differential_plot() + 
     coord_cartesian(xlim = c(input[["butt_diff_x_range"]][[1]], input[["butt_diff_x_range"]][[2]]),
                     ylim = c(input[["butt_diff_y_range"]][[1]], input[["butt_diff_y_range"]][[2]])) +
     labs(title = input[["butterflyDifferential_plot_title"]],

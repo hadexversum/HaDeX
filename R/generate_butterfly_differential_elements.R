@@ -1,213 +1,7 @@
-#' Generate butterfly differential dataset
-#' 
-#' @param dat data imported by the \code{\link{read_hdx}} function.
-#' @param protein chosen protein. 
-#' @param state_1 biological state for chosen protein. From this state values
-#' the second state values are subtracted to get the deuterium uptake difference.
-#' @param state_2 biological state for chosen protein. This state values are 
-#' subtracted from the first state values to get the deuterium uptake difference.
-#' @param time_0 minimal exchange control time point of measurement.
-#' @param time_100 maximal exchange control time point of measurement. 
-#' @param deut_part deuterium percentage in solution used in experiment, 
-#' value from range [0, 1].
-#' 
-#' @details The function \code{\link{generate_butterfly_differential_dataset}} 
-#' generates a dataset what can be plotted in a form of a butterfly differential 
-#' plot. For each peptide in chosen protein for time points of measurement
-#' between minimal and maximal control time points of measurement deuterium 
-#' uptake difference, fractional deuterium uptake difference with respect to 
-#' controls or theoretical tabular values are calculated, with combined and 
-#' propagated uncertainty. Each peptide has an ID, based on its start
-#' position.
-#' 
-#' @return a \code{\link{data.frame}} object.
-#' 
-#' @seealso 
-#' \code{\link{read_hdx}}
-#' \code{\link{generate_differential_data_set}}
-#' \code{\link{generate_butterfly_differential_plot}}
-#' \code{\link{generate_butterfly_differential_data}}
-#' 
-#' @examples 
-#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' butterfly_diff_dat <- generate_butterfly_differential_dataset(dat)
-#' head(butterfly_diff_dat)
-#' 
-#' @export generate_butterfly_differential_dataset
-
-generate_butterfly_differential_dataset <- function(dat, 
-                                                    protein = unique(dat[["Protein"]])[1],
-                                                    state_1 = unique(dat[["State"]])[1],
-                                                    state_2 = unique(dat[["State"]])[2], 
-                                                    time_0 = 0.001,
-                                                    time_100 = 1440,
-                                                    deut_part = 0.9){
-  
-  all_times <- unique(dat[["Exposure"]])
-  times <- all_times[all_times > time_0 & all_times < time_100]
-  
-  butterfly_diff_dat <- lapply(times, function(t){
-    
-    generate_differential_data_set(dat = dat, states = c(state_1, state_2), protein = protein, 
-                                   time_0 = time_0, time_t = t, time_100 = time_100, deut_part = deut_part) %>%
-      arrange(Start, End) %>%
-      mutate(ID = 1L:nrow(.),
-             Exposure = factor(t)) %>%
-      select(ID, Exposure, everything()) 
-    
-  }) %>% bind_rows() %>%
-    ungroup(.)
-  
-  return(butterfly_diff_dat)
-  
-}
-
-
-#' Generate butterfly differential plot
-#' 
-#' @param butterfly_diff_dat data produced by 
-#' \code{\link{generate_butterfly_differential_dataset}} function.
-#' @param theoretical \code{logical}, determines if values are theoretical
-#' @param fractional \code{logical}, determines if values are fractional
-#' @param uncertainty_type type of presenting uncertainty, possible values: 
-#' "ribbon", "bars" or "bars + line".
-#' @param show_confidence_limit \code{logical}, determines if confidence limits
-#' are visible on the plot. 
-#' @param confidence_level confidence level for confidence limit, if chosen
-#' show_confidence_limit.
-#' 
-#' @details Function \code{\link{generate_butterfly_differential_plot}} generates 
-#' butterfly differential plot based on provided data and parameters. On X-axis 
-#' there is peptide ID. On the Y-axis there is deuterium uptake difference in 
-#' chosen form. Data from multiple time points of measurement is presented.
-#' If chosen, there are confidence limits based on Houde test on provided 
-#' confidence level.
-#' This plot is visible in GUI. 
-#' 
-#' @return a \code{\link{ggplot}} object. 
-#' 
-#' @seealso 
-#' \code{\link{read_hdx}}
-#' \code{\link{generate_differential_data_set}}
-#' \code{\link{generate_butterfly_differential_dataset}}
-#' \code{\link{generate_butterfly_differential_data}}
-#' 
-#' @references Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). 
-#' The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in 
-#' Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
-#' 
-#' @examples 
-#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' butterfly_diff_dat <- generate_butterfly_differential_dataset(dat)
-#' generate_butterfly_differential_plot(butterfly_diff_dat)
-#' 
-#' @export generate_butterfly_differential_plot
-
-generate_butterfly_differential_plot <- function(butterfly_diff_dat, 
-                                                 theoretical = FALSE, 
-                                                 fractional = FALSE,
-                                                 uncertainty_type = "ribbon",
-                                                 show_confidence_limit = FALSE,
-                                                 confidence_level = 0.98){
-  
-  uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars", "bars + line"))
-  
-
-
-  if (theoretical) {
-
-    title <- "Theoretical butterfly differential plot"
-    
-    if (fractional) {
-
-      # theoretical & fractional
-      value <- "diff_theo_frac_deut_uptake"
-      err_value <- "err_diff_theo_frac_deut_uptake"
-      y_label <- "Fractional deuterium uptake difference [%]"
-
-    } else {
-
-      # theoretical & absolute
-      value <- "diff_theo_deut_uptake"
-      err_value <- "err_diff_theo_deut_uptake"
-      y_label <- "Deuterium uptake difference [Da]"
-
-    }
-
-  } else {
-
-    title <- "Butterfly differential plot"
-    
-    if (fractional) {
-
-      # experimental & fractional
-      value <- "diff_frac_deut_uptake"
-      err_value <- "err_diff_frac_deut_uptake"
-      y_label <- "Fractional deuterium uptake difference [%]"
-
-    } else {
-
-      # experimental & absolute
-      value <- "diff_deut_uptake"
-      err_value <- "err_diff_deut_uptake"
-      y_label <- "Deuterium uptake difference [Da]"
-
-    }
-
-  }
-
-  plot_dat <- data.frame(ID = butterfly_diff_dat[["ID"]],
-                         Exposure = butterfly_diff_dat[["Exposure"]],
-                         value = butterfly_diff_dat[[value]],
-                         err_value = butterfly_diff_dat[[err_value]],
-                         Sequence = butterfly_diff_dat[["Sequence"]],
-                         Start = butterfly_diff_dat[["Start"]],
-                         End = butterfly_diff_dat[["End"]])
-  
-  butterfly_differential_plot <- ggplot(plot_dat, aes(x = ID, y = value, color = Exposure)) +
-      geom_point(aes(group = Exposure, color = Exposure)) +
-      coord_cartesian(ylim = c(-.5, 1)) +
-      labs(title = title,
-           x = "Peptide ID",
-           y = y_label) +
-      theme(legend.position = "bottom")
-
-  if(uncertainty_type == "ribbon"){
-
-    butterfly_differential_plot <- butterfly_differential_plot +
-      geom_ribbon(aes(x = ID, ymin = value - err_value, ymax = value + err_value, fill = Exposure), alpha = 0.5, size = 0, linetype = "blank")
-
-  } else if (uncertainty_type == "bars"){
-
-    butterfly_differential_plot <- butterfly_differential_plot +
-      geom_errorbar(aes(x = ID, ymin = value - err_value, ymax = value + err_value, color = Exposure), width = 0.25, alpha = 0.5)
-
-  } else if (uncertainty_type == "bars + line"){
-    
-    butterfly_differential_plot <- butterfly_differential_plot +
-      geom_errorbar(aes(x = ID, ymin = value - err_value, ymax = value + err_value, color = Exposure), width = 0.25, alpha = 0.5) +
-      geom_line()
-  }
-  
-  if(show_confidence_limit){
-    
-    t_value <- qt(c((1 - confidence_level)/2, 1-(1 - confidence_level)/2), df = 2)[2]
-    x_threshold <- t_value * mean(plot_dat[["err_value"]], na.rm = TRUE)/sqrt(length(plot_dat))  
-    
-    butterfly_differential_plot <- butterfly_differential_plot +
-      geom_hline(aes(yintercept = x_threshold), linetype = "dashed", color = "black", size = .7) + 
-      geom_hline(aes(yintercept = -x_threshold), linetype = "dashed", color = "black", size = .7) 
-      
-  }
-  
-  return(butterfly_differential_plot)
-    
-}
-
 #' Generate butterfly differential data
 #' 
-#' @param butterfly_diff_dat data produced by 
-#' \code{\link{generate_butterfly_differential_dataset}} function.
+#' @param diff_uptake_dat data produced by 
+#' \code{\link{create_diff_uptake_dataset}} function.
 #' @param theoretical \code{logical}, determines if values are theoretical.
 #' @param fractional \code{logical}, determines if values are fractional.
 #' 
@@ -220,18 +14,17 @@ generate_butterfly_differential_plot <- function(butterfly_diff_dat,
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}}
-#' \code{\link{generate_differential_data_set}}
-#' \code{\link{generate_butterfly_differential_plot}}
-#' \code{\link{generate_butterfly_differential_dataset}}
+#' \code{\link{create_diff_uptake_dataset}}
+#' \code{\link{plot_butterfly_differential}}
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' butterfly_diff_dat <- generate_butterfly_differential_dataset(dat)
-#' head(generate_butterfly_differential_data(butterfly_diff_dat))
+#' diff_uptake_dat <- create_diff_uptake_dataset(dat)
+#' head(generate_butterfly_differential_data(diff_uptake_dat))
 #' 
 #' @export generate_butterfly_differential_data
 
-generate_butterfly_differential_data <- function(butterfly_diff_dat, 
+generate_butterfly_differential_data <- function(diff_uptake_dat, 
                                                  theoretical = FALSE, 
                                                  fractional = FALSE){
   

@@ -77,7 +77,7 @@ plot_butterfly <- function(butterfly_dat,
   }
   
   plot_dat <- data.frame(ID = butterfly_dat[["ID"]],
-                         Exposure = butterfly_dat[["Exposure"]],
+                         Exposure = as.factor(butterfly_dat[["Exposure"]]),
                          value = butterfly_dat[[value]],
                          err_value = butterfly_dat[[err_value]],
                          Sequence = butterfly_dat[["Sequence"]],

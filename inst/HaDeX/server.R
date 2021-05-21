@@ -384,7 +384,6 @@ server <- function(input, output, session) {
   })
 
 
-
   ### TAB: SEQUENCE DATA ###
 
   source("server/tab_sequence_data.R", local = TRUE)
@@ -401,7 +400,7 @@ server <- function(input, output, session) {
 
   ### TAB: BUTTERFLY ###
   
-  source("server/tab_butterfly.R", local = TRUE)
+  source("server/tab_butterfly.R", local = TRUE) 
   
   source("server/tab_butterfly_differential.R", local = TRUE)
   
@@ -417,7 +416,7 @@ server <- function(input, output, session) {
   
   source("server/tab_chiclet.R", local = TRUE)
   
-  source("server/tab_chiclet_differential.R", local = TRUE)
+  source("server/tab_chiclet_differential.R", local = TRUE) 
 
   ### TAB: KINETICS ###
 

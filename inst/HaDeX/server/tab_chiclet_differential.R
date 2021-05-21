@@ -126,13 +126,13 @@ chiclet_diff_dataset <- reactive({
   validate(need(input[["chic_diff_state_first"]]!=input[["chic_diff_state_second"]], "There is no difference between the same state, choose different second state."))
   validate(need(input[["chosen_protein"]] %in% unique(dat()[["Protein"]]), "Wait for the parameters to be loaded."))
   
-  generate_butterfly_differential_dataset(dat(),
-                                          protein = input[["chosen_protein"]],
-                                          state_1 = input[["chic_diff_state_first"]],
-                                          state_2 = input[["chic_diff_state_second"]],
-                                          time_0 = as.numeric(input[["chic_diff_time_0"]]),
-                                          time_100 = as.numeric(input[["chic_diff_time_100"]]),
-                                          deut_part = as.numeric(input[["deut_part"]])/100)
+  create_diff_uptake_dataset(dat(),
+                            protein = input[["chosen_protein"]],
+                            state_1 = input[["chic_diff_state_first"]],
+                            state_2 = input[["chic_diff_state_second"]],
+                            time_0 = as.numeric(input[["chic_diff_time_0"]]),
+                            time_100 = as.numeric(input[["chic_diff_time_100"]]),
+                            deut_part = as.numeric(input[["deut_part"]])/100)
 })
 
 ##

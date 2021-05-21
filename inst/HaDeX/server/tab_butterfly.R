@@ -45,7 +45,6 @@ observe({
 
 observe({
   
-  
   if(input[["butt_fractional"]]){
     
     max_y <- ceiling(max(butterfly_dataset()[["frac_deut_uptake"]], butterfly_dataset()[["theo_frac_deut_uptake"]])) + 1
@@ -153,21 +152,25 @@ butterfly_dataset <- reactive({
                               time_0 = as.numeric(input[["butt_time_0"]]),
                               time_100 = as.numeric(input[["butt_time_100"]]),
                               deut_part = as.numeric(input[["deut_part"]])/100)
-  
 })
 
 #################################
 ######### PLOT ##################
 #################################
 
-
-butterfly_plot_out <- reactive({
+butterfly_plot <- reactive({
   
   butterfly_dataset() %>%
     filter(Exposure %in% input[["butt_timepoints"]]) %>%
     plot_butterfly(theoretical = input[["butt_theory"]],
                    fractional = input[["butt_fractional"]],
-                   uncertainty_type = input[["butt_uncertainty"]]) + 
+                   uncertainty_type = input[["butt_uncertainty"]])
+  
+})
+
+butterfly_plot_out <- reactive({
+  
+  butterfly_plot() + 
     coord_cartesian(xlim = c(input[["butt_x_range"]][[1]], input[["butt_x_range"]][[2]]),
                     ylim = c(input[["butt_y_range"]][[1]], input[["butt_y_range"]][[2]])) +
     labs(title = input[["butterfly_plot_title"]],
@@ -205,8 +208,6 @@ output[["butterflyPlot_download_button"]] <- downloadHandler("butterflyPlot.svg"
 output[["butterflyPlot_debug"]] <- renderUI({
   
   if(!is.null(input[["butterflyPlot_hover"]])) {
-    
-    # browser()
     
     plot_data <- butterfly_plot_out()[["data"]]
     hv <- input[["butterflyPlot_hover"]]

@@ -5,14 +5,14 @@
 \title{Generate butterfly differential data}
 \usage{
 generate_butterfly_differential_data(
-  butterfly_diff_dat,
+  diff_uptake_dat,
   theoretical = FALSE,
   fractional = FALSE
 )
 }
 \arguments{
-\item{butterfly_diff_dat}{data produced by 
-\code{\link{generate_butterfly_differential_dataset}} function.}
+\item{diff_uptake_dat}{data produced by 
+\code{\link{create_diff_uptake_dataset}} function.}
 
 \item{theoretical}{\code{logical}, determines if values are theoretical.}
 
@@ -32,13 +32,12 @@ This data is available in the GUI.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-butterfly_diff_dat <- generate_butterfly_differential_dataset(dat)
-head(generate_butterfly_differential_data(butterfly_diff_dat))
+diff_uptake_dat <- create_diff_uptake_dataset(dat)
+head(generate_butterfly_differential_data(diff_uptake_dat))
 
 }
 \seealso{
 \code{\link{read_hdx}}
-\code{\link{generate_differential_data_set}}
-\code{\link{generate_butterfly_differential_plot}}
-\code{\link{generate_butterfly_differential_dataset}}
+\code{\link{create_diff_uptake_dataset}}
+\code{\link{plot_butterfly_differential}}
 }

@@ -80,7 +80,7 @@ generate_chiclet_differential_plot <- function(chiclet_diff_dat,
   }
   
   plot_dat <- data.frame(ID = chiclet_diff_dat[["ID"]],
-                         Exposure = chiclet_diff_dat[["Exposure"]],
+                         Exposure = as.factor(chiclet_diff_dat[["Exposure"]]),
                          value = chiclet_diff_dat[[value]],
                          err_value = chiclet_diff_dat[[err_value]],
                          Sequence = chiclet_diff_dat[["Sequence"]],
