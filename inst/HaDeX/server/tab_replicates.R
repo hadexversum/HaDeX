@@ -200,4 +200,23 @@ output[["replicates_histogram"]] <- renderPlot({
   
 })
 
+##
 
+output[["all_replicates_histogram"]] <- renderPlot({
+
+  replicate_masses() %>%
+    filter(Protein == input[["chosen_protein"]],
+           State == input[["rep_state"]],
+           Exposure < 99999) %>%
+    select(Sequence, Exposure, Start, End, ID) %>%
+    group_by(Sequence, Exposure, Start, End, ID) %>%
+    summarize(n = n()) %>%
+    ggplot() +
+      geom_col(aes(x = ID, y = n, fill = as.factor(Exposure))) +
+    labs(title = paste0("Number of replicates for each peptide in ", input[["rep_state"]], " state"),
+         x = "Peptide ID",
+         y = "Number of replicates",
+         fill = "Exposure") +
+    theme(legend.position = "bottom")
+  
+})

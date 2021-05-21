@@ -197,7 +197,7 @@ generate_volcano_plot <- function(vol_data,
     y_threshold <- -log(1 - confidence_level)
     
     t_value <- qt(c((1 - confidence_level)/2, 1-(1 - confidence_level)/2), df = 2)[2]
-    x_threshold <- t_value * mean(vol_data[["Uncertainty"]], na.rm = TRUE)/sqrt(length(vol_dat))
+    x_threshold <- t_value * mean(vol_data[["Uncertainty"]], na.rm = TRUE)/sqrt(length(vol_data))
     
     volcano_plot <- volcano_plot + 
       geom_segment(aes(x = -x_threshold, xend = -x_threshold, y = y_threshold, yend = Inf), linetype = "dashed", color = "red") +

@@ -193,77 +193,25 @@ kin_dat <- reactive({
 ######### PLOT ##################
 #################################
 
-kin_plot_theo <- reactive({
+kin_plot <- reactive({
   
   plot_kinetics(kin_dat = kin_dat(),
-                theoretical = TRUE,
-                fractional = TRUE)
-})
-
-##
-
-kin_plot_theo_abs <- reactive({
-  
-  plot_kinetics(kin_dat = kin_dat(),
-                theoretical = TRUE,
-                fractional = FALSE)
-})
-
-##
-
-kin_plot_exp <- reactive({
-  
-  plot_kinetics(kin_dat = kin_dat(),
-                theoretical = FALSE,
-                fractional = TRUE)
-})
-
-##
-
-kin_plot_exp_abs <- reactive({
-  
-  plot_kinetics(kin_dat = kin_dat(),
-                theoretical = FALSE,
-                fractional = FALSE)
+                theoretical = input[["kin_theory"]],
+                fractional = input[["kin_fractional"]],
+                uncertainty_type = input[["kin_uncertainty"]],
+                log_x = input[["kin_log_x"]])
 })
 
 ##
 
 kp_out <- reactive({
   
-  if (input[["kin_theory"]]) {
-    
-    if (input[["kin_fractional"]]) {
-      
-      kp <- kin_plot_theo()
-      
-    } else {
-      
-      kp <- kin_plot_theo_abs()
-      
-    }
-    
-  } else {
-    
-    if (input[["kin_fractional"]]){
-      
-      kp <- kin_plot_exp()
-      
-    } else {
-      
-      kp <- kin_plot_exp_abs()
-      
-    }
-    
-  }
-  
-  kp +
+  kin_plot() +
     geom_point(size = 3) +
     labs(title = input[["kin_plot_title"]],
          x = input[["kin_plot_x_label"]],
          y = input[["kin_plot_y_label"]]) +
     coord_cartesian(ylim = c(input[["kin_plot_y_range"]][1], input[["kin_plot_y_range"]][2])) +
-    scale_x_log10() +
     theme(legend.position = "bottom",
           legend.title = element_blank(),
           plot.title = element_text(size = input[["kin_plot_title_size"]]),
@@ -341,63 +289,18 @@ output[["kineticPlot_download_button"]] <- downloadHandler("kineticPlot.svg",
 ######### DATA ##################
 #################################
 
-kin_plot_theo_data <- reactive({
+kin_plot_data <- reactive({
   
   generate_kinetic_data(dat = kin_dat(),
-                        theoretical = TRUE,
-                        fractional = TRUE)
-})
-
-##
-
-kin_plot_theo_abs_data <- reactive({
-  
-  generate_kinetic_data(dat = kin_dat(),
-                        theoretical = TRUE,
-                        fractional = FALSE)
-})
-
-##
-
-kin_plot_exp_data <- reactive({
-  
-  generate_kinetic_data(dat = kin_dat(),
-                        theoretical = FALSE,
-                        fractional = TRUE)
-})
-
-##
-
-kin_plot_exp_abs_data <- reactive({
-  
-  generate_kinetic_data(dat = kin_dat(),
-                        theoretical = FALSE,
-                        fractional = FALSE)
+                        theoretical = input[["kin_theory"]],
+                        fractional = input[["kin_fractional"]])
 })
 
 ##
 
 output[["kin_plot_data"]] <- DT::renderDataTable(server = FALSE, {
   
-  if (input[["kin_theory"]]) {
-    
-    if (input[["kin_fractional"]]) {
-      kp_data <- kin_plot_theo_data()
-    } else {
-      kp_data <- kin_plot_theo_abs_data()
-    }
-    
-  } else {
-    
-    if (input[["kin_fractional"]]) {
-      kp_data <- kin_plot_exp_data()
-    } else {
-      kp_data <- kin_plot_exp_abs_data()
-    }
-    
-  }
-  
-  kp_data %>%
+  kin_plot_data() %>%
     dt_format()
   
 })
