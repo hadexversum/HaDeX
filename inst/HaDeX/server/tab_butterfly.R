@@ -259,11 +259,19 @@ output[["butterflyPlot_debug"]] <- renderUI({
 ######### DATA ##################
 #################################
 
-butterfly_plot_data_out <- reactive({
+butterfly_plot_data <- reactive({
   
   butterfly_dataset() %>%
-    generate_butterfly_data(theoretical = input[["butt_theory"]],
-                            fractional = input[["butt_fractional"]]) %>%
+    show_uptake_data(theoretical = input[["butt_theory"]],
+                     fractional = input[["butt_fractional"]])
+  
+})
+
+##
+
+butterfly_plot_data_out <- reactive({
+  
+  butterfly_plot_data() %>%
     filter(Exposure %in% input[["butt_timepoints"]]) %>%
     filter(ID >= input[["butt_x_range"]][[1]] & ID <= input[["butt_x_range"]][[2]]) 
   

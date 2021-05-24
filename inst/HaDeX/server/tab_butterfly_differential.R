@@ -301,9 +301,9 @@ output[["butterflyDifferentialPlot_debug"]] <- renderUI({
 
 output[["butterflyDifferentialPlot_data"]] <- DT::renderDataTable(server = FALSE, {
   
-  generate_butterfly_differential_data(butt_diff_dat(),
-                                       theoretical = input[["butt_diff_theory"]],
-                                       fractional = input[["butt_diff_fractional"]]) %>%
+  show_diff_uptake_data(butt_diff_dat(),
+                        theoretical = input[["butt_diff_theory"]],
+                        fractional = input[["butt_diff_fractional"]]) %>%
     filter(ID >= input[["butt_diff_x_range"]][[1]] & ID <= input[["butt_diff_x_range"]][[2]]) %>%
     dt_format()
   
