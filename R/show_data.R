@@ -170,6 +170,126 @@ show_diff_uptake_data <- function(diff_uptake_dat,
   
 }
 
+#' Show differential uptake data with confidence levels 
+#' 
+#' @param dat data produced by \code{\link{generate_differential_data_set}}
+#' function.
+#' @param theoretical \code{logical}, determines if values are theoretical.
+#' @param fractional \code{logical}, determines if values are fractional.
+#' @param confidence_limit_1 ...
+#' @param confidence_limit_2 ...
+#' 
+#' @details This function subsets the dataset based on provided criteria,
+#' rounds the numerical values (4 places) and changes the column names 
+#' to user-friendly ones. 
+#' This data is available in the GUI. 
+#' 
+#' @return a \code{\link{data.frame}} object.
+#' 
+#' @seealso 
+#' \code{\link{generate_differential_data_set}}
+#' \code{\link{plot_differential}}
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' diff_dat <- generate_differential_data_set(dat)
+#' show_diff_uptake_data_confidence(diff_dat)
+#' 
+#' @export show_diff_uptake_data_confidence
+
+show_diff_uptake_data_confidence <- function(dat, 
+                                       theoretical = FALSE, 
+                                       fractional = FALSE,
+                                       confidence_limit_1 = 0.98,
+                                       confidence_limit_2 = 0.99){
+  
+  column_name_cl1 <- paste0("Valid At ", confidence_limit_1)
+  column_name_cl2 <- paste0("Valid At ", confidence_limit_2)
+  
+  if(theoretical){
+    
+    if(fractional){
+      # theoretical & fractional  
+      dat %>%
+        add_stat_dependency(confidence_limit = confidence_limit_1,
+                            theoretical = TRUE, 
+                            fractional = TRUE) %>%
+        add_stat_dependency(confidence_limit = confidence_limit_2,
+                            theoretical = TRUE, 
+                            fractional = TRUE) %>%
+        select(Protein, Sequence, Start, End, diff_theo_frac_deut_uptake, err_diff_theo_frac_deut_uptake, paste0("valid_at_", confidence_limit_1), paste0("valid_at_", confidence_limit_2)) %>%
+        mutate(diff_theo_frac_deut_uptake = round(diff_theo_frac_deut_uptake, 4),
+               err_diff_theo_frac_deut_uptake = round(err_diff_theo_frac_deut_uptake, 4)) %>%
+        arrange(Start, End) %>%
+        rename("Theo Diff Frac Exch" = diff_theo_frac_deut_uptake,
+               "Err Theo Diff Frac Exch" = err_diff_theo_frac_deut_uptake,
+               "{column_name_cl1}" := paste0("valid_at_", confidence_limit_1),
+               "{column_name_cl2}" := paste0("valid_at_", confidence_limit_2))
+      
+    } else {
+      # theoretical & absolute
+      dat %>%
+        add_stat_dependency(confidence_limit = confidence_limit_1,
+                            theoretical = TRUE, 
+                            fractional = FALSE) %>%
+        add_stat_dependency(confidence_limit = confidence_limit_2,
+                            theoretical = TRUE, 
+                            fractional = FALSE) %>%
+        select(Protein, Sequence, Start, End, diff_theo_deut_uptake, err_diff_theo_deut_uptake, paste0("valid_at_", confidence_limit_1), paste0("valid_at_", confidence_limit_2)) %>%
+        mutate(diff_theo_deut_uptake = round(diff_theo_deut_uptake, 4),
+               err_diff_theo_deut_uptake = round(err_diff_theo_deut_uptake, 4)) %>%
+        arrange(Start, End) %>%
+        rename("Theo Abs Value Diff" = diff_theo_deut_uptake,
+               "Err Theo Abs Value Diff" = err_diff_theo_deut_uptake,
+               "{column_name_cl1}" := paste0("valid_at_", confidence_limit_1),
+               "{column_name_cl2}" := paste0("valid_at_", confidence_limit_2))
+    }
+    
+  } else {
+    
+    if(fractional){
+      # experimental & fractional
+      dat %>%
+        add_stat_dependency(confidence_limit = confidence_limit_1,
+                            theoretical = FALSE, 
+                            fractional = TRUE) %>%
+        add_stat_dependency(confidence_limit = confidence_limit_2,
+                            theoretical = FALSE, 
+                            fractional = TRUE) %>%
+        select(Protein, Sequence, Start, End, diff_frac_deut_uptake, err_diff_frac_deut_uptake, paste0("valid_at_", confidence_limit_1), paste0("valid_at_", confidence_limit_2)) %>%
+        mutate(diff_frac_deut_uptake = round(diff_frac_deut_uptake, 4),
+               err_diff_frac_deut_uptake = round(err_diff_frac_deut_uptake, 4)) %>%
+        arrange(Start, End) %>%
+        rename("Diff Frac Exch" = diff_frac_deut_uptake,
+               "Err Diff Frac Exch" = err_diff_frac_deut_uptake,
+               "{column_name_cl1}" := paste0("valid_at_", confidence_limit_1),
+               "{column_name_cl2}" := paste0("valid_at_", confidence_limit_2))
+      
+    } else {
+      # experimental & absolute
+      dat %>%
+        add_stat_dependency(confidence_limit = confidence_limit_1,
+                            theoretical = FALSE,
+                            fractional = FALSE) %>%
+        add_stat_dependency(confidence_limit = confidence_limit_2,
+                            theoretical = FALSE, 
+                            fractional = FALSE) %>%
+        select(Protein, Sequence, Start, End, diff_deut_uptake, err_diff_deut_uptake, paste0("valid_at_", confidence_limit_1), paste0("valid_at_", confidence_limit_2)) %>%
+        mutate(diff_deut_uptake = round(diff_deut_uptake, 4),
+               err_diff_deut_uptake = round(err_diff_deut_uptake, 4)) %>%
+        arrange(Start, End) %>%
+        rename("Diff Abs Value Exch" = diff_deut_uptake,
+               "Err Diff Abs Value Exch" = diff_deut_uptake,
+               "{column_name_cl1}" := paste0("valid_at_", confidence_limit_1),
+               "{column_name_cl2}" := paste0("valid_at_", confidence_limit_2))
+    }
+  }
+  
+  
+}
+
+
+
 #' Show volcano data 
 #'  
 #' @param vol_data data produced by the \code{\link{create_volcano_dataset}} 
@@ -202,5 +322,61 @@ show_volcano_data <- function(vol_data){
     arrange(Exposure, Start, End) %>%
     rename("Deuterium uptake difference" = D_diff , 
            "-log(P value)" = log_p_value)
+  
+}
+
+#' Show summary data
+#' 
+#' @description Generates summary table.
+#' 
+#' @param dat ...
+#' @param confidence_limit_1 ...
+#' @param confidence_limit_2 ...
+#' @param overlap_distribution_data custom format, generated by
+#' \code{\link{generate_overlap_distribution_data}}
+#' 
+#' @details The format in the table is suggested in Masson, G.R., Burke, J.E., 
+#' Ahn, N.G., Anand, G.S., Borchers, C., Brier, S., Bou-Assaf, G.M., Engen, J.R., 
+#' Englander, S.W., Faber, J., et al. (2019). Recommendations for performing, 
+#' interpreting and reporting hydrogen deuterium exchange mass spectrometry 
+#' (HDX-MS) experiments. Nat Methods 16, 595–602
+#' 
+#' @return ...
+#' 
+#' @seealso ... 
+#' 
+#' @export show_summary_data
+
+show_summary_data <- function(dat, 
+                              confidence_limit_1,
+                              confidence_limit_2,
+                              overlap_distribution_data){
+  
+  n_reps <- group_by(dat, Protein, Start, End, Sequence, Modification, State, Exposure) %>%
+    summarise(n_rep = length(unique(File))) %>%
+    ungroup() %>% 
+    pull(n_rep) %>% 
+    table() %>% 
+    sort(decreasing = TRUE) %>% 
+    names() %>% 
+    as.numeric()
+  
+  data.frame(Name = c("HDX time course", 
+                      "Number of peptides",
+                      "Sequence coverage",
+                      "Average peptide length",
+                      "Redundancy",
+                      "Replicates",
+                      #"Average standard deviation",
+                      "Significant differences in HDX"), 
+             Value = c(length(unique(dat[["Exposure"]])) - 1, # we add control as an additional timepoint 
+                       length(unique(dat[["Sequence"]])), 
+                       paste0(100*round(mean(overlap_distribution_data[["coverage"]] > 0), 4), "%"), 
+                       round(mean(nchar(unique(dat[["Sequence"]]))), 4), 
+                       round(mean(overlap_distribution_data[["coverage"]]), 4), 
+                       n_reps[1], 
+                       #NA, 
+                       paste0(confidence_limit_1, " | ", confidence_limit_2))
+  )
   
 }

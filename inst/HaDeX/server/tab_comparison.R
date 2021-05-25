@@ -274,9 +274,9 @@ prep_dat <- reactive({
 
 comparison_plot <- reactive({
   
-  generate_comparison_plot(dat = prep_dat(),
-                           theoretical = input[["theory"]],
-                           fractional = input[["comp_fractional"]])
+  plot_state_comparison(dat = prep_dat(),
+                        theoretical = input[["theory"]],
+                        fractional = input[["comp_fractional"]])
 })
 
 
@@ -371,9 +371,11 @@ output[["comparisonPlot_download_button"]] <- downloadHandler("comparisonPlot.sv
 
 comparison_plot_data <- reactive({
   
-  generate_comparison_data(dat = prep_dat(),
-                           theoretical = input[["theory"]],
-                           fractional = input[["comp_fractional"]])
+  # browser()
+  
+  # show_uptake_data(uptake_dat = prep_dat(),
+  #                  theoretical = input[["theory"]],
+  #                  fractional = input[["comp_fractional"]])
 })
 
 ##

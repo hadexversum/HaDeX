@@ -121,7 +121,7 @@ plot_differential <- function(dat,
   
 }
 
-#' Butterfly differential plot
+#' Differential butterfly plot
 #' 
 #' @param diff_uptake_dat data produced by 
 #' \code{\link{create_diff_uptake_dataset}} function.
@@ -134,8 +134,8 @@ plot_differential <- function(dat,
 #' @param confidence_level confidence level for confidence limit, if chosen
 #' show_confidence_limit.
 #' 
-#' @details Function \code{\link{plot_butterfly_differential}} generates 
-#' butterfly differential plot based on provided data and parameters. On X-axis 
+#' @details Function \code{\link{plot_differential_butterfly}} generates 
+#' differential butterfly plot based on provided data and parameters. On X-axis 
 #' there is peptide ID. On the Y-axis there is deuterium uptake difference in 
 #' chosen form. Data from multiple time points of measurement is presented.
 #' If chosen, there are confidence limits based on Houde test on provided 
@@ -155,11 +155,11 @@ plot_differential <- function(dat,
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' diff_uptake_dat <- create_diff_uptake_dataset(dat)
-#' plot_butterfly_differential(diff_uptake_dat)
+#' plot_differential_butterfly(diff_uptake_dat)
 #' 
-#' @export plot_butterfly_differential
+#' @export plot_differential_butterfly
 
-plot_butterfly_differential <- function(diff_uptake_dat, 
+plot_differential_butterfly <- function(diff_uptake_dat, 
                                         theoretical = FALSE, 
                                         fractional = FALSE,
                                         uncertainty_type = "ribbon",
@@ -258,7 +258,7 @@ plot_butterfly_differential <- function(diff_uptake_dat,
   
 }
 
-#' Chiclet differential plot
+#' Differential chiclet plot
 #' 
 #' @param diff_uptake_dat data produced by 
 #' \code{\link{create_diff_uptake_dataset}} function.
@@ -267,7 +267,7 @@ plot_butterfly_differential <- function(diff_uptake_dat,
 #' @param show_uncertainty \code{logical}, determines if the
 #' uncertainty is shown. 
 #' 
-#' @details Function \code{\link{plot_chiclet_differential}} generates 
+#' @details Function \code{\link{plot_differential_chiclet}} generates 
 #' chiclet differential plot based on provided data and parameters.
 #' On X-axis there is a peptide ID. On Y-axis are time points 
 #' of measurement. Each tile for a peptide in time has a color value 
@@ -286,11 +286,11 @@ plot_butterfly_differential <- function(diff_uptake_dat,
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' diff_uptake_dat <- create_diff_uptake_dataset(dat)
-#' plot_chiclet_differential(diff_uptake_dat)
+#' plot_differential_chiclet(diff_uptake_dat)
 #' 
-#' @export plot_chiclet_differential
+#' @export plot_differential_chiclet
 
-plot_chiclet_differential <- function(diff_uptake_dat, 
+plot_differential_chiclet <- function(diff_uptake_dat, 
                                                theoretical = FALSE, 
                                                fractional = FALSE,
                                                show_uncertainty = FALSE){

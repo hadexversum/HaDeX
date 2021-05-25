@@ -1,9 +1,9 @@
 summary_data <- reactive({
   
-  generate_summary_table(dat = dat(),
-                         confidence_limit_1 = input[["confidence_limit"]],
-                         confidence_limit_2 = input[["confidence_limit_2"]],
-                         overlap_distribution_data = stateOverlapDist_data())
+  show_summary_data(dat = dat(),
+                    confidence_limit_1 = input[["confidence_limit"]],
+                    confidence_limit_2 = input[["confidence_limit_2"]],
+                    overlap_distribution_data = stateOverlapDist_data())
 })
 
 ##

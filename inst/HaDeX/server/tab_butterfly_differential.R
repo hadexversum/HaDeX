@@ -201,7 +201,7 @@ butt_diff_dat <- reactive({
 
 butterfly_differential_plot <- reactive({
   
-  plot_butterfly_differential(butt_diff_dat(),
+  plot_differential_butterfly(butt_diff_dat(),
                               theoretical = input[["butt_diff_theory"]],
                               fractional = input[["butt_diff_fractional"]],
                               uncertainty_type = input[["butt_diff_uncertainty"]],

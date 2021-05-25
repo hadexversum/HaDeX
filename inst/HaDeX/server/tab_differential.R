@@ -204,11 +204,11 @@ output[["differentialPlot_download_button"]] <- downloadHandler("differentialPlo
 
 differential_plot_data <- reactive({
   
-  generate_differential_data(dat = woods_plot_dat(),
-                             theoretical = input[["theory"]],
-                             fractional = input[["comp_fractional"]],
-                             confidence_limit_1 = as.double(input[["confidence_limit"]]),
-                             confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
+  show_diff_uptake_data_confidence(dat = woods_plot_dat(),
+                                   theoretical = input[["theory"]],
+                                   fractional = input[["comp_fractional"]],
+                                   confidence_limit_1 = as.double(input[["confidence_limit"]]),
+                                   confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
 })
 
 ##

@@ -150,9 +150,7 @@ chiclet_diff_dataset_timepoints <- reactive({
 
 chiclet_differential_plot_out <- reactive({
   
-  # browser()
-  
-  plot_chiclet_differential(chiclet_diff_dataset_timepoints(),
+  plot_differential_chiclet(chiclet_diff_dataset_timepoints(),
                             theoretical = input[["chic_diff_theory"]],
                             fractional = input[["chic_diff_fractional"]],
                             show_uncertainty = input[["chic_diff_show_uncertainty"]]) + 
@@ -196,8 +194,8 @@ output[["chicletDifferentialPlot_download_button"]] <- downloadHandler("chicletD
 chiclet_differential_plot_data_out <- reactive({
   
   chiclet_diff_dataset_timepoints() %>%
-    generate_chiclet_differential_data(theoretical = input[["chic_diff_theory"]],
-                                       fractional = input[["chic_diff_fractional"]]) %>%
+    show_diff_uptake_data(theoretical = input[["chic_diff_theory"]],
+                          fractional = input[["chic_diff_fractional"]]) %>%
     filter(ID >= input[["chic_diff_x_range"]][[1]] & ID <= input[["chic_diff_x_range"]][[2]]) 
   
 })

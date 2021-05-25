@@ -13,6 +13,8 @@ generate_comparison_data(dat, theoretical = FALSE, fractional = FALSE, protein)
 \item{theoretical}{\code{logical}, determines if values are theoretical.}
 
 \item{fractional}{\code{logical}, determines if values are fractional}
+
+\item{protein}{chosen protein.}
 }
 \value{
 a \code{data.frame} object.

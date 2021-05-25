@@ -391,32 +391,32 @@ server <- function(input, output, session) {
   ### TAB: COVERAGE ###
 
   source("server/tab_coverage.R", local = TRUE)
-  
+
   ### TAB: WOODS PLOT ###
-  
-  source("server/tab_comparison.R", local = TRUE)
-  
+
+  source("server/tab_comparison.R", local = TRUE) ## check
+
   source("server/tab_differential.R", local = TRUE)
 
   ### TAB: BUTTERFLY ###
-  
-  source("server/tab_butterfly.R", local = TRUE) 
-  
+
+  source("server/tab_butterfly.R", local = TRUE) # check
+
   source("server/tab_butterfly_differential.R", local = TRUE)
-  
+
   ### TAB: VOLCANO ###
-  
+
   source("server/tab_volcano.R", local = TRUE)
-  
+
   ### TAB: REPLICATES ###
-  
+
   source("server/tab_replicates.R", local = TRUE)
-  
+
   ### TAB: CHICLET ###
-  
-  source("server/tab_chiclet.R", local = TRUE)
-  
-  source("server/tab_chiclet_differential.R", local = TRUE) 
+
+  source("server/tab_chiclet.R", local = TRUE) # check
+
+  source("server/tab_chiclet_differential.R", local = TRUE)
 
   ### TAB: KINETICS ###
 
@@ -425,7 +425,7 @@ server <- function(input, output, session) {
   ### TAB: QUALITY CONTROL
 
   source("server/tab_quality_control.R", local = TRUE)
-  
+
   ### TAB: SUMMARY
 
   source("server/tab_summary.R", local = TRUE)

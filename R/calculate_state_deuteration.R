@@ -79,8 +79,9 @@ calculate_state_deuteration <- function(dat,
       # helper values
       Med_Sequence = Start + (End - Start)/2) %>%
     ungroup(.) %>%
+    mutate(ID = 1L:nrow(.)) %>%
     arrange(Start, End) %>%
-    select(Protein, Sequence, Start, End, State, 
+    select(Protein, ID, Sequence, Start, End, State, 
            frac_deut_uptake, err_frac_deut_uptake, 
            deut_uptake, err_deut_uptake, 
            theo_frac_deut_uptake, err_theo_frac_deut_uptake,
