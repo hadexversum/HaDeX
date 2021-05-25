@@ -239,8 +239,8 @@ output[["chicletPlot_debug"]] <- renderUI({
 chiclet_plot_data_out <- reactive({
   
   chiclet_dataset_timepoints() %>%
-    generate_chiclet_data(theoretical = input[["chic_theory"]],
-                          fractional = input[["chic_fractional"]]) %>%
+    show_uptake_data(theoretical = input[["chic_theory"]],
+                     fractional = input[["chic_fractional"]]) %>%
     filter(ID >= input[["chic_x_range"]][[1]] & ID <= input[["chic_x_range"]][[2]]) 
     
 })
