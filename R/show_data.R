@@ -169,3 +169,38 @@ show_diff_uptake_data <- function(diff_uptake_dat,
   }
   
 }
+
+#' Show volcano data 
+#'  
+#' @param vol_data data produced by the \code{\link{create_volcano_dataset}} 
+#' function.
+#'
+#' @details This function subsets the dataset based on provided criteria,
+#' rounds the numerical values (4 places) and changes the column names 
+#' to user-friendly ones. 
+#' This data is available in the GUI. 
+#' 
+#' @return a \code{\link{data.frame}} object.
+#'
+#' @seealso 
+#' \code{\link{create_volcano_dataset}} 
+#' \code{\link{plot_volcano}} 
+#' 
+#' @examples 
+#' dat <-  dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' vol_dat <- create_volcano_dataset(dat)
+#' head(show_volcano_data(vol_dat))
+#' 
+#' @export show_volcano_data
+
+show_volcano_data <- function(vol_data){
+  
+  vol_data %>%
+    mutate(D_diff  = round(D_diff , 4),
+           Uncertainty = round(Uncertainty, 4),
+           log_p_value = round(log_p_value, 4)) %>%
+    arrange(Exposure, Start, End) %>%
+    rename("Deuterium uptake difference" = D_diff , 
+           "-log(P value)" = log_p_value)
+  
+}

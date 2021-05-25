@@ -60,10 +60,10 @@ volcano_dataset <- reactive({
   
   dat() %>%
     filter(Protein == input[["chosen_protein"]]) %>%
-    generate_volcano_dataset(state_1 = input[["vol_state_1"]],
-                             state_2 = input[["vol_state_2"]],
-                             p_adjustment_method = input[["vol_p_adjustment_method"]],
-                             confidence_level = as.numeric(input[["vol_confidence_level"]]))
+    create_volcano_dataset(state_1 = input[["vol_state_1"]],
+                           state_2 = input[["vol_state_2"]],
+                           p_adjustment_method = input[["vol_p_adjustment_method"]],
+                           confidence_level = as.numeric(input[["vol_confidence_level"]]))
   
   
 })
@@ -139,9 +139,9 @@ alpha_interval <- reactive({
 
 volcano_plot_out <- reactive({
   
-  generate_volcano_plot(volcano_data(), 
-                        state_1 = input[["vol_state_1"]], 
-                        state_2 = input[["vol_state_2"]]) +
+  plot_volcano(volcano_data(), 
+               state_1 = input[["vol_state_1"]], 
+               state_2 = input[["vol_state_2"]]) +
     # ## statistics
     geom_segment(aes(x = houde_intervals()[1], xend = houde_intervals()[1], y = alpha_interval(), yend = input[["vol_y_range"]][2]), linetype = "dashed", color = "red") +
     geom_segment(aes(x = houde_intervals()[2], xend = houde_intervals()[2], y = alpha_interval(), yend = input[["vol_y_range"]][2]), linetype = "dashed", color = "red") +
@@ -247,7 +247,7 @@ output[["volcanoPlot_debug"]] <- renderUI({
 
 output[["volcanoPlot_data"]] <- DT::renderDataTable(server = FALSE, {
   
-  generate_volcano_data(volcano_data()) %>%
+  show_volcano_data(volcano_data()) %>%
     dt_format()
   
 })
