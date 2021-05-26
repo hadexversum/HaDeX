@@ -373,9 +373,9 @@ comparison_plot_data <- reactive({
   
   # browser()
   
-  # show_uptake_data(uptake_dat = prep_dat(),
-  #                  theoretical = input[["theory"]],
-  #                  fractional = input[["comp_fractional"]])
+  show_uptake_data(uptake_dat = prep_dat(),
+                   theoretical = input[["theory"]],
+                   fractional = input[["comp_fractional"]])
 })
 
 ##

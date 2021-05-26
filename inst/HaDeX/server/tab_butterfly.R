@@ -261,12 +261,10 @@ output[["butterflyPlot_debug"]] <- renderUI({
 
 butterfly_plot_data <- reactive({
   
-  # browser()
-  
-  # butterfly_dataset() %>%
-  #   show_uptake_data(theoretical = input[["butt_theory"]],
-  #                    fractional = input[["butt_fractional"]])
-  # 
+  butterfly_dataset() %>%
+    show_uptake_data(theoretical = input[["butt_theory"]],
+                     fractional = input[["butt_fractional"]])
+
 })
 
 ##

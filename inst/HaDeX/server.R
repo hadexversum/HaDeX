@@ -394,7 +394,7 @@ server <- function(input, output, session) {
 
   ### TAB: WOODS PLOT ###
 
-  source("server/tab_comparison.R", local = TRUE) ## check
+  source("server/tab_comparison.R", local = TRUE)
 
   source("server/tab_differential.R", local = TRUE)
 
@@ -414,7 +414,7 @@ server <- function(input, output, session) {
 
   ### TAB: CHICLET ###
 
-  source("server/tab_chiclet.R", local = TRUE) # check
+  source("server/tab_chiclet.R", local = TRUE)
 
   source("server/tab_chiclet_differential.R", local = TRUE)
 
