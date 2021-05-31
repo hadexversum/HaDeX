@@ -1,26 +1,86 @@
-#' generate_general_data_set
+#' Creates comparison uptake dataset
 #' 
-#' @description Generates the data set with control sample, based on 
-#' supplied parameters.
+#' @param dat data imported by the \code{\link{read_hdx}} function.
+#' @param protein chosen protein. 
+#' @param states vector of states (for chosen protein), for which the 
+#' calculations are done. 
+#' @param time_0 minimal exchange control time point of measurement.
+#' @param time_t time point of the measurement for which the calculations
+#' are done. 
+#' @param time_100 maximal exchange control time point of measurement.
+#' @param deut_part deuterium percentage in solution used in experiment, 
+#' value from range [0, 1].
 #' 
-#' @param dat ...
-#' @param control_protein ...
-#' @param control_state ...
-#' @param control_exposure ...
+#' @details Function \code{\link{create_state_comparison_dataset}} is a 
+#' wrapper for \code{\link{calculate_state_deuteration}} function, calls 
+#' this function for all (default) or chosen states in states vector.
 #' 
-#' @details The names of the parameters and variables will be changed 
-#' later after the glossary project.
+#' @return a \code{\link{data.frame}} object. 
 #' 
-#' @return ...
+#' @seealso 
+#' \code{\link{read_hdx}}
+#' \code{\link{calculate_state_deuteration}}
 #' 
-#' @seealso ... 
-#' 
-#' @export generate_general_data_set
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' comparison_dat <- create_state_comparison_dataset(dat)
+#' head(comparison_dat)
+#'
+#' @export create_state_comparison_dataset
 
-generate_general_data_set <- function(dat,
-                                      control_protein,
-                                      control_state,
-                                      control_exposure){
+create_state_comparison_dataset <- function(dat,
+                                            protein = unique(dat[["Protein"]])[1],
+                                            states = unique(dat[["State"]]),
+                                            time_0 = 0.001,
+                                            time_t = 1,
+                                            time_100 = 1440,
+                                            deut_part = 0.9){
+  
+  
+  lapply(states, function(state){
+    
+    calculate_state_deuteration(dat,
+                                protein = protein,
+                                state = state,
+                                time_0 = time_0,
+                                time_t = time_t,
+                                time_100 = time_100,
+                                deut_part = deut_part)
+    
+  }) %>% bind_rows
+  
+}
+
+
+
+#' Create dataset with control
+#' 
+#' @param dat data imported by the \code{\link{read_hdx}} function.
+#' @param control_protein maximal exchange control protein, from dat. 
+#' @param control_state maximal exchange control state, from dat.
+#' @param control_exposure maximal exchange control exposure (time
+#' point of measurement), from dat.
+#' 
+#' @details Function \code{\link{create_control_dataset}}
+#' creates a dataset (similar to the output of \code{\link{read_hdx}} 
+#' function), with maximal exchange control for all the states,
+#' based on provided parameters. The other functions are operating 
+#' within a state, so the control is prepared for each state. 
+#' The chosen maximal exchange control is distinguishable by the value 
+#' `99999` in `Exposure` control. 
+#' 
+#' @return a \code{\link{data.frame}} object. 
+#' 
+#' @seealso 
+#' \code{\link{read_hdx}}
+#' \code{\link{calculate_state_deuteration}}
+#' 
+#' @export create_control_dataset
+
+create_control_dataset <- function(dat,
+                                   control_protein,
+                                   control_state,
+                                   control_exposure){
   
   tmp <- dat %>%
     filter(Protein == control_protein, 

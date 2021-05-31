@@ -297,19 +297,19 @@ server <- function(input, output, session) {
 
   ##
 
-  observe({
-
-    tryCatch({
-      if(input[["deut_part"]] < 0)
-        updateNumericInput(session,
-                           inputId = "deut_part",
-                           value = 0)
-    }, error = function(e){
-      updateNumericInput(session,
-                         inputId = "deut_part",
-                         value = 0)
-    })
-  })
+  # observe({
+  # 
+  #   tryCatch({
+  #     if(input[["deut_part"]] < 0)
+  #       updateNumericInput(session,
+  #                          inputId = "deut_part",
+  #                          value = 0)
+  #   }, error = function(e){
+  #     updateNumericInput(session,
+  #                        inputId = "deut_part",
+  #                        value = 0)
+  #   })
+  # })
 
   observe({
 
@@ -377,10 +377,10 @@ server <- function(input, output, session) {
 
   dat <- reactive({
 
-    generate_general_data_set(dat = dat_tmp(),
-                              control_protein = input[["chosen_protein"]],
-                              control_state = strsplit(input[["chosen_control"]], " \\| ")[[1]][2],
-                              control_exposure = strsplit(input[["chosen_control"]], " \\| ")[[1]][3])
+    create_control_dataset(dat = dat_tmp(),
+                           control_protein = input[["chosen_protein"]],
+                           control_state = strsplit(input[["chosen_control"]], " \\| ")[[1]][2],
+                           control_exposure = strsplit(input[["chosen_control"]], " \\| ")[[1]][3])
   })
 
 

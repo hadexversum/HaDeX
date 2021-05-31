@@ -10,14 +10,15 @@ read_hdx(filename)
 \item{filename}{a file supplied by the user. Formats allowed: .csv, .xlsx and .xls.}
 }
 \value{
-\code{dat} - a \code{\link{data.frame}} with validated content.
+a \code{\link{data.frame}} object with validated content.
 }
 \description{
 Imports data from a HDX-MS file and validates its content.
 }
 \details{
-First version accepts files produced by DynamX 3.0 or 2.0 in `cluster data` format
-and `tables` file from HDeXaminer. For further information check the documetation.
+Function \code{\link{read_hdx}} accepts files produced by DynamX 3.0 or 2.0
+in `cluster data` format and `tables` file from HDeXaminer. 
+For further information check the documentation.
 The function checks if all necessary columns are provided in correct format. The file must 
 include at least two repetitions of the measurement for the uncertainty to be calculated.
 For the files of HDeXaminer origin, the rows with no complete information (e.q. missing
@@ -25,19 +26,19 @@ For the files of HDeXaminer origin, the rows with no complete information (e.q. 
 have impact on accepting rows based on their Confidence flag. Moreover, those files need 
 action from the user - to confirm data processing (e.q. FD time point), choose accepted 
 confidence values and make some change of the labels use \code{\link{upadate_hdexaminer_file}}
-function. IMPORTANT! The files of HDeXaminer origin MUST be processed by hand or by 
+function. 
+IMPORTANT! The files of HDeXaminer origin MUST be processed by hand or by 
 \code{\link{upadate_hdexaminer_file}} function to fit the input of processing functions 
 e.q. \code{\link{calculate_state_deuteration}} or \code{\link{calculate_kinetics}}.
 }
 \examples{
-# read example data
-head(read_hdx(system.file(package = "HaDeX", 
-                     "HaDeX/data/KD_180110_CD160_HVEM.csv")))
+dat <- read_hdx(system.file(package = "HaDeX", 
+                     "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+head(dat)
 
 }
 \seealso{
-\code{\link{calculate_kinetics}} \code{\link{calculate_state_deuteration}} 
-\code{\link{plot_coverage}} \code{\link{plot_position_frequency}}
-\code{\link{prepare_dataset}} \code{\link{quality_control}} \code{\link{reconstruct_sequence}}
 \code{\link{update_hdexaminer_file}}
+\code{\link{create_control_dataset}}
+\code{\link{calculate_state_deuteration}}
 }
