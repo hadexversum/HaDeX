@@ -4,7 +4,7 @@
 
 stateOverlap_data <- reactive({
   
-  generate_overlap_data(dat = dat(),
+  show_overlap_data(dat = dat(),
                         protein = input[["chosen_protein"]],
                         state = input[["chosen_state"]],
                         start = input[["plot_range"]][[1]],
@@ -24,7 +24,7 @@ output[["stateOverlap_data"]] <- DT::renderDataTable(server = FALSE, {
 
 stateOverlap_out <- reactive({
   
-  generate_overlap_plot(dat = stateOverlap_data()) +
+  plot_overlap(dat = stateOverlap_data()) +
     coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]]))
   
 })
@@ -101,7 +101,7 @@ output[["stateOverlap_download_button"]] <- downloadHandler("stateOverlap.svg",
 
 stateOverlapDist_data <- reactive({
   
-  generate_overlap_distribution_data(dat(),
+  create_overlap_distribution_dataset(dat(),
                                      protein = input[["chosen_protein"]],
                                      state = input[["chosen_state"]],
                                      start = input[["plot_range"]][[1]],
@@ -124,7 +124,7 @@ output[["stateOverlapDist_data"]] <- DT::renderDataTable(server = FALSE, {
 
 stateOverlapDist <- reactive({
   
-  generate_overlap_distribution_plot(dat = stateOverlapDist_data(),
+  plot_overlap_distribution(dat = stateOverlapDist_data(),
                                      start = input[["plot_range"]][[1]],
                                      end = input[["plot_range"]][[2]])
 })

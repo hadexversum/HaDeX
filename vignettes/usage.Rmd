@@ -1,0 +1,36 @@
+---
+title: "Code usage"
+output: html_document
+vignette: >
+  %\VignetteIndexEntry{Data visualization}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Convention
+
+Purpose of groups of functions in the package:
+
+* calculate_* - calculates one specific value. e.q. deuterium uptake values for specific time point.
+* create_* - creates a dataset for set of values e.q. multiple time points.
+* plot_* - plots a visualization of provided data, accepts calculate_* and create_*  outputs.
+* show_* - subsets the dataset to show specific values, accepts calculate_* and create_*  outputs. 
+
+Variables:
+
+* deut_uptake - deuterium uptake [Da]
+* frac_deut_uptake - fractional deuterium uptake [%]
+* theo_deut_uptake - theoretical deuterium uptake [Da]
+* theo_frac_deut_uptake - theoretical fractional deuterium uptake [%]
+* diff_deut_uptake - differential deuterium uptake [Da]
+* frac_diff_deut_uptake - theoretical differential fractional deuterium uptake [%]
+* theo_diff_deut_uptake - differential deuterium uptake [Da]
+* theo_frac_diff_deut_uptake - theoretical differential fractional deuterium uptake [%]
+
+
+## Example of use
+

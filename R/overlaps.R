@@ -1,4 +1,4 @@
-#' generate_overlap_data
+#' show_overlap_data
 #' 
 #' @description Generates overlap data, based on the supplied
 #' parameters.
@@ -15,9 +15,9 @@
 #' 
 #' @seealso ... 
 #' 
-#' @export generate_overlap_data
+#' @export show_overlap_data
 
-generate_overlap_data <- function(dat,
+show_overlap_data <- function(dat,
                                   protein,
                                   state,
                                   start,
@@ -46,9 +46,9 @@ generate_overlap_data <- function(dat,
 #' 
 #' @seealso ... 
 #' 
-#' @export generate_overlap_plot
+#' @export plot_overlap
 
-generate_overlap_plot <- function(dat){
+plot_overlap <- function(dat){
   
   dat %>%
     select(Sequence, Start, End) %>%
@@ -83,9 +83,9 @@ generate_overlap_plot <- function(dat){
 #' 
 #' @seealso ... 
 # '
-#' @export generate_overlap_distribution_data
+#' @export create_overlap_distribution_dataset
 
-generate_overlap_distribution_data <- function(dat, 
+create_overlap_distribution_dataset <- function(dat, 
                                                protein,
                                                state,
                                                start,
@@ -130,9 +130,9 @@ generate_overlap_distribution_data <- function(dat,
 #' 
 #' @seealso ... 
 #' 
-#' @export generate_overlap_distribution_plot
+#' @export plot_overlap_distribution
 
-generate_overlap_distribution_plot <- function(dat,
+plot_overlap_distribution <- function(dat,
                                                start,
                                                end){
   

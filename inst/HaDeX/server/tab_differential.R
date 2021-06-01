@@ -89,7 +89,7 @@ woods_plot_dat <- reactive({
   }
   
   tryCatch({
-    generate_differential_data_set(dat = dat(),
+    calculate_diff_uptake(dat = dat(),
                                    states = c(input[["state_first"]], input[["state_second"]]),
                                    protein = input[["chosen_protein"]],
                                    time_0 = input[["time_0"]],

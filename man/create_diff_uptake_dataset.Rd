@@ -58,7 +58,7 @@ head(diff_uptake_dat)
 }
 \seealso{
 \code{\link{read_hdx}}
-\code{\link{generate_differential_data_set}}
+\code{\link{calculate_diff_uptake}}
 \code{\link{plot_butterfly_differential}}
 \code{\link{plot_chiclet_differential}}
 \code{\link{plot_differential}}

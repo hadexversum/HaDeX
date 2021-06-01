@@ -19,10 +19,10 @@ library(dplyr)
 
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 
-comp_dat <- generate_comparison_dataset(dat, time_t = 1)
-woods_dat <- generate_differential_data_set(dat)
-butt_dat <- generate_butterfly_dataset(dat)
-butt_diff_dat <- generate_butterfly_differential_dataset(dat)
+states_uptake_dat <- create_state_comparison_dataset(dat, time_t = 1)
+woods_diff_uptake_dat <- calculate_diff_uptake(dat)
+uptake_dat <- create_state_uptake_dataset(dat)
+diff_uptake_dat <- create_diff_uptake_dataset(dat)
 ```
 
 Data visualization is an essential part of the data analysis as it allows to interpret the results.
@@ -55,7 +55,7 @@ The comparison plot shows deuterium uptake of the peptides in a given time point
 *Example* In the comparison plot below, we see the fractional deuterium uptake for two states CD160 and CD160_HVEM, of protein db_CD160. The values are calculated for the time point 1 min. The length of the segments represents the length of the peptide and the position in the protein sequence. The error bars indicate the uncertainty of the measurement. 
 
 ```{r}
-generate_comparison_plot(comp_dat, fractional = TRUE) + 
+plot_state_comparison(states_uptake_dat, fractional = TRUE) + 
   labs(x = "Position in sequence",
        y = "Fractional deuterium uptake [%]",
        title = "Measurement - 1 min")
@@ -77,8 +77,8 @@ Woods plot presents the deuterium uptake difference between two biological state
 *Example* On the Woods plot below, we see fractional deuterium uptake difference between two biological states CD160 and CD160_HVEM for protein db_CD160. The confidence limits indicate which differences are statistically significant at levels 98% and 99%. There are regions that were protected in the second state, and regions deprotected. Also, in region 40-800, results for some peptides were not big enough to be significant. 
 
 ```{r}
-generate_differential_plot(woods_dat, fractional = TRUE) +
-  coord_cartesian(ylim = c(-6, 15)) + 
+plot_differential(woods_diff_uptake_dat, fractional = TRUE) +
+  coord_cartesian(ylim = c(-6, 15)) +
   labs(x = "Position in seqence",
        y = "Fractional deuterium uptake difference [%]",
        title = "Measurement - 1 min")
@@ -100,7 +100,7 @@ Butterfly plot presents the deuterium uptake for all peptides in a given state a
 *Example* Below, on the butterfly plot, we see how the fractional deuterium uptake changes in time for state CD160 for protein db_CD160. We see the different exchange speed - for some peptides, the change is stable in time, and for some peptides, there is no visible change in time.
 
 ```{r}
-generate_butterfly_plot(butt_dat, fractional = TRUE)
+plot_butterfly(uptake_dat, fractional = TRUE)
 ```
 
 *Pros* Shows the changes of deuterium uptake in time and allows to see how the exchange goes. 
@@ -118,7 +118,7 @@ Butterfly differential plot shows the deuterium uptake difference between two bi
 *Example* Below, we see how the fractional deuterium uptake difference between states CD160 and CD160_HVEM changes over time. We see that for some peptides, the difference is smaller with time - perhaps because of the back exchange.
 
 ```{r message=FALSE}
-generate_butterfly_differential_plot(butt_diff_dat, fractional = TRUE, show_confidence_limit = TRUE) +
+plot_differential_butterfly(diff_uptake_dat, fractional = TRUE, show_confidence_limit = TRUE) +
   coord_cartesian(ylim = c(-10, 20))
 ```
 
@@ -137,7 +137,7 @@ Chiclet plot shows the fractional deuterium uptake in the form of a heatmap for 
 *Example*
 
 ```{r}
-generate_chiclet_plot(butt_dat, show_uncertainty = T, fractional = TRUE)
+plot_chiclet(uptake_dat, show_uncertainty = T, fractional = TRUE)
 ```
 
 *Pros* The plot shows how the deuterium uptake changes over time. 
@@ -155,7 +155,7 @@ Chiclet differential plot shows the deuterium uptake difference between two biol
 *Example* On the chiclet differential plot below, we see the fractional deuterium uptake difference between states CD160 and CD160_HVEM for protein db_CD160. We see that some peptides are protected (red), and some are deprotected (blue). 
 
 ```{r}
-generate_chiclet_differential_plot(butt_diff_dat, show_uncertainty = TRUE, fractional = TRUE)
+plot_differential_chiclet(diff_uptake_dat, show_uncertainty = TRUE, fractional = TRUE)
 ```
 
 *Pros* The plot shows the results for different time points of the measurement.
@@ -179,9 +179,9 @@ The dotted red lines indicate confidence limits for the values. The horizontal l
 *Example* On the volcano plot below, we see the results for deuterium uptake difference between states CD160 and CD160_HVEM for protein db_CD160 in all time points. 
 
 ```{r}
-vol_dat <- generate_volcano_dataset(dat)
+vol_dat <- create_volcano_dataset(dat)
 
-generate_volcano_plot(vol_dat, show_confidence_limits = T) 
+plot_volcano(vol_dat, show_confidence_limits = T) 
 
 ```
 

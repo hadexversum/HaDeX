@@ -119,7 +119,7 @@ create_control_dataset <- function(dat,
 #' @param deut_part deuterium percentage in solution used in experiment, 
 #' value from range [0, 1].
 #' 
-#' @details Function \code{\link{generate_differential_data_set}} calculates
+#' @details Function \code{\link{calculate_diff_uptake}} calculates
 #' differential values based on provided criteria for peptides for chosen
 #' protein in selected states. The methods of calculation of deuterium uptake
 #' difference, fractional deuterium uptake difference with respect to 
@@ -132,23 +132,21 @@ create_control_dataset <- function(dat,
 #' @seealso 
 #' \code{\link{read_hdx}}
 #' \code{\link{calculate_state_uptake}}
-#' \code{\link{generate_differential_data}}
-#' \code{\link{generate_differential_plot}}
 #' 
 #' @examples
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' diff_dat <- generate_differential_data_set(dat)
+#' diff_dat <- calculate_diff_uptake(dat)
 #' head(diff_dat)
 #' 
-#' @export generate_differential_data_set
+#' @export calculate_diff_uptake
 
-generate_differential_data_set <- function(dat,
-                                           protein = unique(dat[["Protein"]][1]),
-                                           states = unique(dat[["State"]])[1:2],
-                                           time_0 = 0.001,
-                                           time_t = 1,
-                                           time_100 = 1440,
-                                           deut_part = 0.9){
+calculate_diff_uptake  <- function(dat,
+                                   protein = unique(dat[["Protein"]][1]),
+                                   states = unique(dat[["State"]])[1:2],
+                                   time_0 = 0.001,
+                                   time_t = 1,
+                                   time_100 = 1440,
+                                   deut_part = 0.9){
   
   bind_rows(lapply(states, function(i) calculate_state_uptake(dat, 
                                                               protein = protein, 
@@ -283,12 +281,14 @@ create_uptake_dataset <- function(dat,
   
   uptake_dat <- lapply(states, function(state){
     
-    calculate_state_uptake(dat, protein = protein, 
+    calculate_state_uptake_dataset(dat, protein = protein, 
                            state = state,
                            time_0 = time_0, time_100 = time_100,
                            deut_part = deut_part)
     
   }) %>% bind_rows()
+  
+  return(uptake_dat)
   
 }
 
@@ -320,7 +320,7 @@ create_uptake_dataset <- function(dat,
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}}
-#' \code{\link{generate_differential_data_set}}
+#' \code{\link{calculate_diff_uptake}}
 #' \code{\link{plot_butterfly_differential}}
 #' \code{\link{plot_chiclet_differential}}
 #' \code{\link{plot_differential}}
@@ -345,7 +345,7 @@ create_diff_uptake_dataset <- function(dat,
   
   diff_uptake_dat <- lapply(times, function(time){
     
-    generate_differential_data_set(dat = dat, states = c(state_1, state_2), protein = protein, 
+    calculate_diff_uptake(dat = dat, states = c(state_1, state_2), protein = protein, 
                                    time_0 = time_0, time_t = time, time_100 = time_100, 
                                    deut_part = deut_part) %>%
       arrange(Start, End) %>%
