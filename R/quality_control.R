@@ -64,21 +64,21 @@ quality_control <- function(dat,
   
   result <- lapply(times, function(t){
     
-    state_dat_1 <- calculate_state_deuteration(dat, 
-                                               protein = protein,
-                                               state = state_first,
-                                               time_0 = time_0, 
-                                               time_t = time_t,
-                                               time_100 = t,
-                                               deut_part = deut_part)
+    state_dat_1 <- calculate_state_uptake(dat, 
+                                          protein = protein,
+                                          state = state_first,
+                                          time_0 = time_0, 
+                                          time_t = time_t,
+                                          time_100 = t,
+                                          deut_part = deut_part)
     
-    state_dat_2 <- calculate_state_deuteration(dat, 
-                                               protein = protein,
-                                               state = state_second,
-                                               time_0 = time_0, 
-                                               time_t = time_t,
-                                               time_100 = t,
-                                               deut_part = deut_part)
+    state_dat_2 <- calculate_state_uptake(dat, 
+                                          protein = protein,
+                                          state = state_second,
+                                          time_0 = time_0, 
+                                          time_t = time_t,
+                                          time_100 = t,
+                                          deut_part = deut_part)
     
     ## functionality from generate_differential_data_set()
     diff_dat <- bind_rows(state_dat_1, state_dat_2) %>%

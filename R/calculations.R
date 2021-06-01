@@ -1,4 +1,4 @@
-#' Calculate deuteration 
+#' Calculate deuterium uptake 
 #' 
 #' @description Calculates deuteration uptake based on supplied parameters.
 #' 
@@ -12,8 +12,10 @@
 #' @param time_t chosen time point 
 #' @param deut_part percentage of deuterium the protein was exposed to, value in range [0, 1]
 #' 
-#' @details The function \code{calculate_state_deuteration} calculates deuterium uptake for peptides in given protein in given state based
-#' on supplied parameters: `time_0`, `time_100` and `time_t`. All four variants (combinations of theoretical & relative) are 
+#' @details The function \code{calculate_state_uptake} calculates deuterium uptake 
+#' (in different forms) for all of the peptides in given protein in given state based
+#' on supplied parameters: `time_0`, `time_100` and `time_t`. All four variants 
+#' (fractiona) are 
 #' supplied (mean values and uncertainty). Manual correction of percentage of deuterium the protein was exposed to during the exchange
 #' in theoretical calculations is provided. 
 #'
@@ -21,29 +23,30 @@
 #' 
 #' @return a \code{\link{data.frame}} object
 #' 
-#' @seealso \code{\link{read_hdx}} \code{\link{calculate_confidence_limit_values}} \code{\link{add_stat_dependency}}
+#' @seealso 
+#' \code{\link{read_hdx}} 
+#' \code{\link{create_uptake_dataset}}
+#' \code{\link{calculate_confidence_limit_values}} 
+#' \code{\link{add_stat_dependency}}
 #' 
 #' @examples
-#' # load example data
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' 
-#' # calculate deuterium uptake values for state "CD160"
-#' calculate_state_deuteration(dat, protein = "db_CD160", state = "CD160",
+#' calculate_state_uptake(dat)
+#' calculate_state_uptake(dat, protein = "db_CD160", state = "CD160",
 #'                             time_0 = 0.001, time_t = 5.000, time_100 = 1440.000)
 #'                             
-#' # calculate deuterium uptake values for state "CD160_HVEM"
-#' calculate_state_deuteration(dat, protein = "db_CD160", state = "CD160_HVEM",
-#'                             time_0 = 0.001, time_t = 5.000, time_100 = 1440.000)
 #'                             
-#' @export calculate_state_deuteration
+#' @export calculate_state_uptake
 
-calculate_state_deuteration <- function(dat,
-                                        protein, 
-                                        state, 
-                                        time_0,
-                                        time_t, 
-                                        time_100,
-                                        deut_part = 0.9){
+calculate_state_uptake <- function(dat,
+                                   protein = unique(dat[["Protein"]])[1], 
+                                   state = unique(dat[["State"]])[1], 
+                                   time_0 = min(dat[["Exposure"]]),
+                                   time_t = unique(dat[["Exposure"]])[3], 
+                                   time_100 = max(dat[["Exposure"]]),
+                                   deut_part = 0.9){
+  
   proton_mass <- 1.00727647
   dat <- dat[dat[["Protein"]] == protein & dat[["State"]] == state & dat[["Exposure"]] %in% c(time_0, time_t, time_100), ]
   

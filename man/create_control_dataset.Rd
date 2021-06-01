@@ -33,5 +33,5 @@ The chosen maximal exchange control is distinguishable by the value
 }
 \seealso{
 \code{\link{read_hdx}}
-\code{\link{calculate_state_deuteration}}
+\code{\link{calculate_state_uptake}}
 }

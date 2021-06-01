@@ -40,7 +40,7 @@ Creates comparison uptake dataset
 }
 \details{
 Function \code{\link{create_state_comparison_dataset}} is a 
-wrapper for \code{\link{calculate_state_deuteration}} function, calls 
+wrapper for \code{\link{calculate_state_uptake}} function, calls 
 this function for all (default) or chosen states in states vector.
 }
 \examples{
@@ -51,5 +51,5 @@ head(comparison_dat)
 }
 \seealso{
 \code{\link{read_hdx}}
-\code{\link{calculate_state_deuteration}}
+\code{\link{calculate_state_uptake}}
 }

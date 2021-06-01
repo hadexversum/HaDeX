@@ -54,7 +54,7 @@ head(uptake_dat)
 }
 \seealso{
 \code{\link{read_hdx}}
-\code{\link{calculate_state_deuteration}}
+\code{\link{calculate_state_uptake}}
 \code{\link{create_state_uptake_dataset}} 
 \code{\link{generate_comparison_plot}}
 }

@@ -249,13 +249,13 @@ all_dat <- reactive({
     validate(need(as.numeric(input[["time_t"]]) < as.numeric(input[["time_100"]]), "Out time must be bigger than chosen time."))
   }
   
-  bind_rows(lapply(states_from_file(), function(i) calculate_state_deuteration(dat(),
-                                                                               protein = input[["chosen_protein"]],
-                                                                               state = i,
-                                                                               time_0 = input[["time_0"]],
-                                                                               time_t = input[["time_t"]],
-                                                                               time_100 = input[["time_100"]],
-                                                                               deut_part = 0.01*as.integer(input[["deut_part"]]))))
+  bind_rows(lapply(states_from_file(), function(i) calculate_state_uptake(dat(),
+                                                                          protein = input[["chosen_protein"]],
+                                                                          state = i,
+                                                                          time_0 = input[["time_0"]],
+                                                                          time_t = input[["time_t"]],
+                                                                          time_100 = input[["time_100"]],
+                                                                          deut_part = 0.01*as.integer(input[["deut_part"]]))))
 })
 
 ##

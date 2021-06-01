@@ -52,7 +52,7 @@ head(state_uptake_dat)
 }
 \seealso{
 \code{\link{read_hdx}}
-\code{\link{calculate_state_deuteration}}
+\code{\link{calculate_state_uptake}}
 \code{\link{generate_butterfly_plot}} 
 \code{\link{generate_comparison_plot}}
 \code{\link{generate_chiclet_plot}}

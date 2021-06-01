@@ -110,13 +110,13 @@ calculate_kinetics <- function(dat,
   
   bind_rows(lapply(time_points_to_iterate, function(time_point){
     
-    calculate_state_deuteration(dat = prep_dat, 
-                                protein = protein,
-                                state = state, 
-                                time_0 = time_0, 
-                                time_t = time_point, 
-                                time_100 = time_100,
-                                deut_part = deut_part) %>%
+    calculate_state_uptake(dat = prep_dat, 
+                           protein = protein,
+                           state = state, 
+                           time_0 = time_0, 
+                           time_t = time_point, 
+                           time_100 = time_100,
+                           deut_part = deut_part) %>%
       mutate(time_chosen = time_point) 
     
   })) %>%

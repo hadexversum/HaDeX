@@ -12,14 +12,14 @@
 #' value from range [0, 1].
 #' 
 #' @details Function \code{\link{create_state_comparison_dataset}} is a 
-#' wrapper for \code{\link{calculate_state_deuteration}} function, calls 
+#' wrapper for \code{\link{calculate_state_uptake}} function, calls 
 #' this function for all (default) or chosen states in states vector.
 #' 
 #' @return a \code{\link{data.frame}} object. 
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}}
-#' \code{\link{calculate_state_deuteration}}
+#' \code{\link{calculate_state_uptake}}
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
@@ -39,13 +39,13 @@ create_state_comparison_dataset <- function(dat,
   
   lapply(states, function(state){
     
-    calculate_state_deuteration(dat,
-                                protein = protein,
-                                state = state,
-                                time_0 = time_0,
-                                time_t = time_t,
-                                time_100 = time_100,
-                                deut_part = deut_part)
+    calculate_state_uptake(dat,
+                           protein = protein,
+                           state = state,
+                           time_0 = time_0,
+                           time_t = time_t,
+                           time_100 = time_100,
+                           deut_part = deut_part)
     
   }) %>% bind_rows
   
@@ -73,7 +73,7 @@ create_state_comparison_dataset <- function(dat,
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}}
-#' \code{\link{calculate_state_deuteration}}
+#' \code{\link{calculate_state_uptake}}
 #' 
 #' @export create_control_dataset
 
@@ -131,7 +131,7 @@ create_control_dataset <- function(dat,
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}}
-#' \code{\link{calculate_state_deuteration}}
+#' \code{\link{calculate_state_uptake}}
 #' \code{\link{generate_differential_data}}
 #' \code{\link{generate_differential_plot}}
 #' 
@@ -150,13 +150,13 @@ generate_differential_data_set <- function(dat,
                                            time_100 = 1440,
                                            deut_part = 0.9){
   
-  bind_rows(lapply(states, function(i) calculate_state_deuteration(dat, 
-                                                                   protein = protein, 
-                                                                   state = i, 
-                                                                   time_0 = time_0,
-                                                                   time_t = time_t, 
-                                                                   time_100 = time_100,
-                                                                   deut_part = deut_part))) %>%
+  bind_rows(lapply(states, function(i) calculate_state_uptake(dat, 
+                                                              protein = protein, 
+                                                              state = i, 
+                                                              time_0 = time_0,
+                                                              time_t = time_t, 
+                                                              time_100 = time_100,
+                                                              deut_part = deut_part))) %>%
     droplevels() %>% 
     mutate(State = factor(State, levels = states, labels = c("1", "2"))) %>%
     gather(variable, value, -c(Protein:End, State, Med_Sequence)) %>%
@@ -198,7 +198,7 @@ generate_differential_data_set <- function(dat,
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}}
-#' \code{\link{calculate_state_deuteration}}
+#' \code{\link{calculate_state_uptake}}
 #' \code{\link{generate_butterfly_plot}} 
 #' \code{\link{generate_comparison_plot}}
 #' \code{\link{generate_chiclet_plot}}
@@ -222,9 +222,9 @@ create_state_uptake_dataset <- function(dat,
   
   state_uptake_dat <- lapply(times, function(time){
     
-    calculate_state_deuteration(dat, protein = protein, state = state,
-                                time_0 = time_0, time_t = time, time_100 = time_100, 
-                                deut_part = deut_part) %>%
+    calculate_state_uptake(dat, protein = protein, state = state,
+                           time_0 = time_0, time_t = time, time_100 = time_100, 
+                           deut_part = deut_part) %>%
       arrange(Start, End) %>%
       mutate( # ID = 1L:nrow(.),
              Exposure = time) %>%
@@ -263,7 +263,7 @@ create_state_uptake_dataset <- function(dat,
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}}
-#' \code{\link{calculate_state_deuteration}}
+#' \code{\link{calculate_state_uptake}}
 #' \code{\link{create_state_uptake_dataset}} 
 #' \code{\link{generate_comparison_plot}}
 #' 
@@ -283,10 +283,10 @@ create_uptake_dataset <- function(dat,
   
   uptake_dat <- lapply(states, function(state){
     
-    create_state_uptake_dataset(dat, protein = protein, 
-                                state = state,
-                                time_0 = time_0, time_100 = time_100,
-                                deut_part = deut_part)
+    calculate_state_uptake(dat, protein = protein, 
+                           state = state,
+                           time_0 = time_0, time_100 = time_100,
+                           deut_part = deut_part)
     
   }) %>% bind_rows()
   

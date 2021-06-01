@@ -55,7 +55,7 @@ head(diff_dat)
 }
 \seealso{
 \code{\link{read_hdx}}
-\code{\link{calculate_state_deuteration}}
+\code{\link{calculate_state_uptake}}
 \code{\link{generate_differential_data}}
 \code{\link{generate_differential_plot}}
 }
