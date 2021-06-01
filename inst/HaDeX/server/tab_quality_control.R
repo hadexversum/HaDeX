@@ -42,13 +42,13 @@ quality_control_dat <- reactive({
   validate(need(sum(unique(qc_dat[["Exposure"]]) > as.numeric(input[["qc_time_t"]])) > 1, "Not enough time points (bigger than chosen time) to generate a plot. "))
   validate(need(input[["qc_state_first"]]!=input[["qc_state_second"]], "The states must be different."))
   
-  result <- quality_control(dat = qc_dat,
-                            state_first = input[["qc_state_first"]],
-                            state_second = input[["qc_state_second"]],
-                            time_t = as.numeric(input[["qc_time_t"]]),
-                            time_0 = as.numeric(input[["qc_time_0"]]),
-                            protein = input[["chosen_protein"]],
-                            deut_part = 0.01*as.integer(input[["deut_part"]]))
+  result <- create_quality_control_dataset(dat = qc_dat,
+                                           state_first = input[["qc_state_first"]],
+                                           state_second = input[["qc_state_second"]],
+                                           time_t = as.numeric(input[["qc_time_t"]]),
+                                           time_0 = as.numeric(input[["qc_time_0"]]),
+                                           protein = input[["chosen_protein"]],
+                                           deut_part = 0.01*as.integer(input[["deut_part"]]))
   
 })
 
@@ -58,7 +58,7 @@ quality_control_dat <- reactive({
 
 qc_out <- reactive({
   
-  generate_quality_control_plot(dat = quality_control_dat())
+  plot_quality_control(dat = quality_control_dat())
   
 })
 
@@ -125,7 +125,7 @@ output[["quality_control_plot_download_button"]] <- downloadHandler("qualityCont
 
 quality_control_plot_data_out <- reactive({
   
-  generate_quality_control_data(dat = quality_control_dat()) %>%
+  show_quality_control_data(dat = quality_control_dat()) %>%
     dt_format()
   
 })
