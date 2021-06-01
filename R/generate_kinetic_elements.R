@@ -18,14 +18,14 @@
 #' 
 #' @seealso ... 
 #' 
-#' @export generate_kinetic_data_set
+#' @export create_kinetic_dataset
 
-generate_kinetic_data_set <- function(dat,
-                                      peptide_list,
-                                      protein,
-                                      time_0,
-                                      time_100,
-                                      deut_part){
+create_kinetic_dataset <- function(dat,
+                                   peptide_list,
+                                   protein,
+                                   time_0,
+                                   time_100,
+                                   deut_part){
   
   bind_rows(apply(peptide_list, 1, function(peptide){
     calculate_kinetics(dat = dat,
@@ -59,11 +59,11 @@ generate_kinetic_data_set <- function(dat,
 #' 
 #' @seealso ... 
 #' 
-#' @export generate_kinetic_data
+#' @export show_kinetic_data
 
-generate_kinetic_data <- function(dat, 
-                                  theoretical = FALSE, 
-                                  fractional = FALSE){
+show_kinetic_data <- function(dat, 
+                              theoretical = FALSE, 
+                              fractional = FALSE){
   
   if(theoretical){
     

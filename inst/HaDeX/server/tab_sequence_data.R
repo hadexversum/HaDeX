@@ -107,10 +107,10 @@ output[["sequenceName"]] <- renderText({
 
 aminoDist_out <- reactive({
   
-  generate_amino_distribution(position_in_sequence = position_in_sequence(),
-                              hydro_properties = input[["hydro_prop"]],
-                              protein = input[["chosen_protein"]],
-                              charge_colors = c("-1" = "#E41A1C", "0" = "#377EB8", "1" = "#4DAF4A"))
+  plot_amino_distribution(position_in_sequence = position_in_sequence(),
+                          hydro_properties = input[["hydro_prop"]],
+                          protein = input[["chosen_protein"]],
+                          charge_colors = c("-1" = "#E41A1C", "0" = "#377EB8", "1" = "#4DAF4A"))
 })
 
 ##

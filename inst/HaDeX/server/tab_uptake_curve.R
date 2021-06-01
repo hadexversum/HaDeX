@@ -180,12 +180,12 @@ kin_dat <- reactive({
     
   }
   
-  generate_kinetic_data_set(dat = dat(),
-                            peptide_list = peptide_list()[input[["peptide_list_data_rows_selected"]], ],
-                            protein = input[["chosen_protein"]],
-                            deut_part = input[["deut_part"]],
-                            time_0 = v_time_0,
-                            time_100 = v_time_100)
+  create_kinetic_dataset(dat = dat(),
+                         peptide_list = peptide_list()[input[["peptide_list_data_rows_selected"]], ],
+                         protein = input[["chosen_protein"]],
+                         deut_part = input[["deut_part"]],
+                         time_0 = v_time_0,
+                         time_100 = v_time_100)
 })
 
 
@@ -291,9 +291,9 @@ output[["kineticPlot_download_button"]] <- downloadHandler("kineticPlot.svg",
 
 kin_plot_data <- reactive({
   
-  generate_kinetic_data(dat = kin_dat(),
-                        theoretical = input[["kin_theory"]],
-                        fractional = input[["kin_fractional"]])
+  show_kinetic_data(dat = kin_dat(),
+                    theoretical = input[["kin_theory"]],
+                    fractional = input[["kin_fractional"]])
 })
 
 ##

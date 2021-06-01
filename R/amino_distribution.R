@@ -15,9 +15,9 @@
 #' 
 #' @seealso ... 
 #' 
-#' @export generate_amino_distribution
+#' @export plot_amino_distribution
 
-generate_amino_distribution <- function(position_in_sequence, 
+plot_amino_distribution <- function(position_in_sequence, 
                                         hydro_properties,
                                         protein,
                                         charge_colors){
