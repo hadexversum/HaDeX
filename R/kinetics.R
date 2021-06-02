@@ -165,7 +165,7 @@ calculate_peptide_kinetics <- function(dat,
 }
 
 
-#' generate_kinetic_data_set
+#' Create kinetics dataset for a list of peptides and their states
 #' 
 #' @description Generates the data set of deuterium uptake between selected 
 #' time points based on supplied peptide list.
@@ -188,7 +188,9 @@ calculate_peptide_kinetics <- function(dat,
 #' \code{\link{calculate_state_uptake}}
 #' \code{\link{plot_kinetics}}
 #' 
-#' @examples ...
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' ...
 #' 
 #' @export create_kinetic_dataset
 
@@ -214,26 +216,44 @@ create_kinetic_dataset <- function(dat,
 }
 
 
-#' generate_kinetic_data
+#' Shows selected kinetics data
 #' 
 #' @description Generates deuterium uptake data, based on the supplied
 #' parameters.
 #' 
-#' @param dat custom format, produced by 
-#' \code{\link{generate_kinetic_data_set}}
-#' @param theoretical \code{logical}, determines if plot shows theoretical values
-#' @param fractional \code{logical}, determines if plot shows fractional values
+#' @param kin_dat calculated kinetic data by \code{\link{calculate_kinetics}} 
+#' or \code{\link{calculate_peptide_kinetics}} or \code{\link{create_kinetics_dataset}}
+#' function.
+#' @param theoretical \code{logical}, determines if plot shows theoretical values.
+#' @param fractional \code{logical}, determines if plot shows fractional values.
 #' 
 #' @details This data is available in the GUI. 
 #' All of the numerical values are rounded to 4 places after the dot!!
 #' 
-#' @return ...
+#' @return a \code{\link{data.frame}} object.
 #' 
-#' @seealso ... 
+#' @seealso 
+#' \code{\link{read_hdx}}
+#' \code{\link{calculate_kinetics}}
+#' \code{\link{calculate_peptide_kinetics}}
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#'
+#' # one peptide in one state
+#' kin1 <- calculate_kinetics(dat, 
+#'                            protein = "db_CD160",
+#'                            sequence = "INITSSASQEGTRLN", 
+#'                            state = "CD160",
+#'                            start = 1, 
+#'                            end = 15,
+#'                            time_in = 0.001, 
+#'                            time_out = 1440)
+#' show_kinetic_data(kin1)
 #' 
 #' @export show_kinetic_data
 
-show_kinetic_data <- function(dat, 
+show_kinetic_data <- function(kin_dat, 
                               theoretical = FALSE, 
                               fractional = FALSE){
   
@@ -241,7 +261,7 @@ show_kinetic_data <- function(dat,
     
     if(fractional){
       # theoretical & fractional  
-      dat %>%
+      kin_dat %>%
         select(Protein, Sequence, State, Start, End, time_chosen, theo_frac_deut_uptake, err_avg_theo_in_time) %>%
         mutate(theo_frac_deut_uptake = round(theo_frac_deut_uptake, 4), 
                err_theo_frac_deut_uptake = round(err_theo_frac_deut_uptake, 4)) %>%
@@ -251,7 +271,7 @@ show_kinetic_data <- function(dat,
       
     } else {
       # theoretical & absolute
-      dat %>%
+      kin_dat %>%
         select(Protein, Sequence, State, Start, End, time_chosen, theo_deut_uptake, err_theo_deut_uptake) %>%
         mutate(theo_deut_uptake = round(theo_deut_uptake, 4), 
                err_theo_deut_uptake = round(err_theo_deut_uptake, 4)) %>%
@@ -264,7 +284,7 @@ show_kinetic_data <- function(dat,
     
     if(fractional){
       # experimental & fractional
-      dat %>%
+      kin_dat %>%
         select(Protein, Sequence, State, Start, End, time_chosen, frac_deut_uptake, err_frac_deut_uptake) %>%
         mutate(frac_deut_uptake = round(frac_deut_uptake, 4), 
                err_frac_deut_uptake = round(err_frac_deut_uptake, 4)) %>%
@@ -274,7 +294,7 @@ show_kinetic_data <- function(dat,
       
     } else {
       # experimental & absolute
-      dat %>%
+      kin_dat %>%
         select(Protein, Sequence, State, Start, End, time_chosen, deut_uptake, err_deut_uptake) %>%
         mutate(deut_uptake = round(deut_uptake, 4), 
                err_deut_uptake = round(err_deut_uptake, 4)) %>%
@@ -292,17 +312,16 @@ show_kinetic_data <- function(dat,
 #' @description Plots kinetics of the hydrogen-deuterium exchange for specific peptides. 
 #' 
 #' @importFrom dplyr %>% mutate
-#' @importFrom ggplot2 ggplot aes geom_point geom_ribbon geom_line scale_y_continuous
+#' @importFrom ggplot2 ggplot aes geom_point geom_ribbon geom_line scale_y_continuous scale_x_log10
 #' 
 #' @param kin_dat calculated kinetic data by \code{\link{calculate_kinetics}} 
-#' function
-#' @param theoretical \code{logical}, determines if plot shows theoretical values
-#' @param fractional \code{logical}, determines if plot shows fractional values
+#' or \code{\link{calculate_peptide_kinetics}} or \code{\link{create_kinetics_dataset}}
+#' function.
+#' @param theoretical \code{logical}, determines if plot shows theoretical values.
+#' @param fractional \code{logical}, determines if plot shows fractional values.
 #' @param uncertainty_type type of presenting uncertainty, possible values:
 #' "ribbon", "bars" or "bars + line".
 #' @param log_x \code{logical}, determines if x axis shows logarithmic values.
-#' 
-#' @seealso \code{\link{calculate_kinetics}}
 #' 
 #' @details This function visualizes the output of the  
 #' \code{\link{calculate_kinetics}} function. 
@@ -314,11 +333,17 @@ show_kinetic_data <- function(dat,
 #' calculated data by using \code{\link{bind_rows}} from dplyr package and 
 #' pass the result as kin_dat.
 #' 
-#' @return a \code{\link[ggplot2]{ggplot}} object.
+#' @return a \code{\link{ggplot2}} object.
+#' 
+#' @seealso 
+#' \code{\link{read_hdx}}
+#' \code{\link{calculate_kinetics}}
+#' \code{\link{calculate_peptide_kinetics}}
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #'
+#' # one peptide in one state
 #' kin1 <- calculate_kinetics(dat, 
 #'                            protein = "db_CD160",
 #'                            sequence = "INITSSASQEGTRLN", 
@@ -327,11 +352,22 @@ show_kinetic_data <- function(dat,
 #'                            end = 15,
 #'                            time_in = 0.001, 
 #'                            time_out = 1440)
-#'   
 #' plot_kinetics(kin_dat = kin1, 
-#'               theoretical = TRUE, 
+#'               theoretical = FALSE, 
 #'               fractional = TRUE)
-#'                 
+#' 
+#' # one peptide in all states         
+#' kin2 <- calculate_peptide_kinetics(dat, 
+#'                                    protein = "db_CD160",
+#'                                    sequence = "INITSSASQEGTRLN", 
+#'                                    states = c("CD160", "CD160_HVEM"),
+#'                                    start = 1, 
+#'                                    end = 15,
+#'                                    time_0 = 0.001, 
+#'                                    time_100 = 1440)
+#' plot_kinetics(kin_dat = kin2, 
+#'               theoretical = FALSE, 
+#'               fractional = TRUE)
 #'                 
 #' @export plot_kinetics
 

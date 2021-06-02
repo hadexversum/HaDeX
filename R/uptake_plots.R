@@ -211,7 +211,7 @@ plot_butterfly <- function(butterfly_dat,
 
 #' Generate chiclet plot
 #'  
-#' @importFrom ggplot2 geom_tile scale_fill_gradient2 guide_legend
+#' @importFrom ggplot2 geom_tile scale_fill_gradient2 guide_legend element_rect
 #' 
 #' @param chiclet_dat produced by \code{\link{create_state_uptake_dataset}}
 #' function. 

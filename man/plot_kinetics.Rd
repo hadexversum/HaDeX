@@ -14,11 +14,12 @@ plot_kinetics(
 }
 \arguments{
 \item{kin_dat}{calculated kinetic data by \code{\link{calculate_kinetics}} 
-function}
+or \code{\link{calculate_peptide_kinetics}} or \code{\link{create_kinetics_dataset}}
+function.}
 
-\item{theoretical}{\code{logical}, determines if plot shows theoretical values}
+\item{theoretical}{\code{logical}, determines if plot shows theoretical values.}
 
-\item{fractional}{\code{logical}, determines if plot shows fractional values}
+\item{fractional}{\code{logical}, determines if plot shows fractional values.}
 
 \item{uncertainty_type}{type of presenting uncertainty, possible values:
 "ribbon", "bars" or "bars + line".}
@@ -26,7 +27,7 @@ function}
 \item{log_x}{\code{logical}, determines if x axis shows logarithmic values.}
 }
 \value{
-a \code{\link[ggplot2]{ggplot}} object.
+a \code{\link{ggplot2}} object.
 }
 \description{
 Plots kinetics of the hydrogen-deuterium exchange for specific peptides.
@@ -45,6 +46,7 @@ pass the result as kin_dat.
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 
+# one peptide in one state
 kin1 <- calculate_kinetics(dat, 
                            protein = "db_CD160",
                            sequence = "INITSSASQEGTRLN", 
@@ -53,13 +55,26 @@ kin1 <- calculate_kinetics(dat,
                            end = 15,
                            time_in = 0.001, 
                            time_out = 1440)
-  
 plot_kinetics(kin_dat = kin1, 
-              theoretical = TRUE, 
+              theoretical = FALSE, 
               fractional = TRUE)
-                
+
+# one peptide in all states         
+kin2 <- calculate_peptide_kinetics(dat, 
+                                   protein = "db_CD160",
+                                   sequence = "INITSSASQEGTRLN", 
+                                   states = c("CD160", "CD160_HVEM"),
+                                   start = 1, 
+                                   end = 15,
+                                   time_0 = 0.001, 
+                                   time_100 = 1440)
+plot_kinetics(kin_dat = kin2, 
+              theoretical = FALSE, 
+              fractional = TRUE)
                 
 }
 \seealso{
+\code{\link{read_hdx}}
 \code{\link{calculate_kinetics}}
+\code{\link{calculate_peptide_kinetics}}
 }

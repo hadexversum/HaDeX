@@ -2,7 +2,7 @@
 % Please edit documentation in R/kinetics.R
 \name{create_kinetic_dataset}
 \alias{create_kinetic_dataset}
-\title{generate_kinetic_data_set}
+\title{Create kinetics dataset for a list of peptides and their states}
 \usage{
 create_kinetic_dataset(dat, peptide_list, protein, time_0, time_100, deut_part)
 }
@@ -32,6 +32,7 @@ This is a wrapper for \code{\link{calculate_kinetics}}, but for
 the peptide list instead of one peptide.
 }
 \examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 ...
 
 }

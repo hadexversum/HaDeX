@@ -2,20 +2,21 @@
 % Please edit documentation in R/kinetics.R
 \name{show_kinetic_data}
 \alias{show_kinetic_data}
-\title{generate_kinetic_data}
+\title{Shows selected kinetics data}
 \usage{
-show_kinetic_data(dat, theoretical = FALSE, fractional = FALSE)
+show_kinetic_data(kin_dat, theoretical = FALSE, fractional = FALSE)
 }
 \arguments{
-\item{dat}{custom format, produced by 
-\code{\link{generate_kinetic_data_set}}}
+\item{kin_dat}{calculated kinetic data by \code{\link{calculate_kinetics}} 
+or \code{\link{calculate_peptide_kinetics}} or \code{\link{create_kinetics_dataset}}
+function.}
 
-\item{theoretical}{\code{logical}, determines if plot shows theoretical values}
+\item{theoretical}{\code{logical}, determines if plot shows theoretical values.}
 
-\item{fractional}{\code{logical}, determines if plot shows fractional values}
+\item{fractional}{\code{logical}, determines if plot shows fractional values.}
 }
 \value{
-...
+a \code{\link{data.frame}} object.
 }
 \description{
 Generates deuterium uptake data, based on the supplied
@@ -25,6 +26,23 @@ parameters.
 This data is available in the GUI. 
 All of the numerical values are rounded to 4 places after the dot!!
 }
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+
+# one peptide in one state
+kin1 <- calculate_kinetics(dat, 
+                           protein = "db_CD160",
+                           sequence = "INITSSASQEGTRLN", 
+                           state = "CD160",
+                           start = 1, 
+                           end = 15,
+                           time_in = 0.001, 
+                           time_out = 1440)
+show_kinetic_data(kin1)
+
+}
 \seealso{
-...
+\code{\link{read_hdx}}
+\code{\link{calculate_kinetics}}
+\code{\link{calculate_peptide_kinetics}}
 }

@@ -7,8 +7,9 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
   
-```{r setup, include=FALSE}
+```{r setup, include = FALSE, echo = FALSE, warning = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"))
 ```
 
 ## Convention
@@ -33,4 +34,66 @@ Variables:
 
 
 ## Example of use
+
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+library(HaDeX)
+library(magrittr)
+```
+
+### Read data file 
+```{r, include=TRUE}
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+```
+
+
+```{r}
+dat %>%
+  calculate_state_uptake(state = "CD160_HVEM") %>%
+  plot_state_comparison()
+```
+
+```{r}
+dat %>%
+  calculate_peptide_kinetics(protein = "db_CD160",
+                             sequence = "INITSSASQEGTRLN",
+                             start = 1,
+                             end = 15,
+                             states = c("CD160", "CD160_HVEM"),
+                             time_0 = 0.001, time_100 = 1440) %>%
+  plot_kinetics(fractional = TRUE)
+```
+
+```{r}
+dat %>%
+  calculate_peptide_kinetics(protein = "db_CD160",
+                             sequence = "INITSSASQEGTRLN",
+                             start = 1,
+                             end = 15,
+                             states = c("CD160", "CD160_HVEM"),
+                             time_0 = 0.001, time_100 = 1440) %>%
+  show_kinetic_data(fractional = TRUE)
+```
+
+### Different forms of visualization
+
+Create data frame with uptake values for state in all time points:
+
+```{r}
+uptake_dat <- dat %>%
+  create_state_uptake_dataset()
+```
+
+Butterfly:
+
+```{r}
+uptake_dat %>%
+  plot_butterfly()
+```
+
+Chiclet:
+
+```{r}
+uptake_dat %>%
+  plot_chiclet()
+```
 
