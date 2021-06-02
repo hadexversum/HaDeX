@@ -383,7 +383,6 @@ server <- function(input, output, session) {
                            control_exposure = strsplit(input[["chosen_control"]], " \\| ")[[1]][3])
   })
 
-
   ### TAB: SEQUENCE DATA ###
 
   source("server/tab_sequence_data.R", local = TRUE)
