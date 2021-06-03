@@ -85,13 +85,13 @@ all_timepoints_data <- reactive({
   
   lapply(times_t(), function(t){
     
-    generate_differential_data_set(dat(), 
-                                   states = c(input[["vol_state_1"]], input[["vol_state_2"]]),
-                                   protein = input[["chosen_protein"]],
-                                   time_0 = times_from_file()[1],
-                                   time_t = t,
-                                   time_100 = times_from_file()[length(times_from_file())],
-                                   deut_part = as.numeric(input[["deut_part"]])/100) %>%
+    calculate_diff_uptake(dat(), 
+                          states = c(input[["vol_state_1"]], input[["vol_state_2"]]),
+                          protein = input[["chosen_protein"]],
+                          time_0 = times_from_file()[1],
+                          time_t = t,
+                          time_100 = times_from_file()[length(times_from_file())],
+                          deut_part = as.numeric(input[["deut_part"]])/100) %>%
       mutate(Exposure = t)
     
   }) %>% bind_rows()

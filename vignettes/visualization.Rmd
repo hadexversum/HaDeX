@@ -8,8 +8,8 @@ vignette: >
 ---
   
 ```{r setup, include = FALSE, echo = FALSE, warning = FALSE}
-  knitr::opts_chunk$set(echo = FALSE)
-  knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"))
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"))
 ```
 
 ```{r, echo = FALSE, warning = FALSE, message = FALSE}
