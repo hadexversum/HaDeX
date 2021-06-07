@@ -281,7 +281,7 @@ create_uptake_dataset <- function(dat,
   
   uptake_dat <- lapply(states, function(state){
     
-    calculate_state_uptake_dataset(dat, protein = protein, 
+    calculate_state_uptake(dat, protein = protein, 
                            state = state,
                            time_0 = time_0, time_100 = time_100,
                            deut_part = deut_part)
