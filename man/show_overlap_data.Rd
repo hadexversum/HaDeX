@@ -2,31 +2,31 @@
 % Please edit documentation in R/overlaps.R
 \name{show_overlap_data}
 \alias{show_overlap_data}
-\title{show_overlap_data}
+\title{Show data on overlap}
 \usage{
 show_overlap_data(dat, protein, state, start, end)
 }
 \arguments{
-\item{dat}{...}
+\item{dat}{data imported by the \code{\link{read_hdx}} function.}
 
-\item{protein}{...}
+\item{protein}{chosen protein.}
 
-\item{state}{...}
+\item{state}{biological state for chosen protein.}
 
-\item{start}{...}
+\item{start}{start start position of chosen protein.}
 
-\item{end}{...}
+\item{end}{end position of chosen protein.}
 }
 \value{
-...
+a \code{\link{data.frame}} object.
 }
 \description{
-Generates overlap data, based on the supplied
+Presents overlap data, based on the supplied
 parameters.
 }
 \details{
 This data is available in the GUI.
 }
 \seealso{
-...
+\code{\lnk{read_hdx}}
 }

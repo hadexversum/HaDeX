@@ -1,27 +1,28 @@
-#' show_overlap_data
+#' Show data on overlap
 #' 
-#' @description Generates overlap data, based on the supplied
+#' @description Presents overlap data, based on the supplied
 #' parameters.
 #' 
-#' @param dat ...
-#' @param protein ...
-#' @param state ...
-#' @param start ...
-#' @param end ...
+#' @param dat data imported by the \code{\link{read_hdx}} function.
+#' @param protein chosen protein.
+#' @param state biological state for chosen protein.
+#' @param start start start position of chosen protein.
+#' @param end end position of chosen protein.
 #' 
 #' @details This data is available in the GUI. 
 #' 
-#' @return ...
+#' @return a \code{\link{data.frame}} object.
 #' 
-#' @seealso ... 
+#' @seealso 
+#' \code{\lnk{read_hdx}} 
 #' 
 #' @export show_overlap_data
 
 show_overlap_data <- function(dat,
-                                  protein,
-                                  state,
-                                  start,
-                                  end){
+                              protein,
+                              state,
+                              start,
+                              end){
   dat %>%
     select(Protein, Sequence, Start, End, State) %>% 
     filter(Protein == protein) %>%
@@ -32,19 +33,21 @@ show_overlap_data <- function(dat,
 }
 
 
-#' generate_overlap_plot
+#' Plot overlap data
 #' 
-#' @description Generates overapping peptide plot based on supplied data
-#' and parameters. 
+#' @description Generates overapping peptide plot based 
+#' on supplied data and parameters. 
 #' 
-#' @param dat produced by \code{\link{generate_overlap_plot}}
+#' @param dat produced by \code{\link{show_overlap_data}}
 #' function
 #' 
 #' @details This plot is visible in GUI. 
 #' 
-#' @return ...
+#' @return a \code{\link{ggplot2}} object.
 #' 
-#' @seealso ... 
+#' @seealso 
+#' \code{\link{read_hdx}}
+#' \code{\link{show_overlap_data}}
 #' 
 #' @export plot_overlap
 
@@ -70,27 +73,34 @@ plot_overlap <- function(dat){
 #' @description Generates the data set of frequency of overlap of
 #' each amino in the protein sequence.
 #' 
-#' @param dat ...
-#' @param protein ...
-#' @param state ...
-#' @param start ...
-#' @param end ...
-#' @param protein_sequence ...
+#' @importFrom dplyr right_join
+#' @importFrom tidyr replace_na
+#' @importFrom stringr str_length
+#' 
+#' @param dat data imported by the \code{\link{read_hdx}} function.
+#' @param protein chosen protein.
+#' @param state biological state for chosen protein.
+#' @param start start start position of chosen protein.
+#' @param end end position of chosen protein.
+#' @param protein_sequence data produced by 
+#' \code{\link{reconstruct_sequence}} function.
 #' 
 #' @details This data is available in the GUI.
 #' 
-#' @return ...
+#' @return a \code{\link{data.frame}} object.
 #' 
-#' @seealso ... 
-# '
+#' @seealso 
+#' \code{\link{read_hdx}}
+#' \code{\link{reconstruct_sequence}} 
+#'
 #' @export create_overlap_distribution_dataset
 
 create_overlap_distribution_dataset <- function(dat, 
-                                               protein,
-                                               state,
-                                               start,
-                                               end,
-                                               protein_sequence){
+                                                protein = dat[["Protein"]][1],
+                                                state = dat[["State"]][1],
+                                                start = min(dat[["Start"]]),
+                                                end = max(dat[["End"]]),
+                                                protein_sequence){
   
   dat %>%
     select(Protein, Start, End, State, Sequence) %>%
@@ -109,32 +119,35 @@ create_overlap_distribution_dataset <- function(dat,
     right_join(data.frame(amino = unlist(strsplit(protein_sequence, "")), 
                           pos = 1:str_length(protein_sequence))) %>%
     select(pos, amino, coverage)
-  
-  
 }
 
 
-#' generate_overlap_distribution_plot
+#' Plot overlap distribution
 #' 
 #' @description Generates overlap distribution plot based on supplied data
 #' and parameters.
 #' 
-#' @param dat produced by \code{\link{generate_overlap_distribution_plot}}
+#' @importFrom ggplot2 geom_hline geom_text
+#' 
+#' @param dat produced by \code{\link{create_overlap_distribution_dataset}}
 #' function
-#' @param start ...
-#' @param end ...
+#' @param start start start position of chosen protein.
+#' @param end end position of chosen protein.
 #' 
 #' @details This plot is visible in GUI. 
 #' 
-#' @return ...
+#' @return a \code{\link{ggplot2}} object.
 #' 
-#' @seealso ... 
+#' @seealso 
+#' \code{\link{{read_hdx}}
+#' \code{\link{reconstruct_sequence}} 
+#' \code{\link{create_overlap_distribution_dataset}}
 #' 
 #' @export plot_overlap_distribution
 
 plot_overlap_distribution <- function(dat,
-                                               start,
-                                               end){
+                                      start = 1,
+                                      end = max(dat[["pos"]])){
   
   mean_coverage <- round(mean(dat[["coverage"]], na.rm = TRUE), 2)
   display_position <- (start + end)/2

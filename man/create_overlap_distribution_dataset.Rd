@@ -6,28 +6,29 @@
 \usage{
 create_overlap_distribution_dataset(
   dat,
-  protein,
-  state,
-  start,
-  end,
+  protein = dat[["Protein"]][1],
+  state = dat[["State"]][1],
+  start = min(dat[["Start"]]),
+  end = max(dat[["End"]]),
   protein_sequence
 )
 }
 \arguments{
-\item{dat}{...}
+\item{dat}{data imported by the \code{\link{read_hdx}} function.}
 
-\item{protein}{...}
+\item{protein}{chosen protein.}
 
-\item{state}{...}
+\item{state}{biological state for chosen protein.}
 
-\item{start}{...}
+\item{start}{start start position of chosen protein.}
 
-\item{end}{...}
+\item{end}{end position of chosen protein.}
 
-\item{protein_sequence}{...}
+\item{protein_sequence}{data produced by 
+\code{\link{reconstruct_sequence}} function.}
 }
 \value{
-...
+a \code{\link{data.frame}} object.
 }
 \description{
 Generates the data set of frequency of overlap of
@@ -37,5 +38,6 @@ each amino in the protein sequence.
 This data is available in the GUI.
 }
 \seealso{
-...
+\code{\link{read_hdx}}
+\code{\link{reconstruct_sequence}}
 }

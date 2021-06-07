@@ -2,20 +2,20 @@
 % Please edit documentation in R/overlaps.R
 \name{plot_overlap_distribution}
 \alias{plot_overlap_distribution}
-\title{generate_overlap_distribution_plot}
+\title{Plot overlap distribution}
 \usage{
-plot_overlap_distribution(dat, start, end)
+plot_overlap_distribution(dat, start = 1, end = max(dat[["pos"]]))
 }
 \arguments{
-\item{dat}{produced by \code{\link{generate_overlap_distribution_plot}}
+\item{dat}{produced by \code{\link{create_overlap_distribution_dataset}}
 function}
 
-\item{start}{...}
+\item{start}{start start position of chosen protein.}
 
-\item{end}{...}
+\item{end}{end position of chosen protein.}
 }
 \value{
-...
+a \code{\link{ggplot2}} object.
 }
 \description{
 Generates overlap distribution plot based on supplied data
@@ -25,5 +25,5 @@ and parameters.
 This plot is visible in GUI.
 }
 \seealso{
-...
+
 }

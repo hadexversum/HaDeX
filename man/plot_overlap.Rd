@@ -2,24 +2,25 @@
 % Please edit documentation in R/overlaps.R
 \name{plot_overlap}
 \alias{plot_overlap}
-\title{generate_overlap_plot}
+\title{Plot overlap data}
 \usage{
 plot_overlap(dat)
 }
 \arguments{
-\item{dat}{produced by \code{\link{generate_overlap_plot}}
+\item{dat}{produced by \code{\link{show_overlap_data}}
 function}
 }
 \value{
-...
+a \code{\link{ggplot2}} object.
 }
 \description{
-Generates overapping peptide plot based on supplied data
-and parameters.
+Generates overapping peptide plot based 
+on supplied data and parameters.
 }
 \details{
 This plot is visible in GUI.
 }
 \seealso{
-...
+\code{\link{read_hdx}}
+\code{\link{show_overlap_data}}
 }
