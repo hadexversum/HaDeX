@@ -332,14 +332,22 @@ all_kinetic_plots <- reactive({
                                time_0 = as.numeric(input[["kin_time_0"]]),
                                time_100 = as.numeric(input[["kin_time_100"]])) %>%
       plot_kinetics(fractional = input[["kin_fractional"]],
-                    theoretical = input[["kin_theory"]],
-                    uncertainty_type = input[["kin_uncertainty"]],
-                    log_x = input[["kin_log_x"]]) +
+                    theoretical = input[["kin_theory"]]) +
+                    # uncertainty_type = input[["kin_uncertainty"]],
+                    # log_x = input[["kin_log_x"]]) +
       labs(title = paste0(sequence, " (", start, "-", end, ")" ))
     
   })
   
-  marrangeGrob(grobs = plots, 
+  plots
+  
+})
+
+##
+
+all_kinetic_plots_arranged <- reactive({
+  
+  marrangeGrob(grobs = all_kinetic_plots(), 
                ncol = input[["kin_download_file_columns"]], 
                nrow = input[["kin_download_file_rows"]])
   
@@ -349,6 +357,6 @@ all_kinetic_plots <- reactive({
 
 output[["kin_download_file"]] <- downloadHandler("all_deut_uptake_curves.pdf",
                                                  content = function(file){
-                                                   ggsave(file, all_kinetic_plots(), device = pdf,
+                                                   ggsave(file, all_kinetic_plots_arranged(), device = pdf,
                                                           height = 300, width = 400, units = "mm")
                                                  })
