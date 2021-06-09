@@ -1278,30 +1278,32 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                            tabPanel("Data",
                                                     br(),
                                                     DT::dataTableOutput("kin_plot_data")),
+                                           
+                                           ## DOWNLOAD ALL PLOTS ##
+                                           
                                            tabPanel("Download",
-                                                    h3("Download uptake curves for all peptides in selected form"),
-                                                    h4("There are two ways to download the uptake curves for all of the peptides. "),
-                                                    h4("First, in a form of separated plot files in a zipped folder. Second, in a file in chosen format, arranged in selected grid. "),
-                                                    h4("All of the uptake curves are plotted based on selected parameters in a Settings panel."),
-                                                    br(),
+                                                    h3("Download uptake curves for all peptides in selected form, based on the parameters from the Settings panel."),
+                                                    h4("Preparing the plots may take a while."),
                                                     fluidRow(
                                                       column(width = 4,
-                                                             actionButton(inputId = "kin_download_folder",
-                                                                          label = "Download folder")
+                                                             h4("Download the zipped folder with separate files:"),
+                                                             downloadButton(outputId = "kin_download_folder",
+                                                                            label = "Download folder")
                                                       ),
                                                       column(width = 4,
-                                                             actionButton(inputId = "kin_download_file",
-                                                                          label = "Download file"),
+                                                             h4("Download the pdf file with plots arranged in a grid:"),
+                                                             downloadButton(outputId = "kin_download_file",
+                                                                            label = "Download file"),
                                                              br(),
                                                              br(),
-                                                             selectInput(inputId = "kin_download_file_type",
-                                                                         label = "Select file format",
-                                                                         choices = c("png", "pdf"),
-                                                                         selected = "pdf"),
-                                                             selectInput(inputId = "kin_download_file_column",
-                                                                         label = "Select number of columns",
-                                                                         choices = c(2, 3, 4, 5, 6),
-                                                                         selected = 3)
+                                                             numericInput_h(inputId = "kin_download_file_columns",
+                                                                            label = "Select number of columns on a page",
+                                                                            min = 1, max = 5,
+                                                                            value = 2),
+                                                             numericInput_h(inputId = "kin_download_file_rows",
+                                                                            label = "Select number of rows on a page",
+                                                                            min = 1, max = 5,
+                                                                            value = 2)
                                                       )
                                                     )
                                           )

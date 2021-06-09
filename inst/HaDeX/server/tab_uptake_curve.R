@@ -308,3 +308,47 @@ output[["kin_plot_data"]] <- DT::renderDataTable(server = FALSE, {
 #################################
 ######### DOWNLOAD ##############
 #################################
+
+all_kinetic_plots <- reactive({
+  
+  peptide_list_download <- peptide_list() %>%
+    select(Sequence, Start, End) %>%
+    unique(.)
+  
+  states_download <- unique(peptide_list()[["State"]])
+  
+  plots <- lapply(1:nrow(peptide_list_download), function(i){
+    
+    sequence = peptide_list_download[i, 1]
+    start = peptide_list_download[i, 2]
+    end = peptide_list_download[i, 3]
+    
+    calculate_peptide_kinetics(dat(),
+                               protein = input[["chosen_protein"]],
+                               sequence = sequence,
+                               states = states_download,
+                               start = start,
+                               end = end,
+                               time_0 = as.numeric(input[["kin_time_0"]]),
+                               time_100 = as.numeric(input[["kin_time_100"]])) %>%
+      plot_kinetics(fractional = input[["kin_fractional"]],
+                    theoretical = input[["kin_theory"]],
+                    uncertainty_type = input[["kin_uncertainty"]],
+                    log_x = input[["kin_log_x"]]) +
+      labs(title = paste0(sequence, " (", start, "-", end, ")" ))
+    
+  })
+  
+  marrangeGrob(grobs = plots, 
+               ncol = input[["kin_download_file_columns"]], 
+               nrow = input[["kin_download_file_rows"]])
+  
+})
+
+##
+
+output[["kin_download_file"]] <- downloadHandler("all_deut_uptake_curves.pdf",
+                                                 content = function(file){
+                                                   ggsave(file, all_kinetic_plots(), device = pdf,
+                                                          height = 300, width = 400, units = "mm")
+                                                 })
