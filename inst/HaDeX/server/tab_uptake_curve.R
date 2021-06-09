@@ -360,3 +360,24 @@ output[["kin_download_file"]] <- downloadHandler("all_deut_uptake_curves.pdf",
                                                    ggsave(file, all_kinetic_plots_arranged(), device = pdf,
                                                           height = 300, width = 400, units = "mm")
                                                  })
+
+##
+
+output[["kin_download_folder"]] <- downloadHandler("deut_uptake_curves.zip",
+                                                   content = function(file){
+                                                     owd <- setwd( tempdir())
+                                                     on.exit( setwd( owd))
+                                                     
+                                                     plot_files <- lapply(1:length(all_kinetic_plots()), function(i){
+                                                       
+                                                       label = all_kinetic_plots()[[i]][["labels"]][["title"]]
+                                                       filename = paste0(label, ".png")
+                                                       ggsave(filename, device = "png")
+                                                       
+                                                       filename
+                                                     
+                                                     })
+                                                     
+                                                     zip( file, unlist(plot_files))
+                                                     
+                                                   })
