@@ -12,6 +12,7 @@ library(rmarkdown)
 library(shinycssloaders)
 library(shinyhelper)
 library(shinyjs)
+library(gridExtra)
 
 #########################################
 
