@@ -291,7 +291,7 @@ output[["kineticPlot_download_button"]] <- downloadHandler("kineticPlot.svg",
 
 kin_plot_data <- reactive({
   
-  show_kinetic_data(dat = kin_dat(),
+  show_kinetic_data(kin_dat = kin_dat(),
                     theoretical = input[["kin_theory"]],
                     fractional = input[["kin_fractional"]])
 })
@@ -310,6 +310,8 @@ output[["kin_plot_data"]] <- DT::renderDataTable(server = FALSE, {
 #################################
 
 all_kinetic_plots <- reactive({
+  
+  # browser()
   
   peptide_list_download <- peptide_list() %>%
     select(Sequence, Start, End) %>%
@@ -332,9 +334,9 @@ all_kinetic_plots <- reactive({
                                time_0 = as.numeric(input[["kin_time_0"]]),
                                time_100 = as.numeric(input[["kin_time_100"]])) %>%
       plot_kinetics(fractional = input[["kin_fractional"]],
-                    theoretical = input[["kin_theory"]]) +
-                    # uncertainty_type = input[["kin_uncertainty"]],
-                    # log_x = input[["kin_log_x"]]) +
+                    theoretical = input[["kin_theory"]],
+                    uncertainty_type = input[["kin_uncertainty"]],
+                    log_x = input[["kin_log_x"]]) +
       labs(title = paste0(sequence, " (", start, "-", end, ")" ))
     
   })
