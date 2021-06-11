@@ -10,6 +10,7 @@ chosen_state <- "CD160"
 chosen_time_0 <- 0.001
 chosen_time_100 <- 1440
 chosen_time <- 5
+deut_part <- 1
 
 chosen_peptide <- "INITSSASQEGTRLN"
 ref_dat <- data.frame(Exposure = c(0.167, 1, 5, 25, 120),
@@ -25,24 +26,25 @@ ref_dat <- data.frame(Exposure = c(0.167, 1, 5, 25, 120),
 times <- ref_dat[["Exposure"]]
 
 test_that("class is right",
-          expect_is(calculate_state_deuteration(dat, 
-                                                protein = chosen_protein, 
-                                                state = chosen_state,
-                                                time_0 = chosen_time_0, 
-                                                time_t = chosen_time,
-                                                time_100 = chosen_time_100),
+          expect_is(calculate_state_uptake(dat, 
+                                           protein = chosen_protein, 
+                                           state = chosen_state,
+                                           time_0 = chosen_time_0, 
+                                           time_t = chosen_time,
+                                           time_100 = chosen_time_100),
                     "data.frame"))
 
 
 
 lapply(times, function(chosen_time){
   
-  result_tmp <- calculate_state_deuteration(dat,
-                                            protein = chosen_protein,
-                                            state = chosen_state,
-                                            time_0 = chosen_time_0,
-                                            time_t = chosen_time,
-                                            time_100 = chosen_time_100)
+  result_tmp <- calculate_state_uptake(dat,
+                                       protein = chosen_protein,
+                                       state = chosen_state,
+                                       time_0 = chosen_time_0,
+                                       time_t = chosen_time,
+                                       time_100 = chosen_time_100,
+                                       deut_part = deut_part)
   
   test_that("frac_deut_uptake is right",
             expect_equal(result_tmp %>%

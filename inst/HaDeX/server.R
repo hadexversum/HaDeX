@@ -390,6 +390,20 @@ server <- function(input, output, session) {
   ### TAB: COVERAGE ###
 
   source("server/tab_coverage.R", local = TRUE)
+  
+  ### TAB: QUALITY CONTROL
+  
+  source("server/tab_quality_control.R", local = TRUE)
+  
+  ### TAB: SUMMARY
+  
+  source("server/tab_summary.R", local = TRUE)
+  
+  ### TAB: REPORT ###
+  
+  source("server/tab_report.R", local = TRUE)
+  
+  ##
 
   ### TAB: WOODS PLOT ###
 
@@ -421,17 +435,7 @@ server <- function(input, output, session) {
 
   source("server/tab_uptake_curve.R", local = TRUE)
 
-  ### TAB: QUALITY CONTROL
-
-  source("server/tab_quality_control.R", local = TRUE)
-
-  ### TAB: SUMMARY
-
-  source("server/tab_summary.R", local = TRUE)
-
-  ### TAB: REPORT ###
-
-  source("server/tab_report.R", local = TRUE)
+  
 
 
 }
