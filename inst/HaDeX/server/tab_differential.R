@@ -90,12 +90,12 @@ woods_plot_dat <- reactive({
   
   tryCatch({
     calculate_diff_uptake(dat = dat(),
-                                   states = c(input[["state_first"]], input[["state_second"]]),
-                                   protein = input[["chosen_protein"]],
-                                   time_0 = input[["time_0"]],
-                                   time_t = input[["time_t"]],
-                                   time_100 = input[["time_100"]],
-                                   deut_part = 0.01*as.integer(input[["deut_part"]]))
+                          states = c(input[["state_first"]], input[["state_second"]]),
+                          protein = input[["chosen_protein"]],
+                          time_0 = input[["time_0"]],
+                          time_t = input[["time_t"]],
+                          time_100 = input[["time_100"]],
+                          deut_part = 0.01*as.integer(input[["deut_part"]]))
   },
   error = function(e){
     validate(need(FALSE), "Check chosen parameters - not sufficient data.")

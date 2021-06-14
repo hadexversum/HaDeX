@@ -44,18 +44,6 @@ observe({
 ######### DATASET ###############
 #################################
 
-replicates_of_peptides <- reactive({
- 
-  replicate_masses() %>%
-    select(Protein, State, Sequence, Start, End, Exposure, File) %>%
-    group_by(Protein, State, Sequence, Start, End, Exposure) %>%
-    summarize(N = n()) %>%
-    ungroup(.)
-   
-})
-
-##
-
 replicate_masses <- reactive({
   
   dat() %>%
@@ -77,6 +65,18 @@ replicate_masses_time_t <- reactive({
     filter(Sequence == rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2]) %>%
     filter(Exposure == as.numeric(input[["rep_time"]]))
 
+})
+
+##
+
+replicates_of_peptides <- reactive({
+  
+  replicate_masses() %>%
+    select(Protein, State, Sequence, Start, End, Exposure, File) %>%
+    group_by(Protein, State, Sequence, Start, End, Exposure) %>%
+    summarize(N = n()) %>%
+    ungroup(.)
+  
 })
 
 #################################
