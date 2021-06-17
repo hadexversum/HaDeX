@@ -2,6 +2,27 @@
 ######### SETTINGS ##############
 #################################
 
+observe({
+  
+  updateSelectInput(session,
+                    inputId = "rep_state",
+                    choices = states_from_file(),
+                    selected = states_from_file())
+})
+
+##
+
+observe({
+  
+  updateSelectInput(session,
+                    inputId = "rep_time",
+                    choices = times_from_file()[times_from_file() < 99999],
+                    selected = times_from_file()[1])
+})
+
+
+##
+
 rep_peptide_list <- reactive({
   
   replicates_of_peptides() %>%
@@ -44,11 +65,26 @@ observe({
 ######### DATASET ###############
 #################################
 
+##
+
+replicates_of_peptides <- reactive({
+  
+  replicate_masses() %>%
+    select(Protein, State, Sequence, Start, End, Exposure, File) %>%
+    group_by(Protein, State, Sequence, Start, End, Exposure) %>%
+    summarize(N = n()) %>%
+    ungroup(.)
+  
+})
+
+##
+
 replicate_masses <- reactive({
   
   dat() %>%
     calculate_exp_masses_per_replicate() %>%
     group_by(Start, End) %>%
+    arrange(Start, End) %>%
     mutate(ID = cur_group_id())
   
 })
@@ -67,17 +103,7 @@ replicate_masses_time_t <- reactive({
 
 })
 
-##
 
-replicates_of_peptides <- reactive({
-  
-  replicate_masses() %>%
-    select(Protein, State, Sequence, Start, End, Exposure, File) %>%
-    group_by(Protein, State, Sequence, Start, End, Exposure) %>%
-    summarize(N = n()) %>%
-    ungroup(.)
-  
-})
 
 #################################
 ######### PLOT ##################
