@@ -372,7 +372,7 @@ output[["kin_download_folder"]] <- downloadHandler("deut_uptake_curves.zip",
                                                      
                                                      plot_files <- lapply(1:length(all_kinetic_plots()), function(i){
                                                        
-                                                       label = all_kinetic_plots()[[i]][["labels"]][["title"]]
+                                                       label = paste0(i, "-", all_kinetic_plots()[[i]][["labels"]][["title"]])
                                                        filename = paste0(label, ".png")
                                                        ggsave(filename, plot = all_kinetic_plots()[[i]], device = "png")
                                                        
