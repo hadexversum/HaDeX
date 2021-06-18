@@ -32,7 +32,7 @@ observe({
 
 observe({
   
-  max_x <- ceiling(max(abs(volcano_dataset()[["D_diff"]])))
+  max_x <- ceiling(max(abs(volcano_dataset()[["D_diff"]]), na.rm = TRUE))
   
   updateSliderInput(session,
                     inputId = "vol_x_range",
@@ -40,7 +40,7 @@ observe({
                     min = -max_x - 2,
                     value = c(-max_x, max_x))
   
-  max_y <- ceiling(max(volcano_dataset()[["log_p_value"]])) 
+  max_y <- ceiling(max(volcano_dataset()[["log_p_value"]], na.rm = TRUE)) 
   
   updateSliderInput(session,
                     inputId = "vol_y_range",

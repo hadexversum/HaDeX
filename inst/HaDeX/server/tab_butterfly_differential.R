@@ -72,17 +72,13 @@ observe({
   
   if (input[["butt_diff_fractional"]]) {
     
-    max_y <- ceiling(max(butt_diff_dataset()[!is.na(butt_diff_dataset()[["diff_frac_deut_uptake"]]), ][["diff_frac_deut_uptake"]], 
-                         butt_diff_dataset()[!is.na(butt_diff_dataset()[["diff_theo_frac_deut_uptake"]]), ][["diff_theo_frac_deut_uptake"]])) + 1
-    min_y <- floor(min(butt_diff_dataset()[!is.na(butt_diff_dataset()[["diff_frac_deut_uptake"]]), ][["diff_frac_deut_uptake"]], 
-                       butt_diff_dataset()[!is.na(butt_diff_dataset()[["diff_theo_frac_deut_uptake"]]), ][["diff_theo_frac_deut_uptake"]])) - 1
+    max_y <- ceiling(max(butt_diff_dataset()[["diff_frac_deut_uptake"]], butt_diff_dataset()[["diff_theo_frac_deut_uptake"]], na.rm = TRUE)) + 1
+    min_y <- floor(min(butt_diff_dataset()[["diff_frac_deut_uptake"]], butt_diff_dataset()[["diff_theo_frac_deut_uptake"]], na.rm = TRUE)) - 1
     
   } else {
     
-    max_y <- ceiling(max(butt_diff_dataset()[!is.na(butt_diff_dataset()[["diff_deut_uptake"]]), ][["diff_deut_uptake"]], 
-                         butt_diff_dataset()[!is.na(butt_diff_dataset()[["diff_theo_deut_uptake"]]), ][["diff_theo_deut_uptake"]])) + 1
-    min_y <- floor(min(butt_diff_dataset()[!is.na(butt_diff_dataset()[["diff_deut_uptake"]]), ][["diff_deut_uptake"]], 
-                       butt_diff_dataset()[!is.na(butt_diff_dataset()[["diff_theo_deut_uptake"]]), ][["diff_theo_deut_uptake"]])) - 1
+    max_y <- ceiling(max(butt_diff_dataset()[["diff_deut_uptake"]], butt_diff_dataset()[["diff_theo_deut_uptake"]], na.rm = TRUE)) + 1
+    min_y <- floor(min(butt_diff_dataset()[["diff_deut_uptake"]], butt_diff_dataset()[["diff_theo_deut_uptake"]], na.rm = TRUE)) - 1
   }
   
   max_x <- max(butt_diff_dataset()[["ID"]])

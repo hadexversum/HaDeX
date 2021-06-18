@@ -47,15 +47,13 @@ observe({
   
   if(input[["butt_fractional"]]){
     
-    ## to do: exclude NaN
-    max_y <- ceiling(max(butterfly_dataset()[["frac_deut_uptake"]], butterfly_dataset()[["theo_frac_deut_uptake"]])) + 1
-    min_y <- floor(min(butterfly_dataset()[["frac_deut_uptake"]], butterfly_dataset()[["theo_frac_deut_uptake"]])) - 1
+    max_y <- ceiling(max(butterfly_dataset()[["frac_deut_uptake"]], butterfly_dataset()[["theo_frac_deut_uptake"]], na.rm = TRUE)) + 1
+    min_y <- floor(min(butterfly_dataset()[["frac_deut_uptake"]], butterfly_dataset()[["theo_frac_deut_uptake"]], na.rm = TRUE)) - 1
     
   } else {
     
-    ## to do: exclude NaN
-    max_y <- ceiling(max(butterfly_dataset()[["deut_uptake"]], butterfly_dataset()[["theo_deut_uptake"]])) + 1
-    min_y <- floor(min(butterfly_dataset()[["deut_uptake"]], butterfly_dataset()[["theo_deut_uptake"]])) - 1
+    max_y <- ceiling(max(butterfly_dataset()[["deut_uptake"]], butterfly_dataset()[["theo_deut_uptake"]], na.rm = TRUE)) + 1
+    min_y <- floor(min(butterfly_dataset()[["deut_uptake"]], butterfly_dataset()[["theo_deut_uptake"]], na.rm = TRUE)) - 1
   }
   
   max_x <- max(butterfly_dataset()[["ID"]])
