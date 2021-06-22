@@ -207,6 +207,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          ),
                                          ##
                                          h4("Woods plot parameters:"),
+                                         h5("Differential plot presents the uptake difference between State 1 and State 2."),
                                          splitLayout(
                                            selectInput_h(inputId = "state_first",
                                                          label = "State 1",
@@ -329,7 +330,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                     br(),
                                                     DT::dataTableOutput("comparisonPlot_data"),
                                                     br(),
-                                                    h4("The empty values (e.q. `Frac Exch`) means there was not sufficient data for this peptide."))),
+                                                    h4("The empty values (e.q. `Frac DU`) mean there was not sufficient data for this peptide."))),
                                          uiOutput("comparisonPlot_debug"),
                                          br(),
                                          
@@ -347,7 +348,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                     br(),
                                                     DT::dataTableOutput("differentialPlot_data"),
                                                     br(),
-                                                    h4("The empty values (e.q. `Diff Frac Exch`) means there was not sufficient data for this peptide.")))
+                                                    h4("The empty values (e.q. `Frac Diff DU`) mean there was not sufficient data for this peptide. There is a possibility that the measurement result is available for only one state of the peptide.")))
 
 
                                        )
@@ -476,7 +477,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                     br(),
                                                                     DT::dataTableOutput("butterflyPlot_data"),
                                                                     br(),
-                                                                    h4("The empty values (e.q. `Frac Exch`) means there was not sufficient data for this peptide."))),
+                                                                    h4("The empty values (e.q. `Frac DU`) means there was not sufficient data for this peptide."))),
                                                          uiOutput("butterflyPlot_debug"),
                                                          br()
                                                        )),
@@ -501,7 +502,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                                   value = FALSE)
                                                            )
                                                          ),
-                                                         h5("Differential plot presents the difference between values in State 1 and State 2."),
+                                                         h5("Differential plot presents the uptake difference between State 1 and State 2."),
                                                          splitLayout(selectInput_h(inputId = "butt_diff_state_first",
                                                                                    label = "State 1",
                                                                                    choices = c("CD160", "CD160_HVEM")),
@@ -608,6 +609,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                            tabPanel("Butterfly differential plot",
                                                                     br(),
                                                                     plotOutput_h("butterflyDifferentialPlot", hover = hoverOpts("butterflyDifferentialPlot_hover", delay = 10, delayType = "debounce")),
+                                                                    h4("The empty values (e.q. `Frac DU`) mean there was not sufficient data for this peptide."),
                                                                     downloadButton("butterflyDifferentialPlot_download_button",
                                                                                    "Save chart (.svg)")
                                                            ),
@@ -616,6 +618,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                     DT::dataTableOutput("butterflyDifferentialPlot_data"),
                                                                     br(),
                                                                     h4("The table presents data from the chosen x plot range."),
+                                                                    h4("The empty values (e.q. `Frac Diff DU`) mean there was not sufficient data for this peptide. There is a possibility that the measurement result is available for only one state of the peptide."),
                                                                     br()
                                                              
                                                            )
@@ -641,7 +644,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          ##### SETTINGS ##### 
                                          
                                          h3("Select parameters for the plot."),
-                                         h5("Volcano plot presents the difference between values in State 1 and State 2."),
+                                         h5("Volcano plot presents the uptake difference [Da] between State 1 and State 2."),
                                          splitLayout(selectInput_h(inputId = "vol_state_1",
                                                                    label = "State 1",
                                                                    choices = c("CD160", "CD160_HVEM")),
@@ -730,7 +733,8 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                     br(),
                                                     plotOutput_h("volcanoPlot", width = "80%", height = "800px", hover = hoverOpts("volcanoPlot_hover", delay = 10, delayType = "debounce")),
                                                     h5(textOutput("vol_thresholds")),
-                                                    h5("For more information see: "),
+                                                    h5("For more information see about hybrid testing see: Hageman, T. S. & Weis, D. D. Reliable Identification of Significant Differences in Differential Hydrogen Exchange-Mass Spectrometry Measurements Using a Hybrid Significance Testing Approach. Anal Chem 91, 8008–8016 (2019).
+"),
                                                     downloadButton("volcanoPlot_download_button",
                                                                    "Save chart (.svg)")
                                            ),
@@ -876,7 +880,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                              value = FALSE)
                                                       )
                                                     ),
-                                                    h5("Differential plot presents the difference between values in State 1 and State 2."),
+                                                    h5("Differential plot presents the uptake difference [Da] between State 1 and State 2."),
                                                     splitLayout(selectInput_h(inputId = "chic_diff_state_first",
                                                                               label = "State 1",
                                                                               choices = c("CD160", "CD160_HVEM")),

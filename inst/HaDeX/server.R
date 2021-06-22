@@ -78,6 +78,8 @@ server <- function(input, output, session) {
   })
 
   output[["data_file_info"]] <- renderText({
+    
+    # browser()
 
     status <- ""
     if (is.null(input[["data_file"]])){

@@ -95,8 +95,8 @@ observe({
   updateSliderInput(
     session,
     inputId = "butt_diff_y_range",
-    min = min_y,
-    max = max_y,
+    min = min_y - 5 ,
+    max = max_y + 5,
     value = c(min_y, max_y)
   )
   
