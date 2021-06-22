@@ -4,11 +4,25 @@
 \alias{show_volcano_data}
 \title{Show volcano data}
 \usage{
-show_volcano_data(vol_data)
+show_volcano_data(
+  vol_data,
+  D_diff_threshold = NULL,
+  log_P_threshold = NULL,
+  confidence_level = 0.98
+)
 }
 \arguments{
 \item{vol_data}{data produced by the \code{\link{create_volcano_dataset}} 
 function.}
+
+\item{D_diff_threshold}{\code{numeric}, threshold on differential deuterium 
+uptake, e.q. result of Houde test. If not provided, is calculated as 
+Houde test at provided confidence level.}
+
+\item{log_P_threshold}{\code{numeric}, threshold on P-value (after transformation,
+-log(P)). If not provided, is calculated at provided confidence level.}
+
+\item{confidence_level}{\code{numeric}, confidence level.}
 }
 \value{
 a \code{\link{data.frame}} object.
@@ -19,14 +33,24 @@ Show volcano data
 \details{
 This function subsets the dataset based on provided criteria,
 rounds the numerical values (4 places) and changes the column names 
-to user-friendly ones. 
+to user-friendly ones. It adds the column `valid at confidence_level` to
+indicate if the measurement is valid under hybrid testing.
 This data is available in the GUI.
 }
 \examples{
-dat <-  dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 vol_dat <- create_volcano_dataset(dat)
 head(show_volcano_data(vol_dat))
 
+}
+\references{
+Hageman, T. S. & Weis, D. D. Reliable Identification of Significant 
+Differences in Differential Hydrogen Exchange-Mass Spectrometry Measurements 
+Using a Hybrid Significance Testing Approach. Anal Chem 91, 8008–8016 (2019).
+
+Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). 
+The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in 
+Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
 }
 \seealso{
 \code{\link{create_volcano_dataset}} 

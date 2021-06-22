@@ -294,11 +294,25 @@ show_diff_uptake_data_confidence <- function(dat,
 #'  
 #' @param vol_data data produced by the \code{\link{create_volcano_dataset}} 
 #' function.
+#' @param D_diff_threshold \code{numeric}, threshold on differential deuterium 
+#' uptake, e.q. result of Houde test. If not provided, is calculated as 
+#' Houde test at provided confidence level. 
+#' @param log_P_threshold \code{numeric}, threshold on P-value (after transformation,
+#' -log(P)). If not provided, is calculated at provided confidence level. 
+#' @param confidence_level \code{numeric}, confidence level. 
 #'
 #' @details This function subsets the dataset based on provided criteria,
 #' rounds the numerical values (4 places) and changes the column names 
-#' to user-friendly ones. 
+#' to user-friendly ones. It adds the column `valid at confidence_level` to
+#' indicate if the measurement is valid under hybrid testing.
 #' This data is available in the GUI. 
+#' 
+#' @references Hageman, T. S. & Weis, D. D. Reliable Identification of Significant 
+#' Differences in Differential Hydrogen Exchange-Mass Spectrometry Measurements 
+#' Using a Hybrid Significance Testing Approach. Anal Chem 91, 8008–8016 (2019).
+#' @references Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). 
+#' The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in 
+#' Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
 #' 
 #' @return a \code{\link{data.frame}} object.
 #'
@@ -307,22 +321,41 @@ show_diff_uptake_data_confidence <- function(dat,
 #' \code{\link{plot_volcano}} 
 #' 
 #' @examples 
-#' dat <-  dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' vol_dat <- create_volcano_dataset(dat)
 #' head(show_volcano_data(vol_dat))
 #' 
 #' @export show_volcano_data
 
-show_volcano_data <- function(vol_data){
+show_volcano_data <- function(vol_data,
+                              D_diff_threshold = NULL,
+                              log_P_threshold = NULL,
+                              confidence_level = 0.98){
+  
+  if(is.null(log_P_threshold)){
+    
+    log_P_threshold <- -log(1 - confidence_level)
+    
+  }
+  
+  if(is.null(D_diff_threshold)){
+    
+    t_value <- qt(c((1 - confidence_level)/2, 1-(1 - confidence_level)/2), df = 2)[2]
+    D_diff_threshold <-  t_value * mean(vol_data[["Uncertainty"]], na.rm = TRUE)/sqrt(length(vol_data))
+    
+  }
+  
   
   vol_data %>%
     mutate(D_diff  = round(D_diff , 4),
            Uncertainty = round(Uncertainty, 4),
-           log_p_value = round(log_p_value, 4)) %>%
+           log_p_value = round(log_p_value, 4),
+           valid = (abs(D_diff) >= D_diff_threshold & log_p_value >= log_P_threshold)) %>%
     arrange(Exposure, Start, End) %>%
     rename("Diff DU [Da]" = D_diff,
            "Err Diff DU [Da]" = Uncertainty, 
-           "-log(P value)" = log_p_value)
+           "-log(P value)" = log_p_value,
+           "{paste0('Valid At ', confidence_level)}" := valid) 
   
 }
 
@@ -342,9 +375,10 @@ show_volcano_data <- function(vol_data){
 #' interpreting and reporting hydrogen deuterium exchange mass spectrometry 
 #' (HDX-MS) experiments. Nat Methods 16, 595–602
 #' 
-#' @return ...
+#' @return a \code{\link{ggplot2}} object.
 #' 
-#' @seealso ... 
+#' @seealso 
+#' \code{\link{read_hdx}} 
 #' 
 #' @export show_summary_data
 

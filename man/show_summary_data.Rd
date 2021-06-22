@@ -22,7 +22,7 @@ show_summary_data(
 \code{\link{generate_overlap_distribution_data}}}
 }
 \value{
-...
+a \code{\link{ggplot2}} object.
 }
 \description{
 Generates summary table.
@@ -35,5 +35,5 @@ interpreting and reporting hydrogen deuterium exchange mass spectrometry
 (HDX-MS) experiments. Nat Methods 16, 595–602
 }
 \seealso{
-...
+\code{\link{read_hdx}}
 }

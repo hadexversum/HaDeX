@@ -247,7 +247,10 @@ output[["volcanoPlot_debug"]] <- renderUI({
 
 output[["volcanoPlot_data"]] <- DT::renderDataTable(server = FALSE, {
   
-  show_volcano_data(volcano_data()) %>%
+  show_volcano_data(volcano_data(),
+                    D_diff_threshold = houde_intervals()[2],
+                    log_P_threshold = alpha_interval(),
+                    confidence_level = input[["vol_confidence_level"]]) %>%
     dt_format()
   
 })
