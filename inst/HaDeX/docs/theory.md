@@ -1,17 +1,15 @@
 ## Calculation types
 
-In HaDeX, we support two methods of calculating the results.
-
 ### Theoretical
 
-This method compares measure deuterium uptake with theoretical values. The correction of the D2O concentration is made in the Settings panel.
+Measured deuterium uptake is compared with theoretical values - the minimal exchange control is mass of a peptide with only hydrogens, and the maximal exchange control is a mass of a peptide with only deuterons. The correction on D20 concentration is made, based on the value from `Input data` settings. 
 
-As a consequence of this method, the information on the back-exchange in the experiment is lost.
+Using theoretical values causes the experimental back-exchange information to be lost. The maximal exchange control is the maximal possible based on the sequence (all H exchanged to D), the information about conformation is lost.
 
-To get more insight, check the [documentation](https://hadexversum.github.io/HaDeX/articles/overview.html#theoretical-deuteration-level).
+### Experimental
 
-### Experimental (default)
+Measured deuterium uptake is compared with experimenally measured minimal and maximal exchange control.  
 
-The measured deuterium uptake in chosen time is compared with measured undeuterated value and measured control sample for each state. 
+### More information
 
-For more information, check the [documentation](https://hadexversum.github.io/HaDeX/articles/overview.html#experimental-deuteration-level).
+To get more insight, please see the [documentation](https://hadexversum.github.io/HaDeX/articles/datafiles.html).

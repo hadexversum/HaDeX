@@ -1,4 +1,4 @@
-context("calculate_state_deuteration in test")
+context("calculate_state_uptake in test")
 
 library(tidyr)
 library(dplyr)

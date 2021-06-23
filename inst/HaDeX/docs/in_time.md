@@ -1,3 +1,3 @@
-## Choose `in` time for calculations
+## Minimal exchange control
 
-This is the minimal deuteration control sample.
+Select minimal exchange control time of measurement. 
