@@ -17,9 +17,13 @@ app_inputs <- strsplit("butt_diff_confidence_level, butt_diff_fractional, butt_d
 
 setwd("./inst/HaDeX/docs")
 
-######################
-## time_0 ############
-######################
+####################################
+######### MULTIPLE HELPERS #########
+####################################
+
+#############################
+## time_0 ###################
+#############################
 
 time_0_helper <- "## Minimal exchange control
 
@@ -31,9 +35,9 @@ lapply(grep("time_0", app_inputs), function(i){
 
   })
 
-######################
-## time_t ############
-######################
+#############################
+## time_t ###################
+#############################
 
 time_t_helper <- "## Chosen time point of measurement
 
@@ -46,9 +50,9 @@ lapply(grep("time_t", app_inputs), function(i){
   
 })
 
-######################
-## time_100 ##########
-######################
+#############################
+## time_100 #################
+#############################
 
 time_100_helper <- "## Maximal exchange control
 
@@ -62,9 +66,9 @@ lapply(grep("time_100", app_inputs), function(i){
   
 })
 
-######################
-## theory ############
-######################
+#############################
+## theory ###################
+#############################
 
 theory_helper <- "## Calculation types
 
@@ -88,9 +92,9 @@ lapply(grep("theory", app_inputs), function(i){
   
 })
 
-######################
-## fractional ########
-######################
+#############################
+## fractional ###############
+#############################
 
 fractional_helper <- "## Presented values
 
@@ -103,9 +107,9 @@ lapply(grep("fractional", app_inputs), function(i){
   
 })
 
-######################
-## state_1 ###########
-######################
+#############################
+## state_1 ##################
+#############################
 
 state_1_helper <- "## State 1
 
@@ -117,9 +121,9 @@ lapply(grep("state_1", app_inputs), function(i){
   
 })
 
-######################
-## state_2 ###########
-######################
+#############################
+## state_2 ##################
+#############################
 
 state_2_helper <- "## State 2
 
@@ -131,9 +135,9 @@ lapply(grep("state_2", app_inputs), function(i){
   
 })
 
-######################
-## timepoints ########
-######################
+#############################
+## timepoints ###############
+#############################
 
 timepoints_helper <- "## Chosen time points
 
@@ -145,9 +149,9 @@ lapply(grep("timepoints", app_inputs), function(i){
   
 })
 
-######################
-## uncertainty #######
-######################
+#############################
+## uncertainty ##############
+#############################
 
 uncertainty_helper <- "## Uncertainty forms
 
@@ -164,9 +168,9 @@ lapply(setdiff(grep("uncertainty", app_inputs) , grep("show_uncertainty", app_in
   
 })
 
-######################
-## title_size ########
-######################
+#############################
+## title_size ###############
+#############################
 
 title_size_helper <- "## Title size
 
@@ -179,9 +183,9 @@ lapply(grep("title_size", app_inputs), function(i){
   
 })
 
-######################
-## x_label_size ######
-######################
+#############################
+## x_label_size #############
+#############################
 
 x_label_size_helper <- "## Label size
 
@@ -198,9 +202,9 @@ lapply(grep("x_label_size", app_inputs), function(i){
   
 })
 
-######################
-## y_label_size ###### 
-######################
+#############################
+## y_label_size #############
+#############################
 
 y_label_size_helper <- "## Label size
 
@@ -213,9 +217,9 @@ lapply(grep("y_label_size", app_inputs), function(i){
   
 })
 
-######################
-## show_uncertainty ##
-######################
+#############################
+## show_uncertainty #########
+#############################
 
 show_uncertainty_helper <- "## Uncertainty indicator
 
@@ -227,9 +231,9 @@ lapply(grep("show_uncertainty", app_inputs), function(i){
   
 })
 
-######################
-## confidence_level ##
-######################
+#############################
+## confidence_level #########
+#############################
 
 confidence_level_helper <- ""
 
@@ -238,3 +242,135 @@ lapply(grep("confidence_level", app_inputs), function(i){
   write(confidence_level_helper, file = paste0(app_inputs[i], ".md"), append = FALSE)
   
 })
+
+#############################
+## state ####################
+#############################
+
+state_helper <- ""
+
+lapply(grep("state$", app_inputs), function(i){
+  
+  write(state_helper, file = paste0(app_inputs[i], ".md"), append = FALSE)
+  
+})
+
+
+####################################
+########## SINGLE HELPERS ##########
+####################################
+
+
+#############################
+## show_test ################
+#############################
+
+show_test_helper <- ""
+
+lapply(grep("show_test", app_inputs), function(i){
+  
+  write(show_test_helper, file = paste0(app_inputs[i], ".md"), append = FALSE)
+  
+})
+
+
+#############################
+## deut_part ################
+#############################
+
+deut_part_helper <- ""
+
+lapply(grep("deut_part", app_inputs), function(i){
+  
+  write(deut_part_helper, file = paste0(app_inputs[i], ".md"), append = FALSE)
+  
+})
+
+#############################
+## rep_time #################
+#############################
+
+rep_time_helper <- ""
+
+lapply(grep("rep_time", app_inputs), function(i){
+  
+  write(rep_time_helper, file = paste0(app_inputs[i], ".md"), append = FALSE)
+  
+})
+
+
+###############################
+## kin_download_file_columns ##
+###############################
+
+kin_download_file_columns_helper <- ""
+
+lapply(grep("kin_download_file_columns", app_inputs), function(i){
+  
+  write(kin_download_file_columns_helper, file = paste0(app_inputs[i], ".md"), append = FALSE)
+  
+})
+
+
+#############################
+## kin_download_file_rows ###
+#############################
+
+kin_download_file_rows_helper <- ""
+
+lapply(grep("kin_download_file_rows", app_inputs), function(i){
+  
+  write(kin_download_file_rows_helper, file = paste0(app_inputs[i], ".md"), append = FALSE)
+  
+})
+
+
+#############################
+## vol_interval #############
+#############################
+
+vol_interval_helper <- ""
+
+lapply(grep("vol_interval", app_inputs), function(i){
+  
+  write(vol_interval_helper, file = paste0(app_inputs[i], ".md"), append = FALSE)
+  
+})
+
+
+#############################
+## kin_log_x ################
+#############################
+
+kin_log_x_helper <- ""
+
+lapply(grep("kin_log_x", app_inputs), function(i){
+  
+  write(kin_log_x_helper, file = paste0(app_inputs[i], ".md"), append = FALSE)
+  
+})
+
+
+#############################
+## vol_p_adjustment_method ##
+#############################
+
+vol_p_adjustment_method_helper <- ""
+
+lapply(grep("vol_p_adjustment_method", app_inputs), function(i){
+  
+  write(vol_p_adjustment_method_helper, file = paste0(app_inputs[i], ".md"), append = FALSE)
+  
+})
+
+####################################
+############# MISSING ##############
+####################################
+
+library(stringr)
+
+already_done <- str_remove(list.files(), ".md")
+excluded <- app_inputs[c(grep("export", app_inputs), grep("range", app_inputs), grep("title$", app_inputs), grep("y_label$", app_inputs), grep("x_label$", app_inputs))]
+excluded2 <- c("reset_peptide_list", "hydro_prop",  "data_file", "exam_apply_changes")
+
+setdiff(app_inputs, c(already_done, excluded, excluded2))
