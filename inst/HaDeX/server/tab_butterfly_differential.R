@@ -5,12 +5,12 @@
 observe({
   
   updateSelectInput(session,
-                    inputId = "butt_diff_state_first",
+                    inputId = "butt_diff_state_1",
                     choices = states_from_file(),
                     selected = states_from_file()[1])
   
   updateSelectInput(session,
-                    inputId = "butt_diff_state_second",
+                    inputId = "butt_diff_state_2",
                     choices = states_from_file(),
                     selected = states_from_file()[2])
   
@@ -52,8 +52,8 @@ observe({
   updateTextInput(session,
                   inputId = "butterflyDifferential_plot_title",
                   value = case_when(
-                    input[["butt_diff_theory"]] ~ paste0("Thereotical butterfly differential plot between ", input[["butt_diff_state_first"]], " and ", input[["butt_diff_state_second"]]),
-                    !input[["butt_diff_theory"]] ~ paste0("Butterfly differential plot between ", input[["butt_diff_state_first"]], " and ", input[["butt_diff_state_second"]])
+                    input[["butt_diff_theory"]] ~ paste0("Thereotical butterfly differential plot between ", input[["butt_diff_state_1"]], " and ", input[["butt_diff_state_2"]]),
+                    !input[["butt_diff_theory"]] ~ paste0("Butterfly differential plot between ", input[["butt_diff_state_1"]], " and ", input[["butt_diff_state_2"]])
                   ))
   
   updateTextInput(session,
@@ -170,13 +170,13 @@ observe({
 
 butt_diff_dataset <- reactive({
   
-  validate(need(input[["butt_diff_state_first"]]!=input[["butt_diff_state_second"]], "There is no difference between the same state, choose different second state."))
+  validate(need(input[["butt_diff_state_1"]]!=input[["butt_diff_state_2"]], "There is no difference between the same state, choose different state 2."))
   validate(need(input[["chosen_protein"]] %in% unique(dat()[["Protein"]]), "Wait for the parameters to be loaded."))
   
   create_diff_uptake_dataset(dat(),
                             protein = input[["chosen_protein"]],
-                            state_1 = input[["butt_diff_state_first"]],
-                            state_2 = input[["butt_diff_state_second"]],
+                            state_1 = input[["butt_diff_state_1"]],
+                            state_2 = input[["butt_diff_state_2"]],
                             time_0 = as.numeric(input[["butt_diff_time_0"]]),
                             time_100 = as.numeric(input[["butt_diff_time_100"]]),
                             deut_part = as.numeric(input[["deut_part"]])/100)

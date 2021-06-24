@@ -18,12 +18,12 @@ observe({
                     selected = min(times_from_file()[times_from_file() > 0]))
   
   updateSelectInput(session,
-                    inputId = "qc_state_first",
+                    inputId = "qc_state_1",
                     choices = states_from_file(),
                     selected = states_from_file()[1])
   
   updateSelectInput(session,
-                    inputId = "qc_state_second",
+                    inputId = "qc_state_2",
                     choices = states_from_file(),
                     selected = states_from_file()[length(states_from_file())])
   
@@ -40,11 +40,11 @@ quality_control_dat <- reactive({
   
   validate(need(as.numeric(input[["qc_time_t"]]) > as.numeric(input[["qc_time_0"]]), "Chosen time must be bigger than in time. "))
   validate(need(sum(unique(qc_dat[["Exposure"]]) > as.numeric(input[["qc_time_t"]])) > 1, "Not enough time points (bigger than chosen time) to generate a plot. "))
-  validate(need(input[["qc_state_first"]]!=input[["qc_state_second"]], "The states must be different."))
+  validate(need(input[["qc_state_1"]]!=input[["qc_state_2"]], "The states must be different."))
   
   result <- create_quality_control_dataset(dat = qc_dat,
-                                           state_first = input[["qc_state_first"]],
-                                           state_second = input[["qc_state_second"]],
+                                           state_1 = input[["qc_state_1"]],
+                                           state_2 = input[["qc_state_2"]],
                                            time_t = as.numeric(input[["qc_time_t"]]),
                                            time_0 = as.numeric(input[["qc_time_0"]]),
                                            protein = input[["chosen_protein"]],

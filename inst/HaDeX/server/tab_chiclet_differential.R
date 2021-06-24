@@ -5,12 +5,12 @@
 observe({
   
   updateSelectInput(session,
-                    inputId = "chic_diff_state_first",
+                    inputId = "chic_diff_state_1",
                     choices = states_from_file(),
                     selected = states_from_file()[1])
   
   updateSelectInput(session,
-                    inputId = "chic_diff_state_second",
+                    inputId = "chic_diff_state_2",
                     choices = states_from_file(),
                     selected = states_from_file()[2])
   
@@ -52,8 +52,8 @@ observe({
   updateTextInput(session,
                   inputId = "chicletDifferential_plot_title",
                   value = case_when(
-                    input[["chic_diff_theory"]] ~ paste0("Thereotical chiclet differential plot between ", input[["chic_diff_state_first"]], " and ", input[["chic_diff_state_second"]]),
-                    !input[["chic_diff_theory"]] ~ paste0("Chiclet differential plot between ", input[["chic_diff_state_first"]], " and ", input[["chic_diff_state_second"]])
+                    input[["chic_diff_theory"]] ~ paste0("Thereotical chiclet differential plot between ", input[["chic_diff_state_1"]], " and ", input[["chic_diff_state_2"]]),
+                    !input[["chic_diff_theory"]] ~ paste0("Chiclet differential plot between ", input[["chic_diff_state_1"]], " and ", input[["chic_diff_state_2"]])
                   ))
 
 })
@@ -123,13 +123,13 @@ observe({
 
 chiclet_diff_dataset <- reactive({
   
-  validate(need(input[["chic_diff_state_first"]]!=input[["chic_diff_state_second"]], "There is no difference between the same state, choose different second state."))
+  validate(need(input[["chic_diff_state_1"]]!=input[["chic_diff_state_2"]], "There is no difference between the same state, select different state 2."))
   validate(need(input[["chosen_protein"]] %in% unique(dat()[["Protein"]]), "Wait for the parameters to be loaded."))
   
   create_diff_uptake_dataset(dat(),
                             protein = input[["chosen_protein"]],
-                            state_1 = input[["chic_diff_state_first"]],
-                            state_2 = input[["chic_diff_state_second"]],
+                            state_1 = input[["chic_diff_state_1"]],
+                            state_2 = input[["chic_diff_state_2"]],
                             time_0 = as.numeric(input[["chic_diff_time_0"]]),
                             time_100 = as.numeric(input[["chic_diff_time_100"]]),
                             deut_part = as.numeric(input[["deut_part"]])/100)

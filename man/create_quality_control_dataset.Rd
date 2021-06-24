@@ -7,8 +7,8 @@
 create_quality_control_dataset(
   dat,
   protein,
-  state_first,
-  state_second,
+  state_1,
+  state_2,
   time_t,
   time_0,
   deut_part = 0.9
@@ -19,9 +19,9 @@ create_quality_control_dataset(
 
 \item{protein}{...}
 
-\item{state_first}{state of the first peptide}
+\item{state_1}{state of the first peptide}
 
-\item{state_second}{state of the second peptide}
+\item{state_2}{state of the second peptide}
 
 \item{time_t}{chosen time point}
 
@@ -53,8 +53,8 @@ dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.
 
 (qc_dat <- create_quality_control_dataset(dat = dat,
                                           protein = "db_CD160",
-                                          state_first = "CD160",
-                                          state_second = "CD160_HVEM", 
+                                          state_1 = "CD160",
+                                          state_2 = "CD160_HVEM", 
                                           time_t = 1, 
                                           time_0 = 0.001,
                                           deut_part = 0.9))    

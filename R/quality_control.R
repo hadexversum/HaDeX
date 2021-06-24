@@ -7,8 +7,8 @@
 #' 
 #' @param dat data read by \code{\link{read_hdx}}
 #' @param protein ...
-#' @param state_first state of the first peptide
-#' @param state_second state of the second peptide
+#' @param state_1 state of the first peptide
+#' @param state_2 state of the second peptide
 #' @param time_t chosen time point
 #' @param time_0 `in` time
 #' @param deut_part ...
@@ -38,8 +38,8 @@
 #' 
 #' (qc_dat <- create_quality_control_dataset(dat = dat,
 #'                                           protein = "db_CD160",
-#'                                           state_first = "CD160",
-#'                                           state_second = "CD160_HVEM", 
+#'                                           state_1 = "CD160",
+#'                                           state_2 = "CD160_HVEM", 
 #'                                           time_t = 1, 
 #'                                           time_0 = 0.001,
 #'                                           deut_part = 0.9))    
@@ -50,8 +50,8 @@
 
 create_quality_control_dataset <- function(dat,
                                            protein,
-                                           state_first,
-                                           state_second, 
+                                           state_1,
+                                           state_2, 
                                            time_t, 
                                            time_0, 
                                            deut_part = 0.9){
@@ -63,7 +63,7 @@ create_quality_control_dataset <- function(dat,
     
     state_dat_1 <- calculate_state_uptake(dat, 
                                           protein = protein,
-                                          state = state_first,
+                                          state = state_1,
                                           time_0 = time_0, 
                                           time_t = time_t,
                                           time_100 = t,
@@ -71,7 +71,7 @@ create_quality_control_dataset <- function(dat,
     
     state_dat_2 <- calculate_state_uptake(dat, 
                                           protein = protein,
-                                          state = state_second,
+                                          state = state_2,
                                           time_0 = time_0, 
                                           time_t = time_t,
                                           time_100 = t,
@@ -80,7 +80,7 @@ create_quality_control_dataset <- function(dat,
     ## functionality from generate_differential_data_set()
     diff_dat <- bind_rows(state_dat_1, state_dat_2) %>%
       droplevels() %>% 
-      mutate(State = factor(State, levels = c(state_first, state_second), labels = c("1", "2"))) %>%
+      mutate(State = factor(State, levels = c(state_1, state_2), labels = c("1", "2"))) %>%
       gather(variable, value, -c(Protein:End, State, Med_Sequence)) %>%
       unite(tmp, variable, State) %>%
       spread(tmp, value)  %>%
@@ -101,8 +101,8 @@ create_quality_control_dataset <- function(dat,
   
   result <- bind_rows(result)
   
-  colnames(result) <- c("out_time", "avg_err_state_first", "sd_err_state_first", "avg_err_state_second", 
-                        "sd_err_state_second", "avg_diff", "sd_diff")
+  colnames(result) <- c("out_time", "avg_err_state_1", "sd_err_state_1", "avg_err_state_2", 
+                        "sd_err_state_2", "avg_diff", "sd_diff")
   
   result
   
@@ -133,7 +133,7 @@ plot_quality_control <- function(dat){
     ggplot(aes(x = out_time, y = value, group = type)) +
     geom_point(size = 3) +
     geom_line(aes(color = type)) +
-    scale_colour_discrete(name = "Mean uncertainty of: ", labels = c("difference", "first state", "second state")) +
+    scale_colour_discrete(name = "Mean uncertainty of: ", labels = c("difference", "state_1", "state_2")) +
     scale_x_log10() + 
     labs(x = "Out time [min]",
          y = "Mean uncertainty [%]",
@@ -163,12 +163,12 @@ plot_quality_control <- function(dat){
 show_quality_control_data <- function(dat){
   
   dat %>%
-    select(out_time, avg_err_state_first, avg_err_state_second, avg_diff) %>%
-    mutate(avg_err_state_first = round(avg_err_state_first, 2),
-           avg_err_state_second = round(avg_err_state_second, 2),
+    select(out_time, avg_err_state_1, avg_err_state_2, avg_diff) %>%
+    mutate(avg_err_state_1 = round(avg_err_state_1, 2),
+           avg_err_state_2 = round(avg_err_state_2, 2),
            avg_diff = round(avg_diff, 2)) %>%
     rename("Out time" = out_time,
-           "Mean error - first state [%]" = avg_err_state_first,
-           "Mean error - second state [%]" = avg_err_state_second,
+           "Mean error - state 1 [%]" = avg_err_state_1,
+           "Mean error - state 2 [%]" = avg_err_state_2,
            "Mean error of difference [%]" = avg_diff)
 }

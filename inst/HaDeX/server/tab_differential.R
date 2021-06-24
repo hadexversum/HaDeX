@@ -36,8 +36,8 @@ observe({
   updateTextInput(session,
                   inputId = "woods_plot_title",
                   value = case_when(
-                    input[["theory"]] ~ paste0("Theoretical deuterium uptake difference in ", input[["time_t"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]), " for ", input[["chosen_protein"]]),
-                    !input[["theory"]] ~ paste0("Deuterium uptake difference in ", input[["time_t"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]]), " for ", input[["chosen_protein"]])
+                    input[["theory"]] ~ paste0("Theoretical deuterium uptake difference in ", input[["time_t"]], " min between ", gsub("_", " ", input[["diff_state_1"]]), " and ", gsub("_", " ", input[["diff_state_2"]]), " for ", input[["chosen_protein"]]),
+                    !input[["theory"]] ~ paste0("Deuterium uptake difference in ", input[["time_t"]], " min between ", gsub("_", " ", input[["diff_state_1"]]), " and ", gsub("_", " ", input[["diff_state_2"]]), " for ", input[["chosen_protein"]])
                   ))
   
   updateTextInput(session,
@@ -54,12 +54,12 @@ observe({
   
   
   updateSelectInput(session,
-                    inputId = "state_first",
+                    inputId = "diff_state_1",
                     choices = states_from_file(),
                     selected = states_from_file()[1])
   
   updateSelectInput(session,
-                    inputId = "state_second",
+                    inputId = "diff_state_2",
                     choices = states_from_file(),
                     selected = states_from_file()[length(states_from_file())])
   
@@ -80,7 +80,7 @@ observe({
 
 woods_plot_dat <- reactive({
   
-  validate(need(input[["compare_states"]], "Please select at least one state."))
+  validate(need(input[["diff_state_1"]]!=input[["diff_state_2"]], "There is no difference between the same state, choose different state 2."))
   validate(need(length(unique(filter(dat(), !is.na("Modification"), Protein == input[["chosen_protein"]])[["State"]])) > 1, "Not sufficient number of states without modifications."))
   
   if(!input[["theory"]]){
@@ -90,7 +90,7 @@ woods_plot_dat <- reactive({
   
   tryCatch({
     calculate_diff_uptake(dat = dat(),
-                          states = c(input[["state_first"]], input[["state_second"]]),
+                          states = c(input[["diff_state_1"]], input[["diff_state_2"]]),
                           protein = input[["chosen_protein"]],
                           time_0 = input[["time_0"]],
                           time_t = input[["time_t"]],
@@ -120,7 +120,7 @@ differential_plot <- reactive({
 
 differential_plot_out <- reactive({
   
-  validate(need(!(input[["state_first"]] == input[["state_second"]]), "Please select two different states."))
+  validate(need(input[["diff_state_1"]]!=input[["diff_state_2"]], "There is no difference between the same state, choose different state 2."))
   
   differential_plot() + 
     coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
