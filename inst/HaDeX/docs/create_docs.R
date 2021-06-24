@@ -267,12 +267,7 @@ lapply(grep("state$", app_inputs), function(i){
 
 show_test_helper <- ""
 
-lapply(grep("show_test", app_inputs), function(i){
-  
-  write(show_test_helper, file = paste0(app_inputs[i], ".md"), append = FALSE)
-  
-})
-
+write(show_test_helper, file = "show_test.md", append = FALSE)
 
 #############################
 ## deut_part ################
@@ -280,11 +275,7 @@ lapply(grep("show_test", app_inputs), function(i){
 
 deut_part_helper <- ""
 
-lapply(grep("deut_part", app_inputs), function(i){
-  
-  write(deut_part_helper, file = paste0(app_inputs[i], ".md"), append = FALSE)
-  
-})
+write(deut_part_helper, file = "deut_part.md", append = FALSE)
 
 #############################
 ## rep_time #################
@@ -292,12 +283,7 @@ lapply(grep("deut_part", app_inputs), function(i){
 
 rep_time_helper <- ""
 
-lapply(grep("rep_time", app_inputs), function(i){
-  
-  write(rep_time_helper, file = paste0(app_inputs[i], ".md"), append = FALSE)
-  
-})
-
+write(rep_time_helper, file = "rep_time.md", append = FALSE)
 
 ###############################
 ## kin_download_file_columns ##
@@ -305,12 +291,7 @@ lapply(grep("rep_time", app_inputs), function(i){
 
 kin_download_file_columns_helper <- ""
 
-lapply(grep("kin_download_file_columns", app_inputs), function(i){
-  
-  write(kin_download_file_columns_helper, file = paste0(app_inputs[i], ".md"), append = FALSE)
-  
-})
-
+write(kin_download_file_columns_helper, file = "kin_download_file_columns.md", append = FALSE)
 
 #############################
 ## kin_download_file_rows ###
@@ -318,12 +299,7 @@ lapply(grep("kin_download_file_columns", app_inputs), function(i){
 
 kin_download_file_rows_helper <- ""
 
-lapply(grep("kin_download_file_rows", app_inputs), function(i){
-  
-  write(kin_download_file_rows_helper, file = paste0(app_inputs[i], ".md"), append = FALSE)
-  
-})
-
+write(kin_download_file_rows_helper, file = "kin_download_file_rows.md", append = FALSE)
 
 #############################
 ## vol_interval #############
@@ -331,12 +307,7 @@ lapply(grep("kin_download_file_rows", app_inputs), function(i){
 
 vol_interval_helper <- ""
 
-lapply(grep("vol_interval", app_inputs), function(i){
-  
-  write(vol_interval_helper, file = paste0(app_inputs[i], ".md"), append = FALSE)
-  
-})
-
+write(vol_interval_helper, file = "vol_interval_helper.md", append = FALSE)
 
 #############################
 ## kin_log_x ################
@@ -344,12 +315,7 @@ lapply(grep("vol_interval", app_inputs), function(i){
 
 kin_log_x_helper <- ""
 
-lapply(grep("kin_log_x", app_inputs), function(i){
-  
-  write(kin_log_x_helper, file = paste0(app_inputs[i], ".md"), append = FALSE)
-  
-})
-
+write(kin_log_x_helper, file =  "kin_log_x.md", append = FALSE)
 
 #############################
 ## vol_p_adjustment_method ##
@@ -357,11 +323,7 @@ lapply(grep("kin_log_x", app_inputs), function(i){
 
 vol_p_adjustment_method_helper <- ""
 
-lapply(grep("vol_p_adjustment_method", app_inputs), function(i){
-  
-  write(vol_p_adjustment_method_helper, file = paste0(app_inputs[i], ".md"), append = FALSE)
-  
-})
+write(vol_p_adjustment_method_helper, file = "vol_p_adjustment_method.md", append = FALSE)
 
 ####################################
 ############# MISSING ##############
@@ -374,3 +336,120 @@ excluded <- app_inputs[c(grep("export", app_inputs), grep("range", app_inputs), 
 excluded2 <- c("reset_peptide_list", "hydro_prop",  "data_file", "exam_apply_changes")
 
 setdiff(app_inputs, c(already_done, excluded, excluded2))
+
+
+####################################
+############# OUTPUTS ##############
+####################################
+
+##################################
+## replicatesPlot ################
+##################################
+
+replicatesPlot_helper <- ''
+
+write(replicatesPlot_helper, file = 'replicatesPlot.md', append = FALSE)
+
+##################################
+## replicates_histogram ##########
+##################################
+
+replicates_histogram_helper <- ''
+
+write(replicates_histogram_helper, file = 'replicates_histogram.md', append = FALSE)
+
+##################################
+## all_replicates_histogram ######
+##################################
+
+all_replicates_histogram_helper <- ''
+
+write(all_replicates_histogram_helper, file = 'all_replicates_histogram.md', append = FALSE)
+
+##################################
+## peptide_list_data #############
+##################################
+
+peptide_list_data_helper <- ''
+
+write(peptide_list_data_helper, file = 'peptide_list_data.md', append = FALSE)
+
+##################################
+## kinetic_plot_chosen_peptides ##
+##################################
+
+kinetic_plot_chosen_peptides_helper <- ''
+
+write(kinetic_plot_chosen_peptides_helper, file = 'kinetic_plot_chosen_peptides.md', append = FALSE)
+
+##################################
+## quality_control_plot ##########
+##################################
+
+quality_control_plot_helper <- ''
+
+write(quality_control_plot_helper, file = 'quality_control_plot.md', append = FALSE)
+
+##################################
+## rep_sequence ##################
+##################################
+
+rep_sequence_helper <- ""
+
+write(rep_sequence_helper, file = "rep_sequence.md", append = FALSE)
+
+##################################
+## chicletDifferentialPlot #######
+##################################
+
+chicletDifferentialPlot_helper <- ""
+
+write(chicletDifferentialPlot_helper, file = "chicletDifferentialPlot.md", append = FALSE)
+
+##################################
+## chicletPlot ###################
+##################################
+
+chicletPlot_helper <- ""
+
+write(chicletPlot_helper, file = "chicletPlot.md", append = FALSE)
+
+##################################
+## volcanoPlot ###################
+##################################
+
+volcanoPlot_helper <- ""
+
+write(volcanoPlot_helper, file = "volcanoPlot.md", append = FALSE)
+
+##################################
+## butterflyDifferentialPlot #####
+##################################
+
+butterflyDifferentialPlot_helper <- ""
+
+write(butterflyDifferentialPlot_helper, file = "butterflyDifferentialPlot.md", append = FALSE)
+
+##################################
+## comparisonPlot ################
+##################################
+
+comparisonPlot_helper <- ""
+
+write(comparisonPlot_helper, file = "comparisonPlot.md", append = FALSE)
+
+##################################
+## differentialPlot ##############
+##################################
+
+differentialPlot_helper <- ""
+
+write(differentialPlot_helper, file = "differentialPlot.md", append = FALSE)
+
+##################################
+## butterflyPlot #################
+##################################
+
+butterflyPlot_helper <- ""
+
+write(butterflyPlot_helper, file = "butterflyPlot.md", append = FALSE)
