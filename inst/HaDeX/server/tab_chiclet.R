@@ -184,8 +184,6 @@ output[["chicletPlot_debug"]] <- renderUI({
   
   if(!is.null(input[["chicletPlot_hover"]])) {
     
-    ## TO FIX
-    
     plot_data <- chiclet_plot_out()[["data"]]
     hv <- input[["chicletPlot_hover"]]
     
@@ -201,10 +199,7 @@ output[["chicletPlot_debug"]] <- renderUI({
                          err_value = plot_data[["err_value"]])
     
     tt_df <- filter(hv_dat) %>%
-      filter(abs(ID - x) < 0.5) %>%
-      filter(abs(y_plot - y) < 10) %>%
-      filter(abs(y_plot - y) == min(abs(y_plot - y)))
-    
+      filter(abs(ID - x) < 0.5) 
     
     if(nrow(tt_df) != 0) {
       
@@ -216,18 +211,21 @@ output[["chicletPlot_debug"]] <- renderUI({
                        hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
       
       
-      style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); ",
+      style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); pointer-events: none; ",
                       tt_pos_adj, ":", tt_pos,
                       "px; top:", hv[["coords_css"]][["y"]], "px; padding: 0px;")
       
+      tmp1 <- paste0(unique(tt_df[["Sequence"]]),
+                     "<br/> Position: ", unique(tt_df[["Start"]]), "-", unique(tt_df[["End"]]))
+      
+      tmp2 <- paste0("<br/> Exposure: ", tt_df[["y_plot"]], " min, ",
+                     "Value: ", round(tt_df[["value"]], 2))
       div(
         style = style,
-        p(HTML(paste0(tt_df[["Sequence"]],
-                      "<br/> Position: ", tt_df[["Start"]], "-", tt_df[["End"]],
-                      "<br/> Value: ", round(tt_df[["y_plot"]], 2),
-                      "<br/> Exposure: ", tt_df[["Exposure"]], " min"
-        )))
-      )
+        p(HTML(tmp1), HTML(tmp2)  
+                    
+        ))
+      
     }
   }
 })

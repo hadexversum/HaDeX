@@ -185,7 +185,56 @@ output[["chicletDifferentialPlot_download_button"]] <- downloadHandler("chicletD
                                                                          })
 ##
 
-## TODO: HOVER
+output[["chicletDifferentialPlot_debug"]] <- renderUI({
+  
+  if(!is.null(input[["chicletDifferentialPlot_hover"]])) {
+    
+    plot_data <- chiclet_differential_plot_out()[["data"]]
+    hv <- input[["chicletDifferentialPlot_hover"]]
+    
+    hv_dat <- data.frame(x = hv[["x"]],
+                         y = hv[["y"]],
+                         x_plot = plot_data[[ hv[["mapping"]][["x"]] ]],
+                         y_plot = plot_data[[ "Exposure" ]], 
+                         Sequence = plot_data[["Sequence"]],
+                         Start = plot_data[["Start"]],
+                         End = plot_data[["End"]],
+                         ID = plot_data[["ID"]],
+                         value = plot_data[["value"]],
+                         err_value = plot_data[["err_value"]])
+    
+    tt_df <- filter(hv_dat) %>%
+      filter(abs(ID - x) < 0.5) 
+    
+    if(nrow(tt_df) != 0) {
+      
+      tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                           "left", "right")
+      
+      tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                       hv[["coords_css"]][["x"]],
+                       hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+      
+      
+      style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); pointer-events: none; ",
+                      tt_pos_adj, ":", tt_pos,
+                      "px; top:", hv[["coords_css"]][["y"]], "px; padding: 0px;")
+      
+      tmp1 <- paste0(unique(tt_df[["Sequence"]]),
+                     "<br/> Position: ", unique(tt_df[["Start"]]), "-", unique(tt_df[["End"]]))
+      
+      tmp2 <- paste0("<br/> Exposure: ", tt_df[["y_plot"]], " min, ",
+                     "Value: ", round(tt_df[["value"]], 2))
+      div(
+        style = style,
+        p(HTML(tmp1), HTML(tmp2)  
+          
+        ))
+      
+    }
+  }
+})
+
 
 #################################
 ######### DATA ##################
