@@ -11,7 +11,7 @@ library(dplyr)
 ## is pasted here and then processed (I don't have better idea for
 ## now).
 
-app_inputs <- strsplit("butt_diff_confidence_level, butt_diff_fractional, butt_diff_show_test, butt_diff_state_1, butt_diff_state_2, butt_diff_theory, butt_diff_time_0, butt_diff_time_100, butt_diff_timepoints, butt_diff_uncertainty, butt_diff_x_range, butt_diff_y_range, butt_fractional, butt_state, butt_theory, butt_time_0, butt_time_100, butt_timepoints, butt_uncertainty, butt_x_range, butt_y_range, butterflyDifferential_plot_title, butterflyDifferential_plot_title_size, butterflyDifferential_plot_x_label, butterflyDifferential_plot_x_label_size, butterflyDifferential_plot_y_label, butterflyDifferential_plot_y_label_size, butterfly_plot_title, butterfly_plot_title_size, butterfly_plot_x_label, butterfly_plot_x_label_size, butterfly_plot_y_label, butterfly_plot_y_label_size, chic_diff_fractional, chic_diff_show_uncertainty, chic_diff_state_1, chic_diff_state_2, chic_diff_theory, chic_diff_time_0, chic_diff_time_100, chic_diff_timepoints, chic_diff_x_range, chic_fractional, chic_show_uncertainty, chic_state, chic_theory, chic_time_0, chic_time_100, chic_timepoints, chic_x_range, chicletDifferential_plot_title, chicletDifferential_plot_title_size, chicletDifferential_plot_x_label, chicletDifferential_plot_x_label_size, chicletDifferential_plot_y_label, chicletDifferential_plot_y_label_size, chiclet_plot_title, chiclet_plot_title_size, chiclet_plot_x_label, chiclet_plot_x_label_size, chiclet_plot_y_label, chiclet_plot_y_label_size, chosen_control, chosen_protein, chosen_state, comp_fractional, comp_plot_y_range, compare_states, comparison_plot_title, comparison_plot_title_size, comparison_plot_x_label, comparison_plot_x_label_size, comparison_plot_y_label, comparison_plot_y_label_size, confidence_limit, confidence_limit_2, data_file, deut_part, diff_state_1, diff_state_2, exam_apply_changes, exam_confidence, exam_protein_name, exam_state_name, examiner_fd_timepoint, export_butterfly_differential_plot, export_butterfly_differential_plot_data, export_butterfly_plot, export_butterfly_plot_data, export_chiclet_differential_plot, export_chiclet_differential_plot_data, export_chiclet_plot, export_chiclet_plot_data, export_comparison_plot, export_comparison_plot_data, export_kin_plot, export_kin_plot_data, export_overlap_dist, export_overlap_dist_data, export_overlap_graph, export_overlap_graph_data, export_quality_control_plot, export_quality_control_plot_data, export_theo_comparison_plot, export_theo_comparison_plot_data, export_theo_kin_plot, export_theo_kin_plot_data, export_theo_woods_plot, export_theo_woods_plot_data, export_volcano_plot, export_volcano_plot_data, export_woods_plot, export_woods_plot_data, hydro_prop, kin_download_file_columns, kin_download_file_rows, kin_fractional, kin_log_x, kin_plot_title, kin_plot_title_size, kin_plot_x_label, kin_plot_x_label_size, kin_plot_y_label, kin_plot_y_label_size, kin_plot_y_range, kin_theory, kin_time_0, kin_time_100, kin_uncertainty, plot_range, plot_x_range, qc_state_1, qc_state_2, qc_time_0, qc_time_t, rep_plot_title, rep_plot_title_size, rep_plot_x_label, rep_plot_x_label_size, rep_plot_y_label, rep_plot_y_label_size, rep_state, rep_time, reset_peptide_list, sequence_length, sequence_start_shift, theory, time_0, time_100, time_t, vol_confidence_level, vol_interval, vol_p_adjustment_method, vol_state_1, vol_state_2, vol_timepoints, vol_x_range, vol_y_range, volcano_plot_title, volcano_plot_title_size, volcano_plot_x_label, volcano_plot_x_label_size, volcano_plot_y_label, volcano_plot_y_label_size, woods_plot_title, woods_plot_title_size, woods_plot_x_label, woods_plot_x_label_size, woods_plot_y_label, woods_plot_y_label_size, woods_plot_y_range", ", ")[[1]]
+app_inputs <- strsplit("butt_diff_confidence_level, butt_diff_fractional, butt_diff_show_test, butt_diff_state_1, butt_diff_state_2, butt_diff_theory, butt_diff_time_0, butt_diff_time_100, butt_diff_timepoints, butt_diff_uncertainty, butt_diff_x_range, butt_diff_y_range, butt_fractional, butt_state, butt_theory, butt_time_0, butt_time_100, butt_timepoints, butt_uncertainty, butt_x_range, butt_y_range, butterflyDifferential_plot_title, butterflyDifferential_plot_title_size, butterflyDifferential_plot_x_label, butterflyDifferential_plot_x_label_size, butterflyDifferential_plot_y_label, butterflyDifferential_plot_y_label_size, butterfly_plot_title, butterfly_plot_title_size, butterfly_plot_x_label, butterfly_plot_x_label_size, butterfly_plot_y_label, butterfly_plot_y_label_size, chic_diff_fractional, chic_diff_show_uncertainty, chic_diff_state_1, chic_diff_state_2, chic_diff_theory, chic_diff_time_0, chic_diff_time_100, chic_diff_timepoints, chic_diff_x_range, chic_fractional, chic_show_uncertainty, chic_state, chic_theory, chic_time_0, chic_time_100, chic_timepoints, chic_x_range, chicletDifferential_plot_title, chicletDifferential_plot_title_size, chicletDifferential_plot_x_label, chicletDifferential_plot_x_label_size, chicletDifferential_plot_y_label, chicletDifferential_plot_y_label_size, chiclet_plot_title, chiclet_plot_title_size, chiclet_plot_x_label, chiclet_plot_x_label_size, chiclet_plot_y_label, chiclet_plot_y_label_size, chosen_control, chosen_protein, chosen_state, comp_fractional, comp_plot_y_range, compare_states, comparison_plot_title, comparison_plot_title_size, comparison_plot_x_label, comparison_plot_x_label_size, comparison_plot_y_label, comparison_plot_y_label_size, confidence_level, confidence_level_2, data_file, deut_part, diff_state_1, diff_state_2, exam_apply_changes, exam_confidence, exam_protein_name, exam_state_name, examiner_fd_timepoint, export_butterfly_differential_plot, export_butterfly_differential_plot_data, export_butterfly_plot, export_butterfly_plot_data, export_chiclet_differential_plot, export_chiclet_differential_plot_data, export_chiclet_plot, export_chiclet_plot_data, export_comparison_plot, export_comparison_plot_data, export_kin_plot, export_kin_plot_data, export_overlap_dist, export_overlap_dist_data, export_overlap_graph, export_overlap_graph_data, export_quality_control_plot, export_quality_control_plot_data, export_theo_comparison_plot, export_theo_comparison_plot_data, export_theo_kin_plot, export_theo_kin_plot_data, export_theo_woods_plot, export_theo_woods_plot_data, export_volcano_plot, export_volcano_plot_data, export_woods_plot, export_woods_plot_data, hydro_prop, kin_download_file_columns, kin_download_file_rows, kin_fractional, kin_log_x, kin_plot_title, kin_plot_title_size, kin_plot_x_label, kin_plot_x_label_size, kin_plot_y_label, kin_plot_y_label_size, kin_plot_y_range, kin_theory, kin_time_0, kin_time_100, kin_uncertainty, plot_range, plot_x_range, qc_state_1, qc_state_2, qc_time_0, qc_time_t, rep_plot_title, rep_plot_title_size, rep_plot_x_label, rep_plot_x_label_size, rep_plot_y_label, rep_plot_y_label_size, rep_state, rep_time, reset_peptide_list, sequence_length, sequence_start_shift, theory, time_0, time_100, time_t, vol_confidence_level, vol_interval, vol_p_adjustment_method, vol_state_1, vol_state_2, vol_timepoints, vol_x_range, vol_y_range, volcano_plot_title, volcano_plot_title_size, volcano_plot_x_label, volcano_plot_x_label_size, volcano_plot_y_label, volcano_plot_y_label_size, woods_plot_title, woods_plot_title_size, woods_plot_x_label, woods_plot_x_label_size, woods_plot_y_label, woods_plot_y_label_size, woods_plot_y_range", ", ")[[1]]
 
 ## The helper files must be in inst/HaDeX/docs localization
 
@@ -235,7 +235,9 @@ lapply(grep("show_uncertainty", app_inputs), function(i){
 ## confidence_level #########
 #############################
 
-confidence_level_helper <- ""
+confidence_level_helper <- "## Confidence level
+
+The confidence intervals are calculated based on confidence level."
 
 lapply(grep("confidence_level", app_inputs), function(i){
   
@@ -247,7 +249,9 @@ lapply(grep("confidence_level", app_inputs), function(i){
 ## state ####################
 #############################
 
-state_helper <- ""
+state_helper <- "## Biological state
+
+Biological state of chosen protein of interest."
 
 lapply(grep("state$", app_inputs), function(i){
   
@@ -256,24 +260,39 @@ lapply(grep("state$", app_inputs), function(i){
 })
 
 
+
+
 ####################################
 ########## SINGLE HELPERS ##########
 ####################################
-
 
 #############################
 ## show_test ################
 #############################
 
-show_test_helper <- ""
+show_test_helper <- "## Test indicator
 
-write(show_test_helper, file = "show_test.md", append = FALSE)
+Confidence intervals on differential butterfly plot can affect readibility. They can be shown or not, as the user prefers.
+
+The confidence intervals are calculated based on Houde test. For more information see the documentation.
+
+Confidence intervals indicate if the measurement is statistically significant. If the result of the measurement is above 
+confidence interval on 98% confidence level, it means that for 98% the null hypothesis (that there is no difference between two states) can be rejected.
+"
+
+lapply(grep("show_test", app_inputs), function(i){
+  
+  write(show_test_helper, file = paste0(app_inputs[i], ".md"), append = FALSE)
+  
+})
 
 #############################
 ## deut_part ################
 #############################
 
-deut_part_helper <- ""
+deut_part_helper <- "## Deuterium concentration
+
+Deuterium concentration indicates how much deuterium is in the buffer the protein is incubated in. This value is used when result of measurement is compared with theoretical exchange controls. For more information see the documentation."
 
 write(deut_part_helper, file = "deut_part.md", append = FALSE)
 
@@ -281,7 +300,9 @@ write(deut_part_helper, file = "deut_part.md", append = FALSE)
 ## rep_time #################
 #############################
 
-rep_time_helper <- ""
+rep_time_helper <- "## Time point
+
+Time point of the measurement of interest."
 
 write(rep_time_helper, file = "rep_time.md", append = FALSE)
 
@@ -289,7 +310,12 @@ write(rep_time_helper, file = "rep_time.md", append = FALSE)
 ## kin_download_file_columns ##
 ###############################
 
-kin_download_file_columns_helper <- ""
+kin_download_file_columns_helper <- "## Number of columns in file
+
+The deuterium uptake plots are arranged on the sheets of multi page pdf document. The number of columns can be adjusted. 
+
+The number of columns on one page should not be bigger than 4, as it may affect the readibility. 
+"
 
 write(kin_download_file_columns_helper, file = "kin_download_file_columns.md", append = FALSE)
 
@@ -297,7 +323,12 @@ write(kin_download_file_columns_helper, file = "kin_download_file_columns.md", a
 ## kin_download_file_rows ###
 #############################
 
-kin_download_file_rows_helper <- ""
+kin_download_file_rows_helper <- "## Number of columns in file
+
+The deuterium uptake plots are arranged on the sheets of multi page pdf document. The number of rows can be adjusted. 
+
+The number of rows on one page should not be bigger than 4, as it may affect the readibility. 
+"
 
 write(kin_download_file_rows_helper, file = "kin_download_file_rows.md", append = FALSE)
 
@@ -305,15 +336,19 @@ write(kin_download_file_rows_helper, file = "kin_download_file_rows.md", append 
 ## vol_interval #############
 #############################
 
-vol_interval_helper <- ""
+vol_interval_helper <- "## Confidence calculations
 
-write(vol_interval_helper, file = "vol_interval_helper.md", append = FALSE)
+The confidence limits can be calculated based on whole dataset of measurements, or only the ones visible on the plot (selected on the left)."
+
+write(vol_interval_helper, file = "vol_interval.md", append = FALSE)
 
 #############################
 ## kin_log_x ################
 #############################
 
-kin_log_x_helper <- ""
+kin_log_x_helper <- "## Logarithm indicator
+
+The time point of measurement are on a wide scale - from seconds to hours. The logarythmic values on the time scale help to distinquish the values and can increase readibility."
 
 write(kin_log_x_helper, file =  "kin_log_x.md", append = FALSE)
 
@@ -321,7 +356,9 @@ write(kin_log_x_helper, file =  "kin_log_x.md", append = FALSE)
 ## vol_p_adjustment_method ##
 #############################
 
-vol_p_adjustment_method_helper <- ""
+vol_p_adjustment_method_helper <- "## Adjustment indicator
+
+The P-values calculated for differential deuterium uptake can be adjusted using Benjamini & Hochberg (BH) or Bonferroni correction, if needed. "
 
 write(vol_p_adjustment_method_helper, file = "vol_p_adjustment_method.md", append = FALSE)
 
@@ -336,7 +373,6 @@ excluded <- app_inputs[c(grep("export", app_inputs), grep("range", app_inputs), 
 excluded2 <- c("reset_peptide_list", "hydro_prop",  "data_file", "exam_apply_changes")
 
 setdiff(app_inputs, c(already_done, excluded, excluded2))
-
 
 ####################################
 ############# OUTPUTS ##############

@@ -32,16 +32,16 @@
 plot_differential <- function(dat, 
                               theoretical = FALSE, 
                               fractional = FALSE,
-                              confidence_limit = 0.98, 
-                              confidence_limit_2 = 0.99){ 
+                              confidence_level = 0.98, 
+                              confidence_level_2 = 0.99){ 
   
   interval <- calculate_confidence_limit_values(calc_dat = dat,
-                                                confidence_limit = confidence_limit,
+                                                confidence_level = confidence_level,
                                                 theoretical = theoretical,
                                                 fractional = fractional)
   
   interval_2 <- calculate_confidence_limit_values(calc_dat = dat,
-                                                  confidence_limit = confidence_limit_2,
+                                                  confidence_level = confidence_level_2,
                                                   theoretical = theoretical,
                                                   fractional = fractional)
   
@@ -105,10 +105,10 @@ plot_differential <- function(dat,
     geom_errorbar(aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value, color = colour)) +
     geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
     ## intervals
-    geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) + 
-    geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", confidence_limit*100, "% : ", round(interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
-    geom_hline(aes(yintercept = interval_2[1], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "deepskyblue3", size = .7, show.legend = TRUE) +
-    geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_limit_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
+    geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", confidence_level*100, "% : ", round(interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) + 
+    geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", confidence_level*100, "% : ", round(interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
+    geom_hline(aes(yintercept = interval_2[1], linetype = paste0(" Confidence interval ", confidence_level_2*100, "% : ", round(interval_2[2], 4))), color = "deepskyblue3", size = .7, show.legend = TRUE) +
+    geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_level_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
     scale_linetype_manual(values = c("dashed", "dotdash")) + 
     ## other
     scale_colour_identity() +

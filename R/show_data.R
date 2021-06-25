@@ -200,8 +200,8 @@ show_diff_uptake_data <- function(diff_uptake_dat,
 show_diff_uptake_data_confidence <- function(dat, 
                                        theoretical = FALSE, 
                                        fractional = FALSE,
-                                       confidence_limit_1 = 0.98,
-                                       confidence_limit_2 = 0.99){
+                                       confidence_level_1 = 0.98,
+                                       confidence_level_2 = 0.99){
   
   column_name_cl1 <- paste0("Valid At ", confidence_limit_1)
   column_name_cl2 <- paste0("Valid At ", confidence_limit_2)
@@ -211,13 +211,13 @@ show_diff_uptake_data_confidence <- function(dat,
     if(fractional){
       # theoretical & fractional  
       dat %>%
-        add_stat_dependency(confidence_limit = confidence_limit_1,
+        add_stat_dependency(confidence_limit = confidence_level_1,
                             theoretical = TRUE, 
                             fractional = TRUE) %>%
-        add_stat_dependency(confidence_limit = confidence_limit_2,
+        add_stat_dependency(confidence_limit = confidence_level_2,
                             theoretical = TRUE, 
                             fractional = TRUE) %>%
-        select(Protein, Sequence, Start, End, diff_theo_frac_deut_uptake, err_diff_theo_frac_deut_uptake, paste0("valid_at_", confidence_limit_1), paste0("valid_at_", confidence_limit_2)) %>%
+        select(Protein, Sequence, Start, End, diff_theo_frac_deut_uptake, err_diff_theo_frac_deut_uptake, paste0("valid_at_", confidence_level_1), paste0("valid_at_", confidence_level_2)) %>%
         mutate(diff_theo_frac_deut_uptake = round(diff_theo_frac_deut_uptake, 4),
                err_diff_theo_frac_deut_uptake = round(err_diff_theo_frac_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
@@ -229,13 +229,13 @@ show_diff_uptake_data_confidence <- function(dat,
     } else {
       # theoretical & absolute
       dat %>%
-        add_stat_dependency(confidence_limit = confidence_limit_1,
+        add_stat_dependency(confidence_limit = confidence_level_1,
                             theoretical = TRUE, 
                             fractional = FALSE) %>%
-        add_stat_dependency(confidence_limit = confidence_limit_2,
+        add_stat_dependency(confidence_limit = confidence_level_2,
                             theoretical = TRUE, 
                             fractional = FALSE) %>%
-        select(Protein, Sequence, Start, End, diff_theo_deut_uptake, err_diff_theo_deut_uptake, paste0("valid_at_", confidence_limit_1), paste0("valid_at_", confidence_limit_2)) %>%
+        select(Protein, Sequence, Start, End, diff_theo_deut_uptake, err_diff_theo_deut_uptake, paste0("valid_at_", confidence_level_1), paste0("valid_at_", confidence_level_2)) %>%
         mutate(diff_theo_deut_uptake = round(diff_theo_deut_uptake, 4),
                err_diff_theo_deut_uptake = round(err_diff_theo_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
@@ -250,13 +250,13 @@ show_diff_uptake_data_confidence <- function(dat,
     if(fractional){
       # experimental & fractional
       dat %>%
-        add_stat_dependency(confidence_limit = confidence_limit_1,
+        add_stat_dependency(confidence_limit = confidence_level_1,
                             theoretical = FALSE, 
                             fractional = TRUE) %>%
-        add_stat_dependency(confidence_limit = confidence_limit_2,
+        add_stat_dependency(confidence_limit = confidence_level_2,
                             theoretical = FALSE, 
                             fractional = TRUE) %>%
-        select(Protein, Sequence, Start, End, diff_frac_deut_uptake, err_diff_frac_deut_uptake, paste0("valid_at_", confidence_limit_1), paste0("valid_at_", confidence_limit_2)) %>%
+        select(Protein, Sequence, Start, End, diff_frac_deut_uptake, err_diff_frac_deut_uptake, paste0("valid_at_", confidence_level_1), paste0("valid_at_", confidence_level_2)) %>%
         mutate(diff_frac_deut_uptake = round(diff_frac_deut_uptake, 4),
                err_diff_frac_deut_uptake = round(err_diff_frac_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
@@ -268,13 +268,13 @@ show_diff_uptake_data_confidence <- function(dat,
     } else {
       # experimental & absolute
       dat %>%
-        add_stat_dependency(confidence_limit = confidence_limit_1,
+        add_stat_dependency(confidence_limit = confidence_level_1,
                             theoretical = FALSE,
                             fractional = FALSE) %>%
-        add_stat_dependency(confidence_limit = confidence_limit_2,
+        add_stat_dependency(confidence_limit = confidence_level_2,
                             theoretical = FALSE, 
                             fractional = FALSE) %>%
-        select(Protein, Sequence, Start, End, diff_deut_uptake, err_diff_deut_uptake, paste0("valid_at_", confidence_limit_1), paste0("valid_at_", confidence_limit_2)) %>%
+        select(Protein, Sequence, Start, End, diff_deut_uptake, err_diff_deut_uptake, paste0("valid_at_", confidence_level_1), paste0("valid_at_", confidence_level_2)) %>%
         mutate(diff_deut_uptake = round(diff_deut_uptake, 4),
                err_diff_deut_uptake = round(err_diff_deut_uptake, 4)) %>%
         arrange(Start, End) %>%

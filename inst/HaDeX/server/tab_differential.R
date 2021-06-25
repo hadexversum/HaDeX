@@ -66,9 +66,9 @@ observe({
   
   
   updateSelectInput(session,
-                    inputId = "confidence_limit_2",
-                    choices = confidence_limit_choices[confidence_limit_choices >= input[["confidence_limit"]]],
-                    selected = confidence_limit_choices[confidence_limit_choices > input[["confidence_limit"]]][1])
+                    inputId = "confidence_level_2",
+                    choices = confidence_level_choices[confidence_level_choices >= input[["confidence_level"]]],
+                    selected = confidence_level_choices[confidence_level_choices > input[["confidence_level"]]][1])
   
   
   
@@ -114,8 +114,8 @@ differential_plot <- reactive({
   plot_differential(dat = woods_plot_dat(),
                     theoretical = input[["theory"]],
                     fractional = input[["comp_fractional"]],
-                    confidence_limit = as.double(input[["confidence_limit"]]),
-                    confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
+                    confidence_level = as.double(input[["confidence_level"]]),
+                    confidence_level_2 = as.double(input[["confidence_level_2"]]))
 })
 
 ##
@@ -209,8 +209,8 @@ differential_plot_data <- reactive({
   show_diff_uptake_data_confidence(dat = woods_plot_dat(),
                                    theoretical = input[["theory"]],
                                    fractional = input[["comp_fractional"]],
-                                   confidence_limit_1 = as.double(input[["confidence_limit"]]),
-                                   confidence_limit_2 = as.double(input[["confidence_limit_2"]]))
+                                   confidence_level_1 = as.double(input[["confidence_level"]]),
+                                   confidence_level_2 = as.double(input[["confidence_level_2"]]))
 })
 
 ##

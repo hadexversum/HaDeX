@@ -25,6 +25,8 @@ server <- function(input, output, session) {
   
   dat_in <- reactive({
 
+    browser()
+    
     inFile <- input[["data_file"]]
 
     if (is.null(inFile)){

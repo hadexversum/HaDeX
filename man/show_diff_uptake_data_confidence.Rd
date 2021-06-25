@@ -8,8 +8,8 @@ show_diff_uptake_data_confidence(
   dat,
   theoretical = FALSE,
   fractional = FALSE,
-  confidence_limit_1 = 0.98,
-  confidence_limit_2 = 0.99
+  confidence_level_1 = 0.98,
+  confidence_level_2 = 0.99
 )
 }
 \arguments{

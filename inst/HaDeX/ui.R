@@ -217,11 +217,11 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                          choices = c("CD160", "CD160VEM"))
                                          ),
                                          splitLayout(
-                                           selectInput_h(inputId = "confidence_limit",
+                                           selectInput_h(inputId = "confidence_level",
                                                          label = "Confidence limit 1:",
                                                          choices = c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
                                                          selected = 0.98),
-                                           selectInput_h(inputId = "confidence_limit_2",
+                                           selectInput_h(inputId = "confidence_level_2",
                                                          label = "Confidence limit 2:",
                                                          choices = c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
                                                          selected = 0.99)
