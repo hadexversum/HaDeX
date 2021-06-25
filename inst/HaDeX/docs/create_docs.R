@@ -362,6 +362,112 @@ The P-values calculated for differential deuterium uptake can be adjusted using 
 
 write(vol_p_adjustment_method_helper, file = "vol_p_adjustment_method.md", append = FALSE)
 
+#############################
+## chosen_control ###########
+#############################
+
+chosen_control_helper <- '## Maximal exchange control
+
+Selected measurement is treated as maximal exchange control for all biological states of given protein. '
+
+write(chosen_control_helper, file = 'chosen_control.md', append = FALSE)
+
+#############################
+## chosen_protein ###########
+#############################
+
+chosen_protein_helper <- '## Protein of interest
+
+HaDeX accepts files with more than one protein, but all the calculations are done for the chosen protein. The name of the chosen protein is preserved in all of the tabs and all of the plot titles. '
+
+write(chosen_protein_helper, file = 'chosen_protein.md', append = FALSE)
+
+#############################
+## compare_states ###########
+#############################
+
+compare_states_helper <- '## States comparison
+
+Chosen states appear on the comparison plot on the right.'
+
+write(compare_states_helper, file = 'compare_states.md', append = FALSE)
+
+#############################
+## exam_confidence ##########
+#############################
+
+exam_confidence_helper <- '## Measurement confidence
+
+Files from HDeXaminer have a `Confidence` column that tells how
+reliable each measurement (and recognition of the peptide) is.
+There are three levels of confidence: High, Medium, and Low.
+
+The user can choose which results should be considered for processing. Following the authors of HDeXaminer, we recommend
+to ignore low-confidence results.'
+
+write(exam_confidence_helper, file = 'exam_confidence.md', append = FALSE)
+
+#############################
+## exam_protein_name ########
+#############################
+
+exam_protein_name_helper <- '## Protein name
+
+Protein name is not provided in the file from HDeXaminer, 
+so it is artificially obtained from `Protein State` value.
+The user can change this label to a more descriptive one.'
+
+write(exam_protein_name_helper, file = 'exam_protein_name.md', append = FALSE)
+
+#############################
+## exam_state_name ##########
+#############################
+
+exam_state_name_helper <- '## State names
+
+The user can change the state labels obtained from the file.
+For this operation to be successful, some requirements should
+be taken in the account:
+* the same number of labels as obtained from the file should
+be provided,
+* the labels should be separated by comma (without spaces).'
+
+write(exam_state_name_helper, file = 'exam_state_name.md', append = FALSE)
+
+#############################
+## examiner_fd_timepoint ####
+#############################
+
+examiner_fd_timepoint_helper <- '## FD time point
+
+Files from HDeXaminer don\'t provide the numerical value of time point 
+for the fully deuterated sample but flag it as "FD". For precise values 
+on the plots and data, HaDeX needs a numerical value in minutes.
+The value (1440 min = 24 h) is commonly used and is suggested, but 
+the user can change it to its real value.'
+
+write(examiner_fd_timepoint_helper, file = 'examiner_fd_timepoint.md', append = FALSE)
+
+#############################
+## sequence_length ##########
+#############################
+
+sequence_length_helper <- '## Sequence C-terminus
+
+If the C-terminus of a sequence is trimmed, provide its true position. Imputed amino acids are represented as "x" in the reconstructed sequence.'
+
+write(sequence_length_helper, file = 'sequence_length.md', append = FALSE)
+
+#############################
+## sequence_start_shift #####
+#############################
+
+sequence_start_shift_helper <- '## Sequence N-terminus
+
+If the N-terminus of a sequence is trimmed, provide its true position. Imputed amino acids are represented as "x" in the reconstructed sequence.'
+
+write(sequence_start_shift_helper, file = 'sequence_start_shift.md', append = FALSE)
+
 ####################################
 ############# MISSING ##############
 ####################################
