@@ -1044,7 +1044,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        mainPanel(
                                          class = "scrollable",
                                          tabsetPanel(
-                                          tabPanel("Plot",
+                                          tabPanel("Measurements",
                                                    br(),
                                                    plotOutput_h("replicatesPlot", hover = hoverOpts("replicatesPlot_hover", delay = 10, delayType = "debounce")),
                                                    uiOutput("replicatesPlot_debug"),
@@ -1057,9 +1057,20 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                    br(),
                                                    plotOutput_h("all_replicates_histogram")
                                           ),
-                                          tabPanel("Data",
+                                          tabPanel("Measurements Data",
                                                    br(),
                                                    DT::dataTableOutput("replicatesPlot_data"),
+                                                   br()
+                                          ),
+                                          tabPanel("Charge values",
+                                                   br(),
+                                                   plotOutput_h("replicates_z_plot"),
+                                                   br()
+                                                   
+                                          ),
+                                          tabPanel("Charge values Data",
+                                                   br(),
+                                                   DT::dataTableOutput("replicates_z_plot_data"),
                                                    br()
                                           )
                                          )

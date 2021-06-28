@@ -7,7 +7,7 @@ observe({
   updateSelectInput(session,
                     inputId = "rep_state",
                     choices = states_from_file(),
-                    selected = states_from_file())
+                    selected = states_from_file()[1])
 })
 
 ##
@@ -17,7 +17,7 @@ observe({
   updateSelectInput(session,
                     inputId = "rep_time",
                     choices = times_from_file()[times_from_file() < 99999],
-                    selected = times_from_file()[1])
+                    selected = times_from_file()[3])
 })
 
 
@@ -98,16 +98,32 @@ replicate_masses_time_t <- reactive({
   replicate_masses() %>%
     filter(Protein == input[["chosen_protein"]]) %>%
     filter(State == input[["rep_state"]]) %>%
-    filter(Sequence == rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2]) %>%
+    filter(Sequence == rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2][[1]]) %>%
     filter(Exposure == as.numeric(input[["rep_time"]]))
 
 })
 
+##
 
+replicates_z_values_time_t <- reactive({
+  
+  validate(need(input[["rep_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
+  
+  # browser()
+  
+  dat() %>%
+    filter(Protein == input[["chosen_protein"]]) %>%
+    filter(State == input[["rep_state"]]) %>%
+    filter(Sequence == rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2][[1]]) %>%
+    filter(Exposure == as.numeric(input[["rep_time"]])) %>%
+    select(Protein, Sequence, Start, End, Exposure, State, File, z)
+  
+})
 
 #################################
 ######### PLOT ##################
 #################################
+## measurements 
 
 replicate_plot_out <- reactive({
 
@@ -191,6 +207,25 @@ output[["replicatesPlot_download_button"]] <- downloadHandler("replicatesPlot.sv
 })
 
 #################################
+######### PLOT ##################
+#################################
+## charge values
+
+output[["replicates_z_plot"]] <- renderPlot({
+  
+  n_bins <- length(unique(replicates_z_values_time_t()[["z"]]))
+  min_z <- min(replicates_z_values_time_t()[["z"]])
+  max_z <- max(replicates_z_values_time_t()[["z"]])
+  
+  replicates_z_values_time_t() %>%
+    ggplot(aes(x = z)) +
+    geom_histogram(aes(fill = File), bins = n_bins) + 
+  scale_x_continuous(breaks = c(min_z:max_z)) 
+    
+    
+})
+
+#################################
 ######### DATASET ###############
 #################################
 
@@ -203,6 +238,14 @@ output[["replicatesPlot_data"]] <- DT::renderDataTable(server = FALSE, {
     dt_format()
   
 })
+
+output[["replicates_z_plot_data"]] <- DT::renderDataTable(server = FALSE, {
+
+  replicates_z_values_time_t() %>%
+    dt_format()
+  
+})
+
 
 #################################
 ######## HISTOGRAM ##############
