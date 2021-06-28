@@ -29,7 +29,7 @@ rep_peptide_list <- reactive({
     filter(Protein == input[["chosen_protein"]],
            State == input[["rep_state"]],
            Exposure == input[["rep_time"]]) %>%
-    select(N, Sequence, Start, End) %>%
+    select(N, Sequence, Start, End, charges) %>%
     arrange(Start, End)
   
 })
@@ -69,10 +69,22 @@ observe({
 
 replicates_of_peptides <- reactive({
   
-  replicate_masses() %>%
-    select(Protein, State, Sequence, Start, End, Exposure, File) %>%
+  # browser()
+  
+  # replicate_masses() %>%
+  #   select(Protein, State, Sequence, Start, End, Exposure, File) %>%
+  #   group_by(Protein, State, Sequence, Start, End, Exposure) %>%
+  #   summarize(N = n()) %>%
+  #   ungroup(.)
+
+  dat() %>% 
+    filter(Protein == input[["chosen_protein"]],
+           State == input[["rep_state"]],
+           Exposure == input[["rep_time"]])  %>% 
+    select(Protein, State, Sequence, Start, End, Exposure, File, z) %>%
     group_by(Protein, State, Sequence, Start, End, Exposure) %>%
-    summarize(N = n()) %>%
+    summarize(N = length(unique(File)),
+              charges = paste(unique(z), collapse = " ")) %>%
     ungroup(.)
   
 })
