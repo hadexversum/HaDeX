@@ -7,8 +7,8 @@ dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.
 
 result <- create_quality_control_dataset(dat = dat,
                                          protein = "db_CD160", 
-                                         state_first = "CD160",
-                                         state_second = "CD160_HVEM", 
+                                         state_1 = "CD160",
+                                         state_2 = "CD160_HVEM", 
                                          time_t = 1, 
                                          time_0 = 0.001, 
                                          deut_part = 1)

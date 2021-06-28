@@ -69,14 +69,6 @@ observe({
 
 replicates_of_peptides <- reactive({
   
-  # browser()
-  
-  # replicate_masses() %>%
-  #   select(Protein, State, Sequence, Start, End, Exposure, File) %>%
-  #   group_by(Protein, State, Sequence, Start, End, Exposure) %>%
-  #   summarize(N = n()) %>%
-  #   ungroup(.)
-
   dat() %>% 
     filter(Protein == input[["chosen_protein"]],
            State == input[["rep_state"]],
@@ -120,8 +112,6 @@ replicate_masses_time_t <- reactive({
 replicates_z_values_time_t <- reactive({
   
   validate(need(input[["rep_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
-  
-  # browser()
   
   dat() %>%
     filter(Protein == input[["chosen_protein"]]) %>%
