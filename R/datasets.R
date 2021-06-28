@@ -279,12 +279,20 @@ create_uptake_dataset <- function(dat,
                                   time_100 = 1440,
                                   deut_part = 0.9){
   
+  times <- unique(dat[["Exposure"]])
+  times <- times[times > time_0 & times < time_100]
+  
   uptake_dat <- lapply(states, function(state){
     
-    calculate_state_uptake(dat, protein = protein, 
-                           state = state,
-                           time_0 = time_0, time_100 = time_100,
-                           deut_part = deut_part)
+    lapply(times, function(time){
+      
+      calculate_state_uptake(dat, protein = protein, 
+                            state = state,
+                            time_t = time, 
+                            time_0 = time_0, time_100 = time_100,
+                            deut_part = deut_part)
+      
+    }) %>% bind_rows
     
   }) %>% bind_rows()
   

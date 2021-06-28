@@ -34,7 +34,7 @@
 #' 
 #' calculate_state_uptake(dat)
 #' calculate_state_uptake(dat, protein = "db_CD160", state = "CD160",
-#'                             time_0 = 0.001, time_t = 5.000, time_100 = 1440.000)
+#'                             time_0 = 0.001, time_t = 5.000, time_100 = 1440.000, deut_part = 1)
 #'                             
 #'                             
 #' @export calculate_state_uptake

@@ -6,7 +6,7 @@
 \usage{
 calculate_confidence_limit_values(
   calc_dat,
-  confidence_limit = 0.98,
+  confidence_level = 0.98,
   theoretical = FALSE,
   fractional = TRUE
 )
@@ -14,7 +14,7 @@ calculate_confidence_limit_values(
 \arguments{
 \item{calc_dat}{processed data from DynamX file - using prepare_dataset}
 
-\item{confidence_limit}{confidence limit chosen by user - from range [0, 1].}
+\item{confidence_level}{confidence limit chosen by user - from range [0, 1].}
 
 \item{theoretical}{\code{logical}, determines if values are theoretical}
 

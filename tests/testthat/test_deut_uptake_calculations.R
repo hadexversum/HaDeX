@@ -96,4 +96,58 @@ lapply(times, function(time){
   
 })
 
+###########################
+## CREATE_UPTAKE_DATASET ##
+########################### 
+
+# result_tmp <- create_uptake_dataset(dat = dat,
+#                                     protein = chosen_protein, 
+#                                     states = unique(dat[["State"]]),
+#                                     time_0 = chosen_time_0,
+#                                     time_100 = chosen_time_100,
+#                                     deut_part = deut_part)
+# 
+# 
+# lapply(times, function(time){
+#   
+#   lapply(deut_values, function(deut_value){
+#     
+#     test_name <- paste0("create_uptake_dataset-", time, "min-", deut_value)
+#     
+#     test_that(test_name, 
+#               expect_equal(ref_dat[ref_dat[["Exposure"]] == time, deut_value],
+#                            result_tmp[result_tmp[["State"]] == chosen_state & result_tmp[["Sequence"]] == chosen_peptide & result_tmp[["Exposure"]] == time, deut_value][[1]]
+#               )
+#     )
+#     
+#   })
+#   
+# })
+# 
+# 
+# 
+# create_uptake_dataset(dat = dat,
+#                       protein = "db_CD160", 
+#                       states = c("CD160", "CD160_HVEM"),
+#                       time_0 = chosen_time_0,
+#                       time_100 = chosen_time_100,
+#                       deut_part = deut_part)
+# 
+# 
+# deut_value <- deut_values[2]
+# time <- times[2]
+
+
+# 
+# result_tmp[result_tmp[["Sequence"]] == chosen_peptide, ]
+# 
+# & result_tmp[["Sequence"]] == chosen_peptide & result_tmp[["Exposure"]] == time, ]
+# 
+# 
+# ## create_state_comparison_dataset 
+# 
+# ## create_control_dataset 
+# 
+# create_uptake_dataset(dat)[["Exposure"]]
+
 

@@ -6,7 +6,7 @@
 #' @importFrom stats qt
 #' 
 #' @param calc_dat processed data from DynamX file - using prepare_dataset
-#' @param confidence_limit confidence limit chosen by user - from range [0, 1]. 
+#' @param confidence_level confidence limit chosen by user - from range [0, 1]. 
 #' @param theoretical \code{logical}, determines if values are theoretical
 #' @param fractional \code{logical}, determines if values are fractional
 #' 
@@ -29,11 +29,11 @@
 #' @export calculate_confidence_limit_values
 
 calculate_confidence_limit_values <- function(calc_dat,
-                                              confidence_limit = 0.98,
+                                              confidence_level = 0.98,
                                               theoretical = FALSE,
                                               fractional = TRUE) {
   
-  alpha <- 1 - confidence_limit
+  alpha <- 1 - confidence_level
   t_value <- qt(c(alpha/2, 1-alpha/2), df = 2)[2]
   
   err_column <- case_when(
