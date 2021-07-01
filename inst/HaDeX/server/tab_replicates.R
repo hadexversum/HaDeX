@@ -213,7 +213,7 @@ output[["replicatesPlot_download_button"]] <- downloadHandler("replicatesPlot.sv
 #################################
 ## charge values
 
-output[["replicates_z_plot"]] <- renderPlot({
+replicate_charge_plot_out <- reactive({
   
   n_bins <- length(unique(replicates_z_values_time_t()[["z"]]))
   min_z <- min(replicates_z_values_time_t()[["z"]])
@@ -222,10 +222,22 @@ output[["replicates_z_plot"]] <- renderPlot({
   replicates_z_values_time_t() %>%
     ggplot(aes(x = z)) +
     geom_histogram(aes(fill = File), bins = n_bins) + 
-  scale_x_continuous(breaks = c(min_z:max_z)) 
-    
+    scale_x_continuous(breaks = c(min_z:max_z)) 
+  
+})
+
+output[["replicatesChargePlot"]] <- renderPlot({
+  
+  replicate_charge_plot_out()
     
 })
+
+
+output[["replicatesChargePlot_download_button"]] <- downloadHandler("replicatesChargePlot.svg",
+                                                              content = function(file){
+                                                                ggsave(file, replicate_charge_plot_out(), device = svg,
+                                                                       height = 300, width = 400, units = "mm")
+                                                              })
 
 #################################
 ######### DATASET ###############
@@ -235,13 +247,13 @@ output[["replicatesPlot_data"]] <- DT::renderDataTable(server = FALSE, {
   
   replicate_masses_time_t() %>%
     mutate(avg_exp_mass = round(avg_exp_mass, 4)) %>%
-    select(Protein, Sequence, Start, End, Exposure, File, avg_exp_mass) %>%
+    select(Protein, Sequence, Start, End, Exposure, State, File, avg_exp_mass) %>%
     rename(`Mass` = avg_exp_mass) %>%
     dt_format()
   
 })
 
-output[["replicates_z_plot_data"]] <- DT::renderDataTable(server = FALSE, {
+output[["replicatesChargePlot_data"]] <- DT::renderDataTable(server = FALSE, {
 
   replicates_z_values_time_t() %>%
     dt_format()
@@ -253,7 +265,7 @@ output[["replicates_z_plot_data"]] <- DT::renderDataTable(server = FALSE, {
 ######## HISTOGRAM ##############
 #################################
 
-output[["replicates_histogram"]] <- renderPlot({
+replicates_histogram_out <- reactive({
   
   replicate_masses() %>%
     filter(Exposure == input[["rep_time"]],
@@ -263,7 +275,7 @@ output[["replicates_histogram"]] <- renderPlot({
     group_by(Sequence, Start, End, ID) %>%
     summarize(n = n()) %>%
     ggplot() + 
-      geom_col(aes(x = ID, y = n, fill = n)) +
+    geom_col(aes(x = ID, y = n, fill = n)) +
     labs(title = paste0("Number of replicates for each peptide in ", input[["rep_state"]], " in ", input[["rep_time"]], " min"),
          x = "Peptide ID",
          y = "Number of replicates") +
@@ -273,8 +285,24 @@ output[["replicates_histogram"]] <- renderPlot({
 
 ##
 
-output[["all_replicates_histogram"]] <- renderPlot({
+output[["replicatesHistogram"]] <- renderPlot({
+  
+  replicates_histogram_out()
+  
+})
 
+##
+
+output[["replicatesHistogram_download_button"]] <- downloadHandler("replicatesHistogram.svg",
+                                                                    content = function(file){
+                                                                      ggsave(file, replicates_histogram_out(), device = svg,
+                                                                             height = 300, width = 400, units = "mm")
+                                                                    })
+
+##
+
+all_replicates_histogram <- reactive({
+  
   replicate_masses() %>%
     filter(Protein == input[["chosen_protein"]],
            State == input[["rep_state"]],
@@ -283,7 +311,7 @@ output[["all_replicates_histogram"]] <- renderPlot({
     group_by(Sequence, Exposure, Start, End, ID) %>%
     summarize(n = n()) %>%
     ggplot() +
-      geom_col(aes(x = ID, y = n, fill = as.factor(Exposure))) +
+    geom_col(aes(x = ID, y = n, fill = as.factor(Exposure))) +
     labs(title = paste0("Number of replicates for each peptide in ", input[["rep_state"]], " state"),
          x = "Peptide ID",
          y = "Number of replicates",
@@ -291,3 +319,20 @@ output[["all_replicates_histogram"]] <- renderPlot({
     theme(legend.position = "bottom")
   
 })
+
+##
+
+output[["allReplicatesHistogram"]] <- renderPlot({
+
+  all_replicates_histogram()
+  
+})
+
+
+##
+
+output[["allReplicatesHistogram_download_button"]] <- downloadHandler("allReplicatesHistogram.svg",
+                                                                   content = function(file){
+                                                                     ggsave(file, all_replicates_histogram(), device = svg,
+                                                                            height = 300, width = 400, units = "mm")
+                                                                   })

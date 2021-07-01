@@ -988,7 +988,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        br(),
                                        sidebarPanel(
                                          class = "scrollable",
-                                         
+
                                          ##### SETTINGS #####
                                          h3("Select parameters for the plots"),
                                          splitLayout(
@@ -1004,7 +1004,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          br(),
                                          dataTableOutput_h("rep_sequence"),
                                          br(),
-                                         
+
                                          br(),
                                          tags$button("Adjust labels",
                                                      class = "collapse-button",
@@ -1037,46 +1037,51 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                    label = "Size:",
                                                                    value = 15,
                                                                    min = 5))
-                                           ),                                                                               
-                                           h4("The axis ticks have the same size as the axis label.") 
+                                           ),
+                                           h4("The axis ticks have the same size as the axis label.")
                                          )
                                        ),
                                        mainPanel(
-                                         class = "scrollable",
+                                         class = "scrollable" ,
                                          tabsetPanel(
-                                          tabPanel("Measurements",
+                                          tabPanel("Plot",
+                                                   fluidRow(
+                                                     column(width = 6,
+                                                            br(),
+                                                            plotOutput_h("replicatesPlot", hover = hoverOpts("replicatesPlot_hover", delay = 10, delayType = "debounce")),
+                                                            uiOutput("replicatesPlot_debug"),
+                                                            downloadButton("replicatesPlot_download_button",
+                                                                           "Save chart (.svg)")),
+                                                     column(width = 6,
+                                                            br(),
+                                                            plotOutput_h("replicatesChargePlot"),
+                                                            downloadButton("replicatesChargePlot_download_button",
+                                                                           "Save chart (.svg)"),
+                                                            br())
+                                                   ) ,
                                                    br(),
-                                                   plotOutput_h("replicatesPlot", hover = hoverOpts("replicatesPlot_hover", delay = 10, delayType = "debounce")),
-                                                   uiOutput("replicatesPlot_debug"),
-                                                   downloadButton("replicatesPlot_download_button",
+                                                   br(),
+                                                   plotOutput_h("replicatesHistogram"),
+                                                   downloadButton("replicatesHistogram_download_button",
                                                                   "Save chart (.svg)"),
                                                    br(),
                                                    br(),
-                                                   plotOutput_h("replicates_histogram"),
-                                                   br(),
-                                                   br(),
-                                                   plotOutput_h("all_replicates_histogram")
-                                          ),
-                                          tabPanel("Measurements Data",
+                                                   plotOutput_h("allReplicatesHistogram"),
+                                                   downloadButton("allReplicatesHistogram_download_button",
+                                                                  "Save chart (.svg)")
+                                          ) ,
+                                          tabPanel("Data",
                                                    br(),
                                                    DT::dataTableOutput("replicatesPlot_data"),
-                                                   br()
-                                          ),
-                                          tabPanel("Charge values",
                                                    br(),
-                                                   plotOutput_h("replicates_z_plot"),
+                                                   DT::dataTableOutput("replicatesChargePlot_data"),
                                                    br()
-                                                   
-                                          ),
-                                          tabPanel("Charge values Data",
-                                                   br(),
-                                                   DT::dataTableOutput("replicates_z_plot_data"),
-                                                   br()
+
+
                                           )
                                          )
-                                         
                                        )
-                                
+
                               ),
                               
                               ##################################
