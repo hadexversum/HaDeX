@@ -351,7 +351,8 @@ output[["replicatesHistogram_debug"]] <- renderUI({
                          x_plot = plot_data[[hv[["mapping"]][["x"]]]],
                          y_plot = plot_data[[hv[["mapping"]][["y"]]]],
                          Sequence = plot_data[["Sequence"]],
-                         ID = plot_data[["ID"]])
+                         ID = plot_data[["ID"]],
+                         n = plot_data[["n"]])
 
     tt_df <- filter(hv_dat, 
                     abs(x_plot - x) < 0.5, 
@@ -374,7 +375,8 @@ output[["replicatesHistogram_debug"]] <- renderUI({
         style = style,
         p(HTML(paste0(tt_df[["Sequence"]],
                       "<br/> ID: ", tt_df[["ID"]],
-                      "<br/> Position: ", tt_df[["Start"]], "-", tt_df[["End"]])))
+                      "<br/> Position: ", tt_df[["Start"]], "-", tt_df[["End"]],
+                      "<br/> Replicates: ", tt_df[["n"]])))
       )
     }
   }
@@ -423,8 +425,6 @@ output[["allReplicatesHistogram"]] <- renderPlot({
 output[["allReplicatesHistogram_debug"]] <- renderUI({
   
   if(!is.null(input[["allReplicatesHistogram_hover"]])) {
-    
-    # browser()
     
     plot_data <- all_replicates_histogram()[["data"]]
     hv <- input[["allReplicatesHistogram_hover"]]
