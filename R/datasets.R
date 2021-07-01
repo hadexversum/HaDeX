@@ -282,6 +282,7 @@ create_uptake_dataset <- function(dat,
   times <- unique(dat[["Exposure"]])
   times <- times[times > time_0 & times < time_100]
   
+  
   uptake_dat <- lapply(states, function(state){
     
     lapply(times, function(time){
