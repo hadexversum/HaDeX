@@ -159,8 +159,6 @@ output[["replicatesPlot_debug"]] <- renderUI({
   
   if(!is.null(input[["replicatesPlot_hover"]])) {
     
-    # browsser()
-    
     plot_data <- replicate_plot_out()[["data"]]
     hv <- input[["replicatesPlot_hover"]]
     
@@ -226,12 +224,58 @@ replicate_charge_plot_out <- reactive({
   
 })
 
+##
+
 output[["replicatesChargePlot"]] <- renderPlot({
   
   replicate_charge_plot_out()
     
 })
 
+##
+
+output[["replicatesChargePlot_debug"]] <- renderUI({
+  
+  # if(!is.null(input[["replicatesChargePlot_hover"]])) {
+  #   
+  #   plot_data <- replicate_charge_plot_out()[["data"]]
+  #   hv <- input[["replicatesChargePlot_hover"]]
+  #   
+  #   hv_dat <- data.frame(x = hv[["x"]],
+  #                        y = hv[["y"]],
+  #                        Start = plot_data[["Start"]],
+  #                        End = plot_data[["End"]],
+  #                        x_plot = plot_data[[hv[["mapping"]][["x"]]]],
+  #                        y_plot = plot_data[[hv[["mapping"]][["y"]]]],
+  #                        Sequence = plot_data[["Sequence"]],
+  #                        State = plot_data[["State"]])
+  #   
+  #   tt_df <- filter(hv_dat, abs(x_plot - x) < 0.1*x_plot, abs(x_plot - x) == min(abs(x_plot - x)))
+  #   
+  #   if(nrow(tt_df) != 0) {
+  #     
+  #     tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+  #                          "left", "right")
+  #     
+  #     tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+  #                      hv[["coords_css"]][["x"]],
+  #                      hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+  #     
+  #     
+  #     style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); pointer-events: none;",
+  #                     tt_pos_adj, ":", tt_pos,
+  #                     "px; top:", hv[["coords_css"]][["y"]], "px; padding: 0px;")
+  #     
+  #     div(
+  #       style = style,
+  #       p(HTML(paste0(tt_df[["Sequence"]],
+  #                     "<br/> State: ", tt_df[["State"]],
+  #                     "<br/> Position: ", tt_df[["Start"]], "-", tt_df[["End"]],
+  #                     "<br/> Value: ", round(tt_df[["x_plot"]], 2), " Da")))
+  #     )
+  #   }
+  # }
+})
 
 output[["replicatesChargePlot_download_button"]] <- downloadHandler("replicatesChargePlot.svg",
                                                               content = function(file){
@@ -293,6 +337,52 @@ output[["replicatesHistogram"]] <- renderPlot({
 
 ##
 
+output[["replicatesHistogram_debug"]] <- renderUI({
+  
+  if(!is.null(input[["replicatesHistogram_hover"]])) {
+
+    plot_data <- replicates_histogram_out()[["data"]]
+    hv <- input[["replicatesHistogram_hover"]]
+
+    hv_dat <- data.frame(x = hv[["x"]],
+                         y = hv[["y"]],
+                         Start = plot_data[["Start"]],
+                         End = plot_data[["End"]],
+                         x_plot = plot_data[[hv[["mapping"]][["x"]]]],
+                         y_plot = plot_data[[hv[["mapping"]][["y"]]]],
+                         Sequence = plot_data[["Sequence"]],
+                         ID = plot_data[["ID"]])
+
+    tt_df <- filter(hv_dat, 
+                    abs(x_plot - x) < 0.5, 
+                    abs(x_plot - x) == min(abs(x_plot - x)))
+
+    if(nrow(tt_df) != 0) {
+
+      tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                           "left", "right")
+
+      tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                       hv[["coords_css"]][["x"]],
+                       hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+
+      style <- paste0("position:absolute; z-index:1072; background-color: rgba(245, 245, 245, 1); pointer-events: none; ",
+                      tt_pos_adj, ":", tt_pos, "px; padding: 0px;",
+                      "top:", hv[["coords_css"]][["y"]] , "px; ")
+      
+      div(
+        style = style,
+        p(HTML(paste0(tt_df[["Sequence"]],
+                      "<br/> ID: ", tt_df[["ID"]],
+                      "<br/> Position: ", tt_df[["Start"]], "-", tt_df[["End"]])))
+      )
+    }
+  }
+  
+})
+
+##
+
 output[["replicatesHistogram_download_button"]] <- downloadHandler("replicatesHistogram.svg",
                                                                     content = function(file){
                                                                       ggsave(file, replicates_histogram_out(), device = svg,
@@ -328,6 +418,62 @@ output[["allReplicatesHistogram"]] <- renderPlot({
   
 })
 
+##
+
+output[["allReplicatesHistogram_debug"]] <- renderUI({
+  
+  if(!is.null(input[["allReplicatesHistogram_hover"]])) {
+    
+    # browser()
+    
+    plot_data <- all_replicates_histogram()[["data"]]
+    hv <- input[["allReplicatesHistogram_hover"]]
+    
+    hv_dat <- data.frame(x = hv[["x"]],
+                         y = hv[["y"]],
+                         Start = plot_data[["Start"]],
+                         End = plot_data[["End"]],
+                         x_plot = plot_data[[hv[["mapping"]][["x"]]]],
+                         y_plot = plot_data[[hv[["mapping"]][["y"]]]],
+                         Sequence = plot_data[["Sequence"]],
+                         ID = plot_data[["ID"]],
+                         Exposure = plot_data[["Exposure"]],
+                         n = plot_data[["n"]])
+    
+    tt_df <- filter(hv_dat, 
+                    abs(x_plot - x) < 0.5, 
+                    abs(x_plot - x) == min(abs(x_plot - x))) %>%
+      arrange(Exposure)
+    
+    if(nrow(tt_df) != 0) {
+      
+      tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                           "left", "right")
+      
+      tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                       hv[["coords_css"]][["x"]],
+                       hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+      
+      style <- paste0("position:absolute; z-index:1072; background-color: rgba(245, 245, 245, 1); pointer-events: none; ",
+                      tt_pos_adj, ":", tt_pos, "px; padding: 0px;",
+                      "top:", hv[["coords_css"]][["y"]] , "px; ")
+      
+      tmp1 <- paste0("<br/> ", unique(tt_df[["Sequence"]]),
+                     "<br/> ID: ", unique(tt_df[["ID"]]),
+                     "<br/> Position: ", unique(tt_df[["Start"]]), "-", unique(tt_df[["End"]]))
+      
+      tmp2 <- paste0("<br/> Exposure: ", tt_df[["y_plot"]], " min, ",
+                     "Replicates: ", round(tt_df[["n"]], 2), " ")
+      div(
+        style = style,
+        p(HTML(tmp1), HTML(tmp2)  
+        ))
+      
+      
+    }
+  }
+  
+})
 
 ##
 
