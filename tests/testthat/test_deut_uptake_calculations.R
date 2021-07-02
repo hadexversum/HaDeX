@@ -1,4 +1,4 @@
-context("state_uptake in test")
+context("deut_uptake calculations in test")
 
 library(tidyr)
 library(dplyr)
