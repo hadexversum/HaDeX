@@ -158,10 +158,40 @@ lapply(times, function(time){
   
 })
 
+############################
+## CREATE_CONTROL_DATASET ##
+############################
+
+dat_tmp <- create_control_dataset(dat = dat,
+                                     control_protein = chosen_protein,
+                                     control_state = chosen_state,
+                                     control_exposure = chosen_time_100)
+
+test_that("maximal exchange control added",
+          expect_true(99999 %in% unique(dat_tmp[["Exposure"]])))
 
 
-# ## create_control_dataset 
-# 
-# create_uptake_dataset(dat)[["Exposure"]]
-
+lapply(times, function(time){
+  
+  result_tmp <- calculate_state_uptake(dat_tmp,
+                                       protein = chosen_protein,
+                                       state = chosen_state,
+                                       time_0 = chosen_time_0,
+                                       time_t = time,
+                                       time_100 = 99999,
+                                       deut_part = deut_part)
+  
+  lapply(deut_values, function(deut_value){
+    
+    test_name <- paste0("calculate_state_uptake with control -", time, "min-", deut_value)
+    
+    test_that(test_name,
+              expect_equal(ref_dat[ref_dat[["Exposure"]] == time, deut_value],
+                           result_tmp[result_tmp[["Sequence"]] == chosen_peptide & result_tmp[["Exposure"]] == time, deut_value][[1]]
+              )
+    )
+    
+  })
+  
+})
 
