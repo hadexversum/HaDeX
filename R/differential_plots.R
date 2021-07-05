@@ -123,6 +123,8 @@ plot_differential <- function(dat,
 
 #' Differential butterfly plot
 #' 
+#' @importFrom ggplot2 scale_linetype_manual scale_colour_identity
+#' 
 #' @param diff_uptake_dat data produced by 
 #' \code{\link{create_diff_uptake_dataset}} function.
 #' @param theoretical \code{logical}, determines if values are theoretical
