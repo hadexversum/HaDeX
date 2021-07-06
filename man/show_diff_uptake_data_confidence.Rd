@@ -5,7 +5,7 @@
 \title{Show differential uptake data with confidence levels}
 \usage{
 show_diff_uptake_data_confidence(
-  dat,
+  diff_uptake_dat,
   theoretical = FALSE,
   fractional = FALSE,
   confidence_level_1 = 0.98,
@@ -13,16 +13,16 @@ show_diff_uptake_data_confidence(
 )
 }
 \arguments{
-\item{dat}{data produced by \code{\link{generate_differential_data_set}}
+\item{diff_uptake_dat}{data produced by \code{\link{create_diff_uptake_dataset}}
 function.}
 
 \item{theoretical}{\code{logical}, determines if values are theoretical.}
 
 \item{fractional}{\code{logical}, determines if values are fractional.}
 
-\item{confidence_limit_1}{...}
+\item{confidence_level_1}{...}
 
-\item{confidence_limit_2}{...}
+\item{confidence_level_2}{...}
 }
 \value{
 a \code{\link{data.frame}} object.
@@ -38,11 +38,11 @@ This data is available in the GUI.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-diff_dat <- generate_differential_data_set(dat)
-show_diff_uptake_data_confidence(diff_dat)
+diff_uptake_dat <- create_diff_uptake_dataset(dat)
+show_diff_uptake_data_confidence(diff_uptake_dat)
 
 }
 \seealso{
-\code{\link{generate_differential_data_set}}
+\code{\link{create_diff_uptake_dataset}}
 \code{\link{plot_differential}}
 }

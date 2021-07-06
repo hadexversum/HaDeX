@@ -6,7 +6,7 @@
 \usage{
 add_stat_dependency(
   calc_dat,
-  confidence_limit = 0.98,
+  confidence_level = 0.98,
   theoretical = FALSE,
   fractional = TRUE
 )
@@ -15,7 +15,7 @@ add_stat_dependency(
 \item{calc_dat}{data produced by \code{\link{generate_differential_data_set}}
 funcion.}
 
-\item{confidence_limit}{confidence limit - from range [0, 1].}
+\item{confidence_level}{confidence limit - from range [0, 1].}
 
 \item{theoretical}{\code{logical}, determines if values are theoretical.}
 

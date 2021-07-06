@@ -1,4 +1,4 @@
-context("deut_uptake plots in test")
+# context("deut_uptake plots in test")
 
 library(vdiffr)
 
@@ -15,6 +15,7 @@ deut_part <- 1
 chosen_confidence_level  <- 0.98
 chosen_confidence_level_2 <- 0.99
 
+testthat::local_edition(3)
 
 #########################
 #########################

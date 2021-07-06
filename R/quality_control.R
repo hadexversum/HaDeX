@@ -112,6 +112,8 @@ create_quality_control_dataset <- function(dat,
 #' 
 #' @description Generates quality control plot based on supplied data.
 #' 
+#' @importFrom ggplot2 scale_colour_discrete
+#' 
 #' @param dat data produced by \code{\link{create_quality_control_dataset}} 
 #' function, scaled if necessary.
 #' 
