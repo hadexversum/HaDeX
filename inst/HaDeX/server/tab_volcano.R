@@ -57,7 +57,7 @@ volcano_dataset <- reactive({
   
   validate(need(input[["vol_state_1"]]!=input[["vol_state_2"]], "There is no difference between the same state, choose different second state."))
   validate(need(input[["chosen_protein"]] %in% unique(dat()[["Protein"]]), "Wait for the parameters to be loaded."))
-  
+
   dat() %>%
     filter(Protein == input[["chosen_protein"]]) %>%
     create_volcano_dataset(state_1 = input[["vol_state_1"]],
@@ -121,7 +121,7 @@ chosen_timepoints_data <- reactive({
 houde_intervals <- reactive({
   
   chosen_timepoints_data() %>%
-    calculate_confidence_limit_values(confidence_limit = as.numeric(input[["vol_confidence_level"]]),
+    calculate_confidence_limit_values(confidence_level = as.numeric(input[["vol_confidence_level"]]),
                                       theoretical = FALSE,
                                       fractional = FALSE)
   
