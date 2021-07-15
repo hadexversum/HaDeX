@@ -206,11 +206,12 @@ output[["volcanoPlot_debug"]] <- renderUI({
                          Sequence = plot_data[["Sequence"]],
                          Start = plot_data[["Start"]],
                          End = plot_data[["End"]],
-                         Exposure = plot_data[["Exposure"]])
+                         Exposure = plot_data[["Exposure"]],
+                         P_value = plot_data[["P_value"]])
     
     tt_df <- filter(hv_dat) %>%
-      filter(abs(x_plot - x) < 0.5) %>%
-      filter(abs(y_plot - y) < 10) %>%
+      filter(abs(x_plot - x) < 0.1) %>%
+      filter(abs(y_plot - y) < 0.5) %>%
       filter(abs(y_plot - y) == min(abs(y_plot - y)))
     
     
@@ -234,6 +235,7 @@ output[["volcanoPlot_debug"]] <- renderUI({
                       "<br/> Position: ", tt_df[["Start"]], "-", tt_df[["End"]],
                       "<br/> Exposure: ", tt_df[["Exposure"]], " min",
                       "<br/> Difference: ", round(tt_df[["x_plot"]], 2),
+                      "<br/> P value: ", round(tt_df[["P_value"]], 4),
                       "<br/> -log(P value): ", round(tt_df[["y_plot"]], 2)
         )))
       )

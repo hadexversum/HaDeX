@@ -350,12 +350,14 @@ show_volcano_data <- function(vol_data,
     mutate(D_diff  = round(D_diff , 4),
            Uncertainty = round(Uncertainty, 4),
            log_p_value = round(log_p_value, 4),
-           valid = (abs(D_diff) >= D_diff_threshold & log_p_value >= log_P_threshold)) %>%
+           valid = (abs(D_diff) >= D_diff_threshold & log_p_value >= log_P_threshold),
+           P_value = round(P_value, 4)) %>%
     arrange(Exposure, Start, End) %>%
     rename("Diff DU [Da]" = D_diff,
            "Err Diff DU [Da]" = Uncertainty, 
            "-log(P value)" = log_p_value,
-           "{paste0('Valid At ', confidence_level)}" := valid) 
+           "{paste0('Valid At ', confidence_level)}" := valid,
+           "P value" = P_value) 
   
 }
 
