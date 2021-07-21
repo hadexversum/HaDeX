@@ -14,7 +14,7 @@
 #' @return a \code{\link{data.frame}} object.
 #' 
 #' @seealso 
-#' \code{\lnk{read_hdx}} 
+#' \code{\link{read_hdx}} 
 #' 
 #' @export show_overlap_data
 
