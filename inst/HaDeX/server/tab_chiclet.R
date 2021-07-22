@@ -133,6 +133,8 @@ chiclet_dataset <- reactive({
 
 chiclet_dataset_timepoints <- reactive({
   
+  validate(need(input[["chic_timepoints"]], "Select time points on the left to see the data."))
+  
   chiclet_dataset() %>%
     filter(Exposure %in% input[["chic_timepoints"]])
   

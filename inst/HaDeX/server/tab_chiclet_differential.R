@@ -139,6 +139,8 @@ chiclet_diff_dataset <- reactive({
 
 chiclet_diff_dataset_timepoints <- reactive({
   
+  validate(need(input[["chic_diff_timepoints"]], "Select time points on the left to see the data."))
+  
   chiclet_diff_dataset() %>%
     filter(Exposure %in% input[["chic_diff_timepoints"]])
   

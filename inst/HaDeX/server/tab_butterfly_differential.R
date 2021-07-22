@@ -16,11 +16,11 @@ observe({
   
   if(input[["butt_diff_fractional"]]){
     
-    times_t <- times_from_file()[times_from_file() > input[["butt_diff_time_0"]] & times_from_file() < as.numeric(input[["butt_diff_time_100"]])]
+    times_t <- times_from_file()[times_from_file() > as.numeric(input[["butt_diff_time_0"]]) & times_from_file() < as.numeric(input[["butt_diff_time_100"]])]
     
   } else {
     
-    times_t <- times_from_file()[times_from_file() > input[["butt_diff_time_0"]] & times_from_file() < 99999]
+    times_t <- times_from_file()[times_from_file() > as.numeric(input[["butt_diff_time_0"]]) & times_from_file() < 99999]
     
   }
   
@@ -186,6 +186,8 @@ butt_diff_dataset <- reactive({
 
 butt_diff_dat <- reactive({
   
+  validate(need(input[["butt_diff_timepoints"]], "Select time points on the left to see the data."))
+  
   butt_diff_dataset() %>%
     filter(Exposure %in% input[["butt_diff_timepoints"]])
   
@@ -196,6 +198,8 @@ butt_diff_dat <- reactive({
 #################################
 
 butterfly_differential_plot <- reactive({
+  
+  # browser()
   
   plot_differential_butterfly(butt_diff_dat(),
                               theoretical = input[["butt_diff_theory"]],
