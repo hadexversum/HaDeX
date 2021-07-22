@@ -325,12 +325,17 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                     br(),
                                                     plotOutput_h("comparisonPlot", hover = hoverOpts("comparisonPlot_hover", delay = 10, delayType = "debounce")),
                                                     downloadButton("comparisonPlot_download_button",
-                                                                   "Save chart (.svg)")),
+                                                                   "Save chart (.svg)")
+                                                    ),
                                            tabPanel("Data",
                                                     br(),
                                                     DT::dataTableOutput("comparisonPlot_data"),
                                                     br(),
-                                                    h4("The empty values (e.q. `Frac DU`) mean there was not sufficient data for this peptide."))),
+                                                    h4("The empty values (e.q. `Frac DU`) mean there was not sufficient data for this peptide."),
+                                                    h4("Abbreviations from the table: DU - deuterium uptake, Frac - fractional, Theo - theoretical.")
+                                                    )
+                                                
+                                           ),
                                          uiOutput("comparisonPlot_debug"),
                                          br(),
                                          
@@ -348,7 +353,10 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                     br(),
                                                     DT::dataTableOutput("differentialPlot_data"),
                                                     br(),
-                                                    h4("The empty values (e.q. `Frac Diff DU`) mean there was not sufficient data for this peptide. There is a possibility that the measurement result is available for only one state of the peptide.")))
+                                                    h4("The empty values (e.q. `Frac Diff DU`) mean there was not sufficient data for this peptide. There is a possibility that the measurement result is available for only one state of the peptide."),
+                                                    h4("Abbreviations from the table: Diff DU - differential deuterium uptake, Frac - fractional, Theo - theoretical.")
+                                                    )
+                                           )
 
 
                                        )
@@ -477,7 +485,10 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                     br(),
                                                                     DT::dataTableOutput("butterflyPlot_data"),
                                                                     br(),
-                                                                    h4("The empty values (e.q. `Frac DU`) means there was not sufficient data for this peptide."))),
+                                                                    h4("The empty values (e.q. `Frac DU`) means there was not sufficient data for this peptide."),
+                                                                    h4("Abbreviations from the table: DU - deuterium uptake, Frac - fractional, Theo - theoretical.")
+                                                                    )
+                                                           ),
                                                          uiOutput("butterflyPlot_debug"),
                                                          br()
                                                        )),
@@ -619,6 +630,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                     br(),
                                                                     h4("The table presents data from the chosen x plot range."),
                                                                     h4("The empty values (e.q. `Frac Diff DU`) mean there was not sufficient data for this peptide. There is a possibility that the measurement result is available for only one state of the peptide."),
+                                                                    h4("Abbreviations from the table: Diff DU - differential deuterium uptake, Frac - fractional, Theo - theoretical."),
                                                                     br()
                                                              
                                                            )
@@ -858,6 +870,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                       tabPanel("Data",
                                                                br(),
                                                                DT::dataTableOutput("chicletPlot_data"),
+                                                               h4("Abbreviations from the table: DU - deuterium uptake, Frac - fractional, Theo - theoretical."),
                                                                br()
                                                       )
                                                     )
@@ -971,6 +984,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                DT::dataTableOutput("chicletDifferentialPlot_data"),
                                                                br(),
                                                                h4("The table presents data from the chosen x plot range."),
+                                                               h4("Abbreviations from the table: Diff DU - differential deuterium uptake, Frac - fractional, Theo - theoretical."),
                                                                br()
                                                       )
                                                     )
