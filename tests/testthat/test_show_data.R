@@ -132,9 +132,9 @@ test_that("show_diff_uptake_data_confidence colnames",
 
 vol_dat <- create_volcano_dataset(dat)
 
-test_that("create_volcano_datasetcolnames",
+test_that("create_volcano_dataset colnames",
           expect_equal(colnames(show_volcano_data(vol_dat)),
-                       c( "Sequence", "Start", "End", "Exposure", "Diff DU [Da]", "Err Diff DU [Da]", "-log(P value)", "Valid At 0.98")
+                       c( "Sequence", "Start", "End", "Exposure", "Diff DU [Da]", "Err Diff DU [Da]", "-log(P value)", "P value", "Valid At 0.98")
           )
 )
 

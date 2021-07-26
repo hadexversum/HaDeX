@@ -52,7 +52,7 @@ calculate_state_uptake <- function(dat,
   
   dat %>%
     mutate(exp_mass = Center*z - z*proton_mass) %>%
-    select(-Center, -z, -Modification, -Fragment) %>%
+    select(-Center, -z) %>%
     group_by(Sequence, Start, End, MHP, MaxUptake, State, Exposure, Protein, File) %>%
     summarize(avg_exp_mass = weighted.mean(exp_mass, Inten, na.rm = TRUE)) %>%
     ungroup(.) %>%

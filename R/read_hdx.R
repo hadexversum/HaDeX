@@ -100,13 +100,22 @@ read_hdx <- function(filename){
     err_message <- "There is no sufficient number of replicates."
   } 
   
-  dat <- mutate(dat, State = paste0(State, ifelse(!is.na(Modification), paste0(" - ", Modification), "")))
+  has_modification <- !all(is.na(dat[["Modification"]]))
+  dat <- mutate(dat, State = paste0(State, ifelse(!is.na(Modification), paste0(" - ", Modification), ""))) %>%
+    select(-Modification, -RT, -Fragment)
   
   dat[["Exposure"]] <- round(dat[["Exposure"]], 3)
   
-  attr(dat, "source") <- data_type
-  
-  dat
+  # attr(dat, "source") <- data_type
+  # attr(dat, "has_modification") <- has_modification
+  # 
+  hdx_data(dat = dat,
+           source = data_type,
+           has_modification = has_modification)
+  # 
+  # class(dat) <- c("hdx_data", "data.frame")
+  # 
+  # dat
 
   
 }

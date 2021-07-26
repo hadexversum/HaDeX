@@ -389,7 +389,7 @@ show_summary_data <- function(dat,
                               confidence_limit_2,
                               overlap_distribution_data){
   
-  n_reps <- group_by(dat, Protein, Start, End, Sequence, Modification, State, Exposure) %>%
+  n_reps <- group_by(dat, Protein, Start, End, Sequence, State, Exposure) %>%
     summarise(n_rep = length(unique(File))) %>%
     ungroup() %>% 
     pull(n_rep) %>% 
