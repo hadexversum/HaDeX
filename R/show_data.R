@@ -43,7 +43,7 @@ show_uptake_data <- function(uptake_dat,
                err_theo_frac_deut_uptake = round(err_theo_frac_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("Theo Frac DU [%]" = theo_frac_deut_uptake , 
-               "Err Theo Frac DU [%]" = err_theo_frac_deut_uptake)
+               "U(Theo Frac DU) [%]" = err_theo_frac_deut_uptake)
       
     } else {
       
@@ -53,7 +53,7 @@ show_uptake_data <- function(uptake_dat,
                err_theo_deut_uptake = round(err_theo_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("Theo DU [Da]" = theo_deut_uptake,
-               "Err Theo DU [Da]" = err_theo_deut_uptake)
+               "U(Theo DU) [Da]" = err_theo_deut_uptake)
     }
     
   } else {
@@ -66,7 +66,7 @@ show_uptake_data <- function(uptake_dat,
                err_frac_deut_uptake = round(err_frac_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("Frac DU [%]" = frac_deut_uptake,
-               "Err Frac DU [%]" = err_frac_deut_uptake)
+               "U(Frac DU) [%]" = err_frac_deut_uptake)
       
     } else {
       
@@ -76,7 +76,7 @@ show_uptake_data <- function(uptake_dat,
                err_deut_uptake = round(err_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("DU [Da]" = deut_uptake,
-               "Err DU [Da]" = err_deut_uptake)
+               "U(DU) [Da]" = err_deut_uptake)
       
     }
     
@@ -128,7 +128,7 @@ show_diff_uptake_data <- function(diff_uptake_dat,
                err_diff_theo_frac_deut_uptake = round(err_diff_theo_frac_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("Theo Frac Diff DU [%]" = diff_theo_frac_deut_uptake,
-               "Err Theo Frac Diff DU [%]" = err_diff_theo_frac_deut_uptake)
+               "U(Theo Frac Diff DU) [%]" = err_diff_theo_frac_deut_uptake)
       
     } else {
       
@@ -138,7 +138,7 @@ show_diff_uptake_data <- function(diff_uptake_dat,
                err_diff_theo_deut_uptake = round(err_diff_theo_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("Theo Diff DU [Da]" = diff_theo_deut_uptake,
-               "Err Theo Diff DU [Da]" = err_diff_theo_deut_uptake)
+               "U(Theo Diff DU) [Da]" = err_diff_theo_deut_uptake)
       
     }
     
@@ -152,7 +152,7 @@ show_diff_uptake_data <- function(diff_uptake_dat,
                err_diff_frac_deut_uptake = round(err_diff_frac_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("Frac Diff DU [%]" = diff_frac_deut_uptake,
-               "Err Frac Diff DU [%]" = err_diff_frac_deut_uptake)
+               "U(Frac Diff DU) [%]" = err_diff_frac_deut_uptake)
       
     } else {
       
@@ -162,7 +162,7 @@ show_diff_uptake_data <- function(diff_uptake_dat,
                err_diff_deut_uptake = round(err_diff_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("Diff DU [Da]" = diff_deut_uptake,
-               "Err Diff DU [Da]" = err_diff_deut_uptake)
+               "U(Diff DU) [Da]" = err_diff_deut_uptake)
       
     }
     
@@ -222,7 +222,7 @@ show_diff_uptake_data_confidence <- function(diff_uptake_dat,
                err_diff_theo_frac_deut_uptake = round(err_diff_theo_frac_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("Theo Frac Diff DU [%]" = diff_theo_frac_deut_uptake,
-               "Err Theo Frac Diff DU [%]" = err_diff_theo_frac_deut_uptake,
+               "U(Theo Frac Diff DU) [%]" = err_diff_theo_frac_deut_uptake,
                "{column_name_cl1}" := paste0("valid_at_", confidence_level_1),
                "{column_name_cl2}" := paste0("valid_at_", confidence_level_2))
       
@@ -239,8 +239,8 @@ show_diff_uptake_data_confidence <- function(diff_uptake_dat,
         mutate(diff_theo_deut_uptake = round(diff_theo_deut_uptake, 4),
                err_diff_theo_deut_uptake = round(err_diff_theo_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
-        rename("Theo DU [Da]" = diff_theo_deut_uptake,
-               "Err Theo DU [Da]" = err_diff_theo_deut_uptake,
+        rename("Theo Diff DU [Da]" = diff_theo_deut_uptake,
+               "U(Theo Diff DU) [Da]" = err_diff_theo_deut_uptake,
                "{column_name_cl1}" := paste0("valid_at_", confidence_level_1),
                "{column_name_cl2}" := paste0("valid_at_", confidence_level_2))
     }
@@ -261,7 +261,7 @@ show_diff_uptake_data_confidence <- function(diff_uptake_dat,
                err_diff_frac_deut_uptake = round(err_diff_frac_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("Frac Diff DU [%]" = diff_frac_deut_uptake,
-               "Err Frac Diff DU [%]" = err_diff_frac_deut_uptake,
+               "U(Frac Diff DU) [%]" = err_diff_frac_deut_uptake,
                "{column_name_cl1}" := paste0("valid_at_", confidence_level_1),
                "{column_name_cl2}" := paste0("valid_at_", confidence_level_2))
       
@@ -279,7 +279,7 @@ show_diff_uptake_data_confidence <- function(diff_uptake_dat,
                err_diff_deut_uptake = round(err_diff_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("Diff DU [Da]" = diff_deut_uptake,
-               "Err Diff DU [Da]" = err_diff_deut_uptake,
+               "U(Diff DU) [Da]" = err_diff_deut_uptake,
                "{column_name_cl1}" := paste0("valid_at_", confidence_level_1),
                "{column_name_cl2}" := paste0("valid_at_", confidence_level_2))
     }
@@ -354,7 +354,7 @@ show_volcano_data <- function(vol_data,
            P_value = round(P_value, 4)) %>%
     arrange(Exposure, Start, End) %>%
     rename("Diff DU [Da]" = D_diff,
-           "Err Diff DU [Da]" = Uncertainty, 
+           "U(Diff DU) [Da]" = Uncertainty, 
            "-log(P value)" = log_p_value,
            "{paste0('Valid At ', confidence_level)}" := valid,
            "P value" = P_value) 
