@@ -204,24 +204,24 @@ in theoretical calculations is provided.</p>
 <span class='co'># calculate deuteration for state "CD160"</span>
 <span class='fu'>calculate_state_deuteration</span><span class='op'>(</span><span class='va'>dat</span>, protein <span class='op'>=</span> <span class='st'>"db_CD160"</span>, state <span class='op'>=</span> <span class='st'>"CD160"</span>,
                             time_in <span class='op'>=</span> <span class='fl'>0</span>, time_chosen <span class='op'>=</span> <span class='fl'>5.000</span>, time_out <span class='op'>=</span> <span class='fl'>1440.000</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 41 x 14</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 41 × 14</span>
 #&gt;    Protein  Sequence          Start   End State frac_exch_state err_frac_exch_s…
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> db_CD160 INITSSASQEGTRLN       1    15 CD160            87.6            0.592
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> db_CD160 LICTVW               16    21 CD160            41.7            0.581
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> db_CD160 LICTVWHKKEEAEG       16    29 CD160            72.1            1.07 
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> db_CD160 ICTVWHKKEEAEG        17    29 CD160            75.6            0.780
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> db_CD160 FVVFL                30    34 CD160            40.1            1.85 
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> db_CD160 LCKDRSGDCSPETSL      34    48 CD160            97.6            0.552
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> db_CD160 LCKDRSGDCSPETSLK     34    49 CD160            97.2            0.497
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> db_CD160 LCKDRSGDCSPETSLK…    34    51 CD160            95.3            0.359
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> db_CD160 LCKDRSGDCSPETSLK…    34    69 CD160            93.6            0.336
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> db_CD160 CKDRSGDCSPETSL       35    48 CD160            97.2            0.693
-#&gt; </span><span style='color: #949494;'># … with 31 more rows, and 7 more variables: abs_frac_exch_state &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   err_abs_frac_exch_state &lt;dbl&gt;, avg_theo_in_time &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   err_avg_theo_in_time &lt;dbl&gt;, abs_avg_theo_in_time &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   err_abs_avg_theo_in_time &lt;dbl&gt;, Med_Sequence &lt;dbl&gt;</span><span></div><div class='input'>
-</div></span></pre>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> db_CD160 INITSSASQEGTRLN       1    15 CD160            87.6            0.592
+#&gt; <span style='color: #BCBCBC;'> 2</span> db_CD160 LICTVW               16    21 CD160            41.7            0.581
+#&gt; <span style='color: #BCBCBC;'> 3</span> db_CD160 LICTVWHKKEEAEG       16    29 CD160            72.1            1.07 
+#&gt; <span style='color: #BCBCBC;'> 4</span> db_CD160 ICTVWHKKEEAEG        17    29 CD160            75.6            0.780
+#&gt; <span style='color: #BCBCBC;'> 5</span> db_CD160 FVVFL                30    34 CD160            40.1            1.85 
+#&gt; <span style='color: #BCBCBC;'> 6</span> db_CD160 LCKDRSGDCSPETSL      34    48 CD160            97.6            0.552
+#&gt; <span style='color: #BCBCBC;'> 7</span> db_CD160 LCKDRSGDCSPETSLK     34    49 CD160            97.2            0.497
+#&gt; <span style='color: #BCBCBC;'> 8</span> db_CD160 LCKDRSGDCSPETSLK…    34    51 CD160            95.3            0.359
+#&gt; <span style='color: #BCBCBC;'> 9</span> db_CD160 LCKDRSGDCSPETSLK…    34    69 CD160            93.6            0.336
+#&gt; <span style='color: #BCBCBC;'>10</span> db_CD160 CKDRSGDCSPETSL       35    48 CD160            97.2            0.693
+#&gt; <span style='color: #949494;'># … with 31 more rows, and 7 more variables: abs_frac_exch_state &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   err_abs_frac_exch_state &lt;dbl&gt;, avg_theo_in_time &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   err_avg_theo_in_time &lt;dbl&gt;, abs_avg_theo_in_time &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   err_abs_avg_theo_in_time &lt;dbl&gt;, Med_Sequence &lt;dbl&gt;</span></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

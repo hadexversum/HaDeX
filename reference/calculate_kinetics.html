@@ -230,19 +230,19 @@ The first version doesn't support filled Modification and Fragment columns.</p>
                    end <span class='op'>=</span> <span class='fl'>15</span>,
                    time_in <span class='op'>=</span> <span class='fl'>0.001</span>, 
                    time_out <span class='op'>=</span> <span class='fl'>1440</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 15</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 × 15</span>
 #&gt;   Protein  Sequence        Start   End State time_chosen frac_exch_state
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> db_CD160 INITSSASQEGTRLN     1    15 CD160       0.167            76.9
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> db_CD160 INITSSASQEGTRLN     1    15 CD160       1                84.2
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> db_CD160 INITSSASQEGTRLN     1    15 CD160       5                87.5
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> db_CD160 INITSSASQEGTRLN     1    15 CD160      25                93.2
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> db_CD160 INITSSASQEGTRLN     1    15 CD160     120                95.5
-#&gt; </span><span style='color: #949494;'># … with 8 more variables: err_frac_exch_state &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   abs_frac_exch_state &lt;dbl&gt;, err_abs_frac_exch_state &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   avg_theo_in_time &lt;dbl&gt;, err_avg_theo_in_time &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   abs_avg_theo_in_time &lt;dbl&gt;, err_abs_avg_theo_in_time &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   Med_Sequence &lt;dbl&gt;</span><span></div><div class='input'>                   
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> db_CD160 INITSSASQEGTRLN     1    15 CD160       0.167            76.9
+#&gt; <span style='color: #BCBCBC;'>2</span> db_CD160 INITSSASQEGTRLN     1    15 CD160       1                84.2
+#&gt; <span style='color: #BCBCBC;'>3</span> db_CD160 INITSSASQEGTRLN     1    15 CD160       5                87.5
+#&gt; <span style='color: #BCBCBC;'>4</span> db_CD160 INITSSASQEGTRLN     1    15 CD160      25                93.2
+#&gt; <span style='color: #BCBCBC;'>5</span> db_CD160 INITSSASQEGTRLN     1    15 CD160     120                95.5
+#&gt; <span style='color: #949494;'># … with 8 more variables: err_frac_exch_state &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   abs_frac_exch_state &lt;dbl&gt;, err_abs_frac_exch_state &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   avg_theo_in_time &lt;dbl&gt;, err_avg_theo_in_time &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   abs_avg_theo_in_time &lt;dbl&gt;, err_abs_avg_theo_in_time &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   Med_Sequence &lt;dbl&gt;</span></div><div class='input'>                   
 <span class='co'># calculate data for sequence INITSSASQEGTRLN in state CD160_HVEM</span>
 <span class='op'>(</span><span class='va'>kin2</span> <span class='op'>&lt;-</span> <span class='fu'>calculate_kinetics</span><span class='op'>(</span><span class='va'>dat</span>, 
                    protein <span class='op'>=</span> <span class='st'>"db_CD160"</span>,
@@ -252,19 +252,19 @@ The first version doesn't support filled Modification and Fragment columns.</p>
                    end <span class='op'>=</span> <span class='fl'>15</span>,
                    time_in <span class='op'>=</span> <span class='fl'>0.001</span>, 
                    time_out <span class='op'>=</span> <span class='fl'>1440</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 15</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 × 15</span>
 #&gt;   Protein  Sequence        Start   End State      time_chosen frac_exch_state
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> db_CD160 INITSSASQEGTRLN     1    15 CD160_HVEM       0.167            74.4
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> db_CD160 INITSSASQEGTRLN     1    15 CD160_HVEM       1                81.5
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> db_CD160 INITSSASQEGTRLN     1    15 CD160_HVEM       5                82.9
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> db_CD160 INITSSASQEGTRLN     1    15 CD160_HVEM      25                87.7
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> db_CD160 INITSSASQEGTRLN     1    15 CD160_HVEM     120                95.2
-#&gt; </span><span style='color: #949494;'># … with 8 more variables: err_frac_exch_state &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   abs_frac_exch_state &lt;dbl&gt;, err_abs_frac_exch_state &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   avg_theo_in_time &lt;dbl&gt;, err_avg_theo_in_time &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   abs_avg_theo_in_time &lt;dbl&gt;, err_abs_avg_theo_in_time &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   Med_Sequence &lt;dbl&gt;</span><span></div><div class='input'>                   
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> db_CD160 INITSSASQEGTRLN     1    15 CD160_HVEM       0.167            74.4
+#&gt; <span style='color: #BCBCBC;'>2</span> db_CD160 INITSSASQEGTRLN     1    15 CD160_HVEM       1                81.5
+#&gt; <span style='color: #BCBCBC;'>3</span> db_CD160 INITSSASQEGTRLN     1    15 CD160_HVEM       5                82.9
+#&gt; <span style='color: #BCBCBC;'>4</span> db_CD160 INITSSASQEGTRLN     1    15 CD160_HVEM      25                87.7
+#&gt; <span style='color: #BCBCBC;'>5</span> db_CD160 INITSSASQEGTRLN     1    15 CD160_HVEM     120                95.2
+#&gt; <span style='color: #949494;'># … with 8 more variables: err_frac_exch_state &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   abs_frac_exch_state &lt;dbl&gt;, err_abs_frac_exch_state &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   avg_theo_in_time &lt;dbl&gt;, err_avg_theo_in_time &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   abs_avg_theo_in_time &lt;dbl&gt;, err_abs_avg_theo_in_time &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   Med_Sequence &lt;dbl&gt;</span></div><div class='input'>                   
 <span class='co'># load extra libraries</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'></span>
@@ -287,7 +287,7 @@ The first version doesn't support filled Modification and Fragment columns.</p>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Theoretical kinetics plot for INITSSASQEGTRLN"</span><span class='op'>)</span>
 </div><div class='img'><img src='calculate_kinetics-2.png' alt='' width='700' height='433' /></div><div class='input'>       
 
-</div></span></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
