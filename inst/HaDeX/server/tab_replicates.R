@@ -287,19 +287,34 @@ output[["replicatesChargePlot_download_button"]] <- downloadHandler("replicatesC
 ######### DATASET ###############
 #################################
 
-output[["replicatesPlot_data"]] <- DT::renderDataTable(server = FALSE, {
+replicates_plot_data_out <- reactive({
   
   replicate_masses_time_t() %>%
     mutate(avg_exp_mass = round(avg_exp_mass, 4)) %>%
     select(Protein, Sequence, Start, End, Exposure, State, File, avg_exp_mass) %>%
-    rename(`Mass` = avg_exp_mass) %>%
+    rename(`Mass` = avg_exp_mass)
+  
+})
+
+output[["replicatesPlot_data"]] <- DT::renderDataTable(server = FALSE, {
+  
+  replicates_plot_data_out() %>%
     dt_format()
   
 })
 
+##
+
+replicate_charge_plot_data_out <- reactive({
+  
+  replicates_z_values_time_t()
+  
+})
+
+
 output[["replicatesChargePlot_data"]] <- DT::renderDataTable(server = FALSE, {
 
-  replicates_z_values_time_t() %>%
+  replicate_charge_plot_data_out() %>%
     dt_format()
   
 })

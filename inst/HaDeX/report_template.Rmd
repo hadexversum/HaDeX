@@ -232,6 +232,7 @@ if (input[["export_kin_plot"]]){
     }
   }
     
+    kp_out()
 
   } else {
     
@@ -265,7 +266,7 @@ if (input[["export_kin_plot_data"]]){
         }
       }
     
-    
+    kin_plot_data()
     
     
 
@@ -278,6 +279,160 @@ if (input[["export_kin_plot_data"]]){
 }
 
 ```
+
+
+
+
+
+
+
+<!--- BUTTERFLY PLOT --->
+
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_butterfly_plot"]]){
+  
+  cat("## Butterfly Plot \n")
+  
+  
+  butterfly_plot_out()
+  
+}
+
+
+```
+
+<!--- BUTTERFLY PLOT DATA --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_butterfly_plot_data"]]){
+  
+  cat("## Butterfly Plot Data \n")
+  
+  butterfly_plot_data_out()
+  
+}
+
+```
+
+<!--- DIFFERENTIAL BUTTERFLY PLOT --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_chiclet_differential_plot"]]){
+  
+  cat("## Differential Butterfly Plot \n")
+  
+  butterfly_differential_plot_out()
+  
+}
+
+```
+
+<!--- DIFFERENTIAL BUTTERFLY PLOT DATA --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_chiclet_differential_plot_data"]]){
+  
+  cat("## Differential Butterfly Plot Data \n")
+  
+  butterfly_differential_plot_data_out()
+  
+}
+
+```
+
+<!--- CHICLET PLOT --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_chiclet_plot"]]){
+  
+  cat("## Chiclet Plot \n")
+  
+  chiclet_plot_out()
+  
+}
+
+```
+
+<!--- CHICLET PLOT DATA --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_chiclet_plot_data"]]){
+  
+  cat("## Chiclet Plot Data \n")
+  
+  chiclet_plot_data_out()
+  
+}
+
+```
+
+<!--- DIFFERENTIAL CHICLET PLOT --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_chiclet_differential_plot"]]){
+  
+  cat("## Differential Chiclet Plot \n")
+  
+  chiclet_differential_plot_out()
+  
+}
+
+```
+
+<!--- DIFFERENTIAL CHICLET PLOT DATA --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_chiclet_differential_plot_data"]]){
+  
+  cat("## Differential Chiclet Plot Data \n")
+  
+  chiclet_differential_plot_data_out()
+  
+}
+
+```
+
+<!--- VOLCANO PLOT --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_volcano_plot"]]){
+  
+  cat("## Volcano Plot \n")
+  
+  volcano_plot_out()
+  
+}
+
+```
+
+<!--- VOLCANO PLOT DATA --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_volcano_plot_data"]]){
+  
+  cat("## Volcano Plot Data \n")
+  
+  volcano_plot_data_out()
+  
+}
+
+```
+
+
+
+
+
 
 
 <!--- QUALITY CONTROL PLOT --->
@@ -312,6 +467,105 @@ if (input[["export_quality_control_plot_data"]]){
 
 ```
 
+
+
+
+
+
+
+
+
+
+<!--- REPLICATES CHECK --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+rep_valid <- length(input[["rep_sequence_rows_selected"]]) > 0
+
+
+```
+
+
+<!--- REPLICATE PLOTS --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_replicate_plots"]]){
+  
+  cat("## Replicate Measurement Plot \n")
+  
+  if(rep_valid){
+    
+    replicate_plot_out()
+    
+  } else {
+    
+    "Replicate plot cannot be shown - no peptides were selected"
+  }
+  
+}
+
+```
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_replicate_plots"]]){
+  
+  cat("## Replicate Measured Charge Plot \n")
+  
+  if(rep_valid){
+    
+    replicate_charge_plot_out()
+    
+  } else {
+    
+    "Replicate plot cannot be shown - no peptides were selected"
+  }
+  
+}
+
+```
+
+<!--- REPLICATE PLOTS DATA --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_replicate_plots_data"]]){
+  
+  cat("## Replicate Measurement Plot Data \n")
+  
+  if(rep_valid){
+    
+    replicates_plot_data_out()
+    
+    
+  } else {
+    
+    "Replicate plot cannot be shown - no peptides were selected"
+  }
+  
+}
+
+```
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_replicate_plots_data"]]){
+  
+  cat("## Replicate Measured Charge Plot Data \n")
+  
+  if(rep_valid){
+    
+    replicate_charge_plot_data_out()
+    
+  } else {
+    
+    "Replicate plot cannot be shown - no peptides were selected"
+  }
+  
+}
+
+```
 
 # R Session
 

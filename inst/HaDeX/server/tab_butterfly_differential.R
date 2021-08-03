@@ -299,12 +299,18 @@ output[["butterflyDifferentialPlot_debug"]] <- renderUI({
 ######### DATA ##################
 #################################
 
-output[["butterflyDifferentialPlot_data"]] <- DT::renderDataTable(server = FALSE, {
+butterfly_differential_plot_data_out <- reactive({
   
   show_diff_uptake_data(butt_diff_dat(),
                         theoretical = input[["butt_diff_theory"]],
                         fractional = input[["butt_diff_fractional"]]) %>%
-    filter(ID >= input[["butt_diff_x_range"]][[1]] & ID <= input[["butt_diff_x_range"]][[2]]) %>%
+    filter(ID >= input[["butt_diff_x_range"]][[1]] & ID <= input[["butt_diff_x_range"]][[2]])
+  
+})
+
+output[["butterflyDifferentialPlot_data"]] <- DT::renderDataTable(server = FALSE, {
+  
+  butterfly_differential_plot_data_out() %>%
     dt_format()
   
 })
