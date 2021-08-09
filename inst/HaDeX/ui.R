@@ -1476,6 +1476,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                            value = FALSE),
                                                              checkboxInput(inputId = "export_replicate_plots",
                                                                            label = "Replicate Plots (mass, charge)",
+                                                                           value = FALSE),
+                                                             checkboxInput(inputId = "export_replicate_histograms",
+                                                                           label = "Replicate Histograms (one and all time points)",
                                                                            value = FALSE)
                                                       ),
                                                       column(6,
@@ -1508,7 +1511,9 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                              checkboxInput(inputId = "export_chiclet_differential_plot_data",
                                                                            label = "Chiclet Differential Plot Data"),
                                                              checkboxInput(inputId = "export_replicate_plots_data",
-                                                                           label = "Replicate Plots (mass, charge) Data")
+                                                                           label = "Replicate Plots (mass, charge) Data"),
+                                                             checkboxInput(inputId = "export_replicate_histograms_data",
+                                                                           label = "Replicate Histograms (one and all time points) Data")
                                                       )
                                                     ),
                                                     br(),

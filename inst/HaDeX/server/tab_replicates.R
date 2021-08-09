@@ -453,7 +453,7 @@ all_replicates_histogram_data <- reactive({
 
 ##
 
-all_replicates_histogram <- reactive({
+all_replicates_histogram_out <- reactive({
   
   all_replicates_histogram_data() %>%
     ggplot() +
@@ -470,7 +470,7 @@ all_replicates_histogram <- reactive({
 
 output[["allReplicatesHistogram"]] <- renderPlot({
 
-  all_replicates_histogram()
+  all_replicates_histogram_out()
   
 })
 
