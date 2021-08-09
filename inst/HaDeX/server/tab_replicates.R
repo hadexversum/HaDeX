@@ -321,10 +321,11 @@ output[["replicatesChargePlot_data"]] <- DT::renderDataTable(server = FALSE, {
 
 
 #################################
-######## HISTOGRAM ##############
+######## HISTOGRAM PLOT #########
 #################################
+## replicates in selected time point
 
-replicates_histogram_out <- reactive({
+replicates_histogram_data <- reactive({
   
   replicate_masses() %>%
     filter(Exposure == input[["rep_time"]],
@@ -332,7 +333,15 @@ replicates_histogram_out <- reactive({
            State == input[["rep_state"]]) %>%
     select(Sequence, Start, End, ID) %>%
     group_by(Sequence, Start, End, ID) %>%
-    summarize(n = n()) %>%
+    summarize(n = n())
+  
+})
+
+##
+
+replicates_histogram_out <- reactive({
+  
+  replicates_histogram_data() %>%
     ggplot() + 
     geom_col(aes(x = ID, y = n, fill = n)) +
     labs(title = paste0("Number of replicates for each peptide in ", input[["rep_state"]], " in ", input[["rep_time"]], " min"),
@@ -403,12 +412,34 @@ output[["replicatesHistogram_debug"]] <- renderUI({
 output[["replicatesHistogram_download_button"]] <- downloadHandler("replicatesHistogram.svg",
                                                                     content = function(file){
                                                                       ggsave(file, replicates_histogram_out(), device = svg,
-                                                                             height = 300, width = 400, units = "mm")
-                                                                    })
+                                                                             height = 300, width = 400, units = "mm")})
 
-##
+####################################
+######## HISTOGRAM DATASET #########
+####################################
+## replicates in selected time point
 
-all_replicates_histogram <- reactive({
+replicates_histogram_data_out <- reactive({
+  
+  replicates_histogram_data() %>%
+    arrange(ID)
+  
+})
+
+
+output[["replicatesHistogram_data"]] <- DT::renderDataTable(server = FALSE, {
+  
+  replicates_histogram_data_out() %>%
+    dt_format()
+  
+})
+
+#################################
+######## HISTOGRAM PLOT #########
+#################################
+## replicates in all time points
+
+all_replicates_histogram_data <- reactive({
   
   replicate_masses() %>%
     filter(Protein == input[["chosen_protein"]],
@@ -416,7 +447,15 @@ all_replicates_histogram <- reactive({
            Exposure < 99999) %>%
     select(Sequence, Exposure, Start, End, ID) %>%
     group_by(Sequence, Exposure, Start, End, ID) %>%
-    summarize(n = n()) %>%
+    summarize(n = n())
+  
+})
+
+##
+
+all_replicates_histogram <- reactive({
+  
+  all_replicates_histogram_data() %>%
     ggplot() +
     geom_col(aes(x = ID, y = n, fill = as.factor(Exposure))) +
     labs(title = paste0("Number of replicates for each peptide in ", input[["rep_state"]], " state"),
@@ -497,3 +536,23 @@ output[["allReplicatesHistogram_download_button"]] <- downloadHandler("allReplic
                                                                      ggsave(file, all_replicates_histogram(), device = svg,
                                                                             height = 300, width = 400, units = "mm")
                                                                    })
+
+####################################
+######## HISTOGRAM DATASET #########
+####################################
+## replicates in all time points
+
+all_replicates_histogram_data_out <- reactive({
+  
+  all_replicates_histogram_data() %>%
+    arrange(ID, Exposure)
+  
+})
+
+
+output[["allReplicatesHistogram_data"]] <- DT::renderDataTable(server = FALSE, {
+  
+  all_replicates_histogram_data_out() %>%
+    dt_format()
+  
+})

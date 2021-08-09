@@ -1075,21 +1075,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                             br())
                                                    ) ,
                                                    br(),
-                                                   br(),
-                                                   
-                                                   div(style = "position:relative",
-                                                       plotOutput_h("replicatesHistogram", hover = hoverOpts("replicatesHistogram_hover", delay = 10, delayType = "debounce")),
-                                                       uiOutput("replicatesHistogram_debug")),
-                                                   downloadButton("replicatesHistogram_download_button",
-                                                                  "Save chart (.svg)"),
-                                                   br(),
-                                                   br(),
-                                                   div(style = "position:relative",
-                                                       plotOutput_h("allReplicatesHistogram", hover = hoverOpts("allReplicatesHistogram_hover", delay = 10, delayType = "debounce")),
-                                                       uiOutput("allReplicatesHistogram_debug")
-                                                   ),
-                                                   downloadButton("allReplicatesHistogram_download_button",
-                                                                  "Save chart (.svg)")
+                                                   br()
                                           ) ,
                                           tabPanel("Data",
                                                    br(),
@@ -1098,8 +1084,34 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                    DT::dataTableOutput("replicatesChargePlot_data"),
                                                    br()
 
-
                                           )
+                                         ),
+                                         tabsetPanel(
+                                           tabPanel("Plot",
+                                                    br(),
+                                                    div(style = "position:relative",
+                                                        plotOutput_h("replicatesHistogram", hover = hoverOpts("replicatesHistogram_hover", delay = 10, delayType = "debounce")),
+                                                        uiOutput("replicatesHistogram_debug")),
+                                                    downloadButton("replicatesHistogram_download_button",
+                                                                   "Save chart (.svg)")),
+                                           tabPanel("Data",
+                                                    br(),
+                                                    DT::dataTableOutput("replicatesHistogram_data"))
+                                         ),
+                                         br(),
+                                         br(),
+                                         tabsetPanel(
+                                           tabPanel("Plot",
+                                                    br(),
+                                                    div(style = "position:relative",
+                                                        plotOutput_h("allReplicatesHistogram", hover = hoverOpts("allReplicatesHistogram_hover", delay = 10, delayType = "debounce")),
+                                                        uiOutput("allReplicatesHistogram_debug")
+                                                    ),
+                                                    downloadButton("allReplicatesHistogram_download_button",
+                                                                   "Save chart (.svg)")),
+                                           tabPanel("Data",
+                                                    br(),
+                                                    DT::dataTableOutput("allReplicatesHistogram_data"))
                                          )
                                        )
 
