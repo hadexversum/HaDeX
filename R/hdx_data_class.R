@@ -55,10 +55,20 @@ new_hdx_data <- function(dat, source, has_modification){
 #' 
 #' @keyword Internal
 
-validate_hdx_data <- function(hdx_data){
+validate_hdx_data <- function(hdx_data, msg = ""){
   
+  no_replicates <- hdx_data %>%
+    group_by(Protein, Start, End, Sequence, State, Exposure) %>%
+    summarise(n_rep = length(unique(File))) %>%
+    ungroup(.) %>%
+    summarize(avg_rep = mean(n_rep))
   
+  if (!(no_replicates[[1]] >= 2)) {
+    msg <- paste0(msg, "There is no sufficient number of replicates.")
+  } 
   
+  print(msg)
+  hdx_data
 }
 
 #' Creation of validated hdx_data class
@@ -72,13 +82,13 @@ validate_hdx_data <- function(hdx_data){
 #' 
 #' @keyword Internal
 
-hdx_data <- function(dat, source, has_modification){
+hdx_data <- function(dat, source, has_modification, msg = ""){
   
   tmp <- new_hdx_data(dat = dat,
                       source = source,
                       has_modification = has_modification)
   
-  validate_hdx_data(tmp)
+  validate_hdx_data(tmp, msg = msg)
   
   tmp
   

@@ -90,16 +90,6 @@ read_hdx <- function(filename){
     stop(err_message)
   }
   
-  no_replicates <- dat %>%
-    group_by(Protein, Start, End, Sequence, Modification, State, Exposure) %>%
-    summarise(n_rep = length(unique(File))) %>%
-    ungroup(.) %>%
-    summarize(avg_rep = mean(n_rep))
-    
-  if (!(no_replicates[[1]] > 2)) {
-    err_message <- "There is no sufficient number of replicates."
-  } 
-  
   has_modification <- !all(is.na(dat[["Modification"]]))
   dat <- mutate(dat, State = paste0(State, ifelse(!is.na(Modification), paste0(" - ", Modification), ""))) %>%
     select(-Modification, -RT, -Fragment)
@@ -108,7 +98,7 @@ read_hdx <- function(filename){
   
   # attr(dat, "source") <- data_type
   # attr(dat, "has_modification") <- has_modification
-  # 
+  
   hdx_data(dat = dat,
            source = data_type,
            has_modification = has_modification)

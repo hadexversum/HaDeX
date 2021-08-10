@@ -4,7 +4,7 @@
 \alias{hdx_data}
 \title{Creation of validated hdx_data class}
 \usage{
-hdx_data(dat, source, has_modification)
+hdx_data(dat, source, has_modification, msg = "")
 }
 \arguments{
 \item{dat}{\code{\link{data.frame}}, read from the datafile.}

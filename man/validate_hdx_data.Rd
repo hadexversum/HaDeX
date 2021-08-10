@@ -4,7 +4,7 @@
 \alias{validate_hdx_data}
 \title{Validator on hdx_data class}
 \usage{
-validate_hdx_data(hdx_data)
+validate_hdx_data(hdx_data, msg = "")
 }
 \arguments{
 \item{hdx_data}{\code{\link{hdx_data}} object.}
