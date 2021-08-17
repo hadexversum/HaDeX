@@ -22,7 +22,7 @@ span {
 
 
 
-Report generated on `r Sys.time()` using the [HaDeX](http://github.com/michbur/HaDeX) R package.  
+Report generated on `r Sys.time()` using the [HaDeX](http://github.com/hadexversum/HaDeX) R package.  
 
 Detected input file: `r ifelse(is.null(input[["data_file"]][["name"]]), "none", input[["data_file"]][["name"]])`.  
 
@@ -109,73 +109,18 @@ if (input[["export_comparison_plot"]]){
     
   cat("## Comparison Plot \n")
   
-  cat("### Relative values \n")
-  
   if(has_modifications()){
     cat("Supplied file contains modified peptids. Maximal exchange control cannot be applied.")
   } else{
-    if(input[["out_time"]] == 99999){
+    if(input[["time_100"]] == 99999){
       cat(paste0("Chosen control: ", input[["chosen_control"]], "."))
     } else{
       cat("No chosen control. \n")
     }
   }
   
-
-  p <- comparison_plot_exp() +
-    scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
+  cp_out()
   
-  if(!input[["theory"]] & input[["calc_type"]]=="relative"){
-    
-    p + 
-      coord_cartesian(ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]),
-                      xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
-      labs(title = input[["comparison_plot_title"]], 
-           x = input[["comparison_plot_x_label"]],
-           y = input[["comparison_plot_y_label"]])
-      
-  } else {
-    
-    p + 
-      coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) + 
-      labs(title = paste0("Fraction exchanged in state comparison in ", input[["chosen_time"]], " min"),
-           x = "Position in sequence",
-           y = "Fraction exchanged [%]") 
-    
-  }
-  
-}
-
-```
-
-```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
-
-if (input[["export_comparison_plot"]]){
-
-  cat("### Absolute values \n")
-  
-  p <- comparison_plot_exp_abs() +
-    scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
-  
-  if (!input[["theory"]] & input[["calc_type"]]=="absolute"){
-    
-    p + 
-      coord_cartesian(ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]),
-                      xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
-      labs(title = input[["comparison_plot_title"]], 
-           x = input[["comparison_plot_x_label"]],
-           y = input[["comparison_plot_y_label"]])
-    
-  } else {
-    
-    p + 
-      coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
-      labs(title = paste0("Absolute value exchanged in state comparison in ", input[["chosen_time"]], " min"),
-           x = "Position in sequence", 
-           y = "Absolute value exchanged [Da]")
-  }
-  
- 
 }
 
 ```
@@ -188,133 +133,23 @@ if (input[["export_comparison_plot_data"]]){
     
   cat("## Comparison Plot Data \n")
   
-  cat("### Relative values \n")
   
 if(has_modifications()){
     cat("Supplied file contains modified peptids. Maximal exchange control cannot be applied.")
   } else{
-    if(input[["out_time"]] == 99999){
+    if(input[["time_100"]] == 99999){
       cat(paste0("Chosen control: ", input[["chosen_control"]], "."))
     } else{
       cat("No chosen control. \n")
     }
   }
-  comparison_plot_data_exp() 
   
-  
+  comparison_plot_data()
     
 }
 ```
 
-```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
 
-if (input[["export_comparison_plot_data"]]){
-  
-  cat("### Absolute values \n")
-  
-  comparison_plot_data_exp_abs()
-  
-}
-
-```
-
-<!--- THEORETICAL COMPARISON PLOT --->
-
-```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
-
-if (input[["export_theo_comparison_plot"]]){
-    
-  cat("## Theoretical Comparison Plot \n")
-  
-  cat("### Relative values \n")
-
-  cat(paste0("Deuterium concentration: ", input[["deut_concentration"]], "%."))
-  
-  p <- comparison_plot_theo() + 
-    scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
-    
-  if(input[["theory"]] & input[["calc_type"]]=="relative"){
-    
-    p + 
-      coord_cartesian(ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]),
-                      xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
-      labs(title = input[["comparison_plot_title"]], 
-           x = input[["comparison_plot_x_label"]],
-           y = input[["comparison_plot_y_label"]])
-    
-  } else {
-    
-    p + 
-      coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
-      labs(title = paste0("Theoretical fraction exchanged in state comparison in ", input[["chosen_time"]], " min"),
-           x = "Position in sequence",
-           y = "Theoretical fraction exchanged [%]")
-      
-  }
-    
-}
-```
-
-```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
-
-if (input[["export_theo_comparison_plot"]]){
-  
-  cat("### Absolute values \n")
-  
-  p <- comparison_plot_theo_abs() +
-    scale_color_manual(values = as.vector(comparison_plot_colors_chosen()))
-  
-  if(input[["theory"]] & input[["calc_type"]]=="absolute"){
-    
-    p + 
-      coord_cartesian(ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]]),
-                      xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
-      labs(title = input[["comparison_plot_title"]], 
-           x = input[["comparison_plot_x_label"]],
-           y = input[["comparison_plot_y_label"]])
-    
-  } else {
-    
-    p + 
-      coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]))+
-      labs(title = paste0("Theoretical absolute value exchanged in state comparison in ", input[["chosen_time"]], " min"),
-           x = "Position in sequence",
-           y = "Theoretical absolute value exchanged [Da]")
-  }
-  
-}
-
-```
-
-<!--- THEORETICAL COMPARISON PLOT DATA --->
-
-```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
-
-if (input[["export_theo_comparison_plot_data"]]){
-    
-  cat("## Theoretical Comparison Plot Data \n")
-  
-  cat("### Relative values \n")
-  
-  cat(paste0("Deuterium concentration: ", input[["deut_concentration"]], "%."))
-  
-  comparison_plot_data_theo()
-    
-}
-
-```
-
-```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
-
-if (input[["export_theo_comparison_plot_data"]]){
-  
-  cat("### Absolute values \n")
-  
-  comparison_plot_data_theo_abs()
-  
-}
-
-```
 
 <!--- WOODS PLOT --->
 
@@ -324,72 +159,22 @@ if (input[["export_woods_plot"]]){
     
   cat("## Woods Plot \n")  
   
-  cat("### Relative values \n")
-  
 if(has_modifications()){
     cat("Supplied file contains modified peptids. Maximal exchange control cannot be applied.")
   } else{
-    if(input[["out_time"]] == 99999){
+    if(input[["time_100"]] == 99999){
       cat(paste0("Chosen control: ", input[["chosen_control"]], "."))
     } else{
       cat("No chosen control. \n")
     }
   }
   
-  p <- differential_plot_exp()
-  
-  if(!input[["theory"]] & input[["calc_type"]] == "relative"){
-    
-    p + 
-      coord_cartesian(ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]),
-                      xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
-      labs(title = input[["woods_plot_title"]], 
-           x = input[["woods_plot_x_label"]],
-           y = input[["woods_plot_y_label"]])
-    
-  } else {
-    
-    p + 
-      coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
-      labs(title = paste0("Delta Fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]])),
-           x = "Position in sequence",
-           y = "Delta Fraction exchanged between states [%]")
-    
-  }
+  differential_plot_out()
     
 }
 
 ```
 
-```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
-
-if (input[["export_woods_plot"]]){
-  
-  cat("### Absolute values \n")
-  
-  p <- differential_plot_exp_abs()
-  
-  if(!input[["theory"]] & input[["calc_type"]] == "absolute"){
-    
-    p + 
-      coord_cartesian(ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]),
-                      xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
-      labs(title = input[["woods_plot_title"]], 
-           x = input[["woods_plot_x_label"]],
-           y = input[["woods_plot_y_label"]])
-    
-  } else {
-    
-    p + 
-      coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
-      labs(title = paste0("Delta Fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]])),
-           x = "Position in sequence",
-           y = "Delta Absolute value exchanged between states [Da]")
-  }
-  
-}
-
-```
 
 <!--- WOODS PLOT DATA --->
 
@@ -399,131 +184,17 @@ if (input[["export_woods_plot_data"]]){
     
   cat("## Woods Plot Data \n")
   
-  cat("### Relative values \n")
-  
 if(has_modifications()){
     cat("Supplied file contains modified peptids. Maximal exchange control cannot be applied.")
   } else{
-    if(input[["out_time"]] == 99999){
+    if(input[["time_100"]] == 99999){
       cat(paste0("Chosen control: ", input[["chosen_control"]], "."))
     } else{
       cat("No chosen control. \n")
     }
   }
   
-  differential_plot_data_exp()
-    
-}
-
-```
-
-```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
-
-if (input[["export_woods_plot_data"]]){
-  
-  cat("### Absolute values \n")
-  
-  differential_plot_data_exp_abs()
-  
-}
-
-```
-
-<!--- THEORETICAL WOODS PLOT --->
-
-```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
-
-if (input[["export_theo_woods_plot"]]){
-    
-  cat("## Theoretical Woods Plot \n")  
-  
-  cat("### Relative values \n")
-  
-  cat(paste0("Deuterium concentration: ", input[["deut_concentration"]], "%."))
-  
-  p <- differential_plot_theo()
-  
-  if(input[["theory"]] & input[["calc_type"]] == "relative"){
-    
-    p + 
-      coord_cartesian(ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]),
-                      xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
-      labs(title = input[["woods_plot_title"]], 
-           x = input[["woods_plot_x_label"]],
-           y = input[["woods_plot_y_label"]])
-    
-  } else {
-    
-    p + 
-      coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
-      labs(title = paste0("Delta Theoretical fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]])),
-           x = "Position in sequence",
-           y = "Delta Theoretical fraction exchanged between states [%]")
-    
-  }
-    
-}
-
-
-```
-
-```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
-
-if (input[["export_theo_woods_plot"]]){
-  
-  cat("### Absolute values \n")
-  
-  p <- differential_plot_theo_abs()
-  
-  if(input[["theory"]] & input[["calc_type"]] == "absolute"){
-    
-    p + 
-      coord_cartesian(ylim = c(input[["woods_plot_y_range"]][[1]], input[["woods_plot_y_range"]][[2]]),
-                      xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
-      labs(title = input[["woods_plot_title"]], 
-           x = input[["woods_plot_x_label"]],
-           y = input[["woods_plot_y_label"]])
-    
-  } else {
-    
-    p + 
-      coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]])) +
-      labs(title = paste0("Delta Theoretical fraction exchanged in ", input[["chosen_time"]], " min between ", gsub("_", " ", input[["state_first"]]), " and ", gsub("_", " ", input[["state_second"]])),
-           x = "Position in sequence",
-           y = "Delta Theoretical absoute value exchanged between states [Da]")
-    
-  }
-    
-}
-
-
-```
-
-<!--- THEORETICAL WOODS PLOT DATA --->
-
-```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
-
-if (input[["export_theo_woods_plot_data"]]){
-    
-  cat("## Theoretical Woods Plot Data \n")
-  
-  cat("### Relative values \n")
-  
-  cat(paste0("Deuterium concentration: ", input[["deut_concentration"]], "%."))
-    
-  differential_plot_data_theo()
-    
-}
-
-```
-
-```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
-
-if (input[["export_theo_woods_plot_data"]]){
-  
-  cat("### Absolute values \n")
-    
-  differential_plot_data_theo_abs()
+  differential_plot_data()
     
 }
 
@@ -551,42 +222,18 @@ if (input[["export_kin_plot"]]){
   
   if (kin_valid) {
     
-    cat("### Relative values \n")
-    
  if(has_modifications()){
     cat("Supplied file contains modified peptids. Maximal exchange control cannot be applied.")
   } else{
-    if(input[["out_time"]] == 99999){
+    if(input[["kin_time_100"]] == 99999){
       cat(paste0("Chosen control: ", input[["chosen_control"]], "."))
     } else{
       cat("No chosen control. \n")
     }
   }
     
-    p <- kin_plot_exp()
-    
-    if(!input[["theory"]] & input[["calc_type"]]=="relative"){
-    
-      p + 
-        coord_cartesian(ylim = c(input[["kin_plot_y_range"]][[1]], input[["kin_plot_y_range"]][[2]])) +
-        labs(title = input[["kin_plot_title"]], 
-             x = input[["kin_plot_x_label"]],
-             y = input[["kin_plot_y_label"]]) +
-        theme(legend.position = "bottom",
-              legend.title = element_blank())
-        
-    } else {
-      
-      p + 
-        labs(title = "Uptake curve for chosen peptides",
-             x = "Time points [min]",
-             y = "Deuteration [%]") +
-        scale_y_continuous(limits = c(0, 110)) + 
-        theme(legend.position = "bottom",
-              legend.title = element_blank())
-      
-    }
-    
+    kp_out()
+
   } else {
     
     "Uptake curve cannot be shown - no peptides were selected"
@@ -597,42 +244,6 @@ if (input[["export_kin_plot"]]){
 
 ```
 
-```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
-
-if (input[["export_kin_plot"]]){
-  
-  if (kin_valid) {
-    
-    cat("### Absolute values \n")
-    
-    p <- kin_plot_exp_abs()
-    
-    if (!input[["theory"]] & input[["calc_type"]]=="absolute"){
-    
-      p + 
-        coord_cartesian(ylim = c(input[["kin_plot_y_range"]][[1]], input[["kin_plot_y_range"]][[2]])) +
-        labs(title = input[["kin_plot_title"]], 
-             x = input[["kin_plot_x_label"]],
-             y = input[["kin_plot_y_label"]]) +
-        theme(legend.position = "bottom",
-              legend.title = element_blank())
-      
-    } else {
-      
-      p + 
-        labs(title = "Uptake curve for chosen peptides",
-             x = "Time points [min]",
-             y = "Deuteration [Da]") +
-        scale_y_continuous(limits = c(0, NA)) +
-        theme(legend.position = "bottom",
-              legend.title = element_blank())
-    }
-    
-  }
-  
-}
-
-```
 
 <!--- KINETIC PLOT DATA --->
 
@@ -644,19 +255,20 @@ if (input[["export_kin_plot_data"]]){
   
   if (kin_valid){
     
-    cat("### Relative values \n")
     
       if(has_modifications()){
         cat("Supplied file contains modified peptids. Maximal exchange control cannot be applied.")
       } else{
-        if(input[["out_time"]] == 99999){
+        if(input[["kin_time_100"]] == 99999){
           cat(paste0("Chosen control: ", input[["chosen_control"]], "."))
         } else{
           cat("No chosen control. \n")
         }
       }
     
-    kin_plot_exp_data()
+    kin_plot_data()
+    
+    
 
   } else {
     
@@ -668,148 +280,160 @@ if (input[["export_kin_plot_data"]]){
 
 ```
 
+
+
+
+
+
+
+<!--- BUTTERFLY PLOT --->
+
+
 ```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
 
-if (input[["export_kin_plot_data"]]){
+if (input[["export_butterfly_plot"]]){
   
-  if (kin_valid) {
-    
-    cat("### Absolute values \n")
+  cat("## Butterfly Plot \n")
   
-    kin_plot_exp_abs_data()
   
-  }
+  butterfly_plot_out()
+  
+}
+
+
+```
+
+<!--- BUTTERFLY PLOT DATA --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_butterfly_plot_data"]]){
+  
+  cat("## Butterfly Plot Data \n")
+  
+  butterfly_plot_data_out()
   
 }
 
 ```
 
-<!--- THEORETICAL KINETIC PLOT --->
+<!--- DIFFERENTIAL BUTTERFLY PLOT --->
 
 ```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
 
-if (input[["export_theo_kin_plot"]]){
+if (input[["export_chiclet_differential_plot"]]){
   
-  cat("## Theoretical Uptake curve Data \n")
+  cat("## Differential Butterfly Plot \n")
   
-  if (kin_valid){
-    
-    cat("### Relative values \n")
-    
-    cat(paste0("Deuterium concentration: ", input[["deut_concentration"]], "%."))
-    
-    p <- kin_plot_theo()
-    
-    if(input[["theory"]] & input[["calc_type"]]=="relative"){
-    
-      p + 
-        coord_cartesian(ylim = c(input[["kin_plot_y_range"]][[1]], input[["kin_plot_y_range"]][[2]])) +
-        labs(title = input[["kin_plot_title"]], 
-             x = input[["kin_plot_x_label"]],
-             y = input[["kin_plot_y_label"]]) +
-        theme(legend.position = "bottom",
-              legend.title = element_blank())
-      
-    } else {
-      
-      p + 
-        labs(title = "Theoretical uptake curve for chosen peptides",
-             x = "Time points [min]",
-             y = "Deuteration [%]") +
-        scale_y_continuous(limits = c(0, 110)) + 
-        theme(legend.position = "bottom",
-              legend.title = element_blank())
-        
-    }
-    
-  } else {
-    
-    "Theoretical uptake curve plot cannot be shown - no peptides were selected"
-    
-  }
-
-}
-
-```
-
-```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
-
-if (input[["export_theo_kin_plot"]]){
-  
-  if (kin_valid) {
-    
-    cat("### Absolute values \n")
-    
-    p <- kin_plot_theo_abs()
-    
-    if(input[["theory"]] & input[["calc_type"]]=="absolute"){
-    
-      p + 
-        coord_cartesian(ylim = c(input[["kin_plot_y_range"]][[1]], input[["kin_plot_y_range"]][[2]])) +
-        labs(title = input[["kin_plot_title"]], 
-             x = input[["kin_plot_x_label"]],
-             y = input[["kin_plot_y_label"]]) +
-        theme(legend.position = "bottom",
-              legend.title = element_blank())
-      
-    } else {
-      
-      p + 
-        labs(title = "Theoretical uptake curve for chosen peptides",
-             x = "Time points [min]",
-             y = "Deuteration [Da]") +
-        scale_y_continuous(limits = c(0, NA)) +
-        theme(legend.position = "bottom",
-              legend.title = element_blank())
-    }
-    
-  }
+  butterfly_differential_plot_out()
   
 }
 
 ```
 
-<!--- THEORETICAL KINETIC PLOT DATA --->
+<!--- DIFFERENTIAL BUTTERFLY PLOT DATA --->
 
 ```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
 
-if (input[["export_theo_kin_plot_data"]]){
+if (input[["export_chiclet_differential_plot_data"]]){
   
-  cat("## Theoretical uptake curve Data \n")
+  cat("## Differential Butterfly Plot Data \n")
   
-  if (kin_valid){
-    
-    cat("### Relative values \n")
-    
-    cat(paste0("Deuterium concentration: ", input[["deut_concentration"]], "%."))
-  
-    kin_plot_theo_data()
-  
-  } else {
-    
-    "Theoretical uptake curve data cannot be shown - no peptides were selected"
-    
-  }
+  butterfly_differential_plot_data_out()
   
 }
 
 ```
 
+<!--- CHICLET PLOT --->
+
 ```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
 
-if (input[["export_theo_kin_plot_data"]]){
+if (input[["export_chiclet_plot"]]){
   
-  if (kin_valid){
+  cat("## Chiclet Plot \n")
   
-    cat("### Absolute values \n")
-  
-    kin_plot_theo_abs_data()
-    
-  }
+  chiclet_plot_out()
   
 }
 
 ```
+
+<!--- CHICLET PLOT DATA --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_chiclet_plot_data"]]){
+  
+  cat("## Chiclet Plot Data \n")
+  
+  chiclet_plot_data_out()
+  
+}
+
+```
+
+<!--- DIFFERENTIAL CHICLET PLOT --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_chiclet_differential_plot"]]){
+  
+  cat("## Differential Chiclet Plot \n")
+  
+  chiclet_differential_plot_out()
+  
+}
+
+```
+
+<!--- DIFFERENTIAL CHICLET PLOT DATA --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_chiclet_differential_plot_data"]]){
+  
+  cat("## Differential Chiclet Plot Data \n")
+  
+  chiclet_differential_plot_data_out()
+  
+}
+
+```
+
+<!--- VOLCANO PLOT --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_volcano_plot"]]){
+  
+  cat("## Volcano Plot \n")
+  
+  volcano_plot_out()
+  
+}
+
+```
+
+<!--- VOLCANO PLOT DATA --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_volcano_plot_data"]]){
+  
+  cat("## Volcano Plot Data \n")
+  
+  volcano_plot_data_out()
+  
+}
+
+```
+
+
+
+
+
+
 
 <!--- QUALITY CONTROL PLOT --->
 
@@ -841,6 +465,157 @@ if (input[["export_quality_control_plot_data"]]){
   
 }
 
+```
+
+
+
+
+
+
+
+
+
+
+<!--- REPLICATES CHECK --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+rep_valid <- length(input[["rep_sequence_rows_selected"]]) > 0
+
+
+```
+
+
+<!--- REPLICATE PLOTS --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_replicate_plots"]]){
+  
+  cat("## Replicate Measurement Plot \n")
+  
+  if(rep_valid){
+    
+    replicate_plot_out()
+    
+  } else {
+    
+    "Replicate plot cannot be shown - no peptides were selected"
+  }
+  
+}
+
+```
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_replicate_plots"]]){
+  
+  cat("## Replicate Measured Charge Plot \n")
+  
+  if(rep_valid){
+    
+    replicate_charge_plot_out()
+    
+  } else {
+    
+    "Replicate plot cannot be shown - no peptides were selected"
+  }
+  
+}
+
+```
+
+<!--- REPLICATE PLOTS DATA --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_replicate_plots_data"]]){
+  
+  cat("## Replicate Measurement Plot Data \n")
+  
+  if(rep_valid){
+    
+    replicates_plot_data_out()
+    
+    
+  } else {
+    
+    "Replicate plot cannot be shown - no peptides were selected"
+  }
+  
+}
+
+```
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_replicate_plots_data"]]){
+  
+  cat("## Replicate Measured Charge Plot Data \n")
+  
+  if(rep_valid){
+    
+    replicate_charge_plot_data_out()
+    
+  } else {
+    
+    "Replicate plot cannot be shown - no peptides were selected"
+  }
+  
+}
+
+```
+
+
+<!--- REPLICATE HISTOGRAMS  --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_replicate_histograms"]]){
+  
+  cat("## Replicate Histogram for selected time point \n")
+  
+  replicates_histogram_out()
+  
+}
+```
+
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_replicate_histograms"]]){
+  
+  cat("## Replicate Histogram for all time points \n")
+  
+  all_replicates_histogram_out()
+  
+}
+```
+
+<!--- REPLICATE HISTOGRAMS DATA --->
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_replicate_histograms_data"]]){
+  
+  cat("## Replicate Histogram for selected time point Data \n")
+  
+  replicates_histogram_data_out()
+  
+}
+```
+
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_replicate_histograms_data"]]){
+  
+  cat("## Replicate Histogram for all time points Data \n")
+  
+  all_replicates_histogram_data_out()
+  
+}
 ```
 
 

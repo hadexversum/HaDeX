@@ -43,7 +43,7 @@ show_uptake_data <- function(uptake_dat,
                err_theo_frac_deut_uptake = round(err_theo_frac_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("Theo Frac DU [%]" = theo_frac_deut_uptake , 
-               "Err Theo Frac DU [%]" = err_theo_frac_deut_uptake)
+               "U(Theo Frac DU) [%]" = err_theo_frac_deut_uptake)
       
     } else {
       
@@ -53,7 +53,7 @@ show_uptake_data <- function(uptake_dat,
                err_theo_deut_uptake = round(err_theo_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("Theo DU [Da]" = theo_deut_uptake,
-               "Err Theo DU [Da]" = err_theo_deut_uptake)
+               "U(Theo DU) [Da]" = err_theo_deut_uptake)
     }
     
   } else {
@@ -66,7 +66,7 @@ show_uptake_data <- function(uptake_dat,
                err_frac_deut_uptake = round(err_frac_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("Frac DU [%]" = frac_deut_uptake,
-               "Err Frac DU [%]" = err_frac_deut_uptake)
+               "U(Frac DU) [%]" = err_frac_deut_uptake)
       
     } else {
       
@@ -76,7 +76,7 @@ show_uptake_data <- function(uptake_dat,
                err_deut_uptake = round(err_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("DU [Da]" = deut_uptake,
-               "Err DU [Da]" = err_deut_uptake)
+               "U(DU) [Da]" = err_deut_uptake)
       
     }
     
@@ -128,7 +128,7 @@ show_diff_uptake_data <- function(diff_uptake_dat,
                err_diff_theo_frac_deut_uptake = round(err_diff_theo_frac_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("Theo Frac Diff DU [%]" = diff_theo_frac_deut_uptake,
-               "Err Theo Frac Diff DU [%]" = err_diff_theo_frac_deut_uptake)
+               "U(Theo Frac Diff DU) [%]" = err_diff_theo_frac_deut_uptake)
       
     } else {
       
@@ -138,7 +138,7 @@ show_diff_uptake_data <- function(diff_uptake_dat,
                err_diff_theo_deut_uptake = round(err_diff_theo_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("Theo Diff DU [Da]" = diff_theo_deut_uptake,
-               "Err Theo Diff DU [Da]" = err_diff_theo_deut_uptake)
+               "U(Theo Diff DU) [Da]" = err_diff_theo_deut_uptake)
       
     }
     
@@ -152,7 +152,7 @@ show_diff_uptake_data <- function(diff_uptake_dat,
                err_diff_frac_deut_uptake = round(err_diff_frac_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("Frac Diff DU [%]" = diff_frac_deut_uptake,
-               "Err Frac Diff DU [%]" = err_diff_frac_deut_uptake)
+               "U(Frac Diff DU) [%]" = err_diff_frac_deut_uptake)
       
     } else {
       
@@ -162,7 +162,7 @@ show_diff_uptake_data <- function(diff_uptake_dat,
                err_diff_deut_uptake = round(err_diff_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("Diff DU [Da]" = diff_deut_uptake,
-               "Err Diff DU [Da]" = err_diff_deut_uptake)
+               "U(Diff DU) [Da]" = err_diff_deut_uptake)
       
     }
     
@@ -172,12 +172,12 @@ show_diff_uptake_data <- function(diff_uptake_dat,
 
 #' Show differential uptake data with confidence levels 
 #' 
-#' @param dat data produced by \code{\link{generate_differential_data_set}}
+#' @param diff_uptake_dat data produced by \code{\link{create_diff_uptake_dataset}}
 #' function.
 #' @param theoretical \code{logical}, determines if values are theoretical.
 #' @param fractional \code{logical}, determines if values are fractional.
-#' @param confidence_limit_1 ...
-#' @param confidence_limit_2 ...
+#' @param confidence_level_1 ...
+#' @param confidence_level_2 ...
 #' 
 #' @details This function subsets the dataset based on provided criteria,
 #' rounds the numerical values (4 places) and changes the column names 
@@ -187,101 +187,101 @@ show_diff_uptake_data <- function(diff_uptake_dat,
 #' @return a \code{\link{data.frame}} object.
 #' 
 #' @seealso 
-#' \code{\link{generate_differential_data_set}}
+#' \code{\link{create_diff_uptake_dataset}}
 #' \code{\link{plot_differential}}
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' diff_dat <- generate_differential_data_set(dat)
-#' show_diff_uptake_data_confidence(diff_dat)
+#' diff_uptake_dat <- create_diff_uptake_dataset(dat)
+#' show_diff_uptake_data_confidence(diff_uptake_dat)
 #' 
 #' @export show_diff_uptake_data_confidence
 
-show_diff_uptake_data_confidence <- function(dat, 
+show_diff_uptake_data_confidence <- function(diff_uptake_dat, 
                                        theoretical = FALSE, 
                                        fractional = FALSE,
                                        confidence_level_1 = 0.98,
                                        confidence_level_2 = 0.99){
   
-  column_name_cl1 <- paste0("Valid At ", confidence_limit_1)
-  column_name_cl2 <- paste0("Valid At ", confidence_limit_2)
+  column_name_cl1 <- paste0("Valid At ", confidence_level_1)
+  column_name_cl2 <- paste0("Valid At ", confidence_level_2)
   
   if(theoretical){
     
     if(fractional){
       # theoretical & fractional  
-      dat %>%
-        add_stat_dependency(confidence_limit = confidence_level_1,
+      diff_uptake_dat %>%
+        add_stat_dependency(confidence_level = confidence_level_1,
                             theoretical = TRUE, 
                             fractional = TRUE) %>%
-        add_stat_dependency(confidence_limit = confidence_level_2,
+        add_stat_dependency(confidence_level = confidence_level_2,
                             theoretical = TRUE, 
                             fractional = TRUE) %>%
-        select(Protein, Sequence, Start, End, diff_theo_frac_deut_uptake, err_diff_theo_frac_deut_uptake, paste0("valid_at_", confidence_level_1), paste0("valid_at_", confidence_level_2)) %>%
+        select(Protein, Sequence, ID, Start, End, Exposure, diff_theo_frac_deut_uptake, err_diff_theo_frac_deut_uptake, paste0("valid_at_", confidence_level_1), paste0("valid_at_", confidence_level_2)) %>%
         mutate(diff_theo_frac_deut_uptake = round(diff_theo_frac_deut_uptake, 4),
                err_diff_theo_frac_deut_uptake = round(err_diff_theo_frac_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("Theo Frac Diff DU [%]" = diff_theo_frac_deut_uptake,
-               "Err Theo Frac Diff DU [%]" = err_diff_theo_frac_deut_uptake,
-               "{column_name_cl1}" := paste0("valid_at_", confidence_limit_1),
-               "{column_name_cl2}" := paste0("valid_at_", confidence_limit_2))
+               "U(Theo Frac Diff DU) [%]" = err_diff_theo_frac_deut_uptake,
+               "{column_name_cl1}" := paste0("valid_at_", confidence_level_1),
+               "{column_name_cl2}" := paste0("valid_at_", confidence_level_2))
       
     } else {
       # theoretical & absolute
-      dat %>%
-        add_stat_dependency(confidence_limit = confidence_level_1,
+      diff_uptake_dat %>%
+        add_stat_dependency(confidence_level = confidence_level_1,
                             theoretical = TRUE, 
                             fractional = FALSE) %>%
-        add_stat_dependency(confidence_limit = confidence_level_2,
+        add_stat_dependency(confidence_level = confidence_level_2,
                             theoretical = TRUE, 
                             fractional = FALSE) %>%
-        select(Protein, Sequence, Start, End, diff_theo_deut_uptake, err_diff_theo_deut_uptake, paste0("valid_at_", confidence_level_1), paste0("valid_at_", confidence_level_2)) %>%
+        select(Protein, Sequence, ID, Start, End, Exposure, diff_theo_deut_uptake, err_diff_theo_deut_uptake, paste0("valid_at_", confidence_level_1), paste0("valid_at_", confidence_level_2)) %>%
         mutate(diff_theo_deut_uptake = round(diff_theo_deut_uptake, 4),
                err_diff_theo_deut_uptake = round(err_diff_theo_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
-        rename("Theo DU [Da]" = diff_theo_deut_uptake,
-               "Err Theo DU [Da]" = err_diff_theo_deut_uptake,
-               "{column_name_cl1}" := paste0("valid_at_", confidence_limit_1),
-               "{column_name_cl2}" := paste0("valid_at_", confidence_limit_2))
+        rename("Theo Diff DU [Da]" = diff_theo_deut_uptake,
+               "U(Theo Diff DU) [Da]" = err_diff_theo_deut_uptake,
+               "{column_name_cl1}" := paste0("valid_at_", confidence_level_1),
+               "{column_name_cl2}" := paste0("valid_at_", confidence_level_2))
     }
     
   } else {
     
     if(fractional){
       # experimental & fractional
-      dat %>%
-        add_stat_dependency(confidence_limit = confidence_level_1,
+      diff_uptake_dat %>%
+        add_stat_dependency(confidence_level = confidence_level_1,
                             theoretical = FALSE, 
                             fractional = TRUE) %>%
-        add_stat_dependency(confidence_limit = confidence_level_2,
+        add_stat_dependency(confidence_level = confidence_level_2,
                             theoretical = FALSE, 
                             fractional = TRUE) %>%
-        select(Protein, Sequence, Start, End, diff_frac_deut_uptake, err_diff_frac_deut_uptake, paste0("valid_at_", confidence_level_1), paste0("valid_at_", confidence_level_2)) %>%
+        select(Protein, Sequence,ID, Start, End, Exposure, diff_frac_deut_uptake, err_diff_frac_deut_uptake, paste0("valid_at_", confidence_level_1), paste0("valid_at_", confidence_level_2)) %>%
         mutate(diff_frac_deut_uptake = round(diff_frac_deut_uptake, 4),
                err_diff_frac_deut_uptake = round(err_diff_frac_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("Frac Diff DU [%]" = diff_frac_deut_uptake,
-               "Err Frac Diff DU [%]" = err_diff_frac_deut_uptake,
-               "{column_name_cl1}" := paste0("valid_at_", confidence_limit_1),
-               "{column_name_cl2}" := paste0("valid_at_", confidence_limit_2))
+               "U(Frac Diff DU) [%]" = err_diff_frac_deut_uptake,
+               "{column_name_cl1}" := paste0("valid_at_", confidence_level_1),
+               "{column_name_cl2}" := paste0("valid_at_", confidence_level_2))
       
     } else {
       # experimental & absolute
-      dat %>%
-        add_stat_dependency(confidence_limit = confidence_level_1,
+      diff_uptake_dat %>%
+        add_stat_dependency(confidence_level = confidence_level_1,
                             theoretical = FALSE,
                             fractional = FALSE) %>%
-        add_stat_dependency(confidence_limit = confidence_level_2,
+        add_stat_dependency(confidence_level = confidence_level_2,
                             theoretical = FALSE, 
                             fractional = FALSE) %>%
-        select(Protein, Sequence, Start, End, diff_deut_uptake, err_diff_deut_uptake, paste0("valid_at_", confidence_level_1), paste0("valid_at_", confidence_level_2)) %>%
+        select(Protein, Sequence, ID, Start, End, Exposure, diff_deut_uptake, err_diff_deut_uptake, paste0("valid_at_", confidence_level_1), paste0("valid_at_", confidence_level_2)) %>%
         mutate(diff_deut_uptake = round(diff_deut_uptake, 4),
                err_diff_deut_uptake = round(err_diff_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
         rename("Diff DU [Da]" = diff_deut_uptake,
-               "Err Diff DU [Da]" = err_diff_deut_uptake,
-               "{column_name_cl1}" := paste0("valid_at_", confidence_limit_1),
-               "{column_name_cl2}" := paste0("valid_at_", confidence_limit_2))
+               "U(Diff DU) [Da]" = err_diff_deut_uptake,
+               "{column_name_cl1}" := paste0("valid_at_", confidence_level_1),
+               "{column_name_cl2}" := paste0("valid_at_", confidence_level_2))
     }
   }
   
@@ -350,12 +350,14 @@ show_volcano_data <- function(vol_data,
     mutate(D_diff  = round(D_diff , 4),
            Uncertainty = round(Uncertainty, 4),
            log_p_value = round(log_p_value, 4),
-           valid = (abs(D_diff) >= D_diff_threshold & log_p_value >= log_P_threshold)) %>%
+           valid = (abs(D_diff) >= D_diff_threshold & log_p_value >= log_P_threshold),
+           P_value = round(P_value, 4)) %>%
     arrange(Exposure, Start, End) %>%
     rename("Diff DU [Da]" = D_diff,
-           "Err Diff DU [Da]" = Uncertainty, 
+           "U(Diff DU) [Da]" = Uncertainty, 
            "-log(P value)" = log_p_value,
-           "{paste0('Valid At ', confidence_level)}" := valid) 
+           "{paste0('Valid At ', confidence_level)}" := valid,
+           "P value" = P_value) 
   
 }
 
@@ -387,7 +389,7 @@ show_summary_data <- function(dat,
                               confidence_limit_2,
                               overlap_distribution_data){
   
-  n_reps <- group_by(dat, Protein, Start, End, Sequence, Modification, State, Exposure) %>%
+  n_reps <- group_by(dat, Protein, Start, End, Sequence, State, Exposure) %>%
     summarise(n_rep = length(unique(File))) %>%
     ungroup() %>% 
     pull(n_rep) %>% 

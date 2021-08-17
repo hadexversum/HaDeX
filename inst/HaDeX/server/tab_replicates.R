@@ -159,8 +159,6 @@ output[["replicatesPlot_debug"]] <- renderUI({
   
   if(!is.null(input[["replicatesPlot_hover"]])) {
     
-    # browsser()
-    
     plot_data <- replicate_plot_out()[["data"]]
     hv <- input[["replicatesPlot_hover"]]
     
@@ -213,7 +211,7 @@ output[["replicatesPlot_download_button"]] <- downloadHandler("replicatesPlot.sv
 #################################
 ## charge values
 
-output[["replicates_z_plot"]] <- renderPlot({
+replicate_charge_plot_out <- reactive({
   
   n_bins <- length(unique(replicates_z_values_time_t()[["z"]]))
   min_z <- min(replicates_z_values_time_t()[["z"]])
@@ -222,38 +220,112 @@ output[["replicates_z_plot"]] <- renderPlot({
   replicates_z_values_time_t() %>%
     ggplot(aes(x = z)) +
     geom_histogram(aes(fill = File), bins = n_bins) + 
-  scale_x_continuous(breaks = c(min_z:max_z)) 
-    
+    scale_x_continuous(breaks = c(min_z:max_z)) 
+  
+})
+
+##
+
+output[["replicatesChargePlot"]] <- renderPlot({
+  
+  replicate_charge_plot_out()
     
 })
+
+##
+
+output[["replicatesChargePlot_debug"]] <- renderUI({
+  
+  # if(!is.null(input[["replicatesChargePlot_hover"]])) {
+  #   
+  #   plot_data <- replicate_charge_plot_out()[["data"]]
+  #   hv <- input[["replicatesChargePlot_hover"]]
+  #   
+  #   hv_dat <- data.frame(x = hv[["x"]],
+  #                        y = hv[["y"]],
+  #                        Start = plot_data[["Start"]],
+  #                        End = plot_data[["End"]],
+  #                        x_plot = plot_data[[hv[["mapping"]][["x"]]]],
+  #                        y_plot = plot_data[[hv[["mapping"]][["y"]]]],
+  #                        Sequence = plot_data[["Sequence"]],
+  #                        State = plot_data[["State"]])
+  #   
+  #   tt_df <- filter(hv_dat, abs(x_plot - x) < 0.1*x_plot, abs(x_plot - x) == min(abs(x_plot - x)))
+  #   
+  #   if(nrow(tt_df) != 0) {
+  #     
+  #     tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+  #                          "left", "right")
+  #     
+  #     tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+  #                      hv[["coords_css"]][["x"]],
+  #                      hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+  #     
+  #     
+  #     style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); pointer-events: none;",
+  #                     tt_pos_adj, ":", tt_pos,
+  #                     "px; top:", hv[["coords_css"]][["y"]], "px; padding: 0px;")
+  #     
+  #     div(
+  #       style = style,
+  #       p(HTML(paste0(tt_df[["Sequence"]],
+  #                     "<br/> State: ", tt_df[["State"]],
+  #                     "<br/> Position: ", tt_df[["Start"]], "-", tt_df[["End"]],
+  #                     "<br/> Value: ", round(tt_df[["x_plot"]], 2), " Da")))
+  #     )
+  #   }
+  # }
+})
+
+output[["replicatesChargePlot_download_button"]] <- downloadHandler("replicatesChargePlot.svg",
+                                                              content = function(file){
+                                                                ggsave(file, replicate_charge_plot_out(), device = svg,
+                                                                       height = 300, width = 400, units = "mm")
+                                                              })
 
 #################################
 ######### DATASET ###############
 #################################
 
-output[["replicatesPlot_data"]] <- DT::renderDataTable(server = FALSE, {
+replicates_plot_data_out <- reactive({
   
   replicate_masses_time_t() %>%
     mutate(avg_exp_mass = round(avg_exp_mass, 4)) %>%
-    select(Protein, Sequence, Start, End, Exposure, File, avg_exp_mass) %>%
-    rename(`Mass` = avg_exp_mass) %>%
+    select(Protein, Sequence, Start, End, Exposure, State, File, avg_exp_mass) %>%
+    rename(`Mass` = avg_exp_mass)
+  
+})
+
+output[["replicatesPlot_data"]] <- DT::renderDataTable(server = FALSE, {
+  
+  replicates_plot_data_out() %>%
     dt_format()
   
 })
 
-output[["replicates_z_plot_data"]] <- DT::renderDataTable(server = FALSE, {
+##
 
-  replicates_z_values_time_t() %>%
+replicate_charge_plot_data_out <- reactive({
+  
+  replicates_z_values_time_t()
+  
+})
+
+
+output[["replicatesChargePlot_data"]] <- DT::renderDataTable(server = FALSE, {
+
+  replicate_charge_plot_data_out() %>%
     dt_format()
   
 })
 
 
 #################################
-######## HISTOGRAM ##############
+######## HISTOGRAM PLOT #########
 #################################
+## replicates in selected time point
 
-output[["replicates_histogram"]] <- renderPlot({
+replicates_histogram_data <- reactive({
   
   replicate_masses() %>%
     filter(Exposure == input[["rep_time"]],
@@ -261,9 +333,17 @@ output[["replicates_histogram"]] <- renderPlot({
            State == input[["rep_state"]]) %>%
     select(Sequence, Start, End, ID) %>%
     group_by(Sequence, Start, End, ID) %>%
-    summarize(n = n()) %>%
+    summarize(n = n())
+  
+})
+
+##
+
+replicates_histogram_out <- reactive({
+  
+  replicates_histogram_data() %>%
     ggplot() + 
-      geom_col(aes(x = ID, y = n, fill = n)) +
+    geom_col(aes(x = ID, y = n, fill = n)) +
     labs(title = paste0("Number of replicates for each peptide in ", input[["rep_state"]], " in ", input[["rep_time"]], " min"),
          x = "Peptide ID",
          y = "Number of replicates") +
@@ -273,21 +353,206 @@ output[["replicates_histogram"]] <- renderPlot({
 
 ##
 
-output[["all_replicates_histogram"]] <- renderPlot({
+output[["replicatesHistogram"]] <- renderPlot({
+  
+  replicates_histogram_out()
+  
+})
 
+##
+
+output[["replicatesHistogram_debug"]] <- renderUI({
+  
+  if(!is.null(input[["replicatesHistogram_hover"]])) {
+
+    plot_data <- replicates_histogram_out()[["data"]]
+    hv <- input[["replicatesHistogram_hover"]]
+
+    hv_dat <- data.frame(x = hv[["x"]],
+                         y = hv[["y"]],
+                         Start = plot_data[["Start"]],
+                         End = plot_data[["End"]],
+                         x_plot = plot_data[[hv[["mapping"]][["x"]]]],
+                         y_plot = plot_data[[hv[["mapping"]][["y"]]]],
+                         Sequence = plot_data[["Sequence"]],
+                         ID = plot_data[["ID"]],
+                         n = plot_data[["n"]])
+
+    tt_df <- filter(hv_dat, 
+                    abs(x_plot - x) < 0.5, 
+                    abs(x_plot - x) == min(abs(x_plot - x)))
+
+    if(nrow(tt_df) != 0) {
+
+      tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                           "left", "right")
+
+      tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                       hv[["coords_css"]][["x"]],
+                       hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+
+      style <- paste0("position:absolute; z-index:1072; background-color: rgba(245, 245, 245, 1); pointer-events: none; ",
+                      tt_pos_adj, ":", tt_pos, "px; padding: 0px;",
+                      "top:", hv[["coords_css"]][["y"]] , "px; ")
+      
+      div(
+        style = style,
+        p(HTML(paste0(tt_df[["Sequence"]],
+                      "<br/> ID: ", tt_df[["ID"]],
+                      "<br/> Position: ", tt_df[["Start"]], "-", tt_df[["End"]],
+                      "<br/> Replicates: ", tt_df[["n"]])))
+      )
+    }
+  }
+  
+})
+
+##
+
+output[["replicatesHistogram_download_button"]] <- downloadHandler("replicatesHistogram.svg",
+                                                                    content = function(file){
+                                                                      ggsave(file, replicates_histogram_out(), device = svg,
+                                                                             height = 300, width = 400, units = "mm")})
+
+####################################
+######## HISTOGRAM DATASET #########
+####################################
+## replicates in selected time point
+
+replicates_histogram_data_out <- reactive({
+  
+  replicates_histogram_data() %>%
+    arrange(ID)
+  
+})
+
+
+output[["replicatesHistogram_data"]] <- DT::renderDataTable(server = FALSE, {
+  
+  replicates_histogram_data_out() %>%
+    dt_format()
+  
+})
+
+#################################
+######## HISTOGRAM PLOT #########
+#################################
+## replicates in all time points
+
+all_replicates_histogram_data <- reactive({
+  
   replicate_masses() %>%
     filter(Protein == input[["chosen_protein"]],
            State == input[["rep_state"]],
            Exposure < 99999) %>%
     select(Sequence, Exposure, Start, End, ID) %>%
     group_by(Sequence, Exposure, Start, End, ID) %>%
-    summarize(n = n()) %>%
+    summarize(n = n())
+  
+})
+
+##
+
+all_replicates_histogram_out <- reactive({
+  
+  all_replicates_histogram_data() %>%
     ggplot() +
-      geom_col(aes(x = ID, y = n, fill = as.factor(Exposure))) +
+    geom_col(aes(x = ID, y = n, fill = as.factor(Exposure))) +
     labs(title = paste0("Number of replicates for each peptide in ", input[["rep_state"]], " state"),
          x = "Peptide ID",
          y = "Number of replicates",
          fill = "Exposure") +
     theme(legend.position = "bottom")
+  
+})
+
+##
+
+output[["allReplicatesHistogram"]] <- renderPlot({
+
+  all_replicates_histogram_out()
+  
+})
+
+##
+
+output[["allReplicatesHistogram_debug"]] <- renderUI({
+  
+  if(!is.null(input[["allReplicatesHistogram_hover"]])) {
+    
+    plot_data <- all_replicates_histogram()[["data"]]
+    hv <- input[["allReplicatesHistogram_hover"]]
+    
+    hv_dat <- data.frame(x = hv[["x"]],
+                         y = hv[["y"]],
+                         Start = plot_data[["Start"]],
+                         End = plot_data[["End"]],
+                         x_plot = plot_data[[hv[["mapping"]][["x"]]]],
+                         y_plot = plot_data[[hv[["mapping"]][["y"]]]],
+                         Sequence = plot_data[["Sequence"]],
+                         ID = plot_data[["ID"]],
+                         Exposure = plot_data[["Exposure"]],
+                         n = plot_data[["n"]])
+    
+    tt_df <- filter(hv_dat, 
+                    abs(x_plot - x) < 0.5, 
+                    abs(x_plot - x) == min(abs(x_plot - x))) %>%
+      arrange(Exposure)
+    
+    if(nrow(tt_df) != 0) {
+      
+      tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                           "left", "right")
+      
+      tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                       hv[["coords_css"]][["x"]],
+                       hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+      
+      style <- paste0("position:absolute; z-index:1072; background-color: rgba(245, 245, 245, 1); pointer-events: none; ",
+                      tt_pos_adj, ":", tt_pos, "px; padding: 0px;",
+                      "top:", hv[["coords_css"]][["y"]] , "px; ")
+      
+      tmp1 <- paste0("<br/> ", unique(tt_df[["Sequence"]]),
+                     "<br/> ID: ", unique(tt_df[["ID"]]),
+                     "<br/> Position: ", unique(tt_df[["Start"]]), "-", unique(tt_df[["End"]]))
+      
+      tmp2 <- paste0("<br/> Exposure: ", tt_df[["y_plot"]], " min, ",
+                     "Replicates: ", round(tt_df[["n"]], 2), " ")
+      div(
+        style = style,
+        p(HTML(tmp1), HTML(tmp2)  
+        ))
+      
+      
+    }
+  }
+  
+})
+
+##
+
+output[["allReplicatesHistogram_download_button"]] <- downloadHandler("allReplicatesHistogram.svg",
+                                                                   content = function(file){
+                                                                     ggsave(file, all_replicates_histogram(), device = svg,
+                                                                            height = 300, width = 400, units = "mm")
+                                                                   })
+
+####################################
+######## HISTOGRAM DATASET #########
+####################################
+## replicates in all time points
+
+all_replicates_histogram_data_out <- reactive({
+  
+  all_replicates_histogram_data() %>%
+    arrange(ID, Exposure)
+  
+})
+
+
+output[["allReplicatesHistogram_data"]] <- DT::renderDataTable(server = FALSE, {
+  
+  all_replicates_histogram_data_out() %>%
+    dt_format()
   
 })

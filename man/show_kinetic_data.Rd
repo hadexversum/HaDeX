@@ -36,8 +36,8 @@ kin1 <- calculate_kinetics(dat,
                            state = "CD160",
                            start = 1, 
                            end = 15,
-                           time_in = 0.001, 
-                           time_out = 1440)
+                           time_0 = 0.001, 
+                           time_100 = 1440)
 show_kinetic_data(kin1)
 
 }

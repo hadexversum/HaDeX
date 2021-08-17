@@ -325,12 +325,17 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                     br(),
                                                     plotOutput_h("comparisonPlot", hover = hoverOpts("comparisonPlot_hover", delay = 10, delayType = "debounce")),
                                                     downloadButton("comparisonPlot_download_button",
-                                                                   "Save chart (.svg)")),
+                                                                   "Save chart (.svg)")
+                                                    ),
                                            tabPanel("Data",
                                                     br(),
                                                     DT::dataTableOutput("comparisonPlot_data"),
                                                     br(),
-                                                    h4("The empty values (e.q. `Frac DU`) mean there was not sufficient data for this peptide."))),
+                                                    h4("The empty values (e.q. `Frac DU`) mean there was not sufficient data for this peptide."),
+                                                    h4("Abbreviations from the table: DU - deuterium uptake, Frac - fractional, Theo - theoretical, U(value) - uncertainty of value.")
+                                                    )
+                                                
+                                           ),
                                          uiOutput("comparisonPlot_debug"),
                                          br(),
                                          
@@ -348,7 +353,10 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                     br(),
                                                     DT::dataTableOutput("differentialPlot_data"),
                                                     br(),
-                                                    h4("The empty values (e.q. `Frac Diff DU`) mean there was not sufficient data for this peptide. There is a possibility that the measurement result is available for only one state of the peptide.")))
+                                                    h4("The empty values (e.q. `Frac Diff DU`) mean there was not sufficient data for this peptide. There is a possibility that the measurement result is available for only one state of the peptide."),
+                                                    h4("Abbreviations from the table: Diff DU - differential deuterium uptake, Frac - fractional, Theo - theoretical, U(value) - uncertainty of value.")
+                                                    )
+                                           )
 
 
                                        )
@@ -477,7 +485,10 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                     br(),
                                                                     DT::dataTableOutput("butterflyPlot_data"),
                                                                     br(),
-                                                                    h4("The empty values (e.q. `Frac DU`) means there was not sufficient data for this peptide."))),
+                                                                    h4("The empty values (e.q. `Frac DU`) means there was not sufficient data for this peptide."),
+                                                                    h4("Abbreviations from the table: DU - deuterium uptake, Frac - fractional, Theo - theoretical, U(value) - uncertainty of value.")
+                                                                    )
+                                                           ),
                                                          uiOutput("butterflyPlot_debug"),
                                                          br()
                                                        )),
@@ -619,6 +630,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                     br(),
                                                                     h4("The table presents data from the chosen x plot range."),
                                                                     h4("The empty values (e.q. `Frac Diff DU`) mean there was not sufficient data for this peptide. There is a possibility that the measurement result is available for only one state of the peptide."),
+                                                                    h4("Abbreviations from the table: Diff DU - differential deuterium uptake, Frac - fractional, Theo - theoretical, U(value) - uncertainty of value."),
                                                                     br()
                                                              
                                                            )
@@ -858,6 +870,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                       tabPanel("Data",
                                                                br(),
                                                                DT::dataTableOutput("chicletPlot_data"),
+                                                               h4("Abbreviations from the table: DU - deuterium uptake, Frac - fractional, Theo - theoretical, U(value) - uncertainty of value."),
                                                                br()
                                                       )
                                                     )
@@ -971,6 +984,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                DT::dataTableOutput("chicletDifferentialPlot_data"),
                                                                br(),
                                                                h4("The table presents data from the chosen x plot range."),
+                                                               h4("Abbreviations from the table: Diff DU - differential deuterium uptake, Frac - fractional, Theo - theoretical, U(value) - uncertainty of value."),
                                                                br()
                                                       )
                                                     )
@@ -988,7 +1002,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                        br(),
                                        sidebarPanel(
                                          class = "scrollable",
-                                         
+
                                          ##### SETTINGS #####
                                          h3("Select parameters for the plots"),
                                          splitLayout(
@@ -1004,7 +1018,7 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                          br(),
                                          dataTableOutput_h("rep_sequence"),
                                          br(),
-                                         
+
                                          br(),
                                          tags$button("Adjust labels",
                                                      class = "collapse-button",
@@ -1037,46 +1051,70 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                    label = "Size:",
                                                                    value = 15,
                                                                    min = 5))
-                                           ),                                                                               
-                                           h4("The axis ticks have the same size as the axis label.") 
+                                           ),
+                                           h4("The axis ticks have the same size as the axis label.")
                                          )
                                        ),
                                        mainPanel(
-                                         class = "scrollable",
+                                         class = "scrollable" ,
                                          tabsetPanel(
-                                          tabPanel("Measurements",
+                                          tabPanel("Plot",
+                                                   fluidRow(
+                                                     column(width = 6,
+                                                            br(),
+                                                            plotOutput_h("replicatesPlot", hover = hoverOpts("replicatesPlot_hover", delay = 10, delayType = "debounce")),
+                                                            uiOutput("replicatesPlot_debug"),
+                                                            downloadButton("replicatesPlot_download_button",
+                                                                           "Save chart (.svg)")),
+                                                     column(width = 6,
+                                                            br(),
+                                                            plotOutput_h("replicatesChargePlot", hover = hoverOpts("replicatesChargePlot_hover", delay = 10, delayType = "debounce")),
+                                                            uiOutput("replicatesChargePlot_debug"),
+                                                            downloadButton("replicatesChargePlot_download_button",
+                                                                           "Save chart (.svg)"),
+                                                            br())
+                                                   ) ,
                                                    br(),
-                                                   plotOutput_h("replicatesPlot", hover = hoverOpts("replicatesPlot_hover", delay = 10, delayType = "debounce")),
-                                                   uiOutput("replicatesPlot_debug"),
-                                                   downloadButton("replicatesPlot_download_button",
-                                                                  "Save chart (.svg)"),
-                                                   br(),
-                                                   br(),
-                                                   plotOutput_h("replicates_histogram"),
-                                                   br(),
-                                                   br(),
-                                                   plotOutput_h("all_replicates_histogram")
-                                          ),
-                                          tabPanel("Measurements Data",
+                                                   br()
+                                          ) ,
+                                          tabPanel("Data",
                                                    br(),
                                                    DT::dataTableOutput("replicatesPlot_data"),
-                                                   br()
-                                          ),
-                                          tabPanel("Charge values",
                                                    br(),
-                                                   plotOutput_h("replicates_z_plot"),
+                                                   DT::dataTableOutput("replicatesChargePlot_data"),
                                                    br()
-                                                   
-                                          ),
-                                          tabPanel("Charge values Data",
-                                                   br(),
-                                                   DT::dataTableOutput("replicates_z_plot_data"),
-                                                   br()
+
                                           )
+                                         ),
+                                         tabsetPanel(
+                                           tabPanel("Plot",
+                                                    br(),
+                                                    div(style = "position:relative",
+                                                        plotOutput_h("replicatesHistogram", hover = hoverOpts("replicatesHistogram_hover", delay = 10, delayType = "debounce")),
+                                                        uiOutput("replicatesHistogram_debug")),
+                                                    downloadButton("replicatesHistogram_download_button",
+                                                                   "Save chart (.svg)")),
+                                           tabPanel("Data",
+                                                    br(),
+                                                    DT::dataTableOutput("replicatesHistogram_data"))
+                                         ),
+                                         br(),
+                                         br(),
+                                         tabsetPanel(
+                                           tabPanel("Plot",
+                                                    br(),
+                                                    div(style = "position:relative",
+                                                        plotOutput_h("allReplicatesHistogram", hover = hoverOpts("allReplicatesHistogram_hover", delay = 10, delayType = "debounce")),
+                                                        uiOutput("allReplicatesHistogram_debug")
+                                                    ),
+                                                    downloadButton("allReplicatesHistogram_download_button",
+                                                                   "Save chart (.svg)")),
+                                           tabPanel("Data",
+                                                    br(),
+                                                    DT::dataTableOutput("allReplicatesHistogram_data"))
                                          )
-                                         
                                        )
-                                
+
                               ),
                               
                               ##################################
@@ -1403,21 +1441,21 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                              checkboxInput(inputId = "export_comparison_plot",
                                                                            label = "Comparison Plot",
                                                                            value = TRUE),
-                                                             checkboxInput(inputId = "export_theo_comparison_plot",
-                                                                           label = "Theoretical Comparison Plot",
-                                                                           value = TRUE),
+                                                             # checkboxInput(inputId = "export_theo_comparison_plot",
+                                                             #               label = "Theoretical Comparison Plot",
+                                                             #               value = TRUE),
                                                              checkboxInput(inputId = "export_woods_plot",
                                                                            label = "Woods Plot",
                                                                            value = TRUE),
-                                                             checkboxInput(inputId = "export_theo_woods_plot",
-                                                                           label = "Theoretical Woods Plot",
-                                                                           value = TRUE),
+                                                             # checkboxInput(inputId = "export_theo_woods_plot",
+                                                             #               label = "Theoretical Woods Plot",
+                                                             #               value = TRUE),
                                                              checkboxInput(inputId = "export_kin_plot",
                                                                            label = "Uptake Curve",
                                                                            value = FALSE),
-                                                             checkboxInput(inputId = "export_theo_kin_plot",
-                                                                           label = "Theoretical Uptake Curve",
-                                                                           value = FALSE),
+                                                             # checkboxInput(inputId = "export_theo_kin_plot",
+                                                             #               label = "Theoretical Uptake Curve",
+                                                             #               value = FALSE),
                                                              checkboxInput(inputId = "export_quality_control_plot",
                                                                            label = "Quality Control Plot",
                                                                            value = FALSE),
@@ -1435,6 +1473,12 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                            value = FALSE),
                                                              checkboxInput(inputId = "export_chiclet_differential_plot",
                                                                            label = "Chiclet Differential Plot",
+                                                                           value = FALSE),
+                                                             checkboxInput(inputId = "export_replicate_plots",
+                                                                           label = "Replicate Plots (mass, charge)",
+                                                                           value = FALSE),
+                                                             checkboxInput(inputId = "export_replicate_histograms",
+                                                                           label = "Replicate Histograms (one and all time points)",
                                                                            value = FALSE)
                                                       ),
                                                       column(6,
@@ -1444,16 +1488,16 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                            label = "Peptide Coverage Data"),
                                                              checkboxInput(inputId = "export_comparison_plot_data",
                                                                            label = "Comparison Plot Data"),
-                                                             checkboxInput(inputId = "export_theo_comparison_plot_data",
-                                                                           label = "Theoretical Comparison Plot Data"),
+                                                             # checkboxInput(inputId = "export_theo_comparison_plot_data",
+                                                             #               label = "Theoretical Comparison Plot Data"),
                                                              checkboxInput(inputId = "export_woods_plot_data",
                                                                            label = "Woods Plot Data"),
-                                                             checkboxInput(inputId = "export_theo_woods_plot_data",
-                                                                           label = "Theoretical Woods Plot Data"),
+                                                             # checkboxInput(inputId = "export_theo_woods_plot_data",
+                                                             #               label = "Theoretical Woods Plot Data"),
                                                              checkboxInput(input = "export_kin_plot_data",
                                                                            label = "Uptake Curve Data"),
-                                                             checkboxInput(inputId = "export_theo_kin_plot_data",
-                                                                           label = "Theoretical Uptake Curve Data"),
+                                                             # checkboxInput(inputId = "export_theo_kin_plot_data",
+                                                             #               label = "Theoretical Uptake Curve Data"),
                                                              checkboxInput(inputId = "export_quality_control_plot_data",
                                                                            label = "Quality Control Plot Data"),
                                                              checkboxInput(inputId = "export_butterfly_plot_data",
@@ -1463,15 +1507,19 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                              checkboxInput(inputId = "export_volcano_plot_data",
                                                                            label = "Volcano Plot Data"),
                                                              checkboxInput(inputId = "export_chiclet_plot_data",
-                                                                           label = "Chiclet Plot Data",
-                                                                           value = FALSE),
+                                                                           label = "Chiclet Plot Data"),
                                                              checkboxInput(inputId = "export_chiclet_differential_plot_data",
-                                                                           label = "Chiclet Differential Plot Data",
-                                                                           value = FALSE)
+                                                                           label = "Chiclet Differential Plot Data"),
+                                                             checkboxInput(inputId = "export_replicate_plots_data",
+                                                                           label = "Replicate Plots (mass, charge) Data"),
+                                                             checkboxInput(inputId = "export_replicate_histograms_data",
+                                                                           label = "Replicate Histograms (one and all time points) Data")
                                                       )
                                                     ),
                                                     br(),
-                                                    h5("Elements chosen for report have the same parameters as chosen in panel e.g. axis range and title. Adjust parameters for plots as needed in the report."),
+                                                    h4("Elements chosen for report have the same parameters as chosen in suitable panels e.g. axis range, plot title or theoretical maximal exchange control. Adjust parameters as needed in the report."),
+                                                    h4(textOutput("report_message_uptake_curve")),
+                                                    h4(textOutput("report_message_replicate")),
                                                     br(),
                                                     downloadButton(outputId = "export_action",
                                                                    label = "  Create report!",

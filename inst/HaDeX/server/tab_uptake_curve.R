@@ -183,7 +183,7 @@ kin_dat <- reactive({
   create_kinetic_dataset(dat = dat(),
                          peptide_list = peptide_list()[input[["peptide_list_data_rows_selected"]], ],
                          protein = input[["chosen_protein"]],
-                         deut_part = input[["deut_part"]],
+                         deut_part = as.numeric(input[["deut_part"]])/100,
                          time_0 = v_time_0,
                          time_100 = v_time_100)
 })

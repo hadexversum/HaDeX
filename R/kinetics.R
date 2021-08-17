@@ -210,7 +210,7 @@ create_kinetic_dataset <- function(dat,
                        end = as.numeric(peptide[4]),
                        time_0 = time_0,
                        time_100 = time_100,
-                       deut_part = 0.01*as.integer(deut_part))
+                       deut_part = deut_part)
   }))
   
 }
@@ -247,8 +247,8 @@ create_kinetic_dataset <- function(dat,
 #'                            state = "CD160",
 #'                            start = 1, 
 #'                            end = 15,
-#'                            time_in = 0.001, 
-#'                            time_out = 1440)
+#'                            time_0 = 0.001, 
+#'                            time_100 = 1440)
 #' show_kinetic_data(kin1)
 #' 
 #' @export show_kinetic_data
@@ -262,12 +262,12 @@ show_kinetic_data <- function(kin_dat,
     if(fractional){
       # theoretical & fractional  
       kin_dat %>%
-        select(Protein, Sequence, State, Start, End, time_chosen, theo_frac_deut_uptake, err_avg_theo_in_time) %>%
+        select(Protein, Sequence, State, Start, End, time_chosen, theo_frac_deut_uptake, err_theo_frac_deut_uptake) %>%
         mutate(theo_frac_deut_uptake = round(theo_frac_deut_uptake, 4), 
                err_theo_frac_deut_uptake = round(err_theo_frac_deut_uptake, 4)) %>%
         rename("Time Point" = time_chosen,
-               "Theo Frac Exch" = theo_frac_deut_uptake,
-               "Theo Err Frac Exch" = err_theo_frac_deut_uptake)
+               "Theo Frac DU [%]" = theo_frac_deut_uptake,
+               "Theo Err Frac DU [%]" = err_theo_frac_deut_uptake)
       
     } else {
       # theoretical & absolute
@@ -276,8 +276,8 @@ show_kinetic_data <- function(kin_dat,
         mutate(theo_deut_uptake = round(theo_deut_uptake, 4), 
                err_theo_deut_uptake = round(err_theo_deut_uptake, 4)) %>%
         rename("Time Point" = time_chosen,
-               "Theo Abs Val Exch" = theo_deut_uptake,
-               "Theo Err Abs Val Exch" = err_theo_deut_uptake)
+               "Theo DU [Da]" = theo_deut_uptake,
+               "Theo Err DU [Da]" = err_theo_deut_uptake)
     }
     
   } else {
@@ -289,8 +289,8 @@ show_kinetic_data <- function(kin_dat,
         mutate(frac_deut_uptake = round(frac_deut_uptake, 4), 
                err_frac_deut_uptake = round(err_frac_deut_uptake, 4)) %>%
         rename("Time Point" = time_chosen,
-               "Frac Exch" = frac_deut_uptake,
-               "Err Frac Exch" = err_frac_deut_uptake)
+               "Frac DU [%]" = frac_deut_uptake,
+               "Err Frac DU [%]" = err_frac_deut_uptake)
       
     } else {
       # experimental & absolute
@@ -299,8 +299,8 @@ show_kinetic_data <- function(kin_dat,
         mutate(deut_uptake = round(deut_uptake, 4), 
                err_deut_uptake = round(err_deut_uptake, 4)) %>%
         rename("Time Point" = time_chosen,
-               "Abs Val Exch" = deut_uptake,
-               "Err Abs Val Exch" = err_deut_uptake)
+               "DU [Da]" = deut_uptake,
+               "Err DU [Da]" = err_deut_uptake)
     }
     
   }

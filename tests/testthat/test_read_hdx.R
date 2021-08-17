@@ -20,3 +20,11 @@ test_that("file with ; passes",
 
 test_that("dynamx 2 file passes",
           expect_silent(read_hdx("https://raw.githubusercontent.com/hadexversum/HDX-data/master/lysenin.csv")))
+
+test_that("hdx_data class",
+          expect_true(
+            is(read_hdx("https://raw.githubusercontent.com/hadexversum/HDX-data/master/KD_180110_CD160_HVEM.csv"),
+            "hdx_data"
+                      )
+          )
+)

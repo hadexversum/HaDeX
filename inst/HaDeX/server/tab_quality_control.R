@@ -125,8 +125,7 @@ output[["quality_control_plot_download_button"]] <- downloadHandler("qualityCont
 
 quality_control_plot_data_out <- reactive({
   
-  show_quality_control_data(dat = quality_control_dat()) %>%
-    dt_format()
+  show_quality_control_data(dat = quality_control_dat()) 
   
 })
 
@@ -134,6 +133,7 @@ quality_control_plot_data_out <- reactive({
 
 output[["quality_control_plot_data"]] <- DT::renderDataTable({
   
-  quality_control_plot_data_out()
+  quality_control_plot_data_out() %>%
+    dt_format()
   
 })

@@ -282,6 +282,7 @@ create_uptake_dataset <- function(dat,
   times <- unique(dat[["Exposure"]])
   times <- times[times > time_0 & times < time_100]
   
+  
   uptake_dat <- lapply(states, function(state){
     
     lapply(times, function(time){
@@ -490,6 +491,6 @@ create_volcano_dataset <- function(dat,
   res_volcano %>%
     filter(P_value!=-1) %>%
     mutate(log_p_value = -log(P_value)) %>%
-    select(Sequence, Start, End, Exposure, D_diff, Uncertainty, log_p_value)
+    select(Sequence, Start, End, Exposure, D_diff, Uncertainty, log_p_value, P_value)
   
 }

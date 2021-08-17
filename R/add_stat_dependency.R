@@ -4,7 +4,7 @@
 #' 
 #' @param calc_dat data produced by \code{\link{generate_differential_data_set}}
 #' funcion.
-#' @param confidence_limit confidence limit - from range [0, 1]. 
+#' @param confidence_level confidence limit - from range [0, 1]. 
 #' @param theoretical \code{logical}, determines if values are theoretical.
 #' @param fractional \code{logical}, determines if values are fractional.
 #' 
@@ -32,7 +32,7 @@
 #' @export add_stat_dependency
 
 add_stat_dependency <- function(calc_dat,
-                                confidence_limit = 0.98,
+                                confidence_level = 0.98,
                                 theoretical = FALSE, 
                                 fractional = TRUE){
   
@@ -44,14 +44,14 @@ add_stat_dependency <- function(calc_dat,
   )
   
   confidence_values <- calculate_confidence_limit_values(calc_dat, 
-                                                         confidence_limit = confidence_limit, 
+                                                         confidence_level = confidence_level, 
                                                          fractional = fractional, 
                                                          theoretical = theoretical)
   
-  calc_dat[[paste0("valid_at_", confidence_limit)]] <- calc_dat[[value_column]] > confidence_values[2] | calc_dat[[value_column]] < confidence_values[1]
+  calc_dat[[paste0("valid_at_", confidence_level)]] <- calc_dat[[value_column]] > confidence_values[2] | calc_dat[[value_column]] < confidence_values[1]
   
-  attr(calc_dat, paste0("confidence_limit_at_", confidence_limit)) <- confidence_values
-  attr(calc_dat, paste0("confidence_limit_at_", confidence_limit, "_prop")) <- data.frame("theoretical" = theoretical, "fractional" = fractional)
+  attr(calc_dat, paste0("confidence_limit_at_", confidence_level)) <- confidence_values
+  attr(calc_dat, paste0("confidence_limit_at_", confidence_level, "_prop")) <- data.frame("theoretical" = theoretical, "fractional" = fractional)
 
   calc_dat
   

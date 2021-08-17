@@ -57,7 +57,7 @@ volcano_dataset <- reactive({
   
   validate(need(input[["vol_state_1"]]!=input[["vol_state_2"]], "There is no difference between the same state, choose different second state."))
   validate(need(input[["chosen_protein"]] %in% unique(dat()[["Protein"]]), "Wait for the parameters to be loaded."))
-  
+
   dat() %>%
     filter(Protein == input[["chosen_protein"]]) %>%
     create_volcano_dataset(state_1 = input[["vol_state_1"]],
@@ -121,7 +121,7 @@ chosen_timepoints_data <- reactive({
 houde_intervals <- reactive({
   
   chosen_timepoints_data() %>%
-    calculate_confidence_limit_values(confidence_limit = as.numeric(input[["vol_confidence_level"]]),
+    calculate_confidence_limit_values(confidence_level = as.numeric(input[["vol_confidence_level"]]),
                                       theoretical = FALSE,
                                       fractional = FALSE)
   
@@ -206,11 +206,12 @@ output[["volcanoPlot_debug"]] <- renderUI({
                          Sequence = plot_data[["Sequence"]],
                          Start = plot_data[["Start"]],
                          End = plot_data[["End"]],
-                         Exposure = plot_data[["Exposure"]])
+                         Exposure = plot_data[["Exposure"]],
+                         P_value = plot_data[["P_value"]])
     
     tt_df <- filter(hv_dat) %>%
-      filter(abs(x_plot - x) < 0.5) %>%
-      filter(abs(y_plot - y) < 10) %>%
+      filter(abs(x_plot - x) < 0.1) %>%
+      filter(abs(y_plot - y) < 0.5) %>%
       filter(abs(y_plot - y) == min(abs(y_plot - y)))
     
     
@@ -234,6 +235,7 @@ output[["volcanoPlot_debug"]] <- renderUI({
                       "<br/> Position: ", tt_df[["Start"]], "-", tt_df[["End"]],
                       "<br/> Exposure: ", tt_df[["Exposure"]], " min",
                       "<br/> Difference: ", round(tt_df[["x_plot"]], 2),
+                      "<br/> P value: ", round(tt_df[["P_value"]], 4),
                       "<br/> -log(P value): ", round(tt_df[["y_plot"]], 2)
         )))
       )
@@ -245,12 +247,19 @@ output[["volcanoPlot_debug"]] <- renderUI({
 ######### DATA ##################
 #################################
 
-output[["volcanoPlot_data"]] <- DT::renderDataTable(server = FALSE, {
+volcano_plot_data_out <- reactive({
   
   show_volcano_data(volcano_data(),
                     D_diff_threshold = houde_intervals()[2],
                     log_P_threshold = alpha_interval(),
-                    confidence_level = input[["vol_confidence_level"]]) %>%
+                    confidence_level = input[["vol_confidence_level"]])
+  
+})
+
+##
+output[["volcanoPlot_data"]] <- DT::renderDataTable(server = FALSE, {
+  
+  volcano_plot_data_out() %>%
     dt_format()
   
 })

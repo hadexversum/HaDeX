@@ -28,5 +28,5 @@ parameters.
 This data is available in the GUI.
 }
 \seealso{
-\code{\lnk{read_hdx}}
+\code{\link{read_hdx}}
 }
