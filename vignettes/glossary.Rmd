@@ -1,6 +1,15 @@
 ---
 title: "Glossary"
-output: html_document
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: true
+    always_allow_html: yes
+bibliography: HDX.bib
+vignette: >
+  %\VignetteIndexEntry{Glossary}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
