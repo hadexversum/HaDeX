@@ -67,6 +67,7 @@ calculate_state_uptake <- function(dat,
               err_time_t_mean = coalesce(sd(time_t, na.rm = TRUE)/sqrt(sum(!is.na(time_t))), 0),
               time_100_mean = mean(time_100, na.rm = TRUE),
               err_time_100_mean = coalesce(sd(time_100, na.rm = TRUE)/sqrt(sum(!is.na(time_100))), 0)) %>%
+    ungroup(.) %>%
     mutate(# experimental calculations below - fractional
       frac_deut_uptake = 100*(time_t_mean - time_0_mean)/(time_100_mean - time_0_mean),
       err_frac_deut_uptake = 100*sqrt((err_time_t_mean*(1/(time_100_mean - time_0_mean)))^2 + (err_time_0_mean*((time_t_mean - time_100_mean )/((time_100_mean - time_0_mean)^2)))^2 + (err_time_100_mean*((time_0_mean - time_t_mean)/((time_100_mean - time_0_mean)^2)))^2),

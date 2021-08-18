@@ -1,6 +1,7 @@
 source("data-work.R")
 
 options(spinner.color="#715D91")
+options(shiny.useragg = TRUE)
 
 ui <- fluidPage(theme = "HaDeX_theme.css",
                 title = "HaDeX",
