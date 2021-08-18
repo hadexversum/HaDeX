@@ -48,7 +48,7 @@ position_in_sequence_tmp <- reactive({
 
 protein_sequence <- reactive({
   
-  reconstruct_sequence(filter(dat(), Protein == input[["chosen_protein"]]))
+  reconstruct_sequence(filter(dat(), Protein == input[["chosen_protein"]]), end = as.numeric(input[["sequence_length"]]))
   
 })
 
@@ -68,20 +68,13 @@ output[["protein_stats"]] <- renderTable({
   data.frame(
     Name = c("Length", "Coverage", "Cys"),
     Value = as.character(c(input[["sequence_length"]],
-                           paste0(100*round((max_range()-str_count(protein_sequence(), 'x'))/input[["sequence_length"]], 4), '%'),
+                           paste0(100*round((max_range()-str_count(protein_sequence(), 'x'))/max_range(), 4), '%'),
                            str_count(protein_sequence(), 'C'))),
     stringsAsFactors = FALSE
   )
   
 })
 
-##
-
-output[["sequence_length_exp_info"]] <- renderText({
-  
-  paste("Sequence length from the file is ", max_range(), ".")
-  
-})
 
 ##
 

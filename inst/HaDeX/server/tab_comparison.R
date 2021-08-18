@@ -4,6 +4,8 @@
 
 observe({
 
+  ## TODO: this should be dynamic as well 
+  
   if (input[["comp_fractional"]]) {
 
     updateSliderInput(session,

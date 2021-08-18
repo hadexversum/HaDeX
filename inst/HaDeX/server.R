@@ -275,13 +275,29 @@ server <- function(input, output, session) {
   })
 
   ##
-
-  max_range <- reactive({
-
+  
+  max_range_from_file <- reactive({
+    
     max(filter(dat_tmp(), Protein == input[["chosen_protein"]])[['End']])
+    
+  })
+
+  ##
+  
+  max_range <- reactive({
+    
+    max(max_range_from_file(), as.numeric(input[["sequence_length"]]))
 
   })
 
+  ##
+  
+  output[["sequence_length_exp_info"]] <- renderText({
+    
+    paste("Sequence length from the file is ", max_range_from_file(), ".")
+    
+  })
+  
   ##
 
   options_for_control <- reactive({
@@ -369,7 +385,7 @@ server <- function(input, output, session) {
 
     updateNumericInput(session,
                        inputId = "sequence_length",
-                       value = max_range())
+                       value = max_range_from_file())
 
   })
 

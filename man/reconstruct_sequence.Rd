@@ -4,12 +4,16 @@
 \alias{reconstruct_sequence}
 \title{Reconstruct protein sequence}
 \usage{
-reconstruct_sequence(dat, protein = dat[["Protein"]][1])
+reconstruct_sequence(dat, protein = dat[["Protein"]][1], end = NULL)
 }
 \arguments{
 \item{dat}{data read by \code{\link{read_hdx}}}
 
 \item{protein}{the protein of which the structure is to be reconstructed}
+
+\item{end}{\code{\link{numerical}}, end position of the protein, optional.
+If not provided, is read from the file. It allows to prelongate the sequence
+if the end of the sequence is cut.}
 }
 \value{
 reconstructed sequence - \code{character} object.

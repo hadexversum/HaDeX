@@ -6,6 +6,9 @@
 #' 
 #' @param dat data read by \code{\link{read_hdx}}
 #' @param protein the protein of which the structure is to be reconstructed
+#' @param end \code{\link{numerical}}, end position of the protein, optional.
+#' If not provided, is read from the file. It allows to prelongate the sequence
+#' if the end of the sequence is cut.
 #' 
 #' @details The function reconstructs protein sequence from supplied experimental data. If a position is not covered, x is shown.
 #' First version doesn't support manual sequence length correction.
@@ -21,7 +24,10 @@
 #' @export reconstruct_sequence
 
 reconstruct_sequence <- function(dat, 
-                                 protein = dat[["Protein"]][1]) {
+                                 protein = dat[["Protein"]][1],
+                                 end = NULL) {
+
+  if (is.null(end)) end <- max(dat[["End"]])
   
   position_in_sequence_tmp <- dat %>%
     filter(Protein == protein) %>%
@@ -31,7 +37,7 @@ reconstruct_sequence <- function(dat,
     bind_rows() %>%
     unique(.) 
   
-  protein_sequence_template <- rep('x', max(dat[["End"]])) 
+  protein_sequence_template <- rep('x', end) 
   
   protein_sequence_template[position_in_sequence_tmp[["position"]]] <- position_in_sequence_tmp[["amino"]]
   
