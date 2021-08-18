@@ -24,8 +24,9 @@ To run HaDeX GUI locally on Windows, install it using the following binary file:
 You can install the latest development version of the package:
 
 ```R
-source("https://install-github.me/hadexversum/HaDeX")
+devtools::install_github("hadexversum/HaDeX")
 ```
+
 or the latest version available on CRAN:
 
 ```R
@@ -45,7 +46,7 @@ The HaDeX documentation is available [online](https://HaDeXversum.github.io/HaDe
 
 ### Citation
 
-Puchala W, Burdukiewicz M, Kistowski M, Dabrowska KA, Badaczewska-Dawid AE, Cysewski D and Dadlez M (2019). HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data. R package version 1.2.
+Puchala W, Burdukiewicz M, Kistowski M, Dabrowska KA, Badaczewska-Dawid AE, Cysewski D and Dadlez M (2020). HaDeX: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data. Bioinformatics, 10.1093/bioinformatics/btaa587.
 
 ### Funding  
 
