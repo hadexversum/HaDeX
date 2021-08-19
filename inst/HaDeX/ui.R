@@ -22,15 +22,24 @@ ui <- tagList(useShinyjs(),
                   title = "HaDeX",
                   tab_start,
                   tab_input,
-                  tab_woods,
-                  tab_butterfly,
-                  tab_volcano,
-                  tab_chiclet,
-                  tab_replicates,
-                  tab_coverage,
-                  tab_sequence,
-                  tab_uptake,
-                  tab_quality,
+                  navbarMenu(
+                    "Plots",
+                    tab_woods,
+                    tab_butterfly,
+                    tab_volcano,
+                    tab_chiclet,
+                    tab_uptake
+                  ),
+                  navbarMenu(
+                    "Time-based data",
+                    tab_replicates,
+                    tab_quality
+                  ),
+                  navbarMenu(
+                    "Sequence data",
+                    tab_sequence,
+                    tab_coverage
+                  ),
                   tab_summary,
                   tab_report
                 )
