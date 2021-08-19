@@ -7,8 +7,8 @@
 HaDeXify(plt)
 }
 \arguments{
-\item{plt}{plot}
+\item{plt}{ggplot object. Plot to HaDeXify.}
 }
 \description{
-HaDeX customized ggplot theme
+This function HaDeXifies plot. It adds HaDeX logo and ggplot theme.
 }

@@ -1,6 +1,6 @@
 #' HaDeX customized ggplot theme
-#'
-#' @param plt plot
+#' @description This function HaDeXifies plot. It adds HaDeX logo and ggplot theme.
+#' @param plt ggplot object. Plot to HaDeXify.
 #' @importFrom magick image_read
 #' @importFrom cowplot draw_image ggdraw draw_plot
 #' @importFrom ggplot2 element_text
@@ -8,7 +8,8 @@
 
 HaDeXify <- function(plt) {
 
-  bitmap <- readRDS("./inst/HaDeX/www/HaDeX_logo.RDS")
+  bitmap <- readRDS(system.file(package = "HaDeX",
+                                "HaDeX/www/HaDeX_logo.RDS"))
   img <- image_read(bitmap)
 
   suppressWarnings({
