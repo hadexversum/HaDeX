@@ -3,6 +3,7 @@
 #' @param plt plot
 #' @importFrom magick image_read
 #' @importFrom cowplot draw_image ggdraw draw_plot
+#' @importFrom ggplot2 element_text
 #' @export
 
 HaDeXify <- function(plt) {
