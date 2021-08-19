@@ -24,12 +24,14 @@ LazyData: true
 RoxygenNote: 7.1.1
 Imports: 
     checkmate,
+    cowplot,
     data.table,
 		dplyr,
 		DT,
 		ggplot2,
 		gsubfn,
 		latex2exp,
+		magick,
 		reshape2,
 		readr,
 		readxl,
