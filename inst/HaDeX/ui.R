@@ -36,7 +36,7 @@ ui <- tagList(useShinyjs(),
                   tab_summary,
                   tab_report,
                   theme = "HaDeX_theme.css",
-                  header = img(src = "logo.svg", class = "logo")
+                  header = img(src = "logo.png", class = "logo")
               ),
                 
                 ##################################
