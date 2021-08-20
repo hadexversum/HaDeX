@@ -11,15 +11,8 @@ ui <- tagList(useShinyjs(),
                                   media="screen and (max-width: 600px)"),
                         tags$script(type="text/javascript",
                                     src="detect-element-resize.js")),
-              tags$div(
-                class = "site-backbone",
-                tags$div(
-                  class = "logo-panel",
-                  img(src = "logo.svg", class = "logo")
-                ),
                 navbarPage(
-                  theme = "HaDeX_theme.css",
-                  title = "HaDeX",
+                  "HaDeX",
                   tab_start,
                   tab_input,
                   navbarMenu(
@@ -41,8 +34,9 @@ ui <- tagList(useShinyjs(),
                     tab_coverage
                   ),
                   tab_summary,
-                  tab_report
-                )
+                  tab_report,
+                  theme = "HaDeX_theme.css",
+                  header = img(src = "logo.svg", class = "logo")
               ),
                 
                 ##################################

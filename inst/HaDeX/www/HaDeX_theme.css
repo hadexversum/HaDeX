@@ -1828,20 +1828,6 @@ tfoot {
     margin-right: 5px;
 }
 
-.logo-panel {
-  position: absolute;
-  background: none;
-  width: 320px;
-  padding: 0px;
-  margin-left: -15px;
-  height: 100px;
-  z-index: 100;
-  right: 10px;
-}
-
-.logo {
-float: right;
-}
 
 /*
 .col-sm-6.states-to-compare-column,
@@ -1984,4 +1970,22 @@ a.dt-button {
 
 .shiny-plot-output {
     margin-bottom: 10px;
+}
+
+/* BUILT-IN CLASSSES */
+
+.navbar-header {
+  display: none;
+}
+
+/* CUSTOM CLASSES */
+
+.logo {
+  position: absolute;
+  float: right;
+  top: 0px;
+  right: 0px;
+  z-index: 1000;
+  margin: 5px;
+  height: 40px;
 }
