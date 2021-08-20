@@ -1,14 +1,25 @@
 source("data-work.R")
+library(bslib)
 for (file in list.files("ui", full.names = TRUE)) source(file, local = TRUE)
 
 options(spinner.color="#715D91")
 
+theme <- bs_theme(fg = "#001c34", 
+                  primary = "#0E774E", 
+                  secondary = "#6B91B3", 
+                  success = "#0E774E", 
+                  base_font = font_google("Lato"), 
+                  code_font = font_google("Fira Code"),
+                  `enable-gradients` = TRUE, 
+                  bootswatch = "sandstone", 
+                  bg = "#FFFFFF") %>%
+  bs_add_variables("navbar-bg" = "#6B91B3",
+                   "navbar-light" = "#EDF7D2")
 
 ui <- tagList(useShinyjs(),
               tags$head(includeScript("ga.js"),
                         tags$link(rel="stylesheet",
-                                  href="mobile_version.css",
-                                  media="screen and (max-width: 600px)"),
+                                  href="HaDeX_theme.css"), # TODO: import this file to theme
                         tags$script(type="text/javascript",
                                     src="detect-element-resize.js")),
                 navbarPage(
@@ -35,27 +46,7 @@ ui <- tagList(useShinyjs(),
                   ),
                   tab_summary,
                   tab_report,
-                  theme = "HaDeX_theme.css",
+                  theme = theme,
                   header = img(src = "logo.png", class = "logo")
-              ),
-                
-                ##################################
-                ########## MOBILE ###############
-                ##################################
-                
-              tags$div(
-                class = "mobile-site-backbone",
-                tags$div(
-                  class = "logo-panel",
-                  img(src = "mock_logo.png", class = "logo")
-                ),
-                tags$div(
-                  class = "mobile-information",
-                  h3("Welcome to HaDeX website!"),
-                  h4("For better user experience please use device with wider screen (at least 900px)."),
-                  img(src='funding_icons.png', height = 100)
-                )
-              ),
-              tags$script(type="text/javascript",
-                          src="resize-logo-panel.js")
+              )
 )
