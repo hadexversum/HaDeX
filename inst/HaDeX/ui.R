@@ -13,7 +13,7 @@ theme <- bs_theme(fg = "#001c34",
                   `enable-gradients` = TRUE, 
                   bootswatch = "sandstone", 
                   bg = "#FFFFFF") %>%
-  bs_add_variables("navbar-bg" = "#6B91B3",
+  bs_add_variables("navbar-bg" = "#C8C5D3",
                    "navbar-light" = "#EDF7D2")
 
 ui <- tagList(useShinyjs(),
