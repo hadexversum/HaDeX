@@ -2,17 +2,15 @@ source("data-work.R")
 library(bslib)
 for (file in list.files("ui", full.names = TRUE)) source(file, local = TRUE)
 
-options(spinner.color="#715D91")
-
-theme <- bs_theme(fg = "#001c34", 
-                  primary = "#0E774E", 
-                  secondary = "#6B91B3", 
-                  success = "#0E774E", 
+theme <- bs_theme(fg = "#25283D", 
+                  primary = "#776274", 
+                  secondary = "#485696", 
+                  success = "#188B55", 
                   base_font = font_google("Lato"), 
                   code_font = font_google("Fira Code"),
                   `enable-gradients` = TRUE, 
                   bootswatch = "sandstone", 
-                  bg = "#FFFFFF") %>%
+                  bg = "#FFFEFD") %>%
   bs_add_variables("navbar-bg" = "#C8C5D3",
                    "navbar-light" = "#EDF7D2")
 
