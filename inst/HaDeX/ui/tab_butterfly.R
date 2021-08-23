@@ -1,10 +1,4 @@
 tab_butterfly <- tabPanel("Butterfly plot",
-         br(),
-         tabsetPanel(
-           
-           ##### BUTTERFLY #####
-           
-           tabPanel("Butterfly Plot",
                     br(),
                     sidebarPanel(
                       class = "scrollable",
@@ -123,11 +117,10 @@ tab_butterfly <- tabPanel("Butterfly plot",
                       ),
                       uiOutput("butterflyPlot_debug"),
                       br()
-                    )),
+                    )
+)
            
-           ##### BUTTERFLY DIFFERENTIAL ##### 
-           
-           tabPanel("Butterfly Differential Plot",
+tab_butterfly_diff <- tabPanel("Butterfly differential plot",
                     br(),
                     sidebarPanel(
                       class = "scrollable",
@@ -270,8 +263,4 @@ tab_butterfly <- tabPanel("Butterfly plot",
                       uiOutput("butterflyDifferentialPlot_debug"),
                       br()
                     )
-           )
-           
-         ),
-         
 )
