@@ -321,7 +321,7 @@ if (input[["export_butterfly_plot_data"]]){
 
 ```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
 
-if (input[["export_chiclet_differential_plot"]]){
+if (input[["export_butterfly_differential_plot"]]){
   
   cat("## Differential Butterfly Plot \n")
   
