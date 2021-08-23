@@ -1,4 +1,4 @@
-tab_woods <- tabPanel("Woods plot",
+tab_woods <- tabPanel("Comparison and Woods plot",
          br(),
          sidebarPanel(
            class = "scrollable",
