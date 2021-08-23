@@ -2,15 +2,19 @@ source("data-work.R")
 library(bslib)
 for (file in list.files("ui", full.names = TRUE)) source(file, local = TRUE)
 
-theme <- bs_theme(fg = "#25283D", 
+theme <- bs_theme(bootswatch = "sandstone", 
+                  
+                  fg = "#25283D", 
+                  bg = "#FFFEFD",
                   primary = "#776274", 
                   secondary = "#485696", 
                   success = "#188B55", 
+                  
                   base_font = font_google("Lato"), 
-                  code_font = font_google("Fira Code"),
-                  `enable-gradients` = TRUE, 
-                  bootswatch = "sandstone", 
-                  bg = "#FFFEFD") %>%
+                  code_font = font_google("Fira Code"), 
+                  font_scale = 1.285714,
+                  
+                  `enable-gradients` = TRUE) %>%
   bs_add_variables("navbar-bg" = "#C8C5D3",
                    "navbar-light" = "#EDF7D2")
 
