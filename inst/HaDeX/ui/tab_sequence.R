@@ -24,7 +24,7 @@ tab_sequence <- tabPanel("Sequence data",
                  )
                )
              ),
-             mainPanel(withSpinner(plotOutput("aminoDist", hover = hoverOpts("aminoDist_hover", delay = 10, delayType = "debounce"))),
+             mainPanel(withHaDeXSpinner(plotOutput("aminoDist", hover = hoverOpts("aminoDist_hover", delay = 10, delayType = "debounce"))),
                        uiOutput("aminoDist_debug"),
                        downloadButton("aminoDist_download_button",
                                       "Save chart (.svg)"),

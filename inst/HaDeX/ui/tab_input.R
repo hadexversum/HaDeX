@@ -18,7 +18,7 @@ tab_input <- tabPanel("Input data",
                   h5("File status:"),
                   tags$div(
                     class = "file-status-message",
-                    withSpinner(textOutput("data_file_info"))
+                    withHaDeXSpinner(textOutput("data_file_info"))
                   ))
          ),
          #

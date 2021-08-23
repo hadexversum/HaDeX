@@ -46,7 +46,7 @@ Suggests:
     pander,
     renv,
     rmarkdown,
-    shinycssloaders,
+    shinycustomloader,
     shinyhelper,
     shinyjs,
     testthat,
