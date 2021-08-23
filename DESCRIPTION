@@ -13,7 +13,7 @@ Authors@R: c(person("Weronika", "Puchala",
            email = "d.rafacz@student.mini.pw.edu.pl",
            role = c("ctb")),
            person("Krystyna", "Grzesiak", 
-           email = "krygrz11@gmail.com"",
+           email = "krygrz11@gmail.com",
            role = c("ctb")))
 Description: Functions for processing, analysis and visualization of Hydrogen Deuterium eXchange monitored by 
              Mass Spectrometry experiments (HDX-MS). 'HaDeX' <10.1093/bioinformatics/btaa587> introduces a new 
