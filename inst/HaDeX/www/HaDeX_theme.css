@@ -26,3 +26,24 @@
 .loader-img {
   max-width: 200px;
 }
+
+.sandstone, 
+.tooltip, 
+.dropdown-menu .dropdown-item, 
+.dropdown-menu > li > a, 
+.pagination, 
+.breadcrumb,
+.nav-pills .nav-link, 
+.nav-pills ul.nav.navbar-nav > li > a, 
+.nav-pills .nav-tabs > li > a, 
+.nav-pills > li > a, 
+.nav-tabs .nav-link, .nav-tabs ul.nav.navbar-nav > li > a, 
+.nav-tabs > li > a, 
+.nav-tabs .nav-pills > li > a, 
+.btn, 
+.navbar .nav-link, 
+.navbar ul.nav.navbar-nav > li > a, 
+.navbar .nav-tabs > li > a, 
+.navbar .nav-pills > li > a {
+    font-size: 18px;
+}
