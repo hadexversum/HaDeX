@@ -31,13 +31,13 @@ Differential plot
 }
 \details{
 Function \code{\link{generate_differential_plot}} presents
-provided data in a form of differential (Woods) plot. The plot show 
-difference in exchange for two biological states, selected in 
-generation of dataset at one time point of measurement .On X-axis 
-there is a position in a sequence, with length of a segment of each 
-peptide representing its length. On Y-axis there 
-is deuterium uptake difference in chosen form. Error bars represents 
-the combined and propagated uncertainty. 
+provided data in a form of differential (Woods) plot. The plot show
+difference in exchange for two biological states, selected in
+generation of dataset at one time point of measurement .On X-axis
+there is a position in a sequence, with length of a segment of each
+peptide representing its length. On Y-axis there
+is deuterium uptake difference in chosen form. Error bars represents
+the combined and propagated uncertainty.
 This plot is visible in GUI.
 }
 \examples{
