@@ -1,30 +1,29 @@
-/* BUILT-IN CLASSSES */
+/* HTML TAGS */
+
+h2 {
+  border-width: 0 0 ;
+}
+
+/* BOOTSTRAP CLASSES */
 
 .navbar-header {
   /* no need to display as we have logo*/
   display: none;
 }
 
-/* CUSTOM CLASSES */
-
-.logo {
-  position: absolute;
-  float: right;
-  top: 0px;  
-  right: 0px;
-  z-index: 1000;
-  
-  /* height of navbar = 5 + 40 + 5 */
-  margin: 5px;
-  height: 40px; 
-}
-
-.col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9 {
+.col-sm-1, 
+.col-sm-2, 
+.col-sm-3, 
+.col-sm-4, 
+.col-sm-5, 
+.col-sm-6, 
+.col-sm-7, 
+.col-sm-8, 
+.col-sm-9, 
+.col-sm-10, 
+.col-sm-11, 
+.col-sm-12 {
     float: left;
-}
-
-.loader-img {
-  max-width: 200px;
 }
 
 .sandstone, 
@@ -46,4 +45,36 @@
 .navbar .nav-tabs > li > a, 
 .navbar .nav-pills > li > a {
     font-size: 18px;
+}
+
+/* OTHER EXTERNAL CLASSES */
+
+.loader-img {
+  max-width: 200px;
+}
+
+/* CUSTOM CLASSES */
+
+.HaDeX-logo {
+  position: absolute;
+  float: right;
+  top: 0px;  
+  right: 0px;
+  z-index: 1000;
+  
+  /* height of navbar = 5 + 40 + 5 */
+  margin: 5px;
+  height: 40px; 
+}
+
+.HaDeX-nonplot-tab-content {
+  max-width: 1600px;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.HaDeX-funding-icons {
+  width: 80%;
+  max-width: 1600px;
+  margin: 0 auto;
 }
