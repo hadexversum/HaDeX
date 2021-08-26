@@ -1,12 +1,17 @@
 #' HaDeX customized ggplot theme
+#' 
 #' @description This function HaDeXifies plot. It adds HaDeX logo and ggplot theme.
+#' 
 #' @param plt ggplot object. Plot to HaDeXify.
+#' 
 #' @importFrom magick image_read
-#' @importFrom ggplot2 element_text
+#' @importFrom ggplot2 element_text annotation_custom unit
+#' 
 #' @examples
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' diff_uptake_dat <- generate_differential_data_set(dat)
 #' HaDeXify(plot_differential(diff_uptake_dat))
+#' 
 #' @export
 
 HaDeXify <- function(plt) {

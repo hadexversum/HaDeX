@@ -16,4 +16,5 @@ This function HaDeXifies plot. It adds HaDeX logo and ggplot theme.
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 diff_uptake_dat <- generate_differential_data_set(dat)
 HaDeXify(plot_differential(diff_uptake_dat))
+
 }
