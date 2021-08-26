@@ -1,7 +1,7 @@
-#' Calculate kinetics data for a peptide in specific state
+#' Calculate kinetics data 
 #' 
 #' @description Calculate kinetics of the hydrogen-deuteration exchange 
-#' for given peptide.
+#' for given peptide in given state.
 #' 
 #' @importFrom dplyr %>% bind_rows mutate everything
 #' @importFrom checkmate assert_data_frame assert_string assert_number
@@ -27,7 +27,7 @@
 #' IMPORTANT! The kinetic data is often described as deuterium uptake curve data. 
 #' We use this terms interchangeable. 
 #' 
-#' @return a \code{\link{data.frame} object.
+#' @return a \code{\link{data.frame}} object.
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}} 
@@ -95,9 +95,10 @@ calculate_kinetics <- function(dat,
   
 }
 
-#' Calculate kinetics data for a peptide for a set of states
+#' Calculate kinetics dataset 
 #' 
-#' @description ...
+#' @description Calculate kinetics of the hydrogen-deuteration exchange 
+#' for given peptide in multiple biological states.
 #' 
 #' @param dat dat data imported by the \code{\link{read_hdx}} function.
 #' @param protein chosen protein. 
@@ -171,7 +172,7 @@ calculate_peptide_kinetics <- function(dat,
 #' time points based on supplied peptide list.
 #' 
 #' @param dat dat data imported by the \code{\link{read_hdx}} function.
-#' @param peptide_list ...
+#' @param peptide_list list of peptides for the calculation.
 #' @param protein chosen protein. 
 #' @param time_0 minimal exchange control time point of measurement.
 #' @param time_100 maximal exchange control time point of measurement.
@@ -190,16 +191,20 @@ calculate_peptide_kinetics <- function(dat,
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' ...
+#' peptide_list <- data.frame(Sequence = c("INITSSASQEGTRLN", "INITSSASQEGTRLN"), state = c("CD160", "CD160_HVEM"), start = c(1, 1), end = c(15, 15))
+#' create_kinetic_dataset(dat, peptide_list)
+#' 
+#' peptide_list2 <- data.frame(Sequence = c("INITSSASQEGTRLN", "LICTVW"), state = c("CD160", "CD160"), start = c(1, 16), end = c(15, 21))
+#' create_kinetic_dataset(dat, peptide_list2)
 #' 
 #' @export create_kinetic_dataset
 
 create_kinetic_dataset <- function(dat,
                                    peptide_list,
-                                   protein,
-                                   time_0,
-                                   time_100,
-                                   deut_part){
+                                   protein = dat[["Protein"]][1],
+                                   time_0 = min(dat[["Exposure"]]),
+                                   time_100 = max(dat[["Exposure"]]),
+                                   deut_part = 0.9){
   
   bind_rows(apply(peptide_list, 1, function(peptide){
     calculate_kinetics(dat = dat,

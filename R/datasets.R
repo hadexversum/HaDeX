@@ -75,12 +75,16 @@ create_state_comparison_dataset <- function(dat,
 #' \code{\link{read_hdx}}
 #' \code{\link{calculate_state_uptake}}
 #' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' create_control_dataset(dat)
+#' 
 #' @export create_control_dataset
 
 create_control_dataset <- function(dat,
-                                   control_protein,
-                                   control_state,
-                                   control_exposure){
+                                   control_protein = dat[["Protein"]][1],
+                                   control_state = dat[["State"]][1],
+                                   control_exposure = max(dat[["Exposure"]])){
   
   tmp <- dat %>%
     filter(Protein == control_protein, 
@@ -104,7 +108,7 @@ create_control_dataset <- function(dat,
   
 }
 
-#' Generate differential dataset
+#' Calculate differential uptake 
 #' 
 #' @importFrom tidyr gather
 #' 

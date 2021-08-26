@@ -4,10 +4,14 @@
 \alias{plot_overlap_distribution}
 \title{Plot overlap distribution}
 \usage{
-plot_overlap_distribution(dat, start = 1, end = max(dat[["pos"]]))
+plot_overlap_distribution(
+  overlap_dist_dat,
+  start = 1,
+  end = max(overlap_dist_dat[["pos"]])
+)
 }
 \arguments{
-\item{dat}{produced by \code{\link{create_overlap_distribution_dataset}}
+\item{overlap_dist_dat}{produced by \code{\link{create_overlap_distribution_dataset}}
 function}
 
 \item{start}{start start position of chosen protein.}
@@ -22,8 +26,18 @@ Generates overlap distribution plot based on supplied data
 and parameters.
 }
 \details{
+This plot presents how many times (by how many peptides) 
+a amino position in protein sequence is covered. 
 This plot is visible in GUI.
 }
-\seealso{
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+overlap_dist_dat <- create_overlap_distribution_dataset(dat)
+plot_overlap_distribution(overlap_dist_dat)
 
+}
+\seealso{
+\code{\link{read_hdx}}
+\code{\link{reconstruct_sequence}} 
+\code{\link{create_overlap_distribution_dataset}}
 }

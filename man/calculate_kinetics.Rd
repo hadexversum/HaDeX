@@ -2,7 +2,7 @@
 % Please edit documentation in R/kinetics.R
 \name{calculate_kinetics}
 \alias{calculate_kinetics}
-\title{Calculate kinetics data for a peptide in specific state}
+\title{Calculate kinetics data}
 \usage{
 calculate_kinetics(
   dat,
@@ -37,11 +37,11 @@ calculate_kinetics(
 value from range [0, 1].}
 }
 \value{
-
+a \code{\link{data.frame}} object.
 }
 \description{
 Calculate kinetics of the hydrogen-deuteration exchange 
-for given peptide.
+for given peptide in given state.
 }
 \details{
 The function calculates deuteration data for all available data points 

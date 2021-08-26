@@ -2,12 +2,12 @@
 % Please edit documentation in R/quality_control.R
 \name{show_quality_control_data}
 \alias{show_quality_control_data}
-\title{generate_quality_control_data}
+\title{Show quality control data}
 \usage{
-show_quality_control_data(dat)
+show_quality_control_data(qc_dat)
 }
 \arguments{
-\item{dat}{data produced by \code{\link{create_quality_control_dataset}} 
+\item{qc_dat}{data produced by \code{\link{create_quality_control_dataset}} 
 function, scaled if necessary.}
 }
 \value{
@@ -18,8 +18,15 @@ Generates quality control data, based on the supplied
 parameters.
 }
 \details{
-This data is available in the GUI. The names of the parameters
-and variables will be changed later after the glossary project.
+This data frame presents the mean uncertainty in function of selected 
+maximal exchange control time of measurement. 
+This data is available in the GUI.
+}
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+qc_dat <- create_quality_control_dataset(dat)  
+show_quality_control_data(qc_dat)
+
 }
 \seealso{
 \code{\link{create_quality_control_dataset}}

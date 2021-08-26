@@ -21,3 +21,4 @@ modified peptides in the datafile.}
 The wrapper function for the constructor of the \code{\link{hdx_class}} and 
 its validator. Used in \code{\link{read_hdx}} function.
 }
+\keyword{internal}

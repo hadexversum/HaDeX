@@ -21,7 +21,7 @@ plot_amino_distribution(
 \item{charge_colors}{...}
 }
 \value{
-...
+a \code{\link{ggplot2}} object.
 }
 \description{
 Generates amino distribution based on the 
@@ -30,6 +30,10 @@ or hydrophylic.
 }
 \details{
 The data for this function is not packaged yet.
+}
+\examples{
+...
+
 }
 \seealso{
 ...

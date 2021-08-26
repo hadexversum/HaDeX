@@ -12,3 +12,4 @@ validate_hdx_data(hdx_data, msg = "")
 \description{
 Validator on the content of an hdx_data object.
 }
+\keyword{internal}
