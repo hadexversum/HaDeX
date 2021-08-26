@@ -199,8 +199,6 @@ butt_diff_dat <- reactive({
 
 butterfly_differential_plot <- reactive({
 
-  # browser()
-
   plot_differential_butterfly(butt_diff_dat(),
                               theoretical = input[["butt_diff_theory"]],
                               fractional = input[["butt_diff_fractional"]],
@@ -213,9 +211,9 @@ butterfly_differential_plot <- reactive({
 
 butterfly_differential_plot_out <- reactive({
 
-  plt <- butterfly_differential_plot() +
-    xlim(input[["butt_diff_x_range"]][[1]], input[["butt_diff_x_range"]][[2]]) +
-    ylim(input[["butt_diff_y_range"]][[1]], input[["butt_diff_y_range"]][[2]]) +
+  butterfly_differential_plot() +
+    coord_cartesian(xlim = c(input[["butt_diff_x_range"]][[1]], input[["butt_diff_x_range"]][[2]]),
+                    ylim = c(input[["butt_diff_y_range"]][[1]], input[["butt_diff_y_range"]][[2]])) +
     labs(title = input[["butterflyDifferential_plot_title"]],
          x = input[["butterflyDifferential_plot_x_label"]],
          y = input[["butterflyDifferential_plot_y_label"]]) +
@@ -226,8 +224,6 @@ butterfly_differential_plot_out <- reactive({
           axis.text.y = element_text(size = input[["butterflyDifferential_plot_y_label_size"]]),
           legend.text = element_text(size = input[["butterflyDifferential_plot_x_label_size"]]),
           legend.title = element_text(size = input[["butterflyDifferential_plot_x_label_size"]]))
-
-  HaDeXify(plt)
 
 })
 
