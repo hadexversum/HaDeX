@@ -6,43 +6,46 @@
 \usage{
 create_quality_control_dataset(
   dat,
-  protein,
-  state_1,
-  state_2,
-  time_t,
-  time_0,
+  protein = dat[["Protein"]][1],
+  state_1 = unique(dat[["State"]])[1],
+  state_2 = unique(dat[["State"]])[2],
+  time_t = unique(dat[["Exposure"]])[2],
+  time_0 = min(dat[["Exposure"]]),
   deut_part = 0.9
 )
 }
 \arguments{
-\item{dat}{data read by \code{\link{read_hdx}}}
+\item{dat}{data imported by the \code{\link{read_hdx}} function.}
 
-\item{protein}{...}
+\item{protein}{chosen protein.}
 
-\item{state_1}{state of the first peptide}
+\item{state_1}{first biological state.}
 
-\item{state_2}{state of the second peptide}
+\item{state_2}{second biological state.}
 
-\item{time_t}{chosen time point}
+\item{time_t}{time point of the measurement for which the calculations
+are done.}
 
-\item{time_0}{`in` time}
+\item{time_0}{minimal exchange control time point of measurement.}
 
-\item{deut_part}{...}
+\item{deut_part}{deuterium percentage in solution used in experiment, 
+value from range [0, 1].}
 }
 \value{
 \code{\link{data.frame}} object with mean uncertainty per different 
-`out_time` value. 
+`time_100` value. 
 The values are shown as percentages.
 }
 \description{
-Checks how the uncertainty changes in a function of `out_time`.
+Checks how the uncertainty changes in a function of maximal
+exchange control time of measurement.
 }
 \details{
 The function calculates mean uncertainty of all peptides and its 
-uncertainty (standard error) based on given `in_time` and `chosen_time` 
-as a function of `out_time`. Both theoretical and experimental results for 
+uncertainty (standard error) based on given `time_0` and `time_t` 
+as a function of `time_100`. Both theoretical and experimental results for 
 each state and their difference are supplied for comparison but only 
-experimental calculations depends on `out_time` variable. The results are 
+experimental calculations depends on `time_100` variable. The results are 
 either in form of fractional or absolute values depending on the `fractional` 
 parameter supplied by the user. 
 This data can be useful for general overview of the experiment and analyse 
@@ -50,17 +53,8 @@ of the chosen time parameters.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-
-(qc_dat <- create_quality_control_dataset(dat = dat,
-                                          protein = "db_CD160",
-                                          state_1 = "CD160",
-                                          state_2 = "CD160_HVEM", 
-                                          time_t = 1, 
-                                          time_0 = 0.001,
-                                          deut_part = 0.9))    
+create_quality_control_dataset(dat)    
                            
-plot_quality_control(qc_dat)
-
 }
 \seealso{
 \code{\link{read_hdx}}

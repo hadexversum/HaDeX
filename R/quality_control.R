@@ -1,30 +1,33 @@
 #' Experiment quality control
 #' 
-#' @description Checks how the uncertainty changes in a function of `out_time`.
+#' @description Checks how the uncertainty changes in a function of maximal
+#' exchange control time of measurement.
 #' 
 #' @importFrom dplyr bind_rows
 #' @importFrom tidyr spread unite
 #' 
-#' @param dat data read by \code{\link{read_hdx}}
-#' @param protein ...
-#' @param state_1 state of the first peptide
-#' @param state_2 state of the second peptide
-#' @param time_t chosen time point
-#' @param time_0 `in` time
-#' @param deut_part ...
+#' @param dat data imported by the \code{\link{read_hdx}} function.
+#' @param protein chosen protein. 
+#' @param state_1 first biological state.
+#' @param state_2 second biological state.
+#' @param time_t time point of the measurement for which the calculations
+#' are done. 
+#' @param time_0 minimal exchange control time point of measurement.
+#' @param deut_part deuterium percentage in solution used in experiment, 
+#' value from range [0, 1].
 #' 
 #' @details The function calculates mean uncertainty of all peptides and its 
-#' uncertainty (standard error) based on given `in_time` and `chosen_time` 
-#' as a function of `out_time`. Both theoretical and experimental results for 
+#' uncertainty (standard error) based on given `time_0` and `time_t` 
+#' as a function of `time_100`. Both theoretical and experimental results for 
 #' each state and their difference are supplied for comparison but only 
-#' experimental calculations depends on `out_time` variable. The results are 
+#' experimental calculations depends on `time_100` variable. The results are 
 #' either in form of fractional or absolute values depending on the `fractional` 
 #' parameter supplied by the user. 
 #' This data can be useful for general overview of the experiment and analyse 
 #' of the chosen time parameters. 
 #' 
 #' @return \code{\link{data.frame}} object with mean uncertainty per different 
-#' `out_time` value. 
+#' `time_100` value. 
 #' The values are shown as percentages. 
 #' 
 #' @seealso 
@@ -35,25 +38,16 @@
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' 
-#' (qc_dat <- create_quality_control_dataset(dat = dat,
-#'                                           protein = "db_CD160",
-#'                                           state_1 = "CD160",
-#'                                           state_2 = "CD160_HVEM", 
-#'                                           time_t = 1, 
-#'                                           time_0 = 0.001,
-#'                                           deut_part = 0.9))    
+#' create_quality_control_dataset(dat)    
 #'                            
-#' plot_quality_control(qc_dat)
-#' 
 #' @export create_quality_control_dataset
 
 create_quality_control_dataset <- function(dat,
-                                           protein,
-                                           state_1,
-                                           state_2, 
-                                           time_t, 
-                                           time_0, 
+                                           protein = dat[["Protein"]][1],
+                                           state_1 = unique(dat[["State"]])[1],
+                                           state_2 = unique(dat[["State"]])[2], 
+                                           time_t = unique(dat[["Exposure"]])[2], 
+                                           time_0 = min(dat[["Exposure"]]), 
                                            deut_part = 0.9){
   
   
@@ -101,23 +95,25 @@ create_quality_control_dataset <- function(dat,
   
   result <- bind_rows(result)
   
-  colnames(result) <- c("out_time", "avg_err_state_1", "sd_err_state_1", "avg_err_state_2", 
+  colnames(result) <- c("time_100", "avg_err_state_1", "sd_err_state_1", "avg_err_state_2", 
                         "sd_err_state_2", "avg_diff", "sd_diff")
   
   result
   
 }
 
-#' generate_quality_control_plot
+#' Plot quality control data
 #' 
 #' @description Generates quality control plot based on supplied data.
 #' 
 #' @importFrom ggplot2 scale_colour_discrete
 #' 
-#' @param dat data produced by \code{\link{create_quality_control_dataset}} 
+#' @param qc_dat data produced by \code{\link{create_quality_control_dataset}} 
 #' function, scaled if necessary.
 #' 
-#' @details This plot is visible in GUI. 
+#' @details This plot presents the mean uncertainty in function of selected 
+#' maximal exchange control time of measurement. 
+#' This plot is visible in GUI. 
 #' 
 #' @return a \code{\link{ggplot2}} object.
 #' 
@@ -125,34 +121,40 @@ create_quality_control_dataset <- function(dat,
 #' \code{\link{create_quality_control_dataset}}
 #' \code{\link{show_quality_control_data}} 
 #' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' qc_dat <- create_quality_control_dataset(dat)  
+#' plot_quality_control(qc_dat)
+#' 
 #' @export plot_quality_control
 
-plot_quality_control <- function(dat){
+plot_quality_control <- function(qc_dat){
   
-  dat %>%
+  qc_dat %>%
     gather(2:7, key = 'type', value = 'value') %>%
     filter(startsWith(type, "avg")) %>%
-    ggplot(aes(x = out_time, y = value, group = type)) +
+    ggplot(aes(x = time_100, y = value, group = type)) +
     geom_point(size = 3) +
     geom_line(aes(color = type)) +
     scale_colour_discrete(name = "Mean uncertainty of: ", labels = c("difference", "state_1", "state_2")) +
     scale_x_log10() + 
-    labs(x = "Out time [min]",
+    labs(x = "Control time [min]",
          y = "Mean uncertainty [%]",
          title = "Quality control plot for experiment")
   
 }
 
-#' generate_quality_control_data
+#' Show quality control data
 #' 
 #' @description  Generates quality control data, based on the supplied
 #' parameters.
 #' 
-#' @param dat data produced by \code{\link{create_quality_control_dataset}} 
+#' @param qc_dat data produced by \code{\link{create_quality_control_dataset}} 
 #' function, scaled if necessary.
 #' 
-#' @details This data is available in the GUI. The names of the parameters
-#' and variables will be changed later after the glossary project.
+#' @details This data frame presents the mean uncertainty in function of selected 
+#' maximal exchange control time of measurement. 
+#' This data is available in the GUI. 
 #' 
 #' @return a \code{\link{data.frame}} object.
 #' 
@@ -160,16 +162,21 @@ plot_quality_control <- function(dat){
 #' \code{\link{create_quality_control_dataset}}
 #' \code{\link{plot_quality_control}} 
 #' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' qc_dat <- create_quality_control_dataset(dat)  
+#' show_quality_control_data(qc_dat)
+#' 
 #' @export show_quality_control_data
 
-show_quality_control_data <- function(dat){
+show_quality_control_data <- function(qc_dat){
   
-  dat %>%
-    select(out_time, avg_err_state_1, avg_err_state_2, avg_diff) %>%
+  qc_dat %>%
+    select(time_100, avg_err_state_1, avg_err_state_2, avg_diff) %>%
     mutate(avg_err_state_1 = round(avg_err_state_1, 2),
            avg_err_state_2 = round(avg_err_state_2, 2),
            avg_diff = round(avg_diff, 2)) %>%
-    rename("Out time" = out_time,
+    rename("Out time" = time_100,
            "Mean error - state 1 [%]" = avg_err_state_1,
            "Mean error - state 2 [%]" = avg_err_state_2,
            "Mean error of difference [%]" = avg_diff)

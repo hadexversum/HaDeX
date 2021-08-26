@@ -2,7 +2,7 @@
 % Please edit documentation in R/kinetics.R
 \name{calculate_peptide_kinetics}
 \alias{calculate_peptide_kinetics}
-\title{Calculate kinetics data for a peptide for a set of states}
+\title{Calculate kinetics dataset}
 \usage{
 calculate_peptide_kinetics(
   dat,
@@ -38,7 +38,8 @@ calculations are done.}
 value from range [0, 1].}
 }
 \description{
-...
+Calculate kinetics of the hydrogen-deuteration exchange 
+for given peptide in multiple biological states.
 }
 \details{
 Function \code{\link{calculate_peptide_kinetics}} calculates

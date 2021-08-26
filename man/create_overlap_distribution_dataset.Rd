@@ -2,7 +2,7 @@
 % Please edit documentation in R/overlaps.R
 \name{create_overlap_distribution_dataset}
 \alias{create_overlap_distribution_dataset}
-\title{generate_overlap_distribution_data}
+\title{Show overlap distribution data}
 \usage{
 create_overlap_distribution_dataset(
   dat,
@@ -10,7 +10,7 @@ create_overlap_distribution_dataset(
   state = dat[["State"]][1],
   start = min(dat[["Start"]]),
   end = max(dat[["End"]]),
-  protein_sequence
+  protein_sequence = reconstruct_sequence(dat)
 )
 }
 \arguments{
@@ -20,7 +20,7 @@ create_overlap_distribution_dataset(
 
 \item{state}{biological state for chosen protein.}
 
-\item{start}{start start position of chosen protein.}
+\item{start}{start position of chosen protein.}
 
 \item{end}{end position of chosen protein.}
 
@@ -31,11 +31,18 @@ create_overlap_distribution_dataset(
 a \code{\link{data.frame}} object.
 }
 \description{
-Generates the data set of frequency of overlap of
+Generates the data of frequency of overlap of
 each amino in the protein sequence.
 }
 \details{
+This data frame presents how many times (by how many peptides) 
+a amino position in protein sequence is covered. 
 This data is available in the GUI.
+}
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+create_overlap_distribution_dataset(dat)
+
 }
 \seealso{
 \code{\link{read_hdx}}

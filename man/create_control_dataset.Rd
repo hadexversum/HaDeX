@@ -4,7 +4,12 @@
 \alias{create_control_dataset}
 \title{Create dataset with control}
 \usage{
-create_control_dataset(dat, control_protein, control_state, control_exposure)
+create_control_dataset(
+  dat,
+  control_protein = dat[["Protein"]][1],
+  control_state = dat[["State"]][1],
+  control_exposure = max(dat[["Exposure"]])
+)
 }
 \arguments{
 \item{dat}{data imported by the \code{\link{read_hdx}} function.}
@@ -30,6 +35,11 @@ based on provided parameters. The other functions are operating
 within a state, so the control is prepared for each state. 
 The chosen maximal exchange control is distinguishable by the value 
 `99999` in `Exposure` control.
+}
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+create_control_dataset(dat)
+
 }
 \seealso{
 \code{\link{read_hdx}}

@@ -36,7 +36,7 @@ on provided criteria using Houde test.
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", 
                             "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-calc_dat <- generate_differential_data_set(dat)
+calc_dat <- calculate_diff_uptake(dat)
 result <- add_stat_dependency(calc_dat)
 head(result)                            
 
@@ -48,5 +48,5 @@ The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in
 Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
 }
 \seealso{
-\code{\link{read_hdx}} \code{\link{generate_differential_data_set}}
+\code{\link{read_hdx}} \code{\link{calculate_diff_uptake}}
 }

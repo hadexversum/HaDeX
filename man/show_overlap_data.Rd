@@ -2,9 +2,15 @@
 % Please edit documentation in R/overlaps.R
 \name{show_overlap_data}
 \alias{show_overlap_data}
-\title{Show data on overlap}
+\title{Show data on peptide overlap}
 \usage{
-show_overlap_data(dat, protein, state, start, end)
+show_overlap_data(
+  dat,
+  protein = dat[["Protein"]][1],
+  state = dat[["State"]][1],
+  start = min(dat[["Start"]]),
+  end = max(dat[["End"]])
+)
 }
 \arguments{
 \item{dat}{data imported by the \code{\link{read_hdx}} function.}
@@ -13,7 +19,7 @@ show_overlap_data(dat, protein, state, start, end)
 
 \item{state}{biological state for chosen protein.}
 
-\item{start}{start start position of chosen protein.}
+\item{start}{start position of chosen protein.}
 
 \item{end}{end position of chosen protein.}
 }
@@ -21,12 +27,20 @@ show_overlap_data(dat, protein, state, start, end)
 a \code{\link{data.frame}} object.
 }
 \description{
-Presents overlap data, based on the supplied
-parameters.
+Presents peptide overlap on protein sequence data, 
+based on the supplied parameters.
 }
 \details{
+The data frame presents all the peptides in given state, with
+its start and end position on the protein sequence.
 This data is available in the GUI.
 }
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+show_overlap_data(dat)
+
+}
 \seealso{
-\code{\link{read_hdx}}
+\code{\link{read_hdx}} 
+\code{\link{plot_overlap}}
 }

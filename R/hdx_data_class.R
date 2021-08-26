@@ -35,7 +35,7 @@
 #' 
 #' @return \code{\link{hdx_data}} object.
 #' 
-#' @keyword Internal
+#' @keywords internal
 
 new_hdx_data <- function(dat, source, has_modification){
   
@@ -53,7 +53,7 @@ new_hdx_data <- function(dat, source, has_modification){
 #' 
 #' @param hdx_data \code{\link{hdx_data}} object.
 #' 
-#' @keyword Internal
+#' @keywords internal
 
 validate_hdx_data <- function(hdx_data, msg = ""){
   
@@ -80,7 +80,7 @@ validate_hdx_data <- function(hdx_data, msg = ""){
 #' 
 #' @return \code{\link{hdx_data}} object.
 #' 
-#' @keyword Internal
+#' @keywords internal
 
 hdx_data <- function(dat, source, has_modification, msg = ""){
   

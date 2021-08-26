@@ -45,3 +45,4 @@ The hdx_data object has two additional attributes:
 - has_modification, logical. Indicates if the datafile has data from modified
 peptides.
 }
+\keyword{internal}
