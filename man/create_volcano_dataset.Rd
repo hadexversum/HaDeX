@@ -21,34 +21,34 @@ create_volcano_dataset(
 \item{state_1}{biological state for chosen protein. From this state values
 the second state values are subtracted to get the deuterium uptake difference.}
 
-\item{state_2}{biological state for chosen protein. This state values are 
+\item{state_2}{biological state for chosen protein. This state values are
 subtracted from the first state values to get the deuterium uptake difference.}
 
-\item{p_adjustment_method}{method of adjustment P-values for multiple 
-comparisons. Possible methods: "BH" (Benjamini & Hochberg correction), 
+\item{p_adjustment_method}{method of adjustment P-values for multiple
+comparisons. Possible methods: "BH" (Benjamini & Hochberg correction),
 "bonferroni" (Bonferroni correction) and "none" (default).}
 
 \item{confidence_level}{confidence level for the t-test.}
 }
 \value{
-a \code{\link{data.frame}} object with calculated deuterium uptake difference, 
+a \code{\link{data.frame}} object with calculated deuterium uptake difference,
 uncertainty, P-value and -log(P-value) for the peptides from the provided data.
 }
 \description{
 Create volcano dataset
 }
 \details{
-The volcano plot shows the deuterium uptake difference in time 
+The volcano plot shows the deuterium uptake difference in time
 for the peptides. This function prepares data for the plot.
 For peptides in all of the time points of measurement (except for minimal
 and maximal exchange control) the deuterium uptake difference between state_1
 and state_2 is calculated, with its uncertainty (combined and propagated as
-described in `Data processing` article). For each peptide in time point the 
+described in `Data processing` article). For each peptide in time point the
 P-value is calculated using unpaired t-test - the deuterium uptake difference
-is calculated as the difference of measured masses in a given time point for two 
-states. The tested hypothesis is that the mean masses for states from the 
+is calculated as the difference of measured masses in a given time point for two
+states. The tested hypothesis is that the mean masses for states from the
 replicates of the experiment are similar. The P-values indicates if the null
-hypothesis can be rejected - rejection of the hypothesis means that the 
+hypothesis can be rejected - rejection of the hypothesis means that the
 difference between states is statistically significant at provided confidence
 level. The P-values can be adjusted using the provided method.
 This plot is visible in GUI.
@@ -60,13 +60,13 @@ head(vol_dat)
 
 }
 \references{
-Hageman, T. S. & Weis, D. D. Reliable Identification of Significant 
-Differences in Differential Hydrogen Exchange-Mass Spectrometry Measurements 
+Hageman, T. S. & Weis, D. D. Reliable Identification of Significant
+Differences in Differential Hydrogen Exchange-Mass Spectrometry Measurements
 Using a Hybrid Significance Testing Approach. Anal Chem 91, 8008–8016 (2019).
 }
 \seealso{
 \code{\link{read_hdx}}
 \code{\link{calculate_exp_masses_per_replicate}}
-\code{\link{generate_volcano_plot}}  
+\code{\link{generate_volcano_plot}}
 \code{\link{generate_volcano_data}}
 }

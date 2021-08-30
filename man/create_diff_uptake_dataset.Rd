@@ -22,14 +22,14 @@ create_diff_uptake_dataset(
 \item{state_1}{biological state for chosen protein. From this state values
 the second state values are subtracted to get the deuterium uptake difference.}
 
-\item{state_2}{biological state for chosen protein. This state values are 
+\item{state_2}{biological state for chosen protein. This state values are
 subtracted from the first state values to get the deuterium uptake difference.}
 
 \item{time_0}{minimal exchange control time point of measurement.}
 
 \item{time_100}{maximal exchange control time point of measurement.}
 
-\item{deut_part}{deuterium percentage in solution used in experiment, 
+\item{deut_part}{deuterium percentage in solution used in experiment,
 value from range [0, 1].}
 }
 \value{
@@ -39,12 +39,12 @@ a \code{\link{data.frame}} object.
 Generate differential dataset
 }
 \details{
-The function \code{\link{create_diff_uptake_dataset}} 
-generates a dataset with differential values between given biological states 
-(state_1 - state_2). For each peptide of chosen protein for time points of 
-measurement between minimal and maximal control time points of measurement 
-deuterium uptake difference, fractional deuterium uptake difference with 
-respect to controls or theoretical tabular values are calculated, with 
+The function \code{\link{create_diff_uptake_dataset}}
+generates a dataset with differential values between given biological states
+(state_1 - state_2). For each peptide of chosen protein for time points of
+measurement between minimal and maximal control time points of measurement
+deuterium uptake difference, fractional deuterium uptake difference with
+respect to controls or theoretical tabular values are calculated, with
 combined and propagated uncertainty. Each peptide has an ID, based on its start
 position.
 Function output can be visualized as a differential (Woods) plot, butterfly

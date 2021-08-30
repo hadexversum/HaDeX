@@ -24,7 +24,7 @@ create_state_uptake_dataset(
 
 \item{time_100}{maximal exchange control time point of measurement.}
 
-\item{deut_part}{deuterium percentage in solution used in experiment, 
+\item{deut_part}{deuterium percentage in solution used in experiment,
 value from range [0, 1].}
 }
 \value{
@@ -34,13 +34,13 @@ a \code{\link{data.frame}} object.
 Create uptake dataset for chosen state
 }
 \details{
-The function \code{\link{create_uptake_dataset}} generates 
+The function \code{\link{create_uptake_dataset}} generates
 a dataset with deuterium uptake values in different forms. For each
 peptide in chosen protein in chosen state for time points of measurement
-between minimal and maximal control time points of measurement deuterium 
+between minimal and maximal control time points of measurement deuterium
 uptake, fractional deuterium uptake with respect to controls or theoretical
-tabular values are calculated, with combined and propagated uncertainty. 
-Each peptide has an ID, based on its start position. 
+tabular values are calculated, with combined and propagated uncertainty.
+Each peptide has an ID, based on its start position.
 This data can be presented in a form of comparison plot, butterfly plot or
 chiclet plot.
 }
@@ -53,7 +53,7 @@ head(state_uptake_dat)
 \seealso{
 \code{\link{read_hdx}}
 \code{\link{calculate_state_uptake}}
-\code{\link{generate_butterfly_plot}} 
+\code{\link{generate_butterfly_plot}}
 \code{\link{generate_comparison_plot}}
 \code{\link{generate_chiclet_plot}}
 }

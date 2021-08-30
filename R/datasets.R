@@ -1,5 +1,7 @@
 #' Creates comparison uptake dataset
 #'
+#' @importFrom data.table rbindlist
+#'
 #' @param dat data imported by the \code{\link{read_hdx}} function.
 #' @param protein chosen protein.
 #' @param states vector of states (for chosen protein), for which the
@@ -20,8 +22,6 @@
 #' @seealso
 #' \code{\link{read_hdx}}
 #' \code{\link{calculate_state_uptake}}
-#'
-#' @importFrom data.table rbindlist
 #'
 #' @examples
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
@@ -56,6 +56,9 @@ create_state_comparison_dataset <- function(dat,
 
 #' Create dataset with control
 #'
+#' @importFrom data.table :=
+#' @importFrom plyr .
+#'
 #' @param dat data imported by the \code{\link{read_hdx}} function.
 #' @param control_protein maximal exchange control protein, from dat.
 #' @param control_state maximal exchange control state, from dat.
@@ -75,9 +78,6 @@ create_state_comparison_dataset <- function(dat,
 #' @seealso
 #' \code{\link{read_hdx}}
 #' \code{\link{calculate_state_uptake}}
-#'
-#' @importFrom data.table :=
-#' @importFrom plyr .
 #'
 #' @examples
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
