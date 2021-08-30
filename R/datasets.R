@@ -109,7 +109,8 @@ create_control_dataset <- function(dat,
 
 #' Calculate differential uptake
 #'
-#' @importFrom tidyr gather
+#' @importFrom data.table melt.data.table dcast setorderv
+#' @importFrom stringi stri_detect
 #'
 #' @param dat data imported by the \code{\link{read_hdx}} function.
 #' @param protein chosen protein.
@@ -151,31 +152,48 @@ calculate_diff_uptake  <- function(dat,
                                    time_100 = 1440,
                                    deut_part = 0.9){
 
-  bind_rows(lapply(states, function(i) calculate_state_uptake(dat,
-                                                              protein = protein,
-                                                              state = i,
-                                                              time_0 = time_0,
-                                                              time_t = time_t,
-                                                              time_100 = time_100,
-                                                              deut_part = deut_part))) %>%
-    droplevels() %>%
-    mutate(State = factor(State, levels = states, labels = c("1", "2"))) %>%
-    gather(variable, value, -c(Protein:End, State, Med_Sequence)) %>%
-    unite(tmp, variable, State) %>%
-    spread(tmp, value)  %>%
-    mutate(diff_frac_deut_uptake = frac_deut_uptake_1 - frac_deut_uptake_2,
-           err_diff_frac_deut_uptake = sqrt(err_frac_deut_uptake_1^2 + err_frac_deut_uptake_2^2),
-           diff_deut_uptake = deut_uptake_1 - deut_uptake_2,
-           err_diff_deut_uptake = sqrt(err_deut_uptake_1^2 + err_deut_uptake_2^2),
-           diff_theo_frac_deut_uptake = theo_frac_deut_uptake_1 - theo_frac_deut_uptake_2,
-           err_diff_theo_frac_deut_uptake = sqrt(err_theo_frac_deut_uptake_1^2 + err_theo_frac_deut_uptake_2^2),
-           diff_theo_deut_uptake = theo_deut_uptake_1 - theo_deut_uptake_2,
-           err_diff_theo_deut_uptake = sqrt(err_theo_deut_uptake_1^2 + err_theo_deut_uptake_2^2)) %>%
-    arrange(Start, End) %>%
-    select(Protein, Start, End, Med_Sequence, everything(), -contains("1"), -contains("2"))
+  dat_uptake <- droplevels(rbindlist(lapply(states, function(state) calculate_state_uptake(dat,
+                                                                                           protein = protein,
+                                                                                           state = state,
+                                                                                           time_0 = time_0,
+                                                                                           time_t = time_t,
+                                                                                           time_100 = time_100,
+                                                                                           deut_part = deut_part))))
+  dat_uptake[, State := factor(State, levels = states, labels = c("1", "2"))]
+
+  tmp_dat <- melt.data.table(dat_uptake,
+                             variable.name = "variable",
+                             value.name = "value",
+                             id.vars = c("Protein", "Sequence", "ID", "Exposure", "Start", "End", "State", "Med_Sequence"))
+
+  tmp_dat[, tmp := do.call(paste, c(.SD, sep = "_")), .SDcols= c("variable", "State")]
+
+  tmp_dat <- dcast(tmp_dat, Protein + Sequence + ID + Exposure + Start + End + Med_Sequence ~ tmp, value.var = "value")
+
+  tmp_dat[,`:=`(diff_frac_deut_uptake = frac_deut_uptake_1 - frac_deut_uptake_2,
+                err_diff_frac_deut_uptake = sqrt(err_frac_deut_uptake_1^2 + err_frac_deut_uptake_2^2),
+                diff_deut_uptake = deut_uptake_1 - deut_uptake_2,
+                err_diff_deut_uptake = sqrt(err_deut_uptake_1^2 + err_deut_uptake_2^2),
+                diff_theo_frac_deut_uptake = theo_frac_deut_uptake_1 - theo_frac_deut_uptake_2,
+                err_diff_theo_frac_deut_uptake = sqrt(err_theo_frac_deut_uptake_1^2 + err_theo_frac_deut_uptake_2^2),
+                diff_theo_deut_uptake = theo_deut_uptake_1 - theo_deut_uptake_2,
+                err_diff_theo_deut_uptake = sqrt(err_theo_deut_uptake_1^2 + err_theo_deut_uptake_2^2)), ]
+
+  setorderv(tmp_dat, cols = c("Start", "End"))
+
+  col_names <- c("Protein", "Start", "End", "Med_Sequence", "Sequence", "ID", "Exposure",
+                 "diff_frac_deut_uptake", "err_diff_frac_deut_uptake", "diff_deut_uptake",
+                 "err_diff_deut_uptake", "diff_theo_frac_deut_uptake",
+                 "err_diff_theo_frac_deut_uptake", "diff_theo_deut_uptake",
+                 "err_diff_theo_deut_uptake")
+
+  tmp_dat[, ..col_names]
+
 }
 
 #' Create uptake dataset for chosen state
+#'
+#' @importFrom data.table setcolorder
 #'
 #' @param dat data imported by the \code{\link{read_hdx}} function.
 #' @param protein chosen protein.
@@ -221,17 +239,17 @@ create_state_uptake_dataset <- function(dat,
   all_times <- unique(dat[["Exposure"]])
   times <- all_times[all_times > time_0 & all_times <= time_100]
 
-  state_uptake_dat <- lapply(times, function(time){
+  state_uptake_dat <- rbindlist(lapply(times, function(time){
 
-    calculate_state_uptake(dat, protein = protein, state = state,
-                           time_0 = time_0, time_t = time, time_100 = time_100,
-                           deut_part = deut_part) %>%
-      arrange(Start, End) %>%
-      mutate( # ID = 1L:nrow(.),
-        Exposure = time) %>%
-      select(ID, Exposure, everything())
+    dt <- setorderv(calculate_state_uptake(dat, protein = protein, state = state,
+                                           time_0 = time_0, time_t = time, time_100 = time_100,
+                                           deut_part = deut_part), cols = c("Start", "End"))
 
-  }) %>% bind_rows()
+    col_order <- c("ID", "Exposure", setdiff(colnames(dt), c("ID", "Exposure")))
+    setcolorder(dt, col_order)
+    dt[ , Exposure := time]
+
+  }))
 
   return(state_uptake_dat)
 
@@ -286,9 +304,9 @@ create_uptake_dataset <- function(dat,
   times <- times[times > time_0 & times < time_100]
 
 
-  uptake_dat <- lapply(states, function(state){
+  uptake_dat <- rbindlist(lapply(states, function(state){
 
-    lapply(times, function(time){
+    rbindlist(lapply(times, function(time){
 
       calculate_state_uptake(dat, protein = protein,
                              state = state,
@@ -296,9 +314,9 @@ create_uptake_dataset <- function(dat,
                              time_0 = time_0, time_100 = time_100,
                              deut_part = deut_part)
 
-    }) %>% bind_rows
+    }))
 
-  }) %>% bind_rows()
+  }))
 
   return(uptake_dat)
 
@@ -355,18 +373,18 @@ create_diff_uptake_dataset <- function(dat,
   all_times <- unique(dat[["Exposure"]])
   times <- all_times[all_times > time_0 & all_times <= time_100]
 
-  diff_uptake_dat <- lapply(times, function(time){
 
-    calculate_diff_uptake(dat = dat, states = c(state_1, state_2), protein = protein,
-                          time_0 = time_0, time_t = time, time_100 = time_100,
-                          deut_part = deut_part) %>%
-      arrange(Start, End) %>%
-      mutate(ID = 1L:nrow(.),
-             Exposure = time) %>%
-      select(ID, Exposure, everything())
+  diff_uptake_dat <- rbindlist(lapply(times, function(time){
 
-  }) %>% bind_rows() %>%
-    ungroup(.)
+    dt <- setorderv(calculate_diff_uptake(dat = dat, states = c(state_1, state_2), protein = protein,
+                                          time_0 = time_0, time_t = time, time_100 = time_100,
+                                          deut_part = deut_part), cols = c("Start", "End"))
+    dt[, `:=`(ID = 1L:nrow(dt), Exposure = time)]
+
+    col_order <- c("ID", "Exposure", setdiff(colnames(dt), c("ID", "Exposure")))
+    setcolorder(dt, col_order)
+
+  }))
 
   return(diff_uptake_dat)
 
@@ -375,7 +393,7 @@ create_diff_uptake_dataset <- function(dat,
 
 #' Create volcano dataset
 #'
-#' @importFrom dplyr %>%
+#' @importFrom data.table setnames
 #'
 #' @param dat data imported by the \code{\link{read_hdx}} function.
 #' @param protein chosen protein.
@@ -424,11 +442,11 @@ create_diff_uptake_dataset <- function(dat,
 #' @export create_volcano_dataset
 
 create_volcano_dataset <- function(dat,
-                                   protein = unique(dat[["Protein"]])[1],
-                                   state_1 = unique(dat[["State"]])[1],
-                                   state_2 = unique(dat[["State"]])[2],
-                                   p_adjustment_method = "none",
-                                   confidence_level = 0.98){
+                                    protein = unique(dat[["Protein"]])[1],
+                                    state_1 = unique(dat[["State"]])[1],
+                                    state_2 = unique(dat[["State"]])[2],
+                                    p_adjustment_method = "none",
+                                    confidence_level = 0.98){
 
   p_adjustment_method <- match.arg(p_adjustment_method, c("none", "BH", "bonferroni"))
 
@@ -436,64 +454,51 @@ create_volcano_dataset <- function(dat,
 
   proton_mass <- 1.00727647
 
-  tmp_dat <- dat %>%
-    calculate_exp_masses_per_replicate(.) %>%
-    group_by(Sequence, Start, End, State, Exposure) %>%
-    summarize(avg_mass = mean(avg_exp_mass),
-              err_avg_mass = sd(avg_exp_mass)/sqrt(length(Exposure)),
-              masses = list(avg_exp_mass)) %>%
-    arrange(Start, End)
 
-  tmp_dat_1 <- tmp_dat %>%
-    filter(State == state_1) %>%
-    rename(avg_mass_1 = avg_mass,
-           err_avg_mass_1 = err_avg_mass,
-           masses_1 = masses) %>%
-    ungroup(.) %>%
-    select(-State)
+  tmp_dat <- data.table(calculate_exp_masses_per_replicate(dat))
 
-  tmp_dat_2 <- tmp_dat %>%
-    filter(State == state_2) %>%
-    rename(avg_mass_2 = avg_mass,
-           err_avg_mass_2 = err_avg_mass,
-           masses_2 = masses) %>%
-    ungroup(.) %>%
-    select(-State)
+  tmp_dat <- tmp_dat[ , .(avg_mass = mean(avg_exp_mass),
+                          err_avg_mass = sd(avg_exp_mass)/sqrt(.N),
+                          masses = list(avg_exp_mass)),
+                      by = c("Sequence", "Start", "End", "State", "Exposure")]
+
+  tmp_dat <- setorderv(tmp_dat, cols = c("Start", "End"))
+
+
+  tmp_dat_1 <- tmp_dat[State == state_1]
+  setnames(tmp_dat_1, c("avg_mass", "err_avg_mass", "masses"), c("avg_mass_1", "err_avg_mass_1", "masses_1"))
+  tmp_dat_1[, State := NULL]
+
+  tmp_dat_2 <- tmp_dat[State == state_2]
+  setnames(tmp_dat_2, c("avg_mass", "err_avg_mass", "masses"), c("avg_mass_2", "err_avg_mass_2", "masses_2"))
+  tmp_dat_2[, State := NULL]
+
 
   vol_dat <- merge(tmp_dat_1, tmp_dat_2, by = c("Sequence", "Start", "End", "Exposure"))
 
-  res_volcano <- lapply(1:nrow(vol_dat), function(i){
+  vol_dat[, D_diff := avg_mass_1 - avg_mass_2]
+  vol_dat[, Uncertainty := sqrt(err_avg_mass_1^2 + err_avg_mass_2^2)]
 
-    diff_d <- vol_dat[i, "avg_mass_1"] - vol_dat[i, "avg_mass_2"]
-    uncertainty <- sqrt(vol_dat[i, "err_avg_mass_1"]^2 + vol_dat[i, "err_avg_mass_2"]^2 )
+  vol_dat[, P_value := sapply(1:nrow(vol_dat), function(i) {
 
-    st_1 <- vol_dat[i, "masses_1"][[1]]
-    st_2 <- vol_dat[i, "masses_2"][[1]]
+    st_1 <- vol_dat[i, "masses_1"][[1]][[1]]
+    st_2 <- vol_dat[i, "masses_2"][[1]][[1]]
 
-    if(length(st_1) == 1) {
-      p_value <- -1
-    } else if (length(st_2) == 1){
-      p_value <- -1
-    } else {
-      p_value <- t.test(x = st_1, y = st_2, paired = FALSE, alternative = "two.sided", conf.level = confidence_level)$p.value
-    }
+    ifelse(length(st_1) == 1 | length(st_2) == 1,
+           -1,
+           t.test(x = st_1,
+                  y = st_2,
+                  paired = FALSE,
+                  alternative = "two.sided",
+                  conf.level = confidence_level)$p.value)
 
-    data.frame(Sequence = vol_dat[i, "Sequence"],
-               Exposure = vol_dat[i, "Exposure"],
-               D_diff = diff_d,
-               P_value = p_value,
-               Uncertainty = uncertainty,
-               Start = vol_dat[i, "Start"],
-               End = vol_dat[i, "End"])
+  })]
 
-  }) %>% bind_rows() %>%
-    filter(P_value > 0)
+  vol_dat <- vol_dat[P_value > 0]
+  vol_dat[, P_value := p.adjust(vol_dat[["P_value"]], method = p_adjustment_method)]
+  vol_dat[, log_p_value := -log(P_value)]
+  vol_dat <- vol_dat[, .(Sequence, Start, End, Exposure, D_diff, Uncertainty, log_p_value, P_value)]
 
-  res_volcano[["P_value"]] <- p.adjust(res_volcano[["P_value"]], method = p_adjustment_method)
-
-  res_volcano %>%
-    filter(P_value!=-1) %>%
-    mutate(log_p_value = -log(P_value)) %>%
-    select(Sequence, Start, End, Exposure, D_diff, Uncertainty, log_p_value, P_value)
+  return(vol_dat)
 
 }
