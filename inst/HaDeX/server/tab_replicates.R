@@ -129,6 +129,8 @@ replicates_z_values_time_t <- reactive({
 
 replicate_plot_out <- reactive({
 
+  ## plot_peptide_measurement
+  
   avg_value <- mean(replicate_masses_time_t()[["avg_exp_mass"]])
   
   ggplot(replicate_masses_time_t(), aes(x = avg_exp_mass, y = File)) +
@@ -212,6 +214,8 @@ output[["replicatesPlot_download_button"]] <- downloadHandler("replicatesPlot.sv
 ## charge values
 
 replicate_charge_plot_out <- reactive({
+  
+  # plot_peptide_z
   
   n_bins <- length(unique(replicates_z_values_time_t()[["z"]]))
   min_z <- min(replicates_z_values_time_t()[["z"]])
@@ -327,6 +331,8 @@ output[["replicatesChargePlot_data"]] <- DT::renderDataTable(server = FALSE, {
 
 replicates_histogram_data <- reactive({
   
+  # show_replicate_data
+  
   replicate_masses() %>%
     filter(Exposure == input[["rep_time"]],
            Protein == input[["chosen_protein"]],
@@ -340,6 +346,8 @@ replicates_histogram_data <- reactive({
 ##
 
 replicates_histogram_out <- reactive({
+  
+  # plot_replicate_data
   
   replicates_histogram_data() %>%
     ggplot() + 
@@ -421,6 +429,8 @@ output[["replicatesHistogram_download_button"]] <- downloadHandler("replicatesHi
 
 replicates_histogram_data_out <- reactive({
   
+  # show_all_replicate_data
+  
   replicates_histogram_data() %>%
     arrange(ID)
   
@@ -440,6 +450,8 @@ output[["replicatesHistogram_data"]] <- DT::renderDataTable(server = FALSE, {
 ## replicates in all time points
 
 all_replicates_histogram_data <- reactive({
+  
+  # plot_all_replicate_data
   
   replicate_masses() %>%
     filter(Protein == input[["chosen_protein"]],
