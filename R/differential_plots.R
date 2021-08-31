@@ -1,6 +1,6 @@
 #' Differential plot
 #'
-#' @param dat produced by \code{\link{create_diff_uptake_dataset}} function.
+#' @param diff_uptake_dat produced by \code{\link{create_diff_uptake_dataset}} function.
 #' @param theoretical \code{logical}, determines if values are theoretical.
 #' @param fractional \code{logical}, determines if values are fractional.
 #' @param confidence_level confidence level for the test, from range [0, 1].
@@ -37,18 +37,18 @@
 #'
 #' @export plot_differential
 
-plot_differential <- function(dat,
+plot_differential <- function(diff_uptake_dat,
                               theoretical = FALSE,
                               fractional = FALSE,
                               confidence_level = 0.98,
                               confidence_level_2 = 0.99){
 
-  interval <- calculate_confidence_limit_values(calc_dat = dat,
+  interval <- calculate_confidence_limit_values(calc_dat = diff_uptake_dat,
                                                 confidence_level = confidence_level,
                                                 theoretical = theoretical,
                                                 fractional = fractional)
 
-  interval_2 <- calculate_confidence_limit_values(calc_dat = dat,
+  interval_2 <- calculate_confidence_limit_values(calc_dat = diff_uptake_dat,
                                                   confidence_level = confidence_level_2,
                                                   theoretical = theoretical,
                                                   fractional = fractional)
@@ -94,13 +94,13 @@ plot_differential <- function(dat,
     }
   }
 
-  plot_dat <- data.frame(Protein = dat[["Protein"]],
-                         Sequence = dat[["Sequence"]],
-                         Start = dat[["Start"]],
-                         End = dat[["End"]],
-                         Med_Sequence = dat[["Med_Sequence"]],
-                         value = dat[[value]],
-                         err_value = dat[[err_value]])
+  plot_dat <- data.frame(Protein = diff_uptake_dat[["Protein"]],
+                         Sequence = diff_uptake_dat[["Sequence"]],
+                         Start = diff_uptake_dat[["Start"]],
+                         End = diff_uptake_dat[["End"]],
+                         Med_Sequence = diff_uptake_dat[["Med_Sequence"]],
+                         value = diff_uptake_dat[[value]],
+                         err_value = diff_uptake_dat[[err_value]])
 
   differential_plot <- mutate(plot_dat, colour = case_when(
     value < interval_2[1] ~ "deepskyblue3",
