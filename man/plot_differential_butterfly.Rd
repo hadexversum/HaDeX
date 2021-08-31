@@ -27,8 +27,8 @@ plot_differential_butterfly(
 \item{show_confidence_limit}{\code{logical}, determines if confidence limits
 are visible on the plot.}
 
-\item{confidence_level}{confidence level for confidence limit, if chosen
-show_confidence_limit.}
+\item{confidence_level}{confidence level for the test, from range [0, 1].
+Important if selected show_confidence_limit.}
 }
 \value{
 a \code{\link{ggplot}} object.

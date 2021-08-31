@@ -27,7 +27,7 @@ relation to 0.}
 \item{show_confidence_limits}{logical, indicates if the hybrid testing
 confidence intervals are shown.}
 
-\item{confidence_level}{confidence level for the confidence intervals. It
+\item{confidence_level}{confidence level for the test, from range [0, 1]. It
 should be the same as used in \code{\link{generate_volcano_dataset}} function.}
 }
 \value{

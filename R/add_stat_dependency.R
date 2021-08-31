@@ -4,7 +4,7 @@
 #' 
 #' @param calc_dat data produced by \code{\link{generate_differential_data_set}}
 #' funcion.
-#' @param confidence_level confidence limit - from range [0, 1]. 
+#' @param confidence_level confidence level - from range [0, 1]. 
 #' @param theoretical \code{logical}, determines if values are theoretical.
 #' @param fractional \code{logical}, determines if values are fractional.
 #' 

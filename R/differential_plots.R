@@ -1,26 +1,34 @@
 #' Differential plot
 #'
-#' @param dat produced by \code{\link{generate_differential_data_set}} function
-#' @param theoretical \code{logical}, determines if values are theoretical
-#' @param fractional \code{logical}, determines if values are fractional
-#' @param confidence_limit ...
-#' @param confidence_limit_2 ...
+#' @param dat produced by \code{\link{create_diff_uptake_dataset}} function.
+#' @param theoretical \code{logical}, determines if values are theoretical.
+#' @param fractional \code{logical}, determines if values are fractional.
+#' @param confidence_level confidence level for the test, from range [0, 1].
+#' @param confidence_level_2 second confidence level for the test, 
+#' from range [0, 1]. If the value of second confidence level is the same
+#' as first, only one is shown. 
 #'
-#' @details Function \code{\link{generate_differential_plot}} presents
-#' provided data in a form of differential (Woods) plot. The plot show
+#' @details Function \code{\link{plot_differential}} presents
+#' provided data in a form of differential (Woods) plot. The plot shows
 #' difference in exchange for two biological states, selected in
 #' generation of dataset at one time point of measurement .On X-axis
 #' there is a position in a sequence, with length of a segment of each
 #' peptide representing its length. On Y-axis there
 #' is deuterium uptake difference in chosen form. Error bars represents
 #' the combined and propagated uncertainty.
+#' The confidence limits based on provided confidence levels are shown
+#' on the plot. The statistically significant values are in color (red if the 
+#' difference is positive, blue if negative), and the insignificant values are 
+#' grey. There are two confidence limits for comparison of the results, but
+#' there is possibility to plot only one confidence limit, if the confidence
+#' levels are the same.
 #' This plot is visible in GUI.
 #'
 #' @return a \code{\link{ggplot}} object.
 #'
 #' @seealso
-#' \code{\link{generate_differential_data_set}}
-#' \code{\link{generate_differential_data}}
+#' \code{\link{create_diff_uptake_dataset}}
+#' \code{\link{show_diff_uptake_data}}
 #'
 #' @examples
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
@@ -135,8 +143,8 @@ plot_differential <- function(dat,
 #' "ribbon", "bars" or "bars + line".
 #' @param show_confidence_limit \code{logical}, determines if confidence limits
 #' are visible on the plot.
-#' @param confidence_level confidence level for confidence limit, if chosen
-#' show_confidence_limit.
+#' @param confidence_level confidence level for the test, from range [0, 1].
+#' Important if selected show_confidence_limit.
 #'
 #' @details Function \code{\link{plot_differential_butterfly}} generates
 #' differential butterfly plot based on provided data and parameters. On X-axis
@@ -383,7 +391,7 @@ plot_differential_chiclet <- function(diff_uptake_dat,
 #' relation to 0.
 #' @param show_confidence_limits logical, indicates if the hybrid testing
 #' confidence intervals are shown.
-#' @param confidence_level confidence level for the confidence intervals. It
+#' @param confidence_level confidence level for the test, from range [0, 1]. It
 #' should be the same as used in \code{\link{generate_volcano_dataset}} function.
 #'
 #' @details The data produced by \code{\link{generate_volcano_dataset}} are plotted
