@@ -5,7 +5,7 @@
 \title{Differential plot}
 \usage{
 plot_differential(
-  dat,
+  diff_uptake_dat,
   theoretical = FALSE,
   fractional = FALSE,
   confidence_level = 0.98,
@@ -13,7 +13,7 @@ plot_differential(
 )
 }
 \arguments{
-\item{dat}{produced by \code{\link{create_diff_uptake_dataset}} function.}
+\item{diff_uptake_dat}{produced by \code{\link{create_diff_uptake_dataset}} function.}
 
 \item{theoretical}{\code{logical}, determines if values are theoretical.}
 
@@ -50,7 +50,7 @@ This plot is visible in GUI.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-diff_uptake_dat <- generate_differential_data_set(dat)
+diff_uptake_dat <- create_diff_uptake_dataset(dat)
 plot_differential(diff_uptake_dat)
 
 }

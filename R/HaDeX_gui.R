@@ -8,9 +8,6 @@
 #' 
 #' @section Warning : Any ad-blocking software may cause malfunctions.
 #' 
-#' @examples
-#' HaDeX_gui()
-#' 
 #' @export HaDeX_gui
 
 HaDeX_gui <- function(port = getOption("shiny.port"))

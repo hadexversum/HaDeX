@@ -16,7 +16,3 @@ Launches graphical user interface.
  Any ad-blocking software may cause malfunctions.
 }
 
-\examples{
-HaDeX_gui()
-
-}

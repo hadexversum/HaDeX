@@ -32,7 +32,7 @@
 #'
 #' @examples
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' diff_uptake_dat <- generate_differential_data_set(dat)
+#' diff_uptake_dat <- create_diff_uptake_dataset(dat)
 #' plot_differential(diff_uptake_dat)
 #'
 #' @export plot_differential
@@ -43,12 +43,12 @@ plot_differential <- function(diff_uptake_dat,
                               confidence_level = 0.98,
                               confidence_level_2 = 0.99){
 
-  interval <- calculate_confidence_limit_values(calc_dat = diff_uptake_dat,
+  interval <- calculate_confidence_limit_values(diff_uptake_dat = diff_uptake_dat,
                                                 confidence_level = confidence_level,
                                                 theoretical = theoretical,
                                                 fractional = fractional)
 
-  interval_2 <- calculate_confidence_limit_values(calc_dat = diff_uptake_dat,
+  interval_2 <- calculate_confidence_limit_values(diff_uptake_dat = diff_uptake_dat,
                                                   confidence_level = confidence_level_2,
                                                   theoretical = theoretical,
                                                   fractional = fractional)

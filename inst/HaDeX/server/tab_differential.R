@@ -111,7 +111,7 @@ woods_plot_dat <- reactive({
 
 differential_plot <- reactive({
   
-  plot_differential(dat = woods_plot_dat(),
+  plot_differential(diff_uptake_dat = woods_plot_dat(),
                     theoretical = input[["theory"]],
                     fractional = input[["comp_fractional"]],
                     confidence_level = as.double(input[["confidence_level"]]),
