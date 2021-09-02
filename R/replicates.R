@@ -104,119 +104,148 @@ show_peptide_z <- function(replicates_z_values_time_t){
 
 
 
-#' 
-#' 
-#' @description ...
-#' 
-#' @param replicate_masses ...
-#' @param time_t ...
-#' @param protein ...
-#' @param state ...
+
+#' Create replicates data
 #'
-#' @details ...
+#' @description Create replicate data set suitable
+#' for replicate histogram, for one or multiple 
+#' time points of measurement. 
 #' 
-#' @return ...
-#' 
-#' @seealso ...
-#' 
-#' @examples ...
-#' 
-#' @export 
-
-show_replicate_data <- function(replicate_masses,
-                                time_t,
-                                protein, 
-                                state){
-  
-  replicate_masses %>%
-    filter(Exposure == time_t,
-           Protein == protein,
-           State == state) %>%
-    select(Sequence, Start, End, ID) %>%
-    group_by(Sequence, Start, End, ID) %>%
-    summarize(n = n())
-  
-}
-
-#' 
-#' 
-#' @description ...
-#' 
-#' @param replicates_histogram_data ...
+#' @param dat data as imported by the \code{\link{read_hdx}} function.
+#' @param time_t optional, for only one time point of
+#' measurement. If value is NULL, all time point from
+#' \code{dat} are preserved.
+#' @param protein chosen protein. 
+#' @param state biological state for chosen protein.
 #'
-#' @details ...
+#' @details The function \code{\link{create_replicate_dataset}}
 #' 
-#' @return ...
+#' @return a \code{\link{data.frame}} object.
 #' 
-#' @seealso ...
+#' @seealso 
+#' \code{\link{plot_replicate_histogram}}
+#' \code{\link{show_replicate_histogram_data}}
 #' 
-#' @examples ...
-#' 
-#' @export 
-
-plot_replicate_data <- function(replicates_histogram_data){
-  
-  replicates_histogram_data %>%
-    ggplot() + 
-    geom_col(aes(x = ID, y = n, fill = n)) +
-    labs(title = paste0("Number of replicates for each peptide"),
-         x = "Peptide ID",
-         y = "Number of replicates") +
-    theme(legend.position = "none")
-  
-}
-
-#' 
-#' 
-#' @description ...
-#' 
-#' @param replicates_histogram_data ...
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' create_replicate_dataset(dat)
 #'
-#' @details ...
-#' 
-#' @return ...
-#' 
-#' @seealso ...
-#' 
-#' @examples ...
-#' 
-#' @export 
+#' @export create_replicate_dataset
 
-show_all_replicate_data <- function(replicates_histogram_data){
+create_replicate_dataset <- function(dat, 
+                                     time_t = NULL, 
+                                     protein = unique(dat[["Protein"]])[1], 
+                                     state = dat[["State"]][1]){
   
-  replicates_histogram_data %>%
-    arrange(ID)
-  
-}
-
-#' 
-#' 
-#' @description ...
-#' 
-#' @param replicate_masses ...
-#' @param protein ...
-#' @param state ...
-#'
-#' @details ...
-#' 
-#' @return ...
-#' 
-#' @seealso ...
-#' 
-#' @examples ...
-#' 
-#' @export 
-
-plot_all_replicate_data <- function(replicate_masses,
-                                    protein, 
-                                    state){
-  
-  replicate_masses %>%
+  dat %>%
+    calculate_exp_masses_per_replicate() %>%
+    group_by(Start, End) %>%
+    arrange(Start, End) %>%
+    mutate(ID = cur_group_id()) %>%
+    filter(if (is.null(time_t)) Exposure < 99999 else Exposure == time_t) %>%
     filter(Protein == protein,
-           State == state,
-           Exposure < 99999) %>%
+           State == state) %>%
     select(Sequence, Exposure, Start, End, ID) %>%
     group_by(Sequence, Exposure, Start, End, ID) %>%
     summarize(n = n())
   
+}
+
+#' Plot replicates histogram
+#' 
+#' @description Plot histogram on number of replicates per
+#' peptide in one or multiple time point of measurement.
+#' 
+#' @param rep_dat replicate data, created by 
+#' \code{\link{create_replicate_dataset}} function.
+#'
+#' @details The function shows two versions of replicate 
+#' histogram, based on supplied \code{rep_dat}. 
+#' On the X-axis there are peptide ID, and on the Y-axis
+#' there are numbers of replicates. 
+#' If \code{rep_dat} contains data from one time point 
+#' of measurement, the histogram colors reflect the 
+#' number of replicates to highlight the outliers.
+#' If \code{rep_dat} contains multiple time point of
+#' measurement, the colors help to distinguish between 
+#' them.   
+#' 
+#' @return a \code{\link{ggplot}} object.
+#' 
+#' @seealso
+#' \code{\link{create_replicate_dataset}} 
+#' \code{\link{show_replicate_histogram_data}}
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' rep_dat <- create_replicate_dataset(dat)
+#' plot_replicate_histogram(rep_dat)
+#' 
+#' rep_dat <- create_replicate_dataset(dat, time_t = 0.167)
+#' plot_replicate_histogram(rep_dat)
+#' 
+#' @export plot_replicate_histogram 
+
+plot_replicate_histogram <- function(rep_dat){
+  
+  if (length(unique(rep_dat[["Exposure"]])) == 1) {
+    
+    fill <- "n"
+    legend_position <- "none"
+    
+    time_t <- unique(rep_dat[["Exposure"]])
+    plot_title <- paste0("Number of replicates for each peptide in ", state, " state in ", time_t, " min")
+    
+    
+  } else {
+    
+    
+    fill <- "as.factor(Exposure)"
+    legend_position <- "bottom"
+    
+    plot_title <- paste0("Number of replicates for each peptide in ", state, " state")
+    
+  } 
+  
+  ggplot(rep_dat) +
+    geom_col(aes_string(x = "ID", y = "n", fill = fill)) +
+    labs(title = plot_title,
+         x = "Peptide ID",
+         y = "Number of replicates",
+         fill = "Exposure") +
+    theme(legend.position = legend_position)
+  
+}
+
+#' Show replicate data
+#' 
+#' @description Show histogram data on number of replicates per
+#' peptide in one or multiple time point of measurement.
+#' 
+#' @param rep_dat replicate data, created by 
+#' \code{\link{create_replicate_dataset}} function.
+#'
+#' @details The function shows the information about
+#' number of replicates for peptides in one or multiple
+#' time point of measurement, depends on supplied data.
+#' 
+#' @return a \code{\link{data.frame}} object.
+#' 
+#' @seealso
+#' \code{\link{create_replicate_dataset}}
+#' \code{\link{plot_replicate_histogram}}
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' rep_dat <- create_replicate_dataset(dat)
+#' show_replicate_histogram_data(rep_dat)
+#' 
+#' @export show_replicate_histogram_data
+
+show_replicate_histogram_data <- function(rep_dat){
+  
+  rep_dat %>%
+    arrange(Start, End, Exposure) %>%
+    select(ID, Sequence, Start, End, Exposure, n)
+
 }
