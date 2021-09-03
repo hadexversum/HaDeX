@@ -86,41 +86,38 @@ replicates_of_peptides <- reactive({
 replicate_masses <- reactive({
   
   dat() %>%
-    calculate_exp_masses_per_replicate() %>%
-    group_by(Start, End) %>%
-    arrange(Start, End) %>%
-    mutate(ID = cur_group_id())
+    calculate_exp_masses_per_replicate() 
   
 })
 
 ##
 
-replicate_masses_time_t <- reactive({
-  
-  validate(need(input[["rep_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
-  
-  replicate_masses() %>%
-    filter(Protein == input[["chosen_protein"]]) %>%
-    filter(State == input[["rep_state"]]) %>%
-    filter(Sequence == rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2][[1]]) %>%
-    filter(Exposure == as.numeric(input[["rep_time"]]))
-
-})
+# replicate_masses_time_t <- reactive({
+#   
+#   validate(need(input[["rep_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
+#   
+#   replicate_masses() %>%
+#     filter(Protein == input[["chosen_protein"]]) %>%
+#     filter(State == input[["rep_state"]]) %>%
+#     filter(Sequence == rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2][[1]]) %>%
+#     filter(Exposure == as.numeric(input[["rep_time"]]))
+# 
+# })
 
 ##
 
-replicates_z_values_time_t <- reactive({
-  
-  validate(need(input[["rep_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
-  
-  dat() %>%
-    filter(Protein == input[["chosen_protein"]]) %>%
-    filter(State == input[["rep_state"]]) %>%
-    filter(Sequence == rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2][[1]]) %>%
-    filter(Exposure == as.numeric(input[["rep_time"]])) %>%
-    select(Protein, Sequence, Start, End, Exposure, State, File, z)
-  
-})
+# replicates_z_values_time_t <- reactive({
+#   
+#   validate(need(input[["rep_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
+#   
+#   dat() %>%
+#     filter(Protein == input[["chosen_protein"]]) %>%
+#     filter(State == input[["rep_state"]]) %>%
+#     filter(Sequence == rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2][[1]]) %>%
+#     filter(Exposure == as.numeric(input[["rep_time"]])) %>%
+#     select(Protein, Sequence, Start, End, Exposure, State, File, z)
+#   
+# })
 
 #################################
 ######### PLOT ##################
@@ -129,13 +126,13 @@ replicates_z_values_time_t <- reactive({
 
 replicate_plot_out <- reactive({
 
-  ## plot_peptide_measurement
+  validate(need(input[["rep_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
   
-  avg_value <- mean(replicate_masses_time_t()[["avg_exp_mass"]])
-  
-  ggplot(replicate_masses_time_t(), aes(x = avg_exp_mass, y = File)) +
-    geom_point(size = 3) +
-    geom_vline(xintercept = avg_value, color = "red", linetype = "dashed", size = 1.5) + 
+  plot_peptide_mass_measurement(replicate_masses(),
+                                protein = input[["chosen_protein"]],
+                                state =  input[["rep_state"]],
+                                sequence = rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2][[1]],
+                                time_t = as.numeric(input[["rep_time"]]))  + 
     labs(x = input[["rep_plot_x_label"]],
          y = input[["rep_plot_y_label"]],
          title = input[["rep_plot_title"]]) +
@@ -215,16 +212,13 @@ output[["replicatesPlot_download_button"]] <- downloadHandler("replicatesPlot.sv
 
 replicate_charge_plot_out <- reactive({
   
-  # plot_peptide_z
+  validate(need(input[["rep_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
   
-  n_bins <- length(unique(replicates_z_values_time_t()[["z"]]))
-  min_z <- min(replicates_z_values_time_t()[["z"]])
-  max_z <- max(replicates_z_values_time_t()[["z"]])
-  
-  replicates_z_values_time_t() %>%
-    ggplot(aes(x = z)) +
-    geom_histogram(aes(fill = File), bins = n_bins) + 
-    scale_x_continuous(breaks = c(min_z:max_z)) 
+  plot_peptide_charge_measurement(dat(),
+                                  protein = input[["chosen_protein"]],
+                                  state =  input[["rep_state"]],
+                                  sequence = rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2][[1]],
+                                  time_t = as.numeric(input[["rep_time"]]))
   
 })
 
@@ -293,10 +287,13 @@ output[["replicatesChargePlot_download_button"]] <- downloadHandler("replicatesC
 
 replicates_plot_data_out <- reactive({
   
-  replicate_masses_time_t() %>%
-    mutate(avg_exp_mass = round(avg_exp_mass, 4)) %>%
-    select(Protein, Sequence, Start, End, Exposure, State, File, avg_exp_mass) %>%
-    rename(`Mass` = avg_exp_mass)
+  validate(need(input[["rep_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
+  
+  show_peptide_mass_measurement(replicate_masses(),
+                                protein = input[["chosen_protein"]],
+                                state =  input[["rep_state"]],
+                                sequence = rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2][[1]],
+                                time_t = as.numeric(input[["rep_time"]]))
   
 })
 
@@ -311,7 +308,13 @@ output[["replicatesPlot_data"]] <- DT::renderDataTable(server = FALSE, {
 
 replicate_charge_plot_data_out <- reactive({
   
-  replicates_z_values_time_t()
+  validate(need(input[["rep_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
+  
+  show_peptide_charge_measurement(dat(),
+                                  protein = input[["chosen_protein"]],
+                                  state =  input[["rep_state"]],
+                                  sequence = rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2][[1]],
+                                  time_t = as.numeric(input[["rep_time"]]))
   
 })
 

@@ -27,6 +27,7 @@ The separate measurement (for each replicate in given state in given time point)
 can be distinguished by the `File` value.
 }
 \seealso{
-\code{\link{read_hdx}} \code{\link{calculate_exp_masses}}
+\code{\link{read_hdx}} 
+\code{\link{calculate_exp_masses}}
 \code{\link{calculate_state_deuteration}}
 }
