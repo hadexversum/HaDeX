@@ -32,6 +32,9 @@ time points of measurement.
 }
 \details{
 The function \code{\link{create_replicate_dataset}}
+creates a dataset with information about how many
+replicates are for peptides in specific state in 
+time points of measurement.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))

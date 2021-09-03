@@ -288,7 +288,7 @@ output[["replicatesChargePlot_download_button"]] <- downloadHandler("replicatesC
                                                               })
 
 #################################
-######### DATASET ###############
+######### DATA ##################
 #################################
 
 replicates_plot_data_out <- reactive({
@@ -332,6 +332,9 @@ output[["replicatesChargePlot_data"]] <- DT::renderDataTable(server = FALSE, {
 replicates_histogram_data <- reactive({
   
   # subset from all_replicates_histogram_data() !!
+  
+  # all_replicates_histogram_data() %>%
+  #   filter(Exposure == input[["rep_time"]])
   
   create_replicate_dataset(dat(), 
                            time_t = input[["rep_time"]],

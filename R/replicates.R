@@ -1,49 +1,104 @@
+#' Plot peptide mass measurement
 #' 
+#' @description Plot the mass measurements
+#' from replicates for peptide in specific time point. 
 #' 
-#' @description ...
-#' 
-#' @param replicate_masses_time_t ...
+#' @param rep_mass_dat data produced by 
+#' \code{\link{calculate_exp_masses_per_replicate}} function.
+#' @param protein chosen protein. 
+#' @param state biological state for chosen protein.
+#' @param sequence sequence of chosen peptide.
+#' @param time_t time point of the measurement.
 #'
-#' @details ...
+#' @details This function shows the measurements of mass from
+#' different replicates for specific peptide in specific state
+#' in specific time point of measurement on the plot. 
+#' Moreover, on the plot is shown the average mass from the 
+#' replicates, used later in calculations. 
 #' 
-#' @return ...
+#' @return a \code{\link{ggplot}} object.
 #' 
-#' @seealso ...
+#' @seealso 
+#' \code{\link{read_hdx}}
+#' \code{\link{calculate_exp_masses_per_replicate}}
+#' \code{\link{calculate_exp_masses}}
+#' \code{\link{calculate_state_uptake}}
+#' \code{\link{calculate_diff_uptake}}
 #' 
-#' @examples ...
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' rep_mass_dat <- calculate_exp_masses_per_replicate(dat)
+#' plot_peptide_mass_measurement(rep_mass_dat)
 #' 
-#' @export 
+#' @export plot_peptide_mass_measurement
 
-plot_peptide_measurement <- function(replicate_masses_time_t){
+plot_peptide_mass_measurement <- function(rep_mass_dat,
+                                          protein = rep_mass_dat[["Protein"]][1],
+                                          state = rep_mass_dat[["State"]][1],
+                                          sequence = rep_mass_dat[["Sequence"]][1],
+                                          time_t = unique(rep_mass_dat[["Exposure"]])[3]){
   
-  avg_value <- mean(replicate_masses_time_t[["avg_exp_mass"]])
+  tmp_dat <- rep_mass_dat %>%
+    filter(Protein == protein,
+           State == state,
+           Sequence == sequence,
+           Exposure == time_t)
   
-  ggplot(replicate_masses_time_t, aes(x = avg_exp_mass, y = File)) +
+  avg_value <- mean(tmp_dat[["avg_exp_mass"]])
+  
+  ggplot(tmp_dat, aes(x = avg_exp_mass, y = File)) +
     geom_point(size = 3) +
-    geom_vline(xintercept = avg_value, color = "red", linetype = "dashed", size = 1.5)
+    geom_vline(xintercept = avg_value, color = "red", linetype = "dashed", size = 1.5) +
+    labs(y = "",
+         x = "Measured mass [Da]",
+         title = paste0("Peptide ", sequence, " in state ", state, " in ", time_t, " min"))
   
 }
 
 
+#' Show peptide mass measurement
 #' 
+#' @description Show the mass measurements
+#' from replicates for peptide in specific time point. 
 #' 
-#' @description ...
-#' 
-#' @param replicate_masses_time_t ...
+#' @param rep_mass_dat data produced by 
+#' \code{\link{calculate_exp_masses_per_replicate}} function.
+#' @param protein chosen protein. 
+#' @param state biological state for chosen protein.
+#' @param sequence sequence of chosen peptide.
+#' @param time_t time point of the measurement.
 #'
-#' @details ...
+#' @details This function shows the measurements of mass from
+#' different replicates for specific peptide in specific state
+#' in specific time point of measurement. 
 #' 
-#' @return ...
+#' @return a \code{\link{data.frame}} object.
 #' 
-#' @seealso ...
+#' @seealso 
+#' \code{\link{read_hdx}}
+#' \code{\link{calculate_exp_masses_per_replicate}}
+#' \code{\link{calculate_exp_masses}}
+#' \code{\link{calculate_state_uptake}}
+#' \code{\link{calculate_diff_uptake}}
 #' 
-#' @examples ...
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' rep_mass_dat <- calculate_exp_masses_per_replicate(dat)
+#' show_peptide_mass_measurement(rep_mass_dat)
 #' 
-#' @export 
+#' @export show_peptide_mass_measurement
 
-show_peptide_measurement <- function(replicate_masses_time_t){
+show_peptide_mass_measurement <- function(rep_mass_dat,
+                                          protein = rep_mass_dat[["Protein"]][1],
+                                          state = rep_mass_dat[["State"]][1],
+                                          sequence = rep_mass_dat[["Sequence"]][1],
+                                          time_t = unique(rep_mass_dat[["Exposure"]])[3]){
   
-  replicate_masses_time_t %>%
+  rep_mass_dat %>%
+    filter(Protein == protein,
+           State == state,
+           Sequence == sequence,
+           Exposure == time_t) %>%
     mutate(avg_exp_mass = round(avg_exp_mass, 4)) %>%
     select(Protein, Sequence, Start, End, Exposure, State, File, avg_exp_mass) %>%
     rename(`Mass` = avg_exp_mass)
@@ -51,54 +106,97 @@ show_peptide_measurement <- function(replicate_masses_time_t){
 }
 
 
+#' Plot peptide charge measurement
 #' 
+#' @description Plot the charge measurements
+#' from replicates for peptide in specific time point. 
 #' 
-#' @description ...
-#' 
-#' @param replicates_z_values_time_t ...
+#' @param dat data as imported by the \code{\link{read_hdx}} function.
+#' @param protein chosen protein. 
+#' @param state biological state for chosen protein.
+#' @param sequence sequence of chosen peptide.
+#' @param time_t time point of the measurement.
 #'
-#' @details ...
+#' @details This function shows the measurements of charge from
+#' different replicates for specific peptide in specific state
+#' in specific time point of measurement on the plot.
 #' 
-#' @return ...
+#' @return a \code{\link{ggplot}} object.
 #' 
-#' @seealso ...
+#' @seealso 
+#' \code{\link{read_hdx}}
+#' \code{\link{show_peptide_charge_measurement}}
 #' 
-#' @examples ...
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' plot_peptide_charge_measurement(dat)
 #' 
-#' @export 
+#' @export  plot_peptide_charge_measurement
 
-plot_peptide_z <- function(replicates_z_values_time_t){
+plot_peptide_charge_measurement <- function(dat, 
+                                            protein = rep_mass_dat[["Protein"]][1],
+                                            state = rep_mass_dat[["State"]][1],
+                                            sequence = rep_mass_dat[["Sequence"]][1],
+                                            time_t = unique(rep_mass_dat[["Exposure"]])[3]){
   
-  n_bins <- length(unique(replicates_z_values_time_t[["z"]]))
-  min_z <- min(replicates_z_values_time_t[["z"]])
-  max_z <- max(replicates_z_values_time_t[["z"]])
+  tmp_dat <- dat %>%
+    filter(Protein == protein,
+           State == state,
+           Sequence == sequence,
+           Exposure == time_t)
   
-  replicates_z_values_time_t %>%
+  n_bins <- length(unique(tmp_dat[["z"]]))
+  min_z <- min(tmp_dat[["z"]])
+  max_z <- max(tmp_dat[["z"]])
+  
+  tmp_dat %>%
     ggplot(aes(x = z)) +
     geom_histogram(aes(fill = File), bins = n_bins) + 
-    scale_x_continuous(breaks = c(min_z:max_z)) 
+    scale_x_continuous(breaks = c(min_z:max_z)) +
+    labs(title = paste0("Peptide ", sequence, " in state ", state, " in ", time_t, " min"))
   
 }
 
+#' Show peptide charge measurement
 #' 
+#' @description Show the charge measurements
+#' from replicates for peptide in specific time point. 
 #' 
-#' @description ...
-#' 
-#' @param replicates_z_values_time_t ...
+#' @param dat data as imported by the \code{\link{read_hdx}} function.
+#' @param protein chosen protein. 
+#' @param state biological state for chosen protein.
+#' @param sequence sequence of chosen peptide.
+#' @param time_t time point of the measurement.
 #'
-#' @details ...
+#' @details This function shows the measurements of charge from
+#' different replicates for specific peptide in specific state
+#' in specific time point of measurement.
 #' 
-#' @return ...
+#' @return a \code{\link{data.frame}} object.
 #' 
-#' @seealso ...
+#' @seealso 
+#' \code{\link{read_hdx}}
+#' \code{\link{plot_peptide_charge_measurement}}
 #' 
-#' @examples ...
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' show_peptide_charge_measurement(dat)
 #' 
-#' @export 
+#' @export show_peptide_charge_measurement
 
-show_peptide_z <- function(replicates_z_values_time_t){
+show_peptide_charge_measurement <- function(dat, 
+                                            protein = rep_mass_dat[["Protein"]][1],
+                                            state = rep_mass_dat[["State"]][1],
+                                            sequence = rep_mass_dat[["Sequence"]][1],
+                                            time_t = unique(rep_mass_dat[["Exposure"]])[3]){
   
-  replicates_z_values_time_t
+  dat %>%
+    filter(Protein == protein,
+           State == state,
+           Sequence == sequence,
+           Exposure == time_t) %>%
+    select(Protein, Sequence, Start, End, State, Exposure, File, z) %>%
+    arrange(z, File)
   
 }
 
@@ -119,6 +217,9 @@ show_peptide_z <- function(replicates_z_values_time_t){
 #' @param state biological state for chosen protein.
 #'
 #' @details The function \code{\link{create_replicate_dataset}}
+#' creates a dataset with information about how many
+#' replicates are for peptides in specific state in 
+#' time points of measurement. 
 #' 
 #' @return a \code{\link{data.frame}} object.
 #' 
@@ -137,7 +238,7 @@ create_replicate_dataset <- function(dat,
                                      protein = unique(dat[["Protein"]])[1], 
                                      state = dat[["State"]][1]){
   
-  dat %>%
+  res <- dat %>%
     calculate_exp_masses_per_replicate() %>%
     group_by(Start, End) %>%
     arrange(Start, End) %>%
@@ -145,10 +246,15 @@ create_replicate_dataset <- function(dat,
     filter(if (is.null(time_t)) Exposure < 99999 else Exposure == time_t) %>%
     filter(Protein == protein,
            State == state) %>%
-    select(Sequence, Exposure, Start, End, ID) %>%
+    select(ID, Sequence, Exposure, Start, End) %>%
     group_by(Sequence, Exposure, Start, End, ID) %>%
-    summarize(n = n())
+    summarize(n = n()) %>%
+    ungroup(.) %>%
+    arrange(Start, End, Exposure)
   
+  attr(res, "state") <- state
+  
+  res
 }
 
 #' Plot replicates histogram
@@ -187,6 +293,8 @@ create_replicate_dataset <- function(dat,
 #' @export plot_replicate_histogram 
 
 plot_replicate_histogram <- function(rep_dat){
+  
+  state <- attr(rep_dat, "state")
   
   if (length(unique(rep_dat[["Exposure"]])) == 1) {
     
