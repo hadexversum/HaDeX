@@ -28,6 +28,7 @@ of the terminationg group (H and OH). The source of the masses can be found here
 \url{http://www.matrixscience.com/help/aa_help.html}.
 }
 \seealso{
-\code{\link{read_hdx}} \code{\link{calculate_state_deuteration}} 
+\code{\link{read_hdx}} 
+\code{\link{calculate_state_uptake}} 
 \code{\link{plot_kinetics}}
 }

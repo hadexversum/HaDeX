@@ -101,7 +101,7 @@ plot_differential <- function(diff_uptake_dat,
                          Med_Sequence = diff_uptake_dat[["Med_Sequence"]],
                          value = diff_uptake_dat[[value]],
                          err_value = diff_uptake_dat[[err_value]])
-
+  
   differential_plot <- mutate(plot_dat, colour = case_when(
     value < interval_2[1] ~ "deepskyblue3",
     value < interval[1] ~ "deepskyblue1",
@@ -126,9 +126,9 @@ plot_differential <- function(diff_uptake_dat,
     theme(legend.title = element_blank(),
           legend.position = "bottom",
           legend.direction = "vertical")
-
+  
   return(differential_plot)
-
+  
 }
 
 #' Differential butterfly plot
@@ -177,51 +177,51 @@ plot_differential_butterfly <- function(diff_uptake_dat,
                                         uncertainty_type = "ribbon",
                                         show_confidence_limit = FALSE,
                                         confidence_level = 0.98){
-
+  
   uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars", "bars + line"))
-
+  
   if (theoretical) {
-
+    
     title <- "Theoretical butterfly differential plot"
-
+    
     if (fractional) {
-
+      
       # theoretical & fractional
       value <- "diff_theo_frac_deut_uptake"
       err_value <- "err_diff_theo_frac_deut_uptake"
       y_label <- "Fractional deuterium uptake difference [%]"
-
+      
     } else {
-
+      
       # theoretical & absolute
       value <- "diff_theo_deut_uptake"
       err_value <- "err_diff_theo_deut_uptake"
       y_label <- "Deuterium uptake difference [Da]"
-
+      
     }
-
+    
   } else {
-
+    
     title <- "Butterfly differential plot"
-
+    
     if (fractional) {
-
+      
       # experimental & fractional
       value <- "diff_frac_deut_uptake"
       err_value <- "err_diff_frac_deut_uptake"
       y_label <- "Fractional deuterium uptake difference [%]"
-
+      
     } else {
-
+      
       # experimental & absolute
       value <- "diff_deut_uptake"
       err_value <- "err_diff_deut_uptake"
       y_label <- "Deuterium uptake difference [Da]"
-
+      
     }
-
+    
   }
-
+  
   plot_dat <- data.frame(ID = diff_uptake_dat[["ID"]],
                          Exposure = as.factor(diff_uptake_dat[["Exposure"]]),
                          value = diff_uptake_dat[[value]],
@@ -229,7 +229,7 @@ plot_differential_butterfly <- function(diff_uptake_dat,
                          Sequence = diff_uptake_dat[["Sequence"]],
                          Start = diff_uptake_dat[["Start"]],
                          End = diff_uptake_dat[["End"]])
-
+  
   butterfly_differential_plot <- ggplot(plot_dat, aes(x = ID, y = value, color = Exposure)) +
     geom_point(aes(group = Exposure, color = Exposure)) +
     coord_cartesian(ylim = c(-.5, 1)) +
@@ -237,33 +237,33 @@ plot_differential_butterfly <- function(diff_uptake_dat,
          x = "Peptide ID",
          y = y_label) +
     theme(legend.position = "bottom")
-
+  
   if(uncertainty_type == "ribbon"){
-
+    
     butterfly_differential_plot <- butterfly_differential_plot +
       geom_ribbon(aes(x = ID, ymin = value - err_value, ymax = value + err_value, fill = Exposure), alpha = 0.5, size = 0, linetype = "blank")
-
+    
   } else if (uncertainty_type == "bars"){
-
+    
     butterfly_differential_plot <- butterfly_differential_plot +
       geom_errorbar(aes(x = ID, ymin = value - err_value, ymax = value + err_value, color = Exposure), width = 0.25, alpha = 0.5)
-
+    
   } else if (uncertainty_type == "bars + line"){
-
+    
     butterfly_differential_plot <- butterfly_differential_plot +
       geom_errorbar(aes(x = ID, ymin = value - err_value, ymax = value + err_value, color = Exposure), width = 0.25, alpha = 0.5) +
       geom_line()
   }
-
+  
   if(show_confidence_limit){
-
+    
     t_value <- qt(c((1 - confidence_level)/2, 1-(1 - confidence_level)/2), df = 2)[2]
     x_threshold <- t_value * mean(plot_dat[["err_value"]], na.rm = TRUE)/sqrt(length(plot_dat))
-
+    
     butterfly_differential_plot <- butterfly_differential_plot +
       geom_hline(aes(yintercept = x_threshold), linetype = "dashed", color = "black", size = .7) +
       geom_hline(aes(yintercept = -x_threshold), linetype = "dashed", color = "black", size = .7)
-
+    
   }
   return(HaDeXify(butterfly_differential_plot))
 }
@@ -291,7 +291,6 @@ plot_differential_butterfly <- function(diff_uptake_dat,
 #'
 #' @seealso
 #' \code{\link{create_diff_uptake_dataset}}
-#' \code{\link{generate_chiclet_differential_data}}
 #'
 #' @examples
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
@@ -304,50 +303,50 @@ plot_differential_chiclet <- function(diff_uptake_dat,
                                       theoretical = FALSE,
                                       fractional = FALSE,
                                       show_uncertainty = FALSE){
-
-
+  
+  
   if (theoretical) {
-
+    
     if (fractional) {
-
+      
       # theoretical & fractional
       value <- "diff_theo_frac_deut_uptake"
       err_value <- "err_diff_theo_frac_deut_uptake"
       title <- "Theoretical chiclet differential plot"
       fill <- "Fractional DU Diff"
-
+      
     } else {
-
+      
       # theoretical & absolute
       value <- "diff_theo_deut_uptake"
       err_value <- "err_diff_theo_deut_uptake"
       title <- "Theoretical chiclet differential plot"
       fill <- "DU Diff"
-
+      
     }
-
+    
   } else {
-
+    
     if (fractional) {
-
+      
       # experimental & fractional
       value <- "diff_frac_deut_uptake"
       err_value <- "err_diff_frac_deut_uptake"
       title <- "Chiclet differential plot"
       fill <- "Fractional DU Diff"
-
+      
     } else {
-
+      
       # experimental & absolute
       value <- "diff_deut_uptake"
       err_value <- "err_diff_deut_uptake"
       title <- "Chiclet differential plot"
       fill <- "DU Diff"
-
+      
     }
-
+    
   }
-
+  
   plot_dat <- data.frame(ID = diff_uptake_dat[["ID"]],
                          Exposure = as.factor(diff_uptake_dat[["Exposure"]]),
                          value = diff_uptake_dat[[value]],
@@ -355,7 +354,7 @@ plot_differential_chiclet <- function(diff_uptake_dat,
                          Sequence = diff_uptake_dat[["Sequence"]],
                          Start = diff_uptake_dat[["Start"]],
                          End = diff_uptake_dat[["End"]])
-
+  
   chiclet_differential_plot <- ggplot(plot_dat, aes(y = Exposure, x = ID)) +
     geom_tile(aes(fill = value)) +
     scale_fill_gradient2(low = "blue", mid = "white", high = "red", guide = guide_legend(keywidth = 3)) +
@@ -366,17 +365,17 @@ plot_differential_chiclet <- function(diff_uptake_dat,
     theme(legend.position = "bottom",
           legend.box = "vertical",
           legend.key = element_rect(colour = 'black', size = 1))
-
+  
   if(show_uncertainty){
-
+    
     chiclet_differential_plot <- chiclet_differential_plot +
       geom_point(aes(size = err_value), shape = 3) +
       labs(size = "Err")
-
+    
   }
-
+  
   return(chiclet_differential_plot)
-
+  
 }
 
 #' Volcano plot
@@ -392,11 +391,11 @@ plot_differential_chiclet <- function(diff_uptake_dat,
 #' @param show_confidence_limits logical, indicates if the hybrid testing
 #' confidence intervals are shown.
 #' @param confidence_level confidence level for the test, from range [0, 1]. It
-#' should be the same as used in \code{\link{generate_volcano_dataset}} function.
+#' should be the same as used in \code{\link{create_volcano_dataset}} function.
 #'
-#' @details The data produced by \code{\link{generate_volcano_dataset}} are plotted
+#' @details The data produced by \code{\link{create_volcano_dataset}} are plotted
 #' in the form of a volcano plot. The generation of the data is described in the documentation
-#' of \code{\link{generate_volcano_dataset}} function. The confidence limit on
+#' of \code{\link{create_volcano_dataset}} function. The confidence limit on
 #' P-value is calculated based on the confidence level. The confidence limit on deuterium
 #' uptake difference is calculated using the Houde test for the time point of measurement
 #' from the provided data. The confidence limits are indicated by the red dotted
@@ -430,38 +429,38 @@ plot_volcano <- function(vol_data,
                          adjust_axes = TRUE,
                          show_confidence_limits = FALSE,
                          confidence_level = 0.98) {
-
+  
   volcano_plot <- ggplot(vol_data, aes(x = D_diff, y = log_p_value)) +
     geom_point() +
     geom_errorbar(aes(xmin = D_diff - Uncertainty, xmax = D_diff + Uncertainty), alpha = 0.2) +
     labs(title = paste0("Volcano Plot ", state_1, " " , state_2),
          x = "Mass difference [Da]",
          y = "-log(P value)")
-
+  
   if(adjust_axes){
-
+    
     x_max <- ceiling(max(abs(vol_data[["D_diff"]])))
     y_max <- ceiling(max(vol_data[["log_p_value"]])) + 2
-
+    
     volcano_plot <- volcano_plot +
       coord_cartesian(xlim = c(-x_max, x_max), ylim = c(0, y_max), expand = FALSE)
-
+    
   }
-
+  
   if(show_confidence_limits){
-
+    
     y_threshold <- -log(1 - confidence_level)
-
+    
     t_value <- qt(c((1 - confidence_level)/2, 1-(1 - confidence_level)/2), df = 2)[2]
     x_threshold <- t_value * mean(vol_data[["Uncertainty"]], na.rm = TRUE)/sqrt(length(vol_data))
-
+    
     volcano_plot <- volcano_plot +
       geom_segment(aes(x = -x_threshold, xend = -x_threshold, y = y_threshold, yend = Inf), linetype = "dashed", color = "red") +
       geom_segment(aes(x = x_threshold, xend = x_threshold, y = y_threshold, yend = Inf), linetype = "dashed", color = "red") +
       geom_segment(aes(y = y_threshold, yend = y_threshold, x = -Inf, xend = -x_threshold), linetype = "dashed", color = "red") +
       geom_segment(aes(y = y_threshold, yend = y_threshold, x = x_threshold, xend = Inf), linetype = "dashed", color = "red")
-
+    
   }
-
+  
   return(volcano_plot)
 }

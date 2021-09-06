@@ -227,7 +227,7 @@ create_kinetic_dataset <- function(dat,
 #' parameters.
 #' 
 #' @param kin_dat calculated kinetic data by \code{\link{calculate_kinetics}} 
-#' or \code{\link{calculate_peptide_kinetics}} or \code{\link{create_kinetics_dataset}}
+#' or \code{\link{calculate_peptide_kinetics}} or \code{\link{create_kinetic_dataset}}
 #' function.
 #' @param theoretical \code{logical}, determines if plot shows theoretical values.
 #' @param fractional \code{logical}, determines if plot shows fractional values.
@@ -320,7 +320,7 @@ show_kinetic_data <- function(kin_dat,
 #' @importFrom ggplot2 ggplot aes geom_point geom_ribbon geom_line scale_y_continuous scale_x_log10
 #' 
 #' @param kin_dat calculated kinetic data by \code{\link{calculate_kinetics}} 
-#' or \code{\link{calculate_peptide_kinetics}} or \code{\link{create_kinetics_dataset}}
+#' or \code{\link{calculate_peptide_kinetics}} or \code{\link{create_kinetic_dataset}}
 #' function.
 #' @param theoretical \code{logical}, determines if plot shows theoretical values.
 #' @param fractional \code{logical}, determines if plot shows fractional values.

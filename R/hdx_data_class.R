@@ -75,7 +75,7 @@ validate_hdx_data <- function(hdx_data, msg = ""){
 #' 
 #' @inheritParams new_hdx_data
 #' 
-#' @description The wrapper function for the constructor of the \code{\link{hdx_class}} and 
+#' @description The wrapper function for the constructor of the \code{\link{hdx_data}} and 
 #' its validator. Used in \code{\link{read_hdx}} function.
 #' 
 #' @return \code{\link{hdx_data}} object.

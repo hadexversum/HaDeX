@@ -28,7 +28,7 @@ relation to 0.}
 confidence intervals are shown.}
 
 \item{confidence_level}{confidence level for the test, from range [0, 1]. It
-should be the same as used in \code{\link{generate_volcano_dataset}} function.}
+should be the same as used in \code{\link{create_volcano_dataset}} function.}
 }
 \value{
 a \code{\link{ggplot}} object.
@@ -37,9 +37,9 @@ a \code{\link{ggplot}} object.
 Volcano plot
 }
 \details{
-The data produced by \code{\link{generate_volcano_dataset}} are plotted
+The data produced by \code{\link{create_volcano_dataset}} are plotted
 in the form of a volcano plot. The generation of the data is described in the documentation
-of \code{\link{generate_volcano_dataset}} function. The confidence limit on
+of \code{\link{create_volcano_dataset}} function. The confidence limit on
 P-value is calculated based on the confidence level. The confidence limit on deuterium
 uptake difference is calculated using the Houde test for the time point of measurement
 from the provided data. The confidence limits are indicated by the red dotted

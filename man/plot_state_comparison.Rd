@@ -7,8 +7,7 @@
 plot_state_comparison(dat, theoretical = FALSE, fractional = FALSE)
 }
 \arguments{
-\item{dat}{data produced by \code{\link{calculate_state_deuteration}} or
-\code{\link{generate_comparison_dataset}} function.}
+\item{dat}{data produced by \code{\link{calculate_state_uptake}} function.}
 
 \item{theoretical}{\code{logical}, determines if values are theoretical.}
 
@@ -21,7 +20,7 @@ a \code{ggplot} object.
 Plot state comparison
 }
 \details{
-Function \code{\link{plot_comparison}} presents provided 
+Function \code{\link{plot_state_comparison}} presents provided 
 data in a form of comparison plot, for peptides for chosen protein in chosen states,
 at one time point of measurement at once. On X-axis there is a position in a sequence, 
 with length of a segment of each peptide representing its length. On Y-axis there 
@@ -31,12 +30,10 @@ This plot is visible in GUI.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-comparison_dat <- generate_comparison_dataset(dat)
+comparison_dat <- calculate_state_uptake(dat)
 plot_state_comparison(comparison_dat)
 
 }
 \seealso{
-\code{\link{calculate_state_deuteration}}  
-\code{\link{generate_comparison_dataset}}
-\code{\link{generate_comparison_data}}
+\code{\link{calculate_state_uptake}}
 }

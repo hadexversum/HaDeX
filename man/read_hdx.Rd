@@ -25,11 +25,11 @@ For the files of HDeXaminer origin, the rows with no complete information (e.q. 
 `Exp Cent` value) are removed. The `Confidence` column is preserved as the user should 
 have impact on accepting rows based on their Confidence flag. Moreover, those files need 
 action from the user - to confirm data processing (e.q. FD time point), choose accepted 
-confidence values and make some change of the labels use \code{\link{upadate_hdexaminer_file}}
+confidence values and make some change of the labels use \code{\link{update_hdexaminer_file}}
 function. 
 IMPORTANT! The files of HDeXaminer origin MUST be processed by hand or by 
-\code{\link{upadate_hdexaminer_file}} function to fit the input of processing functions 
-e.q. \code{\link{calculate_state_deuteration}} or \code{\link{calculate_kinetics}}.
+\code{\link{update_hdexaminer_file}} function to fit the input of processing functions 
+e.q. \code{\link{calculate_state_uptake}} or \code{\link{calculate_kinetics}}.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", 
@@ -40,5 +40,5 @@ head(dat)
 \seealso{
 \code{\link{update_hdexaminer_file}}
 \code{\link{create_control_dataset}}
-\code{\link{calculate_state_deuteration}}
+\code{\link{calculate_state_uptake}}
 }

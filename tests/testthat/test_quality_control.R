@@ -2,7 +2,7 @@ context("quality_control in test")
 
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 
-ref_dat <- data.frame(out_time = c(5, 25, 120, 1440),
+ref_dat <- data.frame(time_100 = c(5, 25, 120, 1440),
                       avg_err_state_1 = c(1.0371101576,  0.7297903193,   0.7442617735,    0.6476667184),
                       sd_err_state_1 = c(0.7664453626,  0.5406361520,   0.4309586306,    0.3544872867),
                       avg_err_state_2 = c(1.3311503092,  1.1825446202,   1.0238714977,    0.8902793214),
@@ -39,8 +39,8 @@ lapply(times, function(time){
     
     test_name <- paste0("quality_control_dataset-", time, "min-", value)
     test_that(test_name,
-              expect_equal(ref_dat[ref_dat[["out_time"]] == time, value],
-                           result[result[["out_time"]] == time, value]
+              expect_equal(ref_dat[ref_dat[["time_100"]] == time, value],
+                           result[result[["time_100"]] == time, value]
               )
     )
     

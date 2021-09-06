@@ -24,6 +24,7 @@ on how the data is aggregated or how the uncertainty is calculated, see the
 documentation.
 }
 \seealso{
-\code{\link{read_hdx}} \code{\link{calculate_exp_masses_per_replicate}}
-\code{\link{calculate_state_deuteration}}
+\code{\link{read_hdx}} 
+\code{\link{calculate_exp_masses_per_replicate}}
+\code{\link{calculate_state_uptake}}
 }

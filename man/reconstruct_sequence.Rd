@@ -11,7 +11,7 @@ reconstruct_sequence(dat, protein = dat[["Protein"]][1], end = NULL)
 
 \item{protein}{the protein of which the structure is to be reconstructed}
 
-\item{end}{\code{\link{numerical}}, end position of the protein, optional.
+\item{end}{\code{\link{numeric}}, end position of the protein, optional.
 If not provided, is read from the file. It allows to prelongate the sequence
 if the end of the sequence is cut.}
 }

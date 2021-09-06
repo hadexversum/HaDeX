@@ -27,9 +27,12 @@
 #' 
 #' @return \code{dat} - a \code{\link{data.frame}} with validated and updated content.
 #' 
-#' @seealso \code{\link{read_hdx}} \code{\link{calculate_kinetics}} \code{\link{calculate_state_deuteration}} 
-#' \code{\link{plot_coverage}} \code{\link{plot_position_frequency}}
-#' \code{\link{prepare_dataset}} \code{\link{quality_control}} \code{\link{reconstruct_sequence}}
+#' @seealso 
+#' \code{\link{read_hdx}} 
+#' \code{\link{calculate_kinetics}} 
+#' \code{\link{plot_coverage}} 
+#' \code{\link{plot_position_frequency}}
+#' \code{\link{reconstruct_sequence}}
 #' 
 #' @examples
 #' # read example data 

@@ -3,6 +3,8 @@
 #' @description Plot the mass measurements
 #' from replicates for peptide in specific time point. 
 #' 
+#' @importFrom ggplot2 geom_vline
+#' 
 #' @param rep_mass_dat data produced by 
 #' \code{\link{calculate_exp_masses_per_replicate}} function.
 #' @param protein chosen protein. 
@@ -111,6 +113,8 @@ show_peptide_mass_measurement <- function(rep_mass_dat,
 #' @description Plot the charge measurements
 #' from replicates for peptide in specific time point. 
 #' 
+#' @importFrom ggplot2 geom_histogram scale_x_continuous
+#' 
 #' @param dat data as imported by the \code{\link{read_hdx}} function.
 #' @param protein chosen protein. 
 #' @param state biological state for chosen protein.
@@ -134,10 +138,10 @@ show_peptide_mass_measurement <- function(rep_mass_dat,
 #' @export  plot_peptide_charge_measurement
 
 plot_peptide_charge_measurement <- function(dat, 
-                                            protein = rep_mass_dat[["Protein"]][1],
-                                            state = rep_mass_dat[["State"]][1],
-                                            sequence = rep_mass_dat[["Sequence"]][1],
-                                            time_t = unique(rep_mass_dat[["Exposure"]])[3]){
+                                            protein = dat[["Protein"]][1],
+                                            state = dat[["State"]][1],
+                                            sequence = dat[["Sequence"]][1],
+                                            time_t = unique(dat[["Exposure"]])[3]){
   
   tmp_dat <- dat %>%
     filter(Protein == protein,
@@ -185,10 +189,10 @@ plot_peptide_charge_measurement <- function(dat,
 #' @export show_peptide_charge_measurement
 
 show_peptide_charge_measurement <- function(dat, 
-                                            protein = rep_mass_dat[["Protein"]][1],
-                                            state = rep_mass_dat[["State"]][1],
-                                            sequence = rep_mass_dat[["Sequence"]][1],
-                                            time_t = unique(rep_mass_dat[["Exposure"]])[3]){
+                                            protein = dat[["Protein"]][1],
+                                            state = dat[["State"]][1],
+                                            sequence = dat[["Sequence"]][1],
+                                            time_t = unique(dat[["Exposure"]])[3]){
   
   dat %>%
     filter(Protein == protein,
@@ -261,6 +265,8 @@ create_replicate_dataset <- function(dat,
 #' 
 #' @description Plot histogram on number of replicates per
 #' peptide in one or multiple time point of measurement.
+#' 
+#' @importFrom ggplot2 aes_string
 #' 
 #' @param rep_dat replicate data, created by 
 #' \code{\link{create_replicate_dataset}} function.

@@ -201,9 +201,6 @@ calculate_diff_uptake  <- function(dat,
 #' @seealso 
 #' \code{\link{read_hdx}}
 #' \code{\link{calculate_state_uptake}}
-#' \code{\link{generate_butterfly_plot}} 
-#' \code{\link{generate_comparison_plot}}
-#' \code{\link{generate_chiclet_plot}}
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
@@ -267,7 +264,6 @@ create_state_uptake_dataset <- function(dat,
 #' \code{\link{read_hdx}}
 #' \code{\link{calculate_state_uptake}}
 #' \code{\link{create_state_uptake_dataset}} 
-#' \code{\link{generate_comparison_plot}}
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
@@ -334,8 +330,8 @@ create_uptake_dataset <- function(dat,
 #' @seealso 
 #' \code{\link{read_hdx}}
 #' \code{\link{calculate_diff_uptake}}
-#' \code{\link{plot_butterfly_differential}}
-#' \code{\link{plot_chiclet_differential}}
+#' \code{\link{plot_differential_butterfly}}
+#' \code{\link{plot_differential_chiclet}}
 #' \code{\link{plot_differential}}
 #' 
 #' @examples 
@@ -414,8 +410,6 @@ create_diff_uptake_dataset <- function(dat,
 #' @seealso 
 #' \code{\link{read_hdx}}
 #' \code{\link{calculate_exp_masses_per_replicate}}
-#' \code{\link{generate_volcano_plot}}  
-#' \code{\link{generate_volcano_data}}
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))

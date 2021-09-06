@@ -47,5 +47,4 @@ plot_differential_chiclet(diff_uptake_dat)
 }
 \seealso{
 \code{\link{create_diff_uptake_dataset}}
-\code{\link{generate_chiclet_differential_data}}
 }

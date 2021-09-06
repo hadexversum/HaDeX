@@ -28,7 +28,7 @@ overlap_dist_dat <- create_overlap_distribution_dataset(dat = dat,
                                                         state = chosen_state,
                                                         protein_sequence = reconstruct_sequence(dat))
 
-overlap_dist_plot <- plot_overlap_distribution(dat = overlap_dist_dat,
+overlap_dist_plot <- plot_overlap_distribution(overlap_dist_dat = overlap_dist_dat,
                                                start = 1)
 
 expect_doppelganger("Overlap Distribution Plot", overlap_dist_plot)
@@ -44,6 +44,7 @@ result_tmp <- show_overlap_data(dat,
                                 state = chosen_state,
                                 start = min(dat[["Start"]]),
                                 end = max(dat[["End"]]))
+
 test_that("show_overlap_data colnames",
           expect_equal(colnames(result_tmp),
                        c("Protein", "Sequence", "Start", "End")

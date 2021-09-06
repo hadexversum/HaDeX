@@ -144,7 +144,7 @@ diff_uptake_dat <- create_diff_uptake_dataset(dat = dat,
 ## PLOT_DIFFERENTIAL ##
 #######################
 
-theo_frac_2_differential_plot <- plot_differential(dat = diff_uptake_dat[diff_uptake_dat[["Exposure"]] == chosen_time, ],
+theo_frac_2_differential_plot <- plot_differential(diff_uptake_dat = diff_uptake_dat[diff_uptake_dat[["Exposure"]] == chosen_time, ],
                                                    theoretical = T,
                                                    fractional = T,
                                                    confidence_level = chosen_confidence_level,
@@ -152,7 +152,7 @@ theo_frac_2_differential_plot <- plot_differential(dat = diff_uptake_dat[diff_up
 
 expect_doppelganger("Theo Frac Differential Plot (2I) ", theo_frac_2_differential_plot)
 
-theo_2_differential_plot <- plot_differential(dat = diff_uptake_dat[diff_uptake_dat[["Exposure"]] == chosen_time, ],
+theo_2_differential_plot <- plot_differential(diff_uptake_dat = diff_uptake_dat[diff_uptake_dat[["Exposure"]] == chosen_time, ],
                                               theoretical = T,
                                               fractional = F,
                                               confidence_level = chosen_confidence_level,
@@ -160,7 +160,7 @@ theo_2_differential_plot <- plot_differential(dat = diff_uptake_dat[diff_uptake_
 
 expect_doppelganger("Theo Differential Plot (2I) ", theo_2_differential_plot)
 
-frac_1_differential_plot <- plot_differential(dat = diff_uptake_dat[diff_uptake_dat[["Exposure"]] == chosen_time, ],
+frac_1_differential_plot <- plot_differential(diff_uptake_dat = diff_uptake_dat[diff_uptake_dat[["Exposure"]] == chosen_time, ],
                                               theoretical = F,
                                               fractional = T,
                                               confidence_level = chosen_confidence_level,
@@ -168,7 +168,7 @@ frac_1_differential_plot <- plot_differential(dat = diff_uptake_dat[diff_uptake_
 
 expect_doppelganger("Frac Differential Plot (1I) ", frac_1_differential_plot)
 
-differential_plot <- plot_differential(dat = diff_uptake_dat[diff_uptake_dat[["Exposure"]] == chosen_time, ],
+differential_plot <- plot_differential(diff_uptake_dat = diff_uptake_dat[diff_uptake_dat[["Exposure"]] == chosen_time, ],
                                        theoretical = F,
                                        fractional = F,
                                        confidence_level = chosen_confidence_level,
@@ -222,29 +222,29 @@ theo_frac_differential_butterfly_plot <- plot_differential_butterfly(diff_uptake
 expect_doppelganger("Theo Frac Differential Butterfly Plot (ribbon)", theo_frac_differential_butterfly_plot)
 
 frac_differential_butterfly_plot <- plot_differential_butterfly(diff_uptake_dat, 
-                                                                     theoretical = F,
-                                                                     fractional = T,
-                                                                     uncertainty = "bars",
-                                                                     show_confidence_limit = T,
-                                                                     confidence_level = chosen_confidence_level)
+                                                                theoretical = F,
+                                                                fractional = T,
+                                                                uncertainty = "bars",
+                                                                show_confidence_limit = T,
+                                                                confidence_level = chosen_confidence_level)
 
 expect_doppelganger("Frac Differential Butterfly Plot (bars)", frac_differential_butterfly_plot)
 
 theo_differential_butterfly_plot <- plot_differential_butterfly(diff_uptake_dat, 
-                                                                     theoretical = T,
-                                                                     fractional = F,
-                                                                     uncertainty = "bars + line",
-                                                                     show_confidence_limit = F,
-                                                                     confidence_level = chosen_confidence_level)
+                                                                theoretical = T,
+                                                                fractional = F,
+                                                                uncertainty = "bars + line",
+                                                                show_confidence_limit = F,
+                                                                confidence_level = chosen_confidence_level)
 
 expect_doppelganger("Theo Differential Butterfly Plot (bars + line)", theo_differential_butterfly_plot)
 
 differential_butterfly_plot <- plot_differential_butterfly(diff_uptake_dat, 
-                                                                     theoretical = F,
-                                                                     fractional = F,
-                                                                     uncertainty = "ribbon",
-                                                                     show_confidence_limit = F,
-                                                                     confidence_level = chosen_confidence_level)
+                                                           theoretical = F,
+                                                           fractional = F,
+                                                           uncertainty = "ribbon",
+                                                           show_confidence_limit = F,
+                                                           confidence_level = chosen_confidence_level)
 
 expect_doppelganger("Differential Butterfly Plot", differential_butterfly_plot)
 

@@ -6,7 +6,7 @@
 #' 
 #' @param dat data read by \code{\link{read_hdx}}
 #' @param protein the protein of which the structure is to be reconstructed
-#' @param end \code{\link{numerical}}, end position of the protein, optional.
+#' @param end \code{\link{numeric}}, end position of the protein, optional.
 #' If not provided, is read from the file. It allows to prelongate the sequence
 #' if the end of the sequence is cut.
 #' 

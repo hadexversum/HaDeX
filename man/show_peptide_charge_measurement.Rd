@@ -6,10 +6,10 @@
 \usage{
 show_peptide_charge_measurement(
   dat,
-  protein = rep_mass_dat[["Protein"]][1],
-  state = rep_mass_dat[["State"]][1],
-  sequence = rep_mass_dat[["Sequence"]][1],
-  time_t = unique(rep_mass_dat[["Exposure"]])[3]
+  protein = dat[["Protein"]][1],
+  state = dat[["State"]][1],
+  sequence = dat[["Sequence"]][1],
+  time_t = unique(dat[["Exposure"]])[3]
 )
 }
 \arguments{

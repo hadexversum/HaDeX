@@ -90,34 +90,6 @@ replicate_masses <- reactive({
   
 })
 
-##
-
-# replicate_masses_time_t <- reactive({
-#   
-#   validate(need(input[["rep_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
-#   
-#   replicate_masses() %>%
-#     filter(Protein == input[["chosen_protein"]]) %>%
-#     filter(State == input[["rep_state"]]) %>%
-#     filter(Sequence == rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2][[1]]) %>%
-#     filter(Exposure == as.numeric(input[["rep_time"]]))
-# 
-# })
-
-##
-
-# replicates_z_values_time_t <- reactive({
-#   
-#   validate(need(input[["rep_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
-#   
-#   dat() %>%
-#     filter(Protein == input[["chosen_protein"]]) %>%
-#     filter(State == input[["rep_state"]]) %>%
-#     filter(Sequence == rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2][[1]]) %>%
-#     filter(Exposure == as.numeric(input[["rep_time"]])) %>%
-#     select(Protein, Sequence, Start, End, Exposure, State, File, z)
-#   
-# })
 
 #################################
 ######### PLOT ##################
