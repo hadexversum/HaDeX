@@ -465,7 +465,7 @@ create_volcano_dataset <- function(dat,
     st_1 <- vol_dat[i, "masses_1"][[1]]
     st_2 <- vol_dat[i, "masses_2"][[1]]
     
-    if(length(st_1) == 1) {
+    if(length(st_1) == 1 | all(st_1 == st_2)) {
       p_value <- -1
     } else if (length(st_2) == 1){
       p_value <- -1
