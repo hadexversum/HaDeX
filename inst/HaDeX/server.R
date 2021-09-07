@@ -286,7 +286,7 @@ server <- function(input, output, session) {
   
   max_range <- reactive({
     
-    max(max_range_from_file(), as.numeric(input[["sequence_length"]]))
+    max(max_range_from_file(), as.numeric(input[["sequence_length"]]), na.rm = T)
 
   })
 
