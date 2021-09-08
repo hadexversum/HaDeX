@@ -13,7 +13,7 @@ add_stat_dependency(
 }
 \arguments{
 \item{calc_dat}{data produced by \code{\link{calculate_diff_uptake}}
-funcion.}
+function.}
 
 \item{confidence_level}{confidence level - from range [0, 1].}
 
@@ -23,28 +23,28 @@ funcion.}
 }
 \value{
 calc_dat extended by column specifying if given peptide is relevant in
-given confidence limit. The value of the confidence limit is added as an attribute 
+given confidence limit. The value of the confidence limit is added as an attribute
 - as well as parameters used to calculate (theoretical/fractional).
 }
 \description{
 Returns relation with confidence limits for each peptide.
 }
 \details{
-This function checks if the values are statistically significant based 
-on provided criteria using Houde test.
+This function checks if the values are statistically significant based
+on provided criteria using Houde's confidence intervals test.
 }
 \examples{
-dat <- read_hdx(system.file(package = "HaDeX", 
+dat <- read_hdx(system.file(package = "HaDeX",
                             "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 calc_dat <- calculate_diff_uptake(dat)
 result <- add_stat_dependency(calc_dat)
-head(result)                            
+head(result)
 
 
 }
 \references{
-Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). 
-The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in 
+Houde, D., Berkowitz, S.A., and Engen, J.R. (2011).
+The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in
 Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
 }
 \seealso{

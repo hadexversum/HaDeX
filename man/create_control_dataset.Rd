@@ -29,11 +29,11 @@ Create dataset with control
 }
 \details{
 Function \code{\link{create_control_dataset}}
-creates a dataset (similar to the output of \code{\link{read_hdx}} 
+creates a dataset (similar to the output of \code{\link{read_hdx}}
 function), with maximal exchange control for all the states,
-based on provided parameters. The other functions are operating 
-within a state, so the control is prepared for each state. 
-The chosen maximal exchange control is distinguishable by the value 
+based on provided parameters. The other functions are operating
+within a state, so the control is prepared for each state.
+The chosen maximal exchange control is distinguishable by the value
 `99999` in `Exposure` control.
 }
 \examples{

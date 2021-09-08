@@ -37,27 +37,28 @@ deut_values <- colnames(ref_dat)[-1]
 ###########################
 
 lapply(times, function(time){
-  
-  result_tmp <- calculate_diff_uptake(dat = dat, 
-                                      protein = chosen_protein, 
-                                      states = chosen_states, 
-                                      time_0 = chosen_time_0, 
-                                      time_t = time, 
-                                      time_100 = chosen_time_100, 
+
+  result_tmp <- calculate_diff_uptake(dat = dat,
+                                      protein = chosen_protein,
+                                      states = chosen_states,
+                                      time_0 = chosen_time_0,
+                                      time_t = time,
+                                      time_100 = chosen_time_100,
                                       deut_part = deut_part)
-  
+
   lapply(deut_values, function(deut_value){
-    
+
     test_name <- paste0("calculate_diff_uptake-", time, "min-", deut_value)
-    
+
     test_that(test_name,
               expect_equal(ref_dat[ref_dat[["Exposure"]] == time, deut_value],
-                           result_tmp[result_tmp[["Sequence"]] == chosen_peptide & result_tmp[["Exposure"]] == time, deut_value][[1]]
+                           result_tmp[result_tmp[["Sequence"]] == chosen_peptide &
+                                        result_tmp[["Exposure"]] == time, ..deut_value][[1]]
               )
     )
-    
+
   })
-  
+
 })
 
 ################################
@@ -65,27 +66,28 @@ lapply(times, function(time){
 ################################
 
 lapply(times, function(time){
-  
-  result_tmp <- create_diff_uptake_dataset(dat = dat, 
-                                           protein = chosen_protein, 
-                                           state_1 = chosen_states[1], 
+
+  result_tmp <- create_diff_uptake_dataset(dat = dat,
+                                           protein = chosen_protein,
+                                           state_1 = chosen_states[1],
                                            state_2 = chosen_states[2],
-                                           time_0 = chosen_time_0, 
-                                           time_100 = chosen_time_100, 
+                                           time_0 = chosen_time_0,
+                                           time_100 = chosen_time_100,
                                            deut_part = deut_part)
-  
+
   lapply(deut_values, function(deut_value){
-    
+
     test_name <- paste0("create_diff_uptake_dataset-", time, "min-", deut_value)
-    
+
     test_that(test_name,
               expect_equal(ref_dat[ref_dat[["Exposure"]] == time, deut_value],
-                           result_tmp[result_tmp[["Sequence"]] == chosen_peptide & result_tmp[["Exposure"]] == time, deut_value][[1]]
+                           result_tmp[result_tmp[["Sequence"]] == chosen_peptide &
+                                        result_tmp[["Exposure"]] == time, ..deut_value][[1]]
               )
     )
-    
+
   })
-  
+
 })
 
 ############################
@@ -94,7 +96,7 @@ lapply(times, function(time){
 
 ## TO DO test p value
 
-dat_tmp <- create_volcano_dataset(dat = dat, 
+dat_tmp <- create_volcano_dataset(dat = dat,
                                   protein = chosen_protein,
                                   state_1 = chosen_states[1],
                                   state_2 = chosen_states[2],
@@ -102,17 +104,18 @@ dat_tmp <- create_volcano_dataset(dat = dat,
                                   confidence_level = chosen_confidence_level)
 
 lapply(times, function(time){
-  
+
   test_name <- paste0("create_volcano_dataset-", time, "min")
+
   test_that("",
-            expect_equal(dat_tmp[dat_tmp[["Sequence"]] == chosen_peptide & dat_tmp[["Exposure"]] == time, "D_diff"],
+            expect_equal(dat_tmp[dat_tmp[["Sequence"]] == chosen_peptide & dat_tmp[["Exposure"]] == time, "D_diff"][[1]],
                          ref_dat[ref_dat[["Exposure"]] == time, "diff_deut_uptake"]
             )
   )
-  
+
 })
-  
-  
+
+
 
 
 
