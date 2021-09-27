@@ -19,7 +19,7 @@ calculate_diff_uptake(
 
 \item{protein}{chosen protein.}
 
-\item{states}{vector of two states for chosen protein. Order is important, as the
+\item{states}{vector of two states for chosen protein. Order is important, as the 
 deuterium uptake difference is calculated as state_1 - state_2.}
 
 \item{time_0}{minimal exchange control time point of measurement.}
@@ -29,7 +29,7 @@ are done.}
 
 \item{time_100}{maximal exchange control time point of measurement.}
 
-\item{deut_part}{deuterium percentage in solution used in experiment,
+\item{deut_part}{deuterium percentage in solution used in experiment, 
 value from range [0, 1].}
 }
 \value{
@@ -42,9 +42,9 @@ Calculate differential uptake
 Function \code{\link{calculate_diff_uptake}} calculates
 differential values based on provided criteria for peptides for chosen
 protein in selected states. The methods of calculation of deuterium uptake
-difference, fractional deuterium uptake difference with respect to
+difference, fractional deuterium uptake difference with respect to 
 minimal/maximal exchange controls or theoretical tabular values are
-thoroughly described in the `Data processing` article, as well as
+thoroughly described in the `Data processing` article, as well as 
 law of propagation of uncertainty, used to calculate uncertainty.
 }
 \examples{

@@ -39,6 +39,8 @@ server <- function(input, output, session) {
   ##
 
   data_source <- reactive({
+    
+    # browser()
 
     attr(dat_in(), "source")
 
@@ -219,6 +221,7 @@ server <- function(input, output, session) {
   times_from_file <- reactive({
     
     times_from_file <- round(unique(dat()[["Exposure"]]), 3)
+    
     times_from_file[order(times_from_file)]
     
   })
@@ -437,7 +440,7 @@ server <- function(input, output, session) {
 
   ### TAB: VOLCANO ###
 
-  source("server/tab_volcano.R", local = TRUE)
+  # source("server/tab_volcano.R", local = TRUE)
 
   ### TAB: REPLICATES ###
 

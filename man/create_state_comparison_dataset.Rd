@@ -19,7 +19,7 @@ create_state_comparison_dataset(
 
 \item{protein}{chosen protein.}
 
-\item{states}{vector of states (for chosen protein), for which the
+\item{states}{vector of states (for chosen protein), for which the 
 calculations are done.}
 
 \item{time_0}{minimal exchange control time point of measurement.}
@@ -29,7 +29,7 @@ are done.}
 
 \item{time_100}{maximal exchange control time point of measurement.}
 
-\item{deut_part}{deuterium percentage in solution used in experiment,
+\item{deut_part}{deuterium percentage in solution used in experiment, 
 value from range [0, 1].}
 }
 \value{
@@ -39,8 +39,8 @@ a \code{\link{data.frame}} object.
 Creates comparison uptake dataset
 }
 \details{
-Function \code{\link{create_state_comparison_dataset}} is a
-wrapper for \code{\link{calculate_state_uptake}} function, calls
+Function \code{\link{create_state_comparison_dataset}} is a 
+wrapper for \code{\link{calculate_state_uptake}} function, calls 
 this function for all (default) or chosen states in states vector.
 }
 \examples{

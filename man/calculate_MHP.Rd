@@ -7,18 +7,18 @@
 calculate_MHP(Sequence, mono = FALSE)
 }
 \arguments{
-\item{Sequence}{sequence of the peptide (string) or vector of sequences. Each letter 
-of the sequence of the peptide represents different amino acid (three letter 
+\item{Sequence}{sequence of the peptide (string) or vector of sequences. Each letter
+of the sequence of the peptide represents different amino acid (three letter
 representation not allowed)}
 
-\item{mono}{logical value to determine if the mass should be monoisotopic or not. 
+\item{mono}{logical value to determine if the mass should be monoisotopic or not.
 FALSE by default}
 }
 \value{
 vector of numeric MHP values of provided Sequences
 }
 \description{
-Calculate the mass of the singly charged monoisotopic (or not) 
+Calculate the mass of the singly charged monoisotopic (or not)
 molecular ion of for given peptide.
 }
 \details{

@@ -36,12 +36,12 @@ a \code{\link{data.frame}} object
 Calculates deuteration uptake based on supplied parameters.
 }
 \details{
-The function \code{calculate_state_uptake} calculates deuterium uptake
+The function \code{calculate_state_uptake} calculates deuterium uptake 
 (in different forms) for all of the peptides in given protein in given state based
-on supplied parameters: `time_0`, `time_100` and `time_t`. All four variants
-(fractiona) are
+on supplied parameters: `time_0`, `time_100` and `time_t`. All four variants 
+(fractiona) are 
 supplied (mean values and uncertainty). Manual correction of percentage of deuterium the protein was exposed to during the exchange
-in theoretical calculations is provided.
+in theoretical calculations is provided. 
 
 Methods of calculation and uncertainty are profoundly discussed in the vignette.
 }
@@ -51,12 +51,12 @@ dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.
 calculate_state_uptake(dat)
 calculate_state_uptake(dat, protein = "db_CD160", state = "CD160",
                             time_0 = 0.001, time_t = 5.000, time_100 = 1440.000, deut_part = 1)
-
-
+                            
+                            
 }
 \seealso{
-\code{\link{read_hdx}}
+\code{\link{read_hdx}} 
 \code{\link{create_uptake_dataset}}
-\code{\link{calculate_confidence_limit_values}}
+\code{\link{calculate_confidence_limit_values}} 
 \code{\link{add_stat_dependency}}
 }
