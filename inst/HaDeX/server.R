@@ -440,7 +440,7 @@ server <- function(input, output, session) {
 
   ### TAB: VOLCANO ###
 
-  # source("server/tab_volcano.R", local = TRUE)
+  source("server/tab_volcano.R", local = TRUE)
 
   ### TAB: REPLICATES ###
 

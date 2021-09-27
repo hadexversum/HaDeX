@@ -19,8 +19,8 @@ as aggregated data from the replicates of the experiment.
 }
 \details{
 Each measurement is repeated at least three times to obtain reliable
-result and to calculate uncertainty of the measurement. For more information
-on how the data is aggregated or how the uncertainty is calculated, see the
+result and to calculate uncertainty of the measurement. For more information 
+on how the data is aggregated or how the uncertainty is calculated, see the 
 documentation.
 }
 \seealso{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculate_masses.R
 \name{calculate_exp_masses_per_replicate}
 \alias{calculate_exp_masses_per_replicate}
-\title{Calculate measured mass for each replicate of the
+\title{Calculate measured mass for each replicate of the 
 experiment}
 \usage{
 calculate_exp_masses_per_replicate(dat)
@@ -14,13 +14,13 @@ calculate_exp_masses_per_replicate(dat)
 Data frame with aggregated results for each replicate of the experiment.
 }
 \description{
-Calculate the measured mass from partial results, per each
+Calculate the measured mass from partial results, per each 
 replicate of the experiment.
 }
 \details{
-Each replicate of the experiment generates measurements of the mass
+Each replicate of the experiment generates measurements of the mass 
 for obtained charge values for the peptide. This is an effect of the properties
-of mass spectrometry, that measures the mass to charge ratio (learn more about
+of mass spectrometry, that measures the mass to charge ratio (learn more about 
 Mass Spectrometry in the documentation). The possible charge values depend on
 the sequence of the peptide.
 The separate measurement (for each replicate in given state in given time point)
