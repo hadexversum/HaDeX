@@ -4,11 +4,14 @@
 \alias{plot_replicate_histogram}
 \title{Plot replicates histogram}
 \usage{
-plot_replicate_histogram(rep_dat)
+plot_replicate_histogram(rep_dat, time_points = F)
 }
 \arguments{
 \item{rep_dat}{replicate data, created by 
 \code{\link{create_replicate_dataset}} function.}
+
+\item{time_points}{\code{logical}, indicator if the histogram
+should show values aggregated for time points of measurements.}
 }
 \value{
 a \code{\link{ggplot}} object.
@@ -18,10 +21,15 @@ Plot histogram on number of replicates per
 peptide in one or multiple time point of measurement.
 }
 \details{
-The function shows two versions of replicate 
-histogram, based on supplied \code{rep_dat}. 
-On the X-axis there are peptide ID, and on the Y-axis
-there are numbers of replicates. 
+The function shows three versions of replicate 
+histogram, based on supplied \code{rep_dat} and \code{time_points}. 
+If \code{time_points} is selected, the histogram shows the number 
+of replicates for time points of measurement, to easly spot
+if there were troubles with samples for specific time point of
+measurement. Then, on the X-axis is Exposure (in minutes) and 
+on the Y-axis number of replicates.
+If \code{time_points} is not selected, onn the X-axis there are 
+peptide ID, and on the Y-axis there are numbers of replicates. 
 If \code{rep_dat} contains data from one time point 
 of measurement, the histogram colors reflect the 
 number of replicates to highlight the outliers.
@@ -36,6 +44,8 @@ plot_replicate_histogram(rep_dat)
 
 rep_dat <- create_replicate_dataset(dat, time_t = 0.167)
 plot_replicate_histogram(rep_dat)
+
+plot_replicate_histogram(rep_dat, time_points = T)
 
 }
 \seealso{

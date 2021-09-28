@@ -270,11 +270,18 @@ create_replicate_dataset <- function(dat,
 #' 
 #' @param rep_dat replicate data, created by 
 #' \code{\link{create_replicate_dataset}} function.
+#' @param time_points \code{logical}, indicator if the histogram
+#' should show values aggregated for time points of measurements.
 #'
-#' @details The function shows two versions of replicate 
-#' histogram, based on supplied \code{rep_dat}. 
-#' On the X-axis there are peptide ID, and on the Y-axis
-#' there are numbers of replicates. 
+#' @details The function shows three versions of replicate 
+#' histogram, based on supplied \code{rep_dat} and \code{time_points}. 
+#' If \code{time_points} is selected, the histogram shows the number 
+#' of replicates for time points of measurement, to easly spot
+#' if there were troubles with samples for specific time point of
+#' measurement. Then, on the X-axis is Exposure (in minutes) and 
+#' on the Y-axis number of replicates.
+#' If \code{time_points} is not selected, onn the X-axis there are 
+#' peptide ID, and on the Y-axis there are numbers of replicates. 
 #' If \code{rep_dat} contains data from one time point 
 #' of measurement, the histogram colors reflect the 
 #' number of replicates to highlight the outliers.
@@ -296,35 +303,53 @@ create_replicate_dataset <- function(dat,
 #' rep_dat <- create_replicate_dataset(dat, time_t = 0.167)
 #' plot_replicate_histogram(rep_dat)
 #' 
+#' plot_replicate_histogram(rep_dat, time_points = T)
+#' 
 #' @export plot_replicate_histogram 
 
-plot_replicate_histogram <- function(rep_dat){
+plot_replicate_histogram <- function(rep_dat,
+                                     time_points = F){
   
   state <- attr(rep_dat, "state")
   
-  if (length(unique(rep_dat[["Exposure"]])) == 1) {
+  if(time_points){
     
-    fill <- "n"
-    legend_position <- "none"
-    
-    time_t <- unique(rep_dat[["Exposure"]])
-    plot_title <- paste0("Number of replicates for each peptide in ", state, " state in ", time_t, " min")
-    
+    x <- "as.factor(Exposure)"
+    fill <- "ID"
+    legend_position <- "None"
+    plot_title <- "Number of replicates for time points"
+    plot_x <- "Exposure [min]"
     
   } else {
     
+    if (length(unique(rep_dat[["Exposure"]])) == 1) {
+      
+      x = "ID"
+      fill <- "n"
+      legend_position <- "none"
+      
+      time_t <- unique(rep_dat[["Exposure"]])
+      plot_title <- paste0("Number of replicates for each peptide in ", state, " state in ", time_t, " min")
+      plot_x <- "Peptide ID"
+      
+    } else {
+      
+      x <- "ID"
+      fill <- "as.factor(Exposure)"
+      legend_position <- "bottom"
+      
+      plot_title <- paste0("Number of replicates for each peptide in ", state, " state")
+      plot_x <- "Peptide ID"
+      
+    } 
     
-    fill <- "as.factor(Exposure)"
-    legend_position <- "bottom"
     
-    plot_title <- paste0("Number of replicates for each peptide in ", state, " state")
-    
-  } 
+  }
   
   ggplot(rep_dat) +
-    geom_col(aes_string(x = "ID", y = "n", fill = fill)) +
+    geom_col(aes_string(x = x, y = "n", fill = fill)) +
     labs(title = plot_title,
-         x = "Peptide ID",
+         x = plot_x,
          y = "Number of replicates",
          fill = "Exposure") +
     theme(legend.position = legend_position)
@@ -361,5 +386,5 @@ show_replicate_histogram_data <- function(rep_dat){
   rep_dat %>%
     arrange(Start, End, Exposure) %>%
     select(ID, Sequence, Start, End, Exposure, n)
-
+  
 }
