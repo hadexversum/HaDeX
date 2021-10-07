@@ -47,6 +47,10 @@ h2 {
     font-size: 18px;
 }
 
+.input-group-prepend {
+  height: calc(1.5em + .75rem + 2px);
+}
+
 /* OTHER EXTERNAL CLASSES */
 
 .loader-img {
