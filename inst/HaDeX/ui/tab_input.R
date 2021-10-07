@@ -43,7 +43,7 @@ tab_input <- tabPanel(
     div(
       id = "HaDeX-file-reqs",
       style = "width: min-content",
-      class = "hideable",
+      class = "hideable collapse",
       tableOutput("file_req")
     ),
     h3("Settings"),
