@@ -77,6 +77,24 @@ h2 {
   margin: 0 auto;
 }
 
+#HaDeX-file-status-panel {
+  margin-top: -10px;
+  margin-left: 20px;
+}
+
+#HaDeX-file-status-panel .loader-img {
+  height: 50px;
+  width: 50px;
+}
+
+#HaDeX-file-status-panel .shiny-loader-placeholder {
+  height: 0px !important;
+}
+
+#data_file_info {
+  font-weight: bold;
+}
+
 .HaDeX-nonplot-tab-content {
   max-width: 1600px;
   width: 80%;
