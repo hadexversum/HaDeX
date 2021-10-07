@@ -12,6 +12,7 @@ tab_input <- tabPanel(
     ),
     wellPanel(
       fillRow(
+        flex = c(NA, 1),
         fileInput(
           inputId = "data_file",
           label = "Choose file:",
@@ -26,19 +27,22 @@ tab_input <- tabPanel(
             id = "HaDeX-file-status-message",
             withHaDeXSpinner(textOutput("data_file_info"))
           )
-        ),
-        flex = c(NA, 1)
+        )
       )
     ),
-    p(
-      "For the program to behave correctly, please make sure supplied file fulfills following requirements:"
-    ),
-    tags$button(
-      "Show requirements",
-      class = "btn btn-default collapse-btn",
-      style = "width: unset",
-      `data-toggle`="collapse",
-      `data-target`="#HaDeX-file-reqs"
+    fillRow(
+      flex = c(1, NA),
+      p(
+        "For the program to behave correctly, please make sure supplied file fulfills all requirements.",
+        "Requirements can be displayed by clicking the button."
+      ),
+      tags$button(
+        "Show requirements",
+        class = "btn btn-default collapse-btn",
+        style = "width: unset",
+        `data-toggle`="collapse",
+        `data-target`="#HaDeX-file-reqs"
+      )
     ),
     div(
       id = "HaDeX-file-reqs",
