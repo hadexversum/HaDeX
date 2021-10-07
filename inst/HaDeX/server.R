@@ -56,7 +56,7 @@ server <- function(input, output, session) {
   observe({
 
     if(data_source() == "HDeXaminer"){
-      shinyjs::show("examiner_settings")
+      shinyjs::show("HaDeX-examiner-settings-panel")
     }
 
     updateTextInput(session,

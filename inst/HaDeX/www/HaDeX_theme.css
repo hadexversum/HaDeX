@@ -91,6 +91,16 @@ h2 {
   height: 0px !important;
 }
 
+#HaDeX-settings-panel {
+  justify-content: space-around;
+  gap: 20px;
+  padding: 0 20px;
+}
+
+#HaDeX-settings-panel * {
+  max-width: 800px !important;
+}
+
 #data_file_info {
   font-weight: bold;
 }
