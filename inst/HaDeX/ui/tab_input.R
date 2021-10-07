@@ -17,10 +17,11 @@ tab_input <- tabPanel(
           label = "Choose file:",
           multiple = FALSE,
           accept = c(".csv", ".xlsx", ".xls"),
-          placeholder = "No file selected"),
+          placeholder = "No file selected"
+        ),
         div(
           id = "HaDeX-file-status-panel",
-          h5("File status:"),
+          h6("File status:"),
           div(
             id = "HaDeX-file-status-message",
             withHaDeXSpinner(textOutput("data_file_info"))
