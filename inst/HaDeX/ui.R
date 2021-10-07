@@ -53,6 +53,9 @@ ui <- tagList(useShinyjs(),
                   tab_report,
                   
                   theme = theme,
-                  header = img(src = "logo.png", class = "HaDeX-logo")
+                  header = img(
+                    id = "HaDeX-logo",
+                    src = "logo.png"
+                  )
               )
 )

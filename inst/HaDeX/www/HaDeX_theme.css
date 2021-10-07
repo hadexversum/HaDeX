@@ -53,9 +53,9 @@ h2 {
   max-width: 200px;
 }
 
-/* CUSTOM CLASSES */
+/* CUSTOM CLASSES AND IDS */
 
-.HaDeX-logo {
+#HaDeX-logo {
   position: absolute;
   float: right;
   top: 0px;  
@@ -67,14 +67,16 @@ h2 {
   height: 40px; 
 }
 
+#HaDeX-funding-icons {
+  width: 80%;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
 .HaDeX-nonplot-tab-content {
   max-width: 1600px;
   width: 80%;
   margin: 0 auto;
 }
 
-.HaDeX-funding-icons {
-  width: 80%;
-  max-width: 1600px;
-  margin: 0 auto;
-}
+
