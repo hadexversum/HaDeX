@@ -8,7 +8,7 @@ show_kinetic_data(kin_dat, theoretical = FALSE, fractional = FALSE)
 }
 \arguments{
 \item{kin_dat}{calculated kinetic data by \code{\link{calculate_kinetics}} 
-or \code{\link{calculate_peptide_kinetics}} or \code{\link{create_kinetics_dataset}}
+or \code{\link{calculate_peptide_kinetics}} or \code{\link{create_kinetic_dataset}}
 function.}
 
 \item{theoretical}{\code{logical}, determines if plot shows theoretical values.}

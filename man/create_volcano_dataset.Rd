@@ -67,6 +67,4 @@ Using a Hybrid Significance Testing Approach. Anal Chem 91, 8008–8016 (2019).
 \seealso{
 \code{\link{read_hdx}}
 \code{\link{calculate_exp_masses_per_replicate}}
-\code{\link{generate_volcano_plot}}  
-\code{\link{generate_volcano_data}}
 }

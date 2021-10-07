@@ -46,5 +46,4 @@ plot_chiclet(chic_dat)
 }
 \seealso{
 \code{\link{create_state_uptake_dataset}}
-\code{\link{generate_chiclet_data}}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/datasets.R
 \name{calculate_diff_uptake}
 \alias{calculate_diff_uptake}
-\title{Generate differential dataset}
+\title{Calculate differential uptake}
 \usage{
 calculate_diff_uptake(
   dat,
@@ -36,7 +36,7 @@ value from range [0, 1].}
 a \code{\link{data.frame}} object.
 }
 \description{
-Generate differential dataset
+Calculate differential uptake
 }
 \details{
 Function \code{\link{calculate_diff_uptake}} calculates

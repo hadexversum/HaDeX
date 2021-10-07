@@ -75,12 +75,16 @@ create_state_comparison_dataset <- function(dat,
 #' \code{\link{read_hdx}}
 #' \code{\link{calculate_state_uptake}}
 #' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' create_control_dataset(dat)
+#' 
 #' @export create_control_dataset
 
 create_control_dataset <- function(dat,
-                                   control_protein,
-                                   control_state,
-                                   control_exposure){
+                                   control_protein = dat[["Protein"]][1],
+                                   control_state = dat[["State"]][1],
+                                   control_exposure = max(dat[["Exposure"]])){
   
   tmp <- dat %>%
     filter(Protein == control_protein, 
@@ -104,7 +108,7 @@ create_control_dataset <- function(dat,
   
 }
 
-#' Generate differential dataset
+#' Calculate differential uptake 
 #' 
 #' @importFrom tidyr gather
 #' 
@@ -197,9 +201,6 @@ calculate_diff_uptake  <- function(dat,
 #' @seealso 
 #' \code{\link{read_hdx}}
 #' \code{\link{calculate_state_uptake}}
-#' \code{\link{generate_butterfly_plot}} 
-#' \code{\link{generate_comparison_plot}}
-#' \code{\link{generate_chiclet_plot}}
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
@@ -225,7 +226,7 @@ create_state_uptake_dataset <- function(dat,
                            deut_part = deut_part) %>%
       arrange(Start, End) %>%
       mutate( # ID = 1L:nrow(.),
-             Exposure = time) %>%
+        Exposure = time) %>%
       select(ID, Exposure, everything()) 
     
   }) %>% bind_rows()
@@ -263,7 +264,6 @@ create_state_uptake_dataset <- function(dat,
 #' \code{\link{read_hdx}}
 #' \code{\link{calculate_state_uptake}}
 #' \code{\link{create_state_uptake_dataset}} 
-#' \code{\link{generate_comparison_plot}}
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
@@ -288,10 +288,10 @@ create_uptake_dataset <- function(dat,
     lapply(times, function(time){
       
       calculate_state_uptake(dat, protein = protein, 
-                            state = state,
-                            time_t = time, 
-                            time_0 = time_0, time_100 = time_100,
-                            deut_part = deut_part)
+                             state = state,
+                             time_t = time, 
+                             time_0 = time_0, time_100 = time_100,
+                             deut_part = deut_part)
       
     }) %>% bind_rows
     
@@ -330,8 +330,8 @@ create_uptake_dataset <- function(dat,
 #' @seealso 
 #' \code{\link{read_hdx}}
 #' \code{\link{calculate_diff_uptake}}
-#' \code{\link{plot_butterfly_differential}}
-#' \code{\link{plot_chiclet_differential}}
+#' \code{\link{plot_differential_butterfly}}
+#' \code{\link{plot_differential_chiclet}}
 #' \code{\link{plot_differential}}
 #' 
 #' @examples 
@@ -355,8 +355,8 @@ create_diff_uptake_dataset <- function(dat,
   diff_uptake_dat <- lapply(times, function(time){
     
     calculate_diff_uptake(dat = dat, states = c(state_1, state_2), protein = protein, 
-                                   time_0 = time_0, time_t = time, time_100 = time_100, 
-                                   deut_part = deut_part) %>%
+                          time_0 = time_0, time_t = time, time_100 = time_100, 
+                          deut_part = deut_part) %>%
       arrange(Start, End) %>%
       mutate(ID = 1L:nrow(.),
              Exposure = time) %>%
@@ -410,8 +410,6 @@ create_diff_uptake_dataset <- function(dat,
 #' @seealso 
 #' \code{\link{read_hdx}}
 #' \code{\link{calculate_exp_masses_per_replicate}}
-#' \code{\link{generate_volcano_plot}}  
-#' \code{\link{generate_volcano_data}}
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
@@ -467,7 +465,7 @@ create_volcano_dataset <- function(dat,
     st_1 <- vol_dat[i, "masses_1"][[1]]
     st_2 <- vol_dat[i, "masses_2"][[1]]
     
-    if(length(st_1) == 1) {
+    if(length(st_1) == 1 | all(st_1 == st_2)) {
       p_value <- -1
     } else if (length(st_2) == 1){
       p_value <- -1

@@ -35,7 +35,7 @@
 #' 
 #' @return \code{\link{hdx_data}} object.
 #' 
-#' @keyword Internal
+#' @keywords internal
 
 new_hdx_data <- function(dat, source, has_modification){
   
@@ -53,7 +53,7 @@ new_hdx_data <- function(dat, source, has_modification){
 #' 
 #' @param hdx_data \code{\link{hdx_data}} object.
 #' 
-#' @keyword Internal
+#' @keywords internal
 
 validate_hdx_data <- function(hdx_data, msg = ""){
   
@@ -75,12 +75,12 @@ validate_hdx_data <- function(hdx_data, msg = ""){
 #' 
 #' @inheritParams new_hdx_data
 #' 
-#' @description The wrapper function for the constructor of the \code{\link{hdx_class}} and 
+#' @description The wrapper function for the constructor of the \code{\link{hdx_data}} and 
 #' its validator. Used in \code{\link{read_hdx}} function.
 #' 
 #' @return \code{\link{hdx_data}} object.
 #' 
-#' @keyword Internal
+#' @keywords internal
 
 hdx_data <- function(dat, source, has_modification, msg = ""){
   

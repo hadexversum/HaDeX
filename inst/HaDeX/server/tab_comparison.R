@@ -4,6 +4,8 @@
 
 observe({
 
+  ## TODO: this should be dynamic as well 
+  
   if (input[["comp_fractional"]]) {
 
     updateSliderInput(session,
@@ -287,7 +289,7 @@ prep_dat <- reactive({
 #################################
 
 comparison_plot <- reactive({
-
+  
   plot_state_comparison(dat = prep_dat(),
                         theoretical = input[["theory"]],
                         fractional = input[["comp_fractional"]])

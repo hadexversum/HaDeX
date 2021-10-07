@@ -42,6 +42,5 @@ plot_butterfly(butterfly_dat)
 
 }
 \seealso{
-\code{\link{create_state_uptake_dataset}} 
-\code{\link{generate_butterfly_data}}
+\code{\link{create_state_uptake_dataset}}
 }

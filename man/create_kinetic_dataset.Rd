@@ -4,12 +4,19 @@
 \alias{create_kinetic_dataset}
 \title{Create kinetics dataset for a list of peptides and their states}
 \usage{
-create_kinetic_dataset(dat, peptide_list, protein, time_0, time_100, deut_part)
+create_kinetic_dataset(
+  dat,
+  peptide_list,
+  protein = dat[["Protein"]][1],
+  time_0 = min(dat[["Exposure"]]),
+  time_100 = max(dat[["Exposure"]]),
+  deut_part = 0.9
+)
 }
 \arguments{
 \item{dat}{dat data imported by the \code{\link{read_hdx}} function.}
 
-\item{peptide_list}{...}
+\item{peptide_list}{list of peptides for the calculation.}
 
 \item{protein}{chosen protein.}
 
@@ -33,7 +40,11 @@ the peptide list instead of one peptide.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-...
+peptide_list <- data.frame(Sequence = c("INITSSASQEGTRLN", "INITSSASQEGTRLN"), state = c("CD160", "CD160_HVEM"), start = c(1, 1), end = c(15, 15))
+create_kinetic_dataset(dat, peptide_list)
+
+peptide_list2 <- data.frame(Sequence = c("INITSSASQEGTRLN", "LICTVW"), state = c("CD160", "CD160"), start = c(1, 16), end = c(15, 21))
+create_kinetic_dataset(dat, peptide_list2)
 
 }
 \seealso{

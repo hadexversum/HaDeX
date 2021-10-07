@@ -1,8 +1,13 @@
 ---
 title: "Code usage"
-output: html_document
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: true
+    always_allow_html: yes
+bibliography: HDX.bib
 vignette: >
-  %\VignetteIndexEntry{Data visualization}
+  %\VignetteIndexEntry{Code usage}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

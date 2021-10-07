@@ -1,6 +1,11 @@
 ---
 title: "Data visualization"
-output: html_document
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: true
+    always_allow_html: yes
+bibliography: HDX.bib
 vignette: >
   %\VignetteIndexEntry{Data visualization}
   %\VignetteEngine{knitr::rmarkdown}

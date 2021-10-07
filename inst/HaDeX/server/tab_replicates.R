@@ -86,41 +86,10 @@ replicates_of_peptides <- reactive({
 replicate_masses <- reactive({
   
   dat() %>%
-    calculate_exp_masses_per_replicate() %>%
-    group_by(Start, End) %>%
-    arrange(Start, End) %>%
-    mutate(ID = cur_group_id())
+    calculate_exp_masses_per_replicate() 
   
 })
 
-##
-
-replicate_masses_time_t <- reactive({
-  
-  validate(need(input[["rep_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
-  
-  replicate_masses() %>%
-    filter(Protein == input[["chosen_protein"]]) %>%
-    filter(State == input[["rep_state"]]) %>%
-    filter(Sequence == rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2][[1]]) %>%
-    filter(Exposure == as.numeric(input[["rep_time"]]))
-
-})
-
-##
-
-replicates_z_values_time_t <- reactive({
-  
-  validate(need(input[["rep_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
-  
-  dat() %>%
-    filter(Protein == input[["chosen_protein"]]) %>%
-    filter(State == input[["rep_state"]]) %>%
-    filter(Sequence == rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2][[1]]) %>%
-    filter(Exposure == as.numeric(input[["rep_time"]])) %>%
-    select(Protein, Sequence, Start, End, Exposure, State, File, z)
-  
-})
 
 #################################
 ######### PLOT ##################
@@ -129,11 +98,13 @@ replicates_z_values_time_t <- reactive({
 
 replicate_plot_out <- reactive({
 
-  avg_value <- mean(replicate_masses_time_t()[["avg_exp_mass"]])
+  validate(need(input[["rep_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
   
-  ggplot(replicate_masses_time_t(), aes(x = avg_exp_mass, y = File)) +
-    geom_point(size = 3) +
-    geom_vline(xintercept = avg_value, color = "red", linetype = "dashed", size = 1.5) + 
+  plot_peptide_mass_measurement(replicate_masses(),
+                                protein = input[["chosen_protein"]],
+                                state =  input[["rep_state"]],
+                                sequence = rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2][[1]],
+                                time_t = as.numeric(input[["rep_time"]]))  + 
     labs(x = input[["rep_plot_x_label"]],
          y = input[["rep_plot_y_label"]],
          title = input[["rep_plot_title"]]) +
@@ -213,14 +184,13 @@ output[["replicatesPlot_download_button"]] <- downloadHandler("replicatesPlot.sv
 
 replicate_charge_plot_out <- reactive({
   
-  n_bins <- length(unique(replicates_z_values_time_t()[["z"]]))
-  min_z <- min(replicates_z_values_time_t()[["z"]])
-  max_z <- max(replicates_z_values_time_t()[["z"]])
+  validate(need(input[["rep_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
   
-  replicates_z_values_time_t() %>%
-    ggplot(aes(x = z)) +
-    geom_histogram(aes(fill = File), bins = n_bins) + 
-    scale_x_continuous(breaks = c(min_z:max_z)) 
+  plot_peptide_charge_measurement(dat(),
+                                  protein = input[["chosen_protein"]],
+                                  state =  input[["rep_state"]],
+                                  sequence = rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2][[1]],
+                                  time_t = as.numeric(input[["rep_time"]]))
   
 })
 
@@ -284,15 +254,18 @@ output[["replicatesChargePlot_download_button"]] <- downloadHandler("replicatesC
                                                               })
 
 #################################
-######### DATASET ###############
+######### DATA ##################
 #################################
 
 replicates_plot_data_out <- reactive({
   
-  replicate_masses_time_t() %>%
-    mutate(avg_exp_mass = round(avg_exp_mass, 4)) %>%
-    select(Protein, Sequence, Start, End, Exposure, State, File, avg_exp_mass) %>%
-    rename(`Mass` = avg_exp_mass)
+  validate(need(input[["rep_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
+  
+  show_peptide_mass_measurement(replicate_masses(),
+                                protein = input[["chosen_protein"]],
+                                state =  input[["rep_state"]],
+                                sequence = rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2][[1]],
+                                time_t = as.numeric(input[["rep_time"]]))
   
 })
 
@@ -307,7 +280,13 @@ output[["replicatesPlot_data"]] <- DT::renderDataTable(server = FALSE, {
 
 replicate_charge_plot_data_out <- reactive({
   
-  replicates_z_values_time_t()
+  validate(need(input[["rep_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
+  
+  show_peptide_charge_measurement(dat(),
+                                  protein = input[["chosen_protein"]],
+                                  state =  input[["rep_state"]],
+                                  sequence = rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2][[1]],
+                                  time_t = as.numeric(input[["rep_time"]]))
   
 })
 
@@ -327,27 +306,23 @@ output[["replicatesChargePlot_data"]] <- DT::renderDataTable(server = FALSE, {
 
 replicates_histogram_data <- reactive({
   
-  replicate_masses() %>%
-    filter(Exposure == input[["rep_time"]],
-           Protein == input[["chosen_protein"]],
-           State == input[["rep_state"]]) %>%
-    select(Sequence, Start, End, ID) %>%
-    group_by(Sequence, Start, End, ID) %>%
-    summarize(n = n())
+  # subset from all_replicates_histogram_data() !!
   
+  # all_replicates_histogram_data() %>%
+  #   filter(Exposure == input[["rep_time"]])
+  
+  create_replicate_dataset(dat(), 
+                           time_t = input[["rep_time"]],
+                           protein = input[["chosen_protein"]],
+                           input[["rep_state"]])
+
 })
 
 ##
 
 replicates_histogram_out <- reactive({
   
-  replicates_histogram_data() %>%
-    ggplot() + 
-    geom_col(aes(x = ID, y = n, fill = n)) +
-    labs(title = paste0("Number of replicates for each peptide in ", input[["rep_state"]], " in ", input[["rep_time"]], " min"),
-         x = "Peptide ID",
-         y = "Number of replicates") +
-    theme(legend.position = "none")
+  plot_replicate_histogram(replicates_histogram_data())
   
 })
 
@@ -421,8 +396,7 @@ output[["replicatesHistogram_download_button"]] <- downloadHandler("replicatesHi
 
 replicates_histogram_data_out <- reactive({
   
-  replicates_histogram_data() %>%
-    arrange(ID)
+  show_replicate_histogram_data(replicates_histogram_data())
   
 })
 
@@ -441,28 +415,17 @@ output[["replicatesHistogram_data"]] <- DT::renderDataTable(server = FALSE, {
 
 all_replicates_histogram_data <- reactive({
   
-  replicate_masses() %>%
-    filter(Protein == input[["chosen_protein"]],
-           State == input[["rep_state"]],
-           Exposure < 99999) %>%
-    select(Sequence, Exposure, Start, End, ID) %>%
-    group_by(Sequence, Exposure, Start, End, ID) %>%
-    summarize(n = n())
-  
+  create_replicate_dataset(dat(), 
+                           protein = input[["chosen_protein"]],
+                           state = input[["rep_state"]])
+
 })
 
 ##
 
 all_replicates_histogram_out <- reactive({
   
-  all_replicates_histogram_data() %>%
-    ggplot() +
-    geom_col(aes(x = ID, y = n, fill = as.factor(Exposure))) +
-    labs(title = paste0("Number of replicates for each peptide in ", input[["rep_state"]], " state"),
-         x = "Peptide ID",
-         y = "Number of replicates",
-         fill = "Exposure") +
-    theme(legend.position = "bottom")
+  plot_replicate_histogram(all_replicates_histogram_data())
   
 })
 
@@ -480,7 +443,7 @@ output[["allReplicatesHistogram_debug"]] <- renderUI({
   
   if(!is.null(input[["allReplicatesHistogram_hover"]])) {
     
-    plot_data <- all_replicates_histogram()[["data"]]
+    plot_data <- all_replicates_histogram_out()[["data"]]
     hv <- input[["allReplicatesHistogram_hover"]]
     
     hv_dat <- data.frame(x = hv[["x"]],
@@ -544,11 +507,11 @@ output[["allReplicatesHistogram_download_button"]] <- downloadHandler("allReplic
 
 all_replicates_histogram_data_out <- reactive({
   
-  all_replicates_histogram_data() %>%
-    arrange(ID, Exposure)
+  show_replicate_histogram_data(all_replicates_histogram_data())
   
 })
 
+##
 
 output[["allReplicatesHistogram_data"]] <- DT::renderDataTable(server = FALSE, {
   

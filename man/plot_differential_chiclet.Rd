@@ -12,7 +12,7 @@ plot_differential_chiclet(
 )
 }
 \arguments{
-\item{diff_uptake_dat}{data produced by 
+\item{diff_uptake_dat}{data produced by
 \code{\link{create_diff_uptake_dataset}} function.}
 
 \item{theoretical}{\code{logical}, determines if values are theoretical.}
@@ -29,13 +29,13 @@ a \code{\link{ggplot}} object.
 Differential chiclet plot
 }
 \details{
-Function \code{\link{plot_differential_chiclet}} generates 
+Function \code{\link{plot_differential_chiclet}} generates
 chiclet differential plot based on provided data and parameters.
-On X-axis there is a peptide ID. On Y-axis are time points 
-of measurement. Each tile for a peptide in time has a color value 
-representing the deuterium uptake difference between chosen states, 
-in a form based on provided criteria (e.q. fractional). Each tile has 
-a plus sign, which size represent the uncertainty of measurement for 
+On X-axis there is a peptide ID. On Y-axis are time points
+of measurement. Each tile for a peptide in time has a color value
+representing the deuterium uptake difference between chosen states,
+in a form based on provided criteria (e.q. fractional). Each tile has
+a plus sign, which size represent the uncertainty of measurement for
 chosen value.
 This plot is visible in GUI.
 }
@@ -47,5 +47,4 @@ plot_differential_chiclet(diff_uptake_dat)
 }
 \seealso{
 \code{\link{create_diff_uptake_dataset}}
-\code{\link{generate_chiclet_differential_data}}
 }

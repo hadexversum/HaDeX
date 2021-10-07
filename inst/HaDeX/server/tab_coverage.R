@@ -124,9 +124,9 @@ output[["stateOverlapDist_data"]] <- DT::renderDataTable(server = FALSE, {
 
 stateOverlapDist <- reactive({
   
-  plot_overlap_distribution(dat = stateOverlapDist_data(),
-                                     start = input[["plot_range"]][[1]],
-                                     end = input[["plot_range"]][[2]])
+  plot_overlap_distribution(overlap_dist_dat = stateOverlapDist_data(),
+                            start = input[["plot_range"]][[1]],
+                            end = input[["plot_range"]][[2]])
 })
 
 ##

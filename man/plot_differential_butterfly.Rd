@@ -14,21 +14,21 @@ plot_differential_butterfly(
 )
 }
 \arguments{
-\item{diff_uptake_dat}{data produced by 
+\item{diff_uptake_dat}{data produced by
 \code{\link{create_diff_uptake_dataset}} function.}
 
 \item{theoretical}{\code{logical}, determines if values are theoretical}
 
 \item{fractional}{\code{logical}, determines if values are fractional}
 
-\item{uncertainty_type}{type of presenting uncertainty, possible values: 
+\item{uncertainty_type}{type of presenting uncertainty, possible values:
 "ribbon", "bars" or "bars + line".}
 
 \item{show_confidence_limit}{\code{logical}, determines if confidence limits
 are visible on the plot.}
 
-\item{confidence_level}{confidence level for confidence limit, if chosen
-show_confidence_limit.}
+\item{confidence_level}{confidence level for the test, from range [0, 1].
+Important if selected show_confidence_limit.}
 }
 \value{
 a \code{\link{ggplot}} object.
@@ -37,11 +37,11 @@ a \code{\link{ggplot}} object.
 Differential butterfly plot
 }
 \details{
-Function \code{\link{plot_differential_butterfly}} generates 
-differential butterfly plot based on provided data and parameters. On X-axis 
-there is peptide ID. On the Y-axis there is deuterium uptake difference in 
+Function \code{\link{plot_differential_butterfly}} generates
+differential butterfly plot based on provided data and parameters. On X-axis
+there is peptide ID. On the Y-axis there is deuterium uptake difference in
 chosen form. Data from multiple time points of measurement is presented.
-If chosen, there are confidence limits based on Houde test on provided 
+If chosen, there are confidence limits based on Houde test on provided
 confidence level.
 This plot is visible in GUI.
 }
@@ -52,8 +52,8 @@ plot_differential_butterfly(diff_uptake_dat)
 
 }
 \references{
-Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). 
-The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in 
+Houde, D., Berkowitz, S.A., and Engen, J.R. (2011).
+The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in
 Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
 }
 \seealso{

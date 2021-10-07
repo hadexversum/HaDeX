@@ -58,7 +58,7 @@ quality_control_dat <- reactive({
 
 qc_out <- reactive({
   
-  plot_quality_control(dat = quality_control_dat())
+  plot_quality_control(qc_dat = quality_control_dat())
   
 })
 
@@ -125,7 +125,7 @@ output[["quality_control_plot_download_button"]] <- downloadHandler("qualityCont
 
 quality_control_plot_data_out <- reactive({
   
-  show_quality_control_data(dat = quality_control_dat()) 
+  show_quality_control_data(qc_dat = quality_control_dat()) 
   
 })
 

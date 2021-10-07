@@ -11,16 +11,18 @@
 #' 
 #' @details The data for this function is not packaged yet.
 #' 
-#' @return ...
+#' @return a \code{\link{ggplot2}} object.
 #' 
-#' @seealso ... 
+#' @seealso ...
+#' 
+#' @examples ...
 #' 
 #' @export plot_amino_distribution
 
 plot_amino_distribution <- function(position_in_sequence, 
-                                        hydro_properties,
-                                        protein,
-                                        charge_colors){
+                                    hydro_properties,
+                                    protein,
+                                    charge_colors){
   
   position_in_sequence %>%
     mutate(affinity = ifelse(is_hydrophobic, "phobic", "philic")) %>% 

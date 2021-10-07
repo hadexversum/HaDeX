@@ -16,8 +16,14 @@
 #' 
 #' @return Data frame with aggregated results for each replicate of the experiment.
 #' 
-#' @seealso \code{\link{read_hdx}} \code{\link{calculate_exp_masses}}
-#' \code{\link{calculate_state_deuteration}} 
+#' @seealso 
+#' \code{\link{read_hdx}} 
+#' \code{\link{calculate_exp_masses}}
+#' \code{\link{calculate_state_uptake}} 
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' calculate_exp_masses_per_replicate(dat)
 #' 
 #' @export calculate_exp_masses_per_replicate
 
@@ -50,8 +56,10 @@ calculate_exp_masses_per_replicate <- function(dat){
 #' 
 #' @return Data frame with aggregated mass results from replicates of the experiment.
 #' 
-#' @seealso \code{\link{read_hdx}} \code{\link{calculate_exp_masses_per_replicate}}
-#' \code{\link{calculate_state_deuteration}} 
+#' @seealso 
+#' \code{\link{read_hdx}} 
+#' \code{\link{calculate_exp_masses_per_replicate}}
+#' \code{\link{calculate_state_uptake}} 
 #' 
 #' @export calculate_exp_masses
 
@@ -66,7 +74,7 @@ calculate_exp_masses <- function(dat){
               err_avg_mass = sd(avg_exp_mass)/sqrt(length(Exposure))) %>%
     ungroup(.) %>%
     arrange(Start, End)
-    
+  
 }
 
 
@@ -89,7 +97,8 @@ calculate_exp_masses <- function(dat){
 #' @return vector of numeric MHP values of provided Sequences
 #' 
 #' @seealso 
-#' \code{\link{read_hdx}} \code{\link{calculate_state_deuteration}} 
+#' \code{\link{read_hdx}} 
+#' \code{\link{calculate_state_uptake}} 
 #' \code{\link{plot_kinetics}}
 #' 
 #' @export calculate_MHP

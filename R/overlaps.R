@@ -1,28 +1,35 @@
-#' Show data on overlap
+#' Show data on peptide overlap
 #' 
-#' @description Presents overlap data, based on the supplied
-#' parameters.
+#' @description Presents peptide overlap on protein sequence data, 
+#' based on the supplied parameters. 
 #' 
 #' @param dat data imported by the \code{\link{read_hdx}} function.
 #' @param protein chosen protein.
 #' @param state biological state for chosen protein.
-#' @param start start start position of chosen protein.
+#' @param start start position of chosen protein.
 #' @param end end position of chosen protein.
 #' 
-#' @details This data is available in the GUI. 
+#' @details The data frame presents all the peptides in given state, with
+#' its start and end position on the protein sequence.
+#' This data is available in the GUI. 
 #' 
 #' @return a \code{\link{data.frame}} object.
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}} 
+#' \code{\link{plot_overlap}}
+#' 
+#' @examples
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' show_overlap_data(dat)
 #' 
 #' @export show_overlap_data
 
 show_overlap_data <- function(dat,
-                              protein,
-                              state,
-                              start,
-                              end){
+                              protein = dat[["Protein"]][1],
+                              state = dat[["State"]][1],
+                              start = min(dat[["Start"]]),
+                              end = max(dat[["End"]])){
   dat %>%
     select(Protein, Sequence, Start, End, State) %>% 
     filter(Protein == protein) %>%
@@ -38,16 +45,21 @@ show_overlap_data <- function(dat,
 #' @description Generates overapping peptide plot based 
 #' on supplied data and parameters. 
 #' 
-#' @param dat produced by \code{\link{show_overlap_data}}
-#' function
+#' @param dat data imported by the \code{\link{read_hdx}} function.
 #' 
-#' @details This plot is visible in GUI. 
+#' @details The overlap plot presents all the peptides in given state
+#' on the protein sequence. 
+#' This plot is visible in GUI. 
 #' 
 #' @return a \code{\link{ggplot2}} object.
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}}
 #' \code{\link{show_overlap_data}}
+#' 
+#' @examples
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' plot_overlap(dat)
 #' 
 #' @export plot_overlap
 
@@ -57,7 +69,7 @@ plot_overlap <- function(dat){
     select(Sequence, Start, End) %>%
     filter(!duplicated(.)) %>%
     arrange(Start, End) %>%
-    mutate(ID = row_number()) %>%
+    mutate(ID = 1L:nrow(.)) %>%
     ggplot() +
     geom_segment(aes(x = Start, y = ID, xend = End, yend = ID)) +
     labs(title = "Peptide coverage",
@@ -68,9 +80,9 @@ plot_overlap <- function(dat){
 }
 
 
-#' generate_overlap_distribution_data
+#' Show overlap distribution data 
 #' 
-#' @description Generates the data set of frequency of overlap of
+#' @description Generates the data of frequency of overlap of
 #' each amino in the protein sequence.
 #' 
 #' @importFrom dplyr right_join
@@ -80,12 +92,14 @@ plot_overlap <- function(dat){
 #' @param dat data imported by the \code{\link{read_hdx}} function.
 #' @param protein chosen protein.
 #' @param state biological state for chosen protein.
-#' @param start start start position of chosen protein.
+#' @param start start position of chosen protein.
 #' @param end end position of chosen protein.
 #' @param protein_sequence data produced by 
 #' \code{\link{reconstruct_sequence}} function.
 #' 
-#' @details This data is available in the GUI.
+#' @details This data frame presents how many times (by how many peptides) 
+#' a amino position in protein sequence is covered. 
+#' This data is available in the GUI.
 #' 
 #' @return a \code{\link{data.frame}} object.
 #' 
@@ -93,6 +107,10 @@ plot_overlap <- function(dat){
 #' \code{\link{read_hdx}}
 #' \code{\link{reconstruct_sequence}} 
 #'
+#' @examples
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' create_overlap_distribution_dataset(dat)
+#' 
 #' @export create_overlap_distribution_dataset
 
 create_overlap_distribution_dataset <- function(dat, 
@@ -100,7 +118,7 @@ create_overlap_distribution_dataset <- function(dat,
                                                 state = dat[["State"]][1],
                                                 start = min(dat[["Start"]]),
                                                 end = max(dat[["End"]]),
-                                                protein_sequence){
+                                                protein_sequence = reconstruct_sequence(dat)){
   
   dat %>%
     select(Protein, Start, End, State, Sequence) %>%
@@ -129,30 +147,37 @@ create_overlap_distribution_dataset <- function(dat,
 #' 
 #' @importFrom ggplot2 geom_hline geom_text
 #' 
-#' @param dat produced by \code{\link{create_overlap_distribution_dataset}}
+#' @param overlap_dist_dat produced by \code{\link{create_overlap_distribution_dataset}}
 #' function
 #' @param start start start position of chosen protein.
 #' @param end end position of chosen protein.
 #' 
-#' @details This plot is visible in GUI. 
+#' @details This plot presents how many times (by how many peptides) 
+#' a amino position in protein sequence is covered. 
+#' This plot is visible in GUI. 
 #' 
 #' @return a \code{\link{ggplot2}} object.
 #' 
 #' @seealso 
-#' \code{\link{{read_hdx}}
+#' \code{\link{read_hdx}}
 #' \code{\link{reconstruct_sequence}} 
 #' \code{\link{create_overlap_distribution_dataset}}
 #' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' overlap_dist_dat <- create_overlap_distribution_dataset(dat)
+#' plot_overlap_distribution(overlap_dist_dat)
+#' 
 #' @export plot_overlap_distribution
 
-plot_overlap_distribution <- function(dat,
+plot_overlap_distribution <- function(overlap_dist_dat,
                                       start = 1,
-                                      end = max(dat[["pos"]])){
+                                      end = max(overlap_dist_dat[["pos"]])){
   
-  mean_coverage <- round(mean(dat[["coverage"]], na.rm = TRUE), 2)
+  mean_coverage <- round(mean(overlap_dist_dat[["coverage"]], na.rm = TRUE), 2)
   display_position <- (start + end)/2
   
-  dat %>% 
+  overlap_dist_dat %>% 
     ggplot(aes(x = pos, y = coverage)) +
     geom_col(width = 1) +
     labs(x = 'Position', y = 'Position frequency in peptides') +

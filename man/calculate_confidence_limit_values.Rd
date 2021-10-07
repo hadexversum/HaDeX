@@ -5,35 +5,39 @@
 \title{Calculate the value of confidence limit}
 \usage{
 calculate_confidence_limit_values(
-  calc_dat,
+  diff_uptake_dat,
   confidence_level = 0.98,
   theoretical = FALSE,
   fractional = TRUE
 )
 }
 \arguments{
-\item{calc_dat}{processed data from DynamX file - using prepare_dataset}
+\item{diff_uptake_dat}{processed data from DynamX file - using prepare_dataset}
 
-\item{confidence_level}{confidence limit chosen by user - from range [0, 1].}
+\item{confidence_level}{confidence level for the test, from range [0, 1].}
 
-\item{theoretical}{\code{logical}, determines if values are theoretical}
+\item{theoretical}{\code{logical}, determines if values are theoretical.}
 
-\item{fractional}{\code{logical}, determines if values are fractional}
+\item{fractional}{\code{logical}, determines if values are fractional.}
 }
 \value{
-range of confidence limit interval
+range of confidence limit interval.
 }
 \description{
-Calculates confidence limit values for prepared dataset, based on chosen parameters.
+Calculates confidence limit values for prepared provided, 
+based on chosen parameters.
 }
 \details{
-...
+Function \code{\link{calculate_confidence_limit_values}} 
+calculates confidence limit using Houde test. The confidence limits 
+are calculated on whole provided dataset. If the user wishes to calculate
+confidence limit for one, two or more time points, the provided data 
+should be adjusted accordingly.
 }
 \examples{
-# load example data
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-
-#ToDO
+diff_uptake_dat <- calculate_diff_uptake(dat)
+calculate_confidence_limit_values(diff_uptake_dat)
                               
 }
 \references{
@@ -42,5 +46,7 @@ The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in
 Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
 }
 \seealso{
-\code{\link{read_hdx}} \code{\link{prepare_dataset}}
+\code{\link{read_hdx}} 
+\code{\link{calculate_diff_uptake}} 
+\code{\link{create_diff_uptake_dataset}}
 }

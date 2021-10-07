@@ -544,7 +544,13 @@ write(rep_sequence_helper, file = "rep_sequence.md", append = FALSE)
 ## chicletDifferentialPlot #######
 ##################################
 
-chicletDifferentialPlot_helper <- ""
+chicletDifferentialPlot_helper <- "## Chiclet Differential Plot
+
+Chiclet differential plot shows the deuterium uptake difference between two biological states in the form of a heatmap. One tile indicates the peptide (identified by its ID - number arranged by the start position) in a time point of measurement. The color of the tile indicates the deuterium uptake difference (according to the legend below the plot).
+
+For more information see the [documentation](https://hadexversum.github.io/HaDeX/articles/visualization.html#chiclet-differential-1).
+
+"
 
 write(chicletDifferentialPlot_helper, file = "chicletDifferentialPlot.md", append = FALSE)
 
@@ -552,7 +558,12 @@ write(chicletDifferentialPlot_helper, file = "chicletDifferentialPlot.md", appen
 ## chicletPlot ###################
 ##################################
 
-chicletPlot_helper <- ""
+chicletPlot_helper <- "## Chiclet Plot
+
+Chiclet plot shows the fractional deuterium uptake in the form of a heatmap for the peptides in a given biological state. One tile indicates the peptide (identified by its ID - number arranged by the start position) in a time point of measurement. The color of the tile indicates the fractinal deuterium uptake (according to the legend below the plot).
+
+For more information see the [documentation](https://hadexversum.github.io/HaDeX/articles/visualization.html#chiclet-plot-1).
+"
 
 write(chicletPlot_helper, file = "chicletPlot.md", append = FALSE)
 
@@ -560,7 +571,19 @@ write(chicletPlot_helper, file = "chicletPlot.md", append = FALSE)
 ## volcanoPlot ###################
 ##################################
 
-volcanoPlot_helper <- ""
+volcanoPlot_helper <- "## Volcano Plot
+
+The volcano plot shows the deuterium uptake difference for two biological states for peptide and its p-value for double testing on statistical significance (Weis et al.). On the x-axis, there is a deuterium uptake difference with its uncertainty (combined and propagated). On the y-axis, there is a P-value calculated for each peptide in a specifc time point of a measurement as a un-paired t-test on given significance level (on mass measurement from the replicates to indicate if the measured mean is significantly different between two states, as the deuterium uptake difference between states can be rewritten as
+
+$$Delta D=D_A−D_B=m_{t,A}−m_0−(m_{t,B}−m_0)=m_{t,A}−m_{t,B}$$
+
+
+for states A and B. The values of deuterium uptake difference from all time points are shown on the plot.
+
+The dotted red lines indicate confidence limits for the values. The horizontal line indicates the confidence limit based on chosen confidence level to give a threshold on a P-value. The vertical lines indicate the confidence limit from Houde test for all time points and indicate a threshold on deuterium uptake difference. The statistically significant points are in the top left and right corners of the plot.
+
+For more information see the [documentation](https://hadexversum.github.io/HaDeX/articles/visualization.html#volcano-plot-1).
+"
 
 write(volcanoPlot_helper, file = "volcanoPlot.md", append = FALSE)
 
@@ -568,7 +591,12 @@ write(volcanoPlot_helper, file = "volcanoPlot.md", append = FALSE)
 ## butterflyDifferentialPlot #####
 ##################################
 
-butterflyDifferentialPlot_helper <- ""
+butterflyDifferentialPlot_helper <- "## Butterfly Differential Plot
+
+Butterfly differential plot shows the deuterium uptake difference between two biological states in the form of a butterfly plot. It shows the results for a peptide ID (peptides are numbered arranged by the start position). The results are shown for different time points at once (time points of measurement are indicated by the color).
+
+For more information see the [documentation](https://hadexversum.github.io/HaDeX/articles/visualization.html#butterfly-differential-plot-1).
+"
 
 write(butterflyDifferentialPlot_helper, file = "butterflyDifferentialPlot.md", append = FALSE)
 
@@ -576,7 +604,11 @@ write(butterflyDifferentialPlot_helper, file = "butterflyDifferentialPlot.md", a
 ## comparisonPlot ################
 ##################################
 
-comparisonPlot_helper <- ""
+comparisonPlot_helper <- "## Comparison Plot
+
+The comparison plot shows deuterium uptake of the peptides in a given time point, with information on the length of the peptide and its position in the protein sequence. It allows comparing the results of different biological states.
+
+For more information see the [documentation](https://hadexversum.github.io/HaDeX/articles/visualization.html#comparison-plot-1)."
 
 write(comparisonPlot_helper, file = "comparisonPlot.md", append = FALSE)
 
@@ -584,7 +616,12 @@ write(comparisonPlot_helper, file = "comparisonPlot.md", append = FALSE)
 ## differentialPlot ##############
 ##################################
 
-differentialPlot_helper <- ""
+differentialPlot_helper <- "## Woods Differential Plot
+
+Woods plot presents the deuterium uptake difference between two biological states for the peptides. The results are presented with respect to the length of the peptide and its position in the protein sequence for a given time point of the measurement. The statistical test (Houde et al.), the confidence level is calculated based on the measurements in chosen time point of the measurement) is applied to determine the confidence limits values at the chosen level.
+
+For more information see the [documentation](https://hadexversum.github.io/HaDeX/articles/visualization.html#woods-plot-1).
+"
 
 write(differentialPlot_helper, file = "differentialPlot.md", append = FALSE)
 
@@ -592,6 +629,12 @@ write(differentialPlot_helper, file = "differentialPlot.md", append = FALSE)
 ## butterflyPlot #################
 ##################################
 
-butterflyPlot_helper <- ""
+butterflyPlot_helper <- "## Butterfly Plot
+
+Butterfly plot presents the deuterium uptake for all peptides in a given state at different time points at once. Each time point of measurement is indicated by a different color. Peptides are identified by their ID (peptides are numbered arranged by the start position).
+
+For more information see the [documentation](https://hadexversum.github.io/HaDeX/articles/visualization.html#butterfly-plot-1).
+"
 
 write(butterflyPlot_helper, file = "butterflyPlot.md", append = FALSE)
+

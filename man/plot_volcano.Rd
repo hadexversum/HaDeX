@@ -14,21 +14,21 @@ plot_volcano(
 )
 }
 \arguments{
-\item{vol_data}{data produced by the \code{\link{create_volcano_dataset}} 
+\item{vol_data}{data produced by the \code{\link{create_volcano_dataset}}
 function.}
 
 \item{state_1}{biological state for chosen protein. It is used in the title.}
 
 \item{state_2}{biological state for chosen protein. It is used in the title.}
 
-\item{adjust_axes}{logical, indicating if the X-axis is symmetrical in 
+\item{adjust_axes}{logical, indicating if the X-axis is symmetrical in
 relation to 0.}
 
-\item{show_confidence_limits}{logical, indicates if the hybrid testing 
+\item{show_confidence_limits}{logical, indicates if the hybrid testing
 confidence intervals are shown.}
 
-\item{confidence_level}{confidence level for the confidence intervals. It 
-should be the same as used in \code{\link{generate_volcano_dataset}} function.}
+\item{confidence_level}{confidence level for the test, from range [0, 1]. It
+should be the same as used in \code{\link{create_volcano_dataset}} function.}
 }
 \value{
 a \code{\link{ggplot}} object.
@@ -37,14 +37,14 @@ a \code{\link{ggplot}} object.
 Volcano plot
 }
 \details{
-The data produced by \code{\link{generate_volcano_dataset}} are plotted
+The data produced by \code{\link{create_volcano_dataset}} are plotted
 in the form of a volcano plot. The generation of the data is described in the documentation
-of \code{\link{generate_volcano_dataset}} function. The confidence limit on 
-P-value is calculated based on the confidence level. The confidence limit on deuterium 
+of \code{\link{create_volcano_dataset}} function. The confidence limit on
+P-value is calculated based on the confidence level. The confidence limit on deuterium
 uptake difference is calculated using the Houde test for the time point of measurement
 from the provided data. The confidence limits are indicated by the red dotted
-lines. The points above confidence limits (upper right and left corner) are 
-statistically significant in hybrid testing. 
+lines. The points above confidence limits (upper right and left corner) are
+statistically significant in hybrid testing.
 This plot is visible in GUI.
 }
 \examples{
@@ -54,15 +54,15 @@ plot_volcano(vol_dat, show_confidence_limits = T)
 
 }
 \references{
-Hageman, T. S. & Weis, D. D. Reliable Identification of Significant 
-Differences in Differential Hydrogen Exchange-Mass Spectrometry Measurements 
+Hageman, T. S. & Weis, D. D. Reliable Identification of Significant
+Differences in Differential Hydrogen Exchange-Mass Spectrometry Measurements
 Using a Hybrid Significance Testing Approach. Anal Chem 91, 8008–8016 (2019).
 
-Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). 
-The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in 
+Houde, D., Berkowitz, S.A., and Engen, J.R. (2011).
+The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in
 Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
 }
 \seealso{
-\code{\link{create_volcano_dataset}} 
+\code{\link{create_volcano_dataset}}
 \code{\link{show_volcano_data}}
 }

@@ -1,34 +1,41 @@
 #' Calculate the value of confidence limit
 #' 
-#' @description Calculates confidence limit values for prepared dataset, based on chosen parameters.
+#' @description Calculates confidence limit values for prepared provided, 
+#' based on chosen parameters.
 #' 
 #' @importFrom dplyr case_when
 #' @importFrom stats qt
 #' 
-#' @param calc_dat processed data from DynamX file - using prepare_dataset
-#' @param confidence_level confidence limit chosen by user - from range [0, 1]. 
-#' @param theoretical \code{logical}, determines if values are theoretical
-#' @param fractional \code{logical}, determines if values are fractional
+#' @param diff_uptake_dat processed data from DynamX file - using prepare_dataset
+#' @param confidence_level confidence level for the test, from range [0, 1].
+#' @param theoretical \code{logical}, determines if values are theoretical.
+#' @param fractional \code{logical}, determines if values are fractional.
 #' 
 #' @references Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). 
 #' The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in 
 #' Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
 #' 
-#' @details ...
+#' @details Function \code{\link{calculate_confidence_limit_values}} 
+#' calculates confidence limit using Houde test. The confidence limits 
+#' are calculated on whole provided dataset. If the user wishes to calculate
+#' confidence limit for one, two or more time points, the provided data 
+#' should be adjusted accordingly. 
 #' 
-#' @return range of confidence limit interval 
+#' @return range of confidence limit interval.
 #' 
-#' @seealso \code{\link{read_hdx}} \code{\link{prepare_dataset}} 
+#' @seealso 
+#' \code{\link{read_hdx}} 
+#' \code{\link{calculate_diff_uptake}} 
+#' \code{\link{create_diff_uptake_dataset}}
 #' 
 #' @examples 
-#' # load example data
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' 
-#' #ToDO
+#' diff_uptake_dat <- calculate_diff_uptake(dat)
+#' calculate_confidence_limit_values(diff_uptake_dat)
 #'                               
 #' @export calculate_confidence_limit_values
 
-calculate_confidence_limit_values <- function(calc_dat,
+calculate_confidence_limit_values <- function(diff_uptake_dat,
                                               confidence_level = 0.98,
                                               theoretical = FALSE,
                                               fractional = TRUE) {
@@ -43,7 +50,7 @@ calculate_confidence_limit_values <- function(calc_dat,
     !(theoretical) & !(fractional) ~ "err_diff_deut_uptake"
   )
   
-  confidence_limit_value <- t_value * mean(calc_dat[[err_column]], na.rm = TRUE)/sqrt(length(calc_dat))
+  confidence_limit_value <- t_value * mean(diff_uptake_dat[[err_column]], na.rm = TRUE)/sqrt(length(diff_uptake_dat))
   
   c(-confidence_limit_value, confidence_limit_value)
  

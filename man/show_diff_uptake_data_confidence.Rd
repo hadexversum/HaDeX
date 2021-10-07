@@ -20,9 +20,11 @@ function.}
 
 \item{fractional}{\code{logical}, determines if values are fractional.}
 
-\item{confidence_level_1}{...}
+\item{confidence_level_1}{confidence level for the test, from range [0, 1].}
 
-\item{confidence_level_2}{...}
+\item{confidence_level_2}{second confidence level for the test, 
+from range [0, 1]. If the value of second confidence level is the same
+as first, only one is shown.}
 }
 \value{
 a \code{\link{data.frame}} object.

@@ -19,12 +19,12 @@
 #' The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in 
 #' Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
 #' 
-#' @seealso \code{\link{read_hdx}} \code{\link{generate_differential_data_set}}
+#' @seealso \code{\link{read_hdx}} \code{\link{calculate_diff_uptake}}
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", 
 #'                             "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' calc_dat <- generate_differential_data_set(dat)
+#' calc_dat <- calculate_diff_uptake(dat)
 #' result <- add_stat_dependency(calc_dat)
 #' head(result)                            
 #' 
@@ -52,7 +52,7 @@ add_stat_dependency <- function(calc_dat,
   
   attr(calc_dat, paste0("confidence_limit_at_", confidence_level)) <- confidence_values
   attr(calc_dat, paste0("confidence_limit_at_", confidence_level, "_prop")) <- data.frame("theoretical" = theoretical, "fractional" = fractional)
-
+  
   calc_dat
   
 }

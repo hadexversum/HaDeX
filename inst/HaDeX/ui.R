@@ -17,6 +17,7 @@ theme <- bs_theme(bootswatch = "sandstone",
                   `enable-gradients` = TRUE) %>%
   bs_add_variables("navbar-bg" = "#C8C5D3",
                    "navbar-light" = "#EDF7D2")
+options(shiny.useragg = TRUE)
 
 ui <- tagList(useShinyjs(),
               tags$head(includeScript("ga.js"),

@@ -1,32 +1,43 @@
 ---
 title: "Glossary"
-output: html_document
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: true
+    always_allow_html: yes
+bibliography: HDX.bib
+vignette: >
+  %\VignetteIndexEntry{Glossary}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Terms and variables
+# Terms and variables
 
-time_t : chosen time point
+time_t : chosen time point of measurement.
 
-time_0 : minimal exchange control
+time_0 : minimal exchange control time point of measurement.
 
-time_100 : maximal exchange control
+time_100 : maximal exchange control time point of measurement.
 
-deut_uptake :	deuterium uptake [Da]
+deut_uptake :	deuterium uptake [Da].
 
-err_deut_uptake :	error associated with deuterium uptake [Da]
+err_deut_uptake :	error associated with deuterium uptake [Da].
 
-frac_deut_uptake : fractional deuterium uptake [%]
+frac_deut_uptake : fractional deuterium uptake [%].
 
-err_frac_deut_uptake : error associated with fractional deuterium uptake [%]
+err_frac_deut_uptake : error associated with fractional deuterium uptake [%].
 
-theo_deut_uptake : theoretical deuterium uptake [Da]
+theo_deut_uptake : theoretical deuterium uptake [Da].
 
-err_theo_deut_uptake : error associated with theoretical deuterium uptake [Da]
+err_theo_deut_uptake : error associated with theoreti.cal deuterium uptake [Da].
 
-theo_frac_deut_uptake : theoretical fractional deuterium uptake [%]
+theo_frac_deut_uptake : theoretical fractional deuterium uptake [%].
 
-err_theo_frac_deut_uptake : error associated with theoretical fractional deuterium uptake [%]
+err_theo_frac_deut_uptake : error associated with theoretical fractional deuterium uptake [%].
+
+deut_part : deuterium percentage in solution used in experiment, from range [0, 1].

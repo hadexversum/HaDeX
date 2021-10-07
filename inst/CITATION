@@ -1,0 +1,12 @@
+citHeader("To cite HaDeX in publications, please use:")
+
+citEntry(entry = "Article",
+  author = "Puchala, Weronika and Burdukiewicz, Michal and Kistowski, Michal and Dabrowska, Katarzyna A and Badaczewska-Dawid, Aleksandra E and Cysewski, Dominik and Dadlez, Michal",
+  title = "HaDeX: An R Package and Web-Server for Analysis of Data from Hydrogen-Deuterium Exchange Mass Spectrometry Experiments",
+  year = "2020",
+  doi = "10.1093/bioinformatics/btaa587",
+  journal = "International Journal of Molecular Sciences",
+  volume = "36",
+  textVersion = "Puchała, W., Burdukiewicz, M., Kistowski, M., Dąbrowska, K.A., Badaczewska-Dawid, A.E., Cysewski, D., and Dadlez, M. (2020). HaDeX: an R package and web-server for analysis of data from hydrogen–deuterium exchange mass spectrometry experiments. Bioinformatics 36, 4516–4518 (10.1093/bioinformatics/btaa587)."
+)
+

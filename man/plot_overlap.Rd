@@ -7,8 +7,7 @@
 plot_overlap(dat)
 }
 \arguments{
-\item{dat}{produced by \code{\link{show_overlap_data}}
-function}
+\item{dat}{data imported by the \code{\link{read_hdx}} function.}
 }
 \value{
 a \code{\link{ggplot2}} object.
@@ -18,7 +17,14 @@ Generates overapping peptide plot based
 on supplied data and parameters.
 }
 \details{
+The overlap plot presents all the peptides in given state
+on the protein sequence. 
 This plot is visible in GUI.
+}
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+plot_overlap(dat)
+
 }
 \seealso{
 \code{\link{read_hdx}}

@@ -57,7 +57,9 @@ dat_hdexaminer <- read_hdx(system.file(package = "HaDeX",
 
 }
 \seealso{
-\code{\link{read_hdx}} \code{\link{calculate_kinetics}} \code{\link{calculate_state_deuteration}} 
-\code{\link{plot_coverage}} \code{\link{plot_position_frequency}}
-\code{\link{prepare_dataset}} \code{\link{quality_control}} \code{\link{reconstruct_sequence}}
+\code{\link{read_hdx}} 
+\code{\link{calculate_kinetics}} 
+\code{\link{plot_coverage}} 
+\code{\link{plot_position_frequency}}
+\code{\link{reconstruct_sequence}}
 }

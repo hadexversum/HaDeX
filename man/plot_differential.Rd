@@ -5,7 +5,7 @@
 \title{Differential plot}
 \usage{
 plot_differential(
-  dat,
+  diff_uptake_dat,
   theoretical = FALSE,
   fractional = FALSE,
   confidence_level = 0.98,
@@ -13,15 +13,17 @@ plot_differential(
 )
 }
 \arguments{
-\item{dat}{produced by \code{\link{generate_differential_data_set}} function}
+\item{diff_uptake_dat}{produced by \code{\link{create_diff_uptake_dataset}} function.}
 
-\item{theoretical}{\code{logical}, determines if values are theoretical}
+\item{theoretical}{\code{logical}, determines if values are theoretical.}
 
-\item{fractional}{\code{logical}, determines if values are fractional}
+\item{fractional}{\code{logical}, determines if values are fractional.}
 
-\item{confidence_limit}{...}
+\item{confidence_level}{confidence level for the test, from range [0, 1].}
 
-\item{confidence_limit_2}{...}
+\item{confidence_level_2}{second confidence level for the test, 
+from range [0, 1]. If the value of second confidence level is the same
+as first, only one is shown.}
 }
 \value{
 a \code{\link{ggplot}} object.
@@ -30,23 +32,29 @@ a \code{\link{ggplot}} object.
 Differential plot
 }
 \details{
-Function \code{\link{generate_differential_plot}} presents
-provided data in a form of differential (Woods) plot. The plot show 
-difference in exchange for two biological states, selected in 
-generation of dataset at one time point of measurement .On X-axis 
-there is a position in a sequence, with length of a segment of each 
-peptide representing its length. On Y-axis there 
-is deuterium uptake difference in chosen form. Error bars represents 
-the combined and propagated uncertainty. 
+Function \code{\link{plot_differential}} presents
+provided data in a form of differential (Woods) plot. The plot shows
+difference in exchange for two biological states, selected in
+generation of dataset at one time point of measurement .On X-axis
+there is a position in a sequence, with length of a segment of each
+peptide representing its length. On Y-axis there
+is deuterium uptake difference in chosen form. Error bars represents
+the combined and propagated uncertainty.
+The confidence limits based on provided confidence levels are shown
+on the plot. The statistically significant values are in color (red if the 
+difference is positive, blue if negative), and the insignificant values are 
+grey. There are two confidence limits for comparison of the results, but
+there is possibility to plot only one confidence limit, if the confidence
+levels are the same.
 This plot is visible in GUI.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-diff_uptake_dat <- generate_differential_data_set(dat)
+diff_uptake_dat <- create_diff_uptake_dataset(dat)
 plot_differential(diff_uptake_dat)
 
 }
 \seealso{
-\code{\link{generate_differential_data_set}}
-\code{\link{generate_differential_data}}
+\code{\link{create_diff_uptake_dataset}}
+\code{\link{show_diff_uptake_data}}
 }

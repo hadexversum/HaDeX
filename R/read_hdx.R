@@ -22,18 +22,18 @@
 #' `Exp Cent` value) are removed. The `Confidence` column is preserved as the user should 
 #' have impact on accepting rows based on their Confidence flag. Moreover, those files need 
 #' action from the user - to confirm data processing (e.q. FD time point), choose accepted 
-#' confidence values and make some change of the labels use \code{\link{upadate_hdexaminer_file}}
+#' confidence values and make some change of the labels use \code{\link{update_hdexaminer_file}}
 #' function. 
 #' IMPORTANT! The files of HDeXaminer origin MUST be processed by hand or by 
-#' \code{\link{upadate_hdexaminer_file}} function to fit the input of processing functions 
-#' e.q. \code{\link{calculate_state_deuteration}} or \code{\link{calculate_kinetics}}. 
+#' \code{\link{update_hdexaminer_file}} function to fit the input of processing functions 
+#' e.q. \code{\link{calculate_state_uptake}} or \code{\link{calculate_kinetics}}. 
 #' 
 #' @return a \code{\link{data.frame}} object with validated content.
 #' 
 #' @seealso 
 #' \code{\link{update_hdexaminer_file}}
 #' \code{\link{create_control_dataset}}
-#' \code{\link{calculate_state_deuteration}} 
+#' \code{\link{calculate_state_uptake}} 
 #' 
 #' @examples
 #' dat <- read_hdx(system.file(package = "HaDeX", 
@@ -45,7 +45,7 @@
 read_hdx <- function(filename){
   
   dat <- switch(file_ext(filename),
-                "csv" = fread(filename, data.table = FALSE),
+                "csv" = fread(filename, data.table = TRUE),
                 "xlsx" = read_excel(filename),
                 "xls" = read_excel(filename))
   
@@ -76,9 +76,9 @@ read_hdx <- function(filename){
   
   #check for dynamx3 file
   colnames_v_3 <- c("Protein", "Start", "End", "Sequence", 
-                  "Modification", "Fragment", "MaxUptake", 
-                  "MHP", "State", "Exposure", "File", "z", 
-                  "RT", "Inten", "Center") 
+                    "Modification", "Fragment", "MaxUptake", 
+                    "MHP", "State", "Exposure", "File", "z", 
+                    "RT", "Inten", "Center") 
   
   colnames_presence <- colnames_v_3 %in% colnames(dat)
   
@@ -106,7 +106,7 @@ read_hdx <- function(filename){
   # class(dat) <- c("hdx_data", "data.frame")
   # 
   # dat
-
+  
   
 }
 

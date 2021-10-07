@@ -2,12 +2,11 @@
 #' 
 #' @importFrom ggplot2 ggplot geom_segment geom_errorbar theme scale_y_continuous
 #' 
-#' @param dat data produced by \code{\link{calculate_state_deuteration}} or
-#' \code{\link{generate_comparison_dataset}} function.
+#' @param dat data produced by \code{\link{calculate_state_uptake}} function.
 #' @param theoretical \code{logical}, determines if values are theoretical. 
 #' @param fractional \code{logical}, determines if values are fractional.
 #' 
-#' @details Function \code{\link{plot_comparison}} presents provided 
+#' @details Function \code{\link{plot_state_comparison}} presents provided 
 #' data in a form of comparison plot, for peptides for chosen protein in chosen states,
 #' at one time point of measurement at once. On X-axis there is a position in a sequence, 
 #' with length of a segment of each peptide representing its length. On Y-axis there 
@@ -18,20 +17,18 @@
 #' @return a \code{ggplot} object.
 #' 
 #' @seealso 
-#' \code{\link{calculate_state_deuteration}}  
-#' \code{\link{generate_comparison_dataset}}
-#' \code{\link{generate_comparison_data}}
+#' \code{\link{calculate_state_uptake}}  
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' comparison_dat <- generate_comparison_dataset(dat)
+#' comparison_dat <- calculate_state_uptake(dat)
 #' plot_state_comparison(comparison_dat)
 #' 
 #' @export plot_state_comparison
 
 plot_state_comparison <- function(dat, 
-                            theoretical = FALSE, 
-                            fractional = FALSE){
+                                  theoretical = FALSE, 
+                                  fractional = FALSE){
   
   if (theoretical) {
     
@@ -113,7 +110,6 @@ plot_state_comparison <- function(dat,
 #' 
 #' @seealso 
 #' \code{\link{create_state_uptake_dataset}} 
-#' \code{\link{generate_butterfly_data}}
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
@@ -131,45 +127,45 @@ plot_butterfly <- function(butterfly_dat,
   state <- unique(butterfly_dat[["State"]])
   
   if (theoretical) {
-
+    
     if (fractional) {
-
+      
       # theoretical & fractional
       value <- "theo_frac_deut_uptake"
       err_value <- "err_theo_frac_deut_uptake"
       y_label <- "Fractional deuterium uptake [%]"
       title <- paste0("Theoretical butterfly plot for ", state, " state")
-
+      
     } else {
-
+      
       # theoretical & absolute
       value <- "theo_deut_uptake"
       err_value <- "err_theo_deut_uptake"
       y_label <- "Deuterium uptake [Da]"
       title <- paste0("Theoretical butterfly plot for ", state, " state")
-
+      
     }
-
+    
   } else {
-
+    
     if (fractional) {
-
+      
       # experimental & fractional
       value <- "frac_deut_uptake"
       err_value <- "err_frac_deut_uptake"
       y_label <- "Fractional deuterium uptake [%]"
       title <- paste0("Butterfly plot for ", state, " state")
-
+      
     } else {
-
+      
       # experimental & absolute
       value <- "deut_uptake"
       err_value <- "err_deut_uptake"
       y_label <- "Deuterium uptake [Da]"
       title <- paste0("Butterfly plot for ", state, " state")
-
+      
     }
-
+    
   }
   
   plot_dat <- data.frame(ID = butterfly_dat[["ID"]],
@@ -186,17 +182,17 @@ plot_butterfly <- function(butterfly_dat,
     labs(x = "Peptide ID",
          y = y_label) +
     theme(legend.position = "bottom")
-
+  
   if(uncertainty_type == "ribbon"){
-
+    
     butterfly_plot <- butterfly_plot +
-    geom_ribbon(aes(x = ID, ymin = value - err_value, ymax = value + err_value, fill = Exposure), alpha = 0.5, size = 0, linetype = "blank")
-
+      geom_ribbon(aes(x = ID, ymin = value - err_value, ymax = value + err_value, fill = Exposure), alpha = 0.5, size = 0, linetype = "blank")
+    
   } else if (uncertainty_type == "bars") {
-
+    
     butterfly_plot <- butterfly_plot +
       geom_errorbar(aes(x = ID, ymin = value - err_value, ymax = value + err_value, color = Exposure), width = 0.25, alpha = 0.5)
-
+    
   } else if (uncertainty_type == "bars + line"){
     
     butterfly_plot <- butterfly_plot +
@@ -233,7 +229,6 @@ plot_butterfly <- function(butterfly_dat,
 #' 
 #' @seealso 
 #' \code{\link{create_state_uptake_dataset}}
-#' \code{\link{generate_chiclet_data}} 
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))

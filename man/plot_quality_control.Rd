@@ -2,12 +2,12 @@
 % Please edit documentation in R/quality_control.R
 \name{plot_quality_control}
 \alias{plot_quality_control}
-\title{generate_quality_control_plot}
+\title{Plot quality control data}
 \usage{
-plot_quality_control(dat)
+plot_quality_control(qc_dat)
 }
 \arguments{
-\item{dat}{data produced by \code{\link{create_quality_control_dataset}} 
+\item{qc_dat}{data produced by \code{\link{create_quality_control_dataset}} 
 function, scaled if necessary.}
 }
 \value{
@@ -17,7 +17,15 @@ a \code{\link{ggplot2}} object.
 Generates quality control plot based on supplied data.
 }
 \details{
+This plot presents the mean uncertainty in function of selected 
+maximal exchange control time of measurement. 
 This plot is visible in GUI.
+}
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+qc_dat <- create_quality_control_dataset(dat)  
+plot_quality_control(qc_dat)
+
 }
 \seealso{
 \code{\link{create_quality_control_dataset}}
