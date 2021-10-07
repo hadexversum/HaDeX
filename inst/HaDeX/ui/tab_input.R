@@ -10,22 +10,23 @@ tab_input <- tabPanel(
       "If the supplied file contains modified peptides, maximal exchange control cannot be applied.",
       "Please be aware that loading data (including example file) may take a while. Be patient."
     ),
-    fluidRow(
-      column(
-        width = 3,
+    wellPanel(
+      fillRow(
         fileInput(
           inputId = "data_file",
           label = "Choose file:",
           multiple = FALSE,
           accept = c(".csv", ".xlsx", ".xls"),
-          placeholder = "No file selected")),
-      column(
-        width = 4,
-        h5("File status:"),
+          placeholder = "No file selected"),
         div(
-          class = "file-status-message",
-          withHaDeXSpinner(textOutput("data_file_info"))
-        )
+          id = "HaDeX-file-status-panel",
+          h5("File status:"),
+          div(
+            id = "HaDeX-file-status-message",
+            withHaDeXSpinner(textOutput("data_file_info"))
+          )
+        ),
+        flex = c(NA, 1)
       )
     ),
     span(
