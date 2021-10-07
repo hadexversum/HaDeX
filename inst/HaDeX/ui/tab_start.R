@@ -3,7 +3,7 @@ tab_start <- tabPanel(
   div(
     class = "HaDeX-nonplot-tab-content",
     h1("Welcome to HaDeX!"),
-    span(
+    p(
       "Thank you for using our tool.",
       "Questions/feature requests/commercial applications: hadex@ibb.waw.pl"
     ),

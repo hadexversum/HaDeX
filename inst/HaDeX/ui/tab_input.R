@@ -2,7 +2,7 @@ tab_input <- tabPanel(
   title = "Input data",
   div(
     class = "HaDeX-nonplot-tab-content",
-    span(
+    p(
       "Upload your file. Otherwise, you will see the example data.",
       "Currently HaDeX is limited to `cluster` files from DynamX 3.0 or 2.0 and `tables` file from  HDeXaminer.",
       "Accepted file extensions: .csv, .xls, .xlsx. ",
@@ -29,7 +29,7 @@ tab_input <- tabPanel(
         flex = c(NA, 1)
       )
     ),
-    span(
+    p(
       "For the program to behave correctly, please make sure supplied file fulfills following requirements:"
     ),
     tags$button(
@@ -46,7 +46,7 @@ tab_input <- tabPanel(
       tableOutput("file_req")
     ),
     h3("Settings"),
-    span(
+    p(
       "Values chosen here are propagated into all of the tables for coherent results."
     ),
     fluidRow(
