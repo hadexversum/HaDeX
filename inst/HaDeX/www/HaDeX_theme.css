@@ -51,6 +51,10 @@ h2 {
   height: calc(1.5em + .75rem + 2px);
 }
 
+.shiny-table {
+  margin: auto;
+}
+
 /* OTHER EXTERNAL CLASSES */
 
 .loader-img {
@@ -99,6 +103,18 @@ h2 {
 
 #HaDeX-settings-panel * {
   max-width: 800px !important;
+}
+
+#HaDeX-file-requirements-section {
+  margin-top: 15px;
+}
+
+#HaDeX-file-reqs {
+  margin: 15px;
+}
+
+#file_req {
+  margin: 0 auto;
 }
 
 #data_file_info {

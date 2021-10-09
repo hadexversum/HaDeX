@@ -31,6 +31,7 @@ tab_input <- tabPanel(
       )
     ),
     fillRow(
+      id = "HaDeX-file-requirements-section",
       flex = c(1, NA),
       p(
         "For the program to behave correctly, please make sure supplied file fulfills all requirements.",
@@ -46,7 +47,6 @@ tab_input <- tabPanel(
     ),
     div(
       id = "HaDeX-file-reqs",
-      style = "width: min-content",
       class = "hideable collapse",
       tableOutput("file_req")
     ),
