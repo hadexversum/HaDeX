@@ -29,3 +29,16 @@ HaDeX_plotSettingsSection <- function(..., title = NULL) tagList(
   if (!is.null(title)) h5(title) else NULL,
   ...
 )
+
+HaDeX_collapseButton <- function(title, target) tags$button(
+  title,
+  class = "btn btn-default collapse-btn",
+  `data-toggle`= "collapse",
+  `data-target`= target
+)
+
+HaDeX_collapsablePanel <- function(id, ...) tags$div(
+  class = "hideable collapse",
+  id = id,
+  ...
+)

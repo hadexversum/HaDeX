@@ -84,15 +84,19 @@ woods_comparison_plot_parameters <- function() HaDeX_plotSettingsSection(
                                 selected = c("CD160", "CD160VEM")),
            class = "states-to-compare-column"),
     column(6,
-           helper(tags$button("Adjust colors",
-                              class = "collapse-button",
-                              `data-toggle`="collapse",
-                              `data-target`="#colorss"),
-                  content = "adjust_colors", type = "markdown", buttonLabel = "Okay",
-                  easyClose = TRUE, colour = "#F8F1FF"),
-           tags$div(
-             class = "hideable",
-             id = "colorss",
+           helper(
+             HaDeX_collapseButton(
+               title = "Adjust colors",
+               target = "#HaDeX-woods-colors-adjusting-panel"
+             ),
+             content = "adjust_colors", 
+             type = "markdown", 
+             buttonLabel = "Okay",
+             easyClose = TRUE, 
+             colour = "#715D91"
+           ),
+           HaDeX_collapsablePanel(
+             id = "HaDeX-woods-colors-adjusting-panel",
              uiOutput("states_colors")
            ),
            class = "states-colors-column"
@@ -148,13 +152,12 @@ woods_zoom <- function() HaDeX_plotSettingsSection(
 )
 
 woods_labels_adjustement <- function() HaDeX_plotSettingsSection(
-  tags$button("Adjust labels",
-              class = "collapse-button",
-              `data-toggle`="collapse",
-              `data-target`="#labs"),
-  tags$div(
-    class = "hideable",
-    id = "labs",
+  HaDeX_collapseButton(
+    title = "Adjust labels",
+    target = "#HaDeX-woods-labels-adjusting-panel"
+  ),
+  HaDeX_collapsablePanel(
+    id = "HaDeX-woods-labels-adjusting-panel",
     fluidRow(
       column(width = 10,
              textInput(inputId = "comparison_plot_title",

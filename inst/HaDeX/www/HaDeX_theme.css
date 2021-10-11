@@ -62,7 +62,12 @@ h2 {
 }
 
 .shinyhelper-container {
-  right: 30px !important;
+  right: 20px !important;
+}
+
+.collapse-btn {
+  margin: 10px 30px;
+  width: calc(100% - 60px);
 }
 
 /* CUSTOM CLASSES AND IDS */

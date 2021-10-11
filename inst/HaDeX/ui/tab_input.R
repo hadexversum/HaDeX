@@ -37,17 +37,13 @@ tab_input <- tabPanel(
         "For the program to behave correctly, please make sure supplied file fulfills all requirements.",
         "Requirements can be displayed by clicking the button."
       ),
-      tags$button(
-        "Show requirements",
-        class = "btn btn-default collapse-btn",
-        style = "width: unset",
-        `data-toggle`="collapse",
-        `data-target`="#HaDeX-file-requirements-table"
+      HaDeX_collapseButton(
+        title = "Show requirements",
+        target = "#HaDeX-file-requirements-table"
       )
     ),
-    div(
+    HaDeX_collapsablePanel(
       id = "HaDeX-file-requirements-table",
-      class = "hideable collapse",
       tableOutput("file_req")
     ),
     h3("Settings"),
