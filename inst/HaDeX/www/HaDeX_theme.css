@@ -59,6 +59,10 @@ h5 {
   margin: auto;
 }
 
+.shiny-plot-output, .datatables {
+  margin: 20px 0;
+}
+
 /* OTHER EXTERNAL CLASSES */
 
 .loader-img {

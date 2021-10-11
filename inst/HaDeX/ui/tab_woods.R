@@ -8,43 +8,9 @@ tab_woods <- function() HaDeX_plotTab(
     woods_labels_adjustement()
   ),
   displayPanel = HaDeX_plotDisplayPanel(
-    tabsetPanel(
-      tabPanel("Comparison plot",
-               br(),
-               plotOutput_h("comparisonPlot", hover = hoverOpts("comparisonPlot_hover", delay = 10, delayType = "debounce")),
-               downloadButton("comparisonPlot_download_button",
-                              "Save chart (.svg)")
-      ),
-      tabPanel("Data",
-               br(),
-               DT::dataTableOutput("comparisonPlot_data"),
-               br(),
-               h4("The empty values (e.q. `Frac DU`) mean there was not sufficient data for this peptide."),
-               h4("Abbreviations from the table: DU - deuterium uptake, Frac - fractional, Theo - theoretical, U(value) - uncertainty of value.")
-      )
-      
-    ),
-    uiOutput("comparisonPlot_debug"),
-    br(),
-    
-    ##### WOODS PLOT ##### 
-    
-    tabsetPanel(
-      tabPanel("Woods plot",
-               br(),
-               div(style = "position:relative",
-                   plotOutput_h("differentialPlot", hover = hoverOpts("differentialPlot_hover", delay = 10, delayType = "debounce")),
-                   uiOutput("differentialPlot_debug")),
-               downloadButton("differentialPlot_download_button",
-                              "Save chart (.svg)")),
-      tabPanel("Data",
-               br(),
-               DT::dataTableOutput("differentialPlot_data"),
-               br(),
-               h4("The empty values (e.q. `Frac Diff DU`) mean there was not sufficient data for this peptide. There is a possibility that the measurement result is available for only one state of the peptide."),
-               h4("Abbreviations from the table: Diff DU - differential deuterium uptake, Frac - fractional, Theo - theoretical, U(value) - uncertainty of value.")
-      )
-    )
+    woods_comparison_plot_panel(),
+    woods_debug_panel(),
+    woods_woods_plot_panel()
   )
 )
 
@@ -215,5 +181,39 @@ woods_labels_adjustement <- function() HaDeX_plotSettingsSection(
       )
     ),
     p("The axis ticks have the same size as the axis label. The legend text size is the same as the x axis label.")
+  )
+)
+
+woods_comparison_plot_panel <- function() tabsetPanel(
+  tabPanel("Comparison plot",
+           plotOutput_h("comparisonPlot", hover = hoverOpts("comparisonPlot_hover", delay = 10, delayType = "debounce")),
+           downloadButton("comparisonPlot_download_button",
+                          "Save chart (.svg)")
+  ),
+  tabPanel("Data",
+           DT::dataTableOutput("comparisonPlot_data"),
+           p(
+             "The empty values (e.q. `Frac DU`) mean there was not sufficient data for this peptide.",
+             "Abbreviations from the table: DU - deuterium uptake, Frac - fractional, Theo - theoretical, U(value) - uncertainty of value."
+           )        
+  )
+)
+
+woods_debug_panel <- function() uiOutput("comparisonPlot_debug")
+
+woods_woods_plot_panel <- function() tabsetPanel(
+  tabPanel("Woods plot",
+           br(),
+           div(style = "position:relative",
+               plotOutput_h("differentialPlot", hover = hoverOpts("differentialPlot_hover", delay = 10, delayType = "debounce")),
+               uiOutput("differentialPlot_debug")),
+           downloadButton("differentialPlot_download_button",
+                          "Save chart (.svg)")),
+  tabPanel("Data",
+           DT::dataTableOutput("differentialPlot_data"),
+           p(
+             "The empty values (e.q. `Frac Diff DU`) mean there was not sufficient data for this peptide. There is a possibility that the measurement result is available for only one state of the peptide.",
+             "Abbreviations from the table: Diff DU - differential deuterium uptake, Frac - fractional, Theo - theoretical, U(value) - uncertainty of value."
+           )
   )
 )
