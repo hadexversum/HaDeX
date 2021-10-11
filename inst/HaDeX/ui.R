@@ -1,4 +1,5 @@
 source("data-work.R")
+source("custom-elements.R")
 library(bslib)
 for (file in list.files("ui", full.names = TRUE)) source(file, local = TRUE)
 
@@ -31,7 +32,7 @@ ui <- tagList(useShinyjs(),
                   tab_input,
                   navbarMenu(
                     "Plots",
-                    tab_woods,
+                    tab_woods(),
                     tab_butterfly,
                     tab_butterfly_diff,
                     tab_volcano,
