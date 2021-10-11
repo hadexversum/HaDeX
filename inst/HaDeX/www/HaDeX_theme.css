@@ -62,7 +62,7 @@ h2 {
 }
 
 .shinyhelper-container {
-  right: 30px;
+  right: 30px !important;
 }
 
 /* CUSTOM CLASSES AND IDS */
