@@ -25,7 +25,7 @@ tab_input <- tabPanel(
           h6("File status:"),
           div(
             id = "HaDeX-file-status-message",
-            withHaDeXSpinner(textOutput("data_file_info"))
+            withHaDeXSpinner(verbatimTextOutput("data_file_info"))
           )
         )
       )
