@@ -42,11 +42,11 @@ tab_input <- tabPanel(
         class = "btn btn-default collapse-btn",
         style = "width: unset",
         `data-toggle`="collapse",
-        `data-target`="#HaDeX-file-reqs"
+        `data-target`="#HaDeX-file-requirements-table"
       )
     ),
     div(
-      id = "HaDeX-file-reqs",
+      id = "HaDeX-file-requirements-table",
       class = "hideable collapse",
       tableOutput("file_req")
     ),
