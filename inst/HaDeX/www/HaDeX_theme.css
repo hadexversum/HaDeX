@@ -61,6 +61,10 @@ h2 {
   max-width: 200px;
 }
 
+.shinyhelper-container {
+  right: 30px;
+}
+
 /* CUSTOM CLASSES AND IDS */
 
 #HaDeX-logo {
