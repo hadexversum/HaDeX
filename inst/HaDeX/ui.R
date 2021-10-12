@@ -16,7 +16,7 @@ theme <- bs_theme(bootswatch = "sandstone",
                   font_scale = 1.285714,
                   
                   `enable-gradients` = TRUE) %>%
-  bs_add_variables("navbar-bg" = "#C8C5D3",
+  bs_add_variables("navbar-bg" = "#CCC2D6",
                    "navbar-light" = "#EDF7D2")
 options(shiny.useragg = TRUE)
 

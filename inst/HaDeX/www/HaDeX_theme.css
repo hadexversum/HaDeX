@@ -8,6 +8,10 @@ h5 {
   border-bottom: 1px solid;
 }
 
+h4 {
+  border-bottom: 3px solid;
+}
+
 /* BOOTSTRAP CLASSES */
 
 .navbar-header {
@@ -51,6 +55,10 @@ h5 {
     font-size: 18px;
 }
 
+.btn-default {
+  background: #9A85AD linear-gradient(180deg, #9A85AD, #856C9D) repeat-x;
+}
+
 .input-group-prepend {
   height: calc(1.5em + .75rem + 2px);
 }
@@ -61,6 +69,10 @@ h5 {
 
 .shiny-plot-output, .datatables {
   margin: 20px 0;
+}
+
+.well {
+  background-color: rgba(235, 231, 239, 0.25);
 }
 
 /* OTHER EXTERNAL CLASSES */

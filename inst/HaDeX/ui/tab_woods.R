@@ -59,7 +59,7 @@ woods_comparison_plot_parameters <- function() HaDeX_plotSettingsSection(
              type = "markdown", 
              buttonLabel = "Okay",
              easyClose = TRUE, 
-             colour = "#715D91"
+             colour = "#856C9D"
            ),
            HaDeX_collapsablePanel(
              id = "HaDeX-woods-colors-adjusting-panel",
