@@ -226,7 +226,7 @@ create_state_uptake_dataset <- function(dat,
                            time_0 = time_0, time_t = time, time_100 = time_100, 
                            deut_part = deut_part) %>%
       arrange(Start, End) %>%
-      mutate( # ID = 1L:nrow(.),
+      mutate(ID = 1L:nrow(.),
         Exposure = time) %>%
       select(ID, Exposure, everything()) 
     

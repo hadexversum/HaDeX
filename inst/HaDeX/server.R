@@ -430,17 +430,17 @@ server <- function(input, output, session) {
 
   source("server/tab_comparison.R", local = TRUE)
 
-  # source("server/tab_differential.R", local = TRUE)
+  source("server/tab_differential.R", local = TRUE)
 
   ### TAB: BUTTERFLY ###
 
-  # source("server/tab_butterfly.R", local = TRUE) # check
+  source("server/tab_butterfly.R", local = TRUE) # check
 
-  # source("server/tab_butterfly_differential.R", local = TRUE)
+  source("server/tab_butterfly_differential.R", local = TRUE)
 
   ### TAB: VOLCANO ###
 
-  # source("server/tab_volcano.R", local = TRUE)
+  source("server/tab_volcano.R", local = TRUE)
 
   ### TAB: REPLICATES ###
 
@@ -448,7 +448,7 @@ server <- function(input, output, session) {
 
   ### TAB: CHICLET ###
 
-  # source("server/tab_chiclet.R", local = TRUE)
+  source("server/tab_chiclet.R", local = TRUE)
 
   source("server/tab_chiclet_differential.R", local = TRUE)
 
