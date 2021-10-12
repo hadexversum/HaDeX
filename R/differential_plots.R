@@ -357,6 +357,7 @@ plot_differential_chiclet <- function(diff_uptake_dat,
   
   chiclet_differential_plot <- ggplot(plot_dat, aes(y = Exposure, x = ID)) +
     geom_tile(aes(fill = value)) +
+    geom_tile(data = subset(plot_dat, is.na(value)), fill = "gray95") +
     scale_fill_gradient2(low = "blue", mid = "white", high = "red", guide = guide_legend(keywidth = 3)) +
     labs(title = title,
          y = "Exposure [min]",

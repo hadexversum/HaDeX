@@ -227,6 +227,10 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                          choices = c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
                                                          selected = 0.99)
                                          ),
+                                         selectInput_h(inputId = "woods_diff_test_type",
+                                                       label = "Select test type:",
+                                                       choices = c("Houde test for time point" = 1, "Houde test all time points" = 2, "semi-parametric test" = 3),
+                                                       selected = 1),
                                          ##
                                          h4("Zoom:"),
                                          sliderInput(inputId = 'comp_plot_y_range',
@@ -559,7 +563,11 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                                selectInput_h(inputId = "butt_diff_confidence_level",
                                                                              label = "Select confidence level:",
                                                                              choices = c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
-                                                                             selected = 0.98)
+                                                                             selected = 0.98),
+                                                               selectInput_h(inputId = "butt_diff_test_type",
+                                                                             label = "Select test type:",
+                                                                             choices = c("Houde test for time point" = 1, "Houde test all time points" = 2, "semi-parametric test" = 3),
+                                                                             selected = 1),
                                                           )
                                                          ),
                                                        
@@ -684,7 +692,11 @@ ui <- fluidPage(theme = "HaDeX_theme.css",
                                                   selectInput_h(inputId = "vol_interval",
                                                                 label = "Show confidence limit for: ",
                                                                 choices = c("All time points", "Selected time points"),
-                                                                selected = "All time points")
+                                                                selected = "All time points"),
+                                                  selectInput_h(inputId = "vol_test_type",
+                                                                label = "Select test type:",
+                                                                choices = c("Houde test for selected time points" = 1, "Houde test all time points" = 2, "semi-parametric test" = 3),
+                                                                selected = 1)
                                              
                                            )
                                          ),

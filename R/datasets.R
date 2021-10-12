@@ -173,7 +173,8 @@ calculate_diff_uptake  <- function(dat,
            diff_theo_deut_uptake = theo_deut_uptake_1 - theo_deut_uptake_2,
            err_diff_theo_deut_uptake = sqrt(err_theo_deut_uptake_1^2 + err_theo_deut_uptake_2^2)) %>%
     arrange(Start, End) %>%
-    select(Protein, Start, End, Med_Sequence, everything(), -contains("1"), -contains("2"))
+    select(Protein, Start, End, Med_Sequence, everything(), -contains("1"), -contains("2")) %>%
+    mutate(ID = 1L:nrow(.))
 }
 
 #' Create uptake dataset for chosen state
