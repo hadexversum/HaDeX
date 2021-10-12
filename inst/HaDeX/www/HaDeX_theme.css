@@ -4,14 +4,6 @@ h2 {
   border-width: 0 0 ;
 }
 
-h5 {
-  border-bottom: 1px solid;
-}
-
-h4 {
-  border-bottom: 3px solid;
-}
-
 /* BOOTSTRAP CLASSES */
 
 .navbar-header {
@@ -169,3 +161,14 @@ h4 {
 .HaDeX-plot-tab-content {
   gap: 20px;
 }
+
+h4.HaDeX-plot-settings-panels-header {
+  border-bottom: 3px solid;
+  margin-top: -10px;
+}
+
+h5.HaDeX-plot-settings-panels-section-title {
+  border-bottom: 1px solid;
+}
+
+

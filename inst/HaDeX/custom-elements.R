@@ -12,7 +12,10 @@ HaDeX_plotSettingsPanel <- function(...) wellPanel(
   class = "HaDeX-tab-content-element HaDeX-plot-settings-panel",
   fillCol(
     flex = NA,
-    h4("Select parameters for the plot"),
+    h4(
+      class = "HaDeX-plot-settings-panels-header",
+      "Select parameters for the plot"
+      ),
     ...
   )
 )
@@ -26,7 +29,7 @@ HaDeX_plotDisplayPanel <- function(...) div(
 )
 
 HaDeX_plotSettingsSection <- function(..., title = NULL) tagList(
-  if (!is.null(title)) h5(title) else NULL,
+  if (!is.null(title)) h5(class = "HaDeX-plot-settings-panels-section-title", title) else NULL,
   ...
 )
 
