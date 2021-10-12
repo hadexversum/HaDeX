@@ -23,6 +23,7 @@ HaDeX_plotSettingsPanel <- function(...) wellPanel(
 HaDeX_plotDisplayPanel <- function(...) div(
   class = "HaDeX-tab-content-element HaDeX-plot-display-panel",
   fillCol(
+    class = "HaDeX-plot-display-panel-container",
     flex = NA,
     ...
   )

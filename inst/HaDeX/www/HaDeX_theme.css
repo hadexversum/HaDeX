@@ -171,4 +171,6 @@ h5.HaDeX-plot-settings-panels-section-title {
   border-bottom: 1px solid;
 }
 
-
+.HaDeX-plot-display-panel-container {
+  gap: 20px
+}
