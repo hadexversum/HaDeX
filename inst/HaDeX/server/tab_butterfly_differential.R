@@ -6,13 +6,13 @@ observe({
 
   updateSelectInput(session,
                     inputId = "butt_diff_state_1",
-                    choices = states_from_file(),
-                    selected = states_from_file()[1])
+                    choices = states_chosen_protein(),
+                    selected = states_chosen_protein()[1])
 
   updateSelectInput(session,
                     inputId = "butt_diff_state_2",
-                    choices = states_from_file(),
-                    selected = states_from_file()[2])
+                    choices = states_chosen_protein(),
+                    selected = states_chosen_protein()[2])
 
   if(input[["butt_diff_fractional"]]){
 
@@ -172,6 +172,7 @@ butt_diff_dataset <- reactive({
 
   validate(need(input[["butt_diff_state_1"]]!=input[["butt_diff_state_2"]], "There is no difference between the same state, choose different state 2."))
   validate(need(input[["chosen_protein"]] %in% unique(dat()[["Protein"]]), "Wait for the parameters to be loaded."))
+  validate(need(input[["butt_diff_state_1"]] %in% states_chosen_protein(), "Wait for the parameters to be loaded."))
 
   create_diff_uptake_dataset(dat(),
                              protein = input[["chosen_protein"]],

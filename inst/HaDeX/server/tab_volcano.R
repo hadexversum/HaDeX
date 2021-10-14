@@ -2,17 +2,17 @@
 ######### SETTINGS ##############
 #################################
 
-observe({ 
+observeEvent(input[["chosen_protein"]], { 
   
   updateSelectInput(session, 
                     inputId = "vol_state_1",
-                    choices = states_from_file(),
-                    selected = states_from_file()[1])
+                    choices = states_chosen_protein(),
+                    selected = states_chosen_protein()[1])
   
   updateSelectInput(session, 
                     inputId = "vol_state_2",
-                    choices = states_from_file(),
-                    selected = states_from_file()[2])
+                    choices = states_chosen_protein(),
+                    selected = states_chosen_protein()[2])
   
 })
 
@@ -55,8 +55,11 @@ observe({
 
 volcano_dataset <- reactive({
   
+  # browser()
+  
   validate(need(input[["vol_state_1"]]!=input[["vol_state_2"]], "There is no difference between the same state, choose different second state."))
   validate(need(input[["chosen_protein"]] %in% unique(dat()[["Protein"]]), "Wait for the parameters to be loaded."))
+  validate(need(input[["vol_state_1"]] %in% states_chosen_protein(), "Wait for the parameters to be loaded."))
 
   dat() %>%
     filter(Protein == input[["chosen_protein"]]) %>%

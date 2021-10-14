@@ -216,6 +216,17 @@ server <- function(input, output, session) {
     
   })
   
+  states_chosen_protein <- reactive({
+    
+    dat() %>%
+      filter(Protein == input[["chosen_protein"]]) %>%
+      select(State) %>%
+      unique(.) %>%
+      .[[1]]
+      
+  })
+  
+  
   ##
   
   times_from_file <- reactive({
