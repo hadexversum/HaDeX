@@ -12,7 +12,7 @@
 #' to user-friendly ones. 
 #' This data is available in the GUI. 
 #' 
-#' @importFrom dplyr rename %>%
+#' @importFrom dplyr rename %>% cur_group_id
 #' 
 #' @return a \code{\link{data.frame}} object.
 #' 
