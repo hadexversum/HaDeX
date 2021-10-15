@@ -2,6 +2,8 @@ tab_butterfly <- function() HaDeX_plotTab(
   title = "Butterfly plot",
   settingsPanel = HaDeX_plotSettingsPanel(
     butterfly_general_settings(),
+    butterfly_state(),
+    butterfly_timepoints(),
     butterfly_visualization(),
     butterfly_zoom(),
     butterfly_labels_adjustement()
@@ -13,22 +15,24 @@ tab_butterfly <- function() HaDeX_plotTab(
 )
 
 butterfly_general_settings <- function() HaDeX_plotSettingsSection(
-  fluidRow(
-    column(width = 6,
-           checkboxInput_h(inputId = "butt_theory",
-                           label = "Theoretical calculations",
-                           value = FALSE),
-           checkboxInput_h(inputId = "butt_fractional",
-                           label = "Fractional values",
-                           value = FALSE)
-    ),
-    column(width = 6,
-           selectInput_h(inputId = "butt_state",
-                         label = "Choose state:",
-                         choices = c("CD160", "CD160_HVEM"),
-                         selected = "CD160"),
-    )
-  ),
+  checkboxInput_h(inputId = "butt_theory",
+                  label = "Theoretical calculations",
+                  value = FALSE),
+  checkboxInput_h(inputId = "butt_fractional",
+                  label = "Fractional values",
+                  value = FALSE)
+)
+
+butterfly_state <- function() HaDeX_plotSettingsSection(
+  title = "State",
+  selectInput_h(inputId = "butt_state",
+                label = "Choose state:",
+                choices = c("CD160", "CD160_HVEM"),
+                selected = "CD160"),
+)
+
+butterfly_timepoints <- function() HaDeX_plotSettingsSection(
+  title = "Timepoints",
   fluidRow(
     column(width = 6,
            checkboxGroupInput_h(inputId = "butt_timepoints",

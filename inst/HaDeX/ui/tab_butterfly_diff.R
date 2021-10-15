@@ -2,6 +2,8 @@ tab_butterfly_diff <- function() HaDeX_plotTab(
   title = "Butterfly differential plot",
   settingsPanel = HaDeX_plotSettingsPanel(
     butterfly_diff_general_settings(),
+    butterfly_diff_state(),
+    butterfly_diff_timepoints(),
     butterfly_diff_visualization(),
     butterfly_diff_zoom(),
     butterfly_diff_labels_adjustement()
@@ -18,7 +20,11 @@ butterfly_diff_general_settings <- function() HaDeX_plotSettingsSection(
                   value = FALSE),
   checkboxInput_h(inputId = "butt_diff_fractional",
                   label = "Fractional values",
-                  value = FALSE),
+                  value = FALSE)
+)
+
+butterfly_diff_state <- function() HaDeX_plotSettingsSection(
+  title = "States",
   p("Differential plot presents the uptake difference between State 1 and State 2."),
   splitLayout(selectInput_h(inputId = "butt_diff_state_1",
                             label = "State 1",
@@ -26,7 +32,11 @@ butterfly_diff_general_settings <- function() HaDeX_plotSettingsSection(
               selectInput_h(inputId = "butt_diff_state_2",
                             label = "State 2",
                             choices = c("CD160_HVEM", "CD160"))
-  ),
+  )
+)
+
+butterfly_diff_timepoints <- function() HaDeX_plotSettingsSection(
+  title = "Timepoints",
   fluidRow(
     column(width = 6,
            checkboxGroupInput_h(inputId = "butt_diff_timepoints",
@@ -126,7 +136,7 @@ butterfly_diff_labels_adjustement <- function() HaDeX_plotSettingsSection(
 butterfly_diff_plot_panel <- function() tabsetPanel(
   tabPanel("Butterfly differential plot",
            plotOutput_h("butterflyDifferentialPlot", hover = hoverOpts("butterflyDifferentialPlot_hover", delay = 10, delayType = "debounce")),
-           h4("The empty values (e.q. `Frac DU`) mean there was not sufficient data for this peptide."),
+           p("The empty values (e.q. `Frac DU`) mean there was not sufficient data for this peptide."),
            downloadButton("butterflyDifferentialPlot_download_button",
                           "Save chart (.svg)")
   ),
