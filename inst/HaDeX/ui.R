@@ -36,7 +36,7 @@ ui <- tagList(useShinyjs(),
                     tab_butterfly(),
                     tab_butterfly_diff(),
                     tab_volcano(),
-                    tab_chiclet,
+                    tab_chiclet(),
                     tab_chiclet_diff,
                     tab_uptake
                   ),
