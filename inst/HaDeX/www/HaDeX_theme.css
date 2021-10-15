@@ -82,6 +82,17 @@ h2 {
   width: calc(100% - 60px);
 }
 
+.nav-tabs {
+  gap: 7px;
+}
+
+.nav-tabs > li > a {
+  text-align: center;
+  width: 100%;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
 /* CUSTOM CLASSES AND IDS */
 
 #HaDeX-logo {
