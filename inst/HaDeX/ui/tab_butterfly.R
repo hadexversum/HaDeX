@@ -83,7 +83,7 @@ butterfly_labels_adjustement <- function() HaDeX_plotSettingsSection(
     target = "#HaDeX-butterfly-labels-adjusting-panel"
   ),
   HaDeX_collapsablePanel(
-    id = "HaDeX-woods-labels-adjusting-panel",
+    id = "HaDeX-butterfly-labels-adjusting-panel",
     fluidRow(
       column(width = 10,
              textInput(inputId = "butterfly_plot_title",
