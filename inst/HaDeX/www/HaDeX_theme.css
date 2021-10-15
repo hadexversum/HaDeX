@@ -166,7 +166,7 @@ h2 {
 
 .HaDeX-tab-content-element {
   
-  height: calc(100vh - 110px); /* TODO: recalculate value */
+  max-height: calc(100vh - 110px); /* TODO: recalculate value */
   overflow-y: auto;
 }
 
