@@ -81,33 +81,31 @@ chiclet_labels_adjustement <- function() HaDeX_plotSettingsSection(
   HaDeX_collapsablePanel(
     id = "HaDeX-chiclet-labels-adjusting-panel",
     fluidRow(
-      fluidRow(
-        column(width = 10,
-               textInput(inputId = "chiclet_plot_title",
-                         label = "Chiclet plot title:",
-                         value = ""),
-               textInput(inputId = "chiclet_plot_x_label",
-                         label = "Chiclet plot axis x label:",
-                         value = "Peptide ID"),
-               textInput(inputId = "chiclet_plot_y_label",
-                         label = "Chiclet plot axis y label:",
-                         value = "Exposure [min]")),
-        column(width = 2,
-               numericInput_h(inputId = "chiclet_plot_title_size",
-                              label = "Size:",
-                              value = 15,
-                              min = 5),
-               numericInput_h(inputId = "chiclet_plot_x_label_size",
-                              label = "Size:",
-                              value = 15,
-                              min = 5),
-               numericInput_h(inputId = "chiclet_plot_y_label_size",
-                              label = "Size:",
-                              value = 15,
-                              min = 5))
-      ),
-      p("The axis ticks have the same size as the axis label. The legend text size is the same as the x axis label.")
-    )
+      column(width = 10,
+             textInput(inputId = "chiclet_plot_title",
+                       label = "Chiclet plot title:",
+                       value = ""),
+             textInput(inputId = "chiclet_plot_x_label",
+                       label = "Chiclet plot axis x label:",
+                       value = "Peptide ID"),
+             textInput(inputId = "chiclet_plot_y_label",
+                       label = "Chiclet plot axis y label:",
+                       value = "Exposure [min]")),
+      column(width = 2,
+             numericInput_h(inputId = "chiclet_plot_title_size",
+                            label = "Size:",
+                            value = 15,
+                            min = 5),
+             numericInput_h(inputId = "chiclet_plot_x_label_size",
+                            label = "Size:",
+                            value = 15,
+                            min = 5),
+             numericInput_h(inputId = "chiclet_plot_y_label_size",
+                            label = "Size:",
+                            value = 15,
+                            min = 5))
+    ),
+    p("The axis ticks have the same size as the axis label. The legend text size is the same as the x axis label.")
   )
 )
 
