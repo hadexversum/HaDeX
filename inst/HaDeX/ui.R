@@ -33,7 +33,7 @@ ui <- tagList(useShinyjs(),
                   navbarMenu(
                     "Plots",
                     tab_woods(),
-                    tab_butterfly,
+                    tab_butterfly(),
                     tab_butterfly_diff,
                     tab_volcano,
                     tab_chiclet,
