@@ -47,8 +47,13 @@ h2 {
     font-size: 18px;
 }
 
-.btn-default {
+.btn-default, .btn-secondary {
   background: #9A85AD linear-gradient(180deg, #9A85AD, #856C9D) repeat-x;
+  border-color: #5a4b69;
+}
+
+.btn-default:hover, .btn-secondary:hover {
+  background: #7c513c linear-gradient(180deg, #cf9c82, #a16d4e) repeat-x;
 }
 
 .input-group-prepend {
