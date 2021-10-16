@@ -56,7 +56,7 @@ server <- function(input, output, session) {
   observe({
 
     if(data_source() == "HDeXaminer"){
-      shinyjs::show("examiner_settings")
+      shinyjs::show("HaDeX-examiner-settings-panel")
     }
 
     updateTextInput(session,
@@ -92,9 +92,9 @@ server <- function(input, output, session) {
     }
 
     if(data_source() == "HDeXaminer"){
-      paste0(status, " Detected data source: ", data_source(), ". User action needed below!")
+      paste0(status, "\nDetected data source: ", data_source(), ". User action needed below!")
     } else {
-      paste0(status, " Detected data source: ", data_source(), ".")
+      paste0(status, "\nDetected data source: ", data_source(), ".")
     }
 
 
