@@ -8,6 +8,12 @@ HaDeX_plotTab <- function(title, settingsPanel, displayPanel) tabPanel(
   )
 )
 
+HaDeX_nonplotTab <- function(title, ...) tabPanel(
+  title = title,
+  class = "HaDeX-nonplot-tab-content",
+  ...
+)
+
 HaDeX_plotSettingsPanel <- function(...) wellPanel(
   class = "HaDeX-tab-content-element HaDeX-plot-settings-panel",
   fillCol(

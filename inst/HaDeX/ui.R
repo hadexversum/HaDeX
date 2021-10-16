@@ -28,8 +28,8 @@ ui <- tagList(useShinyjs(),
                                     src="detect-element-resize.js")),
                 navbarPage(
                   "HaDeX",
-                  tab_start,
-                  tab_input,
+                  tab_start(),
+                  tab_input(),
                   navbarMenu(
                     "Plots",
                     tab_woods(),
