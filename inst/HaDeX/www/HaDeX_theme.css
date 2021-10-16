@@ -158,6 +158,10 @@ h2 {
   font-weight: bold;
 }
 
+#peptide_list_data {
+  overflow-x: auto;
+}
+
 .HaDeX-nonplot-tab-content {
   max-width: 1600px;
   width: 80%;
