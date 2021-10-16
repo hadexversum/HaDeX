@@ -3,7 +3,7 @@ tab_volcano <- function() HaDeX_plotTab(
   settingsPanel = HaDeX_plotSettingsPanel(
     volcano_state(),
     volcano_timepoints(),
-    volcano_adjustement(),
+    volcano_test(),
     volcano_zoom(),
     volcano_labels_adjustement()
   ),
@@ -48,8 +48,12 @@ volcano_timepoints <- function() HaDeX_plotSettingsSection(
   )
 )
 
-volcano_adjustement <- function() HaDeX_plotSettingsSection(
-  title = "Adjustement",
+volcano_test <- function() HaDeX_plotSettingsSection(
+  title = "Test",
+  selectInput_h(inputId = "vol_test_type",
+                label = "Select test type:",
+                choices = c("Houde test for selected time points" = 1, "Houde test all time points" = 2, "semi-parametric test" = 3),
+                selected = 1),
   selectInput_h(inputId = "vol_p_adjustment_method",
                 label = "Choose method of adjustment",
                 choices = c("none", "BH", "bonferroni"),

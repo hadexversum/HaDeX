@@ -4,6 +4,7 @@ tab_butterfly_diff <- function() HaDeX_plotTab(
     butterfly_diff_general_settings(),
     butterfly_diff_state(),
     butterfly_diff_timepoints(),
+    butterfly_diff_test(),
     butterfly_diff_visualization(),
     butterfly_diff_zoom(),
     butterfly_diff_labels_adjustement()
@@ -60,6 +61,14 @@ butterfly_diff_timepoints <- function() HaDeX_plotSettingsSection(
            )
     )
   )
+)
+
+butterfly_diff_test <- function() HaDeX_plotSettingsSection(
+  title = "Test",
+  selectInput_h(inputId = "butt_diff_test_type",
+                label = "Select test type:",
+                choices = c("Houde test for time point" = 1, "Houde test all time points" = 2, "semi-parametric test" = 3),
+                selected = 1),
 )
 
 butterfly_diff_visualization <- function() HaDeX_plotSettingsSection(

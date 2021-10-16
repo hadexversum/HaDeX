@@ -91,6 +91,10 @@ woods_woods_plot_parameters <- function() HaDeX_plotSettingsSection(
                   choices = c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
                   selected = 0.99)
   ),
+  selectInput_h(inputId = "woods_diff_test_type",
+                label = "Select test type:",
+                choices = c("Houde test for time point" = 1, "Houde test all time points" = 2, "semi-parametric test" = 3),
+                selected = 1)
 )
 
 woods_zoom <- function() HaDeX_plotSettingsSection(

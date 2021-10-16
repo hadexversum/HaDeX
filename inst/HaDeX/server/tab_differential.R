@@ -55,13 +55,13 @@ observe({
   
   updateSelectInput(session,
                     inputId = "diff_state_1",
-                    choices = states_from_file(),
-                    selected = states_from_file()[1])
+                    choices = states_chosen_protein(),
+                    selected = states_chosen_protein()[1])
   
   updateSelectInput(session,
                     inputId = "diff_state_2",
-                    choices = states_from_file(),
-                    selected = states_from_file()[length(states_from_file())])
+                    choices = states_chosen_protein(),
+                    selected = states_chosen_protein()[length(states_chosen_protein())])
   
   
   

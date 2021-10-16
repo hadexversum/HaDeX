@@ -6,8 +6,8 @@ observe({
   
   updateSelectInput(session,
                     inputId = "rep_state",
-                    choices = states_from_file(),
-                    selected = states_from_file()[1])
+                    choices = states_chosen_protein(),
+                    selected = states_chosen_protein()[1])
 })
 
 ##

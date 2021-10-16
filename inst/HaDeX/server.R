@@ -216,6 +216,17 @@ server <- function(input, output, session) {
     
   })
   
+  states_chosen_protein <- reactive({
+    
+    dat() %>%
+      filter(Protein == input[["chosen_protein"]]) %>%
+      select(State) %>%
+      unique(.) %>%
+      .[[1]]
+      
+  })
+  
+  
   ##
   
   times_from_file <- reactive({
@@ -413,7 +424,7 @@ server <- function(input, output, session) {
   source("server/tab_coverage.R", local = TRUE)
   
   ### TAB: QUALITY CONTROL
-  
+
   source("server/tab_quality_control.R", local = TRUE)
   
   ### TAB: SUMMARY
