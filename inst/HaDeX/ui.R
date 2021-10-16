@@ -51,7 +51,7 @@ ui <- tagList(useShinyjs(),
                     tab_coverage
                   ),
                   tab_summary(),
-                  tab_report,
+                  tab_report(),
                   
                   theme = theme,
                   header = img(
