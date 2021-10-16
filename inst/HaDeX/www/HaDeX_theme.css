@@ -158,7 +158,8 @@ h2 {
   font-weight: bold;
 }
 
-#peptide_list_data {
+#peptide_list_data,
+#rep_sequence {
   overflow-x: auto;
 }
 
