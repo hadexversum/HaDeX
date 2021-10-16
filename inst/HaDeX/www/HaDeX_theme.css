@@ -163,6 +163,10 @@ h2 {
   overflow-x: auto;
 }
 
+#summary_table {
+  margin: 20px auto;
+}
+
 .HaDeX-nonplot-tab-content {
   max-width: 1600px;
   width: 80%;

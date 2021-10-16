@@ -50,7 +50,7 @@ ui <- tagList(useShinyjs(),
                     tab_sequence,
                     tab_coverage
                   ),
-                  tab_summary,
+                  tab_summary(),
                   tab_report,
                   
                   theme = theme,
