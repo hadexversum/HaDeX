@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = FALSE)
 knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"))
 ```
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
+```{r, include=FALSE}
 library(HaDeX)
 library(ggplot2)
 library(dplyr)
@@ -39,21 +39,21 @@ are calculated see the other articles in the documentation.
 
 All of the examples of the plot use the example file *KD_180110_CD160_HVEM.csv*. The examples show the deuterium uptake values, the different forms of presented data are described under each plot. HaDeX package allows to produce a data frame with presented data for each plot.
 
-<!-- ## Sequence data -->
+<!-- # Sequence data -->
 
 <!-- *Example* -->
 <!-- ```{r} -->
 
 <!-- ``` -->
 
-<!-- ## Coverage of the sequence -->
+<!-- # Coverage of the sequence -->
 
 <!-- *Example* -->
 <!-- ```{r} -->
 
 <!-- ``` -->
 
-## Comparison plot
+# Comparison plot
 
 The comparison plot shows deuterium uptake of the peptides in a given time point, with information on the length of the peptide and its position in the protein sequence. It allows comparing the results of different biological states.
 
@@ -75,7 +75,7 @@ plot_state_comparison(states_uptake_dat, fractional = TRUE) +
 
 *Values* The values on the plot can be presented as deuterium uptake (in Daltons) or fractional deuterium uptake (in percentage). The calculation of the deuterium uptake is done with respect to experimentally measured minimal/maximal exchange control or tabular values (MHP and Max Uptake).
 
-## Woods plot
+# Woods plot
 
 Woods plot presents the deuterium uptake difference between two biological states for the peptides. The results are presented with respect to the length of the peptide and its position in the protein sequence for a given time point of the measurement. The statistical test (Houde et al., the confidence level is calculated based on the measurements in chosen time point of the measurement) is applied to determine the confidence limits values at the chosen level.
 
@@ -98,7 +98,7 @@ plot_differential(woods_diff_uptake_dat, fractional = TRUE) +
 
 *Values* The values on the plot can be presented as deuterium uptake difference (in Daltons) or fractional deuterium uptake difference (in percentage). The calculation of the deuterium uptake difference is done with respect to experimentally measured minimal/maximal exchange control or tabular values (MHP and Max Uptake).
 
-## Butterfly plot
+# Butterfly plot
 
 Butterfly plot presents the deuterium uptake for all peptides in a given state at different time points at once. Each time point of measurement is indicated by a different color. Peptides are identified by their ID (peptides are numbered arranged by the start position). 
 
@@ -116,7 +116,7 @@ plot_butterfly(uptake_dat, fractional = TRUE)
 
 *Values* The values on the plot can be presented as deuterium uptake (in Daltons) or fractional deuterium uptake (in percentage). The calculation of the deuterium uptake is done with respect to experimentally measured minimal/maximal exchange control or tabular values (MHP and Max Uptake).
 
-## Butterfly differential plot
+# Butterfly differential plot
 
 Butterfly differential plot shows the deuterium uptake difference between two biological states in the form of a butterfly plot. It shows the results for a peptide ID (peptides are numbered arranged by the start position). The results are shown for different time points at once (time points of measurement are indicated by the color).
 
@@ -135,14 +135,16 @@ plot_differential_butterfly(diff_uptake_dat, fractional = TRUE, show_confidence_
 
 *Values* The values on the plot can be presented as deuterium uptake difference (in Daltons) or fractional deuterium uptake difference (in percentage). The calculation of the deuterium uptake difference is done with respect to experimentally measured minimal/maximal exchange control or tabular values (MHP and Max Uptake).
 
-## Chiclet plot
+# Chiclet plot
 
 Chiclet plot shows the fractional deuterium uptake in the form of a heatmap for the peptides in a given biological state. One tile indicates the peptide (identified by its ID - number arranged by the start position) in a time point of measurement. The color of the tile indicates the fractinal deuterium uptake (according to the legend below the plot). 
 
-*Example*
+*Example* In the chiclet plot below, we can see the deuterium uptake values for peptides (indicated by their ID) in state CD160 during the time course of the experiment. The cross symbols indicate the uncertainty of the measurement (the bigger the cross sign, the bigger the uncertainty). 
 
 ```{r}
-plot_chiclet(uptake_dat, show_uncertainty = T, fractional = TRUE)
+uptake_dat %>%
+  filter(Exposure < 1440) %>%
+  plot_chiclet(show_uncertainty = T, fractional = TRUE)
 ```
 
 *Pros* The plot shows how the deuterium uptake changes over time. 
@@ -153,14 +155,16 @@ plot_chiclet(uptake_dat, show_uncertainty = T, fractional = TRUE)
 
 *Values* The values on the plot can be presented as deuterium uptake (in Daltons) or fractional deuterium uptake (in percentage). The calculation of the deuterium uptake is done with respect to experimentally measured minimal/maximal exchange control or tabular values (MHP and Max Uptake).
 
-## Chiclet differential
+# Chiclet differential plot
 
 Chiclet differential plot shows the deuterium uptake difference between two biological states in the form of a heatmap. One tile indicates the peptide (identified by its ID - number arranged by the start position) in a time point of measurement. The color of the tile indicates the deuterium uptake difference (according to the legend below the plot). 
 
-*Example* On the chiclet differential plot below, we see the fractional deuterium uptake difference between states CD160 and CD160_HVEM for protein db_CD160. We see that some peptides are protected (red), and some are deprotected (blue). 
+*Example* On the chiclet differential plot below, we see the fractional deuterium uptake difference between states CD160 and CD160_HVEM for protein db_CD160. We see that some peptides are protected (red), and some are deprotected (blue). The cross symbols indicate the uncertainty of the measurement (the bigger the cross sign, the bigger the uncertainty). 
 
 ```{r}
-plot_differential_chiclet(diff_uptake_dat, show_uncertainty = TRUE, fractional = TRUE)
+diff_uptake_dat %>%
+  filter(Exposure < 1440) %>%
+  plot_differential_chiclet(show_uncertainty = TRUE, fractional = TRUE)
 ```
 
 *Pros* The plot shows the results for different time points of the measurement.
@@ -171,7 +175,7 @@ plot_differential_chiclet(diff_uptake_dat, show_uncertainty = TRUE, fractional =
 
 *Values* The values on the plot can be presented as deuterium uptake difference (in Daltons) or fractional deuterium uptake difference (in percentage). The calculation of the deuterium uptake difference is done with respect to experimentally measured minimal/maximal exchange control or tabular values (MHP and Max Uptake).
 
-## Volcano plot
+# Volcano plot
 
 The volcano plot shows the deuterium uptake difference for two biological states for peptide and its p-value for double testing on statistical significance (Weis et al.). On the x-axis, there is a deuterium uptake difference with its uncertainty (combined and propagated). On the y-axis, there is a P-value calculated for each peptide in a specifc time point of a measurement as a un-paired t-test on given significance level (on mass measurement from the replicates to indicate if the measured mean is significantly different between two states, as the deuterium uptake difference between states can be rewritten as 
 
@@ -181,9 +185,9 @@ for states A and B. The values of deuterium uptake difference from all time poin
 
 The dotted red lines indicate confidence limits for the values. The horizontal line indicates the confidence limit based on chosen confidence level to give a threshold on a P-value. The vertical lines indicate the confidence limit from Houde test for all time points and indicate a threshold on deuterium uptake difference. The statistically significant points are in the top left and right corners of the plot.
 
-*Example* On the volcano plot below, we see the results for deuterium uptake difference between states CD160 and CD160_HVEM for protein db_CD160 in all time points. 
+*Example* On the volcano plot below, we see the results for deuterium uptake difference between states CD160 and CD160_HVEM for protein db_CD160 in all time points. The points in the left and right upper corner are statistically significant using the hybrid testing.
 
-```{r}
+```{r, warning = FALSE}
 vol_dat <- create_volcano_dataset(dat)
 
 plot_volcano(vol_dat, show_confidence_limits = T) 
@@ -192,19 +196,19 @@ plot_volcano(vol_dat, show_confidence_limits = T)
 
 *Pros* This plot allows to distinguish significant results easily and uses double testing. 
 
-*Cons* It is difficult to recognize the significant peptides and the time point of the measurement. If the plot is reactive, tooltips help to see additional information. For the not reactive plot (e.q. in articles), it is not possible. 
+*Cons* It is difficult to recognize the significant peptides and the time point of the measurement. If the plot is reactive, tooltips help to see additional information. For the not reactive plot (e.q. in articles), the information about sequence, peptide or even time point of measurement is lost. 
 
 *Uncertainty* The uncertainty of the deuterium uptake difference (combined and propagated) is shown as the error bars in the deuterium uptake difference dimension.
 
 *Values* This plot shows only deuterium uptake difference [Da]. 
 
-## Uptake curve
+# Uptake curve
 
 Uptake curves show the changes in exchange in time for a specific peptide for its state.
 
 *Example* On the uptake curve below, we see how the exchange goes for peptide INITSSASQEGTRLN in states CD160 and CD160_HVEM for protein db_CD160. We can see that the fractional deuterium uptake in state CD160_HVEM is smaller than in state CD160. 
 
-```{r}
+```{r, warning = FALSE, message = FALSE}
 kin_dat <- bind_rows(calculate_kinetics(dat,
                               sequence = "INITSSASQEGTRLN",
                               start = 1, end = 15,
@@ -230,7 +234,7 @@ plot_kinetics(kin_dat, fractional = TRUE) +
 
 *Values* The values on the plot can be presented as deuterium uptake (in Daltons) or fractional deuterium uptake (in percentage). The calculation of the deuterium uptake is done with respect to experimentally measured minimal/maximal exchange control or tabular values (MHP and Max Uptake).
 
-<!-- ## Quality control -->
+<!-- # Quality control -->
 
 <!-- *Example* -->
 
@@ -246,7 +250,7 @@ plot_kinetics(kin_dat, fractional = TRUE) +
 
 <!-- *Values* -->
 
-## Summary of the uptake plots
+# Summary of the uptake plots
 
 Below we compare the aspects of the plots. 
 
@@ -271,7 +275,7 @@ The columns indicate:
 * all peptides - does this plot show the results for all of the peptides?
 * different states - does this plot show the results for different states?
 
-## New features
+# New features
 
 We believe that new ways of visualization of the HDX-MS data can be developed. If so, we will be happy to include them in HaDeX package and update this article. 
 

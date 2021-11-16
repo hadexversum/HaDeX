@@ -84,6 +84,8 @@ woods_plot_dat <- reactive({
   
   validate(need(input[["diff_state_1"]]!=input[["diff_state_2"]], "There is no difference between the same state, choose different state 2."))
   validate(need(length(unique(filter(dat(), !is.na("Modification"), Protein == input[["chosen_protein"]])[["State"]])) > 1, "Not sufficient number of states without modifications."))
+  validate(need(input[["diff_state_1"]] %in% states_chosen_protein(), "The first state is not compatible with chosen protein."))
+  validate(need(input[["diff_state_2"]] %in% states_chosen_protein(), "The second state is not compatible with chosen protein."))
   
   if(!input[["theory"]]){
     validate(need(as.numeric(input[["time_0"]]) < as.numeric(input[["time_t"]]), "In time must be smaller than chosen time."))

@@ -1,12 +1,33 @@
 ---
 title: "Basics of HDX-MS"
-output: html_document
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: true
+    always_allow_html: yes
+bibliography: HDX.bib
+vignette: >
+  %\VignetteIndexEntry{Basics of HDX-MS}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## HDX
+# Introduction to HDX-MS
 
-## MS
+Hydrogen-deuterium exchange mass spectrometry (HDX-MS) is a way to perform an analysis of a protein. The principal is to observe the behavior of the protein in the native state in the aqueous solution where the hydrogen particles are replaced by the deuterium particles. Isotopes (variants of the same chemical element but with the different number of neutrons) exchanges with themselves very well. Under controlled conditions, there is a spontaneous process of exchange. This kind of experiment can gather very effective data on how the exchange goes in the main chain of the protein - the exchange on the ends of the sequence goes too fast to be correctly measured. This kind of data not only serves the purpose of gaining the basic information about protein structure but also getting some insight into the protein structure of the tertiary and quaternary order.
+
+What is special about HDX-MS experiments is that they produce unique data that cannot be obtained in any other way. For example, nearly one-third of the proteins are considered as intrinsically disordered protein - lacking a fixed or ordered three-dimensional structure. For those, the crystallography experiments cannot be performed - but HDX-MS can. It is also a suitable solution for analysis of very long proteins - compared to short protein sequences that can be processed using the NMR method. Moreover, HDX-MS can give some insight if the function of the protein is preserved when joined with other substances - that is particularly important when constructing and analyzing new or already existing drugs. 
+
+The disadvantage of the HDX-MS method in comparison with crystallography or NMR is gaining data for whole peptide (considered as low resolution) instead of a single amino residue (high resolution). Elimination of this limitation could make HDX-MS method more efficient and competitive with others.
+ 
+Data from HDX-MS experiments provide a unique insight into the dynamics of protein structure. Such information is a very valuable addition to existing or upcoming models of proteins and protein complexes. They provide data on the mechanics of molecular biological processes, where their dynamics are crucial for understanding their course. However, we believe that HDX-MS data can be analyzed more efficiently and informatively by switching from peptide (low-resolution) to amino acid pairs (high-resolution).
+
+# Additional resources
+
+To learn more about HDX-MS, we propose:
+
+
