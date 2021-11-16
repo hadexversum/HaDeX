@@ -84,9 +84,8 @@ calculate_state_uptake <- function(dat,
       Med_Sequence = Start + (End - Start)/2) %>%
     ungroup(.) %>%
     arrange(Start, End) %>%
-    mutate(ID = 1L:nrow(.),
-           Exposure = time_t) %>%
-    select(Protein, Sequence, ID, Exposure,
+    mutate(Exposure = time_t) %>%
+    select(Protein, Sequence, Exposure,
            Start, End, State, 
            frac_deut_uptake, err_frac_deut_uptake, 
            deut_uptake, err_deut_uptake, 

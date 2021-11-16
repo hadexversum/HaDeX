@@ -56,7 +56,7 @@ server <- function(input, output, session) {
   observe({
 
     if(data_source() == "HDeXaminer"){
-      shinyjs::show("examiner_settings")
+      shinyjs::show("HaDeX-examiner-settings-panel")
     }
 
     updateTextInput(session,
@@ -92,9 +92,9 @@ server <- function(input, output, session) {
     }
 
     if(data_source() == "HDeXaminer"){
-      paste0(status, " Detected data source: ", data_source(), ". User action needed below!")
+      paste0(status, "\nDetected data source: ", data_source(), ". User action needed below!")
     } else {
-      paste0(status, " Detected data source: ", data_source(), ".")
+      paste0(status, "\nDetected data source: ", data_source(), ".")
     }
 
 
@@ -215,6 +215,17 @@ server <- function(input, output, session) {
     unique(dat()[["State"]])
     
   })
+  
+  states_chosen_protein <- reactive({
+    
+    dat() %>%
+      filter(Protein == input[["chosen_protein"]]) %>%
+      select(State) %>%
+      unique(.) %>%
+      .[[1]]
+      
+  })
+  
   
   ##
   
@@ -413,7 +424,7 @@ server <- function(input, output, session) {
   source("server/tab_coverage.R", local = TRUE)
   
   ### TAB: QUALITY CONTROL
-  
+
   source("server/tab_quality_control.R", local = TRUE)
   
   ### TAB: SUMMARY

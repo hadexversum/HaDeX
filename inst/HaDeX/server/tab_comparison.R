@@ -137,8 +137,8 @@ observe({
 
   updateCheckboxGroupInput(session,
                            inputId = "compare_states",
-                           choices = states_from_file(),
-                           selected = states_from_file())
+                           choices = states_chosen_protein(),
+                           selected = states_chosen_protein())
 })
 
 ##

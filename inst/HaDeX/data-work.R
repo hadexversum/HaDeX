@@ -9,7 +9,7 @@ library(tidyr)
 library(latex2exp)
 library(DT)
 library(rmarkdown)
-library(shinycssloaders)
+library(shinycustomloader)
 library(shinyhelper)
 library(shinyjs)
 library(gridExtra)
@@ -58,23 +58,25 @@ confidence_level_choices <- c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9
 
 amino_groups <- c("G", "A", "V", "I", "L", "F", "P", "M", "S", "T", "Y", "W", "N", "Q", "C", "D", "E", "K", "R", "H")
 
+withHaDeXSpinner <- function(ui_element) withLoader(ui_element, type = "image", loader = "HaDeX_loader.gif")
+
 plotOutput_h <- function(outputId, ...) 
-  helper(withSpinner(plotOutput(outputId = outputId, ...)),  content = outputId,
-         type = "markdown", buttonLabel = "Okay", easyClose = TRUE, 
-         icon = "far fa-question-circle", colour = "#715d91")
+  helper(withHaDeXSpinner(plotOutput(outputId = outputId, ...)),  
+         content = outputId, type = "markdown", buttonLabel = "Okay", easyClose = TRUE, 
+         icon = "far fa-question-circle", colour = "#856C9D")
 
 ## "DT::dataTableOutput"
 dataTableOutput_h <- function(outputId, ...)
   helper(getFromNamespace("dataTableOutput", ns = "DT")(outputId = outputId, ...), content = outputId, 
          type = "markdown", buttonLabel = "okay", easyClose = TRUE, 
-         icon = "far fa-question-circle", colour = "#715d91")
+         icon = "far fa-question-circle", colour = "#856C9D")
 
 func_vec <- c("selectInput", "textInput", "checkboxInput", "numericInput", "radioButtons", "checkboxGroupInput")
 func_list <- setNames(lapply(func_vec, function(ith_fun) 
   tmp_name <- function(inputId, ...) {
     helper(getFromNamespace(ith_fun, ns = "shiny")(inputId = inputId, ...),  content = inputId, 
            type = "markdown", buttonLabel = "Okay", easyClose = TRUE, 
-           icon = "far fa-question-circle", colour = "#715d91")
+           icon = "far fa-question-circle", colour = "#856C9D")
   }), func_vec)
 
 for(ith_fun_id in 1L:length(func_list)) {

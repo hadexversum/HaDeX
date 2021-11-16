@@ -6,8 +6,8 @@ observe({
   
   updateSelectInput(session,
                     inputId = "butt_state",
-                    choices = states_from_file(),
-                    selected = states_from_file()[1])
+                    choices = states_chosen_protein(),
+                    selected = states_chosen_protein()[1])
   
   if(input[["butt_fractional"]]){
     
@@ -145,6 +145,7 @@ observe({
 butterfly_dataset <- reactive({
   
   validate(need(input[["chosen_protein"]] %in% unique(dat()[["Protein"]]), "Wait for the parameters to be loaded."))
+  validate(need(input[["butt_state"]] %in% states_chosen_protein(), "Wait for the parameters to be loaded."))
   
   create_state_uptake_dataset(dat(),
                               protein = input[["chosen_protein"]],
