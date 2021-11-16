@@ -52,7 +52,7 @@ volcano_test <- function() HaDeX_plotSettingsSection(
   title = "Test",
   selectInput_h(inputId = "vol_test_type",
                 label = "Select test type:",
-                choices = c("Houde test for selected time points" = 1, "Houde test all time points" = 2, "semi-parametric test" = 3),
+                choices = c("Houde test for selected time points" = 1, "Houde test all time points" = 2), #, "semi-parametric test" = 3),
                 selected = 1),
   selectInput_h(inputId = "vol_p_adjustment_method",
                 label = "Choose method of adjustment",

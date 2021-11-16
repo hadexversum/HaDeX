@@ -64,11 +64,11 @@ butterfly_diff_timepoints <- function() HaDeX_plotSettingsSection(
 )
 
 butterfly_diff_test <- function() HaDeX_plotSettingsSection(
-  title = "Test",
-  selectInput_h(inputId = "butt_diff_test_type",
-                label = "Select test type:",
-                choices = c("Houde test for time point" = 1, "Houde test all time points" = 2, "semi-parametric test" = 3),
-                selected = 1),
+  # title = "Test",
+  # selectInput_h(inputId = "butt_diff_test_type",
+  #               label = "Select test type:",
+  #               choices = c("Houde test for time point" = 1, "Houde test all time points" = 2, "semi-parametric test" = 3),
+  #               selected = 1),
 )
 
 butterfly_diff_visualization <- function() HaDeX_plotSettingsSection(
