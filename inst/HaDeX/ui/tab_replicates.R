@@ -1,20 +1,26 @@
 tab_replicates <- function() HaDeX_plotTab(
+  
   title = "Replicates",
+  
   settingsPanel = HaDeX_plotSettingsPanel(
     replicates_state(),
     replicates_timepoint(),
     replicates_sequence(),
     replicates_labels_adjustement()
   ),
+  
   displayPanel = HaDeX_plotDisplayPanel(
     replicates_plot_and_charge_panel(),
     replicates_histogram_panel(),
     replicates_histogram_all_panel()
   )
+  
 )
 
 replicates_state <- function() HaDeX_plotSettingsSection(
+  
   title = "State",
+  
   selectInput_h(inputId = "rep_state",
                 label = "Select state: ",
                 choices = c("CD160", "CD160_HVEM"),
@@ -22,7 +28,9 @@ replicates_state <- function() HaDeX_plotSettingsSection(
 )
 
 replicates_timepoint <- function() HaDeX_plotSettingsSection(
+  
   title = "Timepoint",
+  
   selectInput_h(inputId = "rep_time",
                 label = "Select time point: ",
                 choices = c(0, 0.001, 0.167, 1, 5, 25, 120, 1440),
@@ -30,17 +38,23 @@ replicates_timepoint <- function() HaDeX_plotSettingsSection(
 )
 
 replicates_sequence <- function() HaDeX_plotSettingsSection(
+  
   title = "Sequence",
+  
   dataTableOutput_h("rep_sequence")
 )
 
 replicates_labels_adjustement <- function() HaDeX_plotSettingsSection(
+  
   HaDeX_collapseButton(
     title = "Adjust labels",
     target = "#HaDeX-replicates-labels-adjusting-panel"
   ),
+  
   HaDeX_collapsablePanel(
+    
     id = "HaDeX-replicates-labels-adjusting-panel",
+    
     fluidRow(
       column(width = 10,
              textInput(inputId = "rep_plot_title",
@@ -72,6 +86,7 @@ replicates_labels_adjustement <- function() HaDeX_plotSettingsSection(
 
 
 replicates_plot_and_charge_panel <- function() tabsetPanel(
+  
   tabPanel("Plot",
            fluidRow(
              column(width = 6,
@@ -86,6 +101,7 @@ replicates_plot_and_charge_panel <- function() tabsetPanel(
                                    "Save chart (.svg)"))
            )
   ),
+  
   tabPanel("Data",
            DT::dataTableOutput("replicatesPlot_data"),
            DT::dataTableOutput("replicatesChargePlot_data")
@@ -93,6 +109,7 @@ replicates_plot_and_charge_panel <- function() tabsetPanel(
 )
 
 replicates_histogram_panel <- function() tabsetPanel(
+  
   tabPanel("Plot",
            div(style = "position:relative",
                plotOutput_h("replicatesHistogram", hover = hoverOpts("replicatesHistogram_hover", delay = 10, delayType = "debounce")),
@@ -104,6 +121,7 @@ replicates_histogram_panel <- function() tabsetPanel(
 )
 
 replicates_histogram_all_panel <- function() tabsetPanel(
+  
   tabPanel("Plot",
            div(style = "position:relative",
                plotOutput_h("allReplicatesHistogram", hover = hoverOpts("allReplicatesHistogram_hover", delay = 10, delayType = "debounce")),
@@ -111,6 +129,7 @@ replicates_histogram_all_panel <- function() tabsetPanel(
            ),
            downloadButton("allReplicatesHistogram_download_button",
                           "Save chart (.svg)")),
+  
   tabPanel("Data",
            DT::dataTableOutput("allReplicatesHistogram_data"))
 )

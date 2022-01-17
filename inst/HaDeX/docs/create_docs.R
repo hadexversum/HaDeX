@@ -488,31 +488,81 @@ setdiff(app_inputs, c(already_done, excluded, excluded2))
 ## replicatesPlot ################
 ##################################
 
-replicatesPlot_helper <- ''
+replicates_plot_helper <- '
 
-write(replicatesPlot_helper, file = 'replicatesPlot.md', append = FALSE)
+## Replicates - mass
+
+This plot presents the values of masured mass (in daltons) from replicates for selected peptide.
+
+The dotted line indicates the average measured mass from the replicates - this value is considered as result of measurement for selected peptide.
+
+Each replicate is specified by the `File` value, chosen by the exprimenter. 
+
+This plot shows the data for selected time point of the measurement. 
+'
+
+write(replicates_plot_helper, file = 'replicatesPlot.md', append = FALSE)
+
+##################################
+## replicates_charge_plot ########
+##################################
+
+replicates_charge_plot_helper <- ' 
+
+## Replicates - charges
+
+This plot represents the measured charge values for selected peptide for each replicate. 
+
+Each replicate is specified by the `File` value, chosen by the exprimenter. 
+
+This plot shows the data for selected time point of the measurement. 
+'
+
+write(replicates_charge_plot_helper, file = 'replicatesChargePlot.md', append = FALSE)
 
 ##################################
 ## replicates_histogram ##########
 ##################################
 
-replicates_histogram_helper <- ''
+replicates_histogram_helper <- '
 
-write(replicates_histogram_helper, file = 'replicates_histogram.md', append = FALSE)
+## Number of replicates
+
+The histogram shows how many repliactes were done for specific peptide in selected time point of the measurement. The peptides are specified by their ID. 
+
+`Data` tab and the tooltips provide additional information e.g. the position of the peptide in the protein sequence. 
+'
+
+write(replicates_histogram_helper, file = 'replicatesHistogram.md', append = FALSE)
 
 ##################################
 ## all_replicates_histogram ######
 ##################################
 
-all_replicates_histogram_helper <- ''
+all_replicates_histogram_helper <- '
 
-write(all_replicates_histogram_helper, file = 'all_replicates_histogram.md', append = FALSE)
+## Number of replicates
+
+The histogram shows how many repliactes were done for specific peptide during the experiment. The colors indicates the tme point of measurement. 
+The peptides are specified by their ID. 
+
+`Data` tab and the tooltips provide additional information e.g. the position of the peptide in the protein sequence. 
+'
+
+write(all_replicates_histogram_helper, file = 'allReplicatesHistogram.md', append = FALSE)
 
 ##################################
 ## peptide_list_data #############
 ##################################
 
-peptide_list_data_helper <- ''
+peptide_list_data_helper <- '
+
+## Peptide list
+
+This table presents available peptides for selected protein.
+
+Uptake curve for selected peptides is plotted on the right panel. Multiple peptides can be selected but we recommed selecting no more than four peptides in order to keep the plot readable.
+'
 
 write(peptide_list_data_helper, file = 'peptide_list_data.md', append = FALSE)
 
@@ -520,7 +570,16 @@ write(peptide_list_data_helper, file = 'peptide_list_data.md', append = FALSE)
 ## kinetic_plot_chosen_peptides ##
 ##################################
 
-kinetic_plot_chosen_peptides_helper <- ''
+kinetic_plot_chosen_peptides_helper <- '
+
+## Uptake curve 
+
+This plot presents uptake curves of the selected peptides. 
+
+On the X axis there are time points of measurement (in minutes). The axis is in logaritmic scale for readability (this can be changed in the settings on the left panel). The minimal uptake control time point of the measurement is not shown on the plot.
+
+On th Y axis there are values of deuterium uptake, in selected form.
+'
 
 write(kinetic_plot_chosen_peptides_helper, file = 'kinetic_plot_chosen_peptides.md', append = FALSE)
 
@@ -536,7 +595,14 @@ write(quality_control_plot_helper, file = 'quality_control_plot.md', append = FA
 ## rep_sequence ##################
 ##################################
 
-rep_sequence_helper <- ""
+rep_sequence_helper <- '
+
+## Peptide list
+
+This table presents available peptides for selected protein, state and time point of measurement. 
+
+Data for selected peptide is plotted on the right panel. Only one peptide can be selected.
+'
 
 write(rep_sequence_helper, file = "rep_sequence.md", append = FALSE)
 
