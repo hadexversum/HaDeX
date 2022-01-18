@@ -18,14 +18,24 @@ observeEvent(input[["chosen_protein"]], {
 
 observe({
   
+  updateSliderInput(session,
+                    inputId = "vol_sequence_range",
+                    max = max_range(),
+                    value = c(1, max_range())
+                    
+  )
+  
   updateTextInput(session, 
                   inputId = "volcano_plot_title",
-                  value = paste0("Deuterium uptake difference between ", input[["vol_state_1"]], " and ", input[["vol_state_2"]]))
+                  value = paste0("Deuterium uptake difference between ", input[["vol_state_1"]], " and ", input[["vol_state_2"]])
+  )
   
   updateCheckboxGroupInput(session,
                            inputId = "vol_timepoints",
                            choices = times_t(),
-                           selected = times_t())
+                           selected = times_t()
+  )
+  
 })
 
 ##
@@ -76,7 +86,8 @@ volcano_dataset <- reactive({
 volcano_data <- reactive({
   
   volcano_dataset() %>%
-    filter(Exposure %in% input[["vol_timepoints"]])
+    filter(Exposure %in% input[["vol_timepoints"]]) %>%
+    filter(Start >= input[["vol_sequence_range"]][1], End <= input[["vol_sequence_range"]][2])
   
 })
 
