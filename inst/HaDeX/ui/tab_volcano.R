@@ -38,7 +38,10 @@ volcano_timepoints <- function() HaDeX_plotSettingsSection(
            checkboxGroupInput_h(inputId = "vol_timepoints",
                                 label = "Show time points: ",
                                 choices = c(0.167, 1, 5, 25, 120, 1440),
-                                selected = c(0.167, 1, 5, 25, 120, 1440))
+                                selected = c(0.167, 1, 5, 25, 120, 1440)),
+           checkboxInput_h(inputId = "vol_time_color",
+                           label = "distinquish by color",
+                           value = TRUE)
     ),
     column(width = 6,
            selectInput_h(inputId = "vol_confidence_level",
