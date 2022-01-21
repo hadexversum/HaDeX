@@ -1,5 +1,7 @@
 tab_volcano <- function() HaDeX_plotTab(
+  
   title = "Volcano plot",
+  
   settingsPanel = HaDeX_plotSettingsPanel(
     volcano_state(),
     volcano_timepoints(),
@@ -14,7 +16,9 @@ tab_volcano <- function() HaDeX_plotTab(
 )
 
 volcano_state <- function() HaDeX_plotSettingsSection(
+  
   title = "States",
+  
   p("Volcano plot presents the uptake difference [Da] between State 1 and State 2."),
   splitLayout(selectInput_h(inputId = "vol_state_1",
                             label = "State 1",
@@ -26,13 +30,18 @@ volcano_state <- function() HaDeX_plotSettingsSection(
 )
 
 volcano_timepoints <- function() HaDeX_plotSettingsSection(
+  
   title = "Timepoints",
+  
   fluidRow(
     column(width = 6,
            checkboxGroupInput_h(inputId = "vol_timepoints",
                                 label = "Show time points: ",
                                 choices = c(0.167, 1, 5, 25, 120, 1440),
-                                selected = c(0.167, 1, 5, 25, 120, 1440))
+                                selected = c(0.167, 1, 5, 25, 120, 1440)),
+           checkboxInput_h(inputId = "vol_time_color",
+                           label = "distinquish by color",
+                           value = TRUE)
     ),
     column(width = 6,
            selectInput_h(inputId = "vol_confidence_level",
@@ -45,11 +54,18 @@ volcano_timepoints <- function() HaDeX_plotSettingsSection(
                          selected = "All time points")
            
     )
-  )
+  ),
+  sliderInput(inputId = "vol_sequence_range",
+              label = "Select subregion of the protein sequence: ",
+              min = 1, 
+              max = 300, 
+              value = c(1, 300))
 )
 
 volcano_test <- function() HaDeX_plotSettingsSection(
+  
   title = "Test",
+  
   selectInput_h(inputId = "vol_test_type",
                 label = "Select test type:",
                 choices = c("Houde test for selected time points" = 1, "Houde test all time points" = 2), #, "semi-parametric test" = 3),
@@ -62,7 +78,9 @@ volcano_test <- function() HaDeX_plotSettingsSection(
 
 
 volcano_zoom <- function() HaDeX_plotSettingsSection(
+  
   title = "Zoom",
+  
   sliderInput(inputId = "vol_x_range",
               label = "Choose x range for volcano plot:",
               min = -1,
@@ -78,10 +96,12 @@ volcano_zoom <- function() HaDeX_plotSettingsSection(
 )
 
 volcano_labels_adjustement <- function() HaDeX_plotSettingsSection(
+  
   HaDeX_collapseButton(
     title = "Adjust labels",
     target = "#HaDeX-volcano-labels-adjusting-panel"
   ),
+  
   HaDeX_collapsablePanel(
     id = "HaDeX-volcano-labels-adjusting-panel",
     fluidRow(
@@ -114,6 +134,7 @@ volcano_labels_adjustement <- function() HaDeX_plotSettingsSection(
 )
   
 volcano_plot_panel <- function() tabsetPanel(
+  
   tabPanel("Volcano plot",
            plotOutput_h("volcanoPlot", width = "80%", height = "800px", hover = hoverOpts("volcanoPlot_hover", delay = 10, delayType = "debounce")),
            p(textOutput("vol_thresholds")),

@@ -1,5 +1,7 @@
 tab_woods <- function() HaDeX_plotTab(
+  
   title = "Comparison and Woods plot",
+  
   settingsPanel = HaDeX_plotSettingsPanel(
     woods_general_settings(),
     woods_comparison_plot_parameters(),
@@ -7,6 +9,7 @@ tab_woods <- function() HaDeX_plotTab(
     woods_zoom(),
     woods_labels_adjustement()
   ),
+  
   displayPanel = HaDeX_plotDisplayPanel(
     woods_comparison_plot_panel(),
     woods_debug_panel(),
@@ -15,6 +18,7 @@ tab_woods <- function() HaDeX_plotTab(
 )
 
 woods_general_settings <- function() HaDeX_plotSettingsSection(
+  
   checkboxInput_h(inputId = "theory",
                   label = "Theoretical calculations",
                   value = FALSE),
@@ -24,7 +28,9 @@ woods_general_settings <- function() HaDeX_plotSettingsSection(
 )
 
 woods_comparison_plot_parameters <- function() HaDeX_plotSettingsSection(
+  
   title = "Comparison plot parameters",
+  
   p("Choose time parameters:"),
   splitLayout(
     div(id = "time_0_part",
@@ -41,6 +47,7 @@ woods_comparison_plot_parameters <- function() HaDeX_plotSettingsSection(
                       choices = c("0", "1", "5", "25", "1440"))
     )
   ),
+  
   p("Choose states for comparison:"),
   fluidRow(
     column(6,
@@ -71,7 +78,9 @@ woods_comparison_plot_parameters <- function() HaDeX_plotSettingsSection(
 )
 
 woods_woods_plot_parameters <- function() HaDeX_plotSettingsSection(
+  
   title = "Woods plot parameters",
+  
   p("Differential plot presents the uptake difference between State 1 and State 2."),
   splitLayout(
     selectInput_h(inputId = "diff_state_1",
@@ -99,7 +108,9 @@ woods_woods_plot_parameters <- function() HaDeX_plotSettingsSection(
 )
 
 woods_zoom <- function() HaDeX_plotSettingsSection(
+  
   title = "Zoom",
+  
   sliderInput(inputId = 'comp_plot_y_range',
               label = 'Choose y range for comparison plot:',
               min = -200,
@@ -123,10 +134,12 @@ woods_zoom <- function() HaDeX_plotSettingsSection(
 )
 
 woods_labels_adjustement <- function() HaDeX_plotSettingsSection(
+  
   HaDeX_collapseButton(
     title = "Adjust labels",
     target = "#HaDeX-woods-labels-adjusting-panel"
   ),
+  
   HaDeX_collapsablePanel(
     id = "HaDeX-woods-labels-adjusting-panel",
     fluidRow(
@@ -190,6 +203,7 @@ woods_labels_adjustement <- function() HaDeX_plotSettingsSection(
 )
 
 woods_comparison_plot_panel <- function() tabsetPanel(
+  
   tabPanel("Comparison plot",
            plotOutput_h("comparisonPlot", hover = hoverOpts("comparisonPlot_hover", delay = 10, delayType = "debounce")),
            downloadButton("comparisonPlot_download_button",
@@ -207,6 +221,7 @@ woods_comparison_plot_panel <- function() tabsetPanel(
 woods_debug_panel <- function() uiOutput("comparisonPlot_debug")
 
 woods_woods_plot_panel <- function() tabsetPanel(
+  
   tabPanel("Woods plot",
            br(),
            div(style = "position:relative",
@@ -214,6 +229,7 @@ woods_woods_plot_panel <- function() tabsetPanel(
                uiOutput("differentialPlot_debug")),
            downloadButton("differentialPlot_download_button",
                           "Save chart (.svg)")),
+  
   tabPanel("Data",
            DT::dataTableOutput("differentialPlot_data"),
            p(

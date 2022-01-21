@@ -393,6 +393,8 @@ plot_differential_chiclet <- function(diff_uptake_dat,
 #' confidence intervals are shown.
 #' @param confidence_level confidence level for the test, from range [0, 1]. It
 #' should be the same as used in \code{\link{create_volcano_dataset}} function.
+#' @param color_times logical, indicating if different time points on the plot
+#' are distinguishable by color. 
 #'
 #' @details The data produced by \code{\link{create_volcano_dataset}} are plotted
 #' in the form of a volcano plot. The generation of the data is described in the documentation
@@ -429,7 +431,10 @@ plot_volcano <- function(vol_data,
                          state_2 = "",
                          adjust_axes = TRUE,
                          show_confidence_limits = FALSE,
-                         confidence_level = 0.98) {
+                         confidence_level = 0.98,
+                         color_times = TRUE) {
+  
+  
   
   volcano_plot <- ggplot(vol_data, aes(x = D_diff, y = log_p_value)) +
     geom_point() +
