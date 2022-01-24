@@ -164,7 +164,8 @@ volcano_plot_out <- reactive({
     ## visualization
     labs(title = input[["volcano_plot_title"]],
          x = input[["volcano_plot_x_label"]],
-         y = input[["volcano_plot_y_label"]]) +
+         y = input[["volcano_plot_y_label"]],
+         caption = paste0("CI ", input[["vol_confidence_level"]], "%: ", round(houde_intervals()[2], 4), " Da")) +
     coord_cartesian(xlim = c(input[["vol_x_range"]][[1]], input[["vol_x_range"]][[2]]),
                     ylim = c(input[["vol_y_range"]][[1]], input[["vol_y_range"]][[2]]),
                     expand = FALSE) +
