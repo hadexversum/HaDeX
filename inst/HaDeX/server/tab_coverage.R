@@ -1,3 +1,12 @@
+
+
+output[["cov_protein_coverage"]] <- renderText(
+  
+  paste0("Protein coverage: ", protein_coverage())
+)
+
+
+
 #################################
 ######### DATASET ###############
 #################################
