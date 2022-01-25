@@ -36,7 +36,9 @@ show_overlap_data <- function(dat,
     filter(State == state) %>%
     filter(Start >= start, End <= end) %>%
     filter(!duplicated(.)) %>%
-    select(-State)
+    arrange(Start, End) %>%
+    mutate(ID = 1L:nrow(.)) %>%
+    select(Protein, Sequence, ID, Start, End)
 }
 
 

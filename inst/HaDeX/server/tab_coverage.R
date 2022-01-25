@@ -13,17 +13,20 @@ output[["cov_protein_coverage"]] <- renderText(
 
 stateOverlap_data <- reactive({
   
-  show_overlap_data(dat = dat(),
-                        protein = input[["chosen_protein"]],
-                        state = input[["chosen_state"]],
-                        start = input[["plot_range"]][[1]],
-                        end = input[["plot_range"]][[2]])
+  show_overlap_data(
+    dat = dat(),
+    protein = input[["chosen_protein"]],
+    state = input[["chosen_state"]],
+    start = input[["plot_range"]][[1]],
+    end = input[["plot_range"]][[2]]
+  )
+  
 })
 
 output[["stateOverlap_data"]] <- DT::renderDataTable(server = FALSE, {
   
   stateOverlap_data() %>%
-    dt_format(cols = c("Protein", "Sequence", "Start", "End"))
+    dt_format(cols = c("Protein", "Sequence", "ID", "Start", "End"))
   
 })
 
@@ -57,6 +60,7 @@ output[["stateOverlap_debug"]] <- renderUI({
     hv_dat <- data.frame(x = hv[["x"]],
                          y = hv[["y"]],
                          Start = plot_data[["Start"]],
+                         ID = plot_data[["ID"]],
                          End = plot_data[["End"]],
                          y_plot = plot_data[[hv[["mapping"]][["y"]]]],
                          Sequence = plot_data[["Sequence"]])
@@ -82,6 +86,7 @@ output[["stateOverlap_debug"]] <- renderUI({
       div(
         style = style,
         p(HTML(paste0(tt_df[["Sequence"]],
+                      "<br/> ID: ",  tt_df[["ID"]],
                       "<br/> Position: ", tt_df[["Start"]], "-", tt_df[["End"]])))
       )
     }
