@@ -186,6 +186,6 @@ plot_overlap_distribution <- function(overlap_dist_dat,
     theme(legend.position = "none") + 
     coord_cartesian(xlim = c(start, end)) +
     geom_hline(yintercept = mean_coverage, color = 'red') +
-    geom_text(aes(x = display_position, y = mean_coverage), label = paste0("Average frequency: ", mean_coverage), color = 'red', vjust = -.5)
+    labs(caption = paste0("Average frequency ofshow range: ", mean_coverage))
   
 }

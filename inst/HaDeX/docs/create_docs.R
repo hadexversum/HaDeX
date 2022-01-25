@@ -484,10 +484,36 @@ write(sequence_start_shift_helper, file = 'sequence_start_shift.md', append = FA
 ############# OUTPUTS ##############
 ####################################
 
-
 ##################################
 ##  ################
 ##################################
+
+
+
+##################################
+## stateOverlap ##################
+##################################
+
+stateOverlap_helper <- '
+
+## Protein coverage
+
+This plot presents the peptide pool for selected protein. Each line shows a peptide, with its length and position on the protein sequence.
+
+'
+write(stateOverlap_helper, file = "stateOverlap.md", append = FALSE)
+
+##################################
+## stateOverlapDist ##############
+##################################
+
+stateOverlapDist_helper <- '
+
+## Position frequency
+
+This histogram shows how many peptides cover each position in the protein structure.
+'
+write(stateOverlapDist_helper, file = "stateOverlapDist.md", append = FALSE)
 
 
 

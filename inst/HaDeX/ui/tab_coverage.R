@@ -38,7 +38,7 @@ tab_coverage <- tabPanel(
       tabPanel(
         "Peptide Coverage",
         br(),
-        withHaDeXSpinner(plotOutput("stateOverlap", hover = hoverOpts("stateOverlap_hover", delay = 10, delayType = "debounce"))),
+        plotOutput_h("stateOverlap", hover = hoverOpts("stateOverlap_hover", delay = 10, delayType = "debounce")),
         uiOutput("stateOverlap_debug"),
         downloadButton("stateOverlap_download_button",
                        "Save chart (.svg)")
@@ -61,7 +61,7 @@ tab_coverage <- tabPanel(
         "Position Frequency",
         br(),
         div(style = "position:relative;",
-            withHaDeXSpinner(plotOutput("stateOverlapDist", hover = hoverOpts("stateOverlapDist_hover", delay = 10, delayType = "debounce"))),
+            plotOutput_h("stateOverlapDist", hover = hoverOpts("stateOverlapDist_hover", delay = 10, delayType = "debounce")),
             uiOutput("stateOverlapDist_debug")),
             downloadButton("stateOverlapDist_download_button",
                            "Save chart (.svg)"
