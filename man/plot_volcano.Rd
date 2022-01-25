@@ -10,7 +10,8 @@ plot_volcano(
   state_2 = "",
   adjust_axes = TRUE,
   show_confidence_limits = FALSE,
-  confidence_level = 0.98
+  confidence_level = 0.98,
+  color_times = TRUE
 )
 }
 \arguments{
@@ -29,6 +30,9 @@ confidence intervals are shown.}
 
 \item{confidence_level}{confidence level for the test, from range [0, 1]. It
 should be the same as used in \code{\link{create_volcano_dataset}} function.}
+
+\item{color_times}{logical, indicating if different time points on the plot
+are distinguishable by color.}
 }
 \value{
 a \code{\link{ggplot}} object.

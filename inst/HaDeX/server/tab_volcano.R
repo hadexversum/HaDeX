@@ -155,7 +155,8 @@ volcano_plot_out <- reactive({
   
   plot_volcano(volcano_data(), 
                state_1 = input[["vol_state_1"]], 
-               state_2 = input[["vol_state_2"]]) +
+               state_2 = input[["vol_state_2"]],
+               color_times = input[["vol_color_times"]]) +
     # ## statistics
     geom_segment(aes(x = houde_intervals()[1], xend = houde_intervals()[1], y = alpha_interval(), yend = input[["vol_y_range"]][2]), linetype = "dashed", color = "red") +
     geom_segment(aes(x = houde_intervals()[2], xend = houde_intervals()[2], y = alpha_interval(), yend = input[["vol_y_range"]][2]), linetype = "dashed", color = "red") +
