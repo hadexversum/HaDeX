@@ -578,7 +578,7 @@ replicates_histogram_helper <- '
 
 ## Number of replicates
 
-The histogram shows how many repliactes were done for specific peptide in selected time point of the measurement. The peptides are specified by their ID. 
+The histogram shows how many replicates were done for specific peptide in selected time point of the measurement. The peptides are specified by their ID. 
 
 `Data` tab and the tooltips provide additional information e.g. the position of the peptide in the protein sequence. 
 '
@@ -591,15 +591,29 @@ write(replicates_histogram_helper, file = 'replicatesHistogram.md', append = FAL
 
 all_replicates_histogram_helper <- '
 
-## Number of replicates
+## Number of replicates per peptide
 
-The histogram shows how many repliactes were done for specific peptide during the experiment. The colors indicates the tme point of measurement. 
+The histogram shows how many replicates were done for specific peptide during the experiment. The colors indicates the time point of measurement. 
 The peptides are specified by their ID. 
 
 `Data` tab and the tooltips provide additional information e.g. the position of the peptide in the protein sequence. 
 '
 
 write(all_replicates_histogram_helper, file = 'allReplicatesHistogram.md', append = FALSE)
+
+##################################
+## timesReplicatesHistogram ######
+##################################
+
+timesReplicatesHistogram_helper <- '
+
+## Number of replicates per time point
+
+The histogram shows how many replicates were done for specific time point of measurement during the experiment. The color indicates the ID of each peptide, as it 
+is cumulatative value. 
+'
+
+write(timesReplicatesHistogram_helper, file = "timesReplicatesHistogram.md", append = FALSE)
 
 ##################################
 ## peptide_list_data #############

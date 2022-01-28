@@ -495,8 +495,8 @@ output[["allReplicatesHistogram_debug"]] <- renderUI({
 ##
 
 output[["allReplicatesHistogram_download_button"]] <- downloadHandler("allReplicatesHistogram.svg",
-                                                                   content = function(file){
-                                                                     ggsave(file, all_replicates_histogram(), device = svg,
+                                                                      content = function(file){
+                                                                     ggsave(file, all_replicates_histogram_out(), device = svg,
                                                                             height = 300, width = 400, units = "mm")
                                                                    })
 
@@ -519,3 +519,108 @@ output[["allReplicatesHistogram_data"]] <- DT::renderDataTable(server = FALSE, {
     dt_format()
   
 })
+
+
+#################################
+######## HISTOGRAM PLOT #########
+#################################
+## replicates for time points
+
+times_replicates_histogram_out <- reactive({
+  
+  plot_replicate_histogram(all_replicates_histogram_data(),
+                           time_point = T)
+  
+})
+
+output[["timesReplicatesHistogram"]] <- renderPlot({
+  
+  times_replicates_histogram_out()
+  
+})
+
+##
+
+output[["timesReplicatesHistogram_debug"]] <- renderUI({
+  
+  if(!is.null(input[["timesReplicatesHistogram_hover"]])) {
+    
+    plot_data <- times_replicates_histogram_out()[["data"]]
+    hv <- input[["timesReplicatesHistogram_hover"]]
+    
+    hv_dat <- data.frame(x = hv[["x"]],
+                         y = hv[["y"]],
+                         Start = plot_data[["Start"]],
+                         End = plot_data[["End"]],
+                         x_plot = plot_data[["Exposure"]],
+                         Sequence = plot_data[["Sequence"]],
+                         ID = plot_data[["ID"]],
+                         Exposure = plot_data[["Exposure"]],
+                         n = plot_data[["n"]])
+    
+    tt_df <- hv_dat %>%
+        group_by(x, Exposure) %>%
+        summarize(cnt = sum(n),
+                  n_peptides = n()) %>%
+        arrange(Exposure) %>%
+        mutate(id = 1:nrow(.)) %>%
+        filter(id == round(x))
+      
+    if(nrow(tt_df) != 0) {
+      
+      tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                           "left", "right")
+      
+      tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
+                       hv[["coords_css"]][["x"]],
+                       hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
+      
+      style <- paste0("position:absolute; z-index:1072; background-color: rgba(245, 245, 245, 1); pointer-events: none; ",
+                      tt_pos_adj, ":", tt_pos, "px; padding: 0px;",
+                      "top:", hv[["coords_css"]][["y"]] , "px; ")
+      
+      tmp <- paste0("<br/> ", tt_df[["Exposure"]], " [min]",
+                     "<br/> Peptides: ", tt_df[["n_peptides"]],
+                     "<br/> Total replicates: ", tt_df[["cnt"]]
+                     )
+
+      div(
+        style = style,
+        p(HTML(tmp)))
+      
+      
+    }
+  }
+  
+})
+
+##
+
+output[["timesReplicatesHistogram_download_button"]] <- downloadHandler("timesReplicatesHistogram.svg",
+                                                                        content = function(file){
+                                                                          ggsave(file, times_replicates_histogram_out(), device = svg,
+                                                                                 height = 300, width = 400, units = "mm")
+                                                                      })
+
+
+####################################
+######## HISTOGRAM DATASET #########
+####################################
+## replicates for time points
+
+times_replicates_histogram_data_out <- reactive({
+
+  show_replicate_histogram_data(all_replicates_histogram_data()) %>%
+    arrange(Exposure, ID) %>%
+    select(Exposure, everything())
+  
+})
+
+##
+
+output[["timesReplicatesHistogram_data"]] <- DT::renderDataTable(server = FALSE, {
+
+  times_replicates_histogram_data_out() %>%
+    dt_format()
+})
+
