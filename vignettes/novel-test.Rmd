@@ -18,13 +18,13 @@ vignette: >
 We propose a novel test based on semiparametric mixed model regularized by ridge regression for HDX-MS data. The test is meant for a specifically designed experiment in which each replication was a sample prepared by incubation of the protein stock (at a particular biological state) in the labeling solution for various time-points i.e. 0s (control), 10 s, 60 s, etc. Thus, under the term \textit{replication} we understand a single deuterium uptake curve consisting of deuterium uptake observed over time as shown on the plot below.
 
 ```{r , echo=FALSE, out.width = '100%'}
-# knitr::include_graphics("du.pdf")
+knitr::include_graphics("du.png")
 ```
 
 The semiparametric test is dedicated for the assessment of the differences in deuteration levels between different biological states. We present an example data set below.
 
 ```{r , echo=FALSE, out.width = '100%'}
-# knitr::include_graphics("du.pdf")
+knitr::include_graphics("curves.png")
 ```
 
 The model requires the following data:
@@ -75,7 +75,7 @@ $$\hat{\beta}_{ridge} = \underset{b \in \mathbb{R}^p}{\arg\min}~\bigg\lbrace||Y 
 where $\lambda$ is the regularization penalty. Let us notice that the greater value of $\lambda$ we set, the sparser estimator of $\beta$ we obtain. At the same time, the sparser estimator of $\beta$ we get, the fewer knots we select to the spline and the more 'boxy' the target model will be.
 
 ```{r , echo=FALSE, out.width = '100%'}
-# knitr::include_graphics("plot_sline.pdf")
+knitr::include_graphics("spline.png")
 ```
 
 
