@@ -59,7 +59,7 @@ lapply(times, function(time){
     test_that(test_name,
               expect_equal(
                 ref_dat[ref_dat[["Exposure"]] == time, deut_value],
-                result_tmp[result_tmp[["Exposure"]] == time, ..deut_value][[1]]
+                result_tmp[result_tmp[["Exposure"]] == time, deut_value][[1]]
               )
     )
 
@@ -91,7 +91,7 @@ lapply(times, function(time){
               expect_equal(
                 ref_dat[ref_dat[["Exposure"]] == time, deut_value],
                 result_tmp[result_tmp[["Exposure"]] == time &
-                             result_tmp[["State"]] == chosen_state, ..deut_value][[1]]
+                             result_tmp[["State"]] == chosen_state, deut_value][[1]]
               )
     )
 
@@ -132,7 +132,7 @@ lapply(times, function(time){
                 ref_dat[ref_dat[["Exposure"]] == time, deut_value],
                 result_tmp[result_tmp[["Exposure"]] == time &
                              result_tmp[["State"]] == chosen_state &
-                             result_tmp[["Sequence"]] == chosen_peptide, ..deut_value][[1]]
+                             result_tmp[["Sequence"]] == chosen_peptide, deut_value][[1]]
               )
     )
 
@@ -171,7 +171,7 @@ lapply(times, function(time){
               expect_equal(
                 ref_dat[ref_dat[["Exposure"]] == time, deut_value],
                 result_tmp[result_tmp[["Sequence"]] == chosen_peptide &
-                             result_tmp[["Exposure"]] == time, ..deut_value][[1]]
+                             result_tmp[["Exposure"]] == time, deut_value][[1]]
               )
     )
 
@@ -203,7 +203,7 @@ lapply(times, function(time){
               expect_equal(
                 ref_dat[ref_dat[["Exposure"]] == time, deut_value],
                 result_tmp[result_tmp[["Sequence"]] == chosen_peptide &
-                             result_tmp[["Exposure"]] == time, ..deut_value][[1]]
+                             result_tmp[["Exposure"]] == time, deut_value][[1]]
               )
     )
 
@@ -234,7 +234,7 @@ lapply(times, function(time){
                 ref_dat[ref_dat[["Exposure"]] == time, deut_value],
                 result_tmp[result_tmp[["State"]] == chosen_state &
                              result_tmp[["Sequence"]] == chosen_peptide &
-                             result_tmp[["Exposure"]] == time, ..deut_value][[1]]
+                             result_tmp[["Exposure"]] == time, deut_value][[1]]
               )
     )
 
@@ -265,7 +265,7 @@ lapply(times, function(time){
               expect_equal(
                 ref_dat[ref_dat[["Exposure"]] == time, deut_value],
                 result_tmp[result_tmp[["State"]] == chosen_state &
-                             result_tmp[["Sequence"]] == chosen_peptide, ..deut_value][[1]]
+                             result_tmp[["Sequence"]] == chosen_peptide, deut_value][[1]]
               )
     )
 
@@ -304,7 +304,7 @@ lapply(times, function(time){
               expect_equal(
                 ref_dat[ref_dat[["Exposure"]] == time, deut_value],
                 result_tmp[result_tmp[["Sequence"]] == chosen_peptide &
-                             result_tmp[["Exposure"]] == time, ..deut_value][[1]]
+                             result_tmp[["Exposure"]] == time, deut_value][[1]]
               )
     )
 
