@@ -107,7 +107,7 @@ lapply(times, function(time){
 
   test_name <- paste0("create_volcano_dataset-", time, "min")
 
-  test_that("",
+  test_that(test_name,
             expect_equal(dat_tmp[dat_tmp[["Sequence"]] == chosen_peptide & dat_tmp[["Exposure"]] == time, "D_diff"][[1]],
                          ref_dat[ref_dat[["Exposure"]] == time, "diff_deut_uptake"]
             )

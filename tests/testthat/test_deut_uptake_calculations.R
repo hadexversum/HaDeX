@@ -151,7 +151,7 @@ test_that("class is right",
                                            time_0 = chosen_time_0,
                                            time_t = chosen_time,
                                            time_100 = chosen_time_100),
-                    "data.table"))
+                    "data.frame"))
 
 lapply(times, function(time){
 
@@ -311,3 +311,4 @@ lapply(times, function(time){
   })
 
 })
+
