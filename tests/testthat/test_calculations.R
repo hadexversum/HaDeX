@@ -42,30 +42,30 @@ lapply(times, function(time){
 ## CALCULATE_MHP ##
 ###################
 
-# test_that(paste0("MHP for ", chosen_peptide),
-#           expect_equal(round(calculate_MHP(chosen_peptide, mono = F)),
-#                        round(dat[dat[["Sequence"]] == chosen_peptide, MHP][1])
-#           )
-# )
-# 
-# test_that(paste0("mono MHP for ", chosen_peptide),
-#           expect_equal(round(calculate_MHP(chosen_peptide, mono = T)),
-#                        round(dat[dat[["Sequence"]] == chosen_peptide, MHP][1] - 1 )[[1]]
-#           )
-# )
+test_that(paste0("MHP for ", chosen_peptide),
+          expect_equal(round(calculate_MHP(chosen_peptide, mono = F)),
+                       round(dat[dat[["Sequence"]] == chosen_peptide, "MHP"][1])
+          )
+)
+
+test_that(paste0("mono MHP for ", chosen_peptide),
+          expect_equal(round(calculate_MHP(chosen_peptide, mono = T)),
+                       round(dat[dat[["Sequence"]] == chosen_peptide, "MHP"][1] - 1 )[[1]]
+          )
+)
 
 
-# ref_dat <- dat %>%
-#   select(Sequence, MHP) %>%
-#   unique(.) %>%
-#   mutate(MHP = round(MHP))
-# 
-# lapply(ref_dat[["Sequence"]], function(sequence){
-# 
-#   test_that("",
-#             expect_equal(round(calculate_MHP(sequence, mono = F)),
-#                          ref_dat[ref_dat[["Sequence"]] == sequence, "MHP"]
-#             )
-#   )
-# 
-# })
+ref_dat <- dat %>%
+  select(Sequence, MHP) %>%
+  unique(.) %>%
+  mutate(MHP = round(MHP))
+
+lapply(ref_dat[["Sequence"]], function(sequence){
+
+  test_that(paste0("MHP for ", sequence),
+            expect_equal(round(calculate_MHP(sequence, mono = F)),
+                         ref_dat[ref_dat[["Sequence"]] == sequence, "MHP"]
+            )
+  )
+
+})
