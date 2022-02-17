@@ -408,12 +408,16 @@ show_volcano_data <- function(vol_data,
 #' @seealso 
 #' \code{\link{read_hdx}} 
 #' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' 
 #' @export show_summary_data
 
 show_summary_data <- function(dat, 
                               confidence_limit_1,
                               confidence_limit_2,
-                              overlap_distribution_data){
+                              overlap_distribution_data, 
+                              protein_length = NULL){
   
   n_reps <- group_by(dat, Protein, Start, End, Sequence, State, Exposure) %>%
     summarise(n_rep = length(unique(File))) %>%
@@ -426,17 +430,17 @@ show_summary_data <- function(dat,
   
   data.frame(Name = c("HDX time course", 
                       "Number of peptides",
-                      "Sequence coverage",
+                      "Sequence coverage ",
                       "Average peptide length",
                       "Redundancy",
                       "Replicates",
                       #"Average standard deviation",
                       "Significant differences in HDX"), 
-             Value = c(length(unique(dat[["Exposure"]])) - 1, # we add control as an additional timepoint 
+             Value = c(sum(unique(dat[["Exposure"]]) > 0 ),  
                        length(unique(dat[["Sequence"]])), 
-                       paste0(100*round(mean(overlap_distribution_data[["coverage"]] > 0), 4), "%"), 
-                       round(mean(nchar(unique(dat[["Sequence"]]))), 4), 
-                       round(mean(overlap_distribution_data[["coverage"]]), 4), 
+                       paste0(get_protein_coverage(dat, protein_length), "%"),
+                       round(mean(nchar(unique(dat[["Sequence"]]))), 2),# average peptide length
+                       get_protein_redundancy(dat, protein_length),
                        n_reps[1], 
                        #NA, 
                        paste0(confidence_limit_1, " | ", confidence_limit_2))

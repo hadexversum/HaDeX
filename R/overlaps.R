@@ -138,7 +138,8 @@ create_overlap_distribution_dataset <- function(dat,
     replace_na(list(coverage = 0)) %>%
     right_join(data.frame(amino = unlist(strsplit(protein_sequence, "")), 
                           pos = 1:str_length(protein_sequence))) %>%
-    select(pos, amino, coverage)
+    select(pos, amino, coverage) %>%
+    arrange(pos)
 }
 
 
