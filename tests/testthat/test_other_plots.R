@@ -47,7 +47,7 @@ result_tmp <- show_overlap_data(dat,
 
 test_that("show_overlap_data colnames",
           expect_equal(colnames(result_tmp),
-                       c("Protein", "Sequence", "Start", "End")
+                       c("Protein", "Sequence", "ID", "Start", "End")
           )
 )
 

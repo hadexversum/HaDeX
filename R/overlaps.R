@@ -36,7 +36,9 @@ show_overlap_data <- function(dat,
     filter(State == state) %>%
     filter(Start >= start, End <= end) %>%
     filter(!duplicated(.)) %>%
-    select(-State)
+    arrange(Start, End) %>%
+    mutate(ID = 1L:nrow(.)) %>%
+    select(Protein, Sequence, ID, Start, End)
 }
 
 
@@ -136,7 +138,8 @@ create_overlap_distribution_dataset <- function(dat,
     replace_na(list(coverage = 0)) %>%
     right_join(data.frame(amino = unlist(strsplit(protein_sequence, "")), 
                           pos = 1:str_length(protein_sequence))) %>%
-    select(pos, amino, coverage)
+    select(pos, amino, coverage) %>%
+    arrange(pos)
 }
 
 
@@ -184,6 +187,6 @@ plot_overlap_distribution <- function(overlap_dist_dat,
     theme(legend.position = "none") + 
     coord_cartesian(xlim = c(start, end)) +
     geom_hline(yintercept = mean_coverage, color = 'red') +
-    geom_text(aes(x = display_position, y = mean_coverage), label = paste0("Average frequency: ", mean_coverage), color = 'red', vjust = -.5)
+    labs(caption = paste0("Average frequency ofshow range: ", mean_coverage))
   
 }

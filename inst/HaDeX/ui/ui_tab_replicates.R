@@ -12,7 +12,8 @@ tab_replicates <- function() HaDeX_plotTab(
   displayPanel = HaDeX_plotDisplayPanel(
     replicates_plot_and_charge_panel(),
     replicates_histogram_panel(),
-    replicates_histogram_all_panel()
+    replicates_histogram_all_panel(),
+    replicates_histogram_times_panel()
   )
   
 )
@@ -132,5 +133,19 @@ replicates_histogram_all_panel <- function() tabsetPanel(
   
   tabPanel("Data",
            DT::dataTableOutput("allReplicatesHistogram_data"))
+)
+
+replicates_histogram_times_panel <- function() tabsetPanel(
+  
+  tabPanel("Plot", 
+           div(style = "position:relative",
+               plotOutput_h("timesReplicatesHistogram", hover = hoverOpts("timesReplicatesHistogram_hover", delay = 10, delayType = "debounce")),
+               uiOutput("timesReplicatesHistogram_debug")),
+           downloadButton("timesReplicatesHistogram_download_button",
+                          "Save chart (.svg)")),
+  
+  tabPanel("Data",
+           DT::dataTableOutput("timesReplicatesHistogram_data"))
+  
 )
  

@@ -8,7 +8,8 @@ show_summary_data(
   dat,
   confidence_limit_1,
   confidence_limit_2,
-  overlap_distribution_data
+  overlap_distribution_data,
+  protein_length = NULL
 )
 }
 \arguments{
@@ -32,6 +33,10 @@ Ahn, N.G., Anand, G.S., Borchers, C., Brier, S., Bou-Assaf, G.M., Engen, J.R.,
 Englander, S.W., Faber, J., et al. (2019). Recommendations for performing, 
 interpreting and reporting hydrogen deuterium exchange mass spectrometry 
 (HDX-MS) experiments. Nat Methods 16, 595–602
+}
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+
 }
 \seealso{
 \code{\link{read_hdx}}

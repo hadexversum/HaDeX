@@ -300,10 +300,10 @@ create_replicate_dataset <- function(dat,
 #' rep_dat <- create_replicate_dataset(dat)
 #' plot_replicate_histogram(rep_dat)
 #' 
+#' plot_replicate_histogram(rep_dat, time_points = T)
+#' 
 #' rep_dat <- create_replicate_dataset(dat, time_t = 0.167)
 #' plot_replicate_histogram(rep_dat)
-#' 
-#' plot_replicate_histogram(rep_dat, time_points = T)
 #' 
 #' @export plot_replicate_histogram 
 
@@ -363,7 +363,7 @@ plot_replicate_histogram <- function(rep_dat,
 #' 
 #' @param rep_dat replicate data, created by 
 #' \code{\link{create_replicate_dataset}} function.
-#'
+#' 
 #' @details The function shows the information about
 #' number of replicates for peptides in one or multiple
 #' time point of measurement, depends on supplied data.

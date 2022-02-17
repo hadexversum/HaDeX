@@ -66,12 +66,18 @@ position_in_sequence <- reactive({
 
 ##
 
+protein_coverage <- reactive({
+  
+  paste0(100*round((max_range()-str_count(protein_sequence(), 'x'))/max_range(), 4), '%')
+  
+})
+
 output[["protein_stats"]] <- renderTable({
   
   data.frame(
     Name = c("Length", "Coverage", "Cys"),
     Value = as.character(c(input[["sequence_length"]],
-                           paste0(100*round((max_range()-str_count(protein_sequence(), 'x'))/max_range(), 4), '%'),
+                           protein_coverage(),
                            str_count(protein_sequence(), 'C'))),
     stringsAsFactors = FALSE
   )

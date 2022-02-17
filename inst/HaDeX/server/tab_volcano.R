@@ -155,7 +155,8 @@ volcano_plot_out <- reactive({
   
   plot_volcano(volcano_data(), 
                state_1 = input[["vol_state_1"]], 
-               state_2 = input[["vol_state_2"]]) +
+               state_2 = input[["vol_state_2"]],
+               color_times = input[["vol_color_times"]]) +
     # ## statistics
     geom_segment(aes(x = houde_intervals()[1], xend = houde_intervals()[1], y = alpha_interval(), yend = input[["vol_y_range"]][2]), linetype = "dashed", color = "red") +
     geom_segment(aes(x = houde_intervals()[2], xend = houde_intervals()[2], y = alpha_interval(), yend = input[["vol_y_range"]][2]), linetype = "dashed", color = "red") +
@@ -164,7 +165,8 @@ volcano_plot_out <- reactive({
     ## visualization
     labs(title = input[["volcano_plot_title"]],
          x = input[["volcano_plot_x_label"]],
-         y = input[["volcano_plot_y_label"]]) +
+         y = input[["volcano_plot_y_label"]],
+         caption = paste0("CI ", input[["vol_confidence_level"]], "%: ", round(houde_intervals()[2], 4), " Da")) +
     coord_cartesian(xlim = c(input[["vol_x_range"]][[1]], input[["vol_x_range"]][[2]]),
                     ylim = c(input[["vol_y_range"]][[1]], input[["vol_y_range"]][[2]]),
                     expand = FALSE) +

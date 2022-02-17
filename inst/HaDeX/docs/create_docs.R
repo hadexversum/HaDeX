@@ -18,6 +18,18 @@ app_inputs <- strsplit("butt_diff_confidence_level, butt_diff_fractional, butt_d
 setwd("./inst/HaDeX/docs")
 
 ####################################
+############# MISSING ##############
+####################################
+
+library(stringr)
+
+already_done <- str_remove(list.files(), ".md")
+excluded <- app_inputs[c(grep("export", app_inputs), grep("range", app_inputs), grep("title$", app_inputs), grep("y_label$", app_inputs), grep("x_label$", app_inputs))]
+excluded2 <- c("reset_peptide_list", "hydro_prop",  "data_file", "exam_apply_changes")
+
+setdiff(app_inputs, c(already_done, excluded, excluded2))
+
+####################################
 ######### MULTIPLE HELPERS #########
 ####################################
 
@@ -469,25 +481,58 @@ If the N-terminus of a sequence is trimmed, provide its true position. Imputed a
 write(sequence_start_shift_helper, file = 'sequence_start_shift.md', append = FALSE)
 
 ####################################
-############# MISSING ##############
-####################################
-
-library(stringr)
-
-already_done <- str_remove(list.files(), ".md")
-excluded <- app_inputs[c(grep("export", app_inputs), grep("range", app_inputs), grep("title$", app_inputs), grep("y_label$", app_inputs), grep("x_label$", app_inputs))]
-excluded2 <- c("reset_peptide_list", "hydro_prop",  "data_file", "exam_apply_changes")
-
-setdiff(app_inputs, c(already_done, excluded, excluded2))
-
-####################################
 ############# OUTPUTS ##############
 ####################################
-
 
 ##################################
 ##  ################
 ##################################
+
+
+
+##################################
+## stateOverlap ##################
+##################################
+
+stateOverlap_helper <- '
+
+## Protein coverage
+
+This plot presents the peptide pool for selected protein. Each line shows a peptide, with its length and position on the protein sequence.
+
+'
+write(stateOverlap_helper, file = "stateOverlap.md", append = FALSE)
+
+##################################
+## stateOverlapDist ##############
+##################################
+
+stateOverlapDist_helper <- '
+
+## Position frequency
+
+This histogram shows how many peptides cover each position in the protein structure.
+'
+write(stateOverlapDist_helper, file = "stateOverlapDist.md", append = FALSE)
+
+
+
+##################################
+## adjust_colors #################
+##################################
+
+adjust_colors_helper <- '
+
+## Select state colors
+
+There is a possibility to select colors for biological state for the comparison plot.
+Under this button, there are fields for color codes for each state. The accepted format is Hex color codes.
+
+For exploring the colors, we recommend [color picker](https://htmlcolorcodes.com/) or [palette generator](https://coolors.co/).
+
+'
+
+write(adjust_colors_helper, file = "adjust_colors.md", append = FALSE)
 
 ##################################
 ## replicatesPlot ################
@@ -533,7 +578,7 @@ replicates_histogram_helper <- '
 
 ## Number of replicates
 
-The histogram shows how many repliactes were done for specific peptide in selected time point of the measurement. The peptides are specified by their ID. 
+The histogram shows how many replicates were done for specific peptide in selected time point of the measurement. The peptides are specified by their ID. 
 
 `Data` tab and the tooltips provide additional information e.g. the position of the peptide in the protein sequence. 
 '
@@ -546,15 +591,29 @@ write(replicates_histogram_helper, file = 'replicatesHistogram.md', append = FAL
 
 all_replicates_histogram_helper <- '
 
-## Number of replicates
+## Number of replicates per peptide
 
-The histogram shows how many repliactes were done for specific peptide during the experiment. The colors indicates the tme point of measurement. 
+The histogram shows how many replicates were done for specific peptide during the experiment. The colors indicates the time point of measurement. 
 The peptides are specified by their ID. 
 
 `Data` tab and the tooltips provide additional information e.g. the position of the peptide in the protein sequence. 
 '
 
 write(all_replicates_histogram_helper, file = 'allReplicatesHistogram.md', append = FALSE)
+
+##################################
+## timesReplicatesHistogram ######
+##################################
+
+timesReplicatesHistogram_helper <- '
+
+## Number of replicates per time point
+
+The histogram shows how many replicates were done for specific time point of measurement during the experiment. The color indicates the ID of each peptide, as it 
+is cumulatative value. 
+'
+
+write(timesReplicatesHistogram_helper, file = "timesReplicatesHistogram.md", append = FALSE)
 
 ##################################
 ## peptide_list_data #############

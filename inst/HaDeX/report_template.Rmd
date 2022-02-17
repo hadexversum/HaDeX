@@ -568,7 +568,7 @@ if (input[["export_replicate_plots_data"]]){
 ```
 
 
-<!--- REPLICATE HISTOGRAMS  --->
+<!--- REPLICATE HISTOGRAMS AND DATA  --->
 
 ```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
 
@@ -581,6 +581,16 @@ if (input[["export_replicate_histograms"]]){
 }
 ```
 
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_replicate_histograms_data"]]){
+  
+  cat("## Replicate Histogram for selected time point Data \n")
+  
+  replicates_histogram_data_out()
+  
+}
+```
 
 ```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
 
@@ -593,20 +603,6 @@ if (input[["export_replicate_histograms"]]){
 }
 ```
 
-<!--- REPLICATE HISTOGRAMS DATA --->
-
-```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
-
-if (input[["export_replicate_histograms_data"]]){
-  
-  cat("## Replicate Histogram for selected time point Data \n")
-  
-  replicates_histogram_data_out()
-  
-}
-```
-
-
 ```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
 
 if (input[["export_replicate_histograms_data"]]){
@@ -618,6 +614,28 @@ if (input[["export_replicate_histograms_data"]]){
 }
 ```
 
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_replicate_histograms"]]){
+  
+  cat("## Replicate Histogram for time points \n")
+  
+  times_replicates_histogram_out()
+  
+}
+```
+
+```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
+
+if (input[["export_replicate_histograms_data"]]){
+  
+  cat("## Replicate Histogram for time points Data \n")
+  
+  times_replicates_histogram_data_out()
+  
+}
+```
 
 # R Session
 

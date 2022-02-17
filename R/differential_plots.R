@@ -436,12 +436,25 @@ plot_volcano <- function(vol_data,
   
   
   
-  volcano_plot <- ggplot(vol_data, aes(x = D_diff, y = log_p_value)) +
-    geom_point() +
-    geom_errorbar(aes(xmin = D_diff - Uncertainty, xmax = D_diff + Uncertainty), alpha = 0.2) +
-    labs(title = paste0("Volcano Plot ", state_1, " " , state_2),
-         x = "Mass difference [Da]",
-         y = "-log(P value)")
+  if (color_times){
+    
+    volcano_plot <- ggplot(vol_data, aes(x = D_diff, y = log_p_value)) +
+      geom_point(aes(color = as.factor(Exposure))) +
+      geom_errorbar(aes(xmin = D_diff - Uncertainty, xmax = D_diff + Uncertainty), alpha = 0.2) +
+      labs(title = paste0("Volcano Plot ", state_1, " " , state_2),
+           x = "Mass difference [Da]",
+           y = "-log(P value)") +
+      labs(color = "Exposure") 
+    
+  } else {
+    
+    volcano_plot <- ggplot(vol_data, aes(x = D_diff, y = log_p_value)) +
+      geom_point() +
+      geom_errorbar(aes(xmin = D_diff - Uncertainty, xmax = D_diff + Uncertainty), alpha = 0.2) +
+      labs(title = paste0("Volcano Plot ", state_1, " " , state_2),
+           x = "Mass difference [Da]",
+           y = "-log(P value)")
+  }
   
   if(adjust_axes){
     
