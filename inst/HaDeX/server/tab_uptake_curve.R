@@ -100,7 +100,7 @@ observe({
     
     updateSliderInput(session,
                       inputId = "kin_plot_y_range",
-                      min = 0,
+                      min = -5,
                       max = max_kin_abs + 5,
                       value = c(0, max_kin_abs),
                       step = 1)
