@@ -28,13 +28,12 @@ tab_input <- function() HaDeX_nonplotTab(
       )
     )
   ),
+  
   fillRow(
     id = "HaDeX-file-requirements-section",
     flex = c(1, NA),
-    p(
-      "For the program to behave correctly, please make sure supplied file fulfills all requirements.",
-      "Requirements can be displayed by clicking the button."
-    ),
+    p("For the program to behave correctly, please make sure supplied file fulfills all requirements.",
+      "Requirements can be displayed by clicking the button."),
     HaDeX_collapseButton(
       title = "Show requirements",
       target = "#HaDeX-file-requirements-table"
@@ -44,10 +43,10 @@ tab_input <- function() HaDeX_nonplotTab(
     id = "HaDeX-file-requirements-table",
     tableOutput("file_req")
   ),
+  
   h3("Settings"),
-  p(
-    "Values chosen here are propagated into all of the tables for coherent results."
-  ),
+  p("Values chosen here are propagated into all of the tables for coherent results."),
+  
   fillRow(
     id = "HaDeX-settings-panel",
     wellPanel(
@@ -75,6 +74,7 @@ tab_input <- function() HaDeX_nonplotTab(
                      width = "100%"),
       textOutput("sequence_length_exp_info")
     ),
+    
     hidden(
       wellPanel(
         id = "HaDeX-examiner-settings-panel",

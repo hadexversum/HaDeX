@@ -1,4 +1,5 @@
 tab_uptake <- function() HaDeX_plotTab(
+  
   title = "Uptake curves",
   settingsPanel = HaDeX_plotSettingsPanel(
     uptake_general_settings(),
@@ -14,33 +15,37 @@ tab_uptake <- function() HaDeX_plotTab(
 )
 
 uptake_general_settings <- function() HaDeX_plotSettingsSection(
+  
   checkboxInput_h(inputId = "kin_theory",
                   label = "Theoretical calculations",
                   value = FALSE),
+  
   checkboxInput_h(inputId = "kin_fractional",
                   label = "Fractional values",
                   value = FALSE)
 )
 
 uptake_timepoints <- function() HaDeX_plotSettingsSection(
+  
   title = "Timepoints",
   div(id = "kin_time_part",
       h5("Choose time parameters:"),
       splitLayout(
         div(id = "kin_time_0_part",
             selectInput_h(inputId = "kin_time_0",
-                          label = "IN",
+                          label = "TIME IN",
                           choices = c("0", "1", "5", "25", "1440"))
         ),
         div(id = "kin_time_100_part",
             selectInput_h(inputId = "kin_time_100",
-                          label = "OUT",
+                          label = "TIME OUT",
                           choices = c("0", "1", "5", "25", "1440")))
       )
   )
 )
  
 uptake_peptide <- function() HaDeX_plotSettingsSection(
+  
   title = "Peptide",
   p("Choose peptide:"),
   dataTableOutput_h("peptide_list_data"),
@@ -50,6 +55,7 @@ uptake_peptide <- function() HaDeX_plotSettingsSection(
 )
 
 uptake_visualization <- function() HaDeX_plotSettingsSection(
+  
   title = "Visualization",
   checkboxInput_h(inputId = "kin_log_x",
                   label = "Logaritmic x scale",
@@ -61,6 +67,7 @@ uptake_visualization <- function() HaDeX_plotSettingsSection(
 )
 
 uptake_zoom <- function() HaDeX_plotSettingsSection(
+  
   title = "Zoom",
   sliderInput(inputId = 'kin_plot_y_range',
               label = 'Choose y range for the plot:',
@@ -71,10 +78,12 @@ uptake_zoom <- function() HaDeX_plotSettingsSection(
 )
 
 uptake_labels_adjustement <- function() HaDeX_plotSettingsSection(
+  
   HaDeX_collapseButton(
     title = "Adjust labels",
     target = "#HaDeX-uptake-labels-adjusting-panel"
   ),
+  
   HaDeX_collapsablePanel(
     id = "HaDeX-uptake-labels-adjusting-panel",
     fluidRow(
@@ -102,6 +111,7 @@ uptake_labels_adjustement <- function() HaDeX_plotSettingsSection(
                             value = 15,
                             min = 5))
     ), 
+    
     p("The axis ticks have the same size as the axis label. The legend text size is the same as the x axis label.")
   )
 )
@@ -116,6 +126,9 @@ uptake_plot_panel <- function() tabsetPanel(
     uiOutput("kinetic_plot_chosen_peptides_debug"),
     downloadButton("kineticPlot_download_button",
                    "Save chart (.svg)")),
+  
+  ##### UPTAKE CURVE DATA #####
+  
   tabPanel("Data",
            br(),
            DT::dataTableOutput("kin_plot_data")),
@@ -127,12 +140,16 @@ uptake_plot_panel <- function() tabsetPanel(
              "Download uptake curves for all peptides in selected form, based on the parameters from the Settings panel.",
              "Preparing the plots may take a while."
            ),
-           h5("Download the zipped folder with separate files:"),
-           downloadButton(outputId = "kin_download_folder",
-                          label = "Download folder"),
-           h5("Download the pdf file with plots arranged in a grid:"),
+           
+           
            fluidRow(
+             column(width = 5,
+                    h5("Download the zipped folder with separate files:"),
+                    downloadButton(outputId = "kin_download_folder",
+                                   label = "Download folder")
+                    ),
              column(width = 4,
+                    h5("Download the pdf file with plots arranged in a grid:"),
                     downloadButton(outputId = "kin_download_file",
                                    label = "Download file"),
                     
