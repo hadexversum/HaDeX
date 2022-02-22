@@ -48,6 +48,8 @@ show_overlap_data <- function(dat,
 #' on supplied data and parameters. 
 #' 
 #' @param dat data imported by the \code{\link{read_hdx}} function.
+#' @param protein protein included in calculations
+#' @param state state included in calculations
 #' 
 #' @details The overlap plot presents all the peptides in given state
 #' on the protein sequence. 
@@ -65,7 +67,11 @@ show_overlap_data <- function(dat,
 #' 
 #' @export plot_overlap
 
-plot_overlap <- function(dat){
+plot_overlap <- function(dat,
+                         protein = dat[["Protein"]][1],
+                         state = dat[["State"]][1]){
+  
+  dat <- dat[dat[["Protein"]] == protein & dat[["State"]] == state, ]
   
   dat %>%
     select(Sequence, Start, End) %>%
