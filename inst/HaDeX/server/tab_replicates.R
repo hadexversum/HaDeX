@@ -479,7 +479,7 @@ output[["allReplicatesHistogram_debug"]] <- renderUI({
                      "<br/> ID: ", unique(tt_df[["ID"]]),
                      "<br/> Position: ", unique(tt_df[["Start"]]), "-", unique(tt_df[["End"]]))
       
-      tmp2 <- paste0("<br/> Exposure: ", tt_df[["y_plot"]], " min, ",
+      tmp2 <- paste0("<br/> Exposure: ", tt_df[["Exposure"]], " min, ",
                      "Replicates: ", round(tt_df[["n"]], 2), " ")
       div(
         style = style,

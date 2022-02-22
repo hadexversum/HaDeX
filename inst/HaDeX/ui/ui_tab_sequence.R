@@ -1,16 +1,19 @@
 tab_sequence <- tabPanel("Sequence data",
+                         
          h3('Protein name'),
          h4(textOutput("protein_name"), class  = "monospaced"),
          h3('Reconstructed sequence'),
          htmlOutput("sequenceName", container = tags[["span"]], class  = "monospaced"),
          br(),
+         
          wellPanel(
            sidebarLayout(
              sidebarPanel(
                fluidRow(
-                 column(6,
+                 column(4,
                         tableOutput("protein_stats"),
-                        br(),
+                        br()),
+                 column(2, 
                         checkboxGroupInput(
                           inputId = "hydro_prop",
                           label = "Hydro-",
