@@ -10,10 +10,10 @@ tab_sequence <- tabPanel("Sequence data",
            sidebarLayout(
              sidebarPanel(
                fluidRow(
-                 column(4,
+                 column(6,
                         tableOutput("protein_stats"),
                         br()),
-                 column(2, 
+                 column(6, 
                         checkboxGroupInput(
                           inputId = "hydro_prop",
                           label = "Hydro-",
