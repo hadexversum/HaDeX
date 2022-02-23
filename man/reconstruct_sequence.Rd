@@ -4,12 +4,20 @@
 \alias{reconstruct_sequence}
 \title{Reconstruct protein sequence}
 \usage{
-reconstruct_sequence(dat, protein = dat[["Protein"]][1], end = NULL)
+reconstruct_sequence(
+  dat,
+  protein = dat[["Protein"]][1],
+  states = unique(dat[["State"]]),
+  end = NULL
+)
 }
 \arguments{
 \item{dat}{data read by \code{\link{read_hdx}}}
 
-\item{protein}{the protein of which the structure is to be reconstructed}
+\item{protein}{the protein of which the sequence is reconstructed}
+
+\item{states}{biological states, for which the sequence is reconstructed
+and coverage calculated}
 
 \item{end}{\code{\link{numeric}}, end position of the protein, optional.
 If not provided, is read from the file. It allows to prelongate the sequence

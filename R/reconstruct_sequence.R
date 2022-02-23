@@ -5,7 +5,9 @@
 #' @importFrom dplyr %>% bind_rows
 #' 
 #' @param dat data read by \code{\link{read_hdx}}
-#' @param protein the protein of which the structure is to be reconstructed
+#' @param protein the protein of which the sequence is reconstructed
+#' @param states biological states, for which the sequence is reconstructed
+#' and coverage calculated
 #' @param end \code{\link{numeric}}, end position of the protein, optional.
 #' If not provided, is read from the file. It allows to prelongate the sequence
 #' if the end of the sequence is cut.
@@ -25,12 +27,14 @@
 
 reconstruct_sequence <- function(dat, 
                                  protein = dat[["Protein"]][1],
+                                 states = unique(dat[["State"]]),
                                  end = NULL) {
 
   if (is.null(end)) end <- max(dat[["End"]])
   
   position_in_sequence_tmp <- dat %>%
     filter(Protein == protein) %>%
+    filter(State %in% states) %>%
     select(Start, End, Sequence) %>%
     unique(.) %>%
     apply(1, function(x) data.frame(position = x[1]:x[2], amino = strsplit(x[3], '')[[1]], stringsAsFactors = FALSE)) %>%

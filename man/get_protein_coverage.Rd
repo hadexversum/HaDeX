@@ -4,7 +4,12 @@
 \alias{get_protein_coverage}
 \title{Get protein coverage}
 \usage{
-get_protein_coverage(dat, protein_length = NULL)
+get_protein_coverage(
+  dat,
+  protein = dat[["Protein"]][1],
+  states = unique(dat[["State"]]),
+  protein_length = NULL
+)
 }
 \arguments{
 \item{dat}{data imported by the \code{\link{read_hdx}} function.}

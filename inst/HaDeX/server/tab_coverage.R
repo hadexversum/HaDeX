@@ -1,9 +1,24 @@
 
 
-output[["cov_protein_coverage"]] <- renderText(
+output[["cov_protein_coverage"]] <- renderText({
   
-  paste0("Protein coverage: ", protein_coverage())
-)
+  
+  # cov_text <- 
+    
+  paste0("Total protein coverage: ", round(get_protein_coverage(dat(), protein = input[["chosen_protein"]], protein_length = max_range()), 4),  "% \n ")
+  
+  # tmp_text <- lapply(states_chosen_protein(), function(state){
+  #   
+  #   paste0( "Protein coverage in state ", state, ": ", round(get_protein_coverage(dat(), 
+  #                                   protein = input[["chosen_protein"]],
+  #                                   states = state,
+  #                                   protein_length = max_range()), 4), "% \n ")
+  #   
+  # }) %>% paste0()
+  # 
+  # paste0(cov_text, tmp_text)
+  
+})
 
 
 
@@ -36,7 +51,9 @@ output[["stateOverlap_data"]] <- DT::renderDataTable(server = FALSE, {
 
 stateOverlap_out <- reactive({
   
-  plot_overlap(dat = stateOverlap_data()) +
+  plot_overlap(dat = dat(),
+               protein = input[["chosen_protein"]],
+               state = input[["chosen_state"]]) +
     coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]]))
   
 })
@@ -46,7 +63,7 @@ stateOverlap_out <- reactive({
 output[["stateOverlap"]] <- renderPlot({
   
   stateOverlap_out() +
-    labs(title = paste0("Peptide coverage for ", input[["chosen_protein"]]))
+    labs(title = paste0("Peptide coverage for ", input[["chosen_protein"]], " in ", input[["chosen_state"]]))
   
 })
 
