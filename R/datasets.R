@@ -4,10 +4,10 @@
 #' @param protein chosen protein. 
 #' @param states vector of states (for chosen protein), for which the 
 #' calculations are done. 
-#' @param time_0 minimal exchange control time point of measurement.
+#' @param time_0 minimal exchange control time point of measurement [min].
 #' @param time_t time point of the measurement for which the calculations
-#' are done. 
-#' @param time_100 maximal exchange control time point of measurement.
+#' are done [min]. 
+#' @param time_100 maximal exchange control time point of measurement [min].
 #' @param deut_part deuterium percentage in solution used in experiment, 
 #' value from range [0, 1].
 #' 
@@ -31,9 +31,9 @@
 create_state_comparison_dataset <- function(dat,
                                             protein = unique(dat[["Protein"]])[1],
                                             states = unique(dat[["State"]]),
-                                            time_0 = 0.001,
-                                            time_t = 1,
-                                            time_100 = 1440,
+                                            time_0 = min(dat[dat[["Exposure"]]>0, ][["Exposure"]]),
+                                            time_t = unique(dat[["Exposure"]])[3], 
+                                            time_100 = max(dat[["Exposure"]]),
                                             deut_part = 0.9){
   
   
@@ -116,10 +116,10 @@ create_control_dataset <- function(dat,
 #' @param protein chosen protein. 
 #' @param states vector of two states for chosen protein. Order is important, as the 
 #' deuterium uptake difference is calculated as state_1 - state_2.
-#' @param time_0 minimal exchange control time point of measurement.
+#' @param time_0 minimal exchange control time point of measurement [min].
 #' @param time_t time point of the measurement for which the calculations
-#' are done. 
-#' @param time_100 maximal exchange control time point of measurement.
+#' are done [min]. 
+#' @param time_100 maximal exchange control time point of measurement [min].
 #' @param deut_part deuterium percentage in solution used in experiment, 
 #' value from range [0, 1].
 #' 
@@ -147,9 +147,9 @@ create_control_dataset <- function(dat,
 calculate_diff_uptake  <- function(dat,
                                    protein = unique(dat[["Protein"]][1]),
                                    states = unique(dat[["State"]])[1:2],
-                                   time_0 = 0.001,
-                                   time_t = 1,
-                                   time_100 = 1440,
+                                   time_0 = min(dat[dat[["Exposure"]]>0, ][["Exposure"]]),
+                                   time_t = unique(dat[["Exposure"]])[3], 
+                                   time_100 = max(dat[["Exposure"]]),
                                    deut_part = 0.9){
   
   bind_rows(lapply(states, function(i) calculate_state_uptake(dat, 
@@ -182,8 +182,8 @@ calculate_diff_uptake  <- function(dat,
 #' @param dat data imported by the \code{\link{read_hdx}} function.
 #' @param protein chosen protein. 
 #' @param state biological state for chosen protein.
-#' @param time_0 minimal exchange control time point of measurement.
-#' @param time_100 maximal exchange control time point of measurement. 
+#' @param time_0 minimal exchange control time point of measurement [min].
+#' @param time_100 maximal exchange control time point of measurement [min]. 
 #' @param deut_part deuterium percentage in solution used in experiment, 
 #' value from range [0, 1].
 #' 
@@ -213,8 +213,8 @@ calculate_diff_uptake  <- function(dat,
 create_state_uptake_dataset <- function(dat, 
                                         protein = unique(dat[["Protein"]])[1],
                                         state = (dat[["State"]])[1], 
-                                        time_0 = 0.001,
-                                        time_100 = 1440,
+                                        time_0 = min(dat[dat[["Exposure"]]>0, ][["Exposure"]]),
+                                        time_100 = max(dat[["Exposure"]]),
                                         deut_part = 0.9){
   
   all_times <- unique(dat[["Exposure"]])
@@ -242,8 +242,8 @@ create_state_uptake_dataset <- function(dat,
 #' @param dat data imported by the \code{\link{read_hdx}} function.
 #' @param protein chosen protein. 
 #' @param states list of biological states for chosen protein.
-#' @param time_0 minimal exchange control time point of measurement.
-#' @param time_100 maximal exchange control time point of measurement. 
+#' @param time_0 minimal exchange control time point of measurement [min].
+#' @param time_100 maximal exchange control time point of measurement [min]. 
 #' @param deut_part deuterium percentage in solution used in experiment, 
 #' value from range [0, 1].
 #' 
@@ -276,8 +276,8 @@ create_state_uptake_dataset <- function(dat,
 create_uptake_dataset <- function(dat,
                                   protein = unique(dat[["Protein"]])[1],
                                   states = unique(dat[["State"]]),
-                                  time_0 = 0.001, 
-                                  time_100 = 1440,
+                                  time_0 = min(dat[dat[["Exposure"]]>0, ][["Exposure"]]),
+                                  time_100 = max(dat[["Exposure"]]),
                                   deut_part = 0.9){
   
   times <- unique(dat[["Exposure"]])
@@ -310,8 +310,8 @@ create_uptake_dataset <- function(dat,
 #' the second state values are subtracted to get the deuterium uptake difference.
 #' @param state_2 biological state for chosen protein. This state values are 
 #' subtracted from the first state values to get the deuterium uptake difference.
-#' @param time_0 minimal exchange control time point of measurement.
-#' @param time_100 maximal exchange control time point of measurement. 
+#' @param time_0 minimal exchange control time point of measurement [min].
+#' @param time_100 maximal exchange control time point of measurement [min]. 
 #' @param deut_part deuterium percentage in solution used in experiment, 
 #' value from range [0, 1].
 #' 
@@ -346,8 +346,8 @@ create_diff_uptake_dataset <- function(dat,
                                        protein = unique(dat[["Protein"]])[1],
                                        state_1 = unique(dat[["State"]])[1],
                                        state_2 = unique(dat[["State"]])[2], 
-                                       time_0 = 0.001,
-                                       time_100 = 1440,
+                                       time_0 = min(dat[dat[["Exposure"]]>0, ][["Exposure"]]),
+                                       time_100 = max(dat[["Exposure"]]),
                                        deut_part = 0.9){
   
   all_times <- unique(dat[["Exposure"]])
@@ -370,10 +370,7 @@ create_diff_uptake_dataset <- function(dat,
   
 }
 
-
-#' Create volcano dataset 
-#'  
-#' @importFrom dplyr %>%
+#' Create p-value dataset
 #' 
 #' @param dat data imported by the \code{\link{read_hdx}} function.
 #' @param protein chosen protein. 
@@ -386,45 +383,22 @@ create_diff_uptake_dataset <- function(dat,
 #' "bonferroni" (Bonferroni correction) and "none" (default).
 #' @param confidence_level confidence level for the t-test.
 #' 
-#' @details The volcano plot shows the deuterium uptake difference in time 
-#' for the peptides. This function prepares data for the plot.
-#' For peptides in all of the time points of measurement (except for minimal
-#' and maximal exchange control) the deuterium uptake difference between state_1
-#' and state_2 is calculated, with its uncertainty (combined and propagated as
-#' described in `Data processing` article). For each peptide in time point the 
-#' P-value is calculated using unpaired t-test - the deuterium uptake difference
-#' is calculated as the difference of measured masses in a given time point for two 
-#' states. The tested hypothesis is that the mean masses for states from the 
-#' replicates of the experiment are similar. The P-values indicates if the null
-#' hypothesis can be rejected - rejection of the hypothesis means that the 
-#' difference between states is statistically significant at provided confidence
-#' level. The P-values can be adjusted using the provided method.
-#' This plot is visible in GUI.
+#' @details ...
 #' 
-#' @references Hageman, T. S. & Weis, D. D. Reliable Identification of Significant 
-#' Differences in Differential Hydrogen Exchange-Mass Spectrometry Measurements 
-#' Using a Hybrid Significance Testing Approach. Anal Chem 91, 8008–8016 (2019).
+#' @return ...
 #' 
-#' @return a \code{\link{data.frame}} object with calculated deuterium uptake difference, 
-#' uncertainty, P-value and -log(P-value) for the peptides from the provided data.
+#' @seealso ...
 #' 
-#' @seealso 
-#' \code{\link{read_hdx}}
-#' \code{\link{calculate_exp_masses_per_replicate}}
+#' @examples ...
 #' 
-#' @examples 
-#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' vol_dat <- create_volcano_dataset(dat)
-#' head(vol_dat)
-#' 
-#' @export create_volcano_dataset
+#' @export calculate_p_value
 
-create_volcano_dataset <- function(dat,
-                                   protein = unique(dat[["Protein"]])[1],
-                                   state_1 = unique(dat[["State"]])[1],
-                                   state_2 = unique(dat[["State"]])[2],
-                                   p_adjustment_method = "none",
-                                   confidence_level = 0.98){
+calculate_p_value <- function(dat, 
+                              protein = unique(dat[["Protein"]])[1],
+                              state_1 = unique(dat[["State"]])[1],
+                              state_2 = unique(dat[["State"]])[2],
+                              p_adjustment_method = "none",
+                              confidence_level = 0.98){
   
   p_adjustment_method <- match.arg(p_adjustment_method, c("none", "BH", "bonferroni"))
   
@@ -458,10 +432,7 @@ create_volcano_dataset <- function(dat,
   
   vol_dat <- merge(tmp_dat_1, tmp_dat_2, by = c("Sequence", "Start", "End", "Exposure"))
   
-  res_volcano <- lapply(1:nrow(vol_dat), function(i){
-    
-    diff_d <- vol_dat[i, "avg_mass_1"] - vol_dat[i, "avg_mass_2"]
-    uncertainty <- sqrt(vol_dat[i, "err_avg_mass_1"]^2 + vol_dat[i, "err_avg_mass_2"]^2 )
+  p_dat <- lapply(1:nrow(vol_dat), function(i){
     
     st_1 <- vol_dat[i, "masses_1"][[1]]
     st_2 <- vol_dat[i, "masses_2"][[1]]
@@ -474,22 +445,124 @@ create_volcano_dataset <- function(dat,
       p_value <- t.test(x = st_1, y = st_2, paired = FALSE, alternative = "two.sided", conf.level = confidence_level)$p.value
     }
     
-    data.frame(Sequence = vol_dat[i, "Sequence"],
+    data.frame(Protein = protein,
+               Sequence = vol_dat[i, "Sequence"],
                Exposure = vol_dat[i, "Exposure"],
-               D_diff = diff_d,
-               P_value = p_value,
-               Uncertainty = uncertainty,
                Start = vol_dat[i, "Start"],
-               End = vol_dat[i, "End"])
+               End = vol_dat[i, "End"],
+               P_value = p_value)
     
   }) %>% bind_rows() %>%
     filter(P_value > 0)
   
-  res_volcano[["P_value"]] <- p.adjust(res_volcano[["P_value"]], method = p_adjustment_method)
+  p_dat[["P_value"]] <- p.adjust(p_dat[["P_value"]], method = p_adjustment_method)
   
-  res_volcano %>%
-    filter(P_value!=-1) %>%
+  p_dat <- p_dat %>% 
     mutate(log_p_value = -log(P_value)) %>%
-    select(Sequence, Start, End, Exposure, D_diff, Uncertainty, log_p_value, P_value)
+    arrange(Protein, Start, End)
+  
+  attr(p_dat, "state_1") <- state_1
+  attr(p_dat, "state_2") <- state_2
+  attr(p_dat, "confidence_level") <- confidence_level
+  attr(p_dat, "p_adjustment_method") <- p_adjustment_method
+  
+  p_dat
+}
+
+#' Create differential uptake dataset with p-value 
+#'  
+#' @importFrom dplyr %>%
+#' 
+#' @param dat data imported by the \code{\link{read_hdx}} function.
+#' @param protein chosen protein. 
+#' @param state_1 biological state for chosen protein. From this state values
+#' the second state values are subtracted to get the deuterium uptake difference.
+#' @param state_2 biological state for chosen protein. This state values are 
+#' subtracted from the first state values to get the deuterium uptake difference.
+#' @param p_adjustment_method method of adjustment P-values for multiple 
+#' comparisons. Possible methods: "BH" (Benjamini & Hochberg correction), 
+#' "bonferroni" (Bonferroni correction) and "none" (default).
+#' @param confidence_level confidence level for the t-test.
+#' @param time_0 minimal exchange control time point of measurement [min].
+#' @param time_100 maximal exchange control time point of measurement [min]. 
+#' @param deut_part deuterium percentage in solution used in experiment, 
+#' value from range [0, 1].
+#' 
+#' @details REWRITE!!
+#' The volcano plot shows the deuterium uptake difference in time 
+#' for the peptides. This function prepares data for the plot.
+#' For peptides in all of the time points of measurement (except for minimal
+#' and maximal exchange control) the deuterium uptake difference between state_1
+#' and state_2 is calculated, with its uncertainty (combined and propagated as
+#' described in `Data processing` article). For each peptide in time point the 
+#' P-value is calculated using unpaired t-test - the deuterium uptake difference
+#' is calculated as the difference of measured masses in a given time point for two 
+#' states. The tested hypothesis is that the mean masses for states from the 
+#' replicates of the experiment are similar. The P-values indicates if the null
+#' hypothesis can be rejected - rejection of the hypothesis means that the 
+#' difference between states is statistically significant at provided confidence
+#' level. The P-values can be adjusted using the provided method.
+#' This plot is visible in GUI.
+#' 
+#' @references Hageman, T. S. & Weis, D. D. Reliable Identification of Significant 
+#' Differences in Differential Hydrogen Exchange-Mass Spectrometry Measurements 
+#' Using a Hybrid Significance Testing Approach. Anal Chem 91, 8008–8016 (2019).
+#' 
+#' @return a \code{\link{data.frame}} object with calculated deuterium uptake difference
+#' in different forms with their uncertainty, P-value and -log(P-value) for the peptides 
+#' from the provided data.
+#' 
+#' @seealso 
+#' \code{\link{read_hdx}}
+#' \code{\link{calculate_exp_masses_per_replicate}}
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' vol_dat <- create_volcano_dataset(dat)
+#' head(vol_dat)
+#' 
+#' @export create_p_diff_uptake_dataset
+
+create_p_diff_uptake_dataset <- function(dat,
+                                         diff_uptake_dat = NULL, 
+                                         protein = unique(dat[["Protein"]])[1],
+                                         state_1 = unique(dat[["State"]])[1],
+                                         state_2 = unique(dat[["State"]])[2],
+                                         p_adjustment_method = "none",
+                                         confidence_level = 0.98,
+                                         time_0 = min(dat[dat[["Exposure"]]>0, ][["Exposure"]]),
+                                         time_100 = max(dat[["Exposure"]]),
+                                         deut_part = 0.9){
+  
+  p_dat <- calculate_p_value(dat = dat, 
+                             protein = protein,
+                             state_1 = state_1,
+                             state_2 = state_2, 
+                             p_adjustment_method = p_adjustment_method,
+                             confidence_level = confidence_level)
+  
+  if(is.null(diff_uptake_dat)) {
+    
+    diff_uptake_dat <- create_diff_uptake_dataset(dat = dat, 
+                                                  protein = protein,
+                                                  state_1 = state_1,
+                                                  state_2 = state_2, 
+                                                  time_0 = time_0,
+                                                  time_100 = time_100, 
+                                                  deut_part = deut_part)
+  }
+  
+  
+  p_diff_uptake_dat <- merge(diff_uptake_dat, p_dat, by = c("Protein", "Sequence", "Start", "End", "Exposure")) %>%
+    arrange(Protein, Start, End)
+  
+  attr(p_diff_uptake_dat, "state_1") <- state_1
+  attr(p_diff_uptake_dat, "state_2") <- state_2
+  attr(p_diff_uptake_dat, "confidence_level") <- confidence_level
+  attr(p_diff_uptake_dat, "p_adjustment_method") <- p_adjustment_method
+  
+  p_diff_uptake_dat
   
 }
+
+
