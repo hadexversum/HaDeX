@@ -355,8 +355,8 @@ show_kinetic_data <- function(kin_dat,
 #'                            state = "CD160",
 #'                            start = 1, 
 #'                            end = 15,
-#'                            time_in = 0.001, 
-#'                            time_out = 1440)
+#'                            time_0 = 0.001, 
+#'                            time_100 = 1440)
 #' plot_kinetics(kin_dat = kin1, 
 #'               theoretical = FALSE, 
 #'               fractional = TRUE)
@@ -433,13 +433,15 @@ plot_kinetics <- function(kin_dat,
   
   kin_plot <- plot_dat %>% 
     ggplot(aes(x = time_chosen, y = value, group = prop)) +
-    geom_point(aes(color = prop)) + 
+    geom_point(aes(color = prop), size = 2) + 
     theme(legend.position = "bottom",
           legend.title = element_blank()) +
     scale_y_continuous(limits = c(0, NA)) + 
     labs(x = "Time points [min]", 
          y = y_label,
          title = title)
+  
+  if(log_x){ err_width = 0.1 } else { err_width = 5 }
   
   if(uncertainty_type == "ribbon"){
     
@@ -450,12 +452,14 @@ plot_kinetics <- function(kin_dat,
   } else if (uncertainty_type == "bars") {
     
     kin_plot <- kin_plot +
-      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = prop))
+      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = prop),
+                    width = err_width)
     
   } else if (uncertainty_type == "bars + line"){
     
     kin_plot <- kin_plot +
-      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = prop)) + 
+      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = prop),
+                    width = err_width) + 
       geom_line(aes(color = prop))
     
   }
