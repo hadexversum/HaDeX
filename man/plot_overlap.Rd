@@ -4,10 +4,14 @@
 \alias{plot_overlap}
 \title{Plot overlap data}
 \usage{
-plot_overlap(dat)
+plot_overlap(dat, protein = dat[["Protein"]][1], state = dat[["State"]][1])
 }
 \arguments{
 \item{dat}{data imported by the \code{\link{read_hdx}} function.}
+
+\item{protein}{protein included in calculations}
+
+\item{state}{state included in calculations}
 }
 \value{
 a \code{\link{ggplot2}} object.

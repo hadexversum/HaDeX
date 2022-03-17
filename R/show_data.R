@@ -143,7 +143,8 @@ show_diff_uptake_data <- function(diff_uptake_dat,
         mutate(diff_theo_frac_deut_uptake = round(diff_theo_frac_deut_uptake, 4),
                err_diff_theo_frac_deut_uptake = round(err_diff_theo_frac_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
-        mutate(ID = 1L:nrow(.)) %>%
+        group_by(Start, End, Sequence) %>%
+        mutate(ID = cur_group_id()) %>%
         rename("Theo Frac Diff DU [%]" = diff_theo_frac_deut_uptake,
                "U(Theo Frac Diff DU) [%]" = err_diff_theo_frac_deut_uptake) %>%
         select(Protein, ID, everything())
@@ -155,7 +156,8 @@ show_diff_uptake_data <- function(diff_uptake_dat,
         mutate(diff_theo_deut_uptake = round(diff_theo_deut_uptake, 4),
                err_diff_theo_deut_uptake = round(err_diff_theo_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
-        mutate(ID = 1L:nrow(.)) %>%
+        group_by(Start, End, Sequence) %>%
+        mutate(ID = cur_group_id()) %>%
         rename("Theo Diff DU [Da]" = diff_theo_deut_uptake,
                "U(Theo Diff DU) [Da]" = err_diff_theo_deut_uptake) %>%
         select(Protein, ID, everything())
@@ -171,7 +173,8 @@ show_diff_uptake_data <- function(diff_uptake_dat,
         mutate(diff_frac_deut_uptake = round(diff_frac_deut_uptake, 4),
                err_diff_frac_deut_uptake = round(err_diff_frac_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
-        mutate(ID = 1L:nrow(.)) %>%
+        group_by(Start, End, Sequence) %>%
+        mutate(ID = cur_group_id()) %>%
         rename("Frac Diff DU [%]" = diff_frac_deut_uptake,
                "U(Frac Diff DU) [%]" = err_diff_frac_deut_uptake) %>%
         select(Protein, ID, everything())
@@ -183,7 +186,8 @@ show_diff_uptake_data <- function(diff_uptake_dat,
         mutate(diff_deut_uptake = round(diff_deut_uptake, 4),
                err_diff_deut_uptake = round(err_diff_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
-        mutate(ID = 1L:nrow(.)) %>%
+        group_by(Start, End, Sequence) %>%
+        mutate(ID = cur_group_id()) %>%
         rename("Diff DU [Da]" = diff_deut_uptake,
                "U(Diff DU) [Da]" = err_diff_deut_uptake) %>%
         select(Protein, ID, everything())

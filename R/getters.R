@@ -18,11 +18,13 @@
 #' @examples
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' get_protein_coverage(dat)
-#' get_protein_coverage(dat, 150)
+#' get_protein_coverage(dat, protein_length  = 150)
 #' 
 #' @export get_protein_coverage
 
 get_protein_coverage <- function(dat,
+                                 protein = dat[["Protein"]][1],
+                                 states = unique(dat[["State"]]),
                                  protein_length = NULL){
   
   if (is.null(protein_length)){
@@ -31,7 +33,7 @@ get_protein_coverage <- function(dat,
   
   assert(protein_length>=max(dat[["End"]]))
   
-  round(100*(protein_length - stri_count_fixed(reconstruct_sequence(dat, end = protein_length), 'x'))/protein_length, 2)
+  round(100*(protein_length - stri_count_fixed(reconstruct_sequence(dat, end = protein_length, protein = protein, states = states), 'x'))/protein_length, 2)
   
 }
 

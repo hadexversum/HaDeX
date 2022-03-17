@@ -4,18 +4,14 @@
 \alias{plot_coverage}
 \title{Plot peptide coverage}
 \usage{
-plot_coverage(
-  dat,
-  protein = dat[["Protein"]][1],
-  chosen_state = dat[["State"]][1]
-)
+plot_coverage(dat, protein = dat[["Protein"]][1], states = dat[["State"]][1])
 }
 \arguments{
 \item{dat}{data as imported by the \code{\link{read_hdx}} function}
 
 \item{protein}{protein to be included in plot}
 
-\item{chosen_state}{sequence states to be included in plot}
+\item{states}{sequence states to be included in plot}
 }
 \value{
 a \code{\link[ggplot2]{ggplot}} object.
@@ -39,7 +35,7 @@ dat <- read_hdx(system.file(package = "HaDeX",
 plot_coverage(dat)
 
 # plot coverage with explicit parameters
-plot_coverage(dat, protein = "db_CD160", chosen_state = "CD160_HVEM")
+plot_coverage(dat, protein = "db_CD160", states = "CD160_HVEM")
 
 }
 \seealso{

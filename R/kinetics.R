@@ -436,7 +436,6 @@ plot_kinetics <- function(kin_dat,
     geom_point(aes(color = prop), size = 2) + 
     theme(legend.position = "bottom",
           legend.title = element_blank()) +
-    scale_y_continuous(limits = c(0, NA)) + 
     labs(x = "Time points [min]", 
          y = y_label,
          title = title)
