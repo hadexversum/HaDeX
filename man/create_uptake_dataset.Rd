@@ -8,8 +8,8 @@ create_uptake_dataset(
   dat,
   protein = unique(dat[["Protein"]])[1],
   states = unique(dat[["State"]]),
-  time_0 = 0.001,
-  time_100 = 1440,
+  time_0 = min(dat[dat[["Exposure"]] > 0, ][["Exposure"]]),
+  time_100 = max(dat[["Exposure"]]),
   deut_part = 0.9
 )
 }
@@ -20,9 +20,9 @@ create_uptake_dataset(
 
 \item{states}{list of biological states for chosen protein.}
 
-\item{time_0}{minimal exchange control time point of measurement.}
+\item{time_0}{minimal exchange control time point of measurement [min].}
 
-\item{time_100}{maximal exchange control time point of measurement.}
+\item{time_100}{maximal exchange control time point of measurement [min].}
 
 \item{deut_part}{deuterium percentage in solution used in experiment, 
 value from range [0, 1].}
