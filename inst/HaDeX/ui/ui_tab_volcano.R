@@ -26,7 +26,15 @@ volcano_state <- function() HaDeX_plotSettingsSection(
               selectInput_h(inputId = "vol_state_2",
                             label = "State 2",
                             choices = c("CD160_HVEM", "CD160"))
-  )
+  ),
+  h5("Displayed values: "),
+  checkboxInput_h(inputId = "vol_theoretical",
+                  label = "Theoretical calculations",
+                  value = F),
+  checkboxInput_h(inputId = "vol_fractional",
+                label = "Fractional values",
+                value = F)
+  
 )
 
 volcano_timepoints <- function() HaDeX_plotSettingsSection(
