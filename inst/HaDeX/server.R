@@ -466,6 +466,10 @@ server <- function(input, output, session) {
   ### TAB: KINETICS ###
 
   source("server/tab_uptake_curve.R", local = TRUE)
+  
+  ### TAB: MANHATTAN ###
+  
+  source("server/tab_manhattan.R", local = TRUE)
 
   
 

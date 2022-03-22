@@ -8,20 +8,26 @@ plot_manhattan(
   p_dat,
   plot_title = NULL,
   separate_times = T,
+  confidence_level = NULL,
   show_confidence_limit = T
 )
 }
 \arguments{
-\item{p_dat}{...}
+\item{p_dat}{data produced by the \code{\link{create_p_diff_uptake_dataset}}
+function.}
 
-\item{plot_title}{...}
+\item{plot_title}{title for the plot. If not provided, it is constructed in a form:
+"Differences between state_1 and state_2"}
 
 \item{separate_times}{...}
 
-\item{show_confidence_limit}{...}
+\item{confidence_level}{confidence level for the test, from range [0, 1].}
+
+\item{show_confidence_limit}{logical, indicates if the hybrid testing
+confidence intervals are shown.}
 }
 \value{
-...
+a \code{\link{ggplot}} object.
 }
 \description{
 Manhattan plot
@@ -40,8 +46,10 @@ manhattan_plot(p_dat, separate_times = F, show_confidence_limit = F)
  
 }
 \references{
-...
+Hageman, T. S. & Weis, D. D. Reliable Identification of Significant
+Differences in Differential Hydrogen Exchange-Mass Spectrometry Measurements
+Using a Hybrid Significance Testing Approach. Anal Chem 91, 8008–8016 (2019).
 }
 \seealso{
-...
+\code{\link{create_p_diff_uptake_dataset}}
 }

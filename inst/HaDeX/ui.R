@@ -43,6 +43,7 @@ ui <- tagList(useShinyjs(),
                   navbarMenu(
                     "Time-based data",
                     tab_replicates(),
+                    tab_manhattan(),
                     tab_quality
                   ),
                   navbarMenu(

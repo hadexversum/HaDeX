@@ -17,7 +17,7 @@ plot_volcano(
 )
 }
 \arguments{
-\item{p_dat}{data produced by the \code{\link{create_volcano_dataset}}
+\item{p_dat}{data produced by the \code{\link{create_p_diff_uptake_dataset}}
 function.}
 
 \item{state_1}{biological state for chosen protein. It is used in the title.}
@@ -73,6 +73,6 @@ The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in
 Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
 }
 \seealso{
-\code{\link{create_volcano_dataset}}
+\code{\link{create_p_diff_uptake_dataset}}
 \code{\link{show_volcano_data}}
 }

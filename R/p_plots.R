@@ -2,7 +2,7 @@
 #'
 #' @importFrom ggplot2 coord_cartesian
 #'
-#' @param p_dat data produced by the \code{\link{create_volcano_dataset}}
+#' @param p_dat data produced by the \code{\link{create_p_diff_uptake_dataset}}
 #' function.
 #' @param state_1 biological state for chosen protein. It is used in the title.
 #' @param state_2 biological state for chosen protein. It is used in the title.
@@ -37,7 +37,7 @@
 #' @return a \code{\link{ggplot}} object.
 #'
 #' @seealso
-#' \code{\link{create_volcano_dataset}}
+#' \code{\link{create_p_diff_uptake_dataset}}
 #' \code{\link{show_volcano_data}}
 #'
 #' @examples
@@ -155,18 +155,25 @@ plot_volcano <- function(p_dat,
 
 #' Manhattan plot
 #' 
-#' @param p_dat ...
-#' @param plot_title ...
+#' @param p_dat data produced by the \code{\link{create_p_diff_uptake_dataset}}
+#' function.
+#' @param plot_title title for the plot. If not provided, it is constructed in a form:
+#' "Differences between state_1 and state_2"
 #' @param separate_times ...
-#' @param show_confidence_limit ...
+#' @param confidence_level confidence level for the test, from range [0, 1]. 
+#' @param show_confidence_limit logical, indicates if the hybrid testing
+#' confidence intervals are shown.
 #' 
 #' @details ...
 #'  
-#' @references ...
+#' @references Hageman, T. S. & Weis, D. D. Reliable Identification of Significant
+#' Differences in Differential Hydrogen Exchange-Mass Spectrometry Measurements
+#' Using a Hybrid Significance Testing Approach. Anal Chem 91, 8008–8016 (2019).
 #' 
-#' @return ...
+#' @return a \code{\link{ggplot}} object.
 #' 
-#' @seealso ...
+#' @seealso 
+#' \code{\link{create_p_diff_uptake_dataset}}
 #' 
 #' @examples
 #' dat <-  read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
@@ -182,9 +189,11 @@ plot_volcano <- function(p_dat,
 plot_manhattan <- function(p_dat,
                            plot_title = NULL, 
                            separate_times = T,
+                           confidence_level = NULL,
                            show_confidence_limit = T){
   
-  confidence_level <- attr(p_dat, "confidence_level") 
+  if(is.null(confidence_level)) {confidence_level <- attr(p_dat, "confidence_level") }
+   
   confidence_limit <- -log(1 - confidence_level)
   
   if(is.null(plot_title)) {plot_title <- paste0("Differences between ", attr(p_dat, "state_1"), " and ", attr(p_dat, "state_2")) }
