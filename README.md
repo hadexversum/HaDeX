@@ -3,6 +3,7 @@
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/HaDeX)](https://cran.r-project.org/package=HaDeX)
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![metacran downloads](https://cranlogs.r-pkg.org/badges/grand-total/HaDeX)](https://cran.r-project.org/package=HaDeX)
+[![DOI](https://zenodo.org/badge/170578005.svg)](https://zenodo.org/badge/latestdoi/170578005)
 
 
 <p>
