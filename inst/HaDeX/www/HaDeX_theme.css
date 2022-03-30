@@ -1,7 +1,44 @@
 /* HTML TAGS */
 
+html {
+  font-size: 16px;
+}
+
 h2 {
   border-width: 0 0 ;
+}
+
+body {
+  font-family: Lato;
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #515363;
+  text-align: left;
+}
+
+@font-face {
+  font-family: 'Fira Code';
+  font-style: normal;
+  font-weight: 400;
+  src: url('fonts/FiraCode-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: url('fonts/Lato-Regular.ttf') format('truetype');
+}
+
+:root {
+  --font-family-sans-serif: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --font-family-monospace: "Fira Code";
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
 }
 
 /* BOOTSTRAP CLASSES */
@@ -47,15 +84,6 @@ h2 {
     font-size: 18px;
 }
 
-.btn-default, .btn-secondary {
-  background: #9A85AD linear-gradient(180deg, #9A85AD, #856C9D) repeat-x;
-  border-color: #5a4b69;
-}
-
-.btn-default:hover, .btn-secondary:hover {
-  background: #7c513c linear-gradient(180deg, #cf9c82, #a16d4e) repeat-x;
-}
-
 .input-group-prepend {
   height: calc(1.5em + .75rem + 2px);
 }
@@ -69,7 +97,14 @@ h2 {
 }
 
 .well {
+  display: block;
   background-color: rgba(235, 231, 239, 0.25);
+  color: #515363;
+  padding: 1.25rem;
+  border-radius: .25rem;
+  background-clip: border-box;
+  border: 1px solid rgba(190,190,195,0.75);
+  word-wrap: break-word;
 }
 
 /* OTHER EXTERNAL CLASSES */
@@ -85,6 +120,53 @@ h2 {
 .collapse-btn {
   margin: 10px 30px;
   width: calc(100% - 60px);
+}
+
+.navbar {
+  color: rgba(37,40,61,0.5) !important;
+  background-color: #CCC2D6 !important;
+  border: none;
+}
+ 
+.navbar.navbar-default .navbar-nav .nav-link:hover, 
+.navbar.navbar-default .navbar-nav .nav-tabs > li > a:hover, 
+.navbar.navbar-default .navbar-nav .nav-pills > li > a:hover, 
+.navbar.navbar-default ul.nav.navbar-nav > li > a:hover, 
+.navbar.navbar-default .navbar-nav .nav-link:focus, 
+.navbar.navbar-default .navbar-nav .nav-tabs > li > a:focus, 
+.navbar.navbar-default .navbar-nav .nav-pills > li > a:focus, 
+.navbar.navbar-default ul.nav.navbar-nav > li > a:focus {
+  color: #FFFEFD;
+}
+
+.tooltip, 
+.dropdown-menu .dropdown-item, 
+.dropdown-menu > li > a, 
+.pagination, 
+.breadcrumb, 
+.nav-pills .nav-link, 
+.nav-pills ul.nav.navbar-nav > li > a, 
+.nav-pills .nav-tabs > li > a, 
+.nav-pills > li > a, 
+.nav-tabs .nav-link, 
+.nav-tabs ul.nav.navbar-nav > li > a, 
+.nav-tabs > li > a, 
+.nav-tabs .nav-pills > li > a, 
+.btn, 
+.navbar .nav-link, 
+.navbar ul.nav.navbar-nav > li > a, 
+.navbar .nav-tabs > li > a, 
+.navbar .nav-pills > li > a {
+  line-height: 22px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.navbar-default .navbar-nav > .active > a, 
+.navbar-default .navbar-nav > .active > a:focus, 
+.navbar-default .navbar-nav > .active > a:hover {
+  color: #25283D;
+  background-color: transparent;
 }
 
 .nav-tabs {
@@ -198,4 +280,91 @@ h5.HaDeX-plot-settings-panels-section-title {
 
 .HaDeX-plot-display-panel-container {
   gap: 20px
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+a {
+  color: #188B55;
+  text-decoration: none;
+  -webkit-text-decoration: none;
+  -moz-text-decoration: none;
+  -ms-text-decoration: none;
+  -o-text-decoration: none;
+  background-color: transparent;
+}
+
+.btn-default,
+.btn-secondary {
+  color: #FFFEFD;
+  background: #485696 linear-gradient(180deg, #636fa5, #485696) repeat-x;
+  border-color: #485696;
+  white-space: normal;
+}
+
+.btn-default:hover, 
+.btn-secondary:hover {
+  color: #FFFEFD;
+  background: #3c477c linear-gradient(180deg, #59638f, #3c477c) repeat-x;
+  border-color: #374274;
+}
+
+pre {
+  display: block;
+  font-size: 87.5%;
+  color: #25283D;
+  background-color: #f8f7f7;
+  padding: .5rem;
+  border: 1px solid #BEBEC3;
+  border-radius: .25rem;
+}
+
+pre, code, kbd, samp {
+  font-family: "Fira Code";
+  font-size: 1em;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: .5rem;
+  font-weight: 400;
+}
+
+.h6, h6 {
+  font-size: 1.125rem;
+}
+
+h5, .h5 {
+  font-size: 1.40625rem;
+}
+
+h4, .h4 {
+  font-size: 1.6875rem;
+}
+
+.nav-tabs .nav-link, 
+.nav-tabs ul.nav.navbar-nav > li > a, 
+.nav-tabs > li > a, 
+.nav-tabs .nav-pills > li > a, 
+.nav-tabs .nav-link:hover, 
+.nav-tabs .nav-link:focus {
+  color: #7C7E8A;
+  background-color: #D3D3D7;
+  border-color: #BEBEC3;
+}
+
+.irs--shiny .irs-bar {
+  border-top: 1px solid #776274 !important;
+  border-bottom: 1px solid #776274 !important;
+  background: #776274 !important;
+}
+
+.irs--shiny .irs-from, 
+.irs--shiny .irs-to, 
+.irs--shiny .irs-single {
+  color: #FFFEFD !important;
+  background-color: #776274 !important;
 }
