@@ -3,7 +3,9 @@ tab_sequence <- tabPanel("Sequence data",
          h3('Protein name'),
          h4(textOutput("protein_name"), class  = "monospaced"),
          h3('Reconstructed sequence'),
-         htmlOutput("sequenceName", container = tags[["span"]], class  = "monospaced"),
+         wellPanel(
+           htmlOutput("sequenceName", inline = TRUE, class  = "HaDeX-sequence")
+         ),
          br(),
          
          wellPanel(

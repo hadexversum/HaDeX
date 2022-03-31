@@ -236,10 +236,6 @@ body {
   margin: 0 auto;
 }
 
-#data_file_info {
-  font-weight: bold;
-}
-
 #peptide_list_data,
 #rep_sequence {
   overflow-x: auto;
@@ -320,6 +316,7 @@ pre {
   padding: .5rem;
   border: 1px solid #BEBEC3;
   border-radius: .25rem;
+  font-weight: bold;
 }
 
 pre, code, kbd, samp {
