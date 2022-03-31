@@ -368,3 +368,7 @@ h4, .h4 {
   color: #FFFEFD !important;
   background-color: #776274 !important;
 }
+
+.shiny-split-layout > div {
+  overflow: visible;
+}
