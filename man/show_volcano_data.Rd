@@ -5,14 +5,16 @@
 \title{Show volcano data}
 \usage{
 show_volcano_data(
-  vol_data,
+  p_dat,
   D_diff_threshold = NULL,
   log_P_threshold = NULL,
-  confidence_level = 0.98
+  confidence_level = 0.98,
+  theoretical = FALSE,
+  fractional = FALSE
 )
 }
 \arguments{
-\item{vol_data}{data produced by the \code{\link{create_volcano_dataset}} 
+\item{p_dat}{data produced by the \code{\link{create_p_diff_uptake_dataset}} 
 function.}
 
 \item{D_diff_threshold}{\code{numeric}, threshold on differential deuterium 
@@ -23,6 +25,10 @@ Houde test at provided confidence level.}
 -log(P)). If not provided, is calculated at provided confidence level.}
 
 \item{confidence_level}{\code{numeric}, confidence level.}
+
+\item{theoretical}{\code{logical}, determines if values are theoretical.}
+
+\item{fractional}{\code{logical}, determines if values are fractional.}
 }
 \value{
 a \code{\link{data.frame}} object.
@@ -39,7 +45,7 @@ This data is available in the GUI.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-vol_dat <- create_volcano_dataset(dat)
+vol_dat <- create_p_diff_uptake_dataset(dat)
 head(show_volcano_data(vol_dat))
 
 }
@@ -53,6 +59,6 @@ The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in
 Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
 }
 \seealso{
-\code{\link{create_volcano_dataset}} 
+\code{\link{create_p_diff_uptake_dataset}} 
 \code{\link{plot_volcano}}
 }

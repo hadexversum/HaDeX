@@ -19,7 +19,7 @@ volcano_state <- function() HaDeX_plotSettingsSection(
   
   title = "States",
   
-  p("Volcano plot presents the uptake difference [Da] between State 1 and State 2."),
+  p("Volcano plot presents the uptake difference between State 1 and State 2."),
   splitLayout(selectInput_h(inputId = "vol_state_1",
                             label = "State 1",
                             choices = c("CD160", "CD160_HVEM")),
@@ -28,9 +28,9 @@ volcano_state <- function() HaDeX_plotSettingsSection(
                             choices = c("CD160_HVEM", "CD160"))
   ),
   h5("Displayed values: "),
-  checkboxInput_h(inputId = "vol_theoretical",
-                  label = "Theoretical calculations",
-                  value = F),
+  # checkboxInput_h(inputId = "vol_theoretical",
+  #                 label = "Theoretical calculations",
+  #                 value = F),
   checkboxInput_h(inputId = "vol_fractional",
                 label = "Fractional values",
                 value = F)
