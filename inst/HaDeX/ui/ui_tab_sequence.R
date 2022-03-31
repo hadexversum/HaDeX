@@ -3,7 +3,9 @@ tab_sequence <- tabPanel("Sequence data",
          h3('Protein name'),
          h4(textOutput("protein_name"), class  = "monospaced"),
          h3('Reconstructed sequence'),
-         htmlOutput("sequenceName", container = tags[["span"]], class  = "monospaced"),
+         wellPanel(
+           htmlOutput("sequenceName", inline = TRUE, class  = "HaDeX-sequence")
+         ),
          br(),
          
          wellPanel(
@@ -31,7 +33,7 @@ tab_sequence <- tabPanel("Sequence data",
                        uiOutput("aminoDist_debug"),
                        downloadButton("aminoDist_download_button",
                                       "Save chart (.svg)"),
-                       p("Source: Kyte, J., and Doolittle, R.F. (1982). A simple method for displaying the hydropathic character of a protein. J Mol Biol 157, 105–132."))
+                       p("Source: Kyte, J., and Doolittle, R.F. (1982). A simple method for displaying the hydropathic character of a protein. J Mol Biol 157, 105-132."))
            )
          )
 )
