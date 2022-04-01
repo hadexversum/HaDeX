@@ -42,6 +42,65 @@ observe({
 
 observe({
   
+  if(!input[["vol_fractional"]]){
+    hide(id = "vol_control_part")
+  }
+  
+})
+
+##
+
+observe({
+  
+  if(input[["vol_fractional"]]){
+    show(id = "vol_control_part")
+  }
+  
+})
+
+##
+
+observe({
+  
+  updateSelectInput(session,
+                    inputId = "vol_time_0",
+                    choices = times_from_file()[times_from_file() < 99999],
+                    selected = min(times_from_file()[times_from_file() > 0]))
+})
+
+##
+
+observe({
+  
+  # browser()
+  
+  tmp <- sort(unique(round(dat()[["Exposure"]], 3)))
+  choose_time_100 <- setNames(tmp, c(head(tmp, -1), "chosen control"))
+  
+  if(has_modifications()){
+    
+    updateSelectInput(session,
+                      inputId = "vol_time_100",
+                      choices = times_from_file()[times_from_file() < 99999],
+                      selected = max(times_from_file()[times_from_file() < 99999]))
+    
+  }
+  
+  if(!has_modifications()){
+    
+    updateSelectInput(session,
+                      inputId = "vol_time_100",
+                      choices = choose_time_100,
+                      selected = choose_time_100["chosen control"])
+  }
+  
+})
+
+
+##
+
+observe({
+  
   if(input[["vol_fractional"]]){
     
     # if(input[["vol_theoretical"]]){ value <- "diff_theo_frac_deut_uptake" } 
@@ -94,11 +153,16 @@ volcano_dataset <- reactive({
   validate(need(input[["vol_state_1"]]!=input[["vol_state_2"]], "There is no difference between the same state, choose different second state."))
   validate(need(input[["chosen_protein"]] %in% unique(dat()[["Protein"]]), "Wait for the parameters to be loaded."))
   validate(need(input[["vol_state_1"]] %in% states_chosen_protein(), "Wait for the parameters to be loaded."))
+  validate(need(as.numeric(input[["vol_time_0"]]) < as.numeric(input[["vol_time_100"]]), "Minimal exchange control time must be smaller than maximal exchange control."))
 
   dat() %>%
     filter(Protein == input[["chosen_protein"]]) %>%
     create_p_diff_uptake_dataset(state_1 = input[["vol_state_1"]],
                                  state_2 = input[["vol_state_2"]],
+                                 protein = input[["chosen_protein"]],
+                                 time_0 = as.numeric(input[["vol_time_0"]]),
+                                 time_100 = as.numeric(input[["vol_time_100"]]),
+                                 deut_part = 0.01*as.integer(input[["deut_part"]]),
                                  p_adjustment_method = input[["vol_p_adjustment_method"]],
                                  confidence_level = as.numeric(input[["vol_confidence_level"]]))
   
