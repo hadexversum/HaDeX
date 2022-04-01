@@ -42,7 +42,18 @@ observe({
 
 observe({
   
-  max_x <- ceiling(max(abs(volcano_dataset()[["D_diff"]]), na.rm = TRUE))
+  if(input[["vol_fractional"]]){
+    
+    # if(input[["vol_theoretical"]]){ value <- "diff_theo_frac_deut_uptake" } 
+   value <- "diff_frac_deut_uptake" 
+    
+  } else {
+    
+    # if(input[["vol_theoretical"]]){ value <- "diff_theo_deut_uptake" }
+    value <- "diff_deut_uptake"
+  }
+  
+  max_x <- ceiling(max(abs(volcano_dataset()[[value]]), na.rm = TRUE)) ## TODO
   
   updateSliderInput(session,
                     inputId = "vol_x_range",
@@ -59,6 +70,19 @@ observe({
   
 })
 
+observe({
+  
+  updateTextInput(session,
+                  inputId = "volcano_plot_x_label",
+                  value = case_when(
+                    input[["vol_fractional"]] ~ "Fractional deuterium uptake difference [%]",
+                    !input[["vol_fractional"]] ~ "Deuterium uptake difference [Da]"
+                  ))
+  
+})
+
+
+
 #################################
 ######### DATASET ###############
 #################################
@@ -73,10 +97,10 @@ volcano_dataset <- reactive({
 
   dat() %>%
     filter(Protein == input[["chosen_protein"]]) %>%
-    create_volcano_dataset(state_1 = input[["vol_state_1"]],
-                           state_2 = input[["vol_state_2"]],
-                           p_adjustment_method = input[["vol_p_adjustment_method"]],
-                           confidence_level = as.numeric(input[["vol_confidence_level"]]))
+    create_p_diff_uptake_dataset(state_1 = input[["vol_state_1"]],
+                                 state_2 = input[["vol_state_2"]],
+                                 p_adjustment_method = input[["vol_p_adjustment_method"]],
+                                 confidence_level = as.numeric(input[["vol_confidence_level"]]))
   
   
 })
@@ -137,7 +161,7 @@ houde_intervals <- reactive({
   chosen_timepoints_data() %>%
     calculate_confidence_limit_values(confidence_level = as.numeric(input[["vol_confidence_level"]]),
                                       theoretical = FALSE,
-                                      fractional = FALSE)
+                                      fractional = input[["vol_fractional"]])
   
 })
 
@@ -156,7 +180,9 @@ volcano_plot_out <- reactive({
   plot_volcano(volcano_data(), 
                state_1 = input[["vol_state_1"]], 
                state_2 = input[["vol_state_2"]],
-               color_times = input[["vol_color_times"]]) +
+               color_times = input[["vol_color_times"]],
+               fractional = input[["vol_fractional"]],
+               theoretical = FALSE) + ## hard coded, no theoretical
     # ## statistics
     geom_segment(aes(x = houde_intervals()[1], xend = houde_intervals()[1], y = alpha_interval(), yend = input[["vol_y_range"]][2]), linetype = "dashed", color = "red") +
     geom_segment(aes(x = houde_intervals()[2], xend = houde_intervals()[2], y = alpha_interval(), yend = input[["vol_y_range"]][2]), linetype = "dashed", color = "red") +
@@ -166,7 +192,7 @@ volcano_plot_out <- reactive({
     labs(title = input[["volcano_plot_title"]],
          x = input[["volcano_plot_x_label"]],
          y = input[["volcano_plot_y_label"]],
-         caption = paste0("CI ", input[["vol_confidence_level"]], "%: ", round(houde_intervals()[2], 4), " Da")) +
+         caption = paste0("CI ", input[["vol_confidence_level"]], "%: ", round(houde_intervals()[2], 4))) +
     coord_cartesian(xlim = c(input[["vol_x_range"]][[1]], input[["vol_x_range"]][[2]]),
                     ylim = c(input[["vol_y_range"]][[1]], input[["vol_y_range"]][[2]]),
                     expand = FALSE) +
@@ -192,7 +218,9 @@ output[["volcanoPlot"]] <- renderPlot({
 
 output[["vol_thresholds"]] <- renderText({
   
-  paste0("Based on the chosen criteria, the threshold of -log(P value) is ", round(alpha_interval(), 4), " and threshold on deuterium uptake difference is ", round(houde_intervals()[1], 4), " and ", round(houde_intervals()[2], 4), " [Da]. ") 
+  if(input[["vol_fractional"]]){ ci_unit <-  " [%]" } else { ci_unit <- " [Da]" }
+  
+  paste0("Based on the chosen criteria, the threshold of -log(P value) is ", round(alpha_interval(), 4), " and threshold on deuterium uptake difference is ", round(houde_intervals()[1], 4), " and ", round(houde_intervals()[2], 4), ci_unit, ".") 
   
 })
 
@@ -268,11 +296,13 @@ volcano_plot_data_out <- reactive({
   show_volcano_data(volcano_data(),
                     D_diff_threshold = houde_intervals()[2],
                     log_P_threshold = alpha_interval(),
-                    confidence_level = input[["vol_confidence_level"]])
+                    confidence_level = input[["vol_confidence_level"]], 
+                    fractional = input[["vol_fractional"]])
   
 })
 
 ##
+
 output[["volcanoPlot_data"]] <- DT::renderDataTable(server = FALSE, {
   
   volcano_plot_data_out() %>%

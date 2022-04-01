@@ -207,7 +207,7 @@ kin_plot <- reactive({
 kp_out <- reactive({
   
   kin_plot() +
-    geom_point(size = 3) +
+    # geom_point(size = 3) +
     labs(title = input[["kin_plot_title"]],
          x = input[["kin_plot_x_label"]],
          y = input[["kin_plot_y_label"]]) +

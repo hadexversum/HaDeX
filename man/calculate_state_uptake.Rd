@@ -8,7 +8,7 @@ calculate_state_uptake(
   dat,
   protein = unique(dat[["Protein"]])[1],
   state = unique(dat[["State"]])[1],
-  time_0 = min(dat[["Exposure"]]),
+  time_0 = min(dat[dat[["Exposure"]] > 0, ][["Exposure"]]),
   time_t = unique(dat[["Exposure"]])[3],
   time_100 = max(dat[["Exposure"]]),
   deut_part = 0.9

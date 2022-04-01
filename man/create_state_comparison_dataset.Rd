@@ -8,9 +8,9 @@ create_state_comparison_dataset(
   dat,
   protein = unique(dat[["Protein"]])[1],
   states = unique(dat[["State"]]),
-  time_0 = 0.001,
-  time_t = 1,
-  time_100 = 1440,
+  time_0 = min(dat[dat[["Exposure"]] > 0, ][["Exposure"]]),
+  time_t = unique(dat[["Exposure"]])[3],
+  time_100 = max(dat[["Exposure"]]),
   deut_part = 0.9
 )
 }
@@ -22,12 +22,12 @@ create_state_comparison_dataset(
 \item{states}{vector of states (for chosen protein), for which the 
 calculations are done.}
 
-\item{time_0}{minimal exchange control time point of measurement.}
+\item{time_0}{minimal exchange control time point of measurement [min].}
 
 \item{time_t}{time point of the measurement for which the calculations
-are done.}
+are done [min].}
 
-\item{time_100}{maximal exchange control time point of measurement.}
+\item{time_100}{maximal exchange control time point of measurement [min].}
 
 \item{deut_part}{deuterium percentage in solution used in experiment, 
 value from range [0, 1].}

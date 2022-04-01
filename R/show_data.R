@@ -322,7 +322,7 @@ show_diff_uptake_data_confidence <- function(diff_uptake_dat,
 
 #' Show volcano data 
 #'  
-#' @param vol_data data produced by the \code{\link{create_volcano_dataset}} 
+#' @param p_dat data produced by the \code{\link{create_p_diff_uptake_dataset}} 
 #' function.
 #' @param D_diff_threshold \code{numeric}, threshold on differential deuterium 
 #' uptake, e.q. result of Houde test. If not provided, is calculated as 
@@ -330,6 +330,8 @@ show_diff_uptake_data_confidence <- function(diff_uptake_dat,
 #' @param log_P_threshold \code{numeric}, threshold on P-value (after transformation,
 #' -log(P)). If not provided, is calculated at provided confidence level. 
 #' @param confidence_level \code{numeric}, confidence level. 
+#' @param theoretical \code{logical}, determines if values are theoretical.
+#' @param fractional \code{logical}, determines if values are fractional.
 #'
 #' @details This function subsets the dataset based on provided criteria,
 #' rounds the numerical values (4 places) and changes the column names 
@@ -347,20 +349,22 @@ show_diff_uptake_data_confidence <- function(diff_uptake_dat,
 #' @return a \code{\link{data.frame}} object.
 #'
 #' @seealso 
-#' \code{\link{create_volcano_dataset}} 
+#' \code{\link{create_p_diff_uptake_dataset}} 
 #' \code{\link{plot_volcano}} 
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' vol_dat <- create_volcano_dataset(dat)
+#' vol_dat <- create_p_diff_uptake_dataset(dat)
 #' head(show_volcano_data(vol_dat))
 #' 
 #' @export show_volcano_data
 
-show_volcano_data <- function(vol_data,
+show_volcano_data <- function(p_dat,
                               D_diff_threshold = NULL,
                               log_P_threshold = NULL,
-                              confidence_level = 0.98){
+                              confidence_level = 0.98,
+                              theoretical = FALSE, 
+                              fractional = FALSE){
   
   if(is.null(log_P_threshold)){
     
@@ -368,26 +372,48 @@ show_volcano_data <- function(vol_data,
     
   }
   
+  if (fractional){
+    
+    if(theoretical){
+      value <- "diff_theo_frac_deut_uptake"
+      err_value <- "err_diff_theo_frac_deut_uptake"
+
+    } else {
+      value <- "diff_frac_deut_uptake"
+      err_value <- "err_diff_frac_deut_uptake" 
+    }
+    
+  } else {
+    
+    if(theoretical){
+      value <- "diff_theo_deut_uptake"
+      err_value <- "err_diff_theo_deut_uptake"
+      
+    } else {
+      value <- "diff_deut_uptake"
+      err_value <- "err_diff_deut_uptake"
+      
+    }
+  }
+  
   if(is.null(D_diff_threshold)){
     
     t_value <- qt(c((1 - confidence_level)/2, 1-(1 - confidence_level)/2), df = 2)[2]
-    D_diff_threshold <-  t_value * mean(vol_data[["Uncertainty"]], na.rm = TRUE)/sqrt(length(vol_data))
+    D_diff_threshold <-  t_value * mean(p_dat[[err_value]], na.rm = TRUE)/sqrt(length(p_dat))
     
   }
   
-  
-  vol_data %>%
-    mutate(D_diff  = round(D_diff , 4),
-           Uncertainty = round(Uncertainty, 4),
-           log_p_value = round(log_p_value, 4),
-           valid = (abs(D_diff) >= D_diff_threshold & log_p_value >= log_P_threshold),
-           P_value = round(P_value, 4)) %>%
-    arrange(Exposure, Start, End) %>%
-    rename("Diff DU [Da]" = D_diff,
-           "U(Diff DU) [Da]" = Uncertainty, 
-           "-log(P value)" = log_p_value,
-           "{paste0('Valid At ', confidence_level)}" := valid,
-           "P value" = P_value) 
+  plot_dat <- data.frame(Protein = p_dat[["Protein"]],
+                         ID = p_dat[["ID"]],
+                         Sequence = p_dat[["Sequence"]],
+                         Start = p_dat[["Start"]],
+                         End = p_dat[["End"]],
+                         Exposure = as.factor(p_dat[["Exposure"]]),
+                         value = round(p_dat[[value]], 4),
+                         err_value = round(p_dat[[err_value]], 4),
+                         p_value = round(p_dat[["P_value"]], 4),
+                         log_p_value = round(p_dat[["log_p_value"]], 4), 
+                         Valid = (abs(p_dat[[value]]) >= D_diff_threshold & p_dat[["log_p_value"]] >= log_P_threshold))
   
 }
 

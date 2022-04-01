@@ -89,9 +89,7 @@ output[["protein_stats"]] <- renderTable({
 
 protein_sequence_colored <- reactive({
   
-  paste0("<span>",
-         gsubfn(pattern = 'C', replacement = function(x) paste0('<font color = "red">', x, "</font>"), x = protein_sequence()),
-         "</span>")
+  paste0(gsubfn(pattern = 'C', replacement = function(x) paste0('<font color = "red">', x, "</font>"), x = protein_sequence()))
   
 })
 

@@ -355,8 +355,8 @@ show_kinetic_data <- function(kin_dat,
 #'                            state = "CD160",
 #'                            start = 1, 
 #'                            end = 15,
-#'                            time_in = 0.001, 
-#'                            time_out = 1440)
+#'                            time_0 = 0.001, 
+#'                            time_100 = 1440)
 #' plot_kinetics(kin_dat = kin1, 
 #'               theoretical = FALSE, 
 #'               fractional = TRUE)
@@ -433,12 +433,14 @@ plot_kinetics <- function(kin_dat,
   
   kin_plot <- plot_dat %>% 
     ggplot(aes(x = time_chosen, y = value, group = prop)) +
-    geom_point(aes(color = prop)) + 
+    geom_point(aes(color = prop), size = 2) + 
     theme(legend.position = "bottom",
           legend.title = element_blank()) +
     labs(x = "Time points [min]", 
          y = y_label,
          title = title)
+  
+  if(log_x){ err_width = 0.1 } else { err_width = 5 }
   
   if(uncertainty_type == "ribbon"){
     
@@ -449,12 +451,14 @@ plot_kinetics <- function(kin_dat,
   } else if (uncertainty_type == "bars") {
     
     kin_plot <- kin_plot +
-      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = prop))
+      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = prop),
+                    width = err_width)
     
   } else if (uncertainty_type == "bars + line"){
     
     kin_plot <- kin_plot +
-      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = prop)) + 
+      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = prop),
+                    width = err_width) + 
       geom_line(aes(color = prop))
     
   }
@@ -467,4 +471,131 @@ plot_kinetics <- function(kin_dat,
   }
   
   kin_plot
+}
+
+#' Plot differential uptake curve
+#' 
+#' @description 
+#' 
+#' @param diff_uptake_dat produced by \code{\link{create_diff_uptake_dataset}} function
+#' @param sequence 
+#' @param theoretical \code{logical}, determines if plot shows theoretical values.
+#' @param fractional \code{logical}, determines if plot shows fractional values.
+#' @param uncertainty_type type of presenting uncertainty, possible values:
+#' "ribbon", "bars" or "bars + line".
+#' @param log_x \code{logical}, determines if x axis shows logarithmic values.
+#' 
+#' @details Currently there is no possibility to plot multiple peptides on the plot.
+#' 
+#' @return a \code{\link{ggplot2}} object.
+#' 
+#' @seealso 
+#' \code{\link{read_hdx}}
+#' \code{\link{create_diff_uptake_dataset}}
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' diff_uptake_dat <- create_diff_uptake_dataset(dat)
+#' plot_differential_uptake_curve(diff_uptake_dat, sequence = "LCKDRSGDCSPETSLKQL")
+#' 
+#' @export plot_differential_uptake_curve
+
+plot_differential_uptake_curve <- function(diff_uptake_dat,
+                                           sequence = NULL,
+                                           theoretical = FALSE,
+                                           fractional = FALSE,
+                                           uncertainty_type = "ribbon",
+                                           log_x = TRUE){
+  
+  if(is.null(sequence)){ sequence <- diff_uptake_dat[["Sequence"]][1] }
+  
+  diff_uptake_dat <- diff_uptake_dat %>%
+    filter(Sequence == sequence)
+  
+  if (theoretical){
+    
+    title <- "Theoretical differential uptake curve"
+    
+    if (fractional){
+      
+      value <- "diff_theo_frac_deut_uptake"
+      err_value <- "err_diff_theo_frac_deut_uptake"
+      y_label <- "Fractional differential uptake [%]"
+      
+    } else {
+      
+      value <- "diff_theo_deut_uptake"
+      err_value <- "err_diff_theo_deut_uptake"
+      y_label <- "Differential uptake [Da]"
+      
+    }
+    
+  } else {
+    
+    title <- "Differential uptake curve"
+    
+    if (fractional){
+      
+      value <- "diff_frac_deut_uptake"
+      err_value <- "err_diff_frac_deut_uptake"
+      y_label <- "Fractional differential uptake [%]"
+      
+    } else {
+      
+      value <- "diff_deut_uptake"
+      err_value <- "err_diff_deut_uptake"
+      y_label <- "Differential uptake [Da]"
+      
+    }
+    
+  }
+  
+  plot_dat <- data.frame(Sequence = diff_uptake_dat[["Sequence"]],
+                         Start = diff_uptake_dat[["Start"]],
+                         End = diff_uptake_dat[["End"]],
+                         time_chosen = diff_uptake_dat[["Exposure"]],
+                         value = diff_uptake_dat[[value]],
+                         err_value = diff_uptake_dat[[err_value]])
+  
+  diff_kin_plot <- plot_dat %>% 
+    ggplot(aes(x = time_chosen, y = value, group = Sequence)) +
+    geom_point(aes(color = Sequence), size = 2) + 
+    theme(legend.position = "bottom",
+          legend.title = element_blank()) +
+    labs(x = "Time points [min]", 
+         y = y_label,
+         title = title)
+  
+  if(log_x){ err_width = 0.1 } else { err_width = 5 }
+  
+  if(uncertainty_type == "ribbon"){
+    
+    diff_kin_plot <- diff_kin_plot +
+      geom_ribbon(aes(ymin = value - err_value, ymax = value + err_value, fill = Sequence), alpha = 0.15) +
+      geom_line(aes(color = Sequence)) 
+    
+  } else if (uncertainty_type == "bars") {
+    
+    diff_kin_plot <- diff_kin_plot +
+      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = Sequence),
+                    width = err_width)
+    
+  } else if (uncertainty_type == "bars + line"){
+    
+    diff_kin_plot <- diff_kin_plot +
+      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = Sequence),
+                    width = err_width) + 
+      geom_line(aes(color = Sequence))
+    
+  }
+  
+  if(log_x){
+    
+    diff_kin_plot <- diff_kin_plot + 
+      scale_x_log10()
+    
+  }
+  
+  diff_kin_plot
+  
 }
