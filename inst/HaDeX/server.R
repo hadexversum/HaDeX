@@ -467,6 +467,8 @@ server <- function(input, output, session) {
 
   source("server/tab_uptake_curve.R", local = TRUE)
   
+  source("server/tab_diff_uptake.R", local = TRUE)
+  
   ### TAB: MANHATTAN ###
   
   source("server/tab_manhattan.R", local = TRUE)

@@ -1,4 +1,23 @@
 #################################
+######### SETTINGS ##############
+#################################
+
+observe({
+  
+  updateSelectInput(session,
+                    inputId = "mann_state_1",
+                    choices = states_chosen_protein(),
+                    selected = states_chosen_protein()[1])
+  
+  updateSelectInput(session,
+                    inputId = "mann_state_2",
+                    choices = states_chosen_protein(),
+                    selected = states_chosen_protein()[length(states_chosen_protein())])
+  
+})
+
+
+#################################
 ######### DATASET ###############
 #################################
 
