@@ -37,7 +37,7 @@ create_state_comparison_dataset <- function(dat,
                                             deut_part = 0.9){
   
   
-  lapply(states, function(state){
+  comparison_dat <- lapply(states, function(state){
     
     calculate_state_uptake(dat,
                            protein = protein,
@@ -48,6 +48,14 @@ create_state_comparison_dataset <- function(dat,
                            deut_part = deut_part)
     
   }) %>% bind_rows
+  
+  attr(comparison_dat, "protein") <- protein
+  attr(comparison_dat, "states") <- states
+  attr(comparison_dat, "time_0") <- time_0
+  attr(comparison_dat, "time_100") <- time_100
+  attr(comparison_dat, "deut_part") <- deut_part
+  
+  return(comparison_dat)
   
 }
 
@@ -94,7 +102,7 @@ create_control_dataset <- function(dat,
   
   states_to_prepare <- unique(filter(dat, Protein == control_protein)[["State"]])
   
-  bind_rows(dat, 
+  control_dat <- bind_rows(dat, 
             lapply(states_to_prepare, function(state){
               peps <- dat %>%
                 filter(State == state) %>%
@@ -105,6 +113,12 @@ create_control_dataset <- function(dat,
                 filter(Sequence %in% peps) %>%
                 mutate(State = state) 
             }))
+  
+  attr(control_dat, "control_protein") <- control_protein 
+  attr(control_dat, "control_state") <- control_state 
+  attr(control_dat, "control_exposure") <- control_exposure
+  
+  return(control_dat)
   
 }
 
@@ -152,7 +166,7 @@ calculate_diff_uptake  <- function(dat,
                                    time_100 = max(dat[["Exposure"]]),
                                    deut_part = 0.9){
   
-  bind_rows(lapply(states, function(i) calculate_state_uptake(dat, 
+  diff_dat <- bind_rows(lapply(states, function(i) calculate_state_uptake(dat, 
                                                               protein = protein, 
                                                               state = i, 
                                                               time_0 = time_0,
@@ -175,7 +189,17 @@ calculate_diff_uptake  <- function(dat,
     arrange(Start, End) %>%
     select(Protein, Start, End, Med_Sequence, everything(), -contains("1"), -contains("2")) %>%
     mutate(ID = 1L:nrow(.))
+  
+  attr(diff_dat, "protein") <- protein
+  attr(diff_dat, "states") <- states
+  attr(diff_dat, "time_0") <- time_0
+  attr(diff_dat, "time_t") <- time_t 
+  attr(diff_dat, "time_100") <- time_100
+  attr(diff_dat, "deut_part") <- deut_part
+  
+  return(diff_dat)
 }
+
 
 #' Create uptake dataset for chosen state
 #' 
@@ -231,6 +255,12 @@ create_state_uptake_dataset <- function(dat,
       select(ID, Exposure, everything()) 
     
   }) %>% bind_rows()
+  
+  attr(state_uptake_dat, "protein") <- protein
+  attr(state_uptake_dat, "state") <- state
+  attr(state_uptake_dat, "time_0") <- time_0
+  attr(state_uptake_dat, "time_100") <- time_100
+  attr(state_uptake_dat, "deut_part") <- deut_part
   
   return(state_uptake_dat)
   
@@ -297,6 +327,12 @@ create_uptake_dataset <- function(dat,
     }) %>% bind_rows
     
   }) %>% bind_rows()
+  
+  attr(uptake_dat, "protein") <- protein
+  attr(uptake_dat, "states") <- states
+  attr(uptake_dat, "time_0") <- time_0
+  attr(uptake_dat, "time_100") <- time_100
+  attr(uptake_dat, "deut_part") <- deut_part
   
   return(uptake_dat)
   
@@ -366,6 +402,13 @@ create_diff_uptake_dataset <- function(dat,
   }) %>% bind_rows() %>%
     ungroup(.)
   
+  attr(diff_uptake_dat, "protein") <- protein
+  attr(diff_uptake_dat, "state_1") <- state_1
+  attr(diff_uptake_dat, "state_2") <- state_2
+  attr(diff_uptake_dat, "time_0") <- time_0
+  attr(diff_uptake_dat, "time_100") <- time_100
+  attr(diff_uptake_dat, "deut_part") <- deut_part
+
   return(diff_uptake_dat)
   
 }
@@ -385,11 +428,19 @@ create_diff_uptake_dataset <- function(dat,
 #' 
 #' @details ...
 #' 
-#' @return ...
+#' @return a \code{\link{data.frame}} object.
 #' 
-#' @seealso ...
+#' @seealso 
+#' \code{\link{read_hdx}}
+#' \code{\link{calculate_exp_masses_per_replicate}}
+#' \code{\link{plot_volcano}}
+#' \code{\link{create_diff_uptake_dataset}}
+#' \code{\link{create_p_diff_uptake_dataset}}
 #' 
-#' @examples ...
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' p_dat <- calculate_p_value(dat)
+#' head(p_dat)
 #' 
 #' @export calculate_p_value
 
@@ -460,13 +511,15 @@ calculate_p_value <- function(dat,
   p_dat <- p_dat %>% 
     mutate(log_p_value = -log(P_value)) %>%
     arrange(Protein, Start, End)
-  
+
+  attr(p_dat, "protein") <- protein
   attr(p_dat, "state_1") <- state_1
   attr(p_dat, "state_2") <- state_2
   attr(p_dat, "confidence_level") <- confidence_level
   attr(p_dat, "p_adjustment_method") <- p_adjustment_method
   
-  p_dat
+  return(p_dat)
+  
 }
 
 #' Create differential uptake dataset with p-value 
@@ -518,8 +571,8 @@ calculate_p_value <- function(dat,
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' vol_dat <- create_p_diff_uptake_dataset(dat)
-#' head(vol_dat)
+#' p_diff_dat <- create_p_diff_uptake_dataset(dat)
+#' head(p_diff_dat)
 #' 
 #' @export create_p_diff_uptake_dataset
 
@@ -556,12 +609,16 @@ create_p_diff_uptake_dataset <- function(dat,
   p_diff_uptake_dat <- merge(diff_uptake_dat, p_dat, by = c("Protein", "Sequence", "Start", "End", "Exposure")) %>%
     arrange(Protein, Start, End)
   
+  attr(p_diff_uptake_dat, "protein") <- protein
   attr(p_diff_uptake_dat, "state_1") <- state_1
   attr(p_diff_uptake_dat, "state_2") <- state_2
   attr(p_diff_uptake_dat, "confidence_level") <- confidence_level
   attr(p_diff_uptake_dat, "p_adjustment_method") <- p_adjustment_method
+  attr(p_diff_uptake_dat, "time_0") <- time_0
+  attr(p_diff_uptake_dat, "time_100") <- time_100
+  attr(p_diff_uptake_dat, "deut_part") <- deut_part
   
-  p_diff_uptake_dat
+  return(p_diff_uptake_dat)
   
 }
 
