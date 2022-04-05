@@ -8,6 +8,7 @@ tab_diff_uptake <- function() HaDeX_plotTab(
     diff_uptake_timepoints(),
     diff_uptake_peptide(),
     diff_uptake_visualization(),
+    diff_uptake_test(), 
     diff_uptake_zoom(),
     diff_uptake_labels_adjustement()
   ),
@@ -17,7 +18,9 @@ tab_diff_uptake <- function() HaDeX_plotTab(
   )
 )
 
-##
+##########
+## SIDE ##
+##########
 
 diff_uptake_general_settings <- function() HaDeX_plotSettingsSection(
   
@@ -65,12 +68,16 @@ diff_uptake_timepoints <- function() HaDeX_plotSettingsSection(
   )
 )
 
+##
+
 diff_uptake_peptide <- function() HaDeX_plotSettingsSection(
   
   title = "Peptide",
   p("Choose peptide:"),
   dataTableOutput_h("diff_peptide_list_data")
 )
+
+##
 
 diff_uptake_visualization <- function() HaDeX_plotSettingsSection(
   
@@ -84,6 +91,22 @@ diff_uptake_visualization <- function() HaDeX_plotSettingsSection(
                 selected = "ribbon")
 )
 
+##
+
+diff_uptake_test <- function() HaDeX_plotSettingsSection(
+  
+  title = "Test",
+  
+  checkboxInput_h(inputId = "diff_kin_houde",
+                  label = "Houde test",
+                  value = FALSE),
+  checkboxInput_h(inputId = "diff_kin_tstud", 
+                  label = "t-Student test", 
+                  value = FALSE)
+)
+
+##
+
 diff_uptake_zoom <- function() HaDeX_plotSettingsSection(
   
   title = "Zoom",
@@ -94,6 +117,8 @@ diff_uptake_zoom <- function() HaDeX_plotSettingsSection(
               value = c(-10, 100),
               step = 10)
 )
+
+##
 
 diff_uptake_labels_adjustement <- function() HaDeX_plotSettingsSection(
   
@@ -133,6 +158,10 @@ diff_uptake_labels_adjustement <- function() HaDeX_plotSettingsSection(
     p("The axis ticks have the same size as the axis label. The legend text size is the same as the x axis label.")
   )
 )
+
+##########
+## MAIN ##
+##########
 
 diff_uptake_plot_panel <- function() tabsetPanel(
   

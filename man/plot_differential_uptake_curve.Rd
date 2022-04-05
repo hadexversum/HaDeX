@@ -5,12 +5,15 @@
 \title{Plot differential uptake curve}
 \usage{
 plot_differential_uptake_curve(
-  diff_uptake_dat,
+  diff_uptake_dat = NULL,
+  diff_p_uptake_dat = NULL,
   sequence = NULL,
   theoretical = FALSE,
   fractional = FALSE,
   uncertainty_type = "ribbon",
-  log_x = TRUE
+  log_x = TRUE,
+  show_houde_interval = FALSE,
+  show_tstud_confidence = FALSE
 )
 }
 \arguments{
@@ -26,6 +29,11 @@ plot_differential_uptake_curve(
 "ribbon", "bars" or "bars + line".}
 
 \item{log_x}{\code{logical}, determines if x axis shows logarithmic values.}
+
+\item{show_houde_interval}{\code{logical}, determines if houde interval is shown.}
+
+\item{show_tstud_confidence}{\code{logical}, determines if t-Student test validity 
+is shown.}
 }
 \value{
 a \code{\link{ggplot2}} object.
@@ -39,7 +47,12 @@ Currently there is no possibility to plot multiple peptides on the plot.
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 diff_uptake_dat <- create_diff_uptake_dataset(dat)
-plot_differential_uptake_curve(diff_uptake_dat, sequence = "LCKDRSGDCSPETSLKQL")
+plot_differential_uptake_curve(diff_uptake_dat = diff_uptake_dat, sequence = "LCKDRSGDCSPETSLKQL")
+
+diff_p_uptake_dat <- create_p_diff_uptake_dataset(dat)
+plot_differential_uptake_curve(diff_p_uptake_dat = diff_p_uptake_dat, sequence = "LCKDRSGDCSPETSLKQL", show_houde_interval = TRUE)
+plot_differential_uptake_curve(diff_p_uptake_dat = diff_p_uptake_dat, sequence = "LCKDRSGDCSPETSLKQL", show_houde_interval = TRUE, show_tstud_confidence = TRUE)
+plot_differential_uptake_curve(diff_p_uptake_dat = diff_p_uptake_dat, sequence = "LCKDRSGDCSPETSLKQL", show_tstud_confidence = TRUE)
 
 }
 \seealso{
