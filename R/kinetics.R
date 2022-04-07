@@ -603,7 +603,7 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
   
   diff_kin_plot <- plot_dat %>% 
     ggplot(aes(x = Exposure, y = value, group = Sequence)) +
-    geom_point(aes(color = Sequence, shape = states), size = 2) + 
+    geom_point(aes(shape = Sequence, color = states), size = 2) + 
     theme(legend.position = "bottom",
           legend.title = element_blank()) +
     labs(x = "Time points [min]", 
@@ -616,18 +616,18 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
     
     diff_kin_plot <- diff_kin_plot +
       geom_ribbon(aes(ymin = value - err_value, ymax = value + err_value, fill = Sequence), alpha = 0.15) +
-      geom_line(aes(color = Sequence)) 
+      geom_line(aes(color = states)) 
     
   } else if (uncertainty_type == "bars") {
     
     diff_kin_plot <- diff_kin_plot +
-      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = Sequence),
+      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = states),
                     width = err_width)
     
   } else if (uncertainty_type == "bars + line"){
     
     diff_kin_plot <- diff_kin_plot +
-      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = Sequence),
+      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = states),
                     width = err_width) + 
       geom_line(aes(color = Sequence))
     
@@ -657,7 +657,7 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
       merge(plot_dat, by = c("Sequence", "Start", "End", "Exposure"))
     
     diff_kin_plot <- diff_kin_plot +
-      geom_point(data = subset(diff_p_uptake_dat, !valid), aes(x = Exposure, y = value), color = "gray57", size = 2)
+      geom_point(data = subset(diff_p_uptake_dat, !valid), aes(x = Exposure, y = value), shape = 13, size = 2)
     
   }
   
