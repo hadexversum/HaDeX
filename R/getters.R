@@ -18,7 +18,7 @@
 #' @examples
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' get_protein_coverage(dat)
-#' get_protein_coverage(dat, protein_length  = 150)
+#' get_protein_coverage(dat, protein_length = 150)
 #' 
 #' @export get_protein_coverage
 

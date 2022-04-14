@@ -440,14 +440,14 @@ show_volcano_data <- function(p_dat,
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' show_summary_data(dat)
 #' 
 #' @export show_summary_data
 
 show_summary_data <- function(dat, 
-                              confidence_limit_1,
-                              confidence_limit_2,
-                              overlap_distribution_data, 
-                              protein_length = NULL){
+                              confidence_limit_1 = "",
+                              confidence_limit_2 = "",
+                              protein_length = max(dat[["End"]])){
   
   n_reps <- group_by(dat, Protein, Start, End, Sequence, State, Exposure) %>%
     summarise(n_rep = length(unique(File))) %>%
@@ -468,7 +468,7 @@ show_summary_data <- function(dat,
                       "Significant differences in HDX"), 
              Value = c(sum(unique(dat[["Exposure"]]) > 0 ),  
                        length(unique(dat[["Sequence"]])), 
-                       paste0(get_protein_coverage(dat, protein_length), "%"),
+                       paste0(get_protein_coverage(dat, protein_length = protein_length), "%"),
                        round(mean(nchar(unique(dat[["Sequence"]]))), 2),# average peptide length
                        get_protein_redundancy(dat, protein_length),
                        n_reps[1], 
