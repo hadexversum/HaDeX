@@ -57,7 +57,8 @@ manhattan_plot_out <- reactive({
                  confidence_level = as.numeric(input[["man_confidence_level"]]),
                  times = input[["man_times"]],
                  separate_times = input[["man_separate_times"]],
-                 show_confidence_limit = TRUE)
+                 show_confidence_limit = TRUE,
+                 show_peptide_position = input[["man_show_position"]])
   
 })
 

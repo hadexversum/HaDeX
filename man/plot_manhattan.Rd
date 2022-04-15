@@ -10,7 +10,8 @@ plot_manhattan(
   separate_times = T,
   times = NULL,
   confidence_level = NULL,
-  show_confidence_limit = T
+  show_confidence_limit = T,
+  show_peptide_position = F
 )
 }
 \arguments{
@@ -29,6 +30,9 @@ or on separate plots for each time point of measurement.}
 
 \item{show_confidence_limit}{logical, indicates if the hybrid testing
 confidence intervals are shown.}
+
+\item{show_peptide_position}{\code{logical}, indicates if the peptide length
+and position in  the  sequence is shown. Otherwise, the peptides are represented by their ID.}
 }
 \value{
 a \code{\link{ggplot}} object.

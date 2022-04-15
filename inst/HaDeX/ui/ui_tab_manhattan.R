@@ -23,13 +23,17 @@ manhattan_state <- function() HaDeX_plotSettingsSection(
   splitLayout(
     
     selectInput_h(inputId = "man_state_1",
-                            label = "State 1",
-                            choices = c("CD160", "CD160_HVEM")),
+                  label = "State 1",
+                  choices = c("CD160", "CD160_HVEM")),
               
     selectInput_h(inputId = "man_state_2",
                   label = "State 2",
                   choices = c("CD160_HVEM", "CD160"))
-  )
+  ),
+  
+  checkboxInput_h(inputId = "man_show_position",
+                  label = "Show peptide length and position in the sequence? ",
+                  value = F)
   
 )
 
