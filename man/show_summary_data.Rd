@@ -6,10 +6,9 @@
 \usage{
 show_summary_data(
   dat,
-  confidence_limit_1,
-  confidence_limit_2,
-  overlap_distribution_data,
-  protein_length = NULL
+  confidence_limit_1 = "",
+  confidence_limit_2 = "",
+  protein_length = max(dat[["End"]])
 )
 }
 \arguments{
@@ -36,6 +35,7 @@ interpreting and reporting hydrogen deuterium exchange mass spectrometry
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+show_summary_data(dat)
 
 }
 \seealso{

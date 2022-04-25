@@ -79,7 +79,7 @@ calculate_kinetics <- function(dat,
   
   time_points_to_iterate <- time_points[time_points > time_0 & time_points < time_100]
   
-  bind_rows(lapply(time_points_to_iterate, function(time_point){
+  kin_dat <- bind_rows(lapply(time_points_to_iterate, function(time_point){
     
     calculate_state_uptake(dat = prep_dat, 
                            protein = protein,
@@ -92,6 +92,17 @@ calculate_kinetics <- function(dat,
     
   })) %>%
     select(Protein, Sequence, Start, End, State, time_chosen, everything())
+  
+  attr(kin_dat, "protein") <- protein
+  attr(kin_dat, "sequence") <- sequence
+  attr(kin_dat, "state") <- state
+  attr(kin_dat, "start") <- start
+  attr(kin_dat, "end") <- end
+  attr(kin_dat, "time_0") <- time_0
+  attr(kin_dat, "time_100") <- time_100
+  attr(kin_dat, "deut_part") <- deut_part
+  
+  return(kin_dat)
   
 }
 
@@ -149,7 +160,7 @@ calculate_peptide_kinetics <- function(dat,
                                        time_100,
                                        deut_part = 0.9){
   
-  lapply(states, function(state){
+  kin_dat <- lapply(states, function(state){
     
     calculate_kinetics(dat = dat,
                        protein = protein, 
@@ -162,6 +173,17 @@ calculate_peptide_kinetics <- function(dat,
                        deut_part = deut_part)
     
   }) %>% bind_rows()
+  
+  attr(kin_dat, "protein") <- protein
+  attr(kin_dat, "sequence") <- sequence
+  attr(kin_dat, "states") <- states
+  attr(kin_dat, "start") <- start
+  attr(kin_dat, "end") <- end
+  attr(kin_dat, "time_0") <- time_0
+  attr(kin_dat, "time_100") <- time_100
+  attr(kin_dat, "deut_part") <- deut_part
+  
+  return(kin_dat)
   
 }
 
@@ -206,7 +228,7 @@ create_kinetic_dataset <- function(dat,
                                    time_100 = max(dat[["Exposure"]]),
                                    deut_part = 0.9){
   
-  bind_rows(apply(peptide_list, 1, function(peptide){
+  kin_dat <- bind_rows(apply(peptide_list, 1, function(peptide){
     calculate_kinetics(dat = dat,
                        protein = protein, 
                        sequence = peptide[1],
@@ -217,6 +239,14 @@ create_kinetic_dataset <- function(dat,
                        time_100 = time_100,
                        deut_part = deut_part)
   }))
+  
+  attr(kin_dat, "protein") <- protein
+  attr(kin_dat, "peptide_list") <- peptide_list
+  attr(kin_dat, "time_0") <- time_0
+  attr(kin_dat, "time_100") <- time_100
+  attr(kin_dat, "deut_part") <- deut_part
+  
+  return(kin_dat)
   
 }
 
@@ -484,6 +514,9 @@ plot_kinetics <- function(kin_dat,
 #' @param uncertainty_type type of presenting uncertainty, possible values:
 #' "ribbon", "bars" or "bars + line".
 #' @param log_x \code{logical}, determines if x axis shows logarithmic values.
+#' @param show_houde_interval \code{logical}, determines if houde interval is shown.
+#' @param show_tstud_confidence \code{logical}, determines if t-Student test validity 
+#' is shown.
 #' 
 #' @details Currently there is no possibility to plot multiple peptides on the plot.
 #' 
@@ -496,21 +529,32 @@ plot_kinetics <- function(kin_dat,
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' diff_uptake_dat <- create_diff_uptake_dataset(dat)
-#' plot_differential_uptake_curve(diff_uptake_dat, sequence = "LCKDRSGDCSPETSLKQL")
+#' plot_differential_uptake_curve(diff_uptake_dat = diff_uptake_dat, sequence = "LCKDRSGDCSPETSLKQL")
+#' 
+#' diff_p_uptake_dat <- create_p_diff_uptake_dataset(dat)
+#' plot_differential_uptake_curve(diff_p_uptake_dat = diff_p_uptake_dat, sequence = "LCKDRSGDCSPETSLKQL", show_houde_interval = TRUE)
+#' plot_differential_uptake_curve(diff_p_uptake_dat = diff_p_uptake_dat, sequence = "LCKDRSGDCSPETSLKQL", show_houde_interval = TRUE, show_tstud_confidence = TRUE)
+#' plot_differential_uptake_curve(diff_p_uptake_dat = diff_p_uptake_dat, sequence = "LCKDRSGDCSPETSLKQL", show_tstud_confidence = TRUE)
 #' 
 #' @export plot_differential_uptake_curve
 
-plot_differential_uptake_curve <- function(diff_uptake_dat,
+plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
+                                           diff_p_uptake_dat = NULL,
                                            sequence = NULL,
                                            theoretical = FALSE,
                                            fractional = FALSE,
                                            uncertainty_type = "ribbon",
-                                           log_x = TRUE){
+                                           log_x = TRUE,
+                                           show_houde_interval = FALSE,
+                                           show_tstud_confidence = FALSE){
   
   if(is.null(sequence)){ sequence <- diff_uptake_dat[["Sequence"]][1] }
   
-  diff_uptake_dat <- diff_uptake_dat %>%
-    filter(Sequence == sequence)
+  states <- paste0(attr(diff_uptake_dat, "state_1"), "-", attr(diff_uptake_dat, "state_2"))
+  
+  if(is.null(diff_uptake_dat)) { stop("Please, provide the neccessary data.") } else { diff_uptake_dat <- filter(diff_uptake_dat, Sequence == sequence) }
+  
+  if(!is.null(diff_p_uptake_dat)) { diff_p_uptake_dat <- filter(diff_p_uptake_dat, Sequence == sequence) }
   
   if (theoretical){
     
@@ -553,13 +597,13 @@ plot_differential_uptake_curve <- function(diff_uptake_dat,
   plot_dat <- data.frame(Sequence = diff_uptake_dat[["Sequence"]],
                          Start = diff_uptake_dat[["Start"]],
                          End = diff_uptake_dat[["End"]],
-                         time_chosen = diff_uptake_dat[["Exposure"]],
+                         Exposure = diff_uptake_dat[["Exposure"]],
                          value = diff_uptake_dat[[value]],
                          err_value = diff_uptake_dat[[err_value]])
   
   diff_kin_plot <- plot_dat %>% 
-    ggplot(aes(x = time_chosen, y = value, group = Sequence)) +
-    geom_point(aes(color = Sequence), size = 2) + 
+    ggplot(aes(x = Exposure, y = value, group = Sequence)) +
+    geom_point(aes(shape = Sequence, color = states), size = 2) + 
     theme(legend.position = "bottom",
           legend.title = element_blank()) +
     labs(x = "Time points [min]", 
@@ -572,20 +616,48 @@ plot_differential_uptake_curve <- function(diff_uptake_dat,
     
     diff_kin_plot <- diff_kin_plot +
       geom_ribbon(aes(ymin = value - err_value, ymax = value + err_value, fill = Sequence), alpha = 0.15) +
-      geom_line(aes(color = Sequence)) 
+      geom_line(aes(color = states)) 
     
   } else if (uncertainty_type == "bars") {
     
     diff_kin_plot <- diff_kin_plot +
-      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = Sequence),
+      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = states),
                     width = err_width)
     
   } else if (uncertainty_type == "bars + line"){
     
     diff_kin_plot <- diff_kin_plot +
-      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = Sequence),
+      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = states),
                     width = err_width) + 
       geom_line(aes(color = Sequence))
+    
+  }
+  
+  if(show_houde_interval){
+    
+    if(is.null(diff_p_uptake_dat)){ stop("Please provide neccessary data to plot the intervals.") }
+      
+    houde_intervals <- diff_p_uptake_dat %>%
+      calculate_confidence_limit_values(confidence_level = attr(diff_p_uptake_dat, "confidence_level"),
+                                        theoretical = theoretical,
+                                        fractional = fractional)
+    
+    diff_kin_plot <- diff_kin_plot +
+      geom_hline(yintercept = houde_intervals[2], linetype = "dashed", color = "red")
+  
+  }
+  
+  if(show_tstud_confidence){
+    
+    if(is.null(diff_p_uptake_dat)){ stop("Please provide neccessary data to plot the intervals.") }
+    
+    alpha <- -log(1 - attr(diff_p_uptake_dat, "confidence_level"))
+    
+    diff_p_uptake_dat <- mutate(diff_p_uptake_dat, valid = log_p_value >= alpha) %>%
+      merge(plot_dat, by = c("Sequence", "Start", "End", "Exposure"))
+    
+    diff_kin_plot <- diff_kin_plot +
+      geom_point(data = subset(diff_p_uptake_dat, !valid), aes(x = Exposure, y = value), shape = 13, size = 2)
     
   }
   

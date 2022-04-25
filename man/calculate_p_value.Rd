@@ -31,7 +31,7 @@ comparisons. Possible methods: "BH" (Benjamini & Hochberg correction),
 \item{confidence_level}{confidence level for the t-test.}
 }
 \value{
-...
+a \code{\link{data.frame}} object.
 }
 \description{
 Create p-value dataset
@@ -40,9 +40,15 @@ Create p-value dataset
 ...
 }
 \examples{
-...
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+p_dat <- calculate_p_value(dat)
+head(p_dat)
 
 }
 \seealso{
-...
+\code{\link{read_hdx}}
+\code{\link{calculate_exp_masses_per_replicate}}
+\code{\link{plot_volcano}}
+\code{\link{create_diff_uptake_dataset}}
+\code{\link{create_p_diff_uptake_dataset}}
 }

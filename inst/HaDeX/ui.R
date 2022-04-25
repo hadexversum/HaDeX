@@ -21,7 +21,8 @@ ui <- tagList(useShinyjs(),
                     tab_volcano(),
                     tab_chiclet(),
                     tab_chiclet_diff(),
-                    tab_uptake()
+                    tab_uptake(),
+                    tab_diff_uptake()
                   ),
                   navbarMenu(
                     "Time-based data",

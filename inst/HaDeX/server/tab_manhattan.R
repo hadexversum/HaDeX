@@ -1,16 +1,46 @@
 #################################
+######### SETTINGS ##############
+#################################
+
+observe({
+  
+  updateSelectInput(session,
+                    inputId = "man_state_1",
+                    choices = states_chosen_protein(),
+                    selected = states_chosen_protein()[1])
+  
+  updateSelectInput(session,
+                    inputId = "man_state_2",
+                    choices = states_chosen_protein(),
+                    selected = states_chosen_protein()[length(states_chosen_protein())])
+  
+})
+
+##
+
+observe({
+  
+  updateCheckboxGroupInput(session,
+                           inputId = "man_times",
+                           choices = times_t(), 
+                           selected = times_t())  
+  
+  
+})
+
+#################################
 ######### DATASET ###############
 #################################
 
 mannhattan_data <- reactive({
   
-  validate(need(input[["mann_state_1"]]!=input[["mann_state_2"]], "Choose two different states for comparison!"))
+  validate(need(input[["man_state_1"]]!=input[["man_state_2"]], "Choose two different states for comparison!"))
   
   create_p_diff_uptake_dataset(dat = dat(),
                                protein = input[["chosen_protein"]],
-                               state_1 = input[["mann_state_1"]],
-                               state_2 = input[["mann_state_2"]],
-                               p_adjustment_method = input[["mann_p_adjustment_method"]])
+                               state_1 = input[["man_state_1"]],
+                               state_2 = input[["man_state_2"]],
+                               p_adjustment_method = input[["man_p_adjustment_method"]])
   
 })
 
@@ -23,9 +53,12 @@ mannhattan_data <- reactive({
 manhattan_plot_out <- reactive({
   
   plot_manhattan(p_dat = mannhattan_data(),
-                 plot_title = paste0("Difference between ", input[["mann_state_1"]], " and ", input[["mann_state_2"]]),
-                 confidence_level = as.numeric(input[["mann_confidence_level"]]))
-  
+                 plot_title = paste0("Difference between ", input[["man_state_1"]], " and ", input[["man_state_2"]]),
+                 confidence_level = as.numeric(input[["man_confidence_level"]]),
+                 times = input[["man_times"]],
+                 separate_times = input[["man_separate_times"]],
+                 show_confidence_limit = TRUE,
+                 show_peptide_position = input[["man_show_position"]])
   
 })
 

@@ -159,10 +159,14 @@ plot_volcano <- function(p_dat,
 #' function.
 #' @param plot_title title for the plot. If not provided, it is constructed in a form:
 #' "Differences between state_1 and state_2"
-#' @param separate_times ...
+#' @param separate_times \code{logical}, indicates if the data should be seen on the same plot, 
+#' or on separate plots for each time point of measurement.
+#' @param times vector of time points of measurements to be included in the plot.
 #' @param confidence_level confidence level for the test, from range [0, 1]. 
 #' @param show_confidence_limit logical, indicates if the hybrid testing
 #' confidence intervals are shown.
+#' @param show_peptide_position \code{logical}, indicates if the peptide length
+#' and position in  the  sequence is shown. Otherwise, the peptides are represented by their ID.
 #' 
 #' @details ...
 #'  
@@ -178,47 +182,59 @@ plot_volcano <- function(p_dat,
 #' @examples
 #' dat <-  read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' p_dat <- create_p_diff_uptake_dataset(dat)
-#' manhattan_plot(p_dat)
+#' plot_manhattan(p_dat)
 #' 
-#' manhattan_plot(p_dat, separate_times = F)
+#' plot_manhattan(p_dat, separate_times = F)
 #' 
-#' manhattan_plot(p_dat, separate_times = F, show_confidence_limit = F)
+#' plot_manhattan(p_dat, show_peptide_position = T, separate_times = F)
+#' 
+#' plot_manhattan(p_dat, separate_times = F, show_confidence_limit = F)
 #'  
 #' @export plot_manhattan
    
 plot_manhattan <- function(p_dat,
                            plot_title = NULL, 
                            separate_times = T,
+                           times = NULL,
                            confidence_level = NULL,
-                           show_confidence_limit = T){
+                           show_confidence_limit = T,
+                           show_peptide_position = F){
   
   if(is.null(confidence_level)) {confidence_level <- attr(p_dat, "confidence_level") }
+
+  if(is.null(times)) { times <- unique(p_dat[["Exposure"]])}
+  
+  plot_dat <- filter(p_dat, Exposure %in% times)
    
   confidence_limit <- -log(1 - confidence_level)
   
   if(is.null(plot_title)) {plot_title <- paste0("Differences between ", attr(p_dat, "state_1"), " and ", attr(p_dat, "state_2")) }
   
+  manhattan_plot <- ggplot(plot_dat) + 
+    theme(legend.position = "none") +
+    labs(title = plot_title,
+         y = "log(P value)", 
+         color = "Exposure")
+  
+  if(show_peptide_position){
+    
+    manhattan_plot <- manhattan_plot +
+      geom_segment(aes(x = Start, y = log_p_value, xend = End, yend = log_p_value, color = as.factor(Exposure))) +
+      labs(x = "Peptide position")
+    
+  } else{
+    
+    manhattan_plot <- manhattan_plot +
+      geom_point(aes(x = ID, y = log_p_value, color = as.factor(Exposure))) +
+      labs(x = "Peptide ID")
+  }
+  
   if(separate_times){
     
-    manhattan_plot <- ggplot(p_dat) + 
-      geom_point(aes(x = ID, y = log_p_value, color = as.factor(Exposure))) +
-      facet_wrap(~ as.factor(Exposure)) +
-      theme(legend.position = "none") +
-      labs(title = plot_title,
-           x = "Peptide ID",
-           y = "log(P value)", 
-           color = "Exposure")
+    manhattan_plot <- manhattan_plot + 
+      facet_wrap(~ as.factor(Exposure)) 
     
-  } else {
-    
-    manhattan_plot <- ggplot(p_dat) + 
-      geom_point(aes(x = ID, y = log_p_value, color = as.factor(Exposure))) +
-      theme(legend.position = "bottom") +
-      labs(title = plot_title,
-           x = "Peptide ID",
-           y = "log(P value)", 
-           color = "Exposure")
-  }
+  } 
   
   if(show_confidence_limit){ 
     

@@ -68,8 +68,8 @@ This plot is visible in GUI.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-vol_dat <- create_p_diff_uptake_dataset(dat)
-head(vol_dat)
+p_diff_uptake_dat <- create_p_diff_uptake_dataset(dat)
+head(p_diff_uptake_dat)
 
 }
 \references{

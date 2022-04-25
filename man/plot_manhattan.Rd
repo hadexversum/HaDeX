@@ -8,8 +8,10 @@ plot_manhattan(
   p_dat,
   plot_title = NULL,
   separate_times = T,
+  times = NULL,
   confidence_level = NULL,
-  show_confidence_limit = T
+  show_confidence_limit = T,
+  show_peptide_position = F
 )
 }
 \arguments{
@@ -19,12 +21,18 @@ function.}
 \item{plot_title}{title for the plot. If not provided, it is constructed in a form:
 "Differences between state_1 and state_2"}
 
-\item{separate_times}{...}
+\item{separate_times}{\code{logical}, indicates if the data should be seen on the same plot, 
+or on separate plots for each time point of measurement.}
+
+\item{times}{vector of time points of measurements to be included in the plot.}
 
 \item{confidence_level}{confidence level for the test, from range [0, 1].}
 
 \item{show_confidence_limit}{logical, indicates if the hybrid testing
 confidence intervals are shown.}
+
+\item{show_peptide_position}{\code{logical}, indicates if the peptide length
+and position in  the  sequence is shown. Otherwise, the peptides are represented by their ID.}
 }
 \value{
 a \code{\link{ggplot}} object.
@@ -38,11 +46,11 @@ Manhattan plot
 \examples{
 dat <-  read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 p_dat <- create_p_diff_uptake_dataset(dat)
-manhattan_plot(p_dat)
+plot_manhattan(p_dat)
 
-manhattan_plot(p_dat, separate_times = F)
+plot_manhattan(p_dat, separate_times = F)
 
-manhattan_plot(p_dat, separate_times = F, show_confidence_limit = F)
+plot_manhattan(p_dat, separate_times = F, show_confidence_limit = F)
  
 }
 \references{
