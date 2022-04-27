@@ -369,3 +369,21 @@ h4, .h4 {
 .shiny-split-layout > div {
   overflow: visible;
 }
+
+#fullsize-website {
+  display: block;
+}
+
+#mobile-website {
+  display: none;
+}
+
+@media (max-width: 767px) {                  
+  #fullsize-website {
+    display: none;
+  }
+  
+  #mobile-website {
+    display: block;
+  }
+}
