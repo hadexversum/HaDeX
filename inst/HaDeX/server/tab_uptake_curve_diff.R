@@ -176,6 +176,9 @@ diff_kin_dat <- reactive({
   
   validate(need(input[["diff_kin_state_1"]]!=input[["diff_kin_state_2"]], "Choose two different states for comparison!"))
   
+  validate(need(!input[["diff_kin_houde"]], "This feature will be available soon!"))
+  validate(need(!input[["diff_kin_tstud"]], "This feature will be available soon!"))
+  
   times_from_file <- unique(round(dat()[["Exposure"]], 3))
   
   if(input[["diff_kin_theory"]]){

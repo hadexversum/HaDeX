@@ -50,6 +50,8 @@ plot_manhattan(p_dat)
 
 plot_manhattan(p_dat, separate_times = F)
 
+plot_manhattan(p_dat, show_peptide_position = T, separate_times = F)
+
 plot_manhattan(p_dat, separate_times = F, show_confidence_limit = F)
  
 }
