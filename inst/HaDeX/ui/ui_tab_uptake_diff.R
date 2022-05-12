@@ -97,10 +97,10 @@ diff_uptake_test <- function() HaDeX_plotSettingsSection(
   
   title = "Test",
   
-  checkboxInput_h(inputId = "diff_kin_houde",
+  checkboxInput_h(inputId = "diff_kin_show_houde",
                   label = "Houde test",
                   value = FALSE),
-  checkboxInput_h(inputId = "diff_kin_tstud", 
+  checkboxInput_h(inputId = "diff_kin_show_tstud", 
                   label = "t-Student test", 
                   value = FALSE)
 )

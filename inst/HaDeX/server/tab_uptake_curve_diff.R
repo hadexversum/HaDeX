@@ -222,8 +222,8 @@ diff_kin_plot <- reactive({
                                  fractional = input[["diff_kin_fractional"]],
                                  uncertainty_type = input[["diff_kin_uncertainty"]],
                                  log_x = input[["diff_kin_log_x"]],
-                                 show_houde_interval = input[["diff_kin_houde"]],
-                                 show_tstud_confidence = input[["diff_kin_tstud"]])
+                                 show_houde_interval = input[["diff_kin_show_houde"]],
+                                 show_tstud_confidence = input[["diff_kin_show_tstud"]])
 })
 
 ##

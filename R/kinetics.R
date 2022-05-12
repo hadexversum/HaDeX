@@ -653,8 +653,6 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
   
   if(show_houde_interval){
     
-
-      
     houde_intervals <- diff_uptake_dat %>%
       calculate_confidence_limit_values(confidence_level = attr(diff_uptake_dat, "confidence_level"),
                                         theoretical = theoretical,
@@ -666,8 +664,6 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
   }
   
   if(show_tstud_confidence){
-    
-    
     
     alpha <- -log(1 - attr(diff_uptake_dat, "confidence_level"))
     

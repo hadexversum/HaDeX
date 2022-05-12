@@ -5,9 +5,13 @@
 \title{Differential plot}
 \usage{
 plot_differential(
-  diff_uptake_dat,
+  diff_uptake_dat = NULL,
+  diff_p_uptake_dat = NULL,
+  time_t = NULL,
   theoretical = FALSE,
   fractional = FALSE,
+  show_houde_interval = FALSE,
+  show_tstud_confidence = FALSE,
   confidence_level = 0.98,
   confidence_level_2 = 0.99
 )
@@ -18,6 +22,11 @@ plot_differential(
 \item{theoretical}{\code{logical}, determines if values are theoretical.}
 
 \item{fractional}{\code{logical}, determines if values are fractional.}
+
+\item{show_houde_interval}{\code{logical}, determines if houde interval is shown.}
+
+\item{show_tstud_confidence}{\code{logical}, determines if t-Student test validity 
+is shown.}
 
 \item{confidence_level}{confidence level for the test, from range [0, 1].}
 

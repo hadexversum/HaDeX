@@ -3,6 +3,9 @@
 #' @param diff_uptake_dat produced by \code{\link{create_diff_uptake_dataset}} function.
 #' @param theoretical \code{logical}, determines if values are theoretical.
 #' @param fractional \code{logical}, determines if values are fractional.
+#' @param show_houde_interval \code{logical}, determines if houde interval is shown.
+#' @param show_tstud_confidence \code{logical}, determines if t-Student test validity 
+#' is shown.
 #' @param confidence_level confidence level for the test, from range [0, 1].
 #' @param confidence_level_2 second confidence level for the test, 
 #' from range [0, 1]. If the value of second confidence level is the same
@@ -37,21 +40,43 @@
 #'
 #' @export plot_differential
 
-plot_differential <- function(diff_uptake_dat,
+plot_differential <- function(diff_uptake_dat = NULL,
+                              diff_p_uptake_dat =  NULL, 
+                              time_t = NULL,
                               theoretical = FALSE,
                               fractional = FALSE,
+                              show_houde_interval = FALSE,
+                              show_tstud_confidence = FALSE,
                               confidence_level = 0.98,
                               confidence_level_2 = 0.99){
+  
+  ## conditions
+  
+  if (show_tstud_confidence) {
+    
+    if(is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } else { diff_uptake_dat <- diff_p_uptake_dat %>% filter(Exposure == attr(diff_uptake_dat, "time_t")) }
+    
+  } else {
+    
+    if(is.null(diff_uptake_dat) & is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } else  { 
+      
+       diff_uptake_dat <- diff_p_uptake_dat %>% filter(Exposure == attr(diff_uptake_dat, "time_t"))
+      
+    }
+  }
 
-  interval <- calculate_confidence_limit_values(diff_uptake_dat = diff_uptake_dat,
-                                                confidence_level = confidence_level,
-                                                theoretical = theoretical,
-                                                fractional = fractional)
 
-  interval_2 <- calculate_confidence_limit_values(diff_uptake_dat = diff_uptake_dat,
-                                                  confidence_level = confidence_level_2,
+  ##
+  
+  h_interval <- calculate_confidence_limit_values(diff_uptake_dat = diff_uptake_dat,
+                                                  confidence_level = confidence_level,
                                                   theoretical = theoretical,
                                                   fractional = fractional)
+
+  h_interval_2 <- calculate_confidence_limit_values(diff_uptake_dat = diff_uptake_dat,
+                                                    confidence_level = confidence_level_2,
+                                                    theoretical = theoretical,
+                                                    fractional = fractional)
 
   if(theoretical){
 
@@ -102,32 +127,68 @@ plot_differential <- function(diff_uptake_dat,
                          value = diff_uptake_dat[[value]],
                          err_value = diff_uptake_dat[[err_value]])
   
-  differential_plot <- mutate(plot_dat, colour = case_when(
-    value < interval_2[1] ~ "deepskyblue3",
-    value < interval[1] ~ "deepskyblue1",
-    value > interval_2[2] ~ "firebrick3",
-    value > interval[2] ~ "firebrick1",
-    TRUE ~ "azure3")) %>%
-    ggplot() +
-    geom_segment(aes(x = Start, y = value, xend = End, yend = value, color = colour)) +
-    geom_errorbar(aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value, color = colour)) +
-    geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
-    ## intervals
-    geom_hline(aes(yintercept = interval[1], linetype = paste0(" Confidence interval ", confidence_level*100, "% : ", round(interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) +
-    geom_hline(aes(yintercept = interval[2], linetype = paste0(" Confidence interval ", confidence_level*100, "% : ", round(interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
-    geom_hline(aes(yintercept = interval_2[1], linetype = paste0(" Confidence interval ", confidence_level_2*100, "% : ", round(interval_2[2], 4))), color = "deepskyblue3", size = .7, show.legend = TRUE) +
-    geom_hline(aes(yintercept = interval_2[2], linetype = paste0(" Confidence interval ", confidence_level_2*100, "% : ", round(interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
-    scale_linetype_manual(values = c("dashed", "dotdash")) +
-    ## other
-    scale_colour_identity() +
-    labs(title = title,
-         x_label = "Position in the sequence",
-         y_label = y_label) +
-    theme(legend.title = element_blank(),
-          legend.position = "bottom",
-          legend.direction = "vertical")
+  if(show_houde_interval){
+    
+    differential_plot <- mutate(plot_dat, colour = case_when(
+                                                        value < h_interval_2[1] ~ "deepskyblue3",
+                                                        value < h_interval[1] ~ "deepskyblue1",
+                                                        value > h_interval_2[2] ~ "firebrick3",
+                                                        value > h_interval[2] ~ "firebrick1",
+                                                        TRUE ~ "azure3")) %>%
+      ggplot() +
+      geom_segment(aes(x = Start, y = value, xend = End, yend = value, color = colour)) +
+      geom_errorbar(aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value, color = colour)) +
+      geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
+      ## intervals
+      geom_hline(aes(yintercept = h_interval[1], linetype = paste0(" Confidence interval ", confidence_level*100, "% : ", round(h_interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) +
+      geom_hline(aes(yintercept = h_interval[2], linetype = paste0(" Confidence interval ", confidence_level*100, "% : ", round(h_interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
+      geom_hline(aes(yintercept = h_interval_2[1], linetype = paste0(" Confidence interval ", confidence_level_2*100, "% : ", round(h_interval_2[2], 4))), color = "deepskyblue3", size = .7, show.legend = TRUE) +
+      geom_hline(aes(yintercept = h_interval_2[2], linetype = paste0(" Confidence interval ", confidence_level_2*100, "% : ", round(h_interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
+      scale_linetype_manual(values = c("dashed", "dotdash")) +
+      ## other
+      scale_colour_identity() +
+      labs(title = title,
+           x_label = "Position in the sequence",
+           y_label = y_label) +
+      theme(legend.title = element_blank(),
+            legend.position = "bottom",
+            legend.direction = "vertical")
+    
+  } else {
+    
+    differential_plot <- plot_dat %>%
+      mutate(colour = case_when(
+                        value > 0 ~ "deepskyblue3",
+                        value < 0 ~ "firebrick3",
+                        TRUE ~ "azure3")) %>%
+      ggplot() +
+      geom_segment(aes(x = Start, y = value, xend = End, yend = value, color = colour )) +
+      geom_errorbar(aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value, color = colour)) +
+      geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
+      ## other
+      labs(title = title,
+           x_label = "Position in the sequence",
+           y_label = y_label) +
+      theme(legend.position = "none")
+    
+  }
   
-  return(differential_plot)
+  if(show_tstud_confidence){
+    
+    alpha <- -log(1 - attr(diff_uptake_dat, "confidence_level"))
+    
+    diff_uptake_dat <- mutate(diff_uptake_dat, valid = log_p_value >= alpha) %>%
+      merge(plot_dat, by = c("Sequence", "Start", "End", "Med_Sequence", "Protein"))
+    
+    differential_plot <- differential_plot +
+      geom_segment(data = subset(diff_uptake_dat, !valid), aes(x = Start, y = value, xend = End, yend = value), color = "azure3") +
+      geom_errorbar(data = subset(diff_uptake_dat, !valid), aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value), color = "azure3") 
+    
+    if(!show_houde_interval) { differential_plot <- differential_plot + theme(legend.position = "none") }
+    
+  }
+  
+  return(HaDeXify(differential_plot))
   
 }
 
@@ -174,6 +235,8 @@ plot_differential <- function(diff_uptake_dat,
 plot_differential_butterfly <- function(diff_uptake_dat,
                                         theoretical = FALSE,
                                         fractional = FALSE,
+                                        show_houde_interval = FALSE,
+                                        show_tstud_confidence = FALSE,
                                         uncertainty_type = "ribbon",
                                         show_confidence_limit = FALSE,
                                         confidence_level = 0.98){
@@ -255,7 +318,7 @@ plot_differential_butterfly <- function(diff_uptake_dat,
       geom_line()
   }
   
-  if(show_confidence_limit){
+  if(show_houde_interval){
     
     t_value <- qt(c((1 - confidence_level)/2, 1-(1 - confidence_level)/2), df = 2)[2]
     x_threshold <- t_value * mean(plot_dat[["err_value"]], na.rm = TRUE)/sqrt(length(plot_dat))

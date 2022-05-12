@@ -80,8 +80,6 @@ observe({
 
 woods_plot_dat <- reactive({
   
-  # browser()
-  
   validate(need(input[["diff_state_1"]]!=input[["diff_state_2"]], "There is no difference between the same state, choose different state 2."))
   validate(need(length(unique(filter(dat(), !is.na("Modification"), Protein == input[["chosen_protein"]])[["State"]])) > 1, "Not sufficient number of states without modifications."))
   validate(need(input[["diff_state_1"]] %in% states_chosen_protein(), "The first state is not compatible with chosen protein."))
@@ -107,15 +105,38 @@ woods_plot_dat <- reactive({
   
 })
 
+##
+
+woods_p_dat <- reactive({
+  
+  create_p_diff_uptake_dataset(dat = dat(),
+                               diff_uptake_dat = woods_plot_dat(),
+                               protein = input[["chosen_protein"]],
+                               state_1 = input[["diff_state_1"]], 
+                               state_2 = input[["diff_state_2"]],
+                               # p_adjustment_method = 
+                               confidence_level = as.double(input[["confidence_level"]]),
+                               time_0 = input[["time_0"]],
+                               time_100 = input[["time_100"]],
+                               deut_part = 0.01*as.integer(input[["deut_part"]])
+                               )
+  
+})
+
 #################################
 ######### PLOT ##################
 #################################
 
 differential_plot <- reactive({
   
+  # browser()
+  
   plot_differential(diff_uptake_dat = woods_plot_dat(),
+                    diff_p_uptake_dat = woods_p_dat(),
                     theoretical = input[["theory"]],
                     fractional = input[["comp_fractional"]],
+                    show_houde_interval = input[["diff_show_houde"]],
+                    show_tstud_confidence = input[["diff_show_tstud"]],
                     confidence_level = as.double(input[["confidence_level"]]),
                     confidence_level_2 = as.double(input[["confidence_level_2"]]))
 })
