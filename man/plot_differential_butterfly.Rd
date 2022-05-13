@@ -28,6 +28,8 @@ plot_differential_butterfly(
 \item{show_tstud_confidence}{\code{logical}, determines if t-Student test validity 
 is shown.}
 
+\item{uncertainty_type}{...}
+
 \item{confidence_level}{confidence level for the test, from range [0, 1].
 Important if selected show_confidence_limit.}
 }

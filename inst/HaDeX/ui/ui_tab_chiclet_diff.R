@@ -1,16 +1,21 @@
 tab_chiclet_diff <- function() HaDeX_plotTab(
+  
   title = "Chiclet differential plot",
+  
   settingsPanel = HaDeX_plotSettingsPanel(
     chiclet_diff_general_settings(),
     chiclet_diff_state(),
     chiclet_diff_timepoints(),
+    chiclet_diff_test(),
     chiclet_diff_visualization(),
     chiclet_diff_zoom(),
     chiclet_diff_labels_adjustement()
   ),
+  
   displayPanel = HaDeX_plotDisplayPanel(
     chiclet_diff_plot_panel()
   )
+  
 )
 
 chiclet_diff_general_settings <- function() HaDeX_plotSettingsSection(
@@ -58,6 +63,23 @@ chiclet_diff_timepoints <- function() HaDeX_plotSettingsSection(
            )
     )
   )
+)
+
+chiclet_diff_test <- function() HaDeX_plotSettingsSection(
+  
+  title = "Test",
+  
+  checkboxInput_h(inputId = "chic_diff_show_houde",
+                  label = "Houde test",
+                  value = FALSE),
+  checkboxInput_h(inputId = "chic_diff_show_tstud", 
+                  label = "t-Student test", 
+                  value = FALSE),
+  
+  selectInput_h(inputId = "chic_confidence_level",
+                label = "Confidence limit:",
+                choices = c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
+                selected = 0.98)
 )
 
 chiclet_diff_visualization <- function() HaDeX_plotSettingsSection(

@@ -206,6 +206,7 @@ plot_differential <- function(diff_uptake_dat = NULL,
 #' is shown.
 #' @param confidence_level confidence level for the test, from range [0, 1].
 #' Important if selected show_confidence_limit.
+#' @param uncertainty_type ...
 #'
 #' @details Function \code{\link{plot_differential_butterfly}} generates
 #' differential butterfly plot based on provided data and parameters. On X-axis
@@ -367,10 +368,16 @@ plot_differential_butterfly <- function(diff_uptake_dat = NULL,
 #'
 #' @param diff_uptake_dat data produced by
 #' \code{\link{create_diff_uptake_dataset}} function.
+#' @param diff_p_uptake_dat ...
 #' @param theoretical \code{logical}, determines if values are theoretical.
 #' @param fractional \code{logical}, determines if values are fractional.
 #' @param show_uncertainty \code{logical}, determines if the
 #' uncertainty is shown.
+#' @param show_houde_interval \code{logical}, determines if houde interval is shown.
+#' @param show_tstud_confidence \code{logical}, determines if t-Student test validity 
+#' is shown.
+#' @param confidence_level confidence level for the test, from range [0, 1].
+#' Important if selected show_confidence_limit.
 #'
 #' @details Function \code{\link{plot_differential_chiclet}} generates
 #' chiclet differential plot based on provided data and parameters.
@@ -391,14 +398,33 @@ plot_differential_butterfly <- function(diff_uptake_dat = NULL,
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' diff_uptake_dat <- create_diff_uptake_dataset(dat)
 #' plot_differential_chiclet(diff_uptake_dat)
-#'
+#' 
+#' diff_p_uptake_dat <- create_p_diff_uptake_dataset(dat)
+#' plot_differential_chiclet(diff_p_uptake_dat = diff_p_uptake_dat, show_tstud_confidence = T)
+#' plot_differential_chiclet(diff_p_uptake_dat = diff_p_uptake_dat, show_tstud_confidence = T, show_houde_interval = T) 
+#' 
 #' @export plot_differential_chiclet
 
-plot_differential_chiclet <- function(diff_uptake_dat,
+plot_differential_chiclet <- function(diff_uptake_dat = NULL, 
+                                      diff_p_uptake_dat = NULL, 
                                       theoretical = FALSE,
                                       fractional = FALSE,
+                                      show_houde_interval = FALSE,
+                                      show_tstud_confidence = FALSE,
+                                      confidence_level = 0.98,
                                       show_uncertainty = FALSE){
   
+  if (show_tstud_confidence) {
+    
+    if(is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } else { diff_uptake_dat <- diff_p_uptake_dat }
+    
+  } else {
+    
+    if(is.null(diff_uptake_dat) & is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } 
+    
+  }
+  
+  ##
   
   if (theoretical) {
     
@@ -470,7 +496,29 @@ plot_differential_chiclet <- function(diff_uptake_dat,
     
   }
   
-  return(chiclet_differential_plot)
+  if(show_houde_interval){
+    
+    t_value <- qt(c((1 - confidence_level)/2, 1-(1 - confidence_level)/2), df = 2)[2]
+    x_threshold <- t_value * mean(plot_dat[["err_value"]], na.rm = TRUE)/sqrt(length(plot_dat))
+    
+    chiclet_differential_plot <- chiclet_differential_plot +
+      geom_tile(data = subset(plot_dat, abs(value) < x_threshold), fill = "azure3")
+    
+  }
+  
+  if(show_tstud_confidence){
+    
+    alpha <- -log(1 - confidence_level)
+    
+    diff_uptake_dat <- mutate(diff_uptake_dat, valid = log_p_value >= alpha, Exposure = as.factor(Exposure)) %>%
+      merge(plot_dat, by = c("Sequence", "Start", "End", "Exposure", "ID"))
+    
+    chiclet_differential_plot <- chiclet_differential_plot +
+      geom_tile(data = subset(diff_uptake_dat, !valid), aes(x = ID, y = Exposure), fill = "grey77")
+    
+  }
+  
+  return(HaDeXify(chiclet_differential_plot))
   
 }
 

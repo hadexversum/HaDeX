@@ -128,12 +128,12 @@ chiclet_diff_dataset <- reactive({
   validate(need(input[["chic_diff_state_1"]] %in% states_chosen_protein(), "Wait for the parameters to be loaded."))
   
   create_diff_uptake_dataset(dat(),
-                            protein = input[["chosen_protein"]],
-                            state_1 = input[["chic_diff_state_1"]],
-                            state_2 = input[["chic_diff_state_2"]],
-                            time_0 = as.numeric(input[["chic_diff_time_0"]]),
-                            time_100 = as.numeric(input[["chic_diff_time_100"]]),
-                            deut_part = as.numeric(input[["deut_part"]])/100)
+                             protein = input[["chosen_protein"]],
+                             state_1 = input[["chic_diff_state_1"]],
+                             state_2 = input[["chic_diff_state_2"]],
+                             time_0 = as.numeric(input[["chic_diff_time_0"]]),
+                             time_100 = as.numeric(input[["chic_diff_time_100"]]),
+                             deut_part = as.numeric(input[["deut_part"]])/100)
 })
 
 ##
@@ -147,15 +147,35 @@ chiclet_diff_dataset_timepoints <- reactive({
   
 })
 
+chilet_p_dif_dataset_timepoints <- reactive({
+  
+  create_p_diff_uptake_dataset(dat = dat(),
+                               diff_uptake_dat = chiclet_diff_dataset_timepoints(),
+                               protein = input[["chosen_protein"]],
+                               state_1 = input[["chic_diff_state_1"]],
+                               state_2 = input[["chic_diff_state_2"]],
+                               confidence_level = as.numeric(input[["chic_confidence_level"]]),
+                               # p_adjustment_method = input[[""]],
+                               time_0 = as.numeric(input[["chic_diff_time_0"]]),
+                               time_100 = as.numeric(input[["chic_diff_time_100"]]),
+                               deut_part = as.numeric(input[["deut_part"]])/100)
+  
+})
+
+
 #################################
 ######### PLOT ##################
 #################################
 
 chiclet_differential_plot_out <- reactive({
   
-  plot_differential_chiclet(chiclet_diff_dataset_timepoints(),
+  plot_differential_chiclet(diff_uptake_dat = chiclet_diff_dataset_timepoints(),
+                            diff_p_uptake_dat = chilet_p_dif_dataset_timepoints(),
                             theoretical = input[["chic_diff_theory"]],
                             fractional = input[["chic_diff_fractional"]],
+                            show_houde_interval = input[["chic_diff_show_houde"]],
+                            show_tstud_confidence = input[["chic_diff_show_tstud"]],
+                            confidence_level = as.numeric(input[["chic_confidence_level"]]),
                             show_uncertainty = input[["chic_diff_show_uncertainty"]]) + 
     coord_cartesian(xlim = c(input[["chic_diff_x_range"]][[1]], input[["chic_diff_x_range"]][[2]])) +
     labs(title = input[["chicletDifferential_plot_title"]],
