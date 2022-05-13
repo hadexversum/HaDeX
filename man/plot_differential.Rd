@@ -19,6 +19,8 @@ plot_differential(
 \arguments{
 \item{diff_uptake_dat}{produced by \code{\link{create_diff_uptake_dataset}} function.}
 
+\item{diff_p_uptake_dat}{...}
+
 \item{theoretical}{\code{logical}, determines if values are theoretical.}
 
 \item{fractional}{\code{logical}, determines if values are fractional.}

@@ -1,6 +1,7 @@
 #' Differential plot
 #'
 #' @param diff_uptake_dat produced by \code{\link{create_diff_uptake_dataset}} function.
+#' @param diff_p_uptake_dat ...
 #' @param theoretical \code{logical}, determines if values are theoretical.
 #' @param fractional \code{logical}, determines if values are fractional.
 #' @param show_houde_interval \code{logical}, determines if houde interval is shown.
@@ -181,8 +182,8 @@ plot_differential <- function(diff_uptake_dat = NULL,
       merge(plot_dat, by = c("Sequence", "Start", "End", "Med_Sequence", "Protein"))
     
     differential_plot <- differential_plot +
-      geom_segment(data = subset(diff_uptake_dat, !valid), aes(x = Start, y = value, xend = End, yend = value), color = "azure3") +
-      geom_errorbar(data = subset(diff_uptake_dat, !valid), aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value), color = "azure3") 
+      geom_segment(data = subset(diff_uptake_dat, !valid), aes(x = Start, y = value, xend = End, yend = value), color = "grey77") +
+      geom_errorbar(data = subset(diff_uptake_dat, !valid), aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value), color = "grey77") 
     
     if(!show_houde_interval) { differential_plot <- differential_plot + theme(legend.position = "none") }
     
@@ -200,10 +201,9 @@ plot_differential <- function(diff_uptake_dat = NULL,
 #' \code{\link{create_diff_uptake_dataset}} function.
 #' @param theoretical \code{logical}, determines if values are theoretical
 #' @param fractional \code{logical}, determines if values are fractional
-#' @param uncertainty_type type of presenting uncertainty, possible values:
-#' "ribbon", "bars" or "bars + line".
-#' @param show_confidence_limit \code{logical}, determines if confidence limits
-#' are visible on the plot.
+#' @param show_houde_interval \code{logical}, determines if houde interval is shown.
+#' @param show_tstud_confidence \code{logical}, determines if t-Student test validity 
+#' is shown.
 #' @param confidence_level confidence level for the test, from range [0, 1].
 #' Important if selected show_confidence_limit.
 #'
@@ -228,20 +228,37 @@ plot_differential <- function(diff_uptake_dat = NULL,
 #' @examples
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' diff_uptake_dat <- create_diff_uptake_dataset(dat)
-#' plot_differential_butterfly(diff_uptake_dat)
-#'
+#' plot_differential_butterfly(diff_uptake_dat = diff_uptake_dat)
+#' 
+#' diff_p_uptake_dat <- create_p_diff_uptake_dataset(dat)
+#' plot_differential_butterfly(diff_p_uptake_dat = diff_p_uptake_dat, show_tstud_confidence = TRUE)
+#' 
 #' @export plot_differential_butterfly
 
-plot_differential_butterfly <- function(diff_uptake_dat,
+plot_differential_butterfly <- function(diff_uptake_dat = NULL,
+                                        diff_p_uptake_dat = NULL, 
                                         theoretical = FALSE,
                                         fractional = FALSE,
                                         show_houde_interval = FALSE,
                                         show_tstud_confidence = FALSE,
                                         uncertainty_type = "ribbon",
-                                        show_confidence_limit = FALSE,
                                         confidence_level = 0.98){
   
   uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars", "bars + line"))
+  
+  ## conditions
+  
+  if (show_tstud_confidence) {
+    
+    if(is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } else { diff_uptake_dat <- diff_p_uptake_dat }
+    
+  } else {
+    
+    if(is.null(diff_uptake_dat) & is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } 
+      
+  }
+  
+  ##
   
   if (theoretical) {
     
@@ -293,9 +310,8 @@ plot_differential_butterfly <- function(diff_uptake_dat,
                          Start = diff_uptake_dat[["Start"]],
                          End = diff_uptake_dat[["End"]])
   
-  butterfly_differential_plot <- ggplot(plot_dat, aes(x = ID, y = value, color = Exposure)) +
-    geom_point(aes(group = Exposure, color = Exposure)) +
-    coord_cartesian(ylim = c(-.5, 1)) +
+  butterfly_differential_plot <- ggplot() +
+    geom_point(data = plot_dat, aes(x = ID, y = value, group = Exposure, color = Exposure)) +
     labs(title = title,
          x = "Peptide ID",
          y = y_label) +
@@ -304,17 +320,17 @@ plot_differential_butterfly <- function(diff_uptake_dat,
   if(uncertainty_type == "ribbon"){
     
     butterfly_differential_plot <- butterfly_differential_plot +
-      geom_ribbon(aes(x = ID, ymin = value - err_value, ymax = value + err_value, fill = Exposure), alpha = 0.5, size = 0, linetype = "blank")
+      geom_ribbon(data = plot_dat, aes(x = ID, ymin = value - err_value, ymax = value + err_value, fill = Exposure), alpha = 0.5, size = 0, linetype = "blank")
     
   } else if (uncertainty_type == "bars"){
     
     butterfly_differential_plot <- butterfly_differential_plot +
-      geom_errorbar(aes(x = ID, ymin = value - err_value, ymax = value + err_value, color = Exposure), width = 0.25, alpha = 0.5)
+      geom_errorbar(data = plot_dat, aes(x = ID, ymin = value - err_value, ymax = value + err_value, color = Exposure), width = 0.25, alpha = 0.5)
     
   } else if (uncertainty_type == "bars + line"){
     
     butterfly_differential_plot <- butterfly_differential_plot +
-      geom_errorbar(aes(x = ID, ymin = value - err_value, ymax = value + err_value, color = Exposure), width = 0.25, alpha = 0.5) +
+      geom_errorbar(data = plot_dat, aes(x = ID, ymin = value - err_value, ymax = value + err_value, color = Exposure), width = 0.25, alpha = 0.5) +
       geom_line()
   }
   
@@ -325,10 +341,26 @@ plot_differential_butterfly <- function(diff_uptake_dat,
     
     butterfly_differential_plot <- butterfly_differential_plot +
       geom_hline(aes(yintercept = x_threshold), linetype = "dashed", color = "black", size = .7) +
-      geom_hline(aes(yintercept = -x_threshold), linetype = "dashed", color = "black", size = .7)
+      geom_hline(aes(yintercept = -x_threshold), linetype = "dashed", color = "black", size = .7) 
     
   }
+  
+  if(show_tstud_confidence){
+    
+    alpha <- -log(1 - attr(diff_uptake_dat, "confidence_level"))
+    
+    diff_uptake_dat <- mutate(diff_uptake_dat, valid = log_p_value >= alpha) %>%
+      merge(plot_dat, by = c("Sequence", "Start", "End", "Exposure", "ID"))
+    
+    butterfly_differential_plot <- butterfly_differential_plot +
+      geom_point(data = subset(diff_uptake_dat, !valid), aes(x = ID, y = value, group = Exposure), color = "grey77", size = 2)
+    
+  }
+  
+  # butterfly_differential_plot <- butterfly_differential_plot + labs(color = "Exposure")
+  
   return(HaDeXify(butterfly_differential_plot))
+  
 }
 
 #' Differential chiclet plot

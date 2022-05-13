@@ -5,11 +5,13 @@
 \title{Differential butterfly plot}
 \usage{
 plot_differential_butterfly(
-  diff_uptake_dat,
+  diff_uptake_dat = NULL,
+  diff_p_uptake_dat = NULL,
   theoretical = FALSE,
   fractional = FALSE,
+  show_houde_interval = FALSE,
+  show_tstud_confidence = FALSE,
   uncertainty_type = "ribbon",
-  show_confidence_limit = FALSE,
   confidence_level = 0.98
 )
 }
@@ -21,11 +23,10 @@ plot_differential_butterfly(
 
 \item{fractional}{\code{logical}, determines if values are fractional}
 
-\item{uncertainty_type}{type of presenting uncertainty, possible values:
-"ribbon", "bars" or "bars + line".}
+\item{show_houde_interval}{\code{logical}, determines if houde interval is shown.}
 
-\item{show_confidence_limit}{\code{logical}, determines if confidence limits
-are visible on the plot.}
+\item{show_tstud_confidence}{\code{logical}, determines if t-Student test validity 
+is shown.}
 
 \item{confidence_level}{confidence level for the test, from range [0, 1].
 Important if selected show_confidence_limit.}
@@ -48,7 +49,10 @@ This plot is visible in GUI.
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 diff_uptake_dat <- create_diff_uptake_dataset(dat)
-plot_differential_butterfly(diff_uptake_dat)
+plot_differential_butterfly(diff_uptake_dat = diff_uptake_dat)
+
+diff_p_uptake_dat <- create_p_diff_uptake_dataset(dat)
+plot_differential_butterfly(diff_p_uptake_dat = diff_p_uptake_dat, show_tstud_confidence = TRUE)
 
 }
 \references{
