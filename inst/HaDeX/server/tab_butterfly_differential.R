@@ -144,25 +144,6 @@ observe({
 
 })
 
-##
-
-observe({
-
-  if(input[["butt_diff_show_test"]]){
-    show(id = "butt_diff_confidence_level_part")
-  }
-
-})
-
-##
-
-observe({
-
-  if(!input[["butt_diff_show_test"]]){
-    hide(id = "butt_diff_confidence_level_part")
-  }
-
-})
 
 #################################
 ######### DATASET ###############
@@ -194,17 +175,39 @@ butt_diff_dat <- reactive({
 
 })
 
+##
+
+butt_p_diff_dat <- reactive({
+  
+  
+  create_p_diff_uptake_dataset(dat = dat(),
+                               diff_uptake_dat = butt_diff_dat(),
+                               protein = input[["chosen_protein"]],
+                               state_1 = input[["butt_diff_state_1"]],
+                               state_2 = input[["butt_diff_state_2"]],
+                               confidence_level = as.numeric(input[["butt_diff_confidence_level"]]),
+                               # p_adjustment_method = input[[""]],
+                               time_0 = as.numeric(input[["butt_diff_time_0"]]),
+                               time_100 = as.numeric(input[["butt_diff_time_100"]]),
+                               deut_part = as.numeric(input[["deut_part"]])/100)
+  
+})
+
 #################################
 ######### PLOT ##################
 #################################
 
 butterfly_differential_plot <- reactive({
 
-  plot_differential_butterfly(butt_diff_dat(),
+  # browser()
+  
+  plot_differential_butterfly(diff_uptake_dat = butt_diff_dat(),
+                              diff_p_uptake_dat = butt_p_diff_dat(),
                               theoretical = input[["butt_diff_theory"]],
                               fractional = input[["butt_diff_fractional"]],
                               uncertainty_type = input[["butt_diff_uncertainty"]],
-                              show_confidence_limit = input[["butt_diff_show_test"]],
+                              show_houde_interval = input[["butt_diff_show_houde"]],
+                              show_tstud_confidence = input[["butt_diff_show_tstud"]],
                               confidence_level = as.numeric(input[["butt_diff_confidence_level"]]))
 })
 

@@ -176,8 +176,8 @@ diff_kin_dat <- reactive({
   
   validate(need(input[["diff_kin_state_1"]]!=input[["diff_kin_state_2"]], "Choose two different states for comparison!"))
   
-  validate(need(!input[["diff_kin_houde"]], "This feature will be available soon!"))
-  validate(need(!input[["diff_kin_tstud"]], "This feature will be available soon!"))
+  # validate(need(!input[["diff_kin_houde"]], "This feature will be available soon!"))
+  # validate(need(!input[["diff_kin_tstud"]], "This feature will be available soon!"))
   
   times_from_file <- unique(round(dat()[["Exposure"]], 3))
   
@@ -209,19 +209,21 @@ diff_kin_dat <- reactive({
 })
 
 
+
 #################################
 ######### PLOT ##################
 #################################
 
 diff_kin_plot <- reactive({
   
-  plot_differential_uptake_curve(diff_uptake_dat = diff_kin_dat(),
+  plot_differential_uptake_curve(diff_p_uptake_dat = diff_kin_dat(),
+                                 sequence = diff_peptide_list()[input[["diff_peptide_list_data_rows_selected"]], "Sequence"],
                                  theoretical = input[["diff_kin_theory"]],
                                  fractional = input[["diff_kin_fractional"]],
                                  uncertainty_type = input[["diff_kin_uncertainty"]],
                                  log_x = input[["diff_kin_log_x"]],
-                                 show_houde_interval = input[["diff_kin_houde"]],
-                                 show_tstud_confidence = input[["diff_kin_tstud"]])
+                                 show_houde_interval = input[["diff_kin_show_houde"]],
+                                 show_tstud_confidence = input[["diff_kin_show_tstud"]])
 })
 
 ##

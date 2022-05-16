@@ -1,5 +1,7 @@
 tab_butterfly_diff <- function() HaDeX_plotTab(
+  
   title = "Butterfly differential plot",
+  
   settingsPanel = HaDeX_plotSettingsPanel(
     butterfly_diff_general_settings(),
     butterfly_diff_state(),
@@ -9,6 +11,7 @@ tab_butterfly_diff <- function() HaDeX_plotTab(
     butterfly_diff_zoom(),
     butterfly_diff_labels_adjustement()
   ),
+  
   displayPanel = HaDeX_plotDisplayPanel(
     butterfly_diff_plot_panel(),
     butterfly_diff_debug()
@@ -16,16 +19,20 @@ tab_butterfly_diff <- function() HaDeX_plotTab(
 )
 
 butterfly_diff_general_settings <- function() HaDeX_plotSettingsSection(
+  
   checkboxInput_h(inputId = "butt_diff_theory",
                   label = "Theoretical calculations",
                   value = FALSE),
+  
   checkboxInput_h(inputId = "butt_diff_fractional",
                   label = "Fractional values",
                   value = FALSE)
 )
 
 butterfly_diff_state <- function() HaDeX_plotSettingsSection(
+  
   title = "States",
+  
   p("Differential plot presents the uptake difference between State 1 and State 2."),
   splitLayout(selectInput_h(inputId = "butt_diff_state_1",
                             label = "State 1",
@@ -37,7 +44,9 @@ butterfly_diff_state <- function() HaDeX_plotSettingsSection(
 )
 
 butterfly_diff_timepoints <- function() HaDeX_plotSettingsSection(
+  
   title = "Timepoints",
+  
   fluidRow(
     column(width = 6,
            checkboxGroupInput_h(inputId = "butt_diff_timepoints",
@@ -64,34 +73,47 @@ butterfly_diff_timepoints <- function() HaDeX_plotSettingsSection(
 )
 
 butterfly_diff_test <- function() HaDeX_plotSettingsSection(
-  # title = "Test",
-  # selectInput_h(inputId = "butt_diff_test_type",
-  #               label = "Select test type:",
-  #               choices = c("Houde test for time point" = 1, "Houde test all time points" = 2, "semi-parametric test" = 3),
-  #               selected = 1),
-)
-
-butterfly_diff_visualization <- function() HaDeX_plotSettingsSection(
-  title = "Visualization",
-  selectInput_h(inputId = "butt_diff_uncertainty",
-                label = "Show uncertainty as:",
-                choices = c("ribbon", "bars", "bars + line"),
-                selected = "ribbon"),
-  splitLayout(
-    checkboxInput_h(inputId = "butt_diff_show_test",
-                    label = "Show confidence limit",
-                    value = FALSE),
-    div(id = "butt_diff_confidence_level_part",
+  
+  title = "Test",
+  
+  fluidPage(
+    fluidRow(
+      column(
+        width = 6, 
+        checkboxInput_h(inputId = "butt_diff_show_houde",
+                        label = "Houde test",
+                        value = FALSE),
+        checkboxInput_h(inputId = "butt_diff_show_tstud", 
+                        label = "t-Student test", 
+                        value = FALSE)
+      ),
+      column(
+        width = 6, 
         selectInput_h(inputId = "butt_diff_confidence_level",
                       label = "Select confidence level:",
                       choices = c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
                       selected = 0.98)
+      )
     )
   )
+
+)
+
+butterfly_diff_visualization <- function() HaDeX_plotSettingsSection(
+  
+  title = "Visualization",
+  
+  selectInput_h(inputId = "butt_diff_uncertainty",
+                label = "Show uncertainty as:",
+                choices = c("ribbon", "bars", "bars + line"),
+                selected = "ribbon"),
+ 
 )
 
 butterfly_diff_zoom <- function() HaDeX_plotSettingsSection(
+  
   title = "Zoom",
+  
   sliderInput(inputId = "butt_diff_x_range",
               label = "Choose x range for butterfly plot:",
               min = 1,
@@ -107,10 +129,12 @@ butterfly_diff_zoom <- function() HaDeX_plotSettingsSection(
 )
 
 butterfly_diff_labels_adjustement <- function() HaDeX_plotSettingsSection(
+  
   HaDeX_collapseButton(
     title = "Adjust labels",
     target = "#HaDeX-butterfly-diff-labels-adjusting-panel"
   ),
+  
   HaDeX_collapsablePanel(
     id = "HaDeX-butterfly-diff-labels-adjusting-panel",
     fluidRow(
@@ -143,12 +167,14 @@ butterfly_diff_labels_adjustement <- function() HaDeX_plotSettingsSection(
 )
 
 butterfly_diff_plot_panel <- function() tabsetPanel(
+  
   tabPanel("Butterfly differential plot",
            plotOutput_h("butterflyDifferentialPlot", hover = hoverOpts("butterflyDifferentialPlot_hover", delay = 10, delayType = "debounce")),
            p("The empty values (e.q. `Frac DU`) mean there was not sufficient data for this peptide."),
            downloadButton("butterflyDifferentialPlot_download_button",
                           "Save chart (.svg)")
   ),
+  
   tabPanel("Data",
            DT::dataTableOutput("butterflyDifferentialPlot_data"),
            p(

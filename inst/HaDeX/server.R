@@ -255,8 +255,8 @@ server <- function(input, output, session) {
   ## mark for modifications
 
   has_modifications <- reactive({
-
-    any(!is.na(dat_in()[["Modification"]]))
+    
+    attr(dat_in(), "has_modification")
 
   })
 

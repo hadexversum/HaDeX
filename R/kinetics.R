@@ -552,9 +552,27 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
   
   states <- paste0(attr(diff_uptake_dat, "state_1"), "-", attr(diff_uptake_dat, "state_2"))
   
-  if(is.null(diff_uptake_dat)) { stop("Please, provide the neccessary data.") } else { diff_uptake_dat <- filter(diff_uptake_dat, Sequence == sequence) }
+  ##
   
-  if(!is.null(diff_p_uptake_dat)) { diff_p_uptake_dat <- filter(diff_p_uptake_dat, Sequence == sequence) }
+  if (show_tstud_confidence) {
+    
+    if(is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } else { diff_uptake_dat <-  filter(diff_p_uptake_dat, Sequence == sequence) }
+  
+  } else {
+      
+    if(is.null(diff_uptake_dat) & is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } else  { 
+      
+      if(is.null(diff_uptake_dat)) {diff_uptake_dat <- filter(diff_p_uptake_dat, Sequence == sequence) } else {
+        
+        diff_uptake_dat <- filter(diff_uptake_dat, Sequence == sequence)
+        
+      }
+    
+    }
+    
+  }
+  
+  ##
   
   if (theoretical){
     
@@ -635,10 +653,8 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
   
   if(show_houde_interval){
     
-    if(is.null(diff_p_uptake_dat)){ stop("Please provide neccessary data to plot the intervals.") }
-      
-    houde_intervals <- diff_p_uptake_dat %>%
-      calculate_confidence_limit_values(confidence_level = attr(diff_p_uptake_dat, "confidence_level"),
+    houde_intervals <- diff_uptake_dat %>%
+      calculate_confidence_limit_values(confidence_level = attr(diff_uptake_dat, "confidence_level"),
                                         theoretical = theoretical,
                                         fractional = fractional)
     
@@ -649,15 +665,13 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
   
   if(show_tstud_confidence){
     
-    if(is.null(diff_p_uptake_dat)){ stop("Please provide neccessary data to plot the intervals.") }
+    alpha <- -log(1 - attr(diff_uptake_dat, "confidence_level"))
     
-    alpha <- -log(1 - attr(diff_p_uptake_dat, "confidence_level"))
-    
-    diff_p_uptake_dat <- mutate(diff_p_uptake_dat, valid = log_p_value >= alpha) %>%
+    diff_uptake_dat <- mutate(diff_uptake_dat, valid = log_p_value >= alpha) %>%
       merge(plot_dat, by = c("Sequence", "Start", "End", "Exposure"))
     
     diff_kin_plot <- diff_kin_plot +
-      geom_point(data = subset(diff_p_uptake_dat, !valid), aes(x = Exposure, y = value), shape = 13, size = 2)
+      geom_point(data = subset(diff_uptake_dat, !valid), aes(x = Exposure, y = value), shape = 13, size = 2)
     
   }
   

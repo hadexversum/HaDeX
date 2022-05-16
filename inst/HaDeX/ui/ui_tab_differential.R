@@ -3,21 +3,26 @@ tab_woods <- function() HaDeX_plotTab(
   title = "Comparison and Woods plot",
   
   settingsPanel = HaDeX_plotSettingsPanel(
-    woods_general_settings(),
-    woods_comparison_plot_parameters(),
-    woods_woods_plot_parameters(),
-    woods_zoom(),
-    woods_labels_adjustement()
+    diff_comp_general_settings(),
+    comp_plot_parameters(),
+    diff_plot_parameters(),
+    diff_test(),
+    diff_comp_zoom(),
+    diff_comp_labels_adjustement()
   ),
   
   displayPanel = HaDeX_plotDisplayPanel(
-    woods_comparison_plot_panel(),
-    woods_debug_panel(),
-    woods_woods_plot_panel()
+    comp_plot_panel(),
+    comp_debug_panel(),
+    diff_plot_panel(),
+    diff_debug_panel()
   )
 )
 
-woods_general_settings <- function() HaDeX_plotSettingsSection(
+##
+
+
+diff_comp_general_settings <- function() HaDeX_plotSettingsSection(
   
   checkboxInput_h(inputId = "theory",
                   label = "Theoretical calculations",
@@ -27,7 +32,7 @@ woods_general_settings <- function() HaDeX_plotSettingsSection(
                   value = FALSE)
 )
 
-woods_comparison_plot_parameters <- function() HaDeX_plotSettingsSection(
+comp_plot_parameters <- function() HaDeX_plotSettingsSection(
   
   title = "Comparison plot parameters",
   
@@ -77,7 +82,7 @@ woods_comparison_plot_parameters <- function() HaDeX_plotSettingsSection(
   )
 )
 
-woods_woods_plot_parameters <- function() HaDeX_plotSettingsSection(
+diff_plot_parameters <- function() HaDeX_plotSettingsSection(
   
   title = "Woods plot parameters",
   
@@ -89,7 +94,20 @@ woods_woods_plot_parameters <- function() HaDeX_plotSettingsSection(
     selectInput_h(inputId = "diff_state_2",
                   label = "State 2",
                   choices = c("CD160", "CD160VEM"))
-  ),
+  )
+)
+
+diff_test <- function() HaDeX_plotSettingsSection(
+    
+  title = "Test",
+    
+  checkboxInput_h(inputId = "diff_show_houde",
+                  label = "Houde test",
+                  value = TRUE),
+  checkboxInput_h(inputId = "diff_show_tstud", 
+                  label = "t-Student test", 
+                  value = FALSE),
+    
   splitLayout(
     selectInput_h(inputId = "confidence_level",
                   label = "Confidence limit 1:",
@@ -100,14 +118,10 @@ woods_woods_plot_parameters <- function() HaDeX_plotSettingsSection(
                   choices = c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
                   selected = 0.99)
   )
-  # ,
-  # selectInput_h(inputId = "woods_diff_test_type",
-  #               label = "Select test type:",
-  #               choices = c("Houde test for time point" = 1, "Houde test all time points" = 2, "semi-parametric test" = 3),
-  #               selected = 1)
+
 )
 
-woods_zoom <- function() HaDeX_plotSettingsSection(
+diff_comp_zoom <- function() HaDeX_plotSettingsSection(
   
   title = "Zoom",
   
@@ -133,7 +147,7 @@ woods_zoom <- function() HaDeX_plotSettingsSection(
   ),
 )
 
-woods_labels_adjustement <- function() HaDeX_plotSettingsSection(
+diff_comp_labels_adjustement <- function() HaDeX_plotSettingsSection(
   
   HaDeX_collapseButton(
     title = "Adjust labels",
@@ -202,7 +216,7 @@ woods_labels_adjustement <- function() HaDeX_plotSettingsSection(
   )
 )
 
-woods_comparison_plot_panel <- function() tabsetPanel(
+comp_plot_panel <- function() tabsetPanel(
   
   tabPanel("Comparison plot",
            plotOutput_h("comparisonPlot", hover = hoverOpts("comparisonPlot_hover", delay = 10, delayType = "debounce")),
@@ -218,15 +232,14 @@ woods_comparison_plot_panel <- function() tabsetPanel(
   )
 )
 
-woods_debug_panel <- function() uiOutput("comparisonPlot_debug")
+comp_debug_panel <- function() uiOutput("comparisonPlot_debug")
 
-woods_woods_plot_panel <- function() tabsetPanel(
+diff_plot_panel <- function() tabsetPanel(
   
   tabPanel("Woods plot",
            br(),
            div(style = "position:relative",
-               plotOutput_h("differentialPlot", hover = hoverOpts("differentialPlot_hover", delay = 10, delayType = "debounce")),
-               uiOutput("differentialPlot_debug")),
+               plotOutput_h("differentialPlot", hover = hoverOpts("differentialPlot_hover", delay = 10, delayType = "debounce"))),
            downloadButton("differentialPlot_download_button",
                           "Save chart (.svg)")),
   
@@ -238,3 +251,5 @@ woods_woods_plot_panel <- function() tabsetPanel(
            )
   )
 )
+
+diff_debug_panel <- function() uiOutput("differentialPlot_debug")
