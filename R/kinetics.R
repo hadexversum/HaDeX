@@ -548,6 +548,8 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
                                            show_houde_interval = FALSE,
                                            show_tstud_confidence = FALSE){
   
+  uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars", "bars + line"))
+  
   if(is.null(sequence)){ sequence <- diff_uptake_dat[["Sequence"]][1] }
   
   states <- paste0(attr(diff_uptake_dat, "state_1"), "-", attr(diff_uptake_dat, "state_2"))
@@ -639,13 +641,13 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
   } else if (uncertainty_type == "bars") {
     
     diff_kin_plot <- diff_kin_plot +
-      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = states),
+      geom_errorbar(aes(x = Exposure, ymin = value - err_value, ymax = value + err_value, color = states),
                     width = err_width)
     
   } else if (uncertainty_type == "bars + line"){
     
     diff_kin_plot <- diff_kin_plot +
-      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = states),
+      geom_errorbar(aes(x = Exposure, ymin = value - err_value, ymax = value + err_value, color = states),
                     width = err_width) + 
       geom_line(aes(color = Sequence))
     

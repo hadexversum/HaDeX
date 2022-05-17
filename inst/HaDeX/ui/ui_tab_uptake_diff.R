@@ -102,7 +102,12 @@ diff_uptake_test <- function() HaDeX_plotSettingsSection(
                   value = FALSE),
   checkboxInput_h(inputId = "diff_kin_show_tstud", 
                   label = "t-Student test", 
-                  value = FALSE)
+                  value = FALSE),
+  selectInput_h(inputId = "diff_kin_confidence_level",
+                label = "Confidence limit:",
+                choices = c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
+                selected = 0.98)
+  
 )
 
 ##

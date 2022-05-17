@@ -202,7 +202,7 @@ diff_kin_dat <- reactive({
                                state_1 = input[["diff_kin_state_1"]],
                                state_2 = input[["diff_kin_state_2"]],
                                # p_adjustment_method = "none",
-                               # confidence_level = 0.98,
+                               confidence_level = as.numeric(input[["diff_kin_confidence_level"]]),
                                time_0 = v_time_0,
                                time_100 = v_time_100,
                                deut_part = as.numeric(input[["deut_part"]])/100)
