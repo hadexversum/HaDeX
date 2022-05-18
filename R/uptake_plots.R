@@ -80,7 +80,7 @@ plot_state_comparison <- function(dat,
                          value = dat[[value]],
                          err_value = dat[[err_value]])
   
-  ggplot(data = plot_dat) +
+  state_comp_plot <- ggplot(data = plot_dat) +
     geom_segment(data = plot_dat, aes(x = Start, y = value, xend = End, yend = value, color = State)) +
     geom_errorbar(data = plot_dat, aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value, color = State)) +
     labs(title = title,
@@ -88,6 +88,8 @@ plot_state_comparison <- function(dat,
          y = y_label) +
     theme(legend.position = "bottom",
           legend.title = element_blank())
+  
+  return(HaDeXify(state_comp_plot))
   
 }
 
@@ -201,7 +203,7 @@ plot_butterfly <- function(butterfly_dat,
     
   }
   
-  return(butterfly_plot)
+  return(HaDeXify(butterfly_plot))
   
 }
 
@@ -312,6 +314,6 @@ plot_chiclet <- function(chiclet_dat,
     
   } 
   
-  return(chiclet_plot)
+  return(HaDeXify(chiclet_plot))
   
 }

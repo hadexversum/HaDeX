@@ -8,6 +8,12 @@ observe({
                     inputId = "butt_state",
                     choices = states_chosen_protein(),
                     selected = states_chosen_protein()[1])
+
+})
+
+##
+
+observe({
   
   if(input[["butt_fractional"]]){
     
@@ -34,11 +40,30 @@ observe({
                     inputId = "butt_time_0",
                     choices = times_from_file()[times_from_file() < 99999],
                     selected = min(times_from_file()[times_from_file() > 0]))
+})
+
+##
+
+observe({
   
   updateSelectInput(session,
                     inputId = "butt_time_100",
                     choices = times_with_control(),
                     selected = max(times_with_control()[times_with_control() < 99999]))
+})
+
+##
+
+observe({
+  
+  max_x <- max(butterfly_dataset()[["ID"]])
+  min_x <- min(butterfly_dataset()[["ID"]])
+  
+  updateSliderInput(session,
+                    inputId = "butt_x_range",
+                    min = min_x,
+                    max = max_x,
+                    value = c(min_x, max_x))
 })
 
 ##
@@ -55,15 +80,6 @@ observe({
     max_y <- ceiling(max(butterfly_dataset()[["deut_uptake"]], butterfly_dataset()[["theo_deut_uptake"]], na.rm = TRUE)) + 1
     min_y <- floor(min(butterfly_dataset()[["deut_uptake"]], butterfly_dataset()[["theo_deut_uptake"]], na.rm = TRUE)) - 1
   }
-  
-  max_x <- max(butterfly_dataset()[["ID"]])
-  min_x <- min(butterfly_dataset()[["ID"]])
-  
-  updateSliderInput(session,
-                    inputId = "butt_x_range",
-                    min = min_x,
-                    max = max_x,
-                    value = c(min_x, max_x))
   
   updateSliderInput(session,
                     inputId = "butt_y_range",

@@ -34,6 +34,11 @@ observe({
                     inputId = "chic_time_0",
                     choices = times_from_file()[times_from_file() < 99999],
                     selected = min(times_from_file()[times_from_file() > 0]))
+})
+
+##
+
+observe({
   
   updateSelectInput(session,
                     inputId = "chic_time_100",

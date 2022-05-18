@@ -37,7 +37,7 @@ plot_coverage <- function(dat,
                           protein = dat[["Protein"]][1],
                           states = dat[["State"]][1]){
   
-  dat %>%
+  cov_plot <- dat %>%
     filter(Protein == protein) %>%
     select(Start, End, State) %>%
     filter(State %in% states) %>%
@@ -53,5 +53,7 @@ plot_coverage <- function(dat,
          y = "") +
     theme(axis.ticks.y = element_blank(),
           axis.text.y = element_blank())
+  
+  return(HaDeXify(cov_plot))
   
 }

@@ -39,6 +39,12 @@ observe({
                     input[["theory"]] ~ paste0("Theoretical deuterium uptake difference in ", input[["time_t"]], " min between ", gsub("_", " ", input[["diff_state_1"]]), " and ", gsub("_", " ", input[["diff_state_2"]]), " for ", input[["chosen_protein"]]),
                     !input[["theory"]] ~ paste0("Deuterium uptake difference in ", input[["time_t"]], " min between ", gsub("_", " ", input[["diff_state_1"]]), " and ", gsub("_", " ", input[["diff_state_2"]]), " for ", input[["chosen_protein"]])
                   ))
+
+})
+
+##
+
+observe({
   
   updateTextInput(session,
                   inputId = "woods_plot_y_label",
@@ -52,18 +58,25 @@ observe({
 
 observe({
   
-  
   updateSelectInput(session,
                     inputId = "diff_state_1",
                     choices = states_chosen_protein(),
                     selected = states_chosen_protein()[1])
+})
+
+##
+
+observe({
   
   updateSelectInput(session,
                     inputId = "diff_state_2",
                     choices = states_chosen_protein(),
                     selected = states_chosen_protein()[length(states_chosen_protein())])
-  
-  
+})
+
+##
+
+observe({  
   
   updateSelectInput(session,
                     inputId = "confidence_level_2",

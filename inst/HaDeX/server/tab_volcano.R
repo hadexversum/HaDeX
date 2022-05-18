@@ -8,6 +8,11 @@ observeEvent(input[["chosen_protein"]], {
                     inputId = "vol_state_1",
                     choices = states_chosen_protein(),
                     selected = states_chosen_protein()[1])
+})
+
+##
+  
+observeEvent(input[["chosen_protein"]], { 
   
   updateSelectInput(session, 
                     inputId = "vol_state_2",
@@ -15,6 +20,8 @@ observeEvent(input[["chosen_protein"]], {
                     selected = states_chosen_protein()[length(states_chosen_protein())])
   
 })
+
+##
 
 observe({
   
@@ -24,11 +31,22 @@ observe({
                     value = c(1, max_range())
                     
   )
+})
+
+##
+
+observe({
   
   updateTextInput(session, 
                   inputId = "volcano_plot_title",
                   value = paste0("Deuterium uptake difference between ", input[["vol_state_1"]], " and ", input[["vol_state_2"]])
   )
+  
+})
+
+##
+
+observe({
   
   updateCheckboxGroupInput(session,
                            inputId = "vol_timepoints",
@@ -119,6 +137,11 @@ observe({
                     max = max_x + 2,
                     min = -max_x - 2,
                     value = c(-max_x, max_x))
+})
+
+##
+
+observe({
   
   max_y <- ceiling(max(volcano_dataset()[["log_p_value"]], na.rm = TRUE)) 
   

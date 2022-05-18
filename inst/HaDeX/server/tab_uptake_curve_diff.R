@@ -4,13 +4,18 @@
 
 observe({
   
-  tmp <- sort(unique(round(dat()[["Exposure"]], 3)))
-  choose_time_100 <- setNames(tmp, c(head(tmp, -1), "chosen control"))
-  
   updateSelectInput(session,
                     inputId = "diff_kin_time_0",
                     choices = times_from_file()[times_from_file() < 99999],
                     selected = min(times_from_file()[times_from_file() > 0]))
+})
+
+##
+
+observe({
+  
+  tmp <- sort(unique(round(dat()[["Exposure"]], 3)))
+  choose_time_100 <- setNames(tmp, c(head(tmp, -1), "chosen control"))
   
   if(!has_modifications()){
     
@@ -31,6 +36,7 @@ observe({
   
 })
 
+##
 
 observe({
   
@@ -38,6 +44,11 @@ observe({
                     inputId = "diff_kin_state_1",
                     choices = states_chosen_protein(),
                     selected = states_chosen_protein()[1])
+})
+
+##
+
+observe({
   
   updateSelectInput(session,
                     inputId = "diff_kin_state_2",
@@ -57,6 +68,12 @@ observe({
                     input[["kin_theory"]] ~ paste0("Theoretical differential uptake curve for chosen peptides for ", input[["chosen_protein"]]),
                     !input[["kin_theory"]]  ~ paste0("Differential uptake curve for chosen peptides for ", input[["chosen_protein"]])
                   ))
+
+})
+
+##
+
+observe({
   
   updateTextInput(session,
                   inputId = "diff_kin_plot_y_label",

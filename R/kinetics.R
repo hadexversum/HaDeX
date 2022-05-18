@@ -500,7 +500,7 @@ plot_kinetics <- function(kin_dat,
     
   }
   
-  kin_plot
+  return(HaDeXify(kin_plot))
 }
 
 #' Plot differential uptake curve
@@ -684,6 +684,6 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
     
   }
   
-  diff_kin_plot
+  return(HaDeXify(diff_kin_plot))
   
 }

@@ -73,7 +73,12 @@ observe({
                     input[["theory"]] ~ paste0("Theoretical deuterium uptake in ", input[["time_t"]], " min for ", input[["chosen_protein"]]),
                     !input[["theory"]]  ~ paste0("Deuterium uptake in ", input[["time_t"]], " min for ", input[["chosen_protein"]])
                   ))
+})
 
+##
+
+observe({
+  
   updateTextInput(session,
                   inputId = "comparison_plot_y_label",
                   value = case_when(
@@ -149,7 +154,12 @@ observe({
                     inputId = "plot_range",
                     max = max_range(),
                     value = c(1, max_range()))
+})
 
+##
+
+observe({
+  
   updateSliderInput(session,
                     inputId = "plot_x_range",
                     max = max_range(),
@@ -207,25 +217,6 @@ comparison_plot_colors <- reactive({
 ##
 
 output[["states_colors"]] <- renderUI({
-
-  # colorInput <- function(inputId, label, value = "", width = NULL, placeholder = NULL) {
-  #   '%BAND%' <- function (x, y) {
-  #     if (!is.null(x) && !is.na(x))
-  #       if (!is.null(y) && !is.na(y))
-  #         return(y)
-  #     return(NULL)
-  #   }
-  #   value <- restoreInput(id = inputId, default = value)
-  #   if(!is.null(value))
-  #     div(class = "form-group shiny-input-container",
-  #         style = paste(if (value != "") paste0("background-color=: ", validateCssUnit(width), ";"),
-  #                       if (!is.null(width)) paste0("width: ", validateCssUnit(width), ";")
-  #         ),
-  #         label %BAND%
-  #         tags$label(label, `for` = inputId), tags$input(id = inputId,
-  #                                                        type = "text", class = "form-control", value = value,
-  #                                                        placeholder = placeholder))
-  # }
 
   lapply(1:length(states_from_file()), function(i) {
     textInput(inputId = paste0(states_from_file()[i], "_color"),

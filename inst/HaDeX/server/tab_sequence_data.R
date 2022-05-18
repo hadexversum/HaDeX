@@ -4,11 +4,6 @@
 
 observeEvent(input[["chosen_protein"]], {
   
-  # browser()
-  
-  # possible_states <- unique(dat()[["State"]])
-  # states_chosen_protein()
-  
   updateRadioButtons(session,
                      inputId = "chosen_state",
                      choices = states_chosen_protein())

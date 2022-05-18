@@ -3,14 +3,20 @@
 #################################
 
 observe({
-  
-  tmp <- sort(unique(round(dat()[["Exposure"]], 3)))
-  choose_time_100 <- setNames(tmp, c(head(tmp, -1), "chosen control"))
-  
+
   updateSelectInput(session,
                     inputId = "kin_time_0",
                     choices = times_from_file()[times_from_file() < 99999],
                     selected = min(times_from_file()[times_from_file() > 0]))
+  
+})
+
+##
+
+observe({
+  
+  tmp <- sort(unique(round(dat()[["Exposure"]], 3)))
+  choose_time_100 <- setNames(tmp, c(head(tmp, -1), "chosen control"))
   
   if(!has_modifications()){
     
@@ -41,6 +47,11 @@ observe({
                     input[["kin_theory"]] ~ paste0("Theoretical uptake curve for chosen peptides for ", input[["chosen_protein"]]),
                     !input[["kin_theory"]]  ~ paste0("Uptake curve for chosen peptides for ", input[["chosen_protein"]])
                   ))
+})
+
+##
+
+observe({
   
   updateTextInput(session,
                   inputId = "kin_plot_y_label",

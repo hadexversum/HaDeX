@@ -8,11 +8,21 @@ observe({
                     inputId = "chic_diff_state_1",
                     choices = states_chosen_protein(),
                     selected = states_chosen_protein()[1])
+})
+
+##
+
+observe({
   
   updateSelectInput(session,
                     inputId = "chic_diff_state_2",
                     choices = states_chosen_protein(),
                     selected = states_chosen_protein()[length(states_chosen_protein())])
+})
+
+##
+
+observe({
   
   if(input[["chic_diff_fractional"]]){
     
@@ -38,6 +48,11 @@ observe({
                     inputId = "chic_diff_time_0",
                     choices = times_from_file()[times_from_file() < 99999],
                     selected = min(times_from_file()[times_from_file() > 0]))
+})
+
+##
+
+observe({
   
   updateSelectInput(session,
                     inputId = "chic_diff_time_100",

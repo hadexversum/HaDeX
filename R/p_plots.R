@@ -148,7 +148,7 @@ plot_volcano <- function(p_dat,
     
   }
   
-  return(volcano_plot)
+  return(HaDeXify(volcano_plot))
   
 }
 
@@ -242,6 +242,6 @@ plot_manhattan <- function(p_dat,
       geom_hline(yintercept = confidence_limit, linetype = "dashed") 
   }
   
-  manhattan_plot
+  return(HaDeXify(manhattan_plot))
   
 }

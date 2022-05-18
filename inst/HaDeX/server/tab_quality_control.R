@@ -16,11 +16,21 @@ observe({
                     inputId = "qc_time_0",
                     choices = times_from_file()[times_from_file() < 99999],
                     selected = min(times_from_file()[times_from_file() > 0]))
+})
+
+##
+
+observe({
   
   updateSelectInput(session,
                     inputId = "qc_state_1",
                     choices = states_chosen_protein(),
                     selected = states_chosen_protein()[1])
+})
+
+##
+
+observe({
   
   updateSelectInput(session,
                     inputId = "qc_state_2",
