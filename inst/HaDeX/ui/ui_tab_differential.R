@@ -52,12 +52,10 @@ comp_plot_parameters <- function() HaDeX_plotSettingsSection(
                       choices = c("0", "1", "5", "25", "1440"))
     )
   ),
-  
-  p("Choose states for comparison:"),
   fluidRow(
     column(6,
            checkboxGroupInput_h(inputId = "compare_states",
-                                label = "",
+                                label = "Choose states for comparison:",
                                 choices = c("CD160", "CD160VEM"),
                                 selected = c("CD160", "CD160VEM")),
            class = "states-to-compare-column"),
