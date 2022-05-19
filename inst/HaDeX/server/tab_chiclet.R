@@ -33,7 +33,7 @@ observe({
   updateSelectInput(session, 
                     inputId = "chic_time_0",
                     choices = times_from_file()[times_from_file() < 99999],
-                    selected = min(times_from_file()[times_from_file() > 0]))
+                    selected = times_from_file()[times_from_file() == as.numeric(input[["no_deut_control"]])])
 })
 
 ##
