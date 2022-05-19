@@ -74,9 +74,9 @@ calculate_p_value <- function(dat,
     st_2 <- vol_dat[i, "masses_2"][[1]]
     
     if(length(st_1) == 1 | all(st_1 == st_2)) {
-      p_value <- -1
+      p_value <- NA
     } else if (length(st_2) == 1){
-      p_value <- -1
+      p_value <- NA
     } else {
       p_value <- t.test(x = st_1, y = st_2, paired = FALSE, alternative = "two.sided", conf.level = confidence_level)$p.value
     }
@@ -88,8 +88,7 @@ calculate_p_value <- function(dat,
                End = vol_dat[i, "End"],
                P_value = p_value)
     
-  }) %>% bind_rows() %>%
-    filter(P_value > 0)
+  }) %>% bind_rows() 
   
   p_dat[["P_value"]] <- p.adjust(p_dat[["P_value"]], method = p_adjustment_method)
   

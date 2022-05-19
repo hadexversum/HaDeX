@@ -136,7 +136,7 @@ plot_differential_chiclet <- function(diff_uptake_dat = NULL,
     x_threshold <- t_value * mean(plot_dat[["err_value"]], na.rm = TRUE)/sqrt(length(plot_dat))
     
     chiclet_differential_plot <- chiclet_differential_plot +
-      geom_tile(data = subset(plot_dat, abs(value) < x_threshold), fill = "azure3")
+      geom_tile(data = subset(plot_dat, abs(value) < x_threshold), fill = "grey91")
     
   }
   
@@ -148,7 +148,8 @@ plot_differential_chiclet <- function(diff_uptake_dat = NULL,
       merge(plot_dat, by = c("Sequence", "Start", "End", "Exposure", "ID"))
     
     chiclet_differential_plot <- chiclet_differential_plot +
-      geom_tile(data = subset(diff_uptake_dat, !valid), aes(x = ID, y = Exposure), fill = "grey77")
+      geom_tile(data = subset(diff_uptake_dat, !valid), aes(x = ID, y = Exposure), fill = "grey89") +
+      geom_tile(data = subset(diff_uptake_dat, is.na(valid)), aes(x = ID, y = Exposure), fill = "grey56")
     
   }
   
