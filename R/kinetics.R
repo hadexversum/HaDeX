@@ -470,7 +470,7 @@ plot_kinetics <- function(kin_dat,
          y = y_label,
          title = title)
   
-  if(log_x){ err_width = 0.1 } else { err_width = 5 }
+  if(log_x){ err_width = 0.1 } else { err_width = 2 }
   
   if(uncertainty_type == "ribbon"){
     
