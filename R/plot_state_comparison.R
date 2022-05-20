@@ -28,7 +28,8 @@
 
 plot_state_comparison <- function(dat, 
                                   theoretical = FALSE, 
-                                  fractional = FALSE){
+                                  fractional = FALSE,
+                                  line_size = 1.5){
   
   if (theoretical) {
     
@@ -81,7 +82,7 @@ plot_state_comparison <- function(dat,
                          err_value = dat[[err_value]])
   
   state_comp_plot <- ggplot(data = plot_dat) +
-    geom_segment(data = plot_dat, aes(x = Start, y = value, xend = End, yend = value, color = State)) +
+    geom_segment(data = plot_dat, aes(x = Start, y = value, xend = End, yend = value, color = State), size = line_size) +
     geom_errorbar(data = plot_dat, aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value, color = State)) +
     labs(title = title,
          x = "Position in the sequence",

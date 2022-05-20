@@ -12,7 +12,8 @@ plot_differential(
   fractional = FALSE,
   show_houde_interval = FALSE,
   show_tstud_confidence = FALSE,
-  confidence_level = 0.98
+  confidence_level = 0.98,
+  line_size = 1.5
 )
 }
 \arguments{
@@ -57,7 +58,8 @@ This plot is visible in GUI.
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 diff_uptake_dat <- create_diff_uptake_dataset(dat)
-plot_differential(diff_uptake_dat)
+plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167)
+plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167, line_size = 1)
 
 }
 \seealso{

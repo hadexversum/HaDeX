@@ -138,6 +138,8 @@ differential_plot <- reactive({
                     fractional = input[["comp_fractional"]],
                     show_houde_interval = input[["diff_show_houde"]],
                     show_tstud_confidence = input[["diff_show_tstud"]],
+                    time_t = input[["time_t"]],
+                    line_size = 1,
                     confidence_level = as.double(input[["confidence_level"]]))
 })
 

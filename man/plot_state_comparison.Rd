@@ -4,7 +4,12 @@
 \alias{plot_state_comparison}
 \title{Plot state comparison}
 \usage{
-plot_state_comparison(dat, theoretical = FALSE, fractional = FALSE)
+plot_state_comparison(
+  dat,
+  theoretical = FALSE,
+  fractional = FALSE,
+  line_size = 1.5
+)
 }
 \arguments{
 \item{dat}{data produced by \code{\link{calculate_state_uptake}} function.}

@@ -34,8 +34,9 @@
 #' @examples
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' diff_uptake_dat <- create_diff_uptake_dataset(dat)
-#' plot_differential(diff_uptake_dat)
-#'
+#' plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167)
+#' plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167, line_size = 1)
+#' 
 #' @export plot_differential
 
 plot_differential <- function(diff_uptake_dat = NULL,
@@ -45,7 +46,8 @@ plot_differential <- function(diff_uptake_dat = NULL,
                               fractional = FALSE,
                               show_houde_interval = FALSE,
                               show_tstud_confidence = FALSE,
-                              confidence_level = 0.98){
+                              confidence_level = 0.98,
+                              line_size = 1.5){
   
   ## conditions
   
@@ -55,13 +57,19 @@ plot_differential <- function(diff_uptake_dat = NULL,
     
   } else {
     
-    if(is.null(diff_uptake_dat) & is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } else  { 
+    if(is.null(diff_uptake_dat)){
+      
+      if(is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } else  { 
       
        diff_uptake_dat <- diff_p_uptake_dat %>% filter(Exposure == attr(diff_uptake_dat, "time_t"))
       
+      }
     }
   }
-
+  
+  if(is.null(time_t)) {time_t <- unique(diff_uptake_dat[["Exposure"]])[3]}
+  
+  diff_uptake_dat <- filter(diff_uptake_dat, Exposure == time_t)
 
   ##
   
@@ -126,7 +134,7 @@ plot_differential <- function(diff_uptake_dat = NULL,
                                                         value > h_interval[2] ~ "firebrick1",
                                                         TRUE ~ "azure3")) %>%
       ggplot() +
-      geom_segment(aes(x = Start, y = value, xend = End, yend = value, color = colour)) +
+      geom_segment(aes(x = Start, y = value, xend = End, yend = value, color = colour), size = line_size) +
       geom_errorbar(aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value, color = colour)) +
       geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
       ## intervals
@@ -150,7 +158,7 @@ plot_differential <- function(diff_uptake_dat = NULL,
                         value < 0 ~ "firebrick3",
                         TRUE ~ "azure3")) %>%
       ggplot() +
-      geom_segment(aes(x = Start, y = value, xend = End, yend = value, color = colour )) +
+      geom_segment(aes(x = Start, y = value, xend = End, yend = value, color = colour), size = line_size) +
       geom_errorbar(aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value, color = colour)) +
       geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
       ## other
@@ -169,10 +177,10 @@ plot_differential <- function(diff_uptake_dat = NULL,
       merge(plot_dat, by = c("Sequence", "Start", "End", "Med_Sequence", "Protein"))
     
     differential_plot <- differential_plot +
-      geom_segment(data = subset(diff_uptake_dat, !valid), aes(x = Start, y = value, xend = End, yend = value), color = "grey77") +
+      geom_segment(data = subset(diff_uptake_dat, !valid), aes(x = Start, y = value, xend = End, yend = value), color = "grey77", size = line_size) +
       geom_errorbar(data = subset(diff_uptake_dat, !valid), aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value), color = "grey77") 
     
-    if(!show_houde_interval) { differential_plot <- differential_plot + theme(legend.position = "none") }
+    # if(!show_houde_interval) { differential_plot <- differential_plot + theme(legend.position = "none") }
     
   }
   
