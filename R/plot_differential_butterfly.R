@@ -136,8 +136,9 @@ plot_differential_butterfly <- function(diff_uptake_dat = NULL,
   } else if (uncertainty_type == "bars + line"){
     
     butterfly_differential_plot <- butterfly_differential_plot +
-      geom_errorbar(data = plot_dat, aes(x = ID, ymin = value - err_value, ymax = value + err_value, color = Exposure), width = 0.25, alpha = 0.5) +
-      geom_line()
+      geom_errorbar(data = plot_dat, aes(x = ID, ymin = value - err_value, ymax = value + err_value, color = Exposure), width = 0.25, alpha = 0.5) + 
+      geom_line(data = plot_dat, aes(x = ID, y = value, group = Exposure, color = Exposure))
+      
   }
   
   if(show_houde_interval){
