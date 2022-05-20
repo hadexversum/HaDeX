@@ -110,10 +110,13 @@ plot_differential_chiclet <- function(diff_uptake_dat = NULL,
                          Start = diff_uptake_dat[["Start"]],
                          End = diff_uptake_dat[["End"]])
   
+  min_du <- min(plot_dat[["value"]])
+  max_du <- max(plot_dat[["value"]])
+  
   chiclet_differential_plot <- ggplot(plot_dat, aes(y = Exposure, x = ID)) +
     geom_tile(aes(fill = value)) +
     geom_tile(data = subset(plot_dat, is.na(value)), fill = "gray95") +
-    scale_fill_gradient2(low = "blue", mid = "white", high = "red", guide = guide_legend(keywidth = 3)) +
+    scale_fill_gradient2(low = "blue", mid = "white", high = "red", guide = guide_legend(keywidth = 3), limits = c(min_du, max_du)) + #       limits = c(min(facetgrid$value), max(facetgrid$value)))
     labs(title = title,
          y = "Exposure [min]",
          x = "Peptide ID",
