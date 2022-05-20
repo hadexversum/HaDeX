@@ -36,16 +36,19 @@ add_stat_dependency <- function(calc_dat,
                                 theoretical = FALSE, 
                                 fractional = TRUE){
   
-  value_column <- case_when(
-    theoretical & fractional ~ "diff_theo_frac_deut_uptake",
-    theoretical & !(fractional) ~ "diff_theo_deut_uptake",
-    !(theoretical) & fractional ~ "diff_frac_deut_uptake",
-    !(theoretical) & !(fractional) ~ "diff_deut_uptake"
-  )
+  options <- c("diff_theo_frac_deut_uptake",
+               "diff_theo_deut_uptake",
+               "diff_frac_deut_uptake",
+               "diff_deut_uptake")
   
-  confidence_values <- calculate_confidence_limit_values(calc_dat, 
-                                                         confidence_level = confidence_level, 
-                                                         fractional = fractional, 
+  value_column <- options[c(theoretical & fractional,
+                            theoretical & !(fractional),
+                            !(theoretical) & fractional,
+                            !(theoretical) & !(fractional))]
+  
+  confidence_values <- calculate_confidence_limit_values(calc_dat,
+                                                         confidence_level = confidence_level,
+                                                         fractional = fractional,
                                                          theoretical = theoretical)
   
   calc_dat[[paste0("valid_at_", confidence_level)]] <- calc_dat[[value_column]] > confidence_values[2] | calc_dat[[value_column]] < confidence_values[1]
