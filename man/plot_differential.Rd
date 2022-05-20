@@ -12,8 +12,7 @@ plot_differential(
   fractional = FALSE,
   show_houde_interval = FALSE,
   show_tstud_confidence = FALSE,
-  confidence_level = 0.98,
-  confidence_level_2 = 0.99
+  confidence_level = 0.98
 )
 }
 \arguments{
@@ -31,10 +30,6 @@ plot_differential(
 is shown.}
 
 \item{confidence_level}{confidence level for the test, from range [0, 1].}
-
-\item{confidence_level_2}{second confidence level for the test, 
-from range [0, 1]. If the value of second confidence level is the same
-as first, only one is shown.}
 }
 \value{
 a \code{\link{ggplot}} object.

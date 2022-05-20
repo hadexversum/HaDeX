@@ -8,9 +8,6 @@
 #' @param show_tstud_confidence \code{logical}, determines if t-Student test validity 
 #' is shown.
 #' @param confidence_level confidence level for the test, from range [0, 1].
-#' @param confidence_level_2 second confidence level for the test, 
-#' from range [0, 1]. If the value of second confidence level is the same
-#' as first, only one is shown. 
 #'
 #' @details Function \code{\link{plot_differential}} presents
 #' provided data in a form of differential (Woods) plot. The plot shows
@@ -48,8 +45,7 @@ plot_differential <- function(diff_uptake_dat = NULL,
                               fractional = FALSE,
                               show_houde_interval = FALSE,
                               show_tstud_confidence = FALSE,
-                              confidence_level = 0.98,
-                              confidence_level_2 = 0.99){
+                              confidence_level = 0.98){
   
   ## conditions
   
@@ -73,11 +69,6 @@ plot_differential <- function(diff_uptake_dat = NULL,
                                                   confidence_level = confidence_level,
                                                   theoretical = theoretical,
                                                   fractional = fractional)
-
-  h_interval_2 <- calculate_confidence_limit_values(diff_uptake_dat = diff_uptake_dat,
-                                                    confidence_level = confidence_level_2,
-                                                    theoretical = theoretical,
-                                                    fractional = fractional)
 
   if(theoretical){
 
@@ -131,9 +122,7 @@ plot_differential <- function(diff_uptake_dat = NULL,
   if(show_houde_interval){
     
     differential_plot <- mutate(plot_dat, colour = case_when(
-                                                        value < h_interval_2[1] ~ "deepskyblue3",
                                                         value < h_interval[1] ~ "deepskyblue1",
-                                                        value > h_interval_2[2] ~ "firebrick3",
                                                         value > h_interval[2] ~ "firebrick1",
                                                         TRUE ~ "azure3")) %>%
       ggplot() +
@@ -143,8 +132,6 @@ plot_differential <- function(diff_uptake_dat = NULL,
       ## intervals
       geom_hline(aes(yintercept = h_interval[1], linetype = paste0(" Confidence interval ", confidence_level*100, "% : ", round(h_interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) +
       geom_hline(aes(yintercept = h_interval[2], linetype = paste0(" Confidence interval ", confidence_level*100, "% : ", round(h_interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
-      geom_hline(aes(yintercept = h_interval_2[1], linetype = paste0(" Confidence interval ", confidence_level_2*100, "% : ", round(h_interval_2[2], 4))), color = "deepskyblue3", size = .7, show.legend = TRUE) +
-      geom_hline(aes(yintercept = h_interval_2[2], linetype = paste0(" Confidence interval ", confidence_level_2*100, "% : ", round(h_interval_2[2], 4))), color = "firebrick3", size = .7, show.legend = FALSE) +
       scale_linetype_manual(values = c("dashed", "dotdash")) +
       ## other
       scale_colour_identity() +

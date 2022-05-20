@@ -74,18 +74,6 @@ observe({
                     selected = states_chosen_protein()[length(states_chosen_protein())])
 })
 
-##
-
-observe({  
-  
-  updateSelectInput(session,
-                    inputId = "confidence_level_2",
-                    choices = confidence_level_choices[confidence_level_choices >= input[["confidence_level"]]],
-                    selected = confidence_level_choices[confidence_level_choices > input[["confidence_level"]]][1])
-  
-  
-  
-})
 
 #################################
 ######### DATASET ###############
@@ -150,8 +138,7 @@ differential_plot <- reactive({
                     fractional = input[["comp_fractional"]],
                     show_houde_interval = input[["diff_show_houde"]],
                     show_tstud_confidence = input[["diff_show_tstud"]],
-                    confidence_level = as.double(input[["confidence_level"]]),
-                    confidence_level_2 = as.double(input[["confidence_level_2"]]))
+                    confidence_level = as.double(input[["confidence_level"]]))
 })
 
 ##
@@ -245,8 +232,7 @@ differential_plot_data <- reactive({
   show_diff_uptake_data_confidence(diff_uptake_dat = woods_plot_dat(),
                                    theoretical = input[["theory"]],
                                    fractional = input[["comp_fractional"]],
-                                   confidence_level_1 = as.double(input[["confidence_level"]]),
-                                   confidence_level_2 = as.double(input[["confidence_level_2"]]))
+                                   confidence_level = as.double(input[["confidence_level"]]))
 })
 
 ##

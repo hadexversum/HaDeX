@@ -40,15 +40,15 @@ comp_plot_parameters <- function() HaDeX_plotSettingsSection(
   splitLayout(
     div(id = "time_0_part",
         selectInput_h(inputId = "time_0",
-                      label = "IN",
+                      label = "Deut 0%",
                       choices = c("0", "1", "5", "25", "1440"))
     ),
     selectInput_h(inputId = "time_t",
-                  label = "CHOSEN",
+                  label = "Timepoint",
                   choices = c("0", "1", "5", "25", "1440")),
     div(id = "time_100_part",
         selectInput_h(inputId = "time_100",
-                      label = "OUT",
+                      label = "Deut 100%",
                       choices = c("0", "1", "5", "25", "1440"))
     )
   ),
@@ -99,24 +99,26 @@ diff_test <- function() HaDeX_plotSettingsSection(
     
   title = "Test",
     
-  checkboxInput_h(inputId = "diff_show_houde",
-                  label = "Houde test",
-                  value = TRUE),
-  checkboxInput_h(inputId = "diff_show_tstud", 
-                  label = "t-Student test", 
-                  value = FALSE),
-    
-  splitLayout(
-    selectInput_h(inputId = "confidence_level",
-                  label = "Confidence limit 1:",
-                  choices = c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
-                  selected = 0.98),
-    selectInput_h(inputId = "confidence_level_2",
-                  label = "Confidence limit 2:",
-                  choices = c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
-                  selected = 0.99)
-  )
-
+  fluidPage(
+    fluidRow(
+      column(
+        width = 6,
+        checkboxInput_h(inputId = "diff_show_houde",
+                        label = "Houde test",
+                        value = TRUE),
+        checkboxInput_h(inputId = "diff_show_tstud", 
+                        label = "t-Student test", 
+                        value = FALSE)
+      ),
+      column(
+        width = 6,
+        selectInput_h(inputId = "confidence_level",
+                      label = "Confidence level:",
+                      choices = c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
+                      selected = 0.98)
+      )
+    )
+  ) 
 )
 
 diff_comp_zoom <- function() HaDeX_plotSettingsSection(
