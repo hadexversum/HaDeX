@@ -37,10 +37,10 @@ volcano_state <- function() HaDeX_plotSettingsSection(
   div(id = "vol_control_part",
       splitLayout(
         selectInput_h(inputId = "vol_time_0",
-                      label = "IN", 
+                      label = "Deut 0%", 
                       choices = c("0", "1", "5", "25", "1440")),
         selectInput_h(inputId = "vol_time_100", 
-                      label = "OUT", 
+                      label = "Deut 100%", 
                       choices = c("0", "1", "5", "25", "1440"))
         )
       )

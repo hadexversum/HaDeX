@@ -42,13 +42,13 @@ chiclet_timepoints <- function() HaDeX_plotSettingsSection(
     column(width = 6,
            div(id = "chic_time_0_part",
                selectInput_h(inputId = "chic_time_0",
-                             label = "TIME IN",
+                             label = "Deut 0%",
                              choices = c(0, 0.001, 1, 5, 25, 1440),
                              selected = 0.001)
            ),
            div(id = "chic_time_100_part",
                selectInput_h(inputId = "chic_time_100",
-                             label = "TIME OUT",
+                             label = "Deut 100%",
                              choices = c(0, 0.001, 1, 5, 25, 1440),
                              selected = 1440)
            )

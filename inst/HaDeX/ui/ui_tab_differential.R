@@ -44,7 +44,7 @@ comp_plot_parameters <- function() HaDeX_plotSettingsSection(
                       choices = c("0", "1", "5", "25", "1440"))
     ),
     selectInput_h(inputId = "time_t",
-                  label = "Timepoint",
+                  label = "Exposure",
                   choices = c("0", "1", "5", "25", "1440")),
     div(id = "time_100_part",
         selectInput_h(inputId = "time_100",
