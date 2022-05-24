@@ -82,7 +82,6 @@ plot_differential <- function(diff_uptake_dat = NULL,
   
   if(is.null(time_t) & !all_times) {time_t <- coalesce(c(attr(diff_uptake_dat, "time_t"), unique(diff_uptake_dat[["Exposure"]])[3] ))}
   
-  
   if(!all_times) { diff_uptake_dat <- filter(diff_uptake_dat, Exposure == time_t) }
 
   ##

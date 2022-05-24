@@ -2,7 +2,7 @@
 #' 
 #' @importFrom ggplot2 ggplot geom_segment geom_errorbar theme scale_y_continuous
 #' 
-#' @param dat data produced by \code{\link{calculate_state_uptake}} function.
+#' @param uptake_dat data produced by \code{\link{calculate_state_uptake}} function.
 #' @param theoretical \code{logical}, determines if values are theoretical. 
 #' @param fractional \code{logical}, determines if values are fractional.
 #' 
@@ -24,12 +24,22 @@
 #' comparison_dat <- calculate_state_uptake(dat)
 #' plot_state_comparison(comparison_dat)
 #' 
+#' uptake_dat <- create_uptake_dataset(dat, states = c("CD160", "CD160_HVEM"))
+#' plot_state_comparison(uptake_dat, all_times = T)
+#' 
 #' @export plot_state_comparison
 
-plot_state_comparison <- function(dat, 
+plot_state_comparison <- function(uptake_dat, 
                                   theoretical = FALSE, 
                                   fractional = FALSE,
-                                  line_size = 1.5){
+                                  line_size = 1.5,
+                                  all_times = FALSE,
+                                  time_t = NULL){
+  
+  if(is.null(time_t) & !all_times) {time_t <- coalesce(c(attr(uptake_dat, "time_t"), unique(uptake_dat[["Exposure"]])[3] ))}
+  
+  if(!all_times) { uptake_dat <- filter(uptake_dat, Exposure == time_t) }
+  
   
   if (theoretical) {
     
@@ -73,13 +83,14 @@ plot_state_comparison <- function(dat,
     
   }
   
-  plot_dat <- data.frame(Sequence = dat[["Sequence"]],
-                         Start = dat[["Start"]],
-                         End = dat[["End"]],
-                         Med_Sequence = dat[["Med_Sequence"]],
-                         State = dat[["State"]],
-                         value = dat[[value]],
-                         err_value = dat[[err_value]])
+  plot_dat <- data.frame(Sequence = uptake_dat[["Sequence"]],
+                         Start = uptake_dat[["Start"]],
+                         End = uptake_dat[["End"]],
+                         Med_Sequence = uptake_dat[["Med_Sequence"]],
+                         State = uptake_dat[["State"]],
+                         value = uptake_dat[[value]],
+                         err_value = uptake_dat[[err_value]],
+                         Exposure = uptake_dat[["Exposure"]])
   
   state_comp_plot <- ggplot(data = plot_dat) +
     geom_segment(data = plot_dat, aes(x = Start, y = value, xend = End, yend = value, color = State), size = line_size) +
@@ -89,6 +100,13 @@ plot_state_comparison <- function(dat,
          y = y_label) +
     theme(legend.position = "bottom",
           legend.title = element_blank())
+  
+  if(all_times){
+    
+    state_comp_plot <- state_comp_plot + 
+      facet_wrap(~Exposure)
+    
+  }
   
   return(HaDeXify(state_comp_plot))
   

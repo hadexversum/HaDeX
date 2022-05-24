@@ -65,8 +65,8 @@ This plot is visible in GUI.
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 diff_uptake_dat <- create_diff_uptake_dataset(dat)
-plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167) # legend should be hidden
-plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167, line_size = 1) # legend should be hidden
+plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167) 
+plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167, line_size = 1) 
 plot_differential(diff_uptake_dat = diff_uptake_dat, all_times = T)
 plot_differential(diff_uptake_dat = diff_uptake_dat, all_times = T, show_houde_interval = T)
 
