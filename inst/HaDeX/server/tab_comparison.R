@@ -281,9 +281,10 @@ prep_dat <- reactive({
 
 comparison_plot <- reactive({
   
-  plot_state_comparison(dat = prep_dat(),
+  plot_state_comparison(uptake_dat = prep_dat(),
                         theoretical = input[["theory"]],
-                        fractional = input[["comp_fractional"]])
+                        fractional = input[["comp_fractional"]],
+                        time_t = input[["time_t"]])
 })
 
 

@@ -1,5 +1,7 @@
 #' Differential plot
 #'
+#' @importFrom ggplot2 facet_wrap
+#' 
 #' @param diff_uptake_dat produced by \code{\link{create_diff_uptake_dataset}} function.
 #' @param diff_p_uptake_dat ...
 #' @param theoretical \code{logical}, determines if values are theoretical.
@@ -8,6 +10,9 @@
 #' @param show_tstud_confidence \code{logical}, determines if t-Student test validity 
 #' is shown.
 #' @param confidence_level confidence level for the test, from range [0, 1].
+#' @param time_t ...
+#' @param all_times ...
+#' @param line_size ...
 #'
 #' @details Function \code{\link{plot_differential}} presents
 #' provided data in a form of differential (Woods) plot. The plot shows
@@ -34,8 +39,15 @@
 #' @examples
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' diff_uptake_dat <- create_diff_uptake_dataset(dat)
-#' plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167)
-#' plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167, line_size = 1)
+#' plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167) 
+#' plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167, line_size = 1) 
+#' plot_differential(diff_uptake_dat = diff_uptake_dat, all_times = T)
+#' plot_differential(diff_uptake_dat = diff_uptake_dat, all_times = T, show_houde_interval = T)
+#' 
+#' diff_p_uptake_dat <- create_p_diff_uptake_dataset(dat)
+#' plot_differential(diff_p_uptake_dat = diff_p_uptake_dat, all_times = T, show_tstud_confidence = T)
+#' plot_differential(diff_p_uptake_dat = diff_p_uptake_dat, all_times = T, show_tstud_confidence = T, show_houde_interval = T)
+#' plot_differential(diff_p_uptake_dat = diff_p_uptake_dat, show_tstud_confidence = T, show_houde_interval = T, all_times = F)
 #' 
 #' @export plot_differential
 
@@ -43,17 +55,18 @@ plot_differential <- function(diff_uptake_dat = NULL,
                               diff_p_uptake_dat =  NULL, 
                               time_t = NULL,
                               theoretical = FALSE,
-                              fractional = FALSE,
+                              fractional = FALSE, 
                               show_houde_interval = FALSE,
                               show_tstud_confidence = FALSE,
                               confidence_level = 0.98,
+                              all_times = FALSE,
                               line_size = 1.5){
   
   ## conditions
   
   if (show_tstud_confidence) {
     
-    if(is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } else { diff_uptake_dat <- diff_p_uptake_dat %>% filter(Exposure == attr(diff_uptake_dat, "time_t")) }
+    if(is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } else { diff_uptake_dat <- diff_p_uptake_dat  }
     
   } else {
     
@@ -61,15 +74,15 @@ plot_differential <- function(diff_uptake_dat = NULL,
       
       if(is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } else  { 
       
-       diff_uptake_dat <- diff_p_uptake_dat %>% filter(Exposure == attr(diff_uptake_dat, "time_t"))
+       diff_uptake_dat <- diff_p_uptake_dat 
       
       }
     }
   }
   
-  if(is.null(time_t)) {time_t <- unique(diff_uptake_dat[["Exposure"]])[3]}
+  if(is.null(time_t) & !all_times) {time_t <- coalesce(c(attr(diff_uptake_dat, "time_t"), unique(diff_uptake_dat[["Exposure"]])[3] ))}
   
-  diff_uptake_dat <- filter(diff_uptake_dat, Exposure == time_t)
+  if(!all_times) { diff_uptake_dat <- filter(diff_uptake_dat, Exposure == time_t) }
 
   ##
   
@@ -118,6 +131,8 @@ plot_differential <- function(diff_uptake_dat = NULL,
 
     }
   }
+  
+  if(!all_times) {title <- paste0(title, " in ", time_t, " min") }
 
   plot_dat <- data.frame(Protein = diff_uptake_dat[["Protein"]],
                          Sequence = diff_uptake_dat[["Sequence"]],
@@ -125,7 +140,8 @@ plot_differential <- function(diff_uptake_dat = NULL,
                          End = diff_uptake_dat[["End"]],
                          Med_Sequence = diff_uptake_dat[["Med_Sequence"]],
                          value = diff_uptake_dat[[value]],
-                         err_value = diff_uptake_dat[[err_value]])
+                         err_value = diff_uptake_dat[[err_value]],
+                         Exposure = diff_uptake_dat[["Exposure"]])
   
   if(show_houde_interval){
     
@@ -144,8 +160,8 @@ plot_differential <- function(diff_uptake_dat = NULL,
       ## other
       scale_colour_identity() +
       labs(title = title,
-           x_label = "Position in the sequence",
-           y_label = y_label) +
+           x = "Position in the sequence",
+           y = y_label) +
       theme(legend.title = element_blank(),
             legend.position = "bottom",
             legend.direction = "vertical")
@@ -163,8 +179,8 @@ plot_differential <- function(diff_uptake_dat = NULL,
       geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
       ## other
       labs(title = title,
-           x_label = "Position in the sequence",
-           y_label = y_label) +
+           x = "Position in the sequence",
+           y = y_label) +
       theme(legend.position = "none")
     
   }
@@ -174,13 +190,19 @@ plot_differential <- function(diff_uptake_dat = NULL,
     alpha <- -log(1 - attr(diff_uptake_dat, "confidence_level"))
     
     diff_uptake_dat <- mutate(diff_uptake_dat, valid = log_p_value >= alpha) %>%
-      merge(plot_dat, by = c("Sequence", "Start", "End", "Med_Sequence", "Protein"))
+      merge(plot_dat, by = c("Sequence", "Start", "End", "Med_Sequence", "Protein", "Exposure"))
     
     differential_plot <- differential_plot +
       geom_segment(data = subset(diff_uptake_dat, !valid), aes(x = Start, y = value, xend = End, yend = value), color = "grey77", size = line_size) +
-      geom_errorbar(data = subset(diff_uptake_dat, !valid), aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value), color = "grey77") 
+      geom_errorbar(data = subset(diff_uptake_dat, !valid), aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value), color = "grey77") +
+      theme(legend.position = "none")
     
-    # if(!show_houde_interval) { differential_plot <- differential_plot + theme(legend.position = "none") }
+  }
+
+  if(all_times) {
+    
+    differential_plot <- differential_plot + 
+      facet_wrap(~Exposure)
     
   }
   

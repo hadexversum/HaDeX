@@ -5,14 +5,16 @@
 \title{Plot state comparison}
 \usage{
 plot_state_comparison(
-  dat,
+  uptake_dat,
   theoretical = FALSE,
   fractional = FALSE,
-  line_size = 1.5
+  line_size = 1.5,
+  all_times = FALSE,
+  time_t = NULL
 )
 }
 \arguments{
-\item{dat}{data produced by \code{\link{calculate_state_uptake}} function.}
+\item{uptake_dat}{data produced by \code{\link{calculate_state_uptake}} function.}
 
 \item{theoretical}{\code{logical}, determines if values are theoretical.}
 
@@ -37,6 +39,9 @@ This plot is visible in GUI.
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 comparison_dat <- calculate_state_uptake(dat)
 plot_state_comparison(comparison_dat)
+
+uptake_dat <- create_uptake_dataset(dat, states = c("CD160", "CD160_HVEM"))
+plot_state_comparison(uptake_dat, all_times = T)
 
 }
 \seealso{

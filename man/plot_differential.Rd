@@ -13,6 +13,7 @@ plot_differential(
   show_houde_interval = FALSE,
   show_tstud_confidence = FALSE,
   confidence_level = 0.98,
+  all_times = FALSE,
   line_size = 1.5
 )
 }
@@ -20,6 +21,8 @@ plot_differential(
 \item{diff_uptake_dat}{produced by \code{\link{create_diff_uptake_dataset}} function.}
 
 \item{diff_p_uptake_dat}{...}
+
+\item{time_t}{...}
 
 \item{theoretical}{\code{logical}, determines if values are theoretical.}
 
@@ -31,6 +34,10 @@ plot_differential(
 is shown.}
 
 \item{confidence_level}{confidence level for the test, from range [0, 1].}
+
+\item{all_times}{...}
+
+\item{line_size}{...}
 }
 \value{
 a \code{\link{ggplot}} object.
@@ -58,8 +65,15 @@ This plot is visible in GUI.
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 diff_uptake_dat <- create_diff_uptake_dataset(dat)
-plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167)
-plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167, line_size = 1)
+plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167) 
+plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167, line_size = 1) 
+plot_differential(diff_uptake_dat = diff_uptake_dat, all_times = T)
+plot_differential(diff_uptake_dat = diff_uptake_dat, all_times = T, show_houde_interval = T)
+
+diff_p_uptake_dat <- create_p_diff_uptake_dataset(dat)
+plot_differential(diff_p_uptake_dat = diff_p_uptake_dat, all_times = T, show_tstud_confidence = T)
+plot_differential(diff_p_uptake_dat = diff_p_uptake_dat, all_times = T, show_tstud_confidence = T, show_houde_interval = T)
+plot_differential(diff_p_uptake_dat = diff_p_uptake_dat, show_tstud_confidence = T, show_houde_interval = T, all_times = F)
 
 }
 \seealso{

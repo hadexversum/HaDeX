@@ -22,8 +22,7 @@ HaDeXify <- function(plt) {
 
   suppressMessages({
     plt  +
-      theme(text = element_text(family = "Lato"),
-            legend.position = "bottom") +
+      theme(text = element_text(family = "Lato")) +
       annotation_custom(grid::rasterGrob(img, interpolate = TRUE,
                                          height = 0.05,
                                          x = 0.99, y = 0.01,
