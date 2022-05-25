@@ -14,8 +14,6 @@ observe({
                       max = 200,
                       value = c(0, 120),
                       step = 10)
-
-
   }
 
 })
@@ -29,7 +27,7 @@ observe({
   
   if(!input[["comp_fractional"]]) {
 
-    if(as.numeric(input[["time_0"]]) < as.numeric(input[["time_t"]]) | input[["theory"]]){
+    if(as.numeric(input[["time_0"]]) < as.numeric(input[["time_t"]]) | input[["theory"]] | input[["time_t"]] == -1){
 
       if(input[["chosen_protein"]] %in% unique(dat()[["Protein"]])){
         
@@ -92,10 +90,8 @@ observe({
 
 observe({
 
-  # browser()
-
-  tmp <- sort(unique(round(dat()[["Exposure"]], 3)))
-  choose_time_100 <- setNames(tmp, c(head(tmp, -1), "chosen control"))
+  times_100 <- sort(unique(round(dat()[["Exposure"]], 3)))
+  choose_time_100 <- setNames(times_100, c(head(times_100, -1), "chosen control"))
 
   if(has_modifications()){
 
@@ -116,14 +112,44 @@ observe({
   
 })
 
+
+observe({
+  
+  if(input[["time_t"]] == -1){ show(id = "diff_comp_times_t_part")  }
+  
+})
+
+observe({
+  
+  if(!input[["time_t"]] == -1){ hide(id = "diff_comp_times_t_part")  }
+  
+})
+
 ##
 
 observe({
+  
+  times_t <- times_from_file()[times_from_file() > input[["no_deut_control"]] & times_from_file() < 99999]
+  
+  updateCheckboxGroupInput(session, 
+                           inputId = "diff_comp_times_t",
+                           choices = times_t,
+                           selected = times_t,
+                           inline = TRUE)
+  
+})
 
+##
+
+observe({
+  
+  times_t <- c(-1, times_from_file()[times_from_file() > input[["no_deut_control"]] & times_from_file() < 99999])
+  choose_times_t <- setNames(times_t, c("multiple times", times_t[-1]))
+  
   updateSelectInput(session,
                     inputId = "time_t",
-                    choices = times_from_file()[times_from_file() < 99999],
-                    selected = min(times_from_file()[times_from_file() > input[["time_0"]]]))
+                    choices = choose_times_t,
+                    selected = choose_times_t[[2]])
 })
 
 ##
@@ -252,17 +278,19 @@ comparison_plot_colors_chosen <- reactive({
 all_dat <- reactive({
 
   if(!input[["theory"]]){
-    validate(need(as.numeric(input[["time_0"]]) < as.numeric(input[["time_t"]]), "In time must be smaller than chosen time."))
+    
+    if(!(input[["time_t"]] == -1)) { validate(need(as.numeric(input[["time_0"]]) < as.numeric(input[["time_t"]]), "In time must be smaller than chosen time.")) }
+    
     validate(need(as.numeric(input[["time_t"]]) < as.numeric(input[["time_100"]]), "Out time must be bigger than chosen time."))
+    
   }
 
-  bind_rows(lapply(states_from_file(), function(i) calculate_state_uptake(dat(),
-                                                                          protein = input[["chosen_protein"]],
-                                                                          state = i,
-                                                                          time_0 = input[["time_0"]],
-                                                                          time_t = input[["time_t"]],
-                                                                          time_100 = input[["time_100"]],
-                                                                          deut_part = 0.01*as.integer(input[["deut_part"]]))))
+  create_uptake_dataset(dat(),
+                        protein = input[["chosen_protein"]],
+                        states = states_from_file(),
+                        time_0 = input[["time_0"]],
+                        time_100 = input[["time_100"]],
+                        deut_part = 0.01*as.integer(input[["deut_part"]]))
 })
 
 ##
@@ -271,8 +299,20 @@ prep_dat <- reactive({
 
   validate(need(input[["compare_states"]], "Please select at least one state."))
 
-  filter(all_dat(), State %in% input[["compare_states"]])
-
+  if(input[["time_t"]] == -1) {
+    
+    all_dat() %>%
+      filter(State %in% input[["compare_states"]],
+             Exposure %in% as.numeric(input[["diff_comp_times_t"]]))
+    
+    } else {
+      
+    all_dat() %>%
+      filter(State %in% input[["compare_states"]],
+             Exposure == input[["time_t"]])
+    
+      }
+  
 })
 
 #################################
@@ -284,7 +324,8 @@ comparison_plot <- reactive({
   plot_state_comparison(uptake_dat = prep_dat(),
                         theoretical = input[["theory"]],
                         fractional = input[["comp_fractional"]],
-                        time_t = input[["time_t"]])
+                        time_t = input[["time_t"]],
+                        all_times = (input[["time_t"]] == -1))
 })
 
 

@@ -4,6 +4,7 @@ tab_woods <- function() HaDeX_plotTab(
   
   settingsPanel = HaDeX_plotSettingsPanel(
     diff_comp_general_settings(),
+    diff_comp_time_parameters(),
     comp_plot_parameters(),
     diff_plot_parameters(),
     diff_test(),
@@ -32,11 +33,12 @@ diff_comp_general_settings <- function() HaDeX_plotSettingsSection(
                   value = FALSE)
 )
 
-comp_plot_parameters <- function() HaDeX_plotSettingsSection(
+##
+
+diff_comp_time_parameters <- function() HaDeX_plotSettingsSection(
   
-  title = "Comparison plot parameters",
+  title = "Select time parameters",
   
-  p("Choose time parameters:"),
   splitLayout(
     div(id = "time_0_part",
         selectInput_h(inputId = "time_0",
@@ -52,6 +54,19 @@ comp_plot_parameters <- function() HaDeX_plotSettingsSection(
                       choices = c("0", "1", "5", "25", "1440"))
     )
   ),
+  div(id = "diff_comp_times_t_part",
+      checkboxGroupInput_h(input = "diff_comp_times_t",
+                           label = "Select time points for the plots:",
+                           choices = c(0, 1, 5, 25, 120),
+                           inline = TRUE))
+) 
+
+##
+
+comp_plot_parameters <- function() HaDeX_plotSettingsSection(
+  
+  title = "Comparison plot parameters",
+  
   fluidRow(
     column(6,
            checkboxGroupInput_h(inputId = "compare_states",
@@ -79,6 +94,8 @@ comp_plot_parameters <- function() HaDeX_plotSettingsSection(
     )
   )
 )
+
+##
 
 diff_plot_parameters <- function() HaDeX_plotSettingsSection(
   
