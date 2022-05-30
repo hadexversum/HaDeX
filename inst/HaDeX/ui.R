@@ -51,6 +51,7 @@ ui <- tagList(
       ),
       tab_summary(),
       tab_report(),
+      tab_about(),
       
       theme = "HaDeX_theme.css",
       header = img(id = "HaDeX-logo", src = "logo.png")
