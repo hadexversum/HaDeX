@@ -1,4 +1,4 @@
-tab_diff_uptake <- function() HaDeX_plotTab(
+tab_uptake_diff <- function() HaDeX_plotTab(
   
   title = "Differential uptake curves",
   

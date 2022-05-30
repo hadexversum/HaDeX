@@ -9,6 +9,7 @@ ui <- tagList(
   useShinyjs(),
   tags$head(
     tags$script(type = "text/javascript", src = "ga.js"),
+    # tags$script(src = "navbar-menu.js"),
     tags$script(type = "text/javascript", src = "detect-element-resize.js")
   ),
   div(
@@ -20,17 +21,22 @@ ui <- tagList(
       navbarMenu(
         title = "Deuterium uptake",
         tab_woods(),
+        tab_volcano(),
         # navbarMenu(
-          # title = "Butterfly",
+        # title = "Butterfly Plots",
           tab_butterfly(),
           tab_butterfly_diff(),
         # ),
-        
-        tab_volcano(),
-        tab_chiclet(),
-        tab_chiclet_diff(),
-        tab_uptake(),
-        tab_diff_uptake()
+        # navbarMenu(
+        # title = "Chiclet Plots",
+          tab_chiclet(),
+          tab_chiclet_diff(),
+        # ),
+        # navbarMenu(
+        # title = "Uptake curves",
+          tab_uptake(),
+          tab_uptake_diff()
+        # )
       ),
       navbarMenu(
         title = "Time-based data",
