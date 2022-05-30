@@ -18,10 +18,14 @@ ui <- tagList(
       tab_start(),
       tab_input(),
       navbarMenu(
-        title = "Plots",
+        title = "Deuterium uptake",
         tab_woods(),
-        tab_butterfly(),
-        tab_butterfly_diff(),
+        # navbarMenu(
+          # title = "Butterfly",
+          tab_butterfly(),
+          tab_butterfly_diff(),
+        # ),
+        
         tab_volcano(),
         tab_chiclet(),
         tab_chiclet_diff(),

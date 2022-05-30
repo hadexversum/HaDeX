@@ -40,8 +40,6 @@ server <- function(input, output, session) {
 
   data_source <- reactive({
     
-    # browser()
-
     attr(dat_in(), "source")
 
   })
