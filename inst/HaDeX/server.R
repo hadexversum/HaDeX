@@ -232,9 +232,7 @@ server <- function(input, output, session) {
 
   observe({
 
-    if(has_modifications()){
-      hide("chosen_control")
-    }
+    if(has_modifications()){ hide("chosen_control") }
 
   })
 
@@ -242,9 +240,7 @@ server <- function(input, output, session) {
 
   observe({
 
-    if(!has_modifications()){
-      show("chosen_control")
-    }
+    if(!has_modifications()){ show("chosen_control") }
 
   })
 

@@ -264,10 +264,14 @@ alpha_interval <- reactive({
 
 volcano_plot_out <- reactive({
   
+  # browser()
+  
   plot_volcano(volcano_data(), 
                state_1 = input[["vol_state_1"]], 
                state_2 = input[["vol_state_2"]],
                color_times = input[["vol_color_times"]],
+               show_insignificant_grey = input[["vol_show_insignificant_grey"]],
+               hide_insignificant = input[["vol_hide_insignificant"]],
                fractional = input[["vol_fractional"]],
                theoretical = FALSE) + ## hard coded, no theoretical
     # ## statistics

@@ -83,14 +83,32 @@ volcano_test <- function() HaDeX_plotSettingsSection(
   
   title = "Test",
   
+  fluidPage(
+    fluidRow(
+      column(
+        width = 6,
+        checkboxInput_h(inputId = "vol_hide_insignificant",
+                        label = "Hide insignificant values?",
+                        value = F),
+        checkboxInput_h(inputId = "vol_show_insignificant_grey",
+                        label = "Show insignificant values in grey?",
+                        value = F)
+        
+      ),
+      column(
+        width = 6,
+        selectInput_h(inputId = "vol_p_adjustment_method",
+                      label = "Choose method of adjustment:",
+                      choices = c("none", "BH", "bonferroni"),
+                      selected = "none")
+      )
+    )
+  )
   # selectInput_h(inputId = "vol_test_type",
   #               label = "Select test type:",
   #               choices = c("Houde test for selected time points" = 1, "Houde test all time points" = 2), #, "semi-parametric test" = 3),
   #               selected = 1),
-  selectInput_h(inputId = "vol_p_adjustment_method",
-                label = "Choose method of adjustment:",
-                choices = c("none", "BH", "bonferroni"),
-                selected = "none")
+  
 )
 
 

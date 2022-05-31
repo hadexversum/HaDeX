@@ -14,6 +14,8 @@
 #' should be the same as used in \code{\link{create_volcano_dataset}} function.
 #' @param color_times logical, indicating if different time points on the plot
 #' are distinguishable by color. 
+#' @param show_insignificant_grey ...
+#' @param hide_insignificant ...
 #' @param relative ...
 #' @param theoretical ...
 #'
@@ -44,7 +46,11 @@
 #' dat <-  read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' p_dat <- create_p_diff_uptake_dataset(dat)
 #' plot_volcano(p_dat, show_confidence_limits = T)
-#'
+#' 
+#' plot_volcano(p_dat, show_confidence_limits = T, show_insignificant_grey = T)
+#' plot_volcano(p_dat, show_confidence_limits = T, hide_insignificant = T)
+#' plot_volcano(p_dat, show_confidence_limits = T, hide_insignificant = T, show_insignificant_grey = T)
+#' 
 #' @export plot_volcano
 
 plot_volcano <- function(p_dat,
@@ -54,9 +60,17 @@ plot_volcano <- function(p_dat,
                          show_confidence_limits = FALSE,
                          confidence_level = 0.98,
                          color_times = TRUE,
+                         show_insignificant_grey = FALSE,
+                         hide_insignificant = FALSE,
                          fractional = F,
                          theoretical = F) {
   
+  if(hide_insignificant & show_insignificant_grey){
+    
+    message("Chosen parameters are in conflict. The unsignifiant values are in grey.")
+    hide_insignificant <- F
+    
+  }
   
   if (fractional){
     
@@ -102,12 +116,25 @@ plot_volcano <- function(p_dat,
                          P_value = p_dat[["P_value"]],
                          log_p_value = p_dat[["log_p_value"]])
   
+  y_threshold <- -log(1 - confidence_level)
   
-  if (color_times){
+  t_value <- qt(c((1 - confidence_level)/2, 1-(1 - confidence_level)/2), df = 2)[2]
+  x_threshold <- t_value * mean(plot_dat[["err_value"]], na.rm = TRUE)/sqrt(length(plot_dat))
+  
+  plot_dat <- plot_dat %>%
+    mutate(valid = abs(value) > x_threshold & log_p_value > y_threshold)
+  
+  if(hide_insignificant) {
+    
+    plot_dat <- filter(plot_dat, valid)
+    
+  }
+  
+  if(color_times){
     
     volcano_plot <- ggplot(plot_dat, aes(x = value, y = log_p_value)) +
+      geom_errorbar(aes(xmin = value - err_value, xmax = value + err_value), color = "grey77") +
       geom_point(aes(color = as.factor(Exposure))) +
-      geom_errorbar(aes(xmin = value - err_value, xmax = value + err_value), alpha = 0.2) +
       labs(title = paste0("Volcano Plot ", state_1, " " , state_2),
            x = x_label,
            y = "-log(P value)") +
@@ -117,7 +144,7 @@ plot_volcano <- function(p_dat,
     
     volcano_plot <- ggplot(plot_dat, aes(x = value, y = log_p_value)) +
       geom_point() +
-      geom_errorbar(aes(xmin = value - err_value, xmax = value + err_value), alpha = 0.2) +
+      geom_errorbar(aes(xmin = value - err_value, xmax = value + err_value), color = "grey77") +
       labs(title = paste0("Volcano Plot ", state_1, " " , state_2),
            x = x_label,
            y = "-log(P value)")
@@ -135,16 +162,18 @@ plot_volcano <- function(p_dat,
   
   if(show_confidence_limits){
     
-    y_threshold <- -log(1 - confidence_level)
-    
-    t_value <- qt(c((1 - confidence_level)/2, 1-(1 - confidence_level)/2), df = 2)[2]
-    x_threshold <- t_value * mean(plot_dat[["err_value"]], na.rm = TRUE)/sqrt(length(plot_dat))
-    
     volcano_plot <- volcano_plot +
       geom_segment(aes(x = -x_threshold, xend = -x_threshold, y = y_threshold, yend = Inf), linetype = "dashed", color = "red") +
       geom_segment(aes(x = x_threshold, xend = x_threshold, y = y_threshold, yend = Inf), linetype = "dashed", color = "red") +
       geom_segment(aes(y = y_threshold, yend = y_threshold, x = -Inf, xend = -x_threshold), linetype = "dashed", color = "red") +
       geom_segment(aes(y = y_threshold, yend = y_threshold, x = x_threshold, xend = Inf), linetype = "dashed", color = "red")
+    
+  }
+  
+  if(show_insignificant_grey){
+    
+    volcano_plot <- volcano_plot + 
+      geom_point(data = subset(plot_dat, !valid), aes(x = value, y = log_p_value), color = "grey77")
     
   }
   
