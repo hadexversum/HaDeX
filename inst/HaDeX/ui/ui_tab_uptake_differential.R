@@ -97,17 +97,32 @@ diff_uptake_test <- function() HaDeX_plotSettingsSection(
   
   title = "Test",
   
-  checkboxInput_h(inputId = "diff_kin_show_houde",
-                  label = "Houde test",
-                  value = FALSE),
-  checkboxInput_h(inputId = "diff_kin_show_tstud", 
-                  label = "t-Student test", 
-                  value = FALSE),
-  selectInput_h(inputId = "diff_kin_confidence_level",
-                label = "Confidence limit:",
-                choices = c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
-                selected = 0.98)
-  
+  fluidPage(
+    fluidRow(
+      column(width = 6, 
+             checkboxInput_h(inputId = "diff_kin_show_houde",
+                             label = "Houde test",
+                             value = FALSE),
+             checkboxInput_h(inputId = "diff_kin_show_tstud", 
+                             label = "t-Student test", 
+                             value = FALSE)
+             ),
+      column(width = 6, 
+             selectInput_h(inputId = "diff_kin_confidence_level",
+                           label = "Confidence limit:",
+                           choices = c("80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
+                           selected = 0.98),
+             div(id = "diff_kin_correction_part",
+                 selectInput_h(inputId = "diff_kin_p_adjustment_method",
+                               label = "Choose method of adjustment:",
+                               choices = c("none", "BH", "bonferroni"),
+                               selected = "none")
+                 )
+             
+             )
+    )
+  )
+ 
 )
 
 ##

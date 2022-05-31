@@ -88,17 +88,13 @@ observe({
 
 observe({
   
-  if(input[["diff_kin_theory"]]){
-    hide(id = "diff_kin_time_part")
-  }
+  if(input[["diff_kin_theory"]]){ hide(id = "diff_kin_time_part") }
   
 })
 
 observe({
   
-  if(!input[["diff_kin_theory"]]){
-    show(id = "diff_kin_time_part")
-  }
+  if(!input[["diff_kin_theory"]]){ show(id = "diff_kin_time_part") }
   
 })
 
@@ -106,9 +102,7 @@ observe({
 
 observe({
   
-  if(!input[["diff_kin_fractional"]]){
-    hide(id = "diff_kin_time_100_part")
-  }
+  if(!input[["diff_kin_fractional"]]){ hide(id = "diff_kin_time_100_part") }
   
 })
 
@@ -116,9 +110,23 @@ observe({
 
 observe({
   
-  if(input[["diff_kin_fractional"]]){
-    show(id = "diff_kin_time_100_part")
-  }
+  if(input[["diff_kin_fractional"]]){ show(id = "diff_kin_time_100_part") }
+  
+})
+
+##
+
+observe({
+  
+  if(input[["diff_kin_show_tstud"]]){ show(id = "diff_kin_correction_part")  }
+  
+})
+
+##
+
+observe({
+  
+  if(!input[["diff_kin_show_tstud"]]){ hide(id = "diff_kin_correction_part")  }
   
 })
 
@@ -218,7 +226,7 @@ diff_kin_dat <- reactive({
                                protein = input[["chosen_protein"]],
                                state_1 = input[["diff_kin_state_1"]],
                                state_2 = input[["diff_kin_state_2"]],
-                               # p_adjustment_method = "none",
+                               p_adjustment_method = input[["diff_kin_p_adjustment_method"]],
                                confidence_level = as.numeric(input[["diff_kin_confidence_level"]]),
                                time_0 = v_time_0,
                                time_100 = v_time_100,

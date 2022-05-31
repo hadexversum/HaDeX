@@ -74,6 +74,21 @@ observe({
                     selected = states_chosen_protein()[length(states_chosen_protein())])
 })
 
+##
+
+observe({
+  
+  if(input[["diff_show_tstud"]]){ show(id = "diff_correction_part")  }
+  
+})
+
+##
+
+observe({
+  
+  if(!input[["diff_show_tstud"]]){ hide(id = "diff_correction_part")  }
+  
+})
 
 #################################
 ######### DATASET ###############
@@ -126,7 +141,7 @@ woods_p_dat <- reactive({
                                protein = input[["chosen_protein"]],
                                state_1 = input[["diff_state_1"]], 
                                state_2 = input[["diff_state_2"]],
-                               # p_adjustment_method = 
+                               p_adjustment_method = input[["diff_p_adjustment_method"]],
                                confidence_level = as.double(input[["confidence_level"]]),
                                time_0 = as.numeric(input[["time_0"]]),
                                time_100 = as.numeric(input[["time_100"]]),

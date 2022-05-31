@@ -131,8 +131,13 @@ diff_test <- function() HaDeX_plotSettingsSection(
         width = 6,
         selectInput_h(inputId = "confidence_level",
                       label = "Confidence level:",
-                      choices = c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
-                      selected = 0.98)
+                      choices = c("80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
+                      selected = 0.98),
+        div(id = "diff_correction_part",
+            selectInput_h(inputId = "diff_p_adjustment_method",
+                          label = "Choose method of adjustment:",
+                          choices = c("none", "BH", "bonferroni"),
+                          selected = "none"))
       )
     )
   ) 
