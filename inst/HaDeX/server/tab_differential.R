@@ -97,8 +97,8 @@ woods_plot_dat <- reactive({
                                protein = input[["chosen_protein"]],
                                state_1 = input[["diff_state_1"]],
                                state_2 = input[["diff_state_2"]],
-                               time_0 = input[["time_0"]],
-                               time_100 = input[["time_100"]],
+                               time_0 = as.numeric(input[["time_0"]]),
+                               time_100 = as.numeric(input[["time_100"]]),
                                deut_part = 0.01*as.integer(input[["deut_part"]]))
   },
   error = function(e){
@@ -128,8 +128,8 @@ woods_p_dat <- reactive({
                                state_2 = input[["diff_state_2"]],
                                # p_adjustment_method = 
                                confidence_level = as.double(input[["confidence_level"]]),
-                               time_0 = input[["time_0"]],
-                               time_100 = input[["time_100"]],
+                               time_0 = as.numeric(input[["time_0"]]),
+                               time_100 = as.numeric(input[["time_100"]]),
                                deut_part = 0.01*as.integer(input[["deut_part"]])
                                )
   
@@ -149,7 +149,7 @@ differential_plot <- reactive({
                     fractional = input[["comp_fractional"]],
                     show_houde_interval = input[["diff_show_houde"]],
                     show_tstud_confidence = input[["diff_show_tstud"]],
-                    time_t = input[["time_t"]],
+                    time_t = as.numeric(input[["time_t"]]),
                     line_size = 1,
                     confidence_level = as.double(input[["confidence_level"]]),
                     all_times = (input[["time_t"]] == -1))

@@ -288,8 +288,8 @@ all_dat <- reactive({
   create_uptake_dataset(dat(),
                         protein = input[["chosen_protein"]],
                         states = states_from_file(),
-                        time_0 = input[["time_0"]],
-                        time_100 = input[["time_100"]],
+                        time_0 = as.numeric(input[["time_0"]]),
+                        time_100 = as.numeric(input[["time_100"]]),
                         deut_part = 0.01*as.integer(input[["deut_part"]]))
 })
 
@@ -324,7 +324,7 @@ comparison_plot <- reactive({
   plot_state_comparison(uptake_dat = prep_dat(),
                         theoretical = input[["theory"]],
                         fractional = input[["comp_fractional"]],
-                        time_t = input[["time_t"]],
+                        time_t = as.numeric(input[["time_t"]]),
                         all_times = (input[["time_t"]] == -1))
 })
 
@@ -337,7 +337,7 @@ cp_out <- reactive({
 
   comparison_plot() +
     coord_cartesian(xlim = c(input[["plot_x_range"]][[1]], input[["plot_x_range"]][[2]]),
-                       ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
+                    ylim = c(input[["comp_plot_y_range"]][[1]], input[["comp_plot_y_range"]][[2]])) +
     labs(title = input[["comparison_plot_title"]],
          x = input[["comparison_plot_x_label"]],
          y = input[["comparison_plot_y_label"]]) +
