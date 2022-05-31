@@ -59,8 +59,8 @@ This plot is visible in GUI.
 }
 \examples{
 dat <-  read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-p_dat <- create_volcano_dataset(dat)
-plot_volcano(vol_dat, show_confidence_limits = T)
+p_dat <- create_p_diff_uptake_dataset(dat)
+plot_volcano(p_dat, show_confidence_limits = T)
 
 }
 \references{

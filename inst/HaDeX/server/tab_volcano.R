@@ -60,9 +60,7 @@ observe({
 
 observe({
   
-  if(!input[["vol_fractional"]]){
-    hide(id = "vol_control_part")
-  }
+  if(!input[["vol_fractional"]]){ hide(id = "vol_control_part") }
   
 })
 
@@ -70,9 +68,7 @@ observe({
 
 observe({
   
-  if(input[["vol_fractional"]]){
-    show(id = "vol_control_part")
-  }
+  if(input[["vol_fractional"]]){ show(id = "vol_control_part") }
   
 })
 
