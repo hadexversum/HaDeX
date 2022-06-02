@@ -5,22 +5,25 @@
 \title{Plot peptide mass measurement}
 \usage{
 plot_peptide_mass_measurement(
-  rep_mass_dat,
-  protein = rep_mass_dat[["Protein"]][1],
-  state = rep_mass_dat[["State"]][1],
-  sequence = rep_mass_dat[["Sequence"]][1],
-  time_t = unique(rep_mass_dat[["Exposure"]])[3]
+  dat,
+  protein = dat[["Protein"]][1],
+  state = dat[["State"]][1],
+  sequence = dat[["Sequence"]][1],
+  show_charge_values = TRUE,
+  time_t = unique(dat[["Exposure"]])[3]
 )
 }
 \arguments{
-\item{rep_mass_dat}{data produced by 
-\code{\link{calculate_exp_masses_per_replicate}} function.}
+\item{dat}{data produced by 
+\code{\link{read_hdx}} function.}
 
 \item{protein}{chosen protein.}
 
 \item{state}{biological state for chosen protein.}
 
 \item{sequence}{sequence of chosen peptide.}
+
+\item{show_charge_values}{...}
 
 \item{time_t}{time point of the measurement.}
 }
@@ -40,8 +43,8 @@ replicates, used later in calculations.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-rep_mass_dat <- calculate_exp_masses_per_replicate(dat)
-plot_peptide_mass_measurement(rep_mass_dat)
+plot_peptide_mass_measurement(dat, sequence = "LICTVWHKKEEAEG")
+plot_peptide_mass_measurement(dat, sequence = "LICTVWHKKEEAEG", show_charge_values = F)
 
 }
 \seealso{

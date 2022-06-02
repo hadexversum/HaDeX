@@ -3,8 +3,7 @@ tab_replicates <- function() HaDeX_plotTab(
   title = "Replicates",
   
   settingsPanel = HaDeX_plotSettingsPanel(
-    replicates_state(),
-    replicates_timepoint(),
+    replicates_plot_param(),
     replicates_sequence(),
     replicates_labels_adjustement()
   ),
@@ -18,25 +17,25 @@ tab_replicates <- function() HaDeX_plotTab(
   
 )
 
-replicates_state <- function() HaDeX_plotSettingsSection(
+replicates_plot_param <- function() HaDeX_plotSettingsSection(
   
-  title = "State",
+  title = "Select parameters:",
   
   selectInput_h(inputId = "rep_state",
                 label = "Select state: ",
                 choices = c("CD160", "CD160_HVEM"),
-                selected = "CD160")
-)
-
-replicates_timepoint <- function() HaDeX_plotSettingsSection(
-  
-  title = "Timepoint",
+                selected = "CD160"),
   
   selectInput_h(inputId = "rep_time",
                 label = "Select time point: ",
                 choices = c(0, 0.001, 0.167, 1, 5, 25, 120, 1440),
-                selected = 1)
+                selected = 1),
+  
+  checkboxInput_h(inputId = "rep_show_charge",
+                  label = "Show charge values?",
+                  value = TRUE)
 )
+
 
 replicates_sequence <- function() HaDeX_plotSettingsSection(
   
@@ -89,18 +88,19 @@ replicates_labels_adjustement <- function() HaDeX_plotSettingsSection(
 replicates_plot_and_charge_panel <- function() tabsetPanel(
   
   tabPanel("Plot",
-           fluidRow(
-             column(width = 6,
+           # fluidRow(
+             # column(width = 6,
                     plotOutput_h("replicatesPlot", hover = hoverOpts("replicatesPlot_hover", delay = 10, delayType = "debounce")),
                     uiOutput("replicatesPlot_debug"),
                     downloadButton("replicatesPlot_download_button",
-                                   "Save chart (.svg)")),
-             column(width = 6,
-                    plotOutput_h("replicatesChargePlot", hover = hoverOpts("replicatesChargePlot_hover", delay = 10, delayType = "debounce")),
-                    uiOutput("replicatesChargePlot_debug"),
-                    downloadButton("replicatesChargePlot_download_button",
-                                   "Save chart (.svg)"))
-           )
+                                   "Save chart (.svg)")
+           # ),
+             # column(width = 6,
+                    # plotOutput_h("replicatesChargePlot", hover = hoverOpts("replicatesChargePlot_hover", delay = 10, delayType = "debounce")),
+                    # uiOutput("replicatesChargePlot_debug"),
+                    # downloadButton("replicatesChargePlot_download_button",
+                                   # "Save chart (.svg)"))
+           # )
   ),
   
   tabPanel("Data",
