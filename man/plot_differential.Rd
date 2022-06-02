@@ -11,7 +11,9 @@ plot_differential(
   theoretical = FALSE,
   fractional = FALSE,
   show_houde_interval = FALSE,
+  hide_houde_insignificant = FALSE,
   show_tstud_confidence = FALSE,
+  hide_tstud_insignificant = FALSE,
   confidence_level = 0.98,
   all_times = FALSE,
   line_size = 1.5
@@ -30,8 +32,12 @@ plot_differential(
 
 \item{show_houde_interval}{\code{logical}, determines if houde interval is shown.}
 
+\item{hide_houde_insignificant}{...}
+
 \item{show_tstud_confidence}{\code{logical}, determines if t-Student test validity 
 is shown.}
+
+\item{hide_tstud_insignificant}{...}
 
 \item{confidence_level}{confidence level for the test, from range [0, 1].}
 
@@ -69,11 +75,14 @@ plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167)
 plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167, line_size = 1) 
 plot_differential(diff_uptake_dat = diff_uptake_dat, all_times = T)
 plot_differential(diff_uptake_dat = diff_uptake_dat, all_times = T, show_houde_interval = T)
+plot_differential(diff_uptake_dat = diff_uptake_dat, all_times = T, show_houde_interval = T, hide_houde_insignificant = T)
 
 diff_p_uptake_dat <- create_p_diff_uptake_dataset(dat)
 plot_differential(diff_p_uptake_dat = diff_p_uptake_dat, all_times = T, show_tstud_confidence = T)
 plot_differential(diff_p_uptake_dat = diff_p_uptake_dat, all_times = T, show_tstud_confidence = T, show_houde_interval = T)
 plot_differential(diff_p_uptake_dat = diff_p_uptake_dat, show_tstud_confidence = T, show_houde_interval = T, all_times = F)
+plot_differential(diff_p_uptake_dat = diff_p_uptake_dat, show_tstud_confidence = T, show_houde_interval = T, all_times = F, hide_houde_insignificant = T)
+plot_differential(diff_p_uptake_dat = diff_p_uptake_dat, show_tstud_confidence = T, show_houde_interval = T, all_times = F, hide_houde_insignificant = T, hide_tstud_insignificant = T)
 
 }
 \seealso{

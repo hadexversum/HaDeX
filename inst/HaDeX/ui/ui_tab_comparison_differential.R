@@ -125,6 +125,9 @@ diff_test <- function() HaDeX_plotSettingsSection(
                         value = TRUE),
         checkboxInput_h(inputId = "diff_show_tstud", 
                         label = "t-Student test", 
+                        value = FALSE),
+        checkboxInput_h(inputId = "diff_hide_insignificant",
+                        label = "Hide insignificant?",
                         value = FALSE)
       ),
       column(
