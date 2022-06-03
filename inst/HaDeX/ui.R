@@ -42,7 +42,8 @@ ui <- tagList(
         title = "Time-based data",
         tab_replicates(),
         tab_manhattan(),
-        tab_quality
+        tab_quality,
+        tab_uncertainty()
       ),
       navbarMenu(
         title = "Sequence data",

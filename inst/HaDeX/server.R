@@ -436,6 +436,10 @@ server <- function(input, output, session) {
   ### TAB: MANHATTAN ###
   
   source("server/tab_manhattan.R", local = TRUE)
+  
+  ### TAB: UNCERTAINTY
+  
+  source("server/tab_uncertainty.R", local = TRUE)
 
   
 
