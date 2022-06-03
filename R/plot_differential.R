@@ -224,8 +224,7 @@ plot_differential <- function(diff_uptake_dat = NULL,
     
     differential_plot <- differential_plot +
       geom_segment(data = subset(plot_dat, !valid), aes(x = Start, y = value, xend = End, yend = value), color = "grey77", size = line_size) +
-      geom_errorbar(data = subset(plot_dat, !valid), aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value), color = "grey77") +
-      theme(legend.position = "none")
+      geom_errorbar(data = subset(plot_dat, !valid), aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value), color = "grey77") 
     
   }
 

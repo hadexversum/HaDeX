@@ -26,7 +26,7 @@ observe({
   
   if(input[["chic_diff_fractional"]]){
     
-    times_t <- times_from_file()[times_from_file() > input[["chic_diff_time_0"]] & times_from_file() < as.numeric(input[["chic_diff_time_100"]])]
+    times_t <- times_from_file()[times_from_file() > input[["chic_diff_time_0"]] & times_from_file() < 99999]
     
   } else {
     
