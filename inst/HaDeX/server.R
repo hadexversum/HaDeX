@@ -190,6 +190,7 @@ server <- function(input, output, session) {
       filter(Protein == input[["chosen_protein"]]) %>%
       select(State) %>%
       unique(.) %>%
+      arrange(nchar(State)) %>%
       .[[1]]
       
   })

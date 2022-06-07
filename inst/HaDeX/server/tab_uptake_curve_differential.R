@@ -53,7 +53,7 @@ observe({
   updateSelectInput(session,
                     inputId = "diff_kin_state_2",
                     choices = states_chosen_protein(),
-                    selected = states_chosen_protein()[length(states_chosen_protein())])
+                    selected = states_chosen_protein()[2])
   
 })
 
