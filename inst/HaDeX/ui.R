@@ -45,6 +45,7 @@ ui <- tagList(
         tab_quality,
         tab_uncertainty()
       ),
+      tab_measurements(),
       navbarMenu(
         title = "Sequence data",
         tab_sequence,

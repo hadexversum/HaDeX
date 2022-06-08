@@ -441,6 +441,10 @@ server <- function(input, output, session) {
   ### TAB: UNCERTAINTY
   
   source("server/tab_uncertainty.R", local = TRUE)
+  
+  ### TAB: MEASUREMENTS
+  
+  source("server/tab_measurements.R", local = TRUE)
 
   
 
