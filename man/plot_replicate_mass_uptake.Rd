@@ -9,7 +9,8 @@ plot_replicate_mass_uptake(
   protein = dat[["Protein"]][1],
   state = dat[["State"]][1],
   sequence = dat[["Sequence"]][1],
-  show_aggregated = FALSE
+  show_aggregated = FALSE,
+  log_x = TRUE
 )
 }
 \arguments{
@@ -22,9 +23,17 @@ plot_replicate_mass_uptake(
 \item{sequence}{...}
 
 \item{show_aggregated}{...}
+
+\item{log_x}{...}
+}
+\value{
+a \code{\link{ggplot}} object.
 }
 \description{
-Plots the mass uptake curve from the replicates
+...
+}
+\details{
+...
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
@@ -33,4 +42,5 @@ plot_replicate_mass_uptake(dat)
 }
 \seealso{
 \code{\link{read_hdx}}
+\code{\link{calculate_exp_masses_per_replicate}}
 }

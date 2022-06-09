@@ -53,12 +53,14 @@ uptake_peptide <- function() HaDeX_plotSettingsSection(
   dataTableOutput_h("peptide_list_data"),
   
   actionButton(inputId = "reset_peptide_list",
-               label = "Reset chosen peptides")
+               label = "Reset chosen peptides"),
+  br()
 )
 
 uptake_visualization <- function() HaDeX_plotSettingsSection(
   
   title = "Visualization",
+  
   checkboxInput_h(inputId = "kin_log_x",
                   label = "Logaritmic x scale",
                   value = TRUE),
