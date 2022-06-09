@@ -45,10 +45,6 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
   
   uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars", "bars + line"))
   
-  if(is.null(sequence)){ sequence <- diff_uptake_dat[["Sequence"]][1] }
-  
-  states <- paste0(attr(diff_uptake_dat, "state_1"), "-", attr(diff_uptake_dat, "state_2"))
-  
   ##
   
   if (show_tstud_confidence) {
@@ -69,7 +65,12 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
     
   }
   
+  if(is.null(sequence)){ sequence <- diff_uptake_dat[["Sequence"]][1] }
+  
+  states <- paste0(attr(diff_uptake_dat, "state_1"), "-", attr(diff_uptake_dat, "state_2"))
+  
   diff_uptake_dat <- filter(diff_uptake_dat, Exposure < 99999) 
+  
   
   ##
   
