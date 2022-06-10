@@ -59,7 +59,8 @@ plot_peptide_mass_measurement <- function(dat,
              Exposure == time_t) %>%
       mutate(exp_mass = Center*z - z*1.00727647,
              weighted_Inten = scale(Inten))
-    ggplot() +
+    
+    pep_mass_plot <- ggplot() +
       geom_point(data = rep_mass_z_dat, aes(x = exp_mass, y = File, color = as.factor(z), size = weighted_Inten)) +
       geom_point(data = rep_mass_dat, aes(x = avg_exp_mass, y = File), size = 3) +
       geom_vline(xintercept = avg_value, color = "red", linetype = "dashed", size = 1.5) +
@@ -72,13 +73,16 @@ plot_peptide_mass_measurement <- function(dat,
   
   } else {
       
-    ggplot() +
+    pep_mass_plot <- ggplot() +
       geom_point(data = rep_mass_dat, aes(x = avg_exp_mass, y = File), size = 3) +
       geom_vline(xintercept = avg_value, color = "red", linetype = "dashed", size = 1.5) +
       labs(y = "",
            x = "Measured mass [Da]",
            title = paste0("Peptide ", sequence, " in state ", state, " in ", time_t, " min"))
-        }
+  }
+  
+  return(HaDeXify(pep_mass_plot))
+  
 }
 
 

@@ -23,11 +23,11 @@ observe({
 
 measures_peptide_list <- reactive({
   
-  measures_of_peptides() %>%
+  dat() %>% 
     filter(Protein == input[["chosen_protein"]],
-           State == input[["measures_state"]],
-           Exposure == input[["measures_time"]]) %>%
-    select(N, Sequence, Start, End, charges) %>%
+           State == input[["measures_state"]])  %>% 
+    select(Sequence, Start, End) %>%
+    unique(.) %>%
     arrange(Start, End)
   
 })
@@ -53,7 +53,7 @@ measures_list_proxy <- DT::dataTableProxy("measures_sequence", session = session
 ##
 
 observe({
-  
+
   updateTextInput(session,
                   inputId = "measures_plot_title",
                   value = paste0("Measurements of ", measures_peptide_list()[input[["measures_sequence_rows_selected"]], 2], " in ", input[["measures_time"]], " min in ", input[["measures_state"]], " state"))
@@ -79,23 +79,7 @@ observe({
                     step = 1)
 })
 
-#################################
-######### DATASET ###############
-#################################
 
-measures_of_peptides <- reactive({
-  
-  dat() %>% 
-    filter(Protein == input[["chosen_protein"]],
-           State == input[["measures_state"]],
-           Exposure == input[["measures_time"]])  %>% 
-    select(Protein, State, Sequence, Start, End, Exposure, File, z) %>%
-    group_by(Protein, State, Sequence, Start, End, Exposure) %>%
-    summarize(N = length(unique(File)),
-              charges = paste(unique(z), collapse = " ")) %>%
-    ungroup(.)
-  
-})
 
 #################################
 ######### PLOT ##################
@@ -110,7 +94,7 @@ measures_plot_out <- reactive({
                                 protein = input[["chosen_protein"]],
                                 show_charge_values = !input[["measures_show_charge"]],
                                 state =  input[["measures_state"]],
-                                sequence = measures_peptide_list()[input[["measures_sequence_rows_selected"]], 2][[1]],
+                                sequence = measures_peptide_list()[input[["measures_sequence_rows_selected"]], 1],
                                 time_t = as.numeric(input[["measures_time"]]))  + 
     labs(x = input[["measures_plot_x_label"]],
          y = input[["measures_plot_y_label"]],
@@ -160,7 +144,7 @@ measures_plot_data_out <- reactive({
   show_peptide_mass_measurement(calculate_exp_masses_per_replicate(dat()),
                                 protein = input[["chosen_protein"]],
                                 state =  input[["measures_state"]],
-                                sequence = measures_peptide_list()[input[["measures_sequence_rows_selected"]], 2][[1]],
+                                sequence = measures_peptide_list()[input[["measures_sequence_rows_selected"]], 1],
                                 time_t = as.numeric(input[["measures_time"]])) 
 })
 
@@ -184,7 +168,7 @@ mass_uptake_plot_out <- reactive({
   plot_replicate_mass_uptake(dat = dat(),
                              protein = input[["chosen_protein"]],
                              state = input[["measures_state"]],
-                             sequence = measures_peptide_list()[input[["measures_sequence_rows_selected"]], 2][[1]],
+                             sequence = measures_peptide_list()[input[["measures_sequence_rows_selected"]], 1],
                              log_x = input[["mass_uptake_log_x"]],
                              show_aggregated = input[["measures_show_charge"]]) +
     coord_cartesian(ylim = c(input[["mass_uptake_plot_y_range"]][1], input[["mass_uptake_plot_y_range"]][2])) +
@@ -226,7 +210,7 @@ mass_uptake_plot_data <- reactive({
   filtered_dat <- dat() %>%
     filter(Protein == input[["chosen_protein"]], 
            State == input[["measures_state"]],
-           Sequence == measures_peptide_list()[input[["measures_sequence_rows_selected"]], 2][[1]],
+           Sequence == measures_peptide_list()[input[["measures_sequence_rows_selected"]], 1],
            Exposure > as.numeric(input[["no_deut_control"]]))
     
   if(input[["measures_show_charge"]]) {
