@@ -15,6 +15,9 @@ a \code{\link{numeric}} value.
 \description{
 Get number of replicates
 }
+\details{
+Calculate the number of replicates of experiment.
+}
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 get_n_replicates(dat)

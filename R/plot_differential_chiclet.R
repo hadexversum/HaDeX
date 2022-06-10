@@ -32,6 +32,7 @@
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' diff_uptake_dat <- create_diff_uptake_dataset(dat)
 #' plot_differential_chiclet(diff_uptake_dat)
+#' plot_differential_chiclet(diff_uptake_dat, show_houde_interval = T)
 #' 
 #' diff_p_uptake_dat <- create_p_diff_uptake_dataset(dat)
 #' plot_differential_chiclet(diff_p_uptake_dat = diff_p_uptake_dat, show_tstud_confidence = T)
@@ -135,8 +136,12 @@ plot_differential_chiclet <- function(diff_uptake_dat = NULL,
   
   if(show_houde_interval){
     
-    t_value <- qt(c((1 - confidence_level)/2, 1-(1 - confidence_level)/2), df = 2)[2]
-    x_threshold <- t_value * mean(plot_dat[["err_value"]], na.rm = TRUE)/sqrt(length(plot_dat))
+    # t_value <- qt(c((1 - confidence_level)/2, 1-(1 - confidence_level)/2), df = 2)[2]
+    # x_threshold <- t_value * mean(plot_dat[["err_value"]], na.rm = TRUE)/sqrt(length(plot_dat))
+    
+    x_threshold <- calculate_confidence_limit_values(plot_dat, 
+                                                     confidence_level = confidence_level,
+                                                     n_rep = attr(diff_uptake_dat, "n_rep"))[2]
     
     chiclet_differential_plot <- chiclet_differential_plot +
       geom_tile(data = subset(plot_dat, abs(value) < x_threshold), fill = "grey91")

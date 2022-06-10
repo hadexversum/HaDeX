@@ -74,7 +74,9 @@ get_protein_redundancy <- function(dat,
 #' 
 #' @param dat data imported by the \code{\link{read_hdx}} function.
 #' 
-#' @detals Calculate the number of replicates of experiment.
+#' @importFrom dplyr pull
+#' 
+#' @details Calculate the number of replicates of experiment.
 #' 
 #' @return a \code{\link{numeric}} value.
 #' 

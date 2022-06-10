@@ -52,6 +52,7 @@ This plot is visible in GUI.
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 diff_uptake_dat <- create_diff_uptake_dataset(dat)
 plot_differential_butterfly(diff_uptake_dat = diff_uptake_dat)
+plot_differential_butterfly(diff_uptake_dat = diff_uptake_dat, show_houde_interval = TRUE)
 
 diff_p_uptake_dat <- create_p_diff_uptake_dataset(dat)
 plot_differential_butterfly(diff_p_uptake_dat = diff_p_uptake_dat, show_tstud_confidence = TRUE)
