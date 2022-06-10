@@ -8,13 +8,20 @@ observeEvent(input[["chosen_protein"]], {
                     inputId = "vol_state_1",
                     choices = states_chosen_protein(),
                     selected = states_chosen_protein()[1])
+})
+
+##
+  
+observeEvent(input[["chosen_protein"]], { 
   
   updateSelectInput(session, 
                     inputId = "vol_state_2",
                     choices = states_chosen_protein(),
-                    selected = states_chosen_protein()[length(states_chosen_protein())])
+                    selected = states_chosen_protein()[2])
   
 })
+
+##
 
 observe({
   
@@ -24,11 +31,22 @@ observe({
                     value = c(1, max_range())
                     
   )
+})
+
+##
+
+observe({
   
   updateTextInput(session, 
                   inputId = "volcano_plot_title",
                   value = paste0("Deuterium uptake difference between ", input[["vol_state_1"]], " and ", input[["vol_state_2"]])
   )
+  
+})
+
+##
+
+observe({
   
   updateCheckboxGroupInput(session,
                            inputId = "vol_timepoints",
@@ -42,9 +60,7 @@ observe({
 
 observe({
   
-  if(!input[["vol_fractional"]]){
-    hide(id = "vol_control_part")
-  }
+  if(!input[["vol_fractional"]]){ hide(id = "vol_control_part") }
   
 })
 
@@ -52,20 +68,20 @@ observe({
 
 observe({
   
-  if(input[["vol_fractional"]]){
-    show(id = "vol_control_part")
-  }
+  if(input[["vol_fractional"]]){ show(id = "vol_control_part") }
   
 })
 
 ##
 
 observe({
+  
+  # browser()
   
   updateSelectInput(session,
                     inputId = "vol_time_0",
                     choices = times_from_file()[times_from_file() < 99999],
-                    selected = min(times_from_file()[times_from_file() > 0]))
+                    selected = times_from_file()[times_from_file() == as.numeric(input[["no_deut_control"]])])
 })
 
 ##
@@ -119,6 +135,11 @@ observe({
                     max = max_x + 2,
                     min = -max_x - 2,
                     value = c(-max_x, max_x))
+})
+
+##
+
+observe({
   
   max_y <- ceiling(max(volcano_dataset()[["log_p_value"]], na.rm = TRUE)) 
   
@@ -243,10 +264,14 @@ alpha_interval <- reactive({
 
 volcano_plot_out <- reactive({
   
+  # browser()
+  
   plot_volcano(volcano_data(), 
                state_1 = input[["vol_state_1"]], 
                state_2 = input[["vol_state_2"]],
                color_times = input[["vol_color_times"]],
+               show_insignificant_grey = input[["vol_show_insignificant_grey"]],
+               hide_insignificant = input[["vol_hide_insignificant"]],
                fractional = input[["vol_fractional"]],
                theoretical = FALSE) + ## hard coded, no theoretical
     # ## statistics

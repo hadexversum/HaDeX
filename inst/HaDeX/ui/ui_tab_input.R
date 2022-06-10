@@ -1,13 +1,13 @@
 tab_input <- function() HaDeX_nonplotTab(
+  
   title = "Input data",
-  p(
-    "Upload your file. Otherwise, you will see the example data.",
-    "Currently HaDeX is limited to `cluster` files from DynamX 3.0 or 2.0 and `tables` file from  HDeXaminer.",
-    "Accepted file extensions: .csv, .xls, .xlsx. ",
+  
+  p(strong("Upload your file."), "Otherwise, you will see the example data."),
+  p("Currently HaDeX is limited to `cluster` files from DynamX 3.0 or 2.0 and `tables` file from  HDeXaminer.",
     "The supplied file should contain at least two repetitions of the measurement for the uncertainty to be calculated.",
-    "If the supplied file contains modified peptides, maximal exchange control cannot be applied.",
-    "Please be aware that loading data (including example file) may take a while. Be patient."
-  ),
+    "If the supplied file contains modified peptides, maximal exchange control cannot be applied."),
+  p("Please be aware that loading data (including example file) may take a while. Thank you for the patience."),
+  
   wellPanel(
     fillRow(
       flex = c(NA, 1),
@@ -39,40 +39,20 @@ tab_input <- function() HaDeX_nonplotTab(
       target = "#HaDeX-file-requirements-table"
     )
   ),
+  
   HaDeX_collapsablePanel(
     id = "HaDeX-file-requirements-table",
     tableOutput("file_req")
   ),
   
-  h3("Settings"),
-  p("Values chosen here are propagated into all of the tables for coherent results."),
+  h3("Upload settings"),
+  p("Values chosen here are propagated into all of the tabs for coherent results."),
   
   fillRow(
     id = "HaDeX-settings-panel",
     wellPanel(
       id = "HaDeX-standard-settings-panel",
-      selectInput_h(inputId = "chosen_protein",
-                    label = "Choose protein: ",
-                    choices = c("db_CD160"),
-                    width = "100%"),
-      selectInput_h(inputId = "chosen_control",
-                    label = "Choose maximal exchange control for chosen protein: ",
-                    choices = c("db_CD160 | CD160 | 1440"),
-                    width = "100%"),
-      numericInput_h(inputId = "deut_part",
-                     label = "Choose D20 concentration [%]: ",
-                     value = 90,
-                     min = 0, max = 100, step = 1,
-                     width = "100%"),
-      numericInput_h(inputId = "sequence_start_shift",
-                     label = "Move sequence start:",
-                     value = 1, step = 1,
-                     width = "100%"),
-      numericInput_h(inputId = "sequence_length",
-                     label = "Correct sequence length:",
-                     value = 300, step = 1,
-                     width = "100%"),
-      textOutput("sequence_length_exp_info")
+      input_parameters()
     ),
     
     hidden(
@@ -113,4 +93,49 @@ tab_input <- function() HaDeX_nonplotTab(
     ),
     flex = c(NA, 1)
   )
+)
+
+input_parameters <- function() HaDeX_plotSettingsSection(
+  
+  title = "Select the parameters:",
+  
+  selectInput_h(inputId = "chosen_protein",
+                label = "Choose protein: ",
+                choices = c("db_CD160"),
+                width = "100%"),
+  selectInput_h(inputId = "chosen_control",
+                label = "Maximal exchange control: ",
+                choices = c("not present", "db_CD160 | CD160 | 1440"),
+                width = "100%"),
+  selectInput_h(inputId = "no_deut_control",
+                label = "No deuterated time point:",
+                choices = c(0, 0.001, 5),
+                selected = 0.001),
+  numericInput_h(inputId = "deut_part",
+                 label = "Choose D20 concentration [%]: ",
+                 value = 90,
+                 min = 0, max = 100, step = 1,
+                 width = "100%"),
+  
+  fluidPage(
+    fluidRow(
+      column(
+        width = 6,
+        numericInput_h(inputId = "sequence_start_shift",
+                       label = "Sequence start:",
+                       value = 1, step = 1,
+                       width = "100%"),
+      ),
+      column(
+        width = 6,
+        numericInput_h(inputId = "sequence_length",
+                       label = "Sequence length:",
+                       value = 300, step = 1,
+                       width = "100%")
+      )
+    )
+  ),
+  textOutput("sequence_length_exp_info")
+  
+  
 )

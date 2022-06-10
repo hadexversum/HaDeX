@@ -123,7 +123,7 @@ Butterfly differential plot shows the deuterium uptake difference between two bi
 *Example* Below, we see how the fractional deuterium uptake difference between states CD160 and CD160_HVEM changes over time. We see that for some peptides, the difference is smaller with time - perhaps because of the back exchange.
 
 ```{r message=FALSE}
-plot_differential_butterfly(diff_uptake_dat, fractional = TRUE, show_confidence_limit = TRUE) +
+plot_differential_butterfly(diff_uptake_dat, fractional = TRUE) +
   coord_cartesian(ylim = c(-10, 20))
 ```
 
@@ -188,9 +188,10 @@ The dotted red lines indicate confidence limits for the values. The horizontal l
 *Example* On the volcano plot below, we see the results for deuterium uptake difference between states CD160 and CD160_HVEM for protein db_CD160 in all time points. The points in the left and right upper corner are statistically significant using the hybrid testing.
 
 ```{r, warning = FALSE}
-vol_dat <- create_volcano_dataset(dat)
 
-plot_volcano(vol_dat, show_confidence_limits = T) 
+p_dat <- create_p_diff_uptake_dataset(dat)
+
+plot_volcano(p_dat, show_confidence_limits = T)
 
 ```
 
@@ -222,8 +223,7 @@ kin_dat <- bind_rows(calculate_kinetics(dat,
                               time_0 = 0.001,
                               time_100 = 1440))
 
-plot_kinetics(kin_dat, fractional = TRUE) +
-  scale_x_log10()
+plot_kinetics(kin_dat, fractional = TRUE, log_x = TRUE) 
 ```
 
 *Pros* The plot shows the differences in deuterium uptake between two states in the time course. The back-exchange phenomenon is visible in this plot. 

@@ -94,26 +94,27 @@ lapply(times, function(time){
 ## CREATE_VOLCANO_DATASET ##
 ############################
 
-## TO DO test p value
+## TODO: rewritte
+## TODO: test p value
 
-dat_tmp <- create_volcano_dataset(dat = dat,
-                                  protein = chosen_protein,
-                                  state_1 = chosen_states[1],
-                                  state_2 = chosen_states[2],
-                                  p_adjustment_method = "none",
-                                  confidence_level = chosen_confidence_level)
-
-lapply(times, function(time){
-
-  test_name <- paste0("create_volcano_dataset-", time, "min")
-
-  test_that(test_name,
-            expect_equal(dat_tmp[dat_tmp[["Sequence"]] == chosen_peptide & dat_tmp[["Exposure"]] == time, "D_diff"][[1]],
-                         ref_dat[ref_dat[["Exposure"]] == time, "diff_deut_uptake"]
-            )
-  )
-
-})
+# dat_tmp <- create_volcano_dataset(dat = dat,
+#                                   protein = chosen_protein,
+#                                   state_1 = chosen_states[1],
+#                                   state_2 = chosen_states[2],
+#                                   p_adjustment_method = "none",
+#                                   confidence_level = chosen_confidence_level)
+# 
+# lapply(times, function(time){
+# 
+#   test_name <- paste0("create_volcano_dataset-", time, "min")
+# 
+#   test_that(test_name,
+#             expect_equal(dat_tmp[dat_tmp[["Sequence"]] == chosen_peptide & dat_tmp[["Exposure"]] == time, "D_diff"][[1]],
+#                          ref_dat[ref_dat[["Exposure"]] == time, "diff_deut_uptake"]
+#             )
+#   )
+# 
+# })
 
 
 

@@ -12,6 +12,7 @@ result_tmp <- show_overlap_data(dat,
                                 state = chosen_state,
                                 start = min(dat[["Start"]]),
                                 end = max(dat[["End"]]))
+
 test_that("show_overlap_data colnames",
           expect_equal(colnames(result_tmp),
                        c("Protein", "Sequence", "ID", "Start", "End")
@@ -28,6 +29,7 @@ test_that("show_overlap_data rows",
 ## PLOT_OVERLAP ##
 ##################
 
-overlap_plot <- plot_overlap(result_tmp)
-
-expect_doppelganger("Overlap Plot", overlap_plot)
+## TODO: check
+# overlap_plot <- plot_overlap(result_tmp)
+# 
+# expect_doppelganger("Overlap Plot", overlap_plot)

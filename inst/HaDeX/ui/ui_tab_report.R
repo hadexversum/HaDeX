@@ -1,8 +1,24 @@
 tab_report <- function() HaDeX_nonplotTab(
+  
   title = "Report",
-  h3("Report items"),
+  
   wellPanel(
+    report_elements()
+  )
+  
+  
+  
+)
+
+report_elements <- function() HaDeX_plotSettingsSection(
+  
+  title = "Select elements for the raport",
+  
+ 
     fluidRow(
+      
+      
+      
       column(6,
              checkboxInput(inputId = "export_overlap_dist",
                            label = "Position Frequency",
@@ -51,7 +67,9 @@ tab_report <- function() HaDeX_nonplotTab(
                            value = FALSE),
              checkboxInput(inputId = "export_replicate_histograms",
                            label = "Replicate Histograms (one and all time points)",
-                           value = FALSE)
+                           value = FALSE),
+             actionButton(inputId = "export_all_plots",
+                          label = "Select all plots")
       ),
       column(6,
              checkboxInput(inputId = "export_overlap_dist_data",
@@ -85,15 +103,24 @@ tab_report <- function() HaDeX_nonplotTab(
              checkboxInput(inputId = "export_replicate_plots_data",
                            label = "Replicate Plots (mass, charge) Data"),
              checkboxInput(inputId = "export_replicate_histograms_data",
-                           label = "Replicate Histograms (one and all time points) Data")
+                           label = "Replicate Histograms (one and all time points) Data"),
+             actionButton(inputId = "export_all_data",
+                          label = "Select all data")
       )
-    )
-  ),
-  p("Elements chosen for report have the same parameters as chosen in suitable panels e.g. axis range, plot title or theoretical maximal exchange control. Adjust parameters as needed in the report."),
-  p(textOutput("report_message_uptake_curve")),
-  p(textOutput("report_message_replicate")),
+    ),
+    br(),
+    p("Elements chosen for report have the same parameters as chosen in suitable panels e.g. axis range, plot title or theoretical maximal exchange control. Adjust parameters as needed in the report."),
+    p(textOutput("report_message_uptake_curve")),
+    p(textOutput("report_message_replicate")),
   
   downloadButton(outputId = "export_action",
                  label = "  Create report!",
-                 icon = icon("fas fa-download"))
+                 icon = icon("fas fa-download"),
+                 style = "background-color:red")
+  
+  
+  
+  
 )
+  
+  

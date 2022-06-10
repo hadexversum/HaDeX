@@ -8,11 +8,17 @@ observe({
                     inputId = "man_state_1",
                     choices = states_chosen_protein(),
                     selected = states_chosen_protein()[1])
+
+})
+
+##
+
+observe({
   
   updateSelectInput(session,
                     inputId = "man_state_2",
                     choices = states_chosen_protein(),
-                    selected = states_chosen_protein()[length(states_chosen_protein())])
+                    selected = states_chosen_protein()[2])
   
 })
 

@@ -8,15 +8,25 @@ observe({
                     inputId = "chic_diff_state_1",
                     choices = states_chosen_protein(),
                     selected = states_chosen_protein()[1])
+})
+
+##
+
+observe({
   
   updateSelectInput(session,
                     inputId = "chic_diff_state_2",
                     choices = states_chosen_protein(),
-                    selected = states_chosen_protein()[length(states_chosen_protein())])
+                    selected = states_chosen_protein()[2])
+})
+
+##
+
+observe({
   
   if(input[["chic_diff_fractional"]]){
     
-    times_t <- times_from_file()[times_from_file() > input[["chic_diff_time_0"]] & times_from_file() < as.numeric(input[["chic_diff_time_100"]])]
+    times_t <- times_from_file()[times_from_file() > input[["chic_diff_time_0"]] & times_from_file() < 99999]
     
   } else {
     
@@ -37,7 +47,12 @@ observe({
   updateSelectInput(session, 
                     inputId = "chic_diff_time_0",
                     choices = times_from_file()[times_from_file() < 99999],
-                    selected = min(times_from_file()[times_from_file() > 0]))
+                    selected = times_from_file()[times_from_file() == as.numeric(input[["no_deut_control"]])])
+})
+
+##
+
+observe({
   
   updateSelectInput(session,
                     inputId = "chic_diff_time_100",
@@ -101,9 +116,7 @@ observe({
 
 observe({
   
-  if(!input[["chic_diff_fractional"]]){
-    hide(id = "chic_diff_time_100_part")
-  }
+  if(!input[["chic_diff_fractional"]]){ hide(id = "chic_diff_time_100_part") }
   
 })
 
@@ -111,9 +124,22 @@ observe({
 
 observe({
   
-  if(input[["chic_diff_fractional"]] & !input[["chic_diff_theory"]]){
-    show(id = "chic_diff_time_100_part")
-  }
+  if(input[["chic_diff_fractional"]] & !input[["chic_diff_theory"]]){ show(id = "chic_diff_time_100_part") }
+  
+})
+
+## 
+observe({
+  
+  if(input[["chic_diff_show_tstud"]]){ show(id = "chic_diff_correction_part")  }
+  
+})
+
+##
+
+observe({
+  
+  if(!input[["chic_diff_show_tstud"]]){ hide(id = "chic_diff_correction_part")  }
   
 })
 
@@ -155,7 +181,7 @@ chilet_p_dif_dataset_timepoints <- reactive({
                                state_1 = input[["chic_diff_state_1"]],
                                state_2 = input[["chic_diff_state_2"]],
                                confidence_level = as.numeric(input[["chic_confidence_level"]]),
-                               # p_adjustment_method = input[[""]],
+                               p_adjustment_method = input[["chic_diff_p_adjustment_method"]],
                                time_0 = as.numeric(input[["chic_diff_time_0"]]),
                                time_100 = as.numeric(input[["chic_diff_time_100"]]),
                                deut_part = as.numeric(input[["deut_part"]])/100)

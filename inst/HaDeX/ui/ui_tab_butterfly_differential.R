@@ -58,13 +58,13 @@ butterfly_diff_timepoints <- function() HaDeX_plotSettingsSection(
     column(width = 6,
            div(id = "butt_diff_time_0_part",
                selectInput_h(inputId = "butt_diff_time_0",
-                             label = "TIME IN",
+                             label = "Deut 0%",
                              choices = c(0, 0.001, 1, 5, 25, 1440),
                              selected = 0.001)
            ),
            div(id = "butt_diff_time_100_part",
                selectInput_h(inputId = "butt_diff_time_100",
-                             label = "TIME OUT",
+                             label = "Deut 100%",
                              choices = c(0, 0.001, 1, 5, 25, 1440),
                              selected = 1440)
            )
@@ -91,8 +91,14 @@ butterfly_diff_test <- function() HaDeX_plotSettingsSection(
         width = 6, 
         selectInput_h(inputId = "butt_diff_confidence_level",
                       label = "Select confidence level:",
-                      choices = c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
-                      selected = 0.98)
+                      choices = c("80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
+                      selected = 0.98),
+        div(id = "butt_diff_correction_part",
+            selectInput_h(inputId = "butt_diff_p_adjustment_method",
+                          label = "Choose method of adjustment:",
+                          choices = c("none", "BH", "bonferroni"),
+                          selected = "none")
+        )
       )
     )
   )

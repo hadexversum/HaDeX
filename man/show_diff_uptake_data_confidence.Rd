@@ -8,8 +8,7 @@ show_diff_uptake_data_confidence(
   diff_uptake_dat,
   theoretical = FALSE,
   fractional = FALSE,
-  confidence_level_1 = 0.98,
-  confidence_level_2 = 0.99
+  confidence_level = 0.98
 )
 }
 \arguments{
@@ -20,11 +19,7 @@ function.}
 
 \item{fractional}{\code{logical}, determines if values are fractional.}
 
-\item{confidence_level_1}{confidence level for the test, from range [0, 1].}
-
-\item{confidence_level_2}{second confidence level for the test, 
-from range [0, 1]. If the value of second confidence level is the same
-as first, only one is shown.}
+\item{confidence_level}{confidence level for the test, from range [0, 1].}
 }
 \value{
 a \code{\link{data.frame}} object.

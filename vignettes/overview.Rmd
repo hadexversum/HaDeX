@@ -1,0 +1,33 @@
+---
+title: "Introduction"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: true
+    always_allow_html: yes
+bibliography: HDX.bib
+vignette: >
+  %\VignetteIndexEntry{Introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+HaDeX is an R package for analysis of HDX-MS data. Although all functionalities are available in the form of a web server and a standalone tool, some of the vignettes are more directed towards the command-line usage of HaDeX.
+
+# General resources
+
+1. [Basics of HDX-MS](hdxms.Rmd): Fundamental principles of the analysis of HDX-MS data.
+2. [Glossary](glossary.html): all definitions and equations necessary to understand the theoretical basics of HaDeX.
+3. [Data visualization](visualisation.html): visualisations of HDX-MS data implemented in HaDeX.
+4. [Data usage](datafiles.html): an in-depth description how HaDeX interprets input data from DynamX 3.0 and 2.0.
+
+# Resources for the command-line usage
+
+1. [Code usage](usage.html): an example of the usage of HaDeX functions.
+2. [Experimental examples](examples.html): a full analytic workflow of HaDeX performed in the R console.
+
+

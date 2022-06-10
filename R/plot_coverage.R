@@ -37,21 +37,21 @@ plot_coverage <- function(dat,
                           protein = dat[["Protein"]][1],
                           states = dat[["State"]][1]){
   
-  dat %>%
-    filter(Protein == protein) %>%
-    select(Start, End, State) %>%
-    filter(State %in% states) %>%
-    select(-State) %>%
+  cov_plot <- dat %>%
+    filter(Protein == protein,
+           State %in% states) %>%
+    select(Start, End) %>%
     filter(!duplicated(.)) %>%
     arrange(Start, End) %>%
     mutate(ID = 1L:nrow(.)) %>%
-    melt(id.vars = "ID") %>%
-    ggplot(aes(x = value, y = ID, group = ID)) +
-    geom_line() +
-    labs(title = "Peptide coverage",
-         x = "Position",
-         y = "") +
-    theme(axis.ticks.y = element_blank(),
-          axis.text.y = element_blank())
+    ggplot() +
+      geom_segment(aes(x = Start, xend = End, y = ID, yend = ID), size = 2) +
+      labs(title = "Peptide coverage",
+           x = "Position",
+           y = "") +
+      theme(axis.ticks.y = element_blank(),
+            axis.text.y = element_blank())
+  
+  return(HaDeXify(cov_plot))
   
 }

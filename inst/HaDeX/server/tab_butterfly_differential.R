@@ -8,12 +8,22 @@ observe({
                     inputId = "butt_diff_state_1",
                     choices = states_chosen_protein(),
                     selected = states_chosen_protein()[1])
+})
 
+##
+
+observe({
+  
   updateSelectInput(session,
                     inputId = "butt_diff_state_2",
                     choices = states_chosen_protein(),
-                    selected = states_chosen_protein()[length(states_chosen_protein())])
+                    selected = states_chosen_protein()[2])
+})
 
+##
+
+observe({
+  
   if(input[["butt_diff_fractional"]]){
 
     times_t <- times_from_file()[times_from_file() > as.numeric(input[["butt_diff_time_0"]]) & times_from_file() < as.numeric(input[["butt_diff_time_100"]])]
@@ -37,8 +47,13 @@ observe({
   updateSelectInput(session,
                     inputId = "butt_diff_time_0",
                     choices = times_from_file()[times_from_file() < 99999],
-                    selected = min(times_from_file()[times_from_file() > 0]))
+                    selected = times_from_file()[times_from_file() == as.numeric(input[["no_deut_control"]])])
+})
 
+##
+
+observe({
+  
   updateSelectInput(session,
                     inputId = "butt_diff_time_100",
                     choices = times_with_control(),
@@ -55,7 +70,12 @@ observe({
                     input[["butt_diff_theory"]] ~ paste0("Thereotical butterfly differential plot between ", input[["butt_diff_state_1"]], " and ", input[["butt_diff_state_2"]]),
                     !input[["butt_diff_theory"]] ~ paste0("Butterfly differential plot between ", input[["butt_diff_state_1"]], " and ", input[["butt_diff_state_2"]])
                   ))
+})
 
+##
+
+observe({
+  
   updateTextInput(session,
                   inputId = "butterflyDifferential_plot_y_label",
                   value = case_when(
@@ -70,17 +90,6 @@ observe({
 
 observe({
 
-  if (input[["butt_diff_fractional"]]) {
-
-    max_y <- ceiling(max(butt_diff_dataset()[["diff_frac_deut_uptake"]], butt_diff_dataset()[["diff_theo_frac_deut_uptake"]], na.rm = TRUE)) + 1
-    min_y <- floor(min(butt_diff_dataset()[["diff_frac_deut_uptake"]], butt_diff_dataset()[["diff_theo_frac_deut_uptake"]], na.rm = TRUE)) - 1
-
-  } else {
-
-    max_y <- ceiling(max(butt_diff_dataset()[["diff_deut_uptake"]], butt_diff_dataset()[["diff_theo_deut_uptake"]], na.rm = TRUE)) + 1
-    min_y <- floor(min(butt_diff_dataset()[["diff_deut_uptake"]], butt_diff_dataset()[["diff_theo_deut_uptake"]], na.rm = TRUE)) - 1
-  }
-
   max_x <- max(butt_diff_dataset()[["ID"]])
   min_x <- min(butt_diff_dataset()[["ID"]])
 
@@ -92,6 +101,23 @@ observe({
     value = c(min_x, max_x)
   )
 
+})
+
+##
+
+observe({
+  
+  if (input[["butt_diff_fractional"]]) {
+    
+    max_y <- ceiling(max(butt_diff_dataset()[["diff_frac_deut_uptake"]], butt_diff_dataset()[["diff_theo_frac_deut_uptake"]], na.rm = TRUE)) + 1
+    min_y <- floor(min(butt_diff_dataset()[["diff_frac_deut_uptake"]], butt_diff_dataset()[["diff_theo_frac_deut_uptake"]], na.rm = TRUE)) - 1
+    
+  } else {
+    
+    max_y <- ceiling(max(butt_diff_dataset()[["diff_deut_uptake"]], butt_diff_dataset()[["diff_theo_deut_uptake"]], na.rm = TRUE)) + 1
+    min_y <- floor(min(butt_diff_dataset()[["diff_deut_uptake"]], butt_diff_dataset()[["diff_theo_deut_uptake"]], na.rm = TRUE)) - 1
+  }
+  
   updateSliderInput(
     session,
     inputId = "butt_diff_y_range",
@@ -144,6 +170,21 @@ observe({
 
 })
 
+##
+
+observe({
+  
+  if(input[["butt_diff_show_tstud"]]){ show(id = "butt_diff_correction_part")  }
+  
+})
+
+##
+
+observe({
+  
+  if(!input[["butt_diff_show_tstud"]]){ hide(id = "butt_diff_correction_part")  }
+  
+})
 
 #################################
 ######### DATASET ###############
@@ -186,7 +227,7 @@ butt_p_diff_dat <- reactive({
                                state_1 = input[["butt_diff_state_1"]],
                                state_2 = input[["butt_diff_state_2"]],
                                confidence_level = as.numeric(input[["butt_diff_confidence_level"]]),
-                               # p_adjustment_method = input[[""]],
+                               p_adjustment_method = input[["chic_diff_correction_part"]],
                                time_0 = as.numeric(input[["butt_diff_time_0"]]),
                                time_100 = as.numeric(input[["butt_diff_time_100"]]),
                                deut_part = as.numeric(input[["deut_part"]])/100)

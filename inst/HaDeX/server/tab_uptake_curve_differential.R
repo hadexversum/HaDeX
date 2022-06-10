@@ -4,13 +4,18 @@
 
 observe({
   
-  tmp <- sort(unique(round(dat()[["Exposure"]], 3)))
-  choose_time_100 <- setNames(tmp, c(head(tmp, -1), "chosen control"))
-  
   updateSelectInput(session,
                     inputId = "diff_kin_time_0",
                     choices = times_from_file()[times_from_file() < 99999],
-                    selected = min(times_from_file()[times_from_file() > 0]))
+                    selected = times_from_file()[times_from_file() == as.numeric(input[["no_deut_control"]])])
+})
+
+##
+
+observe({
+  
+  tmp <- sort(unique(round(dat()[["Exposure"]], 3)))
+  choose_time_100 <- setNames(tmp, c(head(tmp, -1), "chosen control"))
   
   if(!has_modifications()){
     
@@ -31,6 +36,7 @@ observe({
   
 })
 
+##
 
 observe({
   
@@ -38,11 +44,16 @@ observe({
                     inputId = "diff_kin_state_1",
                     choices = states_chosen_protein(),
                     selected = states_chosen_protein()[1])
+})
+
+##
+
+observe({
   
   updateSelectInput(session,
                     inputId = "diff_kin_state_2",
                     choices = states_chosen_protein(),
-                    selected = states_chosen_protein()[length(states_chosen_protein())])
+                    selected = states_chosen_protein()[2])
   
 })
 
@@ -57,6 +68,12 @@ observe({
                     input[["kin_theory"]] ~ paste0("Theoretical differential uptake curve for chosen peptides for ", input[["chosen_protein"]]),
                     !input[["kin_theory"]]  ~ paste0("Differential uptake curve for chosen peptides for ", input[["chosen_protein"]])
                   ))
+
+})
+
+##
+
+observe({
   
   updateTextInput(session,
                   inputId = "diff_kin_plot_y_label",
@@ -71,17 +88,13 @@ observe({
 
 observe({
   
-  if(input[["diff_kin_theory"]]){
-    hide(id = "diff_kin_time_part")
-  }
+  if(input[["diff_kin_theory"]]){ hide(id = "diff_kin_time_part") }
   
 })
 
 observe({
   
-  if(!input[["diff_kin_theory"]]){
-    show(id = "diff_kin_time_part")
-  }
+  if(!input[["diff_kin_theory"]]){ show(id = "diff_kin_time_part") }
   
 })
 
@@ -89,9 +102,7 @@ observe({
 
 observe({
   
-  if(!input[["diff_kin_fractional"]]){
-    hide(id = "diff_kin_time_100_part")
-  }
+  if(!input[["diff_kin_fractional"]]){ hide(id = "diff_kin_time_100_part") }
   
 })
 
@@ -99,9 +110,23 @@ observe({
 
 observe({
   
-  if(input[["diff_kin_fractional"]]){
-    show(id = "diff_kin_time_100_part")
-  }
+  if(input[["diff_kin_fractional"]]){ show(id = "diff_kin_time_100_part") }
+  
+})
+
+##
+
+observe({
+  
+  if(input[["diff_kin_show_tstud"]]){ show(id = "diff_kin_correction_part")  }
+  
+})
+
+##
+
+observe({
+  
+  if(!input[["diff_kin_show_tstud"]]){ hide(id = "diff_kin_correction_part")  }
   
 })
 
@@ -201,8 +226,8 @@ diff_kin_dat <- reactive({
                                protein = input[["chosen_protein"]],
                                state_1 = input[["diff_kin_state_1"]],
                                state_2 = input[["diff_kin_state_2"]],
-                               # p_adjustment_method = "none",
-                               # confidence_level = 0.98,
+                               p_adjustment_method = input[["diff_kin_p_adjustment_method"]],
+                               confidence_level = as.numeric(input[["diff_kin_confidence_level"]]),
                                time_0 = v_time_0,
                                time_100 = v_time_100,
                                deut_part = as.numeric(input[["deut_part"]])/100)

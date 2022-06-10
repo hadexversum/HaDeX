@@ -46,8 +46,10 @@ plot_position_frequency <- function(dat,
     group_by(x) %>% 
     summarise(coverage = length(x)) 
   
-  ggplot(coverage_df, aes(x = x, y = coverage)) +
+  pos_freq_plot <- ggplot(coverage_df, aes(x = x, y = coverage)) +
     geom_col(width = 1) +
     labs(x = 'Position', y = 'Position frequency in peptides') +
     theme(legend.position = "none")
+  
+  return(HaDeXify(pos_freq_plot))
 }

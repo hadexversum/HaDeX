@@ -130,34 +130,36 @@ test_that("show_diff_uptake_data_confidence colnames",
 ## SHOW_VOLCANO_DATA ##
 #######################
 
-vol_dat <- create_volcano_dataset(dat)
-
-test_that("create_volcano_dataset colnames",
-          expect_equal(colnames(show_volcano_data(vol_dat)),
-                       c( "Sequence", "Start", "End", "Exposure", "Diff DU [Da]", "U(Diff DU) [Da]", "-log(P value)", "P value", "Valid At 0.98")
-          )
-)
+## TODO: rewrite
+# vol_dat <- create_volcano_dataset(dat)
+# 
+# test_that("create_volcano_dataset colnames",
+#           expect_equal(colnames(show_volcano_data(vol_dat)),
+#                        c( "Sequence", "Start", "End", "Exposure", "Diff DU [Da]", "U(Diff DU) [Da]", "-log(P value)", "P value", "Valid At 0.98")
+#           )
+# )
 
 #######################
 ## SHOW_SUMMARY_DATA ##
 #######################
 
-result_tmp <- show_summary_data(dat, 
-                                confidence_limit_1 = 0.98,
-                                confidence_limit_2 = 0.99,
-                                overlap_distribution_data = create_overlap_distribution_dataset(dat, 
-                                                                                                protein_sequence = reconstruct_sequence(dat)))
-
-test_that("show_summary_data columnames",
-          expect_equal(colnames(result_tmp),
-                       c("Name", "Value")
-          )
-)
-
-
-test_that("show_summary_data dimentions",
-          expect_equal(dim(result_tmp),
-                       c(7, 2)
-          )
-)
+## TODO: rewrite
+# result_tmp <- show_summary_data(dat, 
+#                                 confidence_limit_1 = 0.98,
+#                                 confidence_limit_2 = 0.99,
+#                                 overlap_distribution_data = create_overlap_distribution_dataset(dat, 
+#                                                                                                 protein_sequence = reconstruct_sequence(dat)))
+# 
+# test_that("show_summary_data columnames",
+#           expect_equal(colnames(result_tmp),
+#                        c("Name", "Value")
+#           )
+# )
+# 
+# 
+# test_that("show_summary_data dimentions",
+#           expect_equal(dim(result_tmp),
+#                        c(7, 2)
+#           )
+# )
 

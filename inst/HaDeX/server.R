@@ -40,8 +40,6 @@ server <- function(input, output, session) {
 
   data_source <- reactive({
     
-    # browser()
-
     attr(dat_in(), "source")
 
   })
@@ -118,47 +116,6 @@ server <- function(input, output, session) {
                           confidence = input[["exam_confidence"]]))
   })
 
-  ##
-  #
-  # editable tables for later, after cleaning the rest of the code
-  #
-  # exam_data_proxy <- DT::dataTableProxy("checking_exam_data")
-  #
-  # exam_dat_checking_previous <- reactiveValues()
-  #
-  # observe({
-  #
-  #   exam_dat_checking_previous[["dat"]] <- dat_exam() %>%
-  #     select(Protein, State, Sequence,  Start, End, MHP) %>%
-  #     unique(.) %>%
-  #     arrange(Start, End)
-  #
-  # })
-  #
-  # observeEvent(input[["checking_exam_data_cell_edit"]], {
-  #
-  #   # browser()
-  #
-  #   change <- input[["checking_exam_data_cell_edit"]]
-  #   row_name <- change[["row"]]
-  #   col_name <- change[["col"]]
-  #   new_value <- change[["value"]]
-  #
-  #   exam_dat_checking_previous[["dat"]][row_name, col_name] <- isolate(DT::coerceValue(new_value, exam_dat_checking_previous[["dat"]][row_name, col_name]))
-  #
-  #     #DT::coerceValue(new_value, exam_dat_checking_previous[["dat"]][row_name, col_name])
-  #
-  #   replaceData(exam_data_proxy, exam_dat_checking_previous[["dat"]], resetPaging = FALSE)
-  #
-  # })
-  #
-  # exam_dat_checking_after <- reactive({
-  #
-  #
-  #   datatable(exam_dat_checking_previous[["dat"]], editable = TRUE)
-  #
-  # })
-
   output[["checking_exam_data"]] <- DT::renderDataTable({
 
     # exam_dat_checking_after()
@@ -198,6 +155,17 @@ server <- function(input, output, session) {
     
   })
   
+  observe({
+    
+    no_deut_times <- times_from_file()[times_from_file() < 0.1] 
+    
+    updateSelectInput(session, 
+                      inputId = "no_deut_control",
+                      choices = no_deut_times,
+                      selected = max(no_deut_times))
+    
+  })
+  
   ################
   #### VALUES #### 
   ################
@@ -222,6 +190,7 @@ server <- function(input, output, session) {
       filter(Protein == input[["chosen_protein"]]) %>%
       select(State) %>%
       unique(.) %>%
+      arrange(nchar(State)) %>%
       .[[1]]
       
   })
@@ -248,7 +217,7 @@ server <- function(input, output, session) {
   
   times_t <- reactive({
     
-    times_from_file()[times_from_file() > 0 & times_from_file()<99999]
+    times_from_file()[times_from_file() > input[["no_deut_control"]] & times_from_file()<99999]
     
   })
   
@@ -264,9 +233,7 @@ server <- function(input, output, session) {
 
   observe({
 
-    if(has_modifications()){
-      hide("chosen_control")
-    }
+    if(has_modifications()){ hide("chosen_control") }
 
   })
 
@@ -274,9 +241,7 @@ server <- function(input, output, session) {
 
   observe({
 
-    if(!has_modifications()){
-      show("chosen_control")
-    }
+    if(!has_modifications()){ show("chosen_control") }
 
   })
 
@@ -467,11 +432,19 @@ server <- function(input, output, session) {
 
   source("server/tab_uptake_curve.R", local = TRUE)
   
-  source("server/tab_uptake_curve_diff.R", local = TRUE)
+  source("server/tab_uptake_curve_differential.R", local = TRUE)
   
   ### TAB: MANHATTAN ###
   
   source("server/tab_manhattan.R", local = TRUE)
+  
+  ### TAB: UNCERTAINTY
+  
+  source("server/tab_uncertainty.R", local = TRUE)
+  
+  ### TAB: MEASUREMENTS
+  
+  source("server/tab_measurements.R", local = TRUE)
 
   
 

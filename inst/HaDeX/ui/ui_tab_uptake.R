@@ -35,12 +35,12 @@ uptake_timepoints <- function() HaDeX_plotSettingsSection(
       splitLayout(
         div(id = "kin_time_0_part",
             selectInput_h(inputId = "kin_time_0",
-                          label = "TIME IN",
+                          label = "Deut 0%",
                           choices = c("0", "1", "5", "25", "1440"))
         ),
         div(id = "kin_time_100_part",
             selectInput_h(inputId = "kin_time_100",
-                          label = "TIME OUT",
+                          label = "Deut 100%",
                           choices = c("0", "1", "5", "25", "1440")))
       )
   )
@@ -53,12 +53,14 @@ uptake_peptide <- function() HaDeX_plotSettingsSection(
   dataTableOutput_h("peptide_list_data"),
   
   actionButton(inputId = "reset_peptide_list",
-               label = "Reset chosen peptides")
+               label = "Reset chosen peptides"),
+  br()
 )
 
 uptake_visualization <- function() HaDeX_plotSettingsSection(
   
   title = "Visualization",
+  
   checkboxInput_h(inputId = "kin_log_x",
                   label = "Logaritmic x scale",
                   value = TRUE),

@@ -5,11 +5,12 @@
 #' 
 #' @importFrom ggplot2 geom_vline
 #' 
-#' @param rep_mass_dat data produced by 
-#' \code{\link{calculate_exp_masses_per_replicate}} function.
+#' @param dat data produced by 
+#' \code{\link{read_hdx}} function.
 #' @param protein chosen protein. 
 #' @param state biological state for chosen protein.
 #' @param sequence sequence of chosen peptide.
+#' @param show_charge_values ...
 #' @param time_t time point of the measurement.
 #'
 #' @details This function shows the measurements of mass from
@@ -29,31 +30,58 @@
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' rep_mass_dat <- calculate_exp_masses_per_replicate(dat)
-#' plot_peptide_mass_measurement(rep_mass_dat)
+#' plot_peptide_mass_measurement(dat, sequence = "LICTVWHKKEEAEG")
+#' plot_peptide_mass_measurement(dat, sequence = "LICTVWHKKEEAEG", show_charge_values = F)
 #' 
 #' @export plot_peptide_mass_measurement
 
-plot_peptide_mass_measurement <- function(rep_mass_dat,
-                                          protein = rep_mass_dat[["Protein"]][1],
-                                          state = rep_mass_dat[["State"]][1],
-                                          sequence = rep_mass_dat[["Sequence"]][1],
-                                          time_t = unique(rep_mass_dat[["Exposure"]])[3]){
+plot_peptide_mass_measurement <- function(dat,
+                                          protein = dat[["Protein"]][1],
+                                          state = dat[["State"]][1],
+                                          sequence = dat[["Sequence"]][1],
+                                          show_charge_values = TRUE,
+                                          time_t = unique(dat[["Exposure"]])[3]){
   
-  tmp_dat <- rep_mass_dat %>%
+  rep_mass_dat <- calculate_exp_masses_per_replicate(dat) %>%
     filter(Protein == protein,
            State == state,
            Sequence == sequence,
            Exposure == time_t)
   
-  avg_value <- mean(tmp_dat[["avg_exp_mass"]])
+  avg_value <- mean(rep_mass_dat[["avg_exp_mass"]])
   
-  ggplot(tmp_dat, aes(x = avg_exp_mass, y = File)) +
-    geom_point(size = 3) +
-    geom_vline(xintercept = avg_value, color = "red", linetype = "dashed", size = 1.5) +
-    labs(y = "",
-         x = "Measured mass [Da]",
-         title = paste0("Peptide ", sequence, " in state ", state, " in ", time_t, " min"))
+  if(show_charge_values){
+    
+    rep_mass_z_dat <- dat %>%
+      filter(Protein == protein,
+             State == state,
+             Sequence == sequence,
+             Exposure == time_t) %>%
+      mutate(exp_mass = Center*z - z*1.00727647,
+             weighted_Inten = scale(Inten))
+    
+    pep_mass_plot <- ggplot() +
+      geom_point(data = rep_mass_z_dat, aes(x = exp_mass, y = File, color = as.factor(z), size = weighted_Inten)) +
+      geom_point(data = rep_mass_dat, aes(x = avg_exp_mass, y = File), size = 3) +
+      geom_vline(xintercept = avg_value, color = "red", linetype = "dashed", size = 1.5) +
+      labs(y = "",
+           x = "Measured mass [Da]",
+           title = paste0("Peptide ", sequence, " in state ", state, " in ", time_t, " min"),
+           color = "Charge",
+           size = "rel Inten") +
+      theme(legend.direction = "vertical")
+  
+  } else {
+      
+    pep_mass_plot <- ggplot() +
+      geom_point(data = rep_mass_dat, aes(x = avg_exp_mass, y = File), size = 3) +
+      geom_vline(xintercept = avg_value, color = "red", linetype = "dashed", size = 1.5) +
+      labs(y = "",
+           x = "Measured mass [Da]",
+           title = paste0("Peptide ", sequence, " in state ", state, " in ", time_t, " min"))
+  }
+  
+  return(HaDeXify(pep_mass_plot))
   
 }
 

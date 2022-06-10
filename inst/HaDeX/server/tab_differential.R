@@ -39,6 +39,12 @@ observe({
                     input[["theory"]] ~ paste0("Theoretical deuterium uptake difference in ", input[["time_t"]], " min between ", gsub("_", " ", input[["diff_state_1"]]), " and ", gsub("_", " ", input[["diff_state_2"]]), " for ", input[["chosen_protein"]]),
                     !input[["theory"]] ~ paste0("Deuterium uptake difference in ", input[["time_t"]], " min between ", gsub("_", " ", input[["diff_state_1"]]), " and ", gsub("_", " ", input[["diff_state_2"]]), " for ", input[["chosen_protein"]])
                   ))
+
+})
+
+##
+
+observe({
   
   updateTextInput(session,
                   inputId = "woods_plot_y_label",
@@ -52,25 +58,35 @@ observe({
 
 observe({
   
-  
   updateSelectInput(session,
                     inputId = "diff_state_1",
                     choices = states_chosen_protein(),
                     selected = states_chosen_protein()[1])
+})
+
+##
+
+observe({
   
   updateSelectInput(session,
                     inputId = "diff_state_2",
                     choices = states_chosen_protein(),
-                    selected = states_chosen_protein()[length(states_chosen_protein())])
+                    selected = states_chosen_protein()[2])
+})
+
+##
+
+observe({
   
+  if(input[["diff_show_tstud"]]){ show(id = "diff_correction_part")  }
   
+})
+
+##
+
+observe({
   
-  updateSelectInput(session,
-                    inputId = "confidence_level_2",
-                    choices = confidence_level_choices[confidence_level_choices >= input[["confidence_level"]]],
-                    selected = confidence_level_choices[confidence_level_choices > input[["confidence_level"]]][1])
-  
-  
+  if(!input[["diff_show_tstud"]]){ hide(id = "diff_correction_part")  }
   
 })
 
@@ -86,22 +102,33 @@ woods_plot_dat <- reactive({
   validate(need(input[["diff_state_2"]] %in% states_chosen_protein(), "The second state is not compatible with chosen protein."))
   
   if(!input[["theory"]]){
-    validate(need(as.numeric(input[["time_0"]]) < as.numeric(input[["time_t"]]), "In time must be smaller than chosen time."))
+    
+    if(!(input[["time_t"]] == -1)) { validate(need(as.numeric(input[["time_0"]]) < as.numeric(input[["time_t"]]), "In time must be smaller than chosen time.")) }
     validate(need(as.numeric(input[["time_t"]]) < as.numeric(input[["time_100"]]), "Out time must be bigger than chosen time."))
   }
   
   tryCatch({
-    calculate_diff_uptake(dat = dat(),
-                          states = c(input[["diff_state_1"]], input[["diff_state_2"]]),
-                          protein = input[["chosen_protein"]],
-                          time_0 = input[["time_0"]],
-                          time_t = input[["time_t"]],
-                          time_100 = input[["time_100"]],
-                          deut_part = 0.01*as.integer(input[["deut_part"]]))
+    tmp_dat <- create_diff_uptake_dataset(dat = dat(),
+                               protein = input[["chosen_protein"]],
+                               state_1 = input[["diff_state_1"]],
+                               state_2 = input[["diff_state_2"]],
+                               time_0 = as.numeric(input[["time_0"]]),
+                               time_100 = as.numeric(input[["time_100"]]),
+                               deut_part = 0.01*as.integer(input[["deut_part"]]))
   },
   error = function(e){
     validate(need(FALSE), "Check chosen parameters - not sufficient data.")
   })
+  
+  if(input[["time_t"]] == -1) {
+    
+    tmp_dat %>%
+      filter(Exposure %in% as.numeric(input[["diff_comp_times_t"]]))
+    
+  } else {
+    tmp_dat %>%
+      filter(Exposure == input[["time_t"]])
+  }
   
 })
 
@@ -114,10 +141,10 @@ woods_p_dat <- reactive({
                                protein = input[["chosen_protein"]],
                                state_1 = input[["diff_state_1"]], 
                                state_2 = input[["diff_state_2"]],
-                               # p_adjustment_method = 
+                               p_adjustment_method = input[["diff_p_adjustment_method"]],
                                confidence_level = as.double(input[["confidence_level"]]),
-                               time_0 = input[["time_0"]],
-                               time_100 = input[["time_100"]],
+                               time_0 = as.numeric(input[["time_0"]]),
+                               time_100 = as.numeric(input[["time_100"]]),
                                deut_part = 0.01*as.integer(input[["deut_part"]])
                                )
   
@@ -136,9 +163,13 @@ differential_plot <- reactive({
                     theoretical = input[["theory"]],
                     fractional = input[["comp_fractional"]],
                     show_houde_interval = input[["diff_show_houde"]],
+                    hide_houde_insignificant = input[["diff_hide_insignificant"]] & input[["diff_show_houde"]] ,
                     show_tstud_confidence = input[["diff_show_tstud"]],
+                    hide_tstud_insignificant = input[["diff_hide_insignificant"]] & input[["diff_show_tstud"]],
+                    time_t = as.numeric(input[["time_t"]]),
+                    line_size = 1,
                     confidence_level = as.double(input[["confidence_level"]]),
-                    confidence_level_2 = as.double(input[["confidence_level_2"]]))
+                    all_times = (input[["time_t"]] == -1))
 })
 
 ##
@@ -232,8 +263,7 @@ differential_plot_data <- reactive({
   show_diff_uptake_data_confidence(diff_uptake_dat = woods_plot_dat(),
                                    theoretical = input[["theory"]],
                                    fractional = input[["comp_fractional"]],
-                                   confidence_level_1 = as.double(input[["confidence_level"]]),
-                                   confidence_level_2 = as.double(input[["confidence_level_2"]]))
+                                   confidence_level = as.double(input[["confidence_level"]]))
 })
 
 ##
