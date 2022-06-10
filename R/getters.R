@@ -69,3 +69,37 @@ get_protein_redundancy <- function(dat,
   round(mean(create_overlap_distribution_dataset(dat, end = protein_length)[["coverage"]]), 2)
   
 }
+
+#' Get number of replicates
+#' 
+#' @param dat data imported by the \code{\link{read_hdx}} function.
+#' 
+#' @detals Calculate the number of replicates of experiment.
+#' 
+#' @return a \code{\link{numeric}} value.
+#' 
+#' @seealso 
+#' \code{\link{read_hdx}}
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' get_n_replicates(dat)
+#'
+#' @export get_n_replicates
+
+get_n_replicates <- function(dat,
+                             protein = dat[["Protein"]][1]){
+  
+  dat %>%
+    filter(Protein == protein) %>%
+    group_by(Protein, Start, End, Sequence, State, Exposure) %>%
+    summarise(n_rep = length(unique(File))) %>%
+    ungroup() %>% 
+    pull(n_rep) %>% 
+    table() %>% 
+    sort(decreasing = TRUE) %>% 
+    names() %>% 
+    as.numeric() %>%
+    .[1]
+  
+}

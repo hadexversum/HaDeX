@@ -40,10 +40,12 @@ calculate_confidence_limit_values <- function(diff_uptake_dat,
                                               theoretical = FALSE,
                                               fractional = TRUE) {
   
-  alpha <- 1 - confidence_level
-  t_value <- qt(c(alpha/2, 1-alpha/2), df = 2)[2]
+  n_rep <- coalesce(attr(diff_uptake_dat, "n_rep"), 3)
   
-  err_column <- case_when(
+  alpha <- 1 - confidence_level
+  t_value <- qt(c(alpha/2, 1-alpha/2), df = n_rep-1)[2]
+
+    err_column <- case_when(
     theoretical & fractional ~ "err_diff_theo_frac_deut_uptake",
     theoretical & !(fractional) ~ "err_diff_theo_deut_uptake",
     !(theoretical) & fractional ~ "err_diff_frac_deut_uptake",
