@@ -3,8 +3,6 @@
 #' @description Plots the frequency of coverage of protein sequence.
 #' 
 #' @importFrom ggplot2 ggplot geom_line geom_col
-#' @importFrom reshape2 melt
-#' @importFrom dplyr filter summarise
 #' 
 #' @param dat data as imported by the \code{\link{read_hdx}} function
 #' @param protein protein to be included in plot
@@ -33,23 +31,35 @@
 plot_position_frequency <- function(dat, 
                                     protein = dat[["Protein"]][1],
                                     chosen_state = dat[["State"]][1]) {
-
-  coverage_df <- dat %>%
-    filter(Protein == protein) %>%
-    select(Start, End, State) %>% 
-    filter(State == chosen_state) %>% 
-    filter(!duplicated(.)) %>% 
-    select(-State) %>% 
-    apply(1, function(i) i[1]:i[2]) %>% 
-    unlist %>% 
-    data.frame(x = .) %>% 
-    group_by(x) %>% 
-    summarise(coverage = length(x)) 
   
-  pos_freq_plot <- ggplot(coverage_df, aes(x = x, y = coverage)) +
-    geom_col(width = 1) +
-    labs(x = 'Position', y = 'Position frequency in peptides') +
+  dat <- read_hdx(system.file(package = "HaDeX",
+                              "HaDeX/data/KD_180110_CD160_HVEM.csv")) %>%  data.table()
+  
+  dat <- dat[Protein == protein & State %in% states, .(Start, End)]
+  dat <- dat[!duplicated(dat)]
+  setorderv(dat, cols = c("Start", "End"))
+  
+  aminos_dat <- unlist(apply(dat, 1, function(i) i[1]:i[2]))
+  freq_dat <- data.table(freq = table(factor(aminos_dat, 
+                                             levels = 1:max(dat[["End"]]))))
+  setnames(freq_dat, c("freq.V1", "freq.N"), c("amino", "freq"))
+  freq_dat[, amino := as.numeric(amino)]
+  
+  pos_freq_plot <- ggplot() +
+    geom_density(mapping = aes(x = aminos_dat, y = ..count..),
+                 fill = "#5A748C", 
+                 col = NA,
+                 alpha = 0.2) +
+    geom_segment(freq_dat, 
+                 mapping = aes(x = amino,
+                               xend = amino, 
+                               yend = freq,
+                               y = 0), 
+                 stat = "identity") +
+    labs(x = 'Position', 
+         y = 'Position frequency in peptides') +
     theme(legend.position = "none")
   
   return(HaDeXify(pos_freq_plot))
+  
 }

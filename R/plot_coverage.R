@@ -43,7 +43,6 @@ plot_coverage <- function(dat,
   dat <- dat[!duplicated(dat)]
   setorderv(dat, cols = c("Start", "End"))
   
-  
   levels <- rep(1, (nrow(dat_tmp)))
   for(i in 1:(nrow(dat_tmp) - 1)) {
     if(max(dat_tmp[1:i, "End"]) > dat_tmp[i + 1, "Start"]) {
@@ -54,14 +53,15 @@ plot_coverage <- function(dat,
   dat[, ID := levels]
   
   if(show_blanks) {
-    aminos <- rbindlist(lapply(1:nrow(dat), function(i) {
-      amino_acids <- seq(pull(dat[i, "Start"]), pull(dat[i, "End"]), by = 1)
-      data.table(amino_acids)
-    }))
-    missing <- data.frame(ids = setdiff(1:max(aminos$amino_acids), 
-                                        unique(aminos$amino_acids)))
     
-    non_missing <- data.frame(ids = unique(aminos$amino_acids))
+    amino_dat <- data.table(amino_acids = unique(unlist(apply(dat, 
+                                                       1, 
+                                                       function(i) i[1]:i[2]))))
+    
+    missing <- data.frame(ids = setdiff(1:max(amino_dat$amino_acids), 
+                                        amino_dat$amino_acids))
+    
+    non_missing <- data.frame(ids = amino_dat$amino_acids)
     
     
     coverage_plot <- ggplot(data = dat) +
