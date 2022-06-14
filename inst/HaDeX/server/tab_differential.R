@@ -46,6 +46,26 @@ observe({
 
 observe({
   
+  if(input[["time_t"]] == -1){
+    
+    updateTextInput(session,
+                    inputId = "woods_plot_title",
+                    value = case_when(
+                      input[["theory"]] ~ paste0("Theoretical deuterium uptake difference between ", gsub("_", " ", input[["diff_state_1"]]), " and ", gsub("_", " ", input[["diff_state_2"]]), " for ", input[["chosen_protein"]]),
+                      !input[["theory"]] ~ paste0("Deuterium uptake difference between ", gsub("_", " ", input[["diff_state_1"]]), " and ", gsub("_", " ", input[["diff_state_2"]]), " for ", input[["chosen_protein"]])
+                    ))
+    
+  }
+  
+})
+
+
+
+
+##
+
+observe({
+  
   updateTextInput(session,
                   inputId = "woods_plot_y_label",
                   value = case_when(
