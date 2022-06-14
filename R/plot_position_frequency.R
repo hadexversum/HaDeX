@@ -31,10 +31,8 @@
 plot_position_frequency <- function(dat, 
                                     protein = dat[["Protein"]][1],
                                     chosen_state = dat[["State"]][1]) {
-  
-  dat <- read_hdx(system.file(package = "HaDeX",
-                              "HaDeX/data/KD_180110_CD160_HVEM.csv")) %>%  data.table()
-  
+  dat <- as.data.table(dat)
+    
   dat <- dat[Protein == protein & State %in% states, .(Start, End)]
   dat <- dat[!duplicated(dat)]
   setorderv(dat, cols = c("Start", "End"))

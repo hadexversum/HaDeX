@@ -38,6 +38,7 @@ plot_coverage <- function(dat,
                           protein = dat[["Protein"]][1],
                           states = dat[["State"]][1],
                           show_blanks = TRUE){
+  dat <- as.data.table(dat)
   
   dat <- dat[Protein == protein & State %in% states, .(Start, End)]
   dat <- dat[!duplicated(dat)]
