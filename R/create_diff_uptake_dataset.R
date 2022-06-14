@@ -42,7 +42,7 @@ create_diff_uptake_dataset <- function(dat,
                                        protein = unique(dat[["Protein"]])[1],
                                        state_1 = unique(dat[["State"]])[1],
                                        state_2 = unique(dat[["State"]])[2], 
-                                       time_0 = min(dat[dat[["Exposure"]]>0, ][["Exposure"]]),
+                                       time_0 = min(dat[["Exposure"]]),
                                        time_100 = max(dat[["Exposure"]]),
                                        deut_part = 0.9){
   

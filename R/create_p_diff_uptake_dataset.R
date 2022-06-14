@@ -59,7 +59,7 @@ create_p_diff_uptake_dataset <- function(dat,
                                          state_2 = unique(dat[["State"]])[2],
                                          p_adjustment_method = "none",
                                          confidence_level = 0.98,
-                                         time_0 = min(dat[dat[["Exposure"]]>0, ][["Exposure"]]),
+                                         time_0 = min(dat[["Exposure"]]),
                                          time_100 = max(dat[["Exposure"]]),
                                          deut_part = 0.9){
   

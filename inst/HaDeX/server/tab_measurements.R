@@ -56,7 +56,7 @@ observe({
 
   updateTextInput(session,
                   inputId = "measures_plot_title",
-                  value = paste0("Measurements of ", measures_peptide_list()[input[["measures_sequence_rows_selected"]], 2], " in ", input[["measures_time"]], " min in ", input[["measures_state"]], " state"))
+                  value = paste0("Measurements of ", measures_peptide_list()[input[["measures_sequence_rows_selected"]], 1], " in ", input[["measures_time"]], " min in ", input[["measures_state"]], " state"))
   
 })
 
@@ -64,7 +64,7 @@ observe({
   
   updateTextInput(session,
                   inputId = "mass_uptake_plot_title",
-                  value = paste0("Mass uptake of ", measures_peptide_list()[input[["measures_sequence_rows_selected"]], 2], " in ", input[["measures_state"]], " state"))
+                  value = paste0("Mass uptake of ", measures_peptide_list()[input[["measures_sequence_rows_selected"]], 1], " in ", input[["measures_state"]], " state"))
   
 })
 
@@ -79,6 +79,11 @@ observe({
                     step = 1)
 })
 
+measures_plot_dat <- reactive({
+  
+  filter(dat(), Exposure < 99999)
+  
+})
 
 
 #################################
@@ -90,7 +95,7 @@ measures_plot_out <- reactive({
   
   validate(need(input[["measures_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
   
-  plot_peptide_mass_measurement(dat(),
+  plot_peptide_mass_measurement(measures_plot_dat(),
                                 protein = input[["chosen_protein"]],
                                 show_charge_values = !input[["measures_show_charge"]],
                                 state =  input[["measures_state"]],
@@ -141,7 +146,7 @@ measures_plot_data_out <- reactive({
   
   validate(need(input[["measures_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
   
-  show_peptide_mass_measurement(calculate_exp_masses_per_replicate(dat()),
+  show_peptide_mass_measurement(calculate_exp_masses_per_replicate(measures_plot_dat()),
                                 protein = input[["chosen_protein"]],
                                 state =  input[["measures_state"]],
                                 sequence = measures_peptide_list()[input[["measures_sequence_rows_selected"]], 1],
@@ -165,7 +170,7 @@ mass_uptake_plot_out <- reactive({
   
   validate(need(input[["measures_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
   
-  plot_replicate_mass_uptake(dat = dat(),
+  plot_replicate_mass_uptake(dat = measures_plot_dat(),
                              protein = input[["chosen_protein"]],
                              state = input[["measures_state"]],
                              sequence = measures_peptide_list()[input[["measures_sequence_rows_selected"]], 1],
@@ -207,7 +212,7 @@ mass_uptake_plot_data <- reactive({
   
   validate(need(input[["measures_sequence_rows_selected"]], "Please select one peptide from the table on the left."))
   
-  filtered_dat <- dat() %>%
+  filtered_dat <- measures_plot_dat() %>%
     filter(Protein == input[["chosen_protein"]], 
            State == input[["measures_state"]],
            Sequence == measures_peptide_list()[input[["measures_sequence_rows_selected"]], 1],

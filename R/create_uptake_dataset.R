@@ -37,7 +37,7 @@
 create_uptake_dataset <- function(dat,
                                   protein = unique(dat[["Protein"]])[1],
                                   states = unique(dat[["State"]]),
-                                  time_0 = min(dat[dat[["Exposure"]]>0, ][["Exposure"]]),
+                                  time_0 = min(dat[["Exposure"]]),
                                   time_100 = max(dat[["Exposure"]]),
                                   deut_part = 0.9){
   
