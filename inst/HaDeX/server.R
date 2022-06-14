@@ -157,7 +157,6 @@ server <- function(input, output, session) {
   
   observe({
     
-    browser()
     no_deut_times <- times_from_file()[times_from_file() < 0.1] 
     
     updateSelectInput(session, 
