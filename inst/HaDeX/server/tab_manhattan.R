@@ -34,6 +34,14 @@ observe({
   
 })
 
+observe({
+  
+  updateTextInput(session, 
+                  inputId = "man_plot_title",
+                  value = paste0("Deutrium uptake difference between ", input[["man_state_1"]], " and ", input[["man_state_2"]]))
+  
+})
+
 #################################
 ######### DATASET ###############
 #################################
@@ -61,10 +69,20 @@ manhattan_plot_out <- reactive({
   plot_manhattan(p_dat = mannhattan_data(),
                  plot_title = paste0("Difference between ", input[["man_state_1"]], " and ", input[["man_state_2"]]),
                  confidence_level = as.numeric(input[["man_confidence_level"]]),
-                 times = input[["man_times"]],
+                 times = as.numeric(input[["man_times"]]),
                  separate_times = input[["man_separate_times"]],
                  show_confidence_limit = TRUE,
-                 show_peptide_position = input[["man_show_position"]])
+                 show_peptide_position = input[["man_show_position"]]) +
+    labs(title = input[["man_plot_title"]],
+         x = input[["man_plot_x_label"]],
+         y = input[["man_plot_y_label"]]) +
+    theme(plot.title = element_text(size = input[["man_plot_title_size"]]),
+          axis.text.x = element_text(size = input[["man_plot_x_label_size"]]),
+          axis.title.x = element_text(size = input[["man_plot_x_label_size"]]),
+          axis.title.y = element_text(size = input[["man_plot_y_label_size"]]),
+          axis.text.y = element_text(size = input[["man_plot_y_label_size"]]),
+          legend.text = element_text(size = input[["man_plot_x_label_size"]]),
+          legend.title = element_text(size = input[["man_plot_x_label_size"]]))
   
 })
 

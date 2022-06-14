@@ -75,6 +75,24 @@ observe({
 
 ##
 
+
+observe({
+  
+  if(input[["time_t"]] == -1) {
+    
+    updateTextInput(session,
+                    inputId = "comparison_plot_title",
+                    value = case_when(
+                      input[["theory"]] ~ paste0("Theoretical deuterium uptake for ", input[["chosen_protein"]]),
+                      !input[["theory"]]  ~ paste0("Deuterium uptake for ", input[["chosen_protein"]])
+                    ))
+    
+  }
+  
+})
+
+##
+
 observe({
   
   updateTextInput(session,
