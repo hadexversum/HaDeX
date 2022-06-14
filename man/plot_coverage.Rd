@@ -4,7 +4,12 @@
 \alias{plot_coverage}
 \title{Plot peptide coverage}
 \usage{
-plot_coverage(dat, protein = dat[["Protein"]][1], states = dat[["State"]][1])
+plot_coverage(
+  dat,
+  protein = dat[["Protein"]][1],
+  states = dat[["State"]][1],
+  show_blanks = TRUE
+)
 }
 \arguments{
 \item{dat}{data as imported by the \code{\link{read_hdx}} function}
@@ -20,11 +25,13 @@ a \code{\link[ggplot2]{ggplot}} object.
 Plots the peptide coverage of the protein sequence.
 }
 \details{
-The function \code{plot_coverage} plots sequence coverage based on experimental data for chosen protein in chosen state. 
-Only non-duplicated peptides are shown on the plot, next to each other. 
+The function \code{plot_coverage} plots sequence coverage based on 
+experimental data for chosen protein in chosen state. Only non-duplicated 
+peptides are shown on the plot, next to each other. 
 
-The aim of this plot is to see the dependence between positions of the peptides on the protein sequence. Their position in y-axis 
-does not contain any information.
+The aim of this plot is to see the dependence between positions of the 
+peptides on the protein sequence. Their position in y-axis does not contain 
+any information.
 }
 \examples{
 # load example data
