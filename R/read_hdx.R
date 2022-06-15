@@ -92,9 +92,10 @@ read_hdx <- function(filename){
   
   has_modification <- !all(is.na(dat[["Modification"]]))
   
-  if(has_modification) { dat <- mutate(dat, State = paste0(State, ifelse(Modification!="", paste0(" - ", Modification), ""))) } 
+  # if(has_modification) { dat <- mutate(dat, State = paste0(State, ifelse(Modification!="", paste0(" - ", Modification), ""))) } 
   
-  dat <- select(dat, -Modification, -RT, -Fragment)
+  # dat <- select(dat, -Modification, -RT, -Fragment)
+  dat <- select(dat, -RT, -Fragment)
   
   dat[["Exposure"]] <- round(dat[["Exposure"]], 3)
   

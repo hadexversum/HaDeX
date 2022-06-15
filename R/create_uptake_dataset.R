@@ -42,7 +42,7 @@ create_uptake_dataset <- function(dat,
                                   deut_part = 0.9){
   
   times <- unique(dat[["Exposure"]])
-  times <- times[times > time_0 & times < time_100]
+  times <- times[times > time_0]
   
   
   uptake_dat <- lapply(states, function(state){
@@ -60,10 +60,13 @@ create_uptake_dataset <- function(dat,
   }) %>% bind_rows()
   
   attr(uptake_dat, "protein") <- protein
+  attr(uptake_dat, "state") <- NULL
+  attr(uptake_dat, "time_t") <- NULL
   attr(uptake_dat, "states") <- states
   attr(uptake_dat, "time_0") <- time_0
   attr(uptake_dat, "time_100") <- time_100
   attr(uptake_dat, "deut_part") <- deut_part
+  attr(uptake_dat, "has_modification") <- attr(dat, "has_modification")
   
   return(uptake_dat)
   
