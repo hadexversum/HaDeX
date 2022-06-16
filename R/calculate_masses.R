@@ -31,14 +31,14 @@ calculate_exp_masses_per_replicate <- function(dat){
   
   proton_mass <- 1.00727647
   
-  dat %>%
-    mutate(exp_mass = Center*z - z*proton_mass) %>%
-    select(-Center, -z) %>%
-    group_by(Protein, State, Sequence, Start, End, MHP, MaxUptake, Exposure, File) %>%
-    summarize(avg_exp_mass = weighted.mean(exp_mass, Inten, na.rm = TRUE)) %>%
-    ungroup(.) %>%
-    arrange(Start, End)
-  
+    dat %>%
+      mutate(exp_mass = Center*z - z*proton_mass) %>%
+      select(-Center, -z) %>%
+      group_by(Protein, State, Sequence, Start, End, MHP, MaxUptake, Exposure, File, Modification) %>%
+      summarize(avg_exp_mass = weighted.mean(exp_mass, Inten, na.rm = TRUE)) %>%
+      ungroup(.) %>%
+      arrange(Start, End)
+    
 }
 
 #' Calculate measured mass, aggregated from the replicates of the
@@ -69,7 +69,7 @@ calculate_exp_masses <- function(dat){
   
   dat %>%
     calculate_exp_masses_per_replicate(.) %>%
-    group_by(Protein, State, Sequence, Start, End, MHP, Exposure) %>%
+    group_by(Protein, State, Sequence, Start, End, MHP, Exposure, Modification) %>%
     summarize(avg_mass = mean(avg_exp_mass),
               err_avg_mass = sd(avg_exp_mass)/sqrt(length(Exposure))) %>%
     ungroup(.) %>%
@@ -92,7 +92,8 @@ calculate_exp_masses <- function(dat){
 #' @details This function calculates the mass of the singly charged monoisotopic (or not)
 #' molecular ion for given peptide. It is the sum of the residue masses plus the masses
 #' of the terminationg group (H and OH). The source of the masses can be found here:
-#' \url{http://www.matrixscience.com/help/aa_help.html}.
+#' \url{http://www.matrixscience.com/help/aa_help.html}. Keep in mind that this function
+#' returns the value of an unmodified peptide.
 #' 
 #' @return vector of numeric MHP values of provided Sequences
 #' 

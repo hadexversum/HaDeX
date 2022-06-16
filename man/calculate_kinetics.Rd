@@ -7,12 +7,12 @@
 calculate_kinetics(
   dat,
   protein = dat[["Protein"]][1],
-  sequence,
-  state,
-  start,
-  end,
-  time_0,
-  time_100,
+  sequence = dat[["Sequence"]][1],
+  state = dat[["State"]][1],
+  start = dat[["Start"]][1],
+  end = dat[["End"]][1],
+  time_0 = min(dat[["Exposure"]]),
+  time_100 = max(dat["Exposure"]),
   deut_part = 0.9
 )
 }

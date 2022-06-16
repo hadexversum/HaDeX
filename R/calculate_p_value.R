@@ -42,14 +42,14 @@ calculate_p_value <- function(dat,
   
   proton_mass <- 1.00727647
   
-  tmp_dat <- dat %>%
-    calculate_exp_masses_per_replicate(.) %>%
-    group_by(Sequence, Start, End, State, Exposure) %>%
-    summarize(avg_mass = mean(avg_exp_mass),
-              err_avg_mass = sd(avg_exp_mass)/sqrt(length(Exposure)),
-              masses = list(avg_exp_mass)) %>%
-    arrange(Start, End) 
-  
+    tmp_dat <- dat %>%
+      calculate_exp_masses_per_replicate(.) %>%
+      group_by(Sequence, Start, End, State, Exposure, Modification) %>%
+      summarize(avg_mass = mean(avg_exp_mass),
+                err_avg_mass = sd(avg_exp_mass)/sqrt(length(Exposure)),
+                masses = list(avg_exp_mass)) %>%
+      arrange(Start, End) 
+
   tmp_dat_1 <- tmp_dat %>%
     filter(State == state_1) %>%
     rename(avg_mass_1 = avg_mass,
@@ -66,8 +66,8 @@ calculate_p_value <- function(dat,
     ungroup(.) %>%
     select(-State)
   
-  vol_dat <- merge(tmp_dat_1, tmp_dat_2, by = c("Sequence", "Start", "End", "Exposure"))
-  
+  vol_dat <- merge(tmp_dat_1, tmp_dat_2, by = c("Sequence", "Start", "End", "Exposure", "Modification"))
+    
   p_dat <- lapply(1:nrow(vol_dat), function(i){
     
     st_1 <- vol_dat[i, "masses_1"][[1]]
@@ -80,13 +80,15 @@ calculate_p_value <- function(dat,
     } else {
       p_value <- t.test(x = st_1, y = st_2, paired = FALSE, alternative = "two.sided", conf.level = confidence_level)$p.value
     }
-    
-    data.frame(Protein = protein,
-               Sequence = vol_dat[i, "Sequence"],
-               Exposure = vol_dat[i, "Exposure"],
-               Start = vol_dat[i, "Start"],
-               End = vol_dat[i, "End"],
-               P_value = p_value)
+
+      data.frame(Protein = protein,
+                 Sequence = vol_dat[i, "Sequence"],
+                 Exposure = vol_dat[i, "Exposure"],
+                 Modification = vol_dat[i, "Modification"],
+                 Start = vol_dat[i, "Start"],
+                 End = vol_dat[i, "End"],
+                 P_value = p_value)
+      
     
   }) %>% bind_rows() 
   
@@ -101,6 +103,7 @@ calculate_p_value <- function(dat,
   attr(p_dat, "state_2") <- state_2
   attr(p_dat, "confidence_level") <- confidence_level
   attr(p_dat, "p_adjustment_method") <- p_adjustment_method
+  attr(p_dat, "has_modification") <- attr(dat, "has_modification")
   
   return(p_dat)
   

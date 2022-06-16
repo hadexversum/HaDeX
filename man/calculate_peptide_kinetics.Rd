@@ -6,13 +6,13 @@
 \usage{
 calculate_peptide_kinetics(
   dat,
-  protein,
-  sequence,
-  states,
-  start,
-  end,
-  time_0,
-  time_100,
+  protein = dat[["Protein"]][1],
+  sequence = dat[["Sequence"]][1],
+  states = unique(dat[["State"]]),
+  start = dat[["Start"]][1],
+  end = dat[["End"]][1],
+  time_0 = min(dat[["Exposure"]]),
+  time_100 = max(dat[["Exposure"]]),
   deut_part = 0.9
 )
 }

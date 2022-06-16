@@ -57,6 +57,7 @@ create_p_diff_uptake_dataset_with_confidence <- function(p_diff_uptake_dat,
   attr(p_diff_uptake_dat, "houde_interval_times") <- houde_interval_times
   attr(p_diff_uptake_dat, "theoretical") <- theoretical
   attr(p_diff_uptake_dat, "fractional") <- fractional
+  attr(p_diff_uptake_dat, "has_modification") <- attr(dat, "has_modification") 
   
   return(p_diff_uptake_dat)
   

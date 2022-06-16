@@ -51,12 +51,12 @@
 
 calculate_kinetics <- function(dat, 
                                protein = dat[["Protein"]][1], 
-                               sequence, 
-                               state, 
-                               start, 
-                               end,
-                               time_0, 
-                               time_100, 
+                               sequence = dat[["Sequence"]][1], 
+                               state = dat[["State"]][1], 
+                               start = dat[["Start"]][1], 
+                               end = dat[["End"]][1],
+                               time_0 = min(dat[["Exposure"]]), 
+                               time_100 = max(dat["Exposure"]), 
                                deut_part = 0.9) {
   
   assert_data_frame(dat)
@@ -151,13 +151,13 @@ calculate_kinetics <- function(dat,
 #' @export calculate_peptide_kinetics
 
 calculate_peptide_kinetics <- function(dat,
-                                       protein,
-                                       sequence,
-                                       states, 
-                                       start, 
-                                       end, 
-                                       time_0,
-                                       time_100,
+                                       protein = dat[["Protein"]][1],
+                                       sequence = dat[["Sequence"]][1],
+                                       states = unique(dat[["State"]]), 
+                                       start = dat[["Start"]][1], 
+                                       end = dat[["End"]][1], 
+                                       time_0 = min(dat[["Exposure"]]),
+                                       time_100 = max(dat[["Exposure"]]),
                                        deut_part = 0.9){
   
   kin_dat <- lapply(states, function(state){
@@ -182,6 +182,7 @@ calculate_peptide_kinetics <- function(dat,
   attr(kin_dat, "time_0") <- time_0
   attr(kin_dat, "time_100") <- time_100
   attr(kin_dat, "deut_part") <- deut_part
+  attr(kin_dat, "has_modification") <- attr(dat, "has_modification")
   
   return(kin_dat)
   
@@ -245,6 +246,7 @@ create_kinetic_dataset <- function(dat,
   attr(kin_dat, "time_0") <- time_0
   attr(kin_dat, "time_100") <- time_100
   attr(kin_dat, "deut_part") <- deut_part
+  attr(kin_dat, "has_modification") <- attr(dat, "has_modification")
   
   return(kin_dat)
   
