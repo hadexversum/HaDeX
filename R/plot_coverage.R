@@ -48,7 +48,7 @@ plot_coverage <- function(dat,
   
   levels <- rep(1, (nrow(dat)))
   for(i in 1:(nrow(dat) - 1)) {
-    if(max(dat[1:i, "End"]) > dat[i + 1, "Start"]) {
+    if(max(dat[1:i, "End"]) >= dat[i + 1, "Start"]) {
       levels[i + 1] <- levels[i] + 1
     }
   }
@@ -91,7 +91,7 @@ plot_coverage <- function(dat,
   coverage_plot <- coverage_plot +
     geom_rect(data = dat, 
               mapping = aes(xmin = Start, 
-                            xmax = End, 
+                            xmax = End + 1, 
                             ymin = ID, 
                             ymax = ID - 1), 
               fill = "#5A748C",
