@@ -2,7 +2,8 @@
 #' 
 #' @description Plots the peptide coverage of the protein sequence.
 #' 
-#' @importFrom ggplot2 ggplot geom_line labs theme element_blank
+#' @importFrom ggplot2 ggplot geom_line labs theme element_blank geom_rect
+#' @importFrom data.table as.data.table setorderv
 #' @importFrom plyr . 
 #' 
 #' @param dat data as imported by the \code{\link{read_hdx}} function
@@ -38,16 +39,16 @@ plot_coverage <- function(dat,
                           protein = dat[["Protein"]][1],
                           states = dat[["State"]][1],
                           show_blanks = TRUE){
+  
   dat <- as.data.table(dat)
   
-
   dat <- dat[Protein == protein & State %in% states, .(Start, End)]
   dat <- dat[!duplicated(dat)]
   setorderv(dat, cols = c("Start", "End"))
   
-  levels <- rep(1, (nrow(dat_tmp)))
-  for(i in 1:(nrow(dat_tmp) - 1)) {
-    if(max(dat_tmp[1:i, "End"]) > dat_tmp[i + 1, "Start"]) {
+  levels <- rep(1, (nrow(dat)))
+  for(i in 1:(nrow(dat) - 1)) {
+    if(max(dat[1:i, "End"]) > dat[i + 1, "Start"]) {
       levels[i + 1] <- levels[i] + 1
     }
   }
@@ -60,10 +61,10 @@ plot_coverage <- function(dat,
                                                        1, 
                                                        function(i) i[1]:i[2]))))
     
-    missing <- data.frame(ids = setdiff(1:max(amino_dat$amino_acids), 
-                                        amino_dat$amino_acids))
+    missing <- data.frame(ids = setdiff(1:max(amino_dat[["amino_acids"]]), 
+                                        amino_dat[["amino_acids"]]))
     
-    non_missing <- data.frame(ids = amino_dat$amino_acids)
+    non_missing <- data.frame(ids = amino_dat[["amino_acids"]])
     
     
     coverage_plot <- ggplot(data = dat) +
@@ -71,7 +72,7 @@ plot_coverage <- function(dat,
                 mapping = aes(xmin = ids - 0.5, 
                               xmax = ids + 0.5,
                               ymin = 0, 
-                              ymax = max(data_plot[["ID"]])),
+                              ymax = max(dat[["ID"]])),
                 fill = "#EFB0A1",
                 colour = NA, 
                 alpha = 0.6) +
@@ -79,7 +80,7 @@ plot_coverage <- function(dat,
                 mapping = aes(xmin = ids - 0.5, 
                               xmax = ids + 0.5,
                               ymin = 0, 
-                              ymax = max(data_plot[["ID"]])),
+                              ymax = max(dat[["ID"]])),
                 fill = "#C6EBBE",
                 colour = NA, 
                 alpha = 0.6)
@@ -88,7 +89,7 @@ plot_coverage <- function(dat,
   }
   
   coverage_plot <- coverage_plot +
-    geom_rect(data_plot, 
+    geom_rect(data = dat, 
               mapping = aes(xmin = Start, 
                             xmax = End, 
                             ymin = ID, 
