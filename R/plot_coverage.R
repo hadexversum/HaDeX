@@ -40,6 +40,7 @@ plot_coverage <- function(dat,
                           show_blanks = TRUE){
   dat <- as.data.table(dat)
   
+
   dat <- dat[Protein == protein & State %in% states, .(Start, End)]
   dat <- dat[!duplicated(dat)]
   setorderv(dat, cols = c("Start", "End"))

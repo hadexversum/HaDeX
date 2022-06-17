@@ -7,8 +7,10 @@
 #' @param theoretical \code{logical}, determines if values are theoretical.
 #' @param fractional \code{logical}, determines if values are fractional.
 #' @param show_houde_interval \code{logical}, determines if houde interval is shown.
+#' @param hide_houde_insignificant ...
 #' @param show_tstud_confidence \code{logical}, determines if t-Student test validity 
 #' is shown.
+#' @param hide_tstud_insignificant ...
 #' @param confidence_level confidence level for the test, from range [0, 1].
 #' @param time_t ...
 #' @param all_times ...
@@ -43,11 +45,14 @@
 #' plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167, line_size = 1) 
 #' plot_differential(diff_uptake_dat = diff_uptake_dat, all_times = T)
 #' plot_differential(diff_uptake_dat = diff_uptake_dat, all_times = T, show_houde_interval = T)
+#' plot_differential(diff_uptake_dat = diff_uptake_dat, all_times = T, show_houde_interval = T, hide_houde_insignificant = T)
 #' 
 #' diff_p_uptake_dat <- create_p_diff_uptake_dataset(dat)
 #' plot_differential(diff_p_uptake_dat = diff_p_uptake_dat, all_times = T, show_tstud_confidence = T)
 #' plot_differential(diff_p_uptake_dat = diff_p_uptake_dat, all_times = T, show_tstud_confidence = T, show_houde_interval = T)
 #' plot_differential(diff_p_uptake_dat = diff_p_uptake_dat, show_tstud_confidence = T, show_houde_interval = T, all_times = F)
+#' plot_differential(diff_p_uptake_dat = diff_p_uptake_dat, show_tstud_confidence = T, show_houde_interval = T, all_times = F, hide_houde_insignificant = T)
+#' plot_differential(diff_p_uptake_dat = diff_p_uptake_dat, show_tstud_confidence = T, show_houde_interval = T, all_times = F, hide_houde_insignificant = T, hide_tstud_insignificant = T)
 #' 
 #' @export plot_differential
 
@@ -57,14 +62,16 @@ plot_differential <- function(diff_uptake_dat = NULL,
                               theoretical = FALSE,
                               fractional = FALSE, 
                               show_houde_interval = FALSE,
+                              hide_houde_insignificant = FALSE,
                               show_tstud_confidence = FALSE,
+                              hide_tstud_insignificant = FALSE, 
                               confidence_level = 0.98,
                               all_times = FALSE,
                               line_size = 1.5){
   
   ## conditions
   
-  if (show_tstud_confidence) {
+  if (show_tstud_confidence | hide_tstud_insignificant) {
     
     if(is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } else { diff_uptake_dat <- diff_p_uptake_dat  }
     
@@ -143,6 +150,25 @@ plot_differential <- function(diff_uptake_dat = NULL,
                          err_value = diff_uptake_dat[[err_value]],
                          Exposure = diff_uptake_dat[["Exposure"]])
   
+  if(hide_houde_insignificant){
+    
+    plot_dat <- plot_dat %>%
+      filter(abs(value) >= h_interval[2])
+    
+  }
+  
+  if(hide_tstud_insignificant){
+    
+    alpha <- -log(1 - attr(diff_uptake_dat, "confidence_level"))
+    
+    diff_uptake_dat <- mutate(diff_uptake_dat, valid = log_p_value >= alpha) %>%
+      merge(plot_dat, by = c("Sequence", "Start", "End", "Med_Sequence", "Protein", "Exposure"))
+    
+    plot_dat <- diff_uptake_dat %>%
+      filter(valid)
+    
+  }
+  
   if(show_houde_interval){
     
     differential_plot <- mutate(plot_dat, colour = case_when(
@@ -187,15 +213,18 @@ plot_differential <- function(diff_uptake_dat = NULL,
   
   if(show_tstud_confidence){
     
-    alpha <- -log(1 - attr(diff_uptake_dat, "confidence_level"))
-    
-    diff_uptake_dat <- mutate(diff_uptake_dat, valid = log_p_value >= alpha) %>%
-      merge(plot_dat, by = c("Sequence", "Start", "End", "Med_Sequence", "Protein", "Exposure"))
+    if(!hide_tstud_insignificant){
+      
+      alpha <- -log(1 - attr(diff_uptake_dat, "confidence_level"))
+      
+      plot_dat <- mutate(diff_uptake_dat, valid = log_p_value >= alpha) %>%
+        merge(plot_dat, by = c("Sequence", "Start", "End", "Med_Sequence", "Protein", "Exposure"))
+      
+    }
     
     differential_plot <- differential_plot +
-      geom_segment(data = subset(diff_uptake_dat, !valid), aes(x = Start, y = value, xend = End, yend = value), color = "grey77", size = line_size) +
-      geom_errorbar(data = subset(diff_uptake_dat, !valid), aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value), color = "grey77") +
-      theme(legend.position = "none")
+      geom_segment(data = subset(plot_dat, !valid), aes(x = Start, y = value, xend = End, yend = value), color = "grey77", size = line_size) +
+      geom_errorbar(data = subset(plot_dat, !valid), aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value), color = "grey77") 
     
   }
 

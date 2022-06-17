@@ -37,7 +37,7 @@
 calculate_diff_uptake  <- function(dat,
                                    protein = unique(dat[["Protein"]][1]),
                                    states = unique(dat[["State"]])[1:2],
-                                   time_0 = min(dat[dat[["Exposure"]]>0, ][["Exposure"]]),
+                                   time_0 = min(dat[["Exposure"]]),
                                    time_t = unique(dat[["Exposure"]])[3], 
                                    time_100 = max(dat[["Exposure"]]),
                                    deut_part = 0.9){
@@ -51,7 +51,7 @@ calculate_diff_uptake  <- function(dat,
                                                                           deut_part = deut_part))) %>%
     droplevels() %>% 
     mutate(State = factor(State, levels = states, labels = c("1", "2"))) %>%
-    gather(variable, value, -c(Protein:End, State, Med_Sequence)) %>%
+    gather(variable, value, -c(Protein:End, State, Med_Sequence, Modification)) %>%
     unite(tmp, variable, State) %>%
     spread(tmp, value)  %>%
     mutate(diff_frac_deut_uptake = frac_deut_uptake_1 - frac_deut_uptake_2,
@@ -72,6 +72,7 @@ calculate_diff_uptake  <- function(dat,
   attr(diff_dat, "time_t") <- time_t 
   attr(diff_dat, "time_100") <- time_100
   attr(diff_dat, "deut_part") <- deut_part
+  attr(diff_dat, "n_rep") <- get_n_replicates(dat)
   
   return(diff_dat)
 }

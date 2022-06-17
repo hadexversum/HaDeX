@@ -31,7 +31,7 @@
 create_state_comparison_dataset <- function(dat,
                                             protein = unique(dat[["Protein"]])[1],
                                             states = unique(dat[["State"]]),
-                                            time_0 = min(dat[dat[["Exposure"]]>0, ][["Exposure"]]),
+                                            time_0 = min(dat[["Exposure"]]),
                                             time_t = unique(dat[["Exposure"]])[3], 
                                             time_100 = max(dat[["Exposure"]]),
                                             deut_part = 0.9){
@@ -54,6 +54,7 @@ create_state_comparison_dataset <- function(dat,
   attr(comparison_dat, "time_0") <- time_0
   attr(comparison_dat, "time_100") <- time_100
   attr(comparison_dat, "deut_part") <- deut_part
+  attr(comparison_dat, "has_modification") <- attr(dat, "has_modification")
   
   return(comparison_dat)
   

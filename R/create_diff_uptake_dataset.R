@@ -42,7 +42,7 @@ create_diff_uptake_dataset <- function(dat,
                                        protein = unique(dat[["Protein"]])[1],
                                        state_1 = unique(dat[["State"]])[1],
                                        state_2 = unique(dat[["State"]])[2], 
-                                       time_0 = min(dat[dat[["Exposure"]]>0, ][["Exposure"]]),
+                                       time_0 = min(dat[["Exposure"]]),
                                        time_100 = max(dat[["Exposure"]]),
                                        deut_part = 0.9){
   
@@ -68,6 +68,8 @@ create_diff_uptake_dataset <- function(dat,
   attr(diff_uptake_dat, "time_0") <- time_0
   attr(diff_uptake_dat, "time_100") <- time_100
   attr(diff_uptake_dat, "deut_part") <- deut_part
+  attr(diff_uptake_dat, "has_modification") <- attr(dat, "has_modification")
+  attr(diff_uptake_dat, "n_rep") <- get_n_replicates(dat)
   
   return(diff_uptake_dat)
   

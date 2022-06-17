@@ -51,9 +51,9 @@ output[["stateOverlap_data"]] <- DT::renderDataTable(server = FALSE, {
 
 stateOverlap_out <- reactive({
   
-  plot_overlap(dat = dat(),
-               protein = input[["chosen_protein"]],
-               state = input[["chosen_state"]]) +
+  plot_coverage(dat = dat(),
+                protein = input[["chosen_protein"]],
+                state = input[["chosen_state"]]) +
     coord_cartesian(xlim = c(input[["plot_range"]][[1]], input[["plot_range"]][[2]]))
   
 })

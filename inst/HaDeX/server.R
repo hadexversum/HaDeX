@@ -40,8 +40,6 @@ server <- function(input, output, session) {
 
   data_source <- reactive({
     
-    # browser()
-
     attr(dat_in(), "source")
 
   })
@@ -192,6 +190,7 @@ server <- function(input, output, session) {
       filter(Protein == input[["chosen_protein"]]) %>%
       select(State) %>%
       unique(.) %>%
+      arrange(nchar(State)) %>%
       .[[1]]
       
   })
@@ -218,7 +217,7 @@ server <- function(input, output, session) {
   
   times_t <- reactive({
     
-    times_from_file()[times_from_file() > 0 & times_from_file()<99999]
+    times_from_file()[times_from_file() > input[["no_deut_control"]] & times_from_file()<99999]
     
   })
   
@@ -234,9 +233,7 @@ server <- function(input, output, session) {
 
   observe({
 
-    if(has_modifications()){
-      hide("chosen_control")
-    }
+    if(has_modifications()){ hide("chosen_control") }
 
   })
 
@@ -244,9 +241,7 @@ server <- function(input, output, session) {
 
   observe({
 
-    if(!has_modifications()){
-      show("chosen_control")
-    }
+    if(!has_modifications()){ show("chosen_control") }
 
   })
 
@@ -437,11 +432,19 @@ server <- function(input, output, session) {
 
   source("server/tab_uptake_curve.R", local = TRUE)
   
-  source("server/tab_uptake_curve_diff.R", local = TRUE)
+  source("server/tab_uptake_curve_differential.R", local = TRUE)
   
   ### TAB: MANHATTAN ###
   
   source("server/tab_manhattan.R", local = TRUE)
+  
+  ### TAB: UNCERTAINTY
+  
+  source("server/tab_uncertainty.R", local = TRUE)
+  
+  ### TAB: MEASUREMENTS
+  
+  source("server/tab_measurements.R", local = TRUE)
 
   
 

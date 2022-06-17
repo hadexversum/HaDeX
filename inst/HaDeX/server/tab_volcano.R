@@ -17,7 +17,7 @@ observeEvent(input[["chosen_protein"]], {
   updateSelectInput(session, 
                     inputId = "vol_state_2",
                     choices = states_chosen_protein(),
-                    selected = states_chosen_protein()[length(states_chosen_protein())])
+                    selected = states_chosen_protein()[2])
   
 })
 
@@ -60,9 +60,7 @@ observe({
 
 observe({
   
-  if(!input[["vol_fractional"]]){
-    hide(id = "vol_control_part")
-  }
+  if(!input[["vol_fractional"]]){ hide(id = "vol_control_part") }
   
 })
 
@@ -70,9 +68,7 @@ observe({
 
 observe({
   
-  if(input[["vol_fractional"]]){
-    show(id = "vol_control_part")
-  }
+  if(input[["vol_fractional"]]){ show(id = "vol_control_part") }
   
 })
 
@@ -268,10 +264,14 @@ alpha_interval <- reactive({
 
 volcano_plot_out <- reactive({
   
+  # browser()
+  
   plot_volcano(volcano_data(), 
                state_1 = input[["vol_state_1"]], 
                state_2 = input[["vol_state_2"]],
                color_times = input[["vol_color_times"]],
+               show_insignificant_grey = input[["vol_show_insignificant_grey"]],
+               hide_insignificant = input[["vol_hide_insignificant"]],
                fractional = input[["vol_fractional"]],
                theoretical = FALSE) + ## hard coded, no theoretical
     # ## statistics

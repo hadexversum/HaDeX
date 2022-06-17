@@ -428,15 +428,6 @@ show_summary_data <- function(dat,
                               confidence_limit_2 = "",
                               protein_length = max(dat[["End"]])){
   
-  n_reps <- group_by(dat, Protein, Start, End, Sequence, State, Exposure) %>%
-    summarise(n_rep = length(unique(File))) %>%
-    ungroup() %>% 
-    pull(n_rep) %>% 
-    table() %>% 
-    sort(decreasing = TRUE) %>% 
-    names() %>% 
-    as.numeric()
-  
   data.frame(Name = c("HDX time course", 
                       "Number of peptides",
                       "Sequence coverage ",
@@ -450,7 +441,7 @@ show_summary_data <- function(dat,
                        paste0(get_protein_coverage(dat, protein_length = protein_length), "%"),
                        round(mean(nchar(unique(dat[["Sequence"]]))), 2),# average peptide length
                        get_protein_redundancy(dat, protein_length),
-                       n_reps[1], 
+                       get_n_replicates(dat), 
                        #NA, 
                        paste0(confidence_limit_1, " | ", confidence_limit_2))
   )

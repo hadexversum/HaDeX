@@ -56,7 +56,7 @@ plot_manhattan <- function(p_dat,
   if(is.null(plot_title)) {plot_title <- paste0("Differences between ", attr(p_dat, "state_1"), " and ", attr(p_dat, "state_2")) }
   
   manhattan_plot <- ggplot(plot_dat) + 
-    theme(legend.position = "none") +
+    theme(legend.position = "bottom") +
     labs(title = plot_title,
          y = "log(P value)", 
          color = "Exposure")
@@ -77,7 +77,8 @@ plot_manhattan <- function(p_dat,
   if(separate_times){
     
     manhattan_plot <- manhattan_plot + 
-      facet_wrap(~ as.factor(Exposure)) 
+      facet_wrap(~ as.factor(Exposure)) +
+      theme(legend.position = "none")
     
   } 
   

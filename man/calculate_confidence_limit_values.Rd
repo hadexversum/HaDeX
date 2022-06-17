@@ -8,7 +8,8 @@ calculate_confidence_limit_values(
   diff_uptake_dat,
   confidence_level = 0.98,
   theoretical = FALSE,
-  fractional = TRUE
+  fractional = TRUE,
+  n_rep = NA
 )
 }
 \arguments{

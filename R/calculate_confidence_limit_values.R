@@ -3,7 +3,7 @@
 #' @description Calculates confidence limit values for prepared provided, 
 #' based on chosen parameters.
 #' 
-#' @importFrom dplyr case_when
+#' @importFrom dplyr case_when coalesce
 #' @importFrom stats qt
 #' 
 #' @param diff_uptake_dat processed data from DynamX file - using prepare_dataset
@@ -38,17 +38,22 @@
 calculate_confidence_limit_values <- function(diff_uptake_dat,
                                               confidence_level = 0.98,
                                               theoretical = FALSE,
-                                              fractional = TRUE) {
+                                              fractional = TRUE,
+                                              n_rep = NA) {
+  
+  n_rep <- coalesce(c(attr(diff_uptake_dat, "n_rep"), n_rep, 3))[1]
   
   alpha <- 1 - confidence_level
-  t_value <- qt(c(alpha/2, 1-alpha/2), df = 2)[2]
-  
+  t_value <- qt(c(alpha/2, 1-alpha/2), df = n_rep-1)[2]
+
   err_column <- case_when(
     theoretical & fractional ~ "err_diff_theo_frac_deut_uptake",
     theoretical & !(fractional) ~ "err_diff_theo_deut_uptake",
     !(theoretical) & fractional ~ "err_diff_frac_deut_uptake",
     !(theoretical) & !(fractional) ~ "err_diff_deut_uptake"
   )
+  
+  if(is.null((diff_uptake_dat[[err_column]]))){ err_column = "err_value" }
   
   confidence_limit_value <- t_value * mean(diff_uptake_dat[[err_column]], na.rm = TRUE)/sqrt(length(diff_uptake_dat))
   

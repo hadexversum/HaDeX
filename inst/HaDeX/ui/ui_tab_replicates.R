@@ -3,14 +3,10 @@ tab_replicates <- function() HaDeX_plotTab(
   title = "Replicates",
   
   settingsPanel = HaDeX_plotSettingsPanel(
-    replicates_state(),
-    replicates_timepoint(),
-    replicates_sequence(),
-    replicates_labels_adjustement()
+    replicates_plot_param()
   ),
   
   displayPanel = HaDeX_plotDisplayPanel(
-    replicates_plot_and_charge_panel(),
     replicates_histogram_panel(),
     replicates_histogram_all_panel(),
     replicates_histogram_times_panel()
@@ -18,19 +14,14 @@ tab_replicates <- function() HaDeX_plotTab(
   
 )
 
-replicates_state <- function() HaDeX_plotSettingsSection(
+replicates_plot_param <- function() HaDeX_plotSettingsSection(
   
-  title = "State",
+  title = "Select parameters:",
   
   selectInput_h(inputId = "rep_state",
                 label = "Select state: ",
                 choices = c("CD160", "CD160_HVEM"),
-                selected = "CD160")
-)
-
-replicates_timepoint <- function() HaDeX_plotSettingsSection(
-  
-  title = "Timepoint",
+                selected = "CD160"),
   
   selectInput_h(inputId = "rep_time",
                 label = "Select time point: ",
@@ -38,76 +29,7 @@ replicates_timepoint <- function() HaDeX_plotSettingsSection(
                 selected = 1)
 )
 
-replicates_sequence <- function() HaDeX_plotSettingsSection(
-  
-  title = "Sequence",
-  
-  dataTableOutput_h("rep_sequence")
-)
 
-replicates_labels_adjustement <- function() HaDeX_plotSettingsSection(
-  
-  HaDeX_collapseButton(
-    title = "Adjust labels",
-    target = "#HaDeX-replicates-labels-adjusting-panel"
-  ),
-  
-  HaDeX_collapsablePanel(
-    
-    id = "HaDeX-replicates-labels-adjusting-panel",
-    
-    fluidRow(
-      column(width = 10,
-             textInput(inputId = "rep_plot_title",
-                       label = "Plot title:",
-                       value = ""),
-             textInput(inputId = "rep_plot_x_label",
-                       label = "Plot x label:",
-                       value = "Measured mass [Da]"),
-             textInput(inputId = "rep_plot_y_label",
-                       label = "Plot y label:",
-                       value = "")),
-      column(width = 2,
-             numericInput_h(inputId = "rep_plot_title_size",
-                            label = "Size:",
-                            value = 15,
-                            min = 5),
-             numericInput_h(inputId = "rep_plot_x_label_size",
-                            label = "Size:",
-                            value = 15,
-                            min = 5),
-             numericInput_h(inputId = "rep_plot_y_label_size",
-                            label = "Size:",
-                            value = 15,
-                            min = 5))
-    ),
-    p("The axis ticks have the same size as the axis label.")
-  )
-)
-
-
-replicates_plot_and_charge_panel <- function() tabsetPanel(
-  
-  tabPanel("Plot",
-           fluidRow(
-             column(width = 6,
-                    plotOutput_h("replicatesPlot", hover = hoverOpts("replicatesPlot_hover", delay = 10, delayType = "debounce")),
-                    uiOutput("replicatesPlot_debug"),
-                    downloadButton("replicatesPlot_download_button",
-                                   "Save chart (.svg)")),
-             column(width = 6,
-                    plotOutput_h("replicatesChargePlot", hover = hoverOpts("replicatesChargePlot_hover", delay = 10, delayType = "debounce")),
-                    uiOutput("replicatesChargePlot_debug"),
-                    downloadButton("replicatesChargePlot_download_button",
-                                   "Save chart (.svg)"))
-           )
-  ),
-  
-  tabPanel("Data",
-           DT::dataTableOutput("replicatesPlot_data"),
-           DT::dataTableOutput("replicatesChargePlot_data")
-  )
-)
 
 replicates_histogram_panel <- function() tabsetPanel(
   

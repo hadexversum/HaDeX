@@ -59,7 +59,7 @@ create_p_diff_uptake_dataset <- function(dat,
                                          state_2 = unique(dat[["State"]])[2],
                                          p_adjustment_method = "none",
                                          confidence_level = 0.98,
-                                         time_0 = min(dat[dat[["Exposure"]]>0, ][["Exposure"]]),
+                                         time_0 = min(dat[["Exposure"]]),
                                          time_100 = max(dat[["Exposure"]]),
                                          deut_part = 0.9){
   
@@ -82,7 +82,7 @@ create_p_diff_uptake_dataset <- function(dat,
   }
   
   
-  p_diff_uptake_dat <- merge(diff_uptake_dat, p_dat, by = c("Protein", "Sequence", "Start", "End", "Exposure")) %>%
+  p_diff_uptake_dat <- merge(diff_uptake_dat, p_dat, by = c("Protein", "Sequence", "Start", "End", "Exposure", "Modification")) %>%
     arrange(Protein, Start, End)
   
   attr(p_diff_uptake_dat, "protein") <- protein
@@ -93,6 +93,8 @@ create_p_diff_uptake_dataset <- function(dat,
   attr(p_diff_uptake_dat, "time_0") <- time_0
   attr(p_diff_uptake_dat, "time_100") <- time_100
   attr(p_diff_uptake_dat, "deut_part") <- deut_part
+  attr(p_diff_uptake_dat, "has_modification") <- attr(dat, "has_modification")
+  attr(p_diff_uptake_dat, "n_rep") <- get_n_replicates(dat)
   
   return(p_diff_uptake_dat)
   

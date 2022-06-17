@@ -50,17 +50,17 @@ calculate_state_uptake <- function(dat,
   proton_mass <- 1.00727647
   dat <- dat[dat[["Protein"]] == protein & dat[["State"]] == state & dat[["Exposure"]] %in% c(time_0, time_t, time_100), ]
   
-  dat %>%
+  uptake_dat <- dat %>%
     mutate(exp_mass = Center*z - z*proton_mass) %>%
     select(-Center, -z) %>%
-    group_by(Sequence, Start, End, MHP, MaxUptake, State, Exposure, Protein, File) %>%
+    group_by(Sequence, Start, End, MHP, MaxUptake, State, Exposure, Protein, File, Modification) %>%
     summarize(avg_exp_mass = weighted.mean(exp_mass, Inten, na.rm = TRUE)) %>%
     ungroup(.) %>%
     mutate(Exposure = case_when(Exposure == time_0 ~ "time_0",
                                 Exposure == time_t ~ "time_t",
                                 Exposure == time_100 ~ "time_100")) %>%
     spread(key = Exposure, value = avg_exp_mass) %>%
-    group_by(Sequence, Start, End, MaxUptake, MHP, Protein, State) %>%
+    group_by(Sequence, Start, End, MaxUptake, MHP, Protein, State, Modification) %>%
     summarize(time_0_mean = mean(time_0, na.rm = TRUE),
               err_time_0_mean = coalesce(sd(time_0, na.rm = TRUE)/sqrt(sum(!is.na(time_0))), 0),
               time_t_mean = mean(time_t, na.rm = TRUE),
@@ -86,11 +86,21 @@ calculate_state_uptake <- function(dat,
     arrange(Start, End) %>%
     mutate(Exposure = time_t) %>%
     select(Protein, Sequence, Exposure,
-           Start, End, State, 
+           Start, End, State, Modification,
            frac_deut_uptake, err_frac_deut_uptake, 
            deut_uptake, err_deut_uptake, 
            theo_frac_deut_uptake, err_theo_frac_deut_uptake,
            theo_deut_uptake, err_theo_deut_uptake, 
            Med_Sequence)
+  
+  attr(uptake_dat, "protein") <- protein
+  attr(uptake_dat, "state") <- state
+  attr(uptake_dat, "time_0") <- time_0
+  attr(uptake_dat, "time_t") <- time_t
+  attr(uptake_dat, "time_100") <- time_100
+  attr(uptake_dat, "deut_part") <- deut_part
+  attr(uptake_dat, "has_modification") <- attr(dat, "has_modification")
+  
+  return(uptake_dat)
 
 }

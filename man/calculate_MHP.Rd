@@ -25,7 +25,8 @@ molecular ion of for given peptide.
 This function calculates the mass of the singly charged monoisotopic (or not)
 molecular ion for given peptide. It is the sum of the residue masses plus the masses
 of the terminationg group (H and OH). The source of the masses can be found here:
-\url{http://www.matrixscience.com/help/aa_help.html}.
+\url{http://www.matrixscience.com/help/aa_help.html}. Keep in mind that this function
+returns the value of an unmodified peptide.
 }
 \seealso{
 \code{\link{read_hdx}} 

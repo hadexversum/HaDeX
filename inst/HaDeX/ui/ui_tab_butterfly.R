@@ -117,6 +117,9 @@ butterfly_labels_adjustement <- function() HaDeX_plotSettingsSection(
   )
 )
 
+##########
+## MAIN ##
+##########
 
 butterfly_plot_panel <- function() tabsetPanel(
   tabPanel("Butterfly plot",

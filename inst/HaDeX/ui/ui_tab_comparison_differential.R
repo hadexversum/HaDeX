@@ -4,6 +4,7 @@ tab_woods <- function() HaDeX_plotTab(
   
   settingsPanel = HaDeX_plotSettingsPanel(
     diff_comp_general_settings(),
+    diff_comp_time_parameters(),
     comp_plot_parameters(),
     diff_plot_parameters(),
     diff_test(),
@@ -32,11 +33,12 @@ diff_comp_general_settings <- function() HaDeX_plotSettingsSection(
                   value = FALSE)
 )
 
-comp_plot_parameters <- function() HaDeX_plotSettingsSection(
+##
+
+diff_comp_time_parameters <- function() HaDeX_plotSettingsSection(
   
-  title = "Comparison plot parameters",
+  title = "Select time parameters",
   
-  p("Choose time parameters:"),
   splitLayout(
     div(id = "time_0_part",
         selectInput_h(inputId = "time_0",
@@ -52,6 +54,19 @@ comp_plot_parameters <- function() HaDeX_plotSettingsSection(
                       choices = c("0", "1", "5", "25", "1440"))
     )
   ),
+  div(id = "diff_comp_times_t_part",
+      checkboxGroupInput_h(input = "diff_comp_times_t",
+                           label = "Select time points for the plots:",
+                           choices = c(0, 1, 5, 25, 120),
+                           inline = TRUE))
+) 
+
+##
+
+comp_plot_parameters <- function() HaDeX_plotSettingsSection(
+  
+  title = "Comparison plot parameters",
+  
   fluidRow(
     column(6,
            checkboxGroupInput_h(inputId = "compare_states",
@@ -79,6 +94,8 @@ comp_plot_parameters <- function() HaDeX_plotSettingsSection(
     )
   )
 )
+
+##
 
 diff_plot_parameters <- function() HaDeX_plotSettingsSection(
   
@@ -108,14 +125,22 @@ diff_test <- function() HaDeX_plotSettingsSection(
                         value = TRUE),
         checkboxInput_h(inputId = "diff_show_tstud", 
                         label = "t-Student test", 
+                        value = FALSE),
+        checkboxInput_h(inputId = "diff_hide_insignificant",
+                        label = "Hide insignificant?",
                         value = FALSE)
       ),
       column(
         width = 6,
         selectInput_h(inputId = "confidence_level",
                       label = "Confidence level:",
-                      choices = c("20%" = 0.2, "50%" = 0.5, "80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
-                      selected = 0.98)
+                      choices = c("80%" = 0.8, "90%" = 0.9, "95%" = 0.95, "98%" = 0.98, "99%" = 0.99, "99.9%" = 0.999),
+                      selected = 0.98),
+        div(id = "diff_correction_part",
+            selectInput_h(inputId = "diff_p_adjustment_method",
+                          label = "Choose method of adjustment:",
+                          choices = c("none", "BH", "bonferroni"),
+                          selected = "none"))
       )
     )
   ) 

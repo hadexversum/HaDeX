@@ -17,7 +17,7 @@ observe({
   updateSelectInput(session,
                     inputId = "butt_diff_state_2",
                     choices = states_chosen_protein(),
-                    selected = states_chosen_protein()[length(states_chosen_protein())])
+                    selected = states_chosen_protein()[2])
 })
 
 ##
@@ -170,6 +170,21 @@ observe({
 
 })
 
+##
+
+observe({
+  
+  if(input[["butt_diff_show_tstud"]]){ show(id = "butt_diff_correction_part")  }
+  
+})
+
+##
+
+observe({
+  
+  if(!input[["butt_diff_show_tstud"]]){ hide(id = "butt_diff_correction_part")  }
+  
+})
 
 #################################
 ######### DATASET ###############
@@ -212,7 +227,7 @@ butt_p_diff_dat <- reactive({
                                state_1 = input[["butt_diff_state_1"]],
                                state_2 = input[["butt_diff_state_2"]],
                                confidence_level = as.numeric(input[["butt_diff_confidence_level"]]),
-                               # p_adjustment_method = input[[""]],
+                               p_adjustment_method = input[["chic_diff_correction_part"]],
                                time_0 = as.numeric(input[["butt_diff_time_0"]]),
                                time_100 = as.numeric(input[["butt_diff_time_100"]]),
                                deut_part = as.numeric(input[["deut_part"]])/100)

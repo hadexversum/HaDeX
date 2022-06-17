@@ -12,6 +12,8 @@ plot_volcano(
   show_confidence_limits = FALSE,
   confidence_level = 0.98,
   color_times = TRUE,
+  show_insignificant_grey = FALSE,
+  hide_insignificant = FALSE,
   fractional = F,
   theoretical = F
 )
@@ -36,6 +38,10 @@ should be the same as used in \code{\link{create_volcano_dataset}} function.}
 \item{color_times}{logical, indicating if different time points on the plot
 are distinguishable by color.}
 
+\item{show_insignificant_grey}{...}
+
+\item{hide_insignificant}{...}
+
 \item{theoretical}{...}
 
 \item{relative}{...}
@@ -59,8 +65,12 @@ This plot is visible in GUI.
 }
 \examples{
 dat <-  read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-p_dat <- create_volcano_dataset(dat)
-plot_volcano(vol_dat, show_confidence_limits = T)
+p_dat <- create_p_diff_uptake_dataset(dat)
+plot_volcano(p_dat, show_confidence_limits = T)
+
+plot_volcano(p_dat, show_confidence_limits = T, show_insignificant_grey = T)
+plot_volcano(p_dat, show_confidence_limits = T, hide_insignificant = T)
+plot_volcano(p_dat, show_confidence_limits = T, hide_insignificant = T, show_insignificant_grey = T)
 
 }
 \references{

@@ -5,7 +5,8 @@ tab_manhattan <- function() HaDeX_plotTab(
   settingsPanel = HaDeX_plotSettingsPanel(
     manhattan_state(),
     manhattan_test(),
-    manhattan_times()
+    manhattan_times(),
+    manhattan_labels_adjustement()
   ),
   displayPanel = HaDeX_plotDisplayPanel(
     manhattan_plot_panel(),
@@ -33,7 +34,7 @@ manhattan_state <- function() HaDeX_plotSettingsSection(
   
   checkboxInput_h(inputId = "man_show_position",
                   label = "Show peptide length and position in the sequence? ",
-                  value = F)
+                  value = TRUE)
   
 )
 
@@ -76,6 +77,47 @@ manhattan_times <- function() HaDeX_plotSettingsSection(
   
 )
 
+manhattan_labels_adjustement <- function() HaDeX_plotSettingsSection(
+  
+  HaDeX_collapseButton(
+    title = "Adjust labels",
+    target = "#HaDeX-manhattan-labels-adjusting-panel"
+  ),
+  
+  HaDeX_collapsablePanel(
+    id = "HaDeX-manhattan-labels-adjusting-panel",
+    fluidRow(
+      column(width = 10,
+             textInput(inputId = "man_plot_title",
+                       label = "Manhattan plot title:",
+                       value = "Deuterium uptake difference"),
+             textInput(inputId = "man_plot_x_label",
+                       label = "Manhattan plot axis x label:",
+                       value = "Peptide position"),
+             textInput(inputId = "man_plot_y_label",
+                       label = "Manhattan plot axis y label:",
+                       value = "log(P value)")),
+      column(width = 2,
+             numericInput_h(inputId = "man_plot_title_size",
+                            label = "Size:",
+                            value = 15,
+                            min = 5),
+             numericInput_h(inputId = "man_plot_x_label_size",
+                            label = "Size:",
+                            value = 15,
+                            min = 5),
+             numericInput_h(inputId = "man_plot_y_label_size",
+                            label = "Size:",
+                            value = 15,
+                            min = 5))
+    ),
+    p("The axis ticks have the same size as the axis label. The legend text size is the same as the x axis label.")
+  )
+)
+
+##########
+## MAIN ##
+##########
 
 manhattan_plot_panel <- function() tabsetPanel(
   
