@@ -104,7 +104,8 @@ read_hdx <- function(filename){
   
   hdx_data(dat = dat,
            source = data_type,
-           has_modification = has_modification)
+           has_modification = has_modification,
+           n_rep = get_n_replicates(dat))
   # 
   # class(dat) <- c("hdx_data", "data.frame")
   # 

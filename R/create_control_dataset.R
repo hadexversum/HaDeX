@@ -54,6 +54,7 @@ create_control_dataset <- function(dat,
   attr(control_dat, "control_protein") <- control_protein 
   attr(control_dat, "control_state") <- control_state 
   attr(control_dat, "control_exposure") <- control_exposure
+  attr(control_dat, "n_rep") <- attr(dat, "n_rep")
   
   return(control_dat)
   

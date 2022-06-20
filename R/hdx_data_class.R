@@ -37,12 +37,13 @@
 #' 
 #' @keywords internal
 
-new_hdx_data <- function(dat, source, has_modification){
+new_hdx_data <- function(dat, source, has_modification, n_rep){
   
   structure(dat,
             class = c("hdx_data", "data.frame"),
             source = source,
-            has_modification = has_modification)
+            has_modification = has_modification,
+            n_rep = n_rep)
   
   
 }
@@ -57,15 +58,15 @@ new_hdx_data <- function(dat, source, has_modification){
 
 validate_hdx_data <- function(hdx_data, msg = ""){
   
-  no_replicates <- hdx_data %>%
-    group_by(Protein, Start, End, Sequence, State, Exposure) %>%
-    summarise(n_rep = length(unique(File))) %>%
-    ungroup(.) %>%
-    summarize(avg_rep = mean(n_rep))
-  
-  if (!(no_replicates[[1]] >= 2)) {
-    msg <- paste0(msg, "There is no sufficient number of replicates.")
-  } 
+  # no_replicates <- hdx_data %>%
+  #   group_by(Protein, Start, End, Sequence, State, Exposure) %>%
+  #   summarise(n_rep = length(unique(File))) %>%
+  #   ungroup(.) %>%
+  #   summarize(avg_rep = mean(n_rep))
+  # 
+  # if (!(no_replicates[[1]] >= 2)) {
+  #   msg <- paste0(msg, "There is no sufficient number of replicates.")
+  # } 
   
   print(msg)
   hdx_data
@@ -82,11 +83,12 @@ validate_hdx_data <- function(hdx_data, msg = ""){
 #' 
 #' @keywords internal
 
-hdx_data <- function(dat, source, has_modification, msg = ""){
+hdx_data <- function(dat, source, has_modification, n_rep, msg = ""){
   
   tmp <- new_hdx_data(dat = dat,
                       source = source,
-                      has_modification = has_modification)
+                      has_modification = has_modification,
+                      n_rep = n_rep)
   
   validate_hdx_data(tmp, msg = msg)
   

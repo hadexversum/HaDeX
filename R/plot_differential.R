@@ -87,7 +87,7 @@ plot_differential <- function(diff_uptake_dat = NULL,
     }
   }
   
-  if(is.null(time_t) & !all_times) {time_t <- coalesce(c(attr(diff_uptake_dat, "time_t"), unique(diff_uptake_dat[["Exposure"]])[3] ))}
+  if(is.null(time_t) & !all_times) {time_t <- coalesce(attr(diff_uptake_dat, "time_t"), unique(diff_uptake_dat[["Exposure"]])[3])}
   
   if(!all_times) { diff_uptake_dat <- filter(diff_uptake_dat, Exposure == time_t) }
 
@@ -146,6 +146,7 @@ plot_differential <- function(diff_uptake_dat = NULL,
                          Start = diff_uptake_dat[["Start"]],
                          End = diff_uptake_dat[["End"]],
                          Med_Sequence = diff_uptake_dat[["Med_Sequence"]],
+                         Modification = diff_uptake_dat[["Modification"]],
                          value = diff_uptake_dat[[value]],
                          err_value = diff_uptake_dat[[err_value]],
                          Exposure = diff_uptake_dat[["Exposure"]])
@@ -218,7 +219,7 @@ plot_differential <- function(diff_uptake_dat = NULL,
       alpha <- -log(1 - attr(diff_uptake_dat, "confidence_level"))
       
       plot_dat <- mutate(diff_uptake_dat, valid = log_p_value >= alpha) %>%
-        merge(plot_dat, by = c("Sequence", "Start", "End", "Med_Sequence", "Protein", "Exposure"))
+        merge(plot_dat, by = c("Sequence", "Start", "End", "Med_Sequence", "Protein", "Exposure", "Modification"))
       
     }
     
