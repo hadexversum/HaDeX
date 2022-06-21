@@ -2,7 +2,8 @@
 #' 
 #' @description Plots the frequency of coverage of protein sequence.
 #' 
-#' @importFrom ggplot2 ggplot geom_line geom_col
+#' @importFrom ggplot2 ggplot geom_line geom_col geom_density
+#' @importFrom data.table setnames
 #' 
 #' @param dat data as imported by the \code{\link{read_hdx}} function
 #' @param protein protein to be included in plot
@@ -24,16 +25,16 @@
 #' plot_position_frequency(dat)
 #' 
 #' # function call with explicit parameters
-#' plot_position_frequency(dat, chosen_state = "CD160_HVEM")
+#' plot_position_frequency(dat, state = "CD160_HVEM")
 #' 
 #' @export plot_position_frequency
 
 plot_position_frequency <- function(dat, 
                                     protein = dat[["Protein"]][1],
-                                    chosen_state = dat[["State"]][1]) {
+                                    state = dat[["State"]][1]) {
   dat <- as.data.table(dat)
     
-  dat <- dat[Protein == protein & State %in% states, .(Start, End)]
+  dat <- dat[Protein == protein & State == state, .(Start, End)]
   dat <- dat[!duplicated(dat)]
   setorderv(dat, cols = c("Start", "End"))
   
