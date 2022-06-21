@@ -68,30 +68,32 @@ calculate_kinetics <- function(dat,
   assert_number(time_100, lower = time_0)
   assert_number(deut_part, lower = 0, upper = 1)
   
-  prep_dat <- dat %>%
-    filter(Protein == protein,
-           Sequence == sequence, 
-           State == state,
-           Start == start, 
-           End == end)
-  
+  prep_dat <- data.table(dat)[Protein == protein & 
+                                Sequence == sequence & 
+                                State == state & 
+                                Start == start & 
+                                End == end]
   time_points <- unique(prep_dat[["Exposure"]])
-  
   time_points_to_iterate <- time_points[time_points > time_0 & time_points < time_100]
   
-  kin_dat <- bind_rows(lapply(time_points_to_iterate, function(time_point){
+  
+  kin_dat <- rbindlist(lapply(time_points_to_iterate, function(time_point){
     
-    calculate_state_uptake(dat = prep_dat, 
-                           protein = protein,
-                           state = state, 
-                           time_0 = time_0, 
-                           time_t = time_point, 
-                           time_100 = time_100,
-                           deut_part = deut_part) %>%
-      mutate(time_chosen = time_point) 
+    uptake_dat <- calculate_state_uptake(dat = prep_dat, 
+                                         protein = protein,
+                                         state = state, 
+                                         time_0 = time_0, 
+                                         time_t = time_point, 
+                                         time_100 = time_100,
+                                         deut_part = deut_part)
+    uptake_dat[["time_chosen"]] <- time_point
+    uptake_dat
     
-  })) %>%
-    select(Protein, Sequence, Start, End, State, time_chosen, everything())
+  }))[, .(Protein, Sequence, Start, End, State, time_chosen,
+          Exposure, Modification, frac_deut_uptake, err_frac_deut_uptake,
+          deut_uptake, err_deut_uptake, theo_frac_deut_uptake, 
+          err_theo_frac_deut_uptake, theo_deut_uptake, err_theo_deut_uptake, 
+          Med_Sequence)]
   
   attr(kin_dat, "protein") <- protein
   attr(kin_dat, "sequence") <- sequence
@@ -160,7 +162,7 @@ calculate_peptide_kinetics <- function(dat,
                                        time_100 = max(dat[["Exposure"]]),
                                        deut_part = 0.9){
   
-  kin_dat <- lapply(states, function(state){
+  kin_dat <- rbindlist(lapply(states, function(state){
     
     calculate_kinetics(dat = dat,
                        protein = protein, 
@@ -172,7 +174,7 @@ calculate_peptide_kinetics <- function(dat,
                        time_100 = time_100,
                        deut_part = deut_part)
     
-  }) %>% bind_rows()
+  }))
   
   attr(kin_dat, "protein") <- protein
   attr(kin_dat, "sequence") <- sequence
@@ -229,7 +231,8 @@ create_kinetic_dataset <- function(dat,
                                    time_100 = max(dat[["Exposure"]]),
                                    deut_part = 0.9){
   
-  kin_dat <- bind_rows(apply(peptide_list, 1, function(peptide){
+  
+  kin_dat <- rbindlist(apply(peptide_list, 1, function(peptide){
     calculate_kinetics(dat = dat,
                        protein = protein, 
                        sequence = peptide[1],
@@ -293,55 +296,50 @@ create_kinetic_dataset <- function(dat,
 show_kinetic_data <- function(kin_dat, 
                               theoretical = FALSE, 
                               fractional = FALSE){
-  
   if(theoretical){
     
     if(fractional){
-      # theoretical & fractional  
-      kin_dat %>%
-        select(Protein, Sequence, State, Start, End, time_chosen, theo_frac_deut_uptake, err_theo_frac_deut_uptake) %>%
-        mutate(theo_frac_deut_uptake = round(theo_frac_deut_uptake, 4), 
-               err_theo_frac_deut_uptake = round(err_theo_frac_deut_uptake, 4)) %>%
-        rename("Time Point" = time_chosen,
-               "Theo Frac DU [%]" = theo_frac_deut_uptake,
-               "Theo Err Frac DU [%]" = err_theo_frac_deut_uptake)
+      # theoretical & fractional
+      tmp <- kin_dat[, .(Protein, Sequence, State, Start, End, time_chosen, 
+                         theo_frac_deut_uptake, err_theo_frac_deut_uptake)]
+      tmp[, `:=`(theo_frac_deut_uptake = round(theo_frac_deut_uptake, 4),
+                 err_theo_frac_deut_uptake = round(err_theo_frac_deut_uptake, 4))]
+      setnames(tmp, c("time_chosen", "theo_frac_deut_uptake", 
+                      "err_theo_frac_deut_uptake"),
+               c("Time Point", "Theo Frac DU [%]", "Theo Err Frac DU [%]"))
       
     } else {
       # theoretical & absolute
-      kin_dat %>%
-        select(Protein, Sequence, State, Start, End, time_chosen, theo_deut_uptake, err_theo_deut_uptake) %>%
-        mutate(theo_deut_uptake = round(theo_deut_uptake, 4), 
-               err_theo_deut_uptake = round(err_theo_deut_uptake, 4)) %>%
-        rename("Time Point" = time_chosen,
-               "Theo DU [Da]" = theo_deut_uptake,
-               "Theo Err DU [Da]" = err_theo_deut_uptake)
+      tmp <- kin_dat[, .(Protein, Sequence, State, Start, End, time_chosen, 
+                         theo_deut_uptake, err_theo_deut_uptake)]
+      tmp[, `:=`(theo_deut_uptake = round(theo_deut_uptake, 4),
+                 err_theo_deut_uptake = round(err_theo_deut_uptake, 4))]
+      setnames(tmp, c("time_chosen", "theo_deut_uptake", "err_theo_deut_uptake"),
+               c("Time Point", "Theo DU [Da]", "Theo Err DU [Da]"))
+      
     }
     
   } else {
     
     if(fractional){
       # experimental & fractional
-      kin_dat %>%
-        select(Protein, Sequence, State, Start, End, time_chosen, frac_deut_uptake, err_frac_deut_uptake) %>%
-        mutate(frac_deut_uptake = round(frac_deut_uptake, 4), 
-               err_frac_deut_uptake = round(err_frac_deut_uptake, 4)) %>%
-        rename("Time Point" = time_chosen,
-               "Frac DU [%]" = frac_deut_uptake,
-               "Err Frac DU [%]" = err_frac_deut_uptake)
+      tmp <- kin_dat[, .(Protein, Sequence, State, Start, End, time_chosen, 
+                         frac_deut_uptake, err_frac_deut_uptake)]
+      tmp[, `:=`(frac_deut_uptake = round(frac_deut_uptake, 4),
+                 err_frac_deut_uptake = round(err_frac_deut_uptake, 4))]
+      setnames(tmp, c("time_chosen", "frac_deut_uptake", "err_frac_deut_uptake"),
+               c("Time Point", "Frac DU [%]", "Err Frac DU [%]"))
       
     } else {
       # experimental & absolute
-      kin_dat %>%
-        select(Protein, Sequence, State, Start, End, time_chosen, deut_uptake, err_deut_uptake) %>%
-        mutate(deut_uptake = round(deut_uptake, 4), 
-               err_deut_uptake = round(err_deut_uptake, 4)) %>%
-        rename("Time Point" = time_chosen,
-               "DU [Da]" = deut_uptake,
-               "Err DU [Da]" = err_deut_uptake)
+      tmp <- kin_dat[, .(Protein, Sequence, State, Start, End, time_chosen, 
+                         deut_uptake, err_deut_uptake)]
+      tmp[, `:=`(deut_uptake = round(deut_uptake, 4),
+                 err_deut_uptake = round(err_deut_uptake, 4))]
+      setnames(tmp, c("time_chosen", "deut_uptake", "err_deut_uptake"),
+               c("Time Point", "DU [Da]", "Err DU [Da]"))
     }
-    
   }
-  
 }
 
 #' Plot kinetics data
@@ -463,8 +461,7 @@ plot_kinetics <- function(kin_dat,
                          err_value = kin_dat[[err_value]],
                          prop = paste0(kin_dat[["Sequence"]], "-", kin_dat[["State"]]))
   
-  kin_plot <- plot_dat %>% 
-    ggplot(aes(x = time_chosen, y = value, group = prop)) +
+  kin_plot <- ggplot(plot_dat, aes(x = time_chosen, y = value, group = prop)) +
     geom_point(aes(color = prop), size = 2) + 
     theme(legend.position = "bottom",
           legend.title = element_blank()) +
