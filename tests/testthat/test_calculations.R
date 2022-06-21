@@ -30,7 +30,7 @@ lapply(times, function(time){
                            result_tmp[result_tmp[["Protein"]] == chosen_protein &
                                         result_tmp[["State"]] == chosen_state &
                                         result_tmp[["Sequence"]] == chosen_peptide &
-                                        result_tmp[["Exposure"]] == time, value][[1]]
+                                        result_tmp[["Exposure"]] == time, get(value)]
               )
     )
 
@@ -69,3 +69,4 @@ test_that(paste0("mono MHP for ", chosen_peptide),
 #   )
 # 
 # })
+
