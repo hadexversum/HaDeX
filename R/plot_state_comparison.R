@@ -36,7 +36,7 @@ plot_state_comparison <- function(uptake_dat,
                                   all_times = FALSE,
                                   time_t = NULL){
   
-  if(is.null(time_t) & !all_times) {time_t <- coalesce(c(attr(uptake_dat, "time_t"), unique(uptake_dat[["Exposure"]])[3] ))}
+  if(is.null(time_t) & !all_times) {time_t <- coalesce(attr(uptake_dat, "time_t"), unique(uptake_dat[["Exposure"]])[3] )}
   
   if(!all_times) { uptake_dat <- filter(uptake_dat, Exposure == time_t) }
   

@@ -117,14 +117,14 @@ test_that("show_replicate_histogram_data colnames",
 
 test_that("plot_peptide_mass_measurement class is right",
           expect_is(
-            plot_peptide_mass_measurement(rep_mass_dat),
+            plot_peptide_mass_measurement(dat),
             "ggplot"
           )
 )
 
 expect_doppelganger(
   "Peptide Mass Measurement Plot",
-  plot_peptide_mass_measurement(rep_mass_dat)
+  plot_peptide_mass_measurement(dat)
 )
 
 #####################################
@@ -163,3 +163,4 @@ expect_doppelganger(
   "Repliates histogram - one time",
   plot_replicate_histogram(rep_dat[rep_dat[["Exposure"]] == 5, ])
 )
+

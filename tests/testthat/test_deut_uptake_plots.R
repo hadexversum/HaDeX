@@ -102,27 +102,34 @@ expect_doppelganger("Chiclet plot + uncertainty", u_chiclet_plot)
 ## PLOT_STATE_COMPARISON ##
 ###########################
 
-theo_frac_state_comparison_plot <- plot_state_comparison(dat = state_uptake_dat[state_uptake_dat[["Exposure"]] == chosen_time, ],
+uptake_dat <- state_uptake_dat[state_uptake_dat[["Exposure"]] == chosen_time, ]
+
+
+theo_frac_state_comparison_plot <- plot_state_comparison(uptake_dat,
                                                          theoretical = T, 
-                                                         fractional = T)
+                                                         fractional = T,
+                                                         time_t = chosen_time)
 
 expect_doppelganger("Theo Frac State Comparison plot", theo_frac_state_comparison_plot)
 
-frac_state_comparison_plot <- plot_state_comparison(dat = state_uptake_dat[state_uptake_dat[["Exposure"]] == chosen_time, ],
+frac_state_comparison_plot <- plot_state_comparison(uptake_dat,
                                                     theoretical = F, 
-                                                    fractional = T)
+                                                    fractional = T,
+                                                    time_t = chosen_time)
 
 expect_doppelganger("Frac State Comparison plot", frac_state_comparison_plot)
 
-theo_state_comparison_plot <- plot_state_comparison(dat = state_uptake_dat[state_uptake_dat[["Exposure"]] == chosen_time, ],
+theo_state_comparison_plot <- plot_state_comparison(uptake_dat, 
                                                     theoretical = T, 
-                                                    fractional = F)
+                                                    fractional = F,
+                                                    time_t = chosen_time)
 
 expect_doppelganger("Theo State Comparison plot", theo_state_comparison_plot)
 
-state_comparison_plot <- plot_state_comparison(dat = state_uptake_dat[state_uptake_dat[["Exposure"]] == chosen_time, ],
+state_comparison_plot <- plot_state_comparison(uptake_dat,
                                                theoretical = F, 
-                                               fractional = F)
+                                               fractional = F,
+                                               time_t = chosen_time)
 
 expect_doppelganger("State Comparison plot", state_comparison_plot)
 

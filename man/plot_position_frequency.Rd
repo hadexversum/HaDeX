@@ -7,7 +7,7 @@
 plot_position_frequency(
   dat,
   protein = dat[["Protein"]][1],
-  chosen_state = dat[["State"]][1]
+  state = dat[["State"]][1]
 )
 }
 \arguments{
@@ -36,7 +36,7 @@ dat <- read_hdx(system.file(package = "HaDeX",
 plot_position_frequency(dat)
 
 # function call with explicit parameters
-plot_position_frequency(dat, chosen_state = "CD160_HVEM")
+plot_position_frequency(dat, state = "CD160_HVEM")
 
 }
 \seealso{
