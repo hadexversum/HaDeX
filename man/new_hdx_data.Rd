@@ -4,7 +4,7 @@
 \alias{new_hdx_data}
 \title{Constructor of hdx_data class}
 \usage{
-new_hdx_data(dat, source, has_modification)
+new_hdx_data(dat, source, has_modification, n_rep)
 }
 \arguments{
 \item{dat}{\code{\link{data.frame}}, read from the datafile.}

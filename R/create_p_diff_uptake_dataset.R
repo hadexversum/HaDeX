@@ -94,7 +94,7 @@ create_p_diff_uptake_dataset <- function(dat,
   attr(p_diff_uptake_dat, "time_100") <- time_100
   attr(p_diff_uptake_dat, "deut_part") <- deut_part
   attr(p_diff_uptake_dat, "has_modification") <- attr(dat, "has_modification")
-  attr(p_diff_uptake_dat, "n_rep") <- get_n_replicates(dat)
+  attr(p_diff_uptake_dat, "n_rep") <- attr(dat, "n_rep")
   
   return(p_diff_uptake_dat)
   

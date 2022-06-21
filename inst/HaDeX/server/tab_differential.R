@@ -176,8 +176,6 @@ woods_p_dat <- reactive({
 
 differential_plot <- reactive({
   
-  # browser()
-  
   plot_differential(diff_uptake_dat = woods_plot_dat(),
                     diff_p_uptake_dat = woods_p_dat(),
                     theoretical = input[["theory"]],

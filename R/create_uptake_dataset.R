@@ -1,5 +1,7 @@
 #' Create uptake dataset for multiple states
 #'
+#' @importFrom dplyr arrange filter summarise 
+#' 
 #' @param dat data imported by the \code{\link{read_hdx}} function.
 #' @param protein chosen protein. 
 #' @param states list of biological states for chosen protein.
