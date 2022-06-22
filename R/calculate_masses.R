@@ -31,14 +31,19 @@ calculate_exp_masses_per_replicate <- function(dat){
   
   proton_mass <- 1.00727647
   
-    dat %>%
-      mutate(exp_mass = Center*z - z*proton_mass) %>%
-      select(-Center, -z) %>%
-      group_by(Protein, State, Sequence, Start, End, MHP, MaxUptake, Exposure, File, Modification) %>%
-      summarize(avg_exp_mass = weighted.mean(exp_mass, Inten, na.rm = TRUE)) %>%
-      ungroup(.) %>%
-      arrange(Start, End)
-    
+  dat <- data.table(dat)
+  
+  exp_dat <- dat[ , `:=`(exp_mass = Center*z - z*proton_mass)]
+  exp_dat <- exp_dat[, .(Protein, Start, End, Sequence, MaxUptake, MHP,
+                         State, Exposure, File, Modification, Inten, exp_mass)]
+  exp_dat <- exp_dat[, .(avg_exp_mass = weighted.mean(exp_mass, Inten, na.rm = TRUE)),
+                     by = c("Protein", "State", "Sequence", "Start", "End", 
+                            "MHP", "MaxUptake", "Exposure", "File", 
+                            "Modification")]
+  setorderv(exp_dat, cols = c("Start", "End"))
+  
+  return(exp_dat)
+  
 }
 
 #' Calculate measured mass, aggregated from the replicates of the
@@ -67,13 +72,15 @@ calculate_exp_masses <- function(dat){
   
   proton_mass <- 1.00727647
   
-  dat %>%
-    calculate_exp_masses_per_replicate(.) %>%
-    group_by(Protein, State, Sequence, Start, End, MHP, Exposure, Modification) %>%
-    summarize(avg_mass = mean(avg_exp_mass),
-              err_avg_mass = sd(avg_exp_mass)/sqrt(length(Exposure))) %>%
-    ungroup(.) %>%
-    arrange(Start, End)
+  exp_dat <- calculate_exp_masses_per_replicate(dat)
+  
+  exp_dat <- exp_dat[, .(avg_mass = mean(avg_exp_mass),
+                         err_avg_mass = sd(avg_exp_mass)/sqrt(.N)),
+                     by = c("Protein", "State", "Sequence", "Start", "End", "MHP", "Exposure", "Modification")]
+  
+  setorderv(exp_dat, cols = c("Start", "End"))
+  
+  return(exp_dat)
   
 }
 
