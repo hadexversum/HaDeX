@@ -47,9 +47,9 @@ create_uptake_dataset <- function(dat,
   times <- times[times > time_0]
   
   
-  uptake_dat <- lapply(states, function(state){
+  uptake_dat <- rbindlist(lapply(states, function(state){
     
-    lapply(times, function(time){
+    rbindlist(lapply(times, function(time){
       
       calculate_state_uptake(dat, protein = protein, 
                              state = state,
@@ -57,9 +57,9 @@ create_uptake_dataset <- function(dat,
                              time_0 = time_0, time_100 = time_100,
                              deut_part = deut_part)
       
-    }) %>% bind_rows
+    }))
     
-  }) %>% bind_rows()
+  }))
   
   attr(uptake_dat, "protein") <- protein
   attr(uptake_dat, "state") <- NULL
