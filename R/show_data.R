@@ -32,71 +32,74 @@ show_uptake_data <- function(uptake_dat,
                              fractional = FALSE,
                              renamed = TRUE){
   
-  
   if (theoretical){
     
     if (fractional){
       
-      uptake_dat %>%
-        select(Protein, Sequence, Modification, State, Start, End, Exposure, theo_frac_deut_uptake, err_theo_frac_deut_uptake) %>%
-        mutate(theo_frac_deut_uptake  = round(theo_frac_deut_uptake , 4),
-               err_theo_frac_deut_uptake = round(err_theo_frac_deut_uptake, 4)) %>%
-        arrange(Start, End) %>%
-        group_by(Start, End, Sequence, Modification) %>%
-        mutate(ID = cur_group_id()) %>%
-        ungroup(.) %>%
-        rename("Theo Frac DU [%]" = theo_frac_deut_uptake , 
-               "U(Theo Frac DU) [%]" = err_theo_frac_deut_uptake) %>%
-        select(Protein, Sequence, ID, everything())
+      uptake_dat <- uptake_dat[, .(Protein, Sequence, State, Start, End, Exposure, 
+                                   theo_frac_deut_uptake, err_theo_frac_deut_uptake)]
+      uptake_dat[, `:=`(theo_frac_deut_uptake  = round(theo_frac_deut_uptake , 4),
+                        err_theo_frac_deut_uptake = round(err_theo_frac_deut_uptake, 4))]
+      setorderv(uptake_dat, cols = c("Start", "End"))
+      uptake_dat[, ID := .GRP, by = c("Start", "End", "Sequence")]
+      setnames(uptake_dat,
+               c("theo_frac_deut_uptake", "err_theo_frac_deut_uptake"),
+               c("Theo Frac DU [%]", "U(Theo Frac DU) [%]"))
+      uptake_dat <- uptake_dat[, c("Protein", "Sequence", "ID", "State", "Start", 
+                                   "End", "Exposure", "Theo Frac DU [%]",
+                                   "U(Theo Frac DU) [%]")]
       
     } else {
       
-      uptake_dat %>%
-        select(Protein, Sequence, Modification, State, Start, End, Exposure, theo_deut_uptake, err_theo_deut_uptake) %>%
-        mutate(theo_deut_uptake = round(theo_deut_uptake, 4),
-               err_theo_deut_uptake = round(err_theo_deut_uptake, 4)) %>%
-        arrange(Start, End) %>%
-        group_by(Start, End, Sequence, Modification) %>%
-        ungroup(.) %>%
-        mutate(ID = cur_group_id()) %>%
-        rename("Theo DU [Da]" = theo_deut_uptake,
-               "U(Theo DU) [Da]" = err_theo_deut_uptake) %>%
-        select(Protein, Sequence, ID, everything())
+      uptake_dat <- uptake_dat[, .(Protein, Sequence, State, Start, End, Exposure, 
+                                   theo_deut_uptake, err_theo_deut_uptake)]
+      uptake_dat[, `:=`(theo_deut_uptake = round(theo_deut_uptake, 4),
+                        err_theo_deut_uptake = round(err_theo_deut_uptake, 4))]
+      setorderv(uptake_dat, cols = c("Start", "End"))
+      uptake_dat[, ID := .GRP, by = c("Start", "End", "Sequence")]
+      uptake_dat <- uptake_dat[, c("Protein", "Sequence", "ID", "State", "Start", 
+                                   "End", "Exposure", "theo_deut_uptake",
+                                   "err_theo_deut_uptake")]
+      setnames(uptake_dat,
+               c("theo_deut_uptake", "err_theo_deut_uptake"),
+               c("Theo DU [Da]", "U(Theo DU) [Da]"))
     }
     
   } else {
     
     if (fractional){
       
-      uptake_dat %>%
-        select(Protein, Sequence, Modification, State, Start, End, Exposure, frac_deut_uptake, err_frac_deut_uptake) %>%
-        mutate(frac_deut_uptake = round(frac_deut_uptake, 4),
-               err_frac_deut_uptake = round(err_frac_deut_uptake, 4)) %>%
-        arrange(Start, End) %>%
-        group_by(Start, End, Sequence, Modification) %>%
-        mutate(ID = cur_group_id()) %>%
-        ungroup(.) %>%
-        rename("Frac DU [%]" = frac_deut_uptake,
-               "U(Frac DU) [%]" = err_frac_deut_uptake) %>%
-        select(Protein, Sequence, ID, everything())
+      uptake_dat <- uptake_dat[, .(Protein, Sequence, State, Start, End, Exposure, 
+                                   frac_deut_uptake, err_frac_deut_uptake)]
+      uptake_dat[, `:=`(frac_deut_uptake = round(frac_deut_uptake, 4),
+                        err_frac_deut_uptake = round(err_frac_deut_uptake, 4))]
+      setorderv(uptake_dat, cols = c("Start", "End"))
+      uptake_dat[, ID := .GRP, by = c("Start", "End", "Sequence")]
+      uptake_dat <- uptake_dat[, c("Protein", "Sequence", "ID", "State", "Start", 
+                                   "End", "Exposure", "frac_deut_uptake",
+                                   "err_frac_deut_uptake")]
+      setnames(uptake_dat,
+               c("frac_deut_uptake", "err_frac_deut_uptake"),
+               c("Frac DU [%]", "U(Frac DU) [%]"))
       
     } else {
       
-      uptake_dat %>%
-        select(Protein, Sequence, Modification, State, Start, End, Exposure, deut_uptake, err_deut_uptake) %>%
-        mutate(deut_uptake = round(deut_uptake, 4),
-               err_deut_uptake = round(err_deut_uptake, 4)) %>%
-        arrange(Start, End) %>%
-        group_by(Start, End, Sequence, Modification) %>%
-        mutate(ID = cur_group_id()) %>%
-        ungroup(.) %>%
-        rename("DU [Da]" = deut_uptake,
-               "U(DU) [Da]" = err_deut_uptake) %>%
-        select(Protein, Sequence, ID, everything())
+      uptake_dat <- uptake_dat[, .(Protein, Sequence, State, Start, End, Exposure, 
+                                   deut_uptake, err_deut_uptake)]
+      uptake_dat[, `:=`(deut_uptake = round(deut_uptake, 4),
+                        err_deut_uptake = round(err_deut_uptake, 4))]
+      setorderv(uptake_dat, cols = c("Start", "End"))
+      uptake_dat[, ID := .GRP, by = c("Start", "End", "Sequence")]
+      uptake_dat <- uptake_dat[, c("Protein", "Sequence", "ID", "State", "Start", 
+                                   "End", "Exposure", "deut_uptake", "err_deut_uptake")]
+      setnames(uptake_dat,
+               c("deut_uptake", "err_deut_uptake"),
+               c("DU [Da]", "U(DU) [Da]"))
       
     }
-    
   }
+  
+  uptake_dat
   
 }
 
@@ -138,29 +141,35 @@ show_diff_uptake_data <- function(diff_uptake_dat,
     
     if(fractional){
       
-      diff_uptake_dat %>%
-        select(Protein, Sequence, Modification, Start, End, Exposure, diff_theo_frac_deut_uptake, err_diff_theo_frac_deut_uptake) %>%
-        mutate(diff_theo_frac_deut_uptake = round(diff_theo_frac_deut_uptake, 4),
-               err_diff_theo_frac_deut_uptake = round(err_diff_theo_frac_deut_uptake, 4)) %>%
-        arrange(Start, End) %>%
-        group_by(Start, End, Sequence, Modification) %>%
-        mutate(ID = cur_group_id()) %>%
-        rename("Theo Frac Diff DU [%]" = diff_theo_frac_deut_uptake,
-               "U(Theo Frac Diff DU) [%]" = err_diff_theo_frac_deut_uptake) %>%
-        select(Protein, ID, everything())
+      diff_uptake_dat <- diff_uptake_dat[, .(Protein, Sequence, Start, End, 
+                                             Exposure, diff_theo_frac_deut_uptake, 
+                                             err_diff_theo_frac_deut_uptake)]
+      diff_uptake_dat[, `:=`(diff_theo_frac_deut_uptake = round(diff_theo_frac_deut_uptake, 4),
+                             err_diff_theo_frac_deut_uptake = round(err_diff_theo_frac_deut_uptake, 4))]
+      setorderv(diff_uptake_dat, cols = c("Start", "End"))
+      diff_uptake_dat[, ID := .GRP, by = c("Start", "End", "Sequence")]
+      diff_uptake_dat <- diff_uptake_dat[, c("Protein", "ID", "Sequence", "Start", 
+                                             "End", "Exposure", 
+                                             "diff_theo_frac_deut_uptake", 
+                                             "err_diff_theo_frac_deut_uptake")]
+      setnames(diff_uptake_dat,
+               c("diff_theo_frac_deut_uptake", "err_diff_theo_frac_deut_uptake"),
+               c("Theo Frac Diff DU [%]", "U(Theo Frac Diff DU) [%]"))
       
     } else {
       
-      diff_uptake_dat %>%
-        select(Protein, Sequence, Modification, Start, End, Exposure, diff_theo_deut_uptake, err_diff_theo_deut_uptake) %>%
-        mutate(diff_theo_deut_uptake = round(diff_theo_deut_uptake, 4),
-               err_diff_theo_deut_uptake = round(err_diff_theo_deut_uptake, 4)) %>%
-        arrange(Start, End) %>%
-        group_by(Start, End, Sequence, Modification) %>%
-        mutate(ID = cur_group_id()) %>%
-        rename("Theo Diff DU [Da]" = diff_theo_deut_uptake,
-               "U(Theo Diff DU) [Da]" = err_diff_theo_deut_uptake) %>%
-        select(Protein, ID, everything())
+      diff_uptake_dat <- diff_uptake_dat[, .(Protein, Sequence, Start, End, Exposure, 
+                                             diff_theo_deut_uptake, err_diff_theo_deut_uptake)]
+      diff_uptake_dat[, `:=`(diff_theo_deut_uptake = round(diff_theo_deut_uptake, 4),
+                             err_diff_theo_deut_uptake = round(err_diff_theo_deut_uptake, 4))]
+      setorderv(diff_uptake_dat, cols = c("Start", "End"))
+      diff_uptake_dat[, ID := .GRP, by = c("Start", "End", "Sequence")]
+      diff_uptake_dat <- diff_uptake_dat[, c("Protein", "ID", "Sequence", "Start", 
+                                             "End", "Exposure", "diff_theo_deut_uptake", 
+                                             "err_diff_theo_deut_uptake")]
+      setnames(diff_uptake_dat,
+               c("diff_theo_deut_uptake", "err_diff_theo_deut_uptake"),
+               c("Theo Diff DU [Da]", "U(Theo Diff DU) [Da]"))
       
     }
     
@@ -168,33 +177,39 @@ show_diff_uptake_data <- function(diff_uptake_dat,
     
     if(fractional){
       
-      diff_uptake_dat %>%
-        select(Protein, Sequence, Modification, Start, End, Exposure, diff_frac_deut_uptake, err_diff_frac_deut_uptake) %>%
-        mutate(diff_frac_deut_uptake = round(diff_frac_deut_uptake, 4),
-               err_diff_frac_deut_uptake = round(err_diff_frac_deut_uptake, 4)) %>%
-        arrange(Start, End) %>%
-        group_by(Start, End, Sequence, Modification) %>%
-        mutate(ID = cur_group_id()) %>%
-        rename("Frac Diff DU [%]" = diff_frac_deut_uptake,
-               "U(Frac Diff DU) [%]" = err_diff_frac_deut_uptake) %>%
-        select(Protein, ID, everything())
+      diff_uptake_dat <- diff_uptake_dat[, .(Protein, Sequence, ID, Start, End, Exposure, diff_frac_deut_uptake, err_diff_frac_deut_uptake)]
+      diff_uptake_dat[, `:=`(diff_frac_deut_uptake = round(diff_frac_deut_uptake, 4),
+                             err_diff_frac_deut_uptake = round(err_diff_frac_deut_uptake, 4))]
+      setorderv(diff_uptake_dat, cols = c("Start", "End"))
+      diff_uptake_dat[, ID := .GRP, by = c("Start", "End", "Sequence")]
+      diff_uptake_dat <- diff_uptake_dat[, c("Protein", "ID", "Sequence", "Start", 
+                                             "End", "Exposure", "diff_frac_deut_uptake", 
+                                             "err_diff_frac_deut_uptake")]
+      setnames(diff_uptake_dat,
+               c("diff_frac_deut_uptake", "err_diff_frac_deut_uptake"),
+               c("Frac Diff DU [%]", "U(Frac Diff DU) [%]"))
       
     } else {
       
-      diff_uptake_dat %>%
-        select(Protein, Sequence, Modification, Start, End, Exposure, diff_deut_uptake, err_diff_deut_uptake) %>%
-        mutate(diff_deut_uptake = round(diff_deut_uptake, 4),
-               err_diff_deut_uptake = round(err_diff_deut_uptake, 4)) %>%
-        arrange(Start, End) %>%
-        group_by(Start, End, Sequence, Modification) %>%
-        mutate(ID = cur_group_id()) %>%
-        rename("Diff DU [Da]" = diff_deut_uptake,
-               "U(Diff DU) [Da]" = err_diff_deut_uptake) %>%
-        select(Protein, ID, everything())
+      diff_uptake_dat <- diff_uptake_dat[, .(Protein, Sequence, Start, End, 
+                                             Exposure, diff_deut_uptake, 
+                                             err_diff_deut_uptake)]
+      diff_uptake_dat[, `:=`(diff_deut_uptake = round(diff_deut_uptake, 4),
+                             err_diff_deut_uptake = round(err_diff_deut_uptake, 4))]
+      setorderv(diff_uptake_dat, cols = c("Start", "End"))
+      diff_uptake_dat[, ID := .GRP, by = c("Start", "End", "Sequence")]
+      diff_uptake_dat <- diff_uptake_dat[, c("Protein", "ID", "Sequence", "Start", 
+                                             "End", "Exposure", "diff_deut_uptake", 
+                                             "err_diff_deut_uptake")]
+      setnames(diff_uptake_dat,
+               c("diff_deut_uptake", "err_diff_deut_uptake"),
+               c("Diff DU [Da]", "U(Diff DU) [Da]"))
       
     }
     
   }
+  
+  diff_uptake_dat
   
 }
 
@@ -356,7 +371,7 @@ show_volcano_data <- function(p_dat,
     if(theoretical){
       value <- "diff_theo_frac_deut_uptake"
       err_value <- "err_diff_theo_frac_deut_uptake"
-
+      
     } else {
       value <- "diff_frac_deut_uptake"
       err_value <- "err_diff_frac_deut_uptake" 
@@ -382,7 +397,8 @@ show_volcano_data <- function(p_dat,
     
   }
   
-  plot_dat <- data.frame(Protein = p_dat[["Protein"]],
+  plot_dat <- data.table(Protein = p_dat[["Protein"]],
+                         ID = p_dat[["ID"]],
                          Sequence = p_dat[["Sequence"]],
                          ID = p_dat[["ID"]],
                          Modification = p_dat[["Modification"]],

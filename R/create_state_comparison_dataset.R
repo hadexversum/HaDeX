@@ -37,7 +37,7 @@ create_state_comparison_dataset <- function(dat,
                                             deut_part = 0.9){
   
   
-  comparison_dat <- lapply(states, function(state){
+  comparison_dat <- rbindlist(lapply(states, function(state){
     
     calculate_state_uptake(dat,
                            protein = protein,
@@ -47,7 +47,7 @@ create_state_comparison_dataset <- function(dat,
                            time_100 = time_100,
                            deut_part = deut_part)
     
-  }) %>% bind_rows
+  }))
   
   attr(comparison_dat, "protein") <- protein
   attr(comparison_dat, "states") <- states

@@ -42,24 +42,17 @@ plot_peptide_mass_measurement <- function(dat,
                                           show_charge_values = TRUE,
                                           time_t = unique(dat[["Exposure"]])[3]){
   
-  rep_mass_dat <- calculate_exp_masses_per_replicate(dat) %>%
-    filter(Protein == protein,
-           State == state,
-           Sequence == sequence,
-           Exposure == time_t)
+  rep_mass_dat <- calculate_exp_masses_per_replicate(dat)
+  rep_mass_dat <- rep_mass_dat[Protein == protein & State == state & Sequence == sequence & Exposure == time_t]
   
   avg_value <- mean(rep_mass_dat[["avg_exp_mass"]])
   
+  
   if(show_charge_values){
     
-    rep_mass_z_dat <- dat %>%
-      filter(Protein == protein,
-             State == state,
-             Sequence == sequence,
-             Exposure == time_t) %>%
-      mutate(exp_mass = Center*z - z*1.00727647,
-             weighted_Inten = scale(Inten))
-    
+    rep_mass_z_dat <- dat[Protein == protein & State == state & Sequence == sequence & Exposure == time_t]
+    rep_mass_z_dat[, `:=`(exp_mass = Center*z - z*1.00727647, 
+                          weighted_Inten = scale(Inten))]
     pep_mass_plot <- ggplot() +
       geom_point(data = rep_mass_z_dat, aes(x = exp_mass, y = File, color = as.factor(z), size = weighted_Inten)) +
       geom_point(data = rep_mass_dat, aes(x = avg_exp_mass, y = File), size = 3) +
@@ -70,9 +63,8 @@ plot_peptide_mass_measurement <- function(dat,
            color = "Charge",
            size = "rel Inten") +
       theme(legend.direction = "vertical")
-  
   } else {
-      
+    
     pep_mass_plot <- ggplot() +
       geom_point(data = rep_mass_dat, aes(x = avg_exp_mass, y = File), size = 3) +
       geom_vline(xintercept = avg_value, color = "red", linetype = "dashed", size = 1.5) +
@@ -80,7 +72,6 @@ plot_peptide_mass_measurement <- function(dat,
            x = "Measured mass [Da]",
            title = paste0("Peptide ", sequence, " in state ", state, " in ", time_t, " min"))
   }
-  
   return(HaDeXify(pep_mass_plot))
   
 }
@@ -124,14 +115,12 @@ show_peptide_mass_measurement <- function(rep_mass_dat,
                                           sequence = rep_mass_dat[["Sequence"]][1],
                                           time_t = unique(rep_mass_dat[["Exposure"]])[3]){
   
-  rep_mass_dat %>%
-    filter(Protein == protein,
-           State == state,
-           Sequence == sequence,
-           Exposure == time_t) %>%
-    mutate(avg_exp_mass = round(avg_exp_mass, 4)) %>%
-    select(Protein, Sequence, Start, End, Exposure, State, File, avg_exp_mass) %>%
-    rename(`Mass` = avg_exp_mass)
+  rep_mass_dat <- rep_mass_dat[Protein == protein & State == state & Sequence == sequence & Exposure == time_t]
+  rep_mass_dat[, avg_exp_mass := round(avg_exp_mass, 4)]
+  rep_mass_dat <- rep_mass_dat[, .(Protein, Sequence, Start, End, Exposure, State, File, avg_exp_mass)]
+  setnames(rep_mass_dat, "avg_exp_mass", "Mass")
+  
+  rep_mass_dat
   
 }
 
@@ -171,21 +160,18 @@ plot_peptide_charge_measurement <- function(dat,
                                             sequence = dat[["Sequence"]][1],
                                             time_t = unique(dat[["Exposure"]])[3]){
   
-  tmp_dat <- dat %>%
-    filter(Protein == protein,
-           State == state,
-           Sequence == sequence,
-           Exposure == time_t)
+  tmp_dat <- data.table(dat)[Protein == protein & State == state & Sequence == sequence & Exposure == time_t]
   
   n_bins <- length(unique(tmp_dat[["z"]]))
   min_z <- min(tmp_dat[["z"]])
   max_z <- max(tmp_dat[["z"]])
   
-  tmp_dat %>%
-    ggplot(aes(x = z)) +
+  peptide_charge_measurement_plot <- ggplot(tmp_dat, aes(x = z)) +
     geom_histogram(aes(fill = File), bins = n_bins) + 
     scale_x_continuous(breaks = c(min_z:max_z)) +
     labs(title = paste0("Peptide ", sequence, " in state ", state, " in ", time_t, " min"))
+  
+  return(HaDeXify(peptide_charge_measurement_plot))
   
 }
 
@@ -222,13 +208,11 @@ show_peptide_charge_measurement <- function(dat,
                                             sequence = dat[["Sequence"]][1],
                                             time_t = unique(dat[["Exposure"]])[3]){
   
-  dat %>%
-    filter(Protein == protein,
-           State == state,
-           Sequence == sequence,
-           Exposure == time_t) %>%
-    select(Protein, Sequence, Start, End, State, Exposure, File, z) %>%
-    arrange(z, File)
+  charge_dat <- dat[Protein == protein & State == state & Sequence == sequence & Exposure == time_t,
+                    .(Protein, Sequence, Start, End, State, Exposure, File, z)]
+  setorderv(charge_dat, cols = c("z", "File"))
+  
+  charge_dat
   
 }
 
@@ -270,23 +254,26 @@ create_replicate_dataset <- function(dat,
                                      protein = unique(dat[["Protein"]])[1], 
                                      state = dat[["State"]][1]){
   
-  res <- dat %>%
-    calculate_exp_masses_per_replicate() %>%
-    group_by(Start, End) %>%
-    arrange(Start, End) %>%
-    mutate(ID = cur_group_id()) %>%
-    filter(if (is.null(time_t)) Exposure < 99999 else Exposure == time_t) %>%
-    filter(Protein == protein,
-           State == state) %>%
-    select(ID, Sequence, Exposure, Start, End) %>%
-    group_by(Sequence, Exposure, Start, End, ID) %>%
-    summarize(n = n()) %>%
-    ungroup(.) %>%
-    arrange(Start, End, Exposure)
+  res <- calculate_exp_masses_per_replicate(dat)
+  res <- res[, ID := .GRP, list(Start, End)]
+  setorderv(res, cols = c("Start", "End"))
+  
+  res <- if (is.null(time_t)) {
+    res[Exposure < 99999 & Protein == protein & State == state,
+        .(ID, Sequence, Exposure, Start, End)]
+    
+  } else {
+    res[Exposure == time_t & Protein == protein & State == state,
+        .(ID, Sequence, Exposure, Start, End)]
+  }
+  
+  res <- res[, .(n = .N), by = c("Sequence", "Exposure", "Start", "End", "ID")]
+  setorderv(res, cols = c("Start", "End", "Exposure"))
   
   attr(res, "state") <- state
   
   res
+  
 }
 
 #' Plot replicates histogram
@@ -374,13 +361,15 @@ plot_replicate_histogram <- function(rep_dat,
     
   }
   
-  ggplot(rep_dat) +
+  replicate_histogram_plot <- ggplot(rep_dat) +
     geom_col(aes_string(x = x, y = "n", fill = fill)) +
     labs(title = plot_title,
          x = plot_x,
          y = "Number of replicates",
          fill = "Exposure") +
     theme(legend.position = legend_position)
+  
+  return(HaDeXify(replicate_histogram_plot))
   
 }
 
@@ -411,8 +400,7 @@ plot_replicate_histogram <- function(rep_dat,
 
 show_replicate_histogram_data <- function(rep_dat){
   
-  rep_dat %>%
-    arrange(Start, End, Exposure) %>%
-    select(ID, Sequence, Start, End, Exposure, n)
+  setorderv(rep_dat, cols = c("Start", "End", "Exposure"))
+  rep_dat[, .(ID, Sequence, Start, End, Exposure, n)]
   
 }

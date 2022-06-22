@@ -36,9 +36,9 @@ plot_state_comparison <- function(uptake_dat,
                                   all_times = FALSE,
                                   time_t = NULL){
   
-  if(is.null(time_t) & !all_times) {time_t <- coalesce(attr(uptake_dat, "time_t"), unique(uptake_dat[["Exposure"]])[3] )}
+  if(is.null(time_t) & !all_times) {time_t <- fcoalesce(attr(uptake_dat, "time_t"), unique(uptake_dat[["Exposure"]])[3] )}
   
-  if(!all_times) { uptake_dat <- filter(uptake_dat, Exposure == time_t) }
+  if(!all_times) { uptake_dat <- uptake_dat[Exposure == time_t] }
   
   
   if (theoretical) {
@@ -83,7 +83,7 @@ plot_state_comparison <- function(uptake_dat,
     
   }
   
-  plot_dat <- data.frame(Sequence = uptake_dat[["Sequence"]],
+  plot_dat <- data.table(Sequence = uptake_dat[["Sequence"]],
                          Start = uptake_dat[["Start"]],
                          End = uptake_dat[["End"]],
                          Med_Sequence = uptake_dat[["Med_Sequence"]],
