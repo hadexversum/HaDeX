@@ -372,7 +372,7 @@ show_volcano_data <- function(p_dat,
     if(theoretical){
       value <- "diff_theo_frac_deut_uptake"
       err_value <- "err_diff_theo_frac_deut_uptake"
-
+      
     } else {
       value <- "diff_frac_deut_uptake"
       err_value <- "err_diff_frac_deut_uptake" 
@@ -398,7 +398,7 @@ show_volcano_data <- function(p_dat,
     
   }
   
-  plot_dat <- data.frame(Protein = p_dat[["Protein"]],
+  plot_dat <- data.table(Protein = p_dat[["Protein"]],
                          ID = p_dat[["ID"]],
                          Sequence = p_dat[["Sequence"]],
                          Start = p_dat[["Start"]],
