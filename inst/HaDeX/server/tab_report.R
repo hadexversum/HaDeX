@@ -49,7 +49,7 @@ observeEvent(input[["export_all_plots"]], {
                       value = TRUE)
   
   updateCheckboxInput(session, 
-                      inputId = "export_replicate_plots",
+                      inputId = "export_measures_plots",
                       value = TRUE)
   
   updateCheckboxInput(session, 
@@ -142,23 +142,27 @@ output[["report_message_uptake_curve"]] <- renderText({
 
 output[["report_message_replicate"]] <- renderText({
   
-  if(nrow(rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2]) == 0){
+  # browser()
+  
+  if(nrow(measures_peptide_list()[input[["measures_sequence_rows_selected"]], ]) == 0){
     
     rep_peptide <- "None"
   
   } else{
       
-    rep_peptide <- rep_peptide_list()[input[["rep_sequence_rows_selected"]], 2][[1]]
+    rep_peptide <- measures_peptide_list()[input[["measures_sequence_rows_selected"]], 1][[1]]
     
   }
   
-  paste0("Chosen peptide for replicate plot: ", rep_peptide, " \n")
+  paste0("Chosen peptide for measurement plot: ", rep_peptide, " \n")
   
 })
 
 ##
 
 output[["export_action"]] <- downloadHandler(
+
+  # browser()
   
   filename <- "HaDeX_Report.html",
   
@@ -167,4 +171,6 @@ output[["export_action"]] <- downloadHandler(
     rmarkdown::render(input = "report_template.Rmd",
                       output_file = file, quiet = TRUE)
     
-})
+  }
+  
+)
