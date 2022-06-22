@@ -95,6 +95,8 @@ calculate_kinetics <- function(dat,
           err_theo_frac_deut_uptake, theo_deut_uptake, err_theo_deut_uptake, 
           Med_Sequence)]
   
+  kin_dat <- data.frame(kin_dat)
+  
   attr(kin_dat, "protein") <- protein
   attr(kin_dat, "sequence") <- sequence
   attr(kin_dat, "state") <- state
@@ -243,6 +245,8 @@ create_kinetic_dataset <- function(dat,
                        time_100 = time_100,
                        deut_part = deut_part)
   }))
+  
+  kin_dat <- data.frame(kin_dat)
   
   attr(kin_dat, "protein") <- protein
   attr(kin_dat, "peptide_list") <- peptide_list
