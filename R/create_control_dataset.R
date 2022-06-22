@@ -31,25 +31,17 @@ create_control_dataset <- function(dat,
                                    control_state = dat[["State"]][1],
                                    control_exposure = max(dat[["Exposure"]])){
   
-  tmp <- dat %>%
-    filter(Protein == control_protein, 
-           State == control_state, 
-           Exposure == control_exposure) %>%
-    mutate(Exposure = 99999)
+  tmp <- dat[Protein == control_protein & State == control_state & Exposure == control_exposure][, Exposure := 99999]
+  states_to_prepare <- unique(dat[Protein == control_protein][["State"]])
   
-  states_to_prepare <- unique(filter(dat, Protein == control_protein)[["State"]])
-  
-  control_dat <- bind_rows(dat, 
-                           lapply(states_to_prepare, function(state){
-                             peps <- dat %>%
-                               filter(State == state) %>%
-                               select(Sequence) %>%
-                               unique(.) %>%
-                               unlist(.)
-                             tmp %>%
-                               filter(Sequence %in% peps) %>%
-                               mutate(State = state) 
-                           }))
+  control_dat <- rbind(dat,
+                       rbindlist(lapply(states_to_prepare, function(state){
+                         
+                         peps <- unlist(unique(dat[State == state, .(Sequence)]))
+                         tmp[Sequence %in% peps][, State := state]
+                         
+                       }))
+  )
   
   attr(control_dat, "control_protein") <- control_protein 
   attr(control_dat, "control_state") <- control_state 
