@@ -270,23 +270,26 @@ create_replicate_dataset <- function(dat,
                                      protein = unique(dat[["Protein"]])[1], 
                                      state = dat[["State"]][1]){
   
-  res <- dat %>%
-    calculate_exp_masses_per_replicate() %>%
-    group_by(Start, End) %>%
-    arrange(Start, End) %>%
-    mutate(ID = cur_group_id()) %>%
-    filter(if (is.null(time_t)) Exposure < 99999 else Exposure == time_t) %>%
-    filter(Protein == protein,
-           State == state) %>%
-    select(ID, Sequence, Exposure, Start, End) %>%
-    group_by(Sequence, Exposure, Start, End, ID) %>%
-    summarize(n = n()) %>%
-    ungroup(.) %>%
-    arrange(Start, End, Exposure)
+  res <- calculate_exp_masses_per_replicate(dat)
+  res <- res[, ID := .GRP, list(Start, End)]
+  setorderv(res, cols = c("Start", "End"))
+  
+  res <- if (is.null(time_t)) {
+    res[Exposure < 99999 & Protein == protein & State == state,
+        .(ID, Sequence, Exposure, Start, End)]
+    
+  } else {
+    res[Exposure == time_t & Protein == protein & State == state,
+        .(ID, Sequence, Exposure, Start, End)]
+  }
+  
+  res <- res[, .(n = .N), by = c("Sequence", "Exposure", "Start", "End", "ID")]
+  setorderv(res, cols = c("Start", "End", "Exposure"))
   
   attr(res, "state") <- state
   
   res
+  
 }
 
 #' Plot replicates histogram
