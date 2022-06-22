@@ -78,7 +78,7 @@ plot_chiclet <- function(chiclet_dat,
     
   }
   
-  plot_dat <- data.frame(ID = chiclet_dat[["ID"]],
+  plot_dat <- data.table(ID = chiclet_dat[["ID"]],
                          Exposure = as.factor(chiclet_dat[["Exposure"]]),
                          value = chiclet_dat[[value]],
                          err_value = chiclet_dat[[err_value]],
