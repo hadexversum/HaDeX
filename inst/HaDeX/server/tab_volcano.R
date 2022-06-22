@@ -176,7 +176,7 @@ volcano_dataset <- reactive({
   validate(need(input[["vol_state_1"]] %in% states_chosen_protein(), "Wait for the parameters to be loaded."))
   validate(need(as.numeric(input[["vol_time_0"]]) < as.numeric(input[["vol_time_100"]]), "Minimal exchange control time must be smaller than maximal exchange control."))
 
-  validate(need(!has_modifications(), "This plot is not yet adjusted for proteins with modifications."))
+  # validate(need(!has_modifications(), "This plot is not yet adjusted for proteins with modifications."))
   
   dat() %>%
     filter(Protein == input[["chosen_protein"]]) %>%

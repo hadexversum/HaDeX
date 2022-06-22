@@ -36,7 +36,6 @@ show_uptake_data <- function(uptake_dat,
     
     if (fractional){
       
-      
       uptake_dat <- uptake_dat[, .(Protein, Sequence, State, Start, End, Exposure, 
                                    theo_frac_deut_uptake, err_theo_frac_deut_uptake)]
       uptake_dat[, `:=`(theo_frac_deut_uptake  = round(theo_frac_deut_uptake , 4),
@@ -255,7 +254,7 @@ show_diff_uptake_data_confidence <- function(diff_uptake_dat,
         add_stat_dependency(confidence_level = confidence_level,
                             theoretical = TRUE, 
                             fractional = TRUE) %>%
-        select(Protein, Sequence, ID, Start, End, Exposure, diff_theo_frac_deut_uptake, err_diff_theo_frac_deut_uptake, paste0("valid_at_", confidence_level)) %>%
+        select(Protein, Sequence, ID, Modification, Start, End, Exposure, diff_theo_frac_deut_uptake, err_diff_theo_frac_deut_uptake, paste0("valid_at_", confidence_level)) %>%
         mutate(diff_theo_frac_deut_uptake = round(diff_theo_frac_deut_uptake, 4),
                err_diff_theo_frac_deut_uptake = round(err_diff_theo_frac_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
@@ -269,7 +268,7 @@ show_diff_uptake_data_confidence <- function(diff_uptake_dat,
         add_stat_dependency(confidence_level = confidence_level,
                             theoretical = TRUE, 
                             fractional = FALSE) %>%
-        select(Protein, Sequence, ID, Start, End, Exposure, diff_theo_deut_uptake, err_diff_theo_deut_uptake, paste0("valid_at_", confidence_level)) %>%
+        select(Protein, Sequence, ID, Modification, Start, End, Exposure, diff_theo_deut_uptake, err_diff_theo_deut_uptake, paste0("valid_at_", confidence_level)) %>%
         mutate(diff_theo_deut_uptake = round(diff_theo_deut_uptake, 4),
                err_diff_theo_deut_uptake = round(err_diff_theo_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
@@ -286,7 +285,7 @@ show_diff_uptake_data_confidence <- function(diff_uptake_dat,
         add_stat_dependency(confidence_level = confidence_level,
                             theoretical = FALSE, 
                             fractional = TRUE) %>%
-        select(Protein, Sequence,ID, Start, End, Exposure, diff_frac_deut_uptake, err_diff_frac_deut_uptake, paste0("valid_at_", confidence_level)) %>%
+        select(Protein, Sequence, ID, Modification, Start, End, Exposure, diff_frac_deut_uptake, err_diff_frac_deut_uptake, paste0("valid_at_", confidence_level)) %>%
         mutate(diff_frac_deut_uptake = round(diff_frac_deut_uptake, 4),
                err_diff_frac_deut_uptake = round(err_diff_frac_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
@@ -300,7 +299,7 @@ show_diff_uptake_data_confidence <- function(diff_uptake_dat,
         add_stat_dependency(confidence_level = confidence_level,
                             theoretical = FALSE,
                             fractional = FALSE) %>%
-        select(Protein, Sequence, ID, Start, End, Exposure, diff_deut_uptake, err_diff_deut_uptake, paste0("valid_at_", confidence_level)) %>%
+        select(Protein, Sequence, ID, Modification, Start, End, Exposure, diff_deut_uptake, err_diff_deut_uptake, paste0("valid_at_", confidence_level)) %>%
         mutate(diff_deut_uptake = round(diff_deut_uptake, 4),
                err_diff_deut_uptake = round(err_diff_deut_uptake, 4)) %>%
         arrange(Start, End) %>%
@@ -401,6 +400,8 @@ show_volcano_data <- function(p_dat,
   plot_dat <- data.table(Protein = p_dat[["Protein"]],
                          ID = p_dat[["ID"]],
                          Sequence = p_dat[["Sequence"]],
+                         ID = p_dat[["ID"]],
+                         Modification = p_dat[["Modification"]],
                          Start = p_dat[["Start"]],
                          End = p_dat[["End"]],
                          Exposure = as.factor(p_dat[["Exposure"]]),

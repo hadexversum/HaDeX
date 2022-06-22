@@ -480,7 +480,7 @@ if (input[["export_quality_control_plot_data"]]){
 
 ```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
 
-rep_valid <- length(input[["rep_sequence_rows_selected"]]) > 0
+measures_valid <- length(input[["measures_sequence_rows_selected"]]) > 0
 
 
 ```
@@ -490,17 +490,17 @@ rep_valid <- length(input[["rep_sequence_rows_selected"]]) > 0
 
 ```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
 
-if (input[["export_replicate_plots"]]){
+if (input[["export_measures_plots"]]){
   
-  cat("## Replicate Measurement Plot \n")
+  cat("## Peptide Measurement Plot in selected timepoint \n")
   
-  if(rep_valid){
+  if(measures_valid){
     
-    replicate_plot_out()
+    measures_plot_out()
     
   } else {
     
-    "Replicate plot cannot be shown - no peptides were selected"
+    "Measurement plot cannot be shown - no peptides were selected"
   }
   
 }
@@ -509,22 +509,23 @@ if (input[["export_replicate_plots"]]){
 
 ```{r echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
 
-if (input[["export_replicate_plots"]]){
+if (input[["export_measures_plots"]]){
   
-  cat("## Replicate Measured Charge Plot \n")
+  cat("## Peptide Mass Uptake Plot \n")
   
-  if(rep_valid){
+  if(measures_valid){
     
-    replicate_charge_plot_out()
+    mass_uptake_plot_out()
     
   } else {
     
-    "Replicate plot cannot be shown - no peptides were selected"
+    "Mass uptake plot cannot be shown - no peptides were selected"
   }
   
 }
 
 ```
+
 
 <!--- REPLICATE PLOTS DATA --->
 
