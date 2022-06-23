@@ -32,6 +32,8 @@ show_uptake_data <- function(uptake_dat,
                              fractional = FALSE,
                              renamed = TRUE){
   
+  uptake_dat <- data.table(uptake_dat)
+  
   if (theoretical){
     
     if (fractional){
@@ -136,6 +138,8 @@ show_diff_uptake_data <- function(diff_uptake_dat,
                                   theoretical = FALSE, 
                                   fractional = FALSE,
                                   renamed = TRUE){
+  
+  diff_uptake_dat <- data.table(diff_uptake_dat)
   
   if(theoretical){
     
@@ -243,6 +247,8 @@ show_diff_uptake_data_confidence <- function(diff_uptake_dat,
                                              theoretical = FALSE, 
                                              fractional = FALSE,
                                              confidence_level = 0.98){
+  
+  diff_uptake_dat <-  data.table(diff_uptake_dat)
   
   column_name_cl1 <- paste0("Valid At ", confidence_level)
   

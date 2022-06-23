@@ -43,10 +43,15 @@ plot_peptide_mass_measurement <- function(dat,
                                           time_t = unique(dat[["Exposure"]])[3]){
   
   rep_mass_dat <- calculate_exp_masses_per_replicate(dat)
+  
+  ## temporarly, for compability
+  rep_mass_dat <- data.table(rep_mass_dat)
+  dat <- data.table(dat)
+  ##
+  
   rep_mass_dat <- rep_mass_dat[Protein == protein & State == state & Sequence == sequence & Exposure == time_t]
   
   avg_value <- mean(rep_mass_dat[["avg_exp_mass"]])
-  
   
   if(show_charge_values){
     
@@ -63,6 +68,7 @@ plot_peptide_mass_measurement <- function(dat,
            color = "Charge",
            size = "rel Inten") +
       theme(legend.direction = "vertical")
+    
   } else {
     
     pep_mass_plot <- ggplot() +
@@ -72,6 +78,7 @@ plot_peptide_mass_measurement <- function(dat,
            x = "Measured mass [Da]",
            title = paste0("Peptide ", sequence, " in state ", state, " in ", time_t, " min"))
   }
+  
   return(HaDeXify(pep_mass_plot))
   
 }
@@ -115,12 +122,14 @@ show_peptide_mass_measurement <- function(rep_mass_dat,
                                           sequence = rep_mass_dat[["Sequence"]][1],
                                           time_t = unique(rep_mass_dat[["Exposure"]])[3]){
   
+  rep_mass_dat <- data.table(rep_mass_dat)
+  
   rep_mass_dat <- rep_mass_dat[Protein == protein & State == state & Sequence == sequence & Exposure == time_t]
   rep_mass_dat[, avg_exp_mass := round(avg_exp_mass, 4)]
   rep_mass_dat <- rep_mass_dat[, .(Protein, Sequence, Start, End, Exposure, State, File, avg_exp_mass)]
   setnames(rep_mass_dat, "avg_exp_mass", "Mass")
   
-  rep_mass_dat
+  data.frame(rep_mass_dat)
   
 }
 
@@ -160,7 +169,9 @@ plot_peptide_charge_measurement <- function(dat,
                                             sequence = dat[["Sequence"]][1],
                                             time_t = unique(dat[["Exposure"]])[3]){
   
-  tmp_dat <- data.table(dat)[Protein == protein & State == state & Sequence == sequence & Exposure == time_t]
+  dat <- data.table(dat)
+  
+  tmp_dat <- dat[Protein == protein & State == state & Sequence == sequence & Exposure == time_t]
   
   n_bins <- length(unique(tmp_dat[["z"]]))
   min_z <- min(tmp_dat[["z"]])
@@ -208,6 +219,8 @@ show_peptide_charge_measurement <- function(dat,
                                             sequence = dat[["Sequence"]][1],
                                             time_t = unique(dat[["Exposure"]])[3]){
   
+  dat <- data.table(dat)
+
   charge_dat <- dat[Protein == protein & State == state & Sequence == sequence & Exposure == time_t,
                     .(Protein, Sequence, Start, End, State, Exposure, File, z)]
   setorderv(charge_dat, cols = c("z", "File"))
@@ -255,6 +268,11 @@ create_replicate_dataset <- function(dat,
                                      state = dat[["State"]][1]){
   
   res <- calculate_exp_masses_per_replicate(dat)
+  
+  ## temporarly, for comparability
+  res <- data.table(res)
+  ##
+  
   res <- res[, ID := .GRP, list(Start, End)]
   setorderv(res, cols = c("Start", "End"))
   
@@ -270,9 +288,13 @@ create_replicate_dataset <- function(dat,
   res <- res[, .(n = .N), by = c("Sequence", "Exposure", "Start", "End", "ID")]
   setorderv(res, cols = c("Start", "End", "Exposure"))
   
+  ## temporarly, for compability
+  res <- data.frame(res)
+  ##
+  
   attr(res, "state") <- state
   
-  res
+  return(res)
   
 }
 

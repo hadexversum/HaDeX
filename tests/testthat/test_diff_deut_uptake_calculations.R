@@ -45,6 +45,8 @@ lapply(times, function(time){
                                       time_t = time,
                                       time_100 = chosen_time_100,
                                       deut_part = deut_part)
+  
+  result_tmp <- data.table(result_tmp) ## temporarily, for compatibility
 
   lapply(deut_values, function(deut_value){
 
@@ -77,6 +79,8 @@ lapply(times, function(time){
                                            time_0 = chosen_time_0,
                                            time_100 = chosen_time_100,
                                            deut_part = deut_part)
+  
+  result_tmp <- data.table(result_tmp) ## temporarily, for compatibility
 
   lapply(deut_values, function(deut_value){
 
