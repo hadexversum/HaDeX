@@ -90,12 +90,16 @@ server <- function(input, output, session) {
     }
 
     if(data_source() == "HDeXaminer"){
-      paste0(status, "\nDetected data source: ", data_source(), ". User action needed below!")
+      status <- paste0(status, "\nDetected data source: ", data_source(), ". User action needed below!")
     } else {
-      paste0(status, "\nDetected data source: ", data_source(), ".")
+      status <- paste0(status, "\nDetected data source: ", data_source(), ".")
     }
 
-
+    if(has_modifications()){
+      status <- paste0(status, "\nFile contains modified peptides.")
+    }
+    
+    status
   })
 
   ##
