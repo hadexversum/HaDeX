@@ -202,6 +202,8 @@ result_tmp <- create_state_uptake_dataset(dat = dat,
                                           time_100 = chosen_time_100,
                                           deut_part = deut_part)
 
+result_tmp <- data.table(result_tmp) ##!!
+
 lapply(times, function(time){
 
   lapply(deut_values, function(deut_value){
@@ -231,6 +233,7 @@ result_tmp <- create_uptake_dataset(dat = dat,
                                     time_100 = chosen_time_100,
                                     deut_part = deut_part)
 
+result_tmp <- data.table(result_tmp)
 
 lapply(times, function(time){
 
@@ -268,6 +271,8 @@ lapply(times, function(time){
                                                   time_100 = chosen_time_100,
                                                   deut_part = deut_part)
 
+    result_tmp <- data.table(result_tmp) ##!!
+    
     test_name <- paste0("create_state_comparison_dataset-", time, "min-", deut_value)
 
     test_that(test_name,

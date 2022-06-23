@@ -422,7 +422,13 @@ plot_replicate_histogram <- function(rep_dat,
 
 show_replicate_histogram_data <- function(rep_dat){
   
+  rep_dat <- data.table(rep_dat) ##!!
+  
   setorderv(rep_dat, cols = c("Start", "End", "Exposure"))
   rep_dat[, .(ID, Sequence, Start, End, Exposure, n)]
+  
+  rep_dat <- data.frame(rep_dat) ##!!
+  
+  return(rep_dat)
   
 }
