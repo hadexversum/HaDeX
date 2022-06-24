@@ -103,6 +103,8 @@ plot_differential_chiclet <- function(diff_uptake_dat = NULL,
     
   }
   
+  diff_uptake_dat <- as.data.table(diff_uptake_dat)
+  
   plot_dat <- data.frame(ID = diff_uptake_dat[["ID"]],
                          Exposure = as.factor(diff_uptake_dat[["Exposure"]]),
                          value = diff_uptake_dat[[value]],

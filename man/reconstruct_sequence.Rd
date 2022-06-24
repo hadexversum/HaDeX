@@ -30,7 +30,8 @@ reconstructed sequence - \code{character} object.
 Reconstructs protein sequence from supplied file.
 }
 \details{
-The function reconstructs protein sequence from supplied experimental data. If a position is not covered, x is shown.
+The function reconstructs protein sequence from supplied 
+experimental data. If a position is not covered, x is shown.
 First version doesn't support manual sequence length correction.
 }
 \examples{
