@@ -79,6 +79,8 @@ calculate_diff_uptake  <- function(dat,
   diff_dat <- diff_dat[, ..col_names]
   diff_dat[, ID := 1L:nrow(diff_dat)]
   
+  diff_dat <- data.frame(diff_dat)
+  
   attr(diff_dat, "protein") <- protein
   attr(diff_dat, "states") <- states
   attr(diff_dat, "time_0") <- time_0

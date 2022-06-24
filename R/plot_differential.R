@@ -87,7 +87,12 @@ plot_differential <- function(diff_uptake_dat = NULL,
     }
   }
   
-  if(is.null(time_t) & !all_times) {time_t <- coalesce(attr(diff_uptake_dat, "time_t"), unique(diff_uptake_dat[["Exposure"]])[3])}
+  if(is.null(time_t) & !all_times) {
+   
+    if(is.null(attr(diff_uptake_dat, "time_t"))){ time_t <- unique(diff_uptake_dat[["Exposure"]])[3] }
+      else { time_t <- attr(diff_uptake_dat, "time_t")}
+    
+  }  
   
   if(!all_times) { diff_uptake_dat <- filter(diff_uptake_dat, Exposure == time_t) }
 
@@ -173,8 +178,8 @@ plot_differential <- function(diff_uptake_dat = NULL,
   if(show_houde_interval){
     
     differential_plot <- mutate(plot_dat, colour = case_when(
-                                                        value < h_interval[1] ~ "deepskyblue1",
                                                         value > h_interval[2] ~ "firebrick1",
+                                                        value < h_interval[1] ~ "deepskyblue1",
                                                         TRUE ~ "azure3")) %>%
       ggplot() +
       geom_segment(aes(x = Start, y = value, xend = End, yend = value, color = colour), size = line_size) +
@@ -195,16 +200,16 @@ plot_differential <- function(diff_uptake_dat = NULL,
     
   } else {
     
-    differential_plot <- plot_dat %>%
-      mutate(colour = case_when(
-                        value > 0 ~ "deepskyblue3",
-                        value < 0 ~ "firebrick3",
-                        TRUE ~ "azure3")) %>%
+    differential_plot <- mutate(plot_dat, colour = case_when(
+                                                      value > 0 ~ "firebrick1",
+                                                      value < 0 ~ "deepskyblue1",
+                                                      TRUE ~ "azure3")) %>%
       ggplot() +
       geom_segment(aes(x = Start, y = value, xend = End, yend = value, color = colour), size = line_size) +
       geom_errorbar(aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value, color = colour)) +
       geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
       ## other
+      scale_colour_identity() +
       labs(title = title,
            x = "Position in the sequence",
            y = y_label) +

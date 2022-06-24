@@ -88,8 +88,8 @@ ref_dat <- structure(list(Sequence = c("INITSSASQEGTRLN", "INITSSASQEGTRLN",
 
 test_that("create_replicate_dataset values",
           expect_equal(
-            ref_dat,
-            rep_dat[rep_dat[["Sequence"]] == "INITSSASQEGTRLN", ]
+            data.frame(ref_dat),
+            data.frame(rep_dat[rep_dat[["Sequence"]] == "INITSSASQEGTRLN", ])
           )
 )
 
@@ -107,7 +107,7 @@ test_that("class is right",
 test_that("show_replicate_histogram_data colnames",
           expect_equal(
             colnames(show_replicate_histogram_data(rep_dat)),
-            c("ID", "Sequence", "Start", "End", "Exposure",  "n")
+            c("Sequence", "Exposure", "Start", "End", "ID",  "n")
           )
 )
 

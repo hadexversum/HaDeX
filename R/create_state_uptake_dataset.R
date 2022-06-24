@@ -1,5 +1,7 @@
 #' Create uptake dataset for chosen state
 #' 
+#' @importFrom data.table setcolorder
+#' 
 #' @param dat data imported by the \code{\link{read_hdx}} function.
 #' @param protein chosen protein. 
 #' @param state biological state for chosen protein.
@@ -38,6 +40,8 @@ create_state_uptake_dataset <- function(dat,
                                         time_100 = max(dat[["Exposure"]]),
                                         deut_part = 0.9){
   
+  dat <- data.table(dat)
+  
   all_times <- unique(dat[["Exposure"]])
   times <- all_times[all_times > time_0 & all_times <= time_100]
   
@@ -52,6 +56,8 @@ create_state_uptake_dataset <- function(dat,
     setcolorder(uptake_dat, col_order)
     
   }))
+  
+  state_uptake_dat <- data.frame(state_uptake_dat)
   
   attr(state_uptake_dat, "protein") <- protein
   attr(state_uptake_dat, "state") <- state

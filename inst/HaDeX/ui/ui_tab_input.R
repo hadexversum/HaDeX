@@ -29,6 +29,8 @@ tab_input <- function() HaDeX_nonplotTab(
     )
   ),
   
+  p("If the file contains both modified and unmodified version of a peptide, they are treated as different ones."),
+  
   fillRow(
     id = "HaDeX-file-requirements-section",
     flex = c(1, NA),
