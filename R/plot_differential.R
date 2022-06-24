@@ -80,73 +80,75 @@ plot_differential <- function(diff_uptake_dat = NULL,
     if(is.null(diff_uptake_dat)){
       
       if(is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } else  { 
-      
-       diff_uptake_dat <- diff_p_uptake_dat 
-      
+        
+        diff_uptake_dat <- diff_p_uptake_dat 
+        
       }
     }
   }
   
   if(is.null(time_t) & !all_times) {
-   
+    
     if(is.null(attr(diff_uptake_dat, "time_t"))){ time_t <- unique(diff_uptake_dat[["Exposure"]])[3] }
-      else { time_t <- attr(diff_uptake_dat, "time_t")}
+    else { time_t <- attr(diff_uptake_dat, "time_t")}
     
   }  
   
-  if(!all_times) { diff_uptake_dat <- filter(diff_uptake_dat, Exposure == time_t) }
-
+  if(!all_times) { 
+    diff_uptake_dat <- diff_uptake_dat[Exposure == time_t]
+  }
+  
   ##
   
   h_interval <- calculate_confidence_limit_values(diff_uptake_dat = diff_uptake_dat,
                                                   confidence_level = confidence_level,
                                                   theoretical = theoretical,
                                                   fractional = fractional)
-
+  
   if(theoretical){
-
+    
     title <- "Theoretical differential plot"
-
+    
     if(fractional){
-
+      
       # theoretical & fractional
       value <- "diff_theo_frac_deut_uptake"
       err_value <- "err_diff_theo_frac_deut_uptake"
       y_label <- "Fractional deuterium uptake difference [%]"
-
+      
     } else {
-
+      
       # theoretical & absolute
       value <- "diff_theo_deut_uptake"
       err_value <- "err_diff_theo_deut_uptake"
       y_label <- "Deuterium uptake difference [Da]"
-
+      
     }
-
+    
   } else {
-
+    
     title <- "Differential plot"
-
+    
     if(fractional){
-
+      
       # experimental & fractional
       value <- "diff_frac_deut_uptake"
       err_value <- "err_diff_frac_deut_uptake"
       y_label <- "Fractional deuterium uptake difference [%]"
-
+      
     } else {
-
+      
       # experimental & absolute
       value <- "diff_deut_uptake"
       err_value <- "err_diff_deut_uptake"
       y_label <- "Deuterium uptake difference [Da]"
-
+      
     }
   }
   
   if(!all_times) {title <- paste0(title, " in ", time_t, " min") }
-
-  plot_dat <- data.frame(Protein = diff_uptake_dat[["Protein"]],
+  
+  plot_dat <- data.table(Protein = diff_uptake_dat[["Protein"]],
                          Sequence = diff_uptake_dat[["Sequence"]],
                          Start = diff_uptake_dat[["Start"]],
                          End = diff_uptake_dat[["End"]],
@@ -158,8 +160,7 @@ plot_differential <- function(diff_uptake_dat = NULL,
   
   if(hide_houde_insignificant){
     
-    plot_dat <- plot_dat %>%
-      filter(abs(value) >= h_interval[2])
+    plot_dat <- plot_dat[abs(value) >= h_interval[2]]
     
   }
   
@@ -167,21 +168,23 @@ plot_differential <- function(diff_uptake_dat = NULL,
     
     alpha <- -log(1 - attr(diff_uptake_dat, "confidence_level"))
     
-    diff_uptake_dat <- mutate(diff_uptake_dat, valid = log_p_value >= alpha) %>%
-      merge(plot_dat, by = c("Sequence", "Start", "End", "Med_Sequence", "Protein", "Exposure"))
+    diff_uptake_dat[["valid"]] <- diff_uptake_dat[["log_p_value"]] >= alpha
     
-    plot_dat <- diff_uptake_dat %>%
-      filter(valid)
+    ### extra data.table
+    diff_uptake_dat <- data.table(merge(diff_uptake_dat, plot_dat, by = c("Sequence", "Start", "End", "Med_Sequence", "Protein", "Exposure")))
+    
+    plot_dat <- diff_uptake_dat[(valid)]
     
   }
   
   if(show_houde_interval){
     
-    differential_plot <- mutate(plot_dat, colour = case_when(
-                                                        value > h_interval[2] ~ "firebrick1",
-                                                        value < h_interval[1] ~ "deepskyblue1",
-                                                        TRUE ~ "azure3")) %>%
-      ggplot() +
+    plot_dat[, colour := fcase(value > h_interval[2], "firebrick1",
+                               value < h_interval[1], "deepskyblue1",
+                               TRUE, "azure3")]
+    
+    
+    differential_plot <- ggplot(plot_dat) +
       geom_segment(aes(x = Start, y = value, xend = End, yend = value, color = colour), size = line_size) +
       geom_errorbar(aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value, color = colour)) +
       geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
@@ -200,11 +203,11 @@ plot_differential <- function(diff_uptake_dat = NULL,
     
   } else {
     
-    differential_plot <- mutate(plot_dat, colour = case_when(
-                                                      value > 0 ~ "firebrick1",
-                                                      value < 0 ~ "deepskyblue1",
-                                                      TRUE ~ "azure3")) %>%
-      ggplot() +
+    plot_dat[, colour := fcase(value > 0, "firebrick1",
+                               value < 0, "deepskyblue1",
+                               TRUE, "azure3")]
+    
+    differential_plot <- ggplot(plot_dat) +
       geom_segment(aes(x = Start, y = value, xend = End, yend = value, color = colour), size = line_size) +
       geom_errorbar(aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value, color = colour)) +
       geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
@@ -223,8 +226,10 @@ plot_differential <- function(diff_uptake_dat = NULL,
       
       alpha <- -log(1 - attr(diff_uptake_dat, "confidence_level"))
       
-      plot_dat <- mutate(diff_uptake_dat, valid = log_p_value >= alpha) %>%
-        merge(plot_dat, by = c("Sequence", "Start", "End", "Med_Sequence", "Protein", "Exposure", "Modification"))
+      diff_uptake_dat[["valid"]] <- diff_uptake_dat[["log_p_value"]] >= alpha
+      
+      ### extra data.table
+      diff_uptake_dat <- data.table(merge(diff_uptake_dat, plot_dat, by = c("Sequence", "Start", "End", "Med_Sequence", "Protein", "Exposure", "Modification")))
       
     }
     
@@ -233,7 +238,7 @@ plot_differential <- function(diff_uptake_dat = NULL,
       geom_errorbar(data = subset(plot_dat, !valid), aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value), color = "grey77") 
     
   }
-
+  
   if(all_times) {
     
     differential_plot <- differential_plot + 

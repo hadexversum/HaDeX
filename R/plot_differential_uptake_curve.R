@@ -43,33 +43,40 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
                                            show_houde_interval = FALSE,
                                            show_tstud_confidence = FALSE){
   
+  
   uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars", "bars + line"))
   
   ##
   
   if (show_tstud_confidence) {
     
-    if(is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } else { diff_uptake_dat <-  filter(diff_p_uptake_dat, Sequence == sequence) }
+    if(is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } else { diff_uptake_dat <-  diff_p_uptake_dat }
     
   } else {
     
     if(is.null(diff_uptake_dat) & is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } else  { 
       
-      if(is.null(diff_uptake_dat)) {diff_uptake_dat <- filter(diff_p_uptake_dat, Sequence == sequence) } else {
+      if(is.null(diff_uptake_dat)) {diff_uptake_dat <- diff_p_uptake_dat } else {
         
-        diff_uptake_dat <- filter(diff_uptake_dat, Sequence == sequence)
+        diff_uptake_dat <- diff_uptake_dat
         
       }
       
     }
     
   }
+  ### as.data.table
+  diff_uptake_dat <- as.data.table(diff_uptake_dat)
+  
+  diff_uptake_dat <- diff_uptake_dat[Sequence == sequence]
+  
+  
   
   if(is.null(sequence)){ sequence <- diff_uptake_dat[["Sequence"]][1] }
   
   states <- paste0(attr(diff_uptake_dat, "state_1"), "-", attr(diff_uptake_dat, "state_2"))
   
-  diff_uptake_dat <- filter(diff_uptake_dat, Exposure < 99999) 
+  diff_uptake_dat <- diff_uptake_dat[Exposure < 99999]
   
   
   ##
@@ -112,15 +119,14 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
     
   }
   
-  plot_dat <- data.frame(Sequence = diff_uptake_dat[["Sequence"]],
+  plot_dat <- data.table(Sequence = diff_uptake_dat[["Sequence"]],
                          Start = diff_uptake_dat[["Start"]],
                          End = diff_uptake_dat[["End"]],
                          Exposure = diff_uptake_dat[["Exposure"]],
                          value = diff_uptake_dat[[value]],
                          err_value = diff_uptake_dat[[err_value]])
   
-  diff_kin_plot <- plot_dat %>% 
-    ggplot(aes(x = Exposure, y = value, group = Sequence)) +
+  diff_kin_plot <- ggplot(plot_dat, aes(x = Exposure, y = value, group = Sequence)) +
     geom_point(aes(shape = Sequence, color = states), size = 2) + 
     theme(legend.position = "bottom",
           legend.title = element_blank()) +
@@ -167,8 +173,10 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
     
     alpha <- -log(1 - attr(diff_uptake_dat, "confidence_level"))
     
-    diff_uptake_dat <- mutate(diff_uptake_dat, valid = log_p_value >= alpha) %>%
-      merge(plot_dat, by = c("Sequence", "Start", "End", "Exposure"))
+    diff_uptake_dat[, valid := log_p_value >= alpha]
+
+    
+    diff_uptake_dat <- merge(diff_uptake_dat, plot_dat, by = c("Sequence", "Start", "End", "Exposure"))
     
     diff_kin_plot <- diff_kin_plot +
       geom_point(data = subset(diff_uptake_dat, !valid), aes(x = Exposure, y = value), shape = 13, size = 2)

@@ -30,15 +30,18 @@ show_overlap_data <- function(dat,
                               state = dat[["State"]][1],
                               start = min(dat[["Start"]]),
                               end = max(dat[["End"]])){
-  dat %>%
-    select(Protein, Sequence, Start, End, State) %>% 
-    filter(Protein == protein) %>%
-    filter(State == state) %>%
-    filter(Start >= start, End <= end) %>%
-    filter(!duplicated(.)) %>%
-    arrange(Start, End) %>%
-    mutate(ID = 1L:nrow(.)) %>%
-    select(Protein, Sequence, ID, Start, End)
+  dat <- data.table(dat)
+  
+  dat <- dat[Protein == protein & State == state & Start >= start & End <= end,
+             .(Protein, Sequence, Start, End, State)]
+  dat <- dat[!duplicated(dat)]
+  setorderv(dat, cols = c("Start", "End"))
+  dat[, ID := 1:.N]
+  dat[["State"]] <- NULL
+  
+  setcolorder(dat, c("Protein", "Sequence", "ID", "Start", "End"))
+  
+  dat
 }
 
 
@@ -73,18 +76,23 @@ plot_overlap <- function(dat,
   
   dat <- dat[dat[["Protein"]] == protein & dat[["State"]] == state, ]
   
-  dat %>%
-    select(Sequence, Start, End) %>%
-    filter(!duplicated(.)) %>%
-    arrange(Start, End) %>%
-    mutate(ID = 1L:nrow(.)) %>%
-    ggplot() +
+  dat <- data.table(dat)
+  
+  dat <- dat[, .(Sequence, Start, End)]
+  dat <- dat[!duplicated(dat)]
+  setorderv(dat, cols = c("Start", "End"))
+  dat[, ID := 1:.N]
+  
+  overlap_plot <- ggplot(dat) +
     geom_segment(aes(x = Start, y = ID, xend = End, yend = ID)) +
     labs(title = "Peptide coverage",
          x = "Position",
          y = "") +
     theme(axis.ticks.y = element_blank(),
           axis.text.y = element_blank()) 
+  
+  HaDeXify(overlap_plot)
+  
 }
 
 
@@ -128,24 +136,27 @@ create_overlap_distribution_dataset <- function(dat,
                                                 end = max(dat[["End"]]),
                                                 protein_sequence = reconstruct_sequence(dat)){
   
-  dat %>%
-    select(Protein, Start, End, State, Sequence) %>%
-    filter(Protein == protein) %>%
-    filter(State == state) %>%
-    filter(Start >= start, End <= end) %>%
-    filter(!duplicated(.)) %>%
-    select(-State, -Protein) %>%
-    apply(1, function(i) i[1]:i[2]) %>%
-    unlist %>%
-    data.frame(pos = .) %>%
-    group_by(pos) %>%
-    summarise(coverage = length(pos)) %>%
-    right_join(data.frame(pos = seq(from = start, to = end))) %>%
-    replace_na(list(coverage = 0)) %>%
-    right_join(data.frame(amino = unlist(strsplit(protein_sequence, "")), 
-                          pos = 1:str_length(protein_sequence))) %>%
-    select(pos, amino, coverage) %>%
-    arrange(pos)
+  tmp_dat <- data.table(dat)
+  
+  tmp_dat <- tmp_dat[Protein == protein & State == state & Start >= start & End <= end,
+             .(Protein, Start, End, State, Sequence)]
+  tmp_dat <- tmp_dat[!duplicated(tmp_dat)]
+  tmp_dat[, `:=`(State = NULL, Protein = NULL)]
+  
+  dt <- data.table(table(unlist(apply(tmp_dat, 1, function(i) i[1]:i[2]))))
+  setnames(dt, c("V1", "N"), c("pos", "coverage"))
+  dt[, pos := as.numeric(pos)]
+  
+  dt <- merge.data.table(dt, data.table(pos = start:end), all.y = TRUE)
+  dt[is.na(dt)] <- 0
+  
+  tmp <- data.table(amino = unlist(tstrsplit(protein_sequence, "")),
+                    pos = 1:nchar(protein_sequence))
+  
+  dt <- merge.data.table(dt, tmp, all.y = TRUE)[, .(pos, amino, coverage)]
+  
+  dt
+  
 }
 
 
@@ -186,13 +197,14 @@ plot_overlap_distribution <- function(overlap_dist_dat,
   mean_coverage <- round(mean(overlap_dist_dat[["coverage"]], na.rm = TRUE), 2)
   display_position <- (start + end)/2
   
-  overlap_dist_dat %>% 
-    ggplot(aes(x = pos, y = coverage)) +
+  overlap_dist_dat_plot <- ggplot(overlap_dist_dat, aes(x = pos, y = coverage)) +
     geom_col(width = 1) +
     labs(x = 'Position', y = 'Position frequency in peptides') +
     theme(legend.position = "none") + 
     coord_cartesian(xlim = c(start, end)) +
     geom_hline(yintercept = mean_coverage, color = 'red') +
     labs(caption = paste0("Average frequency ofshow range: ", mean_coverage))
+  
+  HaDeXify(overlap_dist_dat_plot)
   
 }

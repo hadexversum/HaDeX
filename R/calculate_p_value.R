@@ -45,7 +45,7 @@ calculate_p_value <- function(dat,
   proton_mass <- 1.00727647
   
   
-  tmp_dat <- calculate_exp_masses_per_replicate(dat)
+  tmp_dat <- data.table(calculate_exp_masses_per_replicate(dat))
   
   tmp_dat <- tmp_dat[,  .(avg_mass = mean(avg_exp_mass),
                           err_avg_mass = sd(avg_exp_mass)/sqrt(uniqueN(.SD)),
