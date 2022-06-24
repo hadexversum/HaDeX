@@ -41,7 +41,7 @@ calculate_confidence_limit_values <- function(diff_uptake_dat,
                                               fractional = TRUE,
                                               n_rep = NA) {
   
-  n_rep <- coalesce(c(attr(diff_uptake_dat, "n_rep"), n_rep, 3))[1]
+  n_rep <- coalesce(attr(diff_uptake_dat, "n_rep"), n_rep, 3)
   
   alpha <- 1 - confidence_level
   t_value <- qt(c(alpha/2, 1-alpha/2), df = n_rep-1)[2]

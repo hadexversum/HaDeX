@@ -95,6 +95,8 @@ calculate_kinetics <- function(dat,
           err_theo_frac_deut_uptake, theo_deut_uptake, err_theo_deut_uptake, 
           Med_Sequence)]
   
+  kin_dat <- data.frame(kin_dat)
+  
   attr(kin_dat, "protein") <- protein
   attr(kin_dat, "sequence") <- sequence
   attr(kin_dat, "state") <- state
@@ -162,6 +164,8 @@ calculate_peptide_kinetics <- function(dat,
                                        time_100 = max(dat[["Exposure"]]),
                                        deut_part = 0.9){
   
+  dat <- data.table(dat)
+  
   kin_dat <- rbindlist(lapply(states, function(state){
     
     calculate_kinetics(dat = dat,
@@ -175,6 +179,8 @@ calculate_peptide_kinetics <- function(dat,
                        deut_part = deut_part)
     
   }))
+  
+  kin_dat <- data.frame(kin_dat)
   
   attr(kin_dat, "protein") <- protein
   attr(kin_dat, "sequence") <- sequence
@@ -231,6 +237,7 @@ create_kinetic_dataset <- function(dat,
                                    time_100 = max(dat[["Exposure"]]),
                                    deut_part = 0.9){
   
+  dat <- data.table(dat)
   
   kin_dat <- rbindlist(apply(peptide_list, 1, function(peptide){
     calculate_kinetics(dat = dat,
@@ -243,6 +250,8 @@ create_kinetic_dataset <- function(dat,
                        time_100 = time_100,
                        deut_part = deut_part)
   }))
+  
+  kin_dat <- data.frame(kin_dat)
   
   attr(kin_dat, "protein") <- protein
   attr(kin_dat, "peptide_list") <- peptide_list
@@ -296,6 +305,9 @@ create_kinetic_dataset <- function(dat,
 show_kinetic_data <- function(kin_dat, 
                               theoretical = FALSE, 
                               fractional = FALSE){
+  
+  kin_dat <- data.table(kin_dat)
+  
   if(theoretical){
     
     if(fractional){

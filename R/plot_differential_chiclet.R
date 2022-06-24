@@ -111,6 +111,8 @@ plot_differential_chiclet <- function(diff_uptake_dat = NULL,
                          Start = diff_uptake_dat[["Start"]],
                          End = diff_uptake_dat[["End"]])
   
+  attr(plot_dat, "n_rep") <- attr(diff_uptake_dat, "n_rep")
+  
   min_du <- min(plot_dat[["value"]])
   max_du <- max(plot_dat[["value"]])
   

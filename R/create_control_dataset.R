@@ -31,6 +31,11 @@ create_control_dataset <- function(dat,
                                    control_state = dat[["State"]][1],
                                    control_exposure = max(dat[["Exposure"]])){
   
+  ## temporarily, for compatibility
+  n_rep <- attr(dat, "n_rep")
+  dat <- data.table(dat) 
+  ##
+  
   tmp <- dat[Protein == control_protein & State == control_state & Exposure == control_exposure][, Exposure := 99999]
   states_to_prepare <- unique(dat[Protein == control_protein][["State"]])
   
@@ -43,10 +48,12 @@ create_control_dataset <- function(dat,
                        }))
   )
   
+  dat <- data.frame(dat) ## temporarily, for compatibility
+  
   attr(control_dat, "control_protein") <- control_protein 
   attr(control_dat, "control_state") <- control_state 
   attr(control_dat, "control_exposure") <- control_exposure
-  attr(control_dat, "n_rep") <- attr(dat, "n_rep")
+  attr(control_dat, "n_rep") <- n_rep
   
   return(control_dat)
   

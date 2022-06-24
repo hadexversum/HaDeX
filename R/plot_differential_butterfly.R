@@ -117,6 +117,8 @@ plot_differential_butterfly <- function(diff_uptake_dat = NULL,
                          Start = diff_uptake_dat[["Start"]],
                          End = diff_uptake_dat[["End"]])
   
+  attr(plot_dat, "n_rep") <- attr(diff_uptake_dat, "n_rep")
+  
   butterfly_differential_plot <- ggplot() +
     geom_point(data = plot_dat, aes(x = ID, y = value, group = Exposure, color = Exposure)) +
     labs(title = title,

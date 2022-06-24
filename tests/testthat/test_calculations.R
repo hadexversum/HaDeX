@@ -1,5 +1,7 @@
 context("calculations in test")
 
+library(data.table)
+
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 
 chosen_protein <- "db_CD160"
@@ -19,7 +21,7 @@ times <-  ref_dat[["Exposure"]]
 values <- colnames(ref_dat)[-1]
 
 result_tmp <- calculate_exp_masses(dat)
-
+result_tmp <- data.table(result_tmp) ##!!
 lapply(times, function(time){
 
   lapply(values, function(value){

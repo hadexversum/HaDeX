@@ -242,7 +242,7 @@ diff_kin_dat <- reactive({
 diff_kin_plot <- reactive({
   
   plot_differential_uptake_curve(diff_p_uptake_dat = diff_kin_dat(),
-                                 sequence = diff_peptide_list()[input[["diff_peptide_list_data_rows_selected"]], "Sequence"],
+                                 sequence = diff_peptide_list()[input[["diff_peptide_list_data_rows_selected"]], "Sequence"][[1]],
                                  theoretical = input[["diff_kin_theory"]],
                                  fractional = input[["diff_kin_fractional"]],
                                  uncertainty_type = input[["diff_kin_uncertainty"]],
