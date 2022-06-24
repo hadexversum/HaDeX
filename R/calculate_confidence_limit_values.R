@@ -41,16 +41,17 @@ calculate_confidence_limit_values <- function(diff_uptake_dat,
                                               fractional = TRUE,
                                               n_rep = NA) {
   
-  n_rep <- coalesce(attr(diff_uptake_dat, "n_rep"), n_rep, 3)
-  
+
+  n_rep <- fcoalesce(c(attr(diff_uptake_dat, "n_rep"), n_rep, 3))[1]
+
   alpha <- 1 - confidence_level
   t_value <- qt(c(alpha/2, 1-alpha/2), df = n_rep-1)[2]
-
-  err_column <- case_when(
-    theoretical & fractional ~ "err_diff_theo_frac_deut_uptake",
-    theoretical & !(fractional) ~ "err_diff_theo_deut_uptake",
-    !(theoretical) & fractional ~ "err_diff_frac_deut_uptake",
-    !(theoretical) & !(fractional) ~ "err_diff_deut_uptake"
+  
+  err_column <- fcase(
+    theoretical & fractional, "err_diff_theo_frac_deut_uptake",
+    theoretical & !(fractional), "err_diff_theo_deut_uptake",
+    !(theoretical) & fractional, "err_diff_frac_deut_uptake",
+    !(theoretical) & !(fractional),"err_diff_deut_uptake"
   )
   
   if(is.null((diff_uptake_dat[[err_column]]))){ err_column = "err_value" }

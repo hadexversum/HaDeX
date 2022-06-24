@@ -12,7 +12,8 @@
 #' If not provided, is read from the file. It allows to prelongate the sequence
 #' if the end of the sequence is cut.
 #' 
-#' @details The function reconstructs protein sequence from supplied experimental data. If a position is not covered, x is shown.
+#' @details The function reconstructs protein sequence from supplied 
+#' experimental data. If a position is not covered, x is shown.
 #' First version doesn't support manual sequence length correction.
 #' 
 #' @return reconstructed sequence - \code{character} object.
@@ -29,22 +30,21 @@ reconstruct_sequence <- function(dat,
                                  protein = dat[["Protein"]][1],
                                  states = unique(dat[["State"]]),
                                  end = NULL) {
-
+  dat <- data.table(dat)
+  
   if (is.null(end)) end <- max(dat[["End"]])
   
-  position_in_sequence_tmp <- dat %>%
-    filter(Protein == protein) %>%
-    filter(State %in% states) %>%
-    select(Start, End, Sequence) %>%
-    unique(.) %>%
-    apply(1, function(x) data.frame(position = x[1]:x[2], amino = strsplit(x[3], '')[[1]], stringsAsFactors = FALSE)) %>%
-    bind_rows() %>%
-    unique(.) 
+  tmp_dat <- dat[Protein == protein]
+  tmp_dat <- unique(tmp_dat[,.(Start, End, Sequence)])
   
-  protein_sequence_template <- rep('x', end) 
+  position_in_sequence_tmp <- unique(rbindlist(apply(tmp_dat, 1, function(x) data.table(position = x[1]:x[2],
+                                                                                        amino = strsplit(x[3], '')[[1]],
+                                                                                        stringsAsFactors = FALSE))))
+  protein_sequence_template <- rep('x', end)
   
   protein_sequence_template[position_in_sequence_tmp[["position"]]] <- position_in_sequence_tmp[["amino"]]
   
   paste(protein_sequence_template, collapse = "")
+  
   
 }

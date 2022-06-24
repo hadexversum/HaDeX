@@ -249,65 +249,86 @@ show_diff_uptake_data_confidence <- function(diff_uptake_dat,
     
     if(fractional){
       # theoretical & fractional  
-      diff_uptake_dat %>%
-        add_stat_dependency(confidence_level = confidence_level,
-                            theoretical = TRUE, 
-                            fractional = TRUE) %>%
-        select(Protein, Sequence, ID, Modification, Start, End, Exposure, diff_theo_frac_deut_uptake, err_diff_theo_frac_deut_uptake, paste0("valid_at_", confidence_level)) %>%
-        mutate(diff_theo_frac_deut_uptake = round(diff_theo_frac_deut_uptake, 4),
-               err_diff_theo_frac_deut_uptake = round(err_diff_theo_frac_deut_uptake, 4)) %>%
-        arrange(Start, End) %>%
-        rename("Theo Frac Diff DU [%]" = diff_theo_frac_deut_uptake,
-               "U(Theo Frac Diff DU) [%]" = err_diff_theo_frac_deut_uptake,
-               "{column_name_cl1}" := paste0("valid_at_", confidence_level))
+      diff_uptake_dat <- data.table(add_stat_dependency(diff_uptake_dat,
+                                                        confidence_level = confidence_level,
+                                                        theoretical = TRUE, 
+                                                        fractional = TRUE))
+      diff_uptake_dat <- diff_uptake_dat[, mget(c("Protein", "Sequence", "ID", "Modification", 
+                                                  'Start', "End", "Exposure", 
+                                                  "diff_theo_frac_deut_uptake", 
+                                                  "err_diff_theo_frac_deut_uptake", 
+                                                  paste0("valid_at_", confidence_level)))]
+      diff_uptake_dat[, `:=`(diff_theo_frac_deut_uptake = round(diff_theo_frac_deut_uptake, 4),
+                             err_diff_theo_frac_deut_uptake = round(err_diff_theo_frac_deut_uptake, 4))]
+      setorderv(diff_uptake_dat, cols = c("Start", "End"))
+      setnames(diff_uptake_dat, 
+               c("diff_theo_frac_deut_uptake",  "err_diff_theo_frac_deut_uptake", paste0("valid_at_", confidence_level)),
+               c("Theo Frac Diff DU [%]", "U(Theo Frac Diff DU) [%]", column_name_cl1), 
+               skip_absent = TRUE)
       
     } else {
       # theoretical & absolute
-      diff_uptake_dat %>%
-        add_stat_dependency(confidence_level = confidence_level,
-                            theoretical = TRUE, 
-                            fractional = FALSE) %>%
-        select(Protein, Sequence, ID, Modification, Start, End, Exposure, diff_theo_deut_uptake, err_diff_theo_deut_uptake, paste0("valid_at_", confidence_level)) %>%
-        mutate(diff_theo_deut_uptake = round(diff_theo_deut_uptake, 4),
-               err_diff_theo_deut_uptake = round(err_diff_theo_deut_uptake, 4)) %>%
-        arrange(Start, End) %>%
-        rename("Theo Diff DU [Da]" = diff_theo_deut_uptake,
-               "U(Theo Diff DU) [Da]" = err_diff_theo_deut_uptake,
-               "{column_name_cl1}" := paste0("valid_at_", confidence_level))
+      diff_uptake_dat <- data.table(add_stat_dependency(diff_uptake_dat,
+                                                        confidence_level = confidence_level,
+                                                        theoretical = TRUE, 
+                                                        fractional = TRUE))
+      diff_uptake_dat <- diff_uptake_dat[, mget(c("Protein", "Sequence", "ID", "Modification", 
+                                                  'Start', "End", "Exposure", 
+                                                  "diff_theo_deut_uptake", 
+                                                  "err_diff_theo_deut_uptake", 
+                                                  paste0("valid_at_", confidence_level)))]
+      diff_uptake_dat[, `:=`(diff_theo_deut_uptake = round(diff_theo_deut_uptake, 4),
+                             err_diff_theo_deut_uptake = round(err_diff_theo_deut_uptake, 4))]
+      setorderv(diff_uptake_dat, cols = c("Start", "End"))
+      setnames(diff_uptake_dat, 
+               c("diff_theo_deut_uptake",  "err_diff_theo_deut_uptake", paste0("valid_at_", confidence_level)),
+               c("Theo Diff DU [Da]", "U(Theo Diff DU) [Da]", column_name_cl1), 
+               skip_absent = TRUE)
     }
     
   } else {
     
     if(fractional){
       # experimental & fractional
-      diff_uptake_dat %>%
-        add_stat_dependency(confidence_level = confidence_level,
-                            theoretical = FALSE, 
-                            fractional = TRUE) %>%
-        select(Protein, Sequence, ID, Modification, Start, End, Exposure, diff_frac_deut_uptake, err_diff_frac_deut_uptake, paste0("valid_at_", confidence_level)) %>%
-        mutate(diff_frac_deut_uptake = round(diff_frac_deut_uptake, 4),
-               err_diff_frac_deut_uptake = round(err_diff_frac_deut_uptake, 4)) %>%
-        arrange(Start, End) %>%
-        rename("Frac Diff DU [%]" = diff_frac_deut_uptake,
-               "U(Frac Diff DU) [%]" = err_diff_frac_deut_uptake,
-               "{column_name_cl1}" := paste0("valid_at_", confidence_level))
+      diff_uptake_dat <- data.table(add_stat_dependency(diff_uptake_dat,
+                                                        confidence_level = confidence_level,
+                                                        theoretical = TRUE, 
+                                                        fractional = TRUE))
+      diff_uptake_dat <- diff_uptake_dat[, mget(c("Protein", "Sequence", "ID", "Modification", 
+                                                  'Start', "End", "Exposure", 
+                                                  "diff_frac_deut_uptake", 
+                                                  "err_diff_frac_deut_uptake", 
+                                                  paste0("valid_at_", confidence_level)))]
+      diff_uptake_dat[, `:=`(diff_frac_deut_uptake = round(diff_frac_deut_uptake, 4),
+                             err_diff_frac_deut_uptake = round(err_diff_frac_deut_uptake, 4))]
+      setorderv(diff_uptake_dat, cols = c("Start", "End"))
+      setnames(diff_uptake_dat, 
+               c("diff_frac_deut_uptake",  "err_diff_frac_deut_uptake", paste0("valid_at_", confidence_level)),
+               c("Frac Diff DU [%]", "U(Frac Diff DU) [%]", column_name_cl1), 
+               skip_absent = TRUE)
       
     } else {
       # experimental & absolute
-      diff_uptake_dat %>%
-        add_stat_dependency(confidence_level = confidence_level,
-                            theoretical = FALSE,
-                            fractional = FALSE) %>%
-        select(Protein, Sequence, ID, Modification, Start, End, Exposure, diff_deut_uptake, err_diff_deut_uptake, paste0("valid_at_", confidence_level)) %>%
-        mutate(diff_deut_uptake = round(diff_deut_uptake, 4),
-               err_diff_deut_uptake = round(err_diff_deut_uptake, 4)) %>%
-        arrange(Start, End) %>%
-        rename("Diff DU [Da]" = diff_deut_uptake,
-               "U(Diff DU) [Da]" = err_diff_deut_uptake,
-               "{column_name_cl1}" := paste0("valid_at_", confidence_level))
+      diff_uptake_dat <- data.table(add_stat_dependency(diff_uptake_dat,
+                                                        confidence_level = confidence_level,
+                                                        theoretical = TRUE, 
+                                                        fractional = TRUE))
+      diff_uptake_dat <- diff_uptake_dat[, mget(c("Protein", "Sequence", "ID", "Modification", 
+                                                  'Start', "End", "Exposure", 
+                                                  "diff_deut_uptake", 
+                                                  "err_diff_deut_uptake", 
+                                                  paste0("valid_at_", confidence_level)))]
+      diff_uptake_dat[, `:=`(diff_deut_uptake = round(diff_deut_uptake, 4),
+                             err_diff_deut_uptake = round(err_diff_deut_uptake, 4))]
+      setorderv(diff_uptake_dat, cols = c("Start", "End"))
+      setnames(diff_uptake_dat, 
+               c("diff_deut_uptake",  "err_diff_deut_uptake", paste0("valid_at_", confidence_level)),
+               c("Diff DU [Da]", "U(Diff DU) [Da]", column_name_cl1), 
+               skip_absent = TRUE)
     }
   }
   
+  diff_uptake_dat
   
 }
 

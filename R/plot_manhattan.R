@@ -45,11 +45,13 @@ plot_manhattan <- function(p_dat,
                            show_confidence_limit = T,
                            show_peptide_position = F){
   
+  p_dat <- as.data.table(p_dat)
+  
   if(is.null(confidence_level)) {confidence_level <- attr(p_dat, "confidence_level") }
 
   if(is.null(times)) { times <- unique(p_dat[["Exposure"]])}
   
-  plot_dat <- filter(p_dat, Exposure %in% times)
+  plot_dat <- p_dat[Exposure %in% times]
    
   confidence_limit <- -log(1 - confidence_level)
   

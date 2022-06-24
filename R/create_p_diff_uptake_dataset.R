@@ -63,6 +63,8 @@ create_p_diff_uptake_dataset <- function(dat,
                                          time_100 = max(dat[["Exposure"]]),
                                          deut_part = 0.9){
   
+  dat <- data.table(dat)
+  
   p_dat <- calculate_p_value(dat = dat, 
                              protein = protein,
                              state_1 = state_1,
@@ -82,8 +84,9 @@ create_p_diff_uptake_dataset <- function(dat,
   }
   
   
-  p_diff_uptake_dat <- merge(diff_uptake_dat, p_dat, by = c("Protein", "Sequence", "Start", "End", "Exposure", "Modification")) %>%
-    arrange(Protein, Start, End)
+  p_diff_uptake_dat <- merge(diff_uptake_dat, p_dat, by = c("Protein", "Sequence", "Start", "End", "Exposure", "Modification"))
+  
+  setorderv(p_diff_uptake_dat, cols = c("Protein", "Start", "End"))
   
   attr(p_diff_uptake_dat, "protein") <- protein
   attr(p_diff_uptake_dat, "state_1") <- state_1

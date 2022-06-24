@@ -33,7 +33,10 @@ get_protein_coverage <- function(dat,
   
   assert(protein_length>=max(dat[["End"]]))
   
-  round(100*(protein_length - stri_count_fixed(reconstruct_sequence(dat, end = protein_length, protein = protein, states = states), 'x'))/protein_length, 2)
+  round(100*(protein_length - stri_count_fixed(reconstruct_sequence(dat, 
+                                                                    end = protein_length, 
+                                                                    protein = protein, 
+                                                                    states = states), 'x'))/protein_length, 2)
   
 }
 
@@ -75,6 +78,7 @@ get_protein_redundancy <- function(dat,
 #' @param dat data imported by the \code{\link{read_hdx}} function.
 #' 
 #' @importFrom dplyr pull
+#' @importFrom data.table uniqueN
 #' 
 #' @details Calculate the number of replicates of experiment.
 #' 
@@ -92,16 +96,11 @@ get_protein_redundancy <- function(dat,
 get_n_replicates <- function(dat,
                              protein = dat[["Protein"]][1]){
   
-  dat %>%
-    filter(Protein == protein) %>%
-    group_by(Protein, Start, End, Sequence, State, Exposure) %>%
-    summarise(n_rep = length(unique(File))) %>%
-    ungroup() %>% 
-    pull(n_rep) %>% 
-    table() %>% 
-    sort(decreasing = TRUE) %>% 
-    names() %>% 
-    as.numeric() %>%
-    .[1]
+  dat <- data.table(dat)
+
+  dat <- dat[Protein == protein]
+  dat <- dat[, .(n_rep = uniqueN(File)),
+             by = c("Protein", "Start", "End", "Sequence", "State", "Exposure")]
+  as.numeric(names(sort(table(dat[["n_rep"]]), decreasing = TRUE)))[1]
   
 }

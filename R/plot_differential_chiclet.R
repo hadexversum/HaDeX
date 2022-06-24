@@ -154,8 +154,13 @@ plot_differential_chiclet <- function(diff_uptake_dat = NULL,
     
     alpha <- -log(1 - confidence_level)
     
-    diff_uptake_dat <- mutate(diff_uptake_dat, valid = log_p_value >= alpha, Exposure = as.factor(Exposure)) %>%
-      merge(plot_dat, by = c("Sequence", "Start", "End", "Exposure", "ID"))
+    #### datatable extra
+    diff_uptake_dat <- data.table(diff_uptake_dat)
+    
+    diff_uptake_dat[, `:=`(valid = log_p_value >= alpha, 
+                           Exposure = as.factor(Exposure))]
+      
+    diff_uptake_dat <- merge(diff_uptake_dat, plot_dat, by = c("Sequence", "Start", "End", "Exposure", "ID"))
     
     chiclet_differential_plot <- chiclet_differential_plot +
       geom_tile(data = subset(diff_uptake_dat, !valid), aes(x = ID, y = Exposure), fill = "grey89") +

@@ -109,6 +109,8 @@ plot_differential_butterfly <- function(diff_uptake_dat = NULL,
     
   }
   
+  diff_uptake_dat <- as.data.table(diff_uptake_dat)
+  
   plot_dat <- data.frame(ID = diff_uptake_dat[["ID"]],
                          Exposure = as.factor(diff_uptake_dat[["Exposure"]]),
                          value = diff_uptake_dat[[value]],
@@ -163,9 +165,10 @@ plot_differential_butterfly <- function(diff_uptake_dat = NULL,
     
     alpha <- -log(1 - attr(diff_uptake_dat, "confidence_level"))
     
-    diff_uptake_dat <- mutate(diff_uptake_dat, valid = log_p_value >= alpha) %>%
-      merge(plot_dat, by = c("Sequence", "Start", "End", "Exposure", "ID"))
+    diff_uptake_dat[, valid := log_p_value >= alpha]
     
+    diff_uptake_dat <- merge(diff_uptake_dat, plot_dat, by = c("Sequence", "Start", "End", "Exposure", "ID"))
+      
     butterfly_differential_plot <- butterfly_differential_plot +
       geom_point(data = subset(diff_uptake_dat, !valid), aes(x = ID, y = value, group = Exposure), color = "grey77", size = 2)
     

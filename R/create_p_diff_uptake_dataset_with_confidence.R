@@ -29,24 +29,26 @@ create_p_diff_uptake_dataset_with_confidence <- function(p_diff_uptake_dat,
                                                          theoretical = F, 
                                                          fractional = F){
   
+  p_diff_uptake_dat <- as.data.table(p_diff_uptake_dat)
+  
   confidence_level = attr(p_diff_uptake_dat, "confidence_level")
   
   if(is.null(houde_interval)){
     
     if(is.null(houde_interval_times)){ houde_interval_times <- unique(p_diff_uptake_dat[["Exposure"]]) }
     
-    houde_interval <- p_diff_uptake_dat %>%
-      filter(Exposure %in% houde_interval_times) %>% 
-      calculate_confidence_limit_values(confidence_level = confidence_level,
-                                        theoretical = theoretical, 
-                                        fractional = fractional)
+    
+    houde_interval <- calculate_confidence_limit_values(p_diff_uptake_dat[Exposure %in% houde_interval_times], 
+                                                        confidence_level = confidence_level,
+                                                        theoretical = theoretical, 
+                                                        fractional = fractional)
   }
   
-  value <- case_when(
-    theoretical & fractional ~ "diff_theo_frac_deut_uptake",
-    theoretical & !(fractional) ~ "diff_theo_deut_uptake",
-    !(theoretical) & fractional ~ "diff_frac_deut_uptake",
-    !(theoretical) & !(fractional) ~ "diff_deut_uptake"
+  value <- fcase(
+    theoretical & fractional, "diff_theo_frac_deut_uptake",
+    theoretical & !(fractional),  "diff_theo_deut_uptake",
+    !(theoretical) & fractional,  "diff_frac_deut_uptake",
+    !(theoretical) & !(fractional),  "diff_deut_uptake"
   )
   
   alpha <- -log(1 - confidence_level)

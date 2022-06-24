@@ -106,7 +106,7 @@ plot_volcano <- function(p_dat,
     }
   }
   
-  plot_dat <- data.frame(ID = p_dat[["ID"]],
+  plot_dat <- data.table(ID = p_dat[["ID"]],
                          Exposure = as.factor(p_dat[["Exposure"]]),
                          value = p_dat[[value]],
                          err_value = p_dat[[err_value]],
@@ -121,8 +121,7 @@ plot_volcano <- function(p_dat,
   t_value <- qt(c((1 - confidence_level)/2, 1-(1 - confidence_level)/2), df = 2)[2]
   x_threshold <- t_value * mean(plot_dat[["err_value"]], na.rm = TRUE)/sqrt(length(plot_dat))
   
-  plot_dat <- plot_dat %>%
-    mutate(valid = abs(value) > x_threshold & log_p_value > y_threshold)
+  plot_dat[, valid := abs(value) > x_threshold & log_p_value > y_threshold]
   
   if(hide_insignificant) {
     
@@ -133,7 +132,9 @@ plot_volcano <- function(p_dat,
   if(color_times){
     
     volcano_plot <- ggplot(plot_dat, aes(x = value, y = log_p_value)) +
-      geom_errorbar(aes(xmin = value - err_value, xmax = value + err_value), color = "grey77") +
+      geom_errorbar(aes(xmin = value - err_value, 
+                        xmax = value + err_value), 
+                    color = "grey77") +
       geom_point(aes(color = as.factor(Exposure))) +
       labs(title = paste0("Volcano Plot ", state_1, " " , state_2),
            x = x_label,
@@ -144,7 +145,9 @@ plot_volcano <- function(p_dat,
     
     volcano_plot <- ggplot(plot_dat, aes(x = value, y = log_p_value)) +
       geom_point() +
-      geom_errorbar(aes(xmin = value - err_value, xmax = value + err_value), color = "grey77") +
+      geom_errorbar(aes(xmin = value - err_value, 
+                        xmax = value + err_value), 
+                    color = "grey77") +
       labs(title = paste0("Volcano Plot ", state_1, " " , state_2),
            x = x_label,
            y = "-log(P value)")
@@ -156,24 +159,36 @@ plot_volcano <- function(p_dat,
     y_max <- ceiling(max(plot_dat[["log_p_value"]])) + 2
     
     volcano_plot <- volcano_plot +
-      coord_cartesian(xlim = c(-x_max, x_max), ylim = c(0, y_max), expand = FALSE)
+      coord_cartesian(xlim = c(-x_max, x_max), 
+                      ylim = c(0, y_max), 
+                      expand = FALSE)
     
   }
   
   if(show_confidence_limits){
     
     volcano_plot <- volcano_plot +
-      geom_segment(aes(x = -x_threshold, xend = -x_threshold, y = y_threshold, yend = Inf), linetype = "dashed", color = "red") +
-      geom_segment(aes(x = x_threshold, xend = x_threshold, y = y_threshold, yend = Inf), linetype = "dashed", color = "red") +
-      geom_segment(aes(y = y_threshold, yend = y_threshold, x = -Inf, xend = -x_threshold), linetype = "dashed", color = "red") +
-      geom_segment(aes(y = y_threshold, yend = y_threshold, x = x_threshold, xend = Inf), linetype = "dashed", color = "red")
+      geom_segment(aes(x = -x_threshold, xend = -x_threshold, 
+                       y = y_threshold, yend = Inf), 
+                   linetype = "dashed", color = "red") +
+      geom_segment(aes(x = x_threshold, xend = x_threshold, 
+                       y = y_threshold, yend = Inf), 
+                   linetype = "dashed", color = "red") +
+      geom_segment(aes(y = y_threshold, yend = y_threshold, 
+                       x = -Inf, xend = -x_threshold), 
+                   linetype = "dashed", color = "red") +
+      geom_segment(aes(y = y_threshold, yend = y_threshold,
+                       x = x_threshold, xend = Inf), 
+                   linetype = "dashed", color = "red")
     
   }
   
   if(show_insignificant_grey){
     
     volcano_plot <- volcano_plot + 
-      geom_point(data = subset(plot_dat, !valid), aes(x = value, y = log_p_value), color = "grey77")
+      geom_point(data = subset(plot_dat, !valid), 
+                 aes(x = value, y = log_p_value), 
+                 color = "grey77")
     
   }
   
