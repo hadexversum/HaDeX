@@ -75,6 +75,8 @@ create_quality_control_dataset <- function(dat,
     diff_dat <- bind_rows(state_dat_1, state_dat_2) %>%
       droplevels() %>% 
       mutate(State = factor(State, levels = c(state_1, state_2), labels = c("1", "2"))) %>%
+      mutate(Sequence = paste0(Sequence, "+", Modification)) %>%
+      select(-Modification) %>%
       gather(variable, value, -c(Protein:End, State, Med_Sequence)) %>%
       unite(tmp, variable, State) %>%
       spread(tmp, value)  %>%
