@@ -49,13 +49,16 @@ plot_peptide_mass_measurement <- function(dat,
   dat <- data.table(dat)
   ##
   
+  rep_mass_dat <- rep_mass_dat[!is.na(Modification) & Modification!="", Sequence := paste0(Sequence, "+", Modification)]
   rep_mass_dat <- rep_mass_dat[Protein == protein & State == state & Sequence == sequence & Exposure == time_t]
   
   avg_value <- mean(rep_mass_dat[["avg_exp_mass"]])
   
   if(show_charge_values){
     
-    rep_mass_z_dat <- dat[Protein == protein & State == state & Sequence == sequence & Exposure == time_t]
+    rep_mass_z_dat <- dat[!is.na(Modification) & Modification!="", Sequence := paste0(Sequence, "+", Modification)]
+    rep_mass_z_dat <- rep_mass_z_dat[Protein == protein & State == state & Sequence == sequence & Exposure == time_t]
+    
     rep_mass_z_dat[, `:=`(exp_mass = Center*z - z*1.00727647, 
                           weighted_Inten = scale(Inten))]
     pep_mass_plot <- ggplot() +
