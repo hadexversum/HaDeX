@@ -98,6 +98,7 @@ read_hdx <- function(filename){
   dat <- select(dat, -RT, -Fragment)
   
   dat[["Exposure"]] <- round(dat[["Exposure"]], 3)
+  dat[!is.na(Modification) & Modification!="", Sequence := paste0(Sequence, "+", Modification)]
   
   # attr(dat, "source") <- data_type
   # attr(dat, "has_modification") <- has_modification

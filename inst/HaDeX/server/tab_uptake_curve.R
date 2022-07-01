@@ -206,11 +206,11 @@ kin_dat <- reactive({
 
 kin_plot <- reactive({
   
-  plot_kinetics(kin_dat = kin_dat(),
-                theoretical = input[["kin_theory"]],
-                fractional = input[["kin_fractional"]],
-                uncertainty_type = input[["kin_uncertainty"]],
-                log_x = input[["kin_log_x"]])
+  plot_uptake_curve(uc_dat = kin_dat(),
+                    theoretical = input[["kin_theory"]],
+                    fractional = input[["kin_fractional"]],
+                    uncertainty_type = input[["kin_uncertainty"]],
+                    log_x = input[["kin_log_x"]])
 })
 
 ##

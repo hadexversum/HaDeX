@@ -391,38 +391,38 @@ show_kinetic_data <- function(kin_dat,
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #'
 #' # one peptide in one state
-#' kin1 <- calculate_kinetics(dat, 
-#'                            protein = "db_CD160",
-#'                            sequence = "INITSSASQEGTRLN", 
-#'                            state = "CD160",
-#'                            start = 1, 
-#'                            end = 15,
-#'                            time_0 = 0.001, 
-#'                            time_100 = 1440)
-#' plot_kinetics(kin_dat = kin1, 
-#'               theoretical = FALSE, 
-#'               fractional = TRUE)
+#' uc_dat <- calculate_kinetics(dat, 
+#'                              protein = "db_CD160",
+#'                              sequence = "INITSSASQEGTRLN", 
+#'                              state = "CD160",
+#'                              start = 1, 
+#'                              end = 15,
+#'                              time_0 = 0.001, 
+#'                              time_100 = 1440)
+#' plot_uptake_curve(uc_dat = uc_dat, 
+#'                   theoretical = FALSE, 
+#'                   fractional = TRUE)
 #' 
 #' # one peptide in all states         
-#' kin2 <- calculate_peptide_kinetics(dat, 
-#'                                    protein = "db_CD160",
-#'                                    sequence = "INITSSASQEGTRLN", 
-#'                                    states = c("CD160", "CD160_HVEM"),
-#'                                    start = 1, 
-#'                                    end = 15,
-#'                                    time_0 = 0.001, 
-#'                                    time_100 = 1440)
-#' plot_kinetics(kin_dat = kin2, 
-#'               theoretical = FALSE, 
-#'               fractional = TRUE)
+#' uc_dat2 <- calculate_peptide_kinetics(dat, 
+#'                                       protein = "db_CD160",
+#'                                       sequence = "INITSSASQEGTRLN", 
+#'                                       states = c("CD160", "CD160_HVEM"),
+#'                                       start = 1, 
+#'                                       end = 15,
+#'                                       time_0 = 0.001, 
+#'                                       time_100 = 1440)
+#' plot_uptake_curve(uc_dat = uc_dat2, 
+#'                   theoretical = FALSE, 
+#'                   fractional = TRUE)
 #'                 
-#' @export plot_kinetics
+#' @export plot_uptake_curve
 
-plot_kinetics <- function(kin_dat, 
-                          theoretical = FALSE, 
-                          fractional = FALSE,
-                          uncertainty_type = "ribbon",
-                          log_x = TRUE){
+plot_uptake_curve <- function(uc_dat, 
+                              theoretical = FALSE, 
+                              fractional = FALSE,
+                              uncertainty_type = "ribbon",
+                              log_x = TRUE){
   
   uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars", "bars + line"))
   
@@ -464,16 +464,16 @@ plot_kinetics <- function(kin_dat,
     
   }
   
-  plot_dat <- data.frame(Sequence = kin_dat[["Sequence"]],
-                         Start = kin_dat[["Start"]],
-                         End = kin_dat[["End"]],
-                         State = kin_dat[["State"]],
-                         time_chosen = kin_dat[["time_chosen"]],
-                         value = kin_dat[[value]],
-                         err_value = kin_dat[[err_value]],
-                         prop = paste0(kin_dat[["Sequence"]], "-", kin_dat[["State"]]))
+  plot_dat <- data.frame(Sequence = uc_dat[["Sequence"]],
+                         Start = uc_dat[["Start"]],
+                         End = uc_dat[["End"]],
+                         State = uc_dat[["State"]],
+                         time_t = uc_dat[["time_chosen"]],
+                         value = uc_dat[[value]],
+                         err_value = uc_dat[[err_value]],
+                         prop = paste0(uc_dat[["Sequence"]], "-", uc_dat[["State"]]))
   
-  kin_plot <- ggplot(plot_dat, aes(x = time_chosen, y = value, group = prop)) +
+  uc_plot <- ggplot(plot_dat, aes(x = time_t, y = value, group = prop)) +
     geom_point(aes(color = prop), size = 2) + 
     theme(legend.position = "bottom",
           legend.title = element_blank()) +
@@ -485,20 +485,20 @@ plot_kinetics <- function(kin_dat,
   
   if(uncertainty_type == "ribbon"){
     
-    kin_plot <- kin_plot +
+    uc_plot <- uc_plot +
       geom_ribbon(aes(ymin = value - err_value, ymax = value + err_value, fill = prop), alpha = 0.15) +
       geom_line(aes(color = prop)) 
     
   } else if (uncertainty_type == "bars") {
     
-    kin_plot <- kin_plot +
-      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = prop),
+    uc_plot <- uc_plot +
+      geom_errorbar(aes(x = time_t, ymin = value - err_value, ymax = value + err_value, color = prop),
                     width = err_width)
     
   } else if (uncertainty_type == "bars + line"){
     
-    kin_plot <- kin_plot +
-      geom_errorbar(aes(x = time_chosen, ymin = value - err_value, ymax = value + err_value, color = prop),
+    uc_plot <- uc_plot +
+      geom_errorbar(aes(x = time_t, ymin = value - err_value, ymax = value + err_value, color = prop),
                     width = err_width) + 
       geom_line(aes(color = prop))
     
@@ -506,11 +506,11 @@ plot_kinetics <- function(kin_dat,
   
   if(log_x){
     
-    kin_plot <- kin_plot + 
+    uc_plot <- uc_plot + 
       scale_x_log10()
     
   }
   
-  return(HaDeXify(kin_plot))
+  return(HaDeXify(uc_plot))
 }
 
