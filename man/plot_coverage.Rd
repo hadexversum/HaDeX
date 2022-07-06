@@ -35,9 +35,8 @@ any information.
 }
 \examples{
 # load example data
-dat <- read_hdx(system.file(package = "HaDeX", 
-                            "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-                            
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+
 # plot coverage with default parameters
 plot_coverage(dat)
 
