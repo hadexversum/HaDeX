@@ -24,9 +24,8 @@
 #' 
 #' @examples 
 #' # load example data
-#' dat <- read_hdx(system.file(package = "HaDeX", 
-#'                             "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#'                             
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' 
 #' # plot coverage with default parameters
 #' plot_coverage(dat)
 #' 
@@ -44,12 +43,29 @@ plot_coverage <- function(dat,
   
   dat <- dat[Protein == protein & State %in% states, .(Start, End)]
   dat <- dat[!duplicated(dat)]
-  setorderv(dat, cols = c("Start", "End"))
+  dat[, Len := - End + Start]
+  setorderv(dat, cols = c("Start", "Len"))
   
-  levels <- rep(1, (nrow(dat)))
+  levels <- rep(NA, (nrow(dat)))
+  levels[1] <- 1
+  
+  start <- dat[["Start"]]
+  end <- dat[["End"]]
+  
   for(i in 1:(nrow(dat) - 1)) {
-    if(max(dat[1:i, "End"]) >= dat[i + 1, "Start"]) {
-      levels[i + 1] <- levels[i] + 1
+    
+    for(level in 1:max(levels, na.rm = TRUE)) {
+      
+      if(all(start[i + 1] > end[1:i][levels == level] | end[i + 1] < start[1:i][levels == level], na.rm = TRUE)) {
+        
+        levels[i + 1] <- level
+        break
+        
+      } else {
+        if(level == max(levels, na.rm = TRUE)) {
+          levels[i + 1] <- max(levels, na.rm = TRUE) + 1
+        } 
+      }
     }
   }
   
@@ -65,7 +81,6 @@ plot_coverage <- function(dat,
                                         amino_dat[["amino_acids"]]))
     
     non_missing <- data.frame(ids = amino_dat[["amino_acids"]])
-    
     
     coverage_plot <- ggplot(data = dat) +
       geom_rect(missing,
