@@ -67,50 +67,6 @@ output[["stateOverlap"]] <- renderPlot({
   
 })
 
-output[["stateOverlap_debug"]] <- renderUI({
-  
-  if(!is.null(input[["stateOverlap_hover"]])) {
-    
-    plot_data <- stateOverlap_out()[["data"]]
-    hv <- input[["stateOverlap_hover"]]
-    
-    hv_dat <- data.frame(x = hv[["x"]],
-                         y = hv[["y"]],
-                         Start = plot_data[["Start"]],
-                         ID = plot_data[["ID"]],
-                         End = plot_data[["End"]],
-                         y_plot = plot_data[[hv[["mapping"]][["y"]]]],
-                         Sequence = plot_data[["Sequence"]])
-    
-    tt_df <- filter(hv_dat, Start < x, End > x) %>%
-      filter(abs(y_plot - y) < 5) %>%
-      filter(abs(y_plot - y) == min(abs(y_plot - y)))
-    
-    if(nrow(tt_df) != 0) {
-      
-      tt_pos_adj <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
-                           "left", "right")
-      
-      tt_pos <- ifelse(hv[["coords_img"]][["x"]]/hv[["range"]][["right"]] < 0.5,
-                       hv[["coords_css"]][["x"]],
-                       hv[["range"]][["right"]]/hv[["img_css_ratio"]][["x"]] - hv[["coords_css"]][["x"]])
-      
-      
-      style <- paste0("position:absolute; z-index:1000; background-color: rgba(245, 245, 245, 1); pointer-events: none;",
-                      tt_pos_adj, ":", tt_pos,
-                      "px; top:", hv[["coords_css"]][["y"]], "px; padding: 0px;")
-      
-      div(
-        style = style,
-        p(HTML(paste0(tt_df[["Sequence"]],
-                      "<br/> ID: ",  tt_df[["ID"]],
-                      "<br/> Position: ", tt_df[["Start"]], "-", tt_df[["End"]])))
-      )
-    }
-  }
-})
-
-##
 
 output[["protein_length"]] <- renderText({
   
