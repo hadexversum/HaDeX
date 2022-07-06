@@ -87,7 +87,7 @@ calculate_diff_uptake  <- function(dat,
   attr(diff_dat, "time_t") <- time_t 
   attr(diff_dat, "time_100") <- time_100
   attr(diff_dat, "deut_part") <- deut_part
-  attr(diff_dat, "n_rep") <- get_n_replicates(dat)
+  attr(diff_dat, "n_rep") <- attr(dat, "n_rep")
   
   return(diff_dat)
 }

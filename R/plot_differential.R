@@ -1,6 +1,7 @@
 #' Differential plot
 #'
 #' @importFrom ggplot2 facet_wrap
+#' @importFrom data.table as.data.table
 #' 
 #' @param diff_uptake_dat produced by \code{\link{create_diff_uptake_dataset}} function.
 #' @param diff_p_uptake_dat ...
@@ -94,6 +95,10 @@ plot_differential <- function(diff_uptake_dat = NULL,
     
   }  
   
+  ##
+  diff_uptake_dat <- as.data.table(diff_uptake_dat)
+  ##
+  
   if(!all_times) { 
     diff_uptake_dat <- diff_uptake_dat[Exposure == time_t]
   }
@@ -181,7 +186,7 @@ plot_differential <- function(diff_uptake_dat = NULL,
     
     plot_dat[, colour := fcase(value > h_interval[2], "firebrick1",
                                value < h_interval[1], "deepskyblue1",
-                               TRUE, "azure3")]
+                               default = "azure3")]
     
     
     differential_plot <- ggplot(plot_dat) +
@@ -205,7 +210,7 @@ plot_differential <- function(diff_uptake_dat = NULL,
     
     plot_dat[, colour := fcase(value > 0, "firebrick1",
                                value < 0, "deepskyblue1",
-                               TRUE, "azure3")]
+                               default = "azure3")]
     
     differential_plot <- ggplot(plot_dat) +
       geom_segment(aes(x = Start, y = value, xend = End, yend = value, color = colour), size = line_size) +

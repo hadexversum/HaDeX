@@ -104,3 +104,40 @@ get_n_replicates <- function(dat,
   as.numeric(names(sort(table(dat[["n_rep"]]), decreasing = TRUE)))[1]
   
 }
+
+#' Get peptide sequence based on the position
+#' 
+#' @param dat any data frame that contains following information:
+#' protein, sequence, start, end, modification.
+#' @param protein ...
+#' @param start start position of the peptide of interest.
+#' @param end end position of the peptide of interest.
+#' @param modification logical value to indicate if peptide
+#' of interest has modification or not.
+#' 
+#' @return character value.
+#' 
+#' @seealso 
+#' \code{\link{read_hdx}}
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' get_peptide_sequence(dat, start = 1, end = 15)
+#'
+#' @export get_peptide_sequence
+
+get_peptide_sequence <- function(dat, 
+                                 protein = dat[["Protein"]][1],
+                                 start, 
+                                 end,
+                                 modification = FALSE){
+  dat <- data.table(dat)
+  
+  sequences <- unique(dat[Protein == protein & Start == start & End == end, .(Sequence, Modification)])
+  
+  sequences[Modification!="", Sequence := paste0(Sequence, "+", Modification)]
+  
+  if(modification) { sequences[Modification!="" ][["Sequence"]] }  
+  else { sequences[Modification=="" | is.na(Modification)][["Sequence"]] }
+  
+}

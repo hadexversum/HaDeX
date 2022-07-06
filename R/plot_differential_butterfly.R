@@ -165,7 +165,8 @@ plot_differential_butterfly <- function(diff_uptake_dat = NULL,
     
     alpha <- -log(1 - attr(diff_uptake_dat, "confidence_level"))
     
-    diff_uptake_dat[, valid := log_p_value >= alpha]
+    diff_uptake_dat[, `:=`(valid = log_p_value >= alpha,
+                      Exposure = as.factor(Exposure))]
     
     diff_uptake_dat <- merge(diff_uptake_dat, plot_dat, by = c("Sequence", "Start", "End", "Exposure", "ID"))
       
