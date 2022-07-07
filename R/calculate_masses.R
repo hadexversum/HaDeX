@@ -14,7 +14,7 @@
 #' The separate measurement (for each replicate in given state in given time point)
 #' can be distinguished by the `File` value.
 #' 
-#' @return Data frame with aggregated results for each replicate of the experiment.
+#' @return a \code{\link{data.frame} object. 
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}} 
@@ -61,12 +61,16 @@ calculate_exp_masses_per_replicate <- function(dat){
 #' on how the data is aggregated or how the uncertainty is calculated, see the 
 #' documentation. 
 #' 
-#' @return Data frame with aggregated mass results from replicates of the experiment.
+#' @return a \code{\link{data.frame} object. 
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}} 
 #' \code{\link{calculate_exp_masses_per_replicate}}
 #' \code{\link{calculate_state_uptake}} 
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' calculate_exp_masses(dat)
 #' 
 #' @export calculate_exp_masses
 
@@ -114,6 +118,10 @@ calculate_exp_masses <- function(dat){
 #' \code{\link{read_hdx}} 
 #' \code{\link{calculate_state_uptake}} 
 #' \code{\link{plot_kinetics}}
+#' 
+#' @examples 
+#' calculate_MHP("CHERICHERILADY")
+#' calculate_MHP("CHERICHERILADY", mono = T)
 #' 
 #' @export calculate_MHP
 

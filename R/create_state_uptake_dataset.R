@@ -1,5 +1,8 @@
 #' Create uptake dataset for chosen state
 #' 
+#' @description Calculates deuterium uptake values for one 
+#' biological state.
+#' 
 #' @importFrom data.table setcolorder
 #' 
 #' @param dat data imported by the \code{\link{read_hdx}} function.

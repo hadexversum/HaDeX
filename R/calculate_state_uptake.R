@@ -6,20 +6,21 @@
 #' @importFrom data.table fcase fcoalesce
 #' 
 #' @param dat data as imported by the \code{\link{read_hdx}} function
-#' @param protein protein included in calculations
+#' @param protein chosen protein. 
 #' @param state state included in calculations
 #' @param time_0 minimal exchange control
 #' @param time_100 maximal exchange control 
 #' @param time_t chosen time point 
-#' @param deut_part percentage of deuterium the protein was exposed to, value in range [0, 1]
+#' @param deut_part percentage of deuterium the protein was exposed to, 
+#' value in range [0, 1]
 #' 
 #' @details The function \code{calculate_state_uptake} calculates deuterium uptake 
 #' (in different forms) for all of the peptides in given protein in given state based
 #' on supplied parameters: `time_0`, `time_100` and `time_t`. All four variants 
-#' (fractiona) are 
-#' supplied (mean values and uncertainty). Manual correction of percentage of deuterium the protein was exposed to during the exchange
+#' (fractiona) are supplied (mean values and uncertainty). Manual correction of 
+#' percentage of deuterium the protein was exposed to during the exchange
 #' in theoretical calculations is provided. 
-#'
+#' 
 #' Methods of calculation and uncertainty are profoundly discussed in the vignette.
 #' 
 #' @return a \code{\link{data.frame}} object

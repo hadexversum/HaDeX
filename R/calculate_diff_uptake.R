@@ -1,5 +1,8 @@
 #' Calculate differential uptake 
 #' 
+#' @description Calculates differential deuterim uptake between 
+#' two selected biological states. 
+#' 
 #' @importFrom tidyr gather
 #' @importFrom data.table rbindlist melt.data.table dcast setorderv :=
 #' 
@@ -22,7 +25,7 @@
 #' thoroughly described in the `Data processing` article, as well as 
 #' law of propagation of uncertainty, used to calculate uncertainty. 
 #' 
-#' @return a \code{\link{data.frame}} object.
+#' @return a \code{\link{data.frame}} object. 
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}}

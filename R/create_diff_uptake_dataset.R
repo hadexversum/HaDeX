@@ -1,5 +1,8 @@
 #' Generate differential dataset
 #' 
+#' @description Calculates differential deuterium uptake values 
+#' between two states. 
+#' 
 #' @param dat data imported by the \code{\link{read_hdx}} function.
 #' @param protein chosen protein. 
 #' @param state_1 biological state for chosen protein. From this state values

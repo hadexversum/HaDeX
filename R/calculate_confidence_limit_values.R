@@ -11,10 +11,6 @@
 #' @param theoretical \code{logical}, determines if values are theoretical.
 #' @param fractional \code{logical}, determines if values are fractional.
 #' 
-#' @references Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). 
-#' The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in 
-#' Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
-#' 
 #' @details Function \code{\link{calculate_confidence_limit_values}} 
 #' calculates confidence limit using Houde test. The confidence limits 
 #' are calculated on whole provided dataset. If the user wishes to calculate
@@ -22,6 +18,10 @@
 #' should be adjusted accordingly. 
 #' 
 #' @return range of confidence limit interval.
+#' 
+#' @references Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). 
+#' The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in 
+#' Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}} 

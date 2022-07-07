@@ -16,7 +16,7 @@ get_peptide_sequence(
 \item{dat}{any data frame that contains following information:
 protein, sequence, start, end, modification.}
 
-\item{protein}{...}
+\item{protein}{chosen protein.}
 
 \item{start}{start position of the peptide of interest.}
 
@@ -26,10 +26,17 @@ protein, sequence, start, end, modification.}
 of interest has modification or not.}
 }
 \value{
-character value.
+a \code{\link{character}} value.
 }
 \description{
-Get peptide sequence based on the position
+Gets the peptide sequence based on selected parameters
+(start and end position, modification).
+}
+\details{
+Function returns peptide sequence for selected parameters. 
+Peptide sequence is often required to properly identify peptide of 
+interest, and to avoid mistakes sequence is returned by the function.
+Moreover, function uses the modification value to select petide sequence.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))

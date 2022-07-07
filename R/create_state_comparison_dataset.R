@@ -1,5 +1,8 @@
 #' Creates comparison uptake dataset
 #' 
+#' @description Calculates deuterium uptake values for selected 
+#' biological states in selected time point of measurements.
+#' 
 #' @param dat data imported by the \code{\link{read_hdx}} function.
 #' @param protein chosen protein. 
 #' @param states vector of states (for chosen protein), for which the 

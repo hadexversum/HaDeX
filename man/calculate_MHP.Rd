@@ -28,6 +28,11 @@ of the terminationg group (H and OH). The source of the masses can be found here
 \url{http://www.matrixscience.com/help/aa_help.html}. Keep in mind that this function
 returns the value of an unmodified peptide.
 }
+\examples{
+calculate_MHP("CHERICHERILADY")
+calculate_MHP("CHERICHERILADY", mono = T)
+
+}
 \seealso{
 \code{\link{read_hdx}} 
 \code{\link{calculate_state_uptake}} 

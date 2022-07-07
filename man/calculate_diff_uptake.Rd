@@ -36,7 +36,8 @@ value from range [0, 1].}
 a \code{\link{data.frame}} object.
 }
 \description{
-Calculate differential uptake
+Calculates differential deuterim uptake between 
+two selected biological states.
 }
 \details{
 Function \code{\link{calculate_diff_uptake}} calculates

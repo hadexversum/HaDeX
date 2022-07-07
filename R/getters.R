@@ -1,14 +1,17 @@
 #' Get protein coverage
-#'
-#' @param dat data imported by the \code{\link{read_hdx}} function.
-#' @param protein_length \code{\link{numeric}}, indicates the length of 
-#' the protein. If not provided, the maximal end value from the file is used.
+#' 
+#' @description Calculate protein coverage by the peptides in 
+#' selected biological state or states.
 #' 
 #' @importFrom stringi stri_count_fixed
 #' @importFrom checkmate assert
 #' 
-#' @details Function \code{\link{get_protein_coverage}} calculates the percentage coverage of the 
-#' protein sequence, rounded to two decimal places
+#' @param dat data imported by the \code{\link{read_hdx}} function.
+#' @param protein_length \code{\link{numeric}}, indicates the length of 
+#' the protein. If not provided, the maximal end value from the file is used.
+#' 
+#' @details Function \code{\link{get_protein_coverage}} calculates the 
+#' percentage coverage of the protein sequence, rounded to two decimal places.
 #'
 #' @return a \code{\link{numeric}} percentage value (rounded to two decimal places).
 #'
@@ -41,6 +44,9 @@ get_protein_coverage <- function(dat,
 }
 
 #' Get protein redundancy
+#' 
+#' @description Calculates the protein redundancy in the whole 
+#' experiment (all biological states).
 #' 
 #' @param dat data imported by the \code{\link{read_hdx}} function.
 #' @param protein_length \code{\link{numeric}}, indicates the length of 
@@ -75,10 +81,13 @@ get_protein_redundancy <- function(dat,
 
 #' Get number of replicates
 #' 
-#' @param dat data imported by the \code{\link{read_hdx}} function.
+#' @description Calculates the number of replicates from 
+#' the experimnetal data.
 #' 
 #' @importFrom dplyr pull
 #' @importFrom data.table uniqueN
+#' 
+#' @param dat data imported by the \code{\link{read_hdx}} function.
 #' 
 #' @details Calculate the number of replicates of experiment.
 #' 
@@ -107,15 +116,23 @@ get_n_replicates <- function(dat,
 
 #' Get peptide sequence based on the position
 #' 
+#' @description Gets the peptide sequence based on selected parameters
+#' (start and end position, modification).
+#' 
 #' @param dat any data frame that contains following information:
 #' protein, sequence, start, end, modification.
-#' @param protein ...
+#' @param protein chosen protein. 
 #' @param start start position of the peptide of interest.
 #' @param end end position of the peptide of interest.
 #' @param modification logical value to indicate if peptide
 #' of interest has modification or not.
 #' 
-#' @return character value.
+#' @details Function returns peptide sequence for selected parameters. 
+#' Peptide sequence is often required to properly identify peptide of 
+#' interest, and to avoid mistakes sequence is returned by the function.
+#' Moreover, function uses the modification value to select petide sequence.
+#' 
+#' @return a \code{\link{character}} value.
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}}

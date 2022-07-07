@@ -36,7 +36,8 @@ value from range [0, 1].}
 a \code{\link{data.frame}} object.
 }
 \description{
-Creates comparison uptake dataset
+Calculates deuterium uptake values for selected 
+biological states in selected time point of measurements.
 }
 \details{
 Function \code{\link{create_state_comparison_dataset}} is a 

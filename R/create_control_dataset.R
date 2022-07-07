@@ -1,5 +1,8 @@
 #' Create dataset with control
 #' 
+#' @description This function adds selected experimental maximal 
+#' exchange control as a measurement for all biological states.
+#'  
 #' @param dat data imported by the \code{\link{read_hdx}} function.
 #' @param control_protein maximal exchange control protein, from dat. 
 #' @param control_state maximal exchange control state, from dat.

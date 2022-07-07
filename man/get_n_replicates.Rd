@@ -13,7 +13,8 @@ get_n_replicates(dat, protein = dat[["Protein"]][1])
 a \code{\link{numeric}} value.
 }
 \description{
-Get number of replicates
+Calculates the number of replicates from 
+the experimnetal data.
 }
 \details{
 Calculate the number of replicates of experiment.

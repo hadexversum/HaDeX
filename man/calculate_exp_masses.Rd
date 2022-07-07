@@ -11,7 +11,7 @@ calculate_exp_masses(dat)
 \item{dat}{data as imported by the \code{\link{read_hdx}} function}
 }
 \value{
-Data frame with aggregated mass results from replicates of the experiment.
+
 }
 \description{
 Calculate the measured mass (with the uncertainty of the measurement)
@@ -22,6 +22,11 @@ Each measurement is repeated at least three times to obtain reliable
 result and to calculate uncertainty of the measurement. For more information 
 on how the data is aggregated or how the uncertainty is calculated, see the 
 documentation.
+}
+\examples{
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+calculate_exp_masses(dat)
+
 }
 \seealso{
 \code{\link{read_hdx}} 

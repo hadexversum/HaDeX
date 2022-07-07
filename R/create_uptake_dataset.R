@@ -1,5 +1,8 @@
 #' Create uptake dataset for multiple states
 #'
+#' @description Calculates deuterium uptake values for selected 
+#' biological states in multiple time points of measurements.
+#' 
 #' @importFrom dplyr arrange filter summarise 
 #' 
 #' @param dat data imported by the \code{\link{read_hdx}} function.
