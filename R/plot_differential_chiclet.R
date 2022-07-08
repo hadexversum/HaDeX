@@ -1,5 +1,8 @@
-#' Differential chiclet plot
-#'
+#' Chiclet differential deuterium uptake plot
+#' 
+#' @description Chiclet plot of differential deuterium uptake values 
+#' between two biological states in time.
+#' 
 #' @param diff_uptake_dat data produced by
 #' \code{\link{create_diff_uptake_dataset}} function.
 #' @param diff_p_uptake_dat ...
@@ -21,7 +24,6 @@
 #' in a form based on provided criteria (e.q. fractional). Each tile has
 #' a plus sign, which size represent the uncertainty of measurement for
 #' chosen value.
-#' This plot is visible in GUI.
 #'
 #' @return a \code{\link{ggplot}} object.
 #'

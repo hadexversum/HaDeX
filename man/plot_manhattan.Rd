@@ -38,20 +38,22 @@ and position in  the  sequence is shown. Otherwise, the peptides are represented
 a \code{\link{ggplot}} object.
 }
 \description{
-Manhattan plot
+Manhattan plot with p-values from the t-Student test
+and peptide position.
 }
 \details{
-...
+The manhattan plot presents the P-values from t-student test, to see 
+the regions of the protein with statistically significant changes between two 
+biological states. 
+On X-axis there is a position in a sequence, with length of a segment of each
+peptide representing its length. On Y-axis there is P-value from t-Student test.
 }
 \examples{
-dat <-  read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 p_dat <- create_p_diff_uptake_dataset(dat)
 plot_manhattan(p_dat)
-
 plot_manhattan(p_dat, separate_times = F)
-
 plot_manhattan(p_dat, show_peptide_position = T, separate_times = F)
-
 plot_manhattan(p_dat, separate_times = F, show_confidence_limit = F)
  
 }
@@ -61,5 +63,6 @@ Differences in Differential Hydrogen Exchange-Mass Spectrometry Measurements
 Using a Hybrid Significance Testing Approach. Anal Chem 91, 8008–8016 (2019).
 }
 \seealso{
+\code{\link{read_hdx}}
 \code{\link{create_p_diff_uptake_dataset}}
 }

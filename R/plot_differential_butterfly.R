@@ -1,5 +1,8 @@
-#' Differential butterfly plot
+#' Butterfly differential deuterium uptake plot
 #'
+#' @description Butterfly plot of differential deuterium uptake values 
+#' between two biological states in time.
+#' 
 #' @importFrom ggplot2 scale_linetype_manual scale_colour_identity
 #'
 #' @param diff_uptake_dat data produced by
@@ -19,17 +22,16 @@
 #' chosen form. Data from multiple time points of measurement is presented.
 #' If chosen, there are confidence limits based on Houde test on provided
 #' confidence level.
-#' This plot is visible in GUI.
-#'
+#' 
 #' @return a \code{\link{ggplot}} object.
-#'
-#' @seealso
-#' \code{\link{read_hdx}}
-#' \code{\link{create_diff_uptake_dataset}}
 #'
 #' @references Houde, D., Berkowitz, S.A., and Engen, J.R. (2011).
 #' The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in
 #' Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
+#' 
+#' @seealso
+#' \code{\link{read_hdx}}
+#' \code{\link{create_diff_uptake_dataset}}
 #'
 #' @examples
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))

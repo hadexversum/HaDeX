@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_differential_chiclet.R
 \name{plot_differential_chiclet}
 \alias{plot_differential_chiclet}
-\title{Differential chiclet plot}
+\title{Chiclet differential deuterium uptake plot}
 \usage{
 plot_differential_chiclet(
   diff_uptake_dat = NULL,
@@ -40,7 +40,8 @@ uncertainty is shown.}
 a \code{\link{ggplot}} object.
 }
 \description{
-Differential chiclet plot
+Chiclet plot of differential deuterium uptake values 
+between two biological states in time.
 }
 \details{
 Function \code{\link{plot_differential_chiclet}} generates
@@ -51,7 +52,6 @@ representing the deuterium uptake difference between chosen states,
 in a form based on provided criteria (e.q. fractional). Each tile has
 a plus sign, which size represent the uncertainty of measurement for
 chosen value.
-This plot is visible in GUI.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))

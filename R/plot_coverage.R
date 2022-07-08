@@ -18,9 +18,11 @@
 #' peptides on the protein sequence. Their position in y-axis does not contain 
 #' any information. 
 #' 
-#' @return a \code{\link[ggplot2]{ggplot}} object.
+#' @return a \code{\link{ggplot}} object.
 #' 
-#' @seealso \code{\link{read_hdx}} \code{\link{plot_position_frequency}}
+#' @seealso 
+#' \code{\link{read_hdx}} 
+#' \code{\link{plot_position_frequency}}
 #' 
 #' @examples 
 #' # load example data

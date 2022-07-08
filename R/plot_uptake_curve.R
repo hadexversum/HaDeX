@@ -1,6 +1,6 @@
-#' Plot kinetics data
+#' Plot uptake curve for specific peptides
 #' 
-#' @description Plots kinetics of the hydrogen-deuterium exchange for specific peptides. 
+#' @description Deuterium uptake curve for selected peptides. 
 #' 
 #' @importFrom dplyr %>% mutate
 #' @importFrom ggplot2 ggplot aes geom_point geom_ribbon geom_line scale_y_continuous scale_x_log10
@@ -22,9 +22,9 @@
 #' 
 #' If you want to plot data for more then one peptide in one state, join 
 #' calculated data by using \code{\link{bind_rows}} from dplyr package and 
-#' pass the result as kin_dat.
+#' pass the result as uc_dat.
 #' 
-#' @return a \code{\link{ggplot2}} object.
+#' @return a \code{\link{ggplot}} object.
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}}

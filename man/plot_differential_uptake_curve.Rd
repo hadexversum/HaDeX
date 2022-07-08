@@ -19,7 +19,7 @@ plot_differential_uptake_curve(
 \arguments{
 \item{diff_uptake_dat}{produced by \code{\link{create_diff_uptake_dataset}} function}
 
-\item{sequence}{}
+\item{sequence}{sequence of chosen peptide.}
 
 \item{theoretical}{\code{logical}, determines if plot shows theoretical values.}
 
@@ -36,13 +36,17 @@ plot_differential_uptake_curve(
 is shown.}
 }
 \value{
-a \code{\link{ggplot2}} object.
+a \code{\link{ggplot}} object.
 }
 \description{
-
+Differential uptake curve for one peptide
+between two biological states.
 }
 \details{
-Currently there is no possibility to plot multiple peptides on the plot.
+This plot shows the differential deuterium uptake between two biological 
+states for selected peptides in different time points.
+The possibility to plot multiple differences (between state and mutant) for the peptide
+will be added soon.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))

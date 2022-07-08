@@ -1,40 +1,52 @@
 #' Differential plot
 #'
+#' @description Woods plot of differential deuterium uptake values 
+#' between two biological states in time point.
+#' 
 #' @importFrom ggplot2 facet_wrap
 #' @importFrom data.table as.data.table
 #' 
-#' @param diff_uptake_dat produced by \code{\link{create_diff_uptake_dataset}} function.
-#' @param diff_p_uptake_dat ...
+#' @param diff_uptake_dat produced by \code{\link{create_diff_uptake_dataset}} 
+#' function.
+#' @param diff_p_uptake_dat produced by \code{\link{create_p_diff_uptake_dataset}} 
+#' function.
 #' @param theoretical \code{logical}, determines if values are theoretical.
 #' @param fractional \code{logical}, determines if values are fractional.
 #' @param show_houde_interval \code{logical}, determines if houde interval is shown.
-#' @param hide_houde_insignificant ...
+#' @param hide_houde_insignificant \code{logical}, determines if statistically
+#' insignificant values using Houde test are hidden on the plot.
 #' @param show_tstud_confidence \code{logical}, determines if t-Student test validity 
 #' is shown.
-#' @param hide_tstud_insignificant ...
+#' @param hide_tstud_insignificant \code{logical}, determines if statistically
+#' insignificant values using t-Student test are hidden on the plot.
 #' @param confidence_level confidence level for the test, from range [0, 1].
-#' @param time_t ...
-#' @param all_times ...
-#' @param line_size ...
+#' @param time_t time point of measurement, if only one should be displayed
+#' on the plot.
+#' @param all_times \code{logical}, determines if all the time points from the
+#' supplied data should be displayed on the plots next to each other.
+#' @param line_size line size of the lines displayed on the plot.
 #'
 #' @details Function \code{\link{plot_differential}} presents
 #' provided data in a form of differential (Woods) plot. The plot shows
 #' difference in exchange for two biological states, selected in
-#' generation of dataset at one time point of measurement .On X-axis
+#' generation of dataset at one time point of measurement. On X-axis
 #' there is a position in a sequence, with length of a segment of each
 #' peptide representing its length. On Y-axis there
 #' is deuterium uptake difference in chosen form. Error bars represents
 #' the combined and propagated uncertainty.
-#' The confidence limits based on provided confidence levels are shown
-#' on the plot. The statistically significant values are in color (red if the 
+#' For Woods Plot there is available Houde test and t-Student test to 
+#' see the statistically significant peptides. Selecting both of them 
+#' simultaneously results in hybrid testing, as described in Weis et al.
+#' The statistically significant values are in color (red if the 
 #' difference is positive, blue if negative), and the insignificant values are 
-#' grey. There are two confidence limits for comparison of the results, but
-#' there is possibility to plot only one confidence limit, if the confidence
-#' levels are the same.
-#' This plot is visible in GUI.
+#' grey. 
 #'
 #' @return a \code{\link{ggplot}} object.
 #'
+#' @references Hageman, T. S. & Weis, D. D. Reliable Identification of Significant 
+#' Differences in Differential Hydrogen Exchange-Mass Spectrometry Measurements 
+#' Using a Hybrid Significance Testing Approach. Anal Chem 91, 8008–8016 (2019).
+#' 
 #' @seealso
 #' \code{\link{create_diff_uptake_dataset}}
 #' \code{\link{show_diff_uptake_data}}

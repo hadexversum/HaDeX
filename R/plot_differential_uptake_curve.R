@@ -1,9 +1,10 @@
 #' Plot differential uptake curve
 #' 
-#' @description 
+#' @description Differential uptake curve for one peptide
+#' between two biological states.  
 #' 
 #' @param diff_uptake_dat produced by \code{\link{create_diff_uptake_dataset}} function
-#' @param sequence 
+#' @param sequence sequence of chosen peptide.
 #' @param theoretical \code{logical}, determines if plot shows theoretical values.
 #' @param fractional \code{logical}, determines if plot shows fractional values.
 #' @param uncertainty_type type of presenting uncertainty, possible values:
@@ -13,9 +14,12 @@
 #' @param show_tstud_confidence \code{logical}, determines if t-Student test validity 
 #' is shown.
 #' 
-#' @details Currently there is no possibility to plot multiple peptides on the plot.
+#' @details This plot shows the differential deuterium uptake between two biological 
+#' states for selected peptides in different time points.
+#' The possibility to plot multiple differences (between state and mutant) for the peptide
+#' will be added soon.
 #' 
-#' @return a \code{\link{ggplot2}} object.
+#' @return a \code{\link{ggplot}} object.
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}}

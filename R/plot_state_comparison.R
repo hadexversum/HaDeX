@@ -1,4 +1,7 @@
-#' Plot state comparison
+#' Plot state deuterium uptake comparison
+#' 
+#' @description Comparison plot of deuterium uptake values in time
+#' point for biological states.
 #' 
 #' @importFrom ggplot2 ggplot geom_segment geom_errorbar theme scale_y_continuous
 #' 
@@ -17,6 +20,7 @@
 #' @return a \code{ggplot} object.
 #' 
 #' @seealso 
+#' \code{\link{read_hdx}}
 #' \code{\link{calculate_state_uptake}}  
 #' 
 #' @examples 

@@ -1,5 +1,8 @@
-#' Generate chiclet plot
-#'  
+#' Chiclet deuterium uptake plot
+#'
+#' @description Chiclet plot of deuterium uptake values in time
+#' for one biological state.
+#' 
 #' @importFrom ggplot2 geom_tile scale_fill_gradient2 guide_legend element_rect
 #' 
 #' @param chiclet_dat produced by \code{\link{create_state_uptake_dataset}}
@@ -16,7 +19,6 @@
 #' a color value representing the deuterium uptake, in a form based on 
 #' provided criteria (e.q. fractional). Each tile has a plus sign, which size 
 #' represent the uncertainty of measurement for chosen value.
-#' This plot is visible in GUI.
 #' 
 #' @return a \code{\link{ggplot}} object.
 #' 
@@ -25,17 +27,17 @@
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' chic_dat <- create_state_uptake_dataset(dat)
-#' plot_chiclet(chic_dat)
+#' state_uptake_dat <- create_state_uptake_dataset(dat)
+#' plot_chiclet(state_uptake_dat)
 #' 
 #' @export plot_chiclet
 
-plot_chiclet <- function(chiclet_dat, 
+plot_chiclet <- function(uptake_dat, 
                          theoretical = FALSE, 
                          fractional = FALSE,
                          show_uncertainty = FALSE){
   
-  state <- unique(chiclet_dat[["State"]])
+  state <- unique(uptake_dat[["State"]])
   
   if (theoretical) {
     
@@ -78,13 +80,13 @@ plot_chiclet <- function(chiclet_dat,
     
   }
   
-  plot_dat <- data.table(ID = chiclet_dat[["ID"]],
-                         Exposure = as.factor(chiclet_dat[["Exposure"]]),
-                         value = chiclet_dat[[value]],
-                         err_value = chiclet_dat[[err_value]],
-                         Sequence = chiclet_dat[["Sequence"]],
-                         Start = chiclet_dat[["Start"]],
-                         End = chiclet_dat[["End"]])
+  plot_dat <- data.table(ID = uptake_dat[["ID"]],
+                         Exposure = as.factor(uptake_dat[["Exposure"]]),
+                         value = uptake_dat[[value]],
+                         err_value = uptake_dat[[err_value]],
+                         Sequence = uptake_dat[["Sequence"]],
+                         Start = uptake_dat[["Start"]],
+                         End = uptake_dat[["End"]])
   
   chiclet_plot <- ggplot(plot_dat, aes(y = Exposure, x = ID)) +
     geom_tile(aes(fill = value)) +

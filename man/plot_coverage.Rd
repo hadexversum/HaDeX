@@ -19,7 +19,7 @@ plot_coverage(
 \item{states}{sequence states to be included in plot}
 }
 \value{
-a \code{\link[ggplot2]{ggplot}} object.
+a \code{\link{ggplot}} object.
 }
 \description{
 Plots the peptide coverage of the protein sequence.
@@ -45,5 +45,6 @@ plot_coverage(dat, protein = "db_CD160", states = "CD160_HVEM")
 
 }
 \seealso{
-\code{\link{read_hdx}} \code{\link{plot_position_frequency}}
+\code{\link{read_hdx}} 
+\code{\link{plot_position_frequency}}
 }

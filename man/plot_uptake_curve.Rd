@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_uptake_curve.R
 \name{plot_uptake_curve}
 \alias{plot_uptake_curve}
-\title{Plot kinetics data}
+\title{Plot uptake curve for specific peptides}
 \usage{
 plot_uptake_curve(
   uc_dat,
@@ -27,10 +27,10 @@ or \code{\link{calculate_peptide_kinetics}} or \code{\link{create_kinetic_datase
 function.}
 }
 \value{
-a \code{\link{ggplot2}} object.
+a \code{\link{ggplot}} object.
 }
 \description{
-Plots kinetics of the hydrogen-deuterium exchange for specific peptides.
+Deuterium uptake curve for selected peptides.
 }
 \details{
 This function visualizes the output of the  
@@ -41,7 +41,7 @@ Axis are labeled according to the supplied parameters but no title is provided.
 
 If you want to plot data for more then one peptide in one state, join 
 calculated data by using \code{\link{bind_rows}} from dplyr package and 
-pass the result as kin_dat.
+pass the result as uc_dat.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))

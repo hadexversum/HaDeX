@@ -2,31 +2,32 @@
 % Please edit documentation in R/plot_chiclet.R
 \name{plot_chiclet}
 \alias{plot_chiclet}
-\title{Generate chiclet plot}
+\title{Chiclet deuterium uptake plot}
 \usage{
 plot_chiclet(
-  chiclet_dat,
+  uptake_dat,
   theoretical = FALSE,
   fractional = FALSE,
   show_uncertainty = FALSE
 )
 }
 \arguments{
-\item{chiclet_dat}{produced by \code{\link{create_state_uptake_dataset}}
-function.}
-
 \item{theoretical}{\code{logical}, determines if values are theoretical.}
 
 \item{fractional}{\code{logical}, determines if values are fractional.}
 
 \item{show_uncertainty}{\code{logical}, determines if the
 uncertainty is shown.}
+
+\item{chiclet_dat}{produced by \code{\link{create_state_uptake_dataset}}
+function.}
 }
 \value{
 a \code{\link{ggplot}} object.
 }
 \description{
-Generate chiclet plot
+Chiclet plot of deuterium uptake values in time
+for one biological state.
 }
 \details{
 Function \code{\link{plot_chiclet}} produces a chiclet
@@ -36,12 +37,11 @@ Y-axis are time points of measurement. Each tile for a peptide in time has
 a color value representing the deuterium uptake, in a form based on 
 provided criteria (e.q. fractional). Each tile has a plus sign, which size 
 represent the uncertainty of measurement for chosen value.
-This plot is visible in GUI.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-chic_dat <- create_state_uptake_dataset(dat)
-plot_chiclet(chic_dat)
+state_uptake_dat <- create_state_uptake_dataset(dat)
+plot_chiclet(state_uptake_dat)
 
 }
 \seealso{

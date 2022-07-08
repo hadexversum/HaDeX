@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_state_comparison.R
 \name{plot_state_comparison}
 \alias{plot_state_comparison}
-\title{Plot state comparison}
+\title{Plot state deuterium uptake comparison}
 \usage{
 plot_state_comparison(
   uptake_dat,
@@ -24,7 +24,8 @@ plot_state_comparison(
 a \code{ggplot} object.
 }
 \description{
-Plot state comparison
+Comparison plot of deuterium uptake values in time
+point for biological states.
 }
 \details{
 Function \code{\link{plot_state_comparison}} presents provided 
@@ -45,5 +46,6 @@ plot_state_comparison(uptake_dat, all_times = T)
 
 }
 \seealso{
+\code{\link{read_hdx}}
 \code{\link{calculate_state_uptake}}
 }
