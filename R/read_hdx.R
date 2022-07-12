@@ -1,6 +1,6 @@
 #' Read HDX-MS data file
 #' 
-#' @description Imports data from a HDX-MS file and validates its content.
+#' @description Import HDX-MS datafile and validate its content
 #' 
 #' @importFrom tools file_ext
 #' @importFrom readxl read_excel
@@ -11,24 +11,29 @@
 #' @importFrom stringi stri_count
 #' @importFrom dplyr group_by ungroup summarize
 #' 
-#' @param filename a file supplied by the user. Formats allowed: .csv, .xlsx and .xls.
+#' @param filename a file supplied by the user. 
+#' Formats allowed: .csv, .xlsx and .xls.
 #' 
-#' @details Function \code{\link{read_hdx}} accepts files produced by DynamX 3.0 or 2.0
-#' in `cluster data` format and `tables` file from HDeXaminer. 
+#' @details The function \code{\link{read_hdx}} generates a 
+#' dataset read from the supplied datafile. The files produced 
+#' by DynamX 3.0 or 2.0 in `cluster data` format and `tables` 
+#' file from HDeXaminer are handled.
+#' Moreover, the data should include at least two replicates 
+#' of the experiment to calculate the uncertainty of the measurement.
+#' For the files of HDeXaminer origin, the rows with no complete 
+#' information (e.q. missing `Exp Cent` value) are removed. The `Confidence` 
+#' column is preserved as the user should have impact on accepting rows based 
+#' on their Confidence flag. Moreover, those files need action from the user 
+#' - to confirm data processing (e.q. FD time point), choose accepted 
+#' confidence values and make some change of the labels using 
+#' \code{\link{update_hdexaminer_file}} function. 
 #' For further information check the documentation.
-#' The function checks if all necessary columns are provided in correct format. The file must 
-#' include at least two repetitions of the measurement for the uncertainty to be calculated.
-#' For the files of HDeXaminer origin, the rows with no complete information (e.q. missing
-#' `Exp Cent` value) are removed. The `Confidence` column is preserved as the user should 
-#' have impact on accepting rows based on their Confidence flag. Moreover, those files need 
-#' action from the user - to confirm data processing (e.q. FD time point), choose accepted 
-#' confidence values and make some change of the labels use \code{\link{update_hdexaminer_file}}
-#' function. 
-#' IMPORTANT! The files of HDeXaminer origin MUST be processed by hand or by 
-#' \code{\link{update_hdexaminer_file}} function to fit the input of processing functions 
-#' e.q. \code{\link{calculate_state_uptake}} or \code{\link{calculate_kinetics}}. 
+#' IMPORTANT! The files of HDeXaminer origin MUST be processed by 
+#' hand or by \code{\link{update_hdexaminer_file}} function to fit 
+#' the input of processing functions e.q. \code{\link{calculate_state_uptake}} 
+#' or \code{\link{calculate_diff_uptake}}. 
 #' 
-#' @return a \code{\link{data.frame}} object with validated content.
+#' @return a \code{\link{data.frame}} object
 #' 
 #' @seealso 
 #' \code{\link{update_hdexaminer_file}}
@@ -92,27 +97,15 @@ read_hdx <- function(filename){
   
   has_modification <- !all(is.na(dat[["Modification"]]))
   
-  # if(has_modification) { dat <- mutate(dat, State = paste0(State, ifelse(Modification!="", paste0(" - ", Modification), ""))) } 
-  
-  # dat <- select(dat, -Modification, -RT, -Fragment)
   dat <- select(dat, -RT, -Fragment)
   
   dat[["Exposure"]] <- round(dat[["Exposure"]], 3)
   dat[!is.na(Modification) & Modification!="", Sequence := paste0(Sequence, "+", Modification)]
   
-  # attr(dat, "source") <- data_type
-  # attr(dat, "has_modification") <- has_modification
-  
   hdx_data(dat = dat,
            source = data_type,
            has_modification = has_modification,
            n_rep = get_n_replicates(dat))
-  # 
-  # class(dat) <- c("hdx_data", "data.frame")
-  # 
-  # dat
-  
-  
 }
 
 upgrade_2_to_3 <- function(dat){

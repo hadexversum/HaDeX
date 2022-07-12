@@ -1,18 +1,21 @@
-#' Shows selected kinetics data
+#' Deuterium uptake curve data
 #' 
-#' @description Generates deuterium uptake data, based on the supplied
-#' parameters.
+#' @description Present deuterium uptake curve data
 #' 
-#' @param kin_dat calculated kinetic data by \code{\link{calculate_kinetics}} 
-#' or \code{\link{calculate_peptide_kinetics}} or \code{\link{create_kinetic_dataset}}
-#' function.
-#' @param theoretical \code{logical}, determines if plot shows theoretical values.
-#' @param fractional \code{logical}, determines if plot shows fractional values.
+#' @param uc_dat calculated kinetic data by \code{\link{calculate_kinetics}} 
+#' or \code{\link{calculate_peptide_kinetics}} or 
+#' \code{\link{create_kinetic_dataset}} function
+#' @param theoretical \code{logical}, indicator if values are 
+#' calculated using theoretical controls
+#' @param fractional \code{logical}, indicator if values are shown 
+#' in fractional form 
 #' 
-#' @details This data is available in the GUI. 
-#' All of the numerical values are rounded to 4 places after the dot!!
+#' @details The function \code{\link{show_uptake_data}} generates a subsets
+#' of the uc_dat based on selected parameters.
+#' The numerical values are rounded to 4 places. The names of columns
+#' are changed to user-friendly ones. 
 #' 
-#' @return a \code{\link{data.frame}} object.
+#' @return a \code{\link{data.frame}} object
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}}
@@ -21,31 +24,26 @@
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#'
-#' # one peptide in one state
-#' kin1 <- calculate_kinetics(dat, 
-#'                            protein = "db_CD160",
-#'                            sequence = "INITSSASQEGTRLN", 
-#'                            state = "CD160",
-#'                            start = 1, 
-#'                            end = 15,
-#'                            time_0 = 0.001, 
-#'                            time_100 = 1440)
-#' show_kinetic_data(kin1)
+#' uc_dat <- calculate_kinetics(dat, protein = "db_CD160",
+#'                              sequence = "INITSSASQEGTRLN", 
+#'                              state = "CD160",
+#'                              start = 1, end = 15,
+#'                              time_0 = 0.001, time_100 = 1440)
+#' show_uc_data(uc_dat)
 #' 
-#' @export show_kinetic_data
+#' @export show_uc_data
 
-show_kinetic_data <- function(kin_dat, 
-                              theoretical = FALSE, 
-                              fractional = FALSE){
+show_uc_data <- function(uc_dat, 
+                         theoretical = FALSE, 
+                         fractional = FALSE){
   
-  kin_dat <- data.table(kin_dat)
+  uc_dat <- data.table(uc_dat)
   
   if(theoretical){
     
     if(fractional){
       # theoretical & fractional
-      tmp <- kin_dat[, .(Protein, Sequence, State, Start, End, time_chosen, 
+      tmp <- uc_dat[, .(Protein, Sequence, State, Start, End, time_chosen, 
                          theo_frac_deut_uptake, err_theo_frac_deut_uptake)]
       tmp[, `:=`(theo_frac_deut_uptake = round(theo_frac_deut_uptake, 4),
                  err_theo_frac_deut_uptake = round(err_theo_frac_deut_uptake, 4))]
@@ -55,7 +53,7 @@ show_kinetic_data <- function(kin_dat,
       
     } else {
       # theoretical & absolute
-      tmp <- kin_dat[, .(Protein, Sequence, State, Start, End, time_chosen, 
+      tmp <- uc_dat[, .(Protein, Sequence, State, Start, End, time_chosen, 
                          theo_deut_uptake, err_theo_deut_uptake)]
       tmp[, `:=`(theo_deut_uptake = round(theo_deut_uptake, 4),
                  err_theo_deut_uptake = round(err_theo_deut_uptake, 4))]
@@ -68,7 +66,7 @@ show_kinetic_data <- function(kin_dat,
     
     if(fractional){
       # experimental & fractional
-      tmp <- kin_dat[, .(Protein, Sequence, State, Start, End, time_chosen, 
+      tmp <- uc_dat[, .(Protein, Sequence, State, Start, End, time_chosen, 
                          frac_deut_uptake, err_frac_deut_uptake)]
       tmp[, `:=`(frac_deut_uptake = round(frac_deut_uptake, 4),
                  err_frac_deut_uptake = round(err_frac_deut_uptake, 4))]
@@ -77,7 +75,7 @@ show_kinetic_data <- function(kin_dat,
       
     } else {
       # experimental & absolute
-      tmp <- kin_dat[, .(Protein, Sequence, State, Start, End, time_chosen, 
+      tmp <- uc_dat[, .(Protein, Sequence, State, Start, End, time_chosen, 
                          deut_uptake, err_deut_uptake)]
       tmp[, `:=`(deut_uptake = round(deut_uptake, 4),
                  err_deut_uptake = round(err_deut_uptake, 4))]

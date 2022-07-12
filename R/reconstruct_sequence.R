@@ -1,24 +1,26 @@
 #' Reconstruct protein sequence
 #'
-#' @description Reconstructs protein sequence from supplied file. 
-#'
+#' @description Reconstruct protein sequence from
+#' experimental data
+#' 
 #' @importFrom dplyr %>% bind_rows
 #' 
 #' @param dat data read by \code{\link{read_hdx}}
-#' @param protein the protein of which the sequence is reconstructed
-#' @param states biological states, for which the sequence is reconstructed
-#' and coverage calculated
-#' @param end \code{\link{numeric}}, end position of the protein, optional.
-#' If not provided, is read from the file. It allows to prelongate the sequence
-#' if the end of the sequence is cut.
+#' @param protein selected protein
+#' @param states selected biological states for given protein
+#' @param end \code{\link{numeric}}, end position of the protein
 #' 
-#' @details The function reconstructs protein sequence from supplied 
-#' experimental data. If a position is not covered, x is shown.
-#' First version doesn't support manual sequence length correction.
+#' @details The function \code{\link{reconstruct_sequence}} 
+#' generates protein sequence from supplied experimental data. 
+#' For a position not covered, letter x is shown.
+#' If the C-terminus of protein is not covered, there is a
+#' possibility to manually fix the protein lenght by passing
+#' a value to the `end` parameter.
 #' 
-#' @return reconstructed sequence - \code{character} object.
+#' @return a \code{\link{character}} object.
 #' 
-#' @seealso \code{\link{read_hdx}}
+#' @seealso 
+#' \code{\link{read_hdx}}
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))

@@ -1,61 +1,54 @@
-#' Plot uptake curve for specific peptides
+#' Deuterium uptake curve 
 #' 
-#' @description Deuterium uptake curve for selected peptides. 
+#' @description Plot deuterium uptake curve for selected peptides 
 #' 
 #' @importFrom dplyr %>% mutate
 #' @importFrom ggplot2 ggplot aes geom_point geom_ribbon geom_line scale_y_continuous scale_x_log10
 #' 
-#' @param kin_dat calculated kinetic data by \code{\link{calculate_kinetics}} 
+#' @param uc_dat data produced by \code{\link{calculate_kinetics}} 
 #' or \code{\link{calculate_peptide_kinetics}} or \code{\link{create_kinetic_dataset}}
-#' function.
-#' @param theoretical \code{logical}, determines if plot shows theoretical values.
-#' @param fractional \code{logical}, determines if plot shows fractional values.
-#' @param uncertainty_type type of presenting uncertainty, possible values:
-#' "ribbon", "bars" or "bars + line".
-#' @param log_x \code{logical}, determines if x axis shows logarithmic values.
+#' functions
+#' @param theoretical \code{logical}, indicator if values are 
+#' calculated using theoretical controls
+#' @param fractional \code{logical}, indicator if values are shown 
+#' in fractional form 
+#' @param uncertainty_type type of uncertainty presentation, possible values:
+#' "ribbon", "bars" or "bars + line"
+#' @param log_x \code{logical}, indicator if the X axis values 
+#' are transformed to log10
 #' 
-#' @details This function visualizes the output of the  
-#' \code{\link{calculate_kinetics}} function. 
-#' Based on supplied parameters appropriate columns are chosen for the plot. 
-#' The uncertainty associated with each peptide is shown as a ribbon. 
-#' Axis are labeled according to the supplied parameters but no title is provided.
+#' @details The function \code{\link{plot_uptake_curve}} generates
+#' the deuterium uptake curve for selected peptides 
+#' from selected protein.
+#' On X-axis there are time points of measurements. On Y-axis there
+#' is deuterium uptake in selected form. The combined and propagated
+#' uncertainty can be presentes as ribbons or error bars.
 #' 
-#' If you want to plot data for more then one peptide in one state, join 
-#' calculated data by using \code{\link{bind_rows}} from dplyr package and 
-#' pass the result as uc_dat.
-#' 
-#' @return a \code{\link{ggplot}} object.
-#' 
+#' @return a \code{\link{ggplot}} object
+#'  
 #' @seealso 
 #' \code{\link{read_hdx}}
 #' \code{\link{calculate_kinetics}}
 #' \code{\link{calculate_peptide_kinetics}}
+#' \code{\link{create_kinetic_dataset}}
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #'
-#' # one peptide in one state
-#' uc_dat <- calculate_kinetics(dat, 
-#'                              protein = "db_CD160",
+#' uc_dat <- calculate_kinetics(dat, protein = "db_CD160",
 #'                              sequence = "INITSSASQEGTRLN", 
 #'                              state = "CD160",
-#'                              start = 1, 
-#'                              end = 15,
-#'                              time_0 = 0.001, 
-#'                              time_100 = 1440)
+#'                              start = 1, end = 15,
+#'                              time_0 = 0.001, time_100 = 1440)
 #' plot_uptake_curve(uc_dat = uc_dat, 
 #'                   theoretical = FALSE, 
 #'                   fractional = TRUE)
 #' 
-#' # one peptide in all states         
-#' uc_dat2 <- calculate_peptide_kinetics(dat, 
-#'                                       protein = "db_CD160",
+#' uc_dat2 <- calculate_peptide_kinetics(dat, protein = "db_CD160",
 #'                                       sequence = "INITSSASQEGTRLN", 
 #'                                       states = c("CD160", "CD160_HVEM"),
-#'                                       start = 1, 
-#'                                       end = 15,
-#'                                       time_0 = 0.001, 
-#'                                       time_100 = 1440)
+#'                                       start = 1, end = 15,
+#'                                       time_0 = 0.001, time_100 = 1440)
 #' plot_uptake_curve(uc_dat = uc_dat2, 
 #'                   theoretical = FALSE, 
 #'                   fractional = TRUE)

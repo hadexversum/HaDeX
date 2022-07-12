@@ -18,27 +18,25 @@ plot_position_frequency(
 \item{chosen_state}{sequence states to be included in plot}
 }
 \value{
-a \code{\link[ggplot2]{ggplot}} object.
+a \code{\link{ggplot}} object
 }
 \description{
 Plots the frequency of coverage of protein sequence.
 }
 \details{
-The function \code{plot_position_frequency} plots a histogram of the coverage frequency based on experimental data.
-The aim of this plot is to see how many times each position of the sequence was covered (by different peptides).
+The function \code{plot_position_frequency} plots a 
+histogram of the coverage frequency based on experimental data.
+The aim of this plot is to see how many times each position of 
+the sequence was covered (by different peptides).
 }
 \examples{
-# load example data
 dat <- read_hdx(system.file(package = "HaDeX", 
                             "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-                            
-# function call with default parameters
 plot_position_frequency(dat)
-
-# function call with explicit parameters
 plot_position_frequency(dat, state = "CD160_HVEM")
 
 }
 \seealso{
-\code{\link{read_hdx}} \code{\link{plot_coverage}}
+\code{\link{read_hdx}} 
+\code{\link{plot_coverage}}
 }

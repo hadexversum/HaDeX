@@ -1,20 +1,25 @@
-#' Show uptake data
+#' Deuterium uptake data
 #' 
-#' @param uptake_dat data produced by \code{\link{create_uptake_dataset}} 
-#' function or \code{\link{create_state_uptake_dataset}}.
-#' @param theoretical \code{logical}, determines if values are theoretical.
-#' @param fractional \code{logical}, determines if values are fractional.
-#' @param renamed \code{logical}, determines if the names of the columns
-#' are renamed to user-friendly ones. Currently FALSE not implemented.
-#' 
-#' @details This function subsets the dataset based on provided criteria,
-#' rounds the numerical values (4 places) and changes the column names 
-#' to user-friendly ones. 
-#' This data is available in the GUI. 
+#' @description Present deuterium uptake values 
+#' in selected form
 #' 
 #' @importFrom dplyr rename %>% cur_group_id
 #' 
-#' @return a \code{\link{data.frame}} object.
+#' @param uptake_dat data produced by \code{\link{create_uptake_dataset}} 
+#' function or \code{\link{create_state_uptake_dataset}}
+#' @param theoretical \code{logical}, indicator if values are 
+#' calculated using theoretical controls
+#' @param fractional \code{logical}, indicator if values are shown 
+#' in fractional form 
+#' @param renamed \code{logical}, indicator if the names of the columns
+#' are renamed to user-friendly ones. Currently FALSE not implemented.
+#' 
+#' @details The function \code{\link{show_uptake_data}} generates a subsets
+#' of the uptake_dat based on selected parameters.
+#' The numerical values are rounded to 4 places. The names of columns
+#' are changed to user-friendly ones. 
+#' 
+#' @return a \code{\link{data.frame}} object
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}}
@@ -107,21 +112,26 @@ show_uptake_data <- function(uptake_dat,
 
 
 
-#' Show differential uptake data
+#' Differential deuterium uptake data
+#' 
+#' @description Present differential deuterium uptake values 
+#' in selected form
 #' 
 #' @param diff_uptake_dat data produced by 
-#' \code{\link{create_diff_uptake_dataset}} function.
-#' @param theoretical \code{logical}, determines if values are theoretical.
-#' @param fractional \code{logical}, determines if values are fractional.
-#' @param renamed \code{logical}, determines if the names of the columns
+#' \code{\link{create_diff_uptake_dataset}} function
+#' @param theoretical \code{logical}, indicator if values are 
+#' calculated using theoretical controls
+#' @param fractional \code{logical}, indicator if values are shown 
+#' in fractional form 
+#' @param renamed \code{logical}, indicator if the names of the columns
 #' are renamed to user-friendly ones. Currently FALSE not implemented.
 #' 
-#' @details This function subsets the dataset based on provided criteria,
-#' rounds the numerical values (4 places) and changes the column names 
-#' to user-friendly ones. 
-#' This data is available in the GUI. 
+#' @details The function \code{\link{show_uptake_data}} generates a subsets
+#' of the diff_uptake_dat based on selected parameters.
+#' The numerical values are rounded to 4 places. The names of columns
+#' are changed to user-friendly ones. 
 #' 
-#' @return a \code{\link{data.frame}} object.
+#' @return a \code{\link{data.frame}} object
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}}
@@ -212,20 +222,28 @@ show_diff_uptake_data <- function(diff_uptake_dat,
   
 }
 
-#' Show differential uptake data with confidence levels 
+#' Differential uptake data with confidence 
+#' 
+#' @description Present differential deuterium uptake values 
+#' in selected form, accompanied by the significance
 #' 
 #' @param diff_uptake_dat data produced by \code{\link{create_diff_uptake_dataset}}
-#' function.
-#' @param theoretical \code{logical}, determines if values are theoretical.
-#' @param fractional \code{logical}, determines if values are fractional.
+#' function
+#' @param theoretical \code{logical}, indicator if values are 
+#' calculated using theoretical controls
+#' @param fractional \code{logical}, indicator if values are shown 
+#' in fractional form 
 #' @param confidence_level confidence level for the test, from range [0, 1].
+#' @param hybrid \code{logical}, indicator if the hybrid testing was
+#' applied in diff_uptake_dat. 
 #' 
-#' @details This function subsets the dataset based on provided criteria,
-#' rounds the numerical values (4 places) and changes the column names 
-#' to user-friendly ones. 
-#' This data is available in the GUI. 
+#' @details The function \code{\link{show_uptake_data}} generates a subsets
+#' of the uptake dat based on selected parameters. It contains the information
+#' if the value is statistically significant at selected confidence level.
+#' The numerical values are rounded to 4 places. The names of columns
+#' are changed to user-friendly ones. 
 #' 
-#' @return a \code{\link{data.frame}} object.
+#' @return a \code{\link{data.frame}} object
 #' 
 #' @seealso 
 #' \code{\link{create_diff_uptake_dataset}}
@@ -241,7 +259,8 @@ show_diff_uptake_data <- function(diff_uptake_dat,
 show_diff_uptake_data_confidence <- function(diff_uptake_dat, 
                                              theoretical = FALSE, 
                                              fractional = FALSE,
-                                             confidence_level = 0.98){
+                                             confidence_level = 0.98,
+                                             hybrid = FALSE){
   
   column_name_cl1 <- paste0("Valid At ", confidence_level)
   
@@ -334,122 +353,24 @@ show_diff_uptake_data_confidence <- function(diff_uptake_dat,
 
 
 
-#' Show volcano data 
-#'  
-#' @param p_dat data produced by the \code{\link{create_p_diff_uptake_dataset}} 
-#' function.
-#' @param D_diff_threshold \code{numeric}, threshold on differential deuterium 
-#' uptake, e.q. result of Houde test. If not provided, is calculated as 
-#' Houde test at provided confidence level. 
-#' @param log_P_threshold \code{numeric}, threshold on P-value (after transformation,
-#' -log(P)). If not provided, is calculated at provided confidence level. 
-#' @param confidence_level \code{numeric}, confidence level. 
-#' @param theoretical \code{logical}, determines if values are theoretical.
-#' @param fractional \code{logical}, determines if values are fractional.
-#'
-#' @details This function subsets the dataset based on provided criteria,
-#' rounds the numerical values (4 places) and changes the column names 
-#' to user-friendly ones. It adds the column `valid at confidence_level` to
-#' indicate if the measurement is valid under hybrid testing.
-#' This data is available in the GUI. 
+#' Summary data
 #' 
-#' @references Hageman, T. S. & Weis, D. D. Reliable Identification of Significant 
-#' Differences in Differential Hydrogen Exchange-Mass Spectrometry Measurements 
-#' Using a Hybrid Significance Testing Approach. Anal Chem 91, 8008–8016 (2019).
-#' @references Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). 
-#' The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in 
-#' Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
+#' @description Show summary table
 #' 
-#' @return a \code{\link{data.frame}} object.
-#'
-#' @seealso 
-#' \code{\link{create_p_diff_uptake_dataset}} 
-#' \code{\link{plot_volcano}} 
+#' @param dat data imported by the \code{\link{read_hdx}} function
+#' @param confidence_level confidence level for the test, from range [0, 1].
+#' @param protein_length the length of the protein sequence
 #' 
-#' @examples 
-#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' vol_dat <- create_p_diff_uptake_dataset(dat)
-#' head(show_volcano_data(vol_dat))
+#' @details The format in the table is suggested by the community and 
+#' should be provided for experimetal data.
 #' 
-#' @export show_volcano_data
-
-show_volcano_data <- function(p_dat,
-                              D_diff_threshold = NULL,
-                              log_P_threshold = NULL,
-                              confidence_level = 0.98,
-                              theoretical = FALSE, 
-                              fractional = FALSE){
-  
-  if(is.null(log_P_threshold)){
-    
-    log_P_threshold <- -log(1 - confidence_level)
-    
-  }
-  
-  if (fractional){
-    
-    if(theoretical){
-      value <- "diff_theo_frac_deut_uptake"
-      err_value <- "err_diff_theo_frac_deut_uptake"
-      
-    } else {
-      value <- "diff_frac_deut_uptake"
-      err_value <- "err_diff_frac_deut_uptake" 
-    }
-    
-  } else {
-    
-    if(theoretical){
-      value <- "diff_theo_deut_uptake"
-      err_value <- "err_diff_theo_deut_uptake"
-      
-    } else {
-      value <- "diff_deut_uptake"
-      err_value <- "err_diff_deut_uptake"
-      
-    }
-  }
-  
-  if(is.null(D_diff_threshold)){
-    
-    t_value <- qt(c((1 - confidence_level)/2, 1-(1 - confidence_level)/2), df = 2)[2]
-    D_diff_threshold <-  t_value * mean(p_dat[[err_value]], na.rm = TRUE)/sqrt(length(p_dat))
-    
-  }
-  
-  plot_dat <- data.table(Protein = p_dat[["Protein"]],
-                         ID = p_dat[["ID"]],
-                         Sequence = p_dat[["Sequence"]],
-                         ID = p_dat[["ID"]],
-                         Modification = p_dat[["Modification"]],
-                         Start = p_dat[["Start"]],
-                         End = p_dat[["End"]],
-                         Exposure = as.factor(p_dat[["Exposure"]]),
-                         value = round(p_dat[[value]], 4),
-                         err_value = round(p_dat[[err_value]], 4),
-                         p_value = round(p_dat[["P_value"]], 4),
-                         log_p_value = round(p_dat[["log_p_value"]], 4), 
-                         Valid = (abs(p_dat[[value]]) >= D_diff_threshold & p_dat[["log_p_value"]] >= log_P_threshold))
-  
-}
-
-#' Show summary data
+#' @return a \code{\link{data.table}} object
 #' 
-#' @description Generates summary table.
-#' 
-#' @param dat data imported by the \code{\link{read_hdx}} function.
-#' @param confidence_limit_1 confidence level for the test, from range [0, 1].
-#' Used in the calculations.
-#' @param confidence_limit_2 second confidence level for the test, 
-#' from range [0, 1]. Used in the calculations.
-#' 
-#' @details The format in the table is suggested in Masson, G.R., Burke, J.E., 
-#' Ahn, N.G., Anand, G.S., Borchers, C., Brier, S., Bou-Assaf, G.M., Engen, J.R., 
-#' Englander, S.W., Faber, J., et al. (2019). Recommendations for performing, 
-#' interpreting and reporting hydrogen deuterium exchange mass spectrometry 
-#' (HDX-MS) experiments. Nat Methods 16, 595–602
-#' 
-#' @return a \code{\link{ggplot2}} object.
+#' @references Masson, G.R., Burke, J.E., Ahn, N.G., Anand, G.S., Borchers, C., 
+#' Brier, S., Bou-Assaf, G.M., Engen, J.R., Englander, S.W., Faber, J., 
+#' et al. (2019). Recommendations for performing, interpreting and reporting 
+#' hydrogen deuterium exchange mass spectrometry (HDX-MS) experiments. 
+#' Nat Methods 16, 595–602
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}} 
@@ -461,8 +382,7 @@ show_volcano_data <- function(p_dat,
 #' @export show_summary_data
 
 show_summary_data <- function(dat, 
-                              confidence_limit_1 = "",
-                              confidence_limit_2 = "",
+                              confidence_level = "",
                               protein_length = max(dat[["End"]])){
   
   data.frame(Name = c("HDX time course", 
@@ -480,7 +400,7 @@ show_summary_data <- function(dat,
                        get_protein_redundancy(dat, protein_length),
                        get_n_replicates(dat), 
                        #NA, 
-                       paste0(confidence_limit_1, " | ", confidence_limit_2))
+                       confidence_level)
   )
   
 }
