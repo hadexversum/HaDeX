@@ -49,7 +49,7 @@ for given peptide in chosen biological state..
 All four variants (relative & theoretical combinations) of deuterium uptake computations 
 are supported. Manual correction of percentage of deuterium the protein was exposed 
 to during the exchange in theoretical calculations is provided.
-To visualize obtained data we recommend using \code{\link{plot_kinetics}} function.
+To visualize obtained data we recommend using \code{\link{plot_uptake_curve}} function.
 The first version doesn't support filled Modification and Fragment columns.
 IMPORTANT! The kinetic data is often described as deuterium uptake curve data. 
 We use this terms interchangeable.
@@ -71,5 +71,5 @@ calculate_kinetics(dat,
 \seealso{
 \code{\link{read_hdx}} 
 \code{\link{calculate_state_uptake}} 
-\code{\link{plot_kinetics}}
+\code{\link{plot_uptake_curve}}
 }

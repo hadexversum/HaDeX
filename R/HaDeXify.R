@@ -37,6 +37,10 @@ HaDeXify <- function(plt) {
       annotation_custom(grid::rasterGrob(img, interpolate = TRUE,
                                          height = 0.05,
                                          x = 0.99, y = 0.01,
-                                         hjust = 1, vjust = 0))
+                                         hjust = 1, vjust = 0)) +
+      theme_bw() +
+      theme(plot.background = element_rect(fill = NA, color = NA),
+            legend.position = "bottom")
+    
   })
 }

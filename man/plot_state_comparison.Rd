@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_state_comparison.R
 \name{plot_state_comparison}
 \alias{plot_state_comparison}
-\title{Plot state deuterium uptake comparison}
+\title{State deuterium uptake comparison}
 \usage{
 plot_state_comparison(
   uptake_dat,
@@ -14,27 +14,31 @@ plot_state_comparison(
 )
 }
 \arguments{
-\item{uptake_dat}{data produced by \code{\link{calculate_state_uptake}} function.}
+\item{uptake_dat}{data produced by \code{\link{calculate_state_uptake}} 
+function}
 
-\item{theoretical}{\code{logical}, determines if values are theoretical.}
+\item{theoretical}{\code{logical}, indicator if values are 
+calculated using theoretical controls}
 
-\item{fractional}{\code{logical}, determines if values are fractional.}
+\item{fractional}{\code{logical}, indicator if values are shown 
+in fractional form}
 }
 \value{
-a \code{ggplot} object.
+a \code{ggplot} object
 }
 \description{
 Comparison plot of deuterium uptake values in time
 point for biological states.
 }
 \details{
-Function \code{\link{plot_state_comparison}} presents provided 
-data in a form of comparison plot, for peptides for chosen protein in chosen states,
-at one time point of measurement at once. On X-axis there is a position in a sequence, 
-with length of a segment of each peptide representing its length. On Y-axis there 
-is deuterium uptake in chosen form. Error bars represents the combined and propagated
-uncertainty. 
-This plot is visible in GUI.
+The function \code{\link{plot_state_comparison}} generates
+a comparison plot, presenting deuterium uptake values of peptides 
+from selected protein in selected biological states at one time point 
+of measurement at once. 
+On X-axis there is a position in a sequence, with length of a segment 
+of each peptide representing its length. On Y-axis there 
+is deuterium uptake in selected form. Error bars represents the combined
+and propagated uncertainty.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
@@ -43,6 +47,7 @@ plot_state_comparison(comparison_dat)
 
 uptake_dat <- create_uptake_dataset(dat, states = c("CD160", "CD160_HVEM"))
 plot_state_comparison(uptake_dat, all_times = T)
+plot_state_comparison(uptake_dat, fractional = T, all_times = T)
 
 }
 \seealso{

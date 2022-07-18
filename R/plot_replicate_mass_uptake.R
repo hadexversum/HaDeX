@@ -42,7 +42,7 @@ plot_replicate_mass_uptake <- function(dat,
                                        log_x = TRUE){
   
   
-  if(show_aggregated) {
+  if(aggregated) {
     
     mass_uptake_plot <- dat %>%
       filter(Protein == protein, 

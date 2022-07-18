@@ -2,7 +2,7 @@
 #' 
 #' @description Returns relation with confidence limits for each peptide.
 #' 
-#' @param calc_dat data produced by \code{\link{generate_differential_data_set}}
+#' @param calc_dat data produced by \code{\link{calculate_diff_uptake}}
 #' funcion.
 #' @param confidence_level confidence limit - from range [0, 1]. 
 #' @param theoretical \code{logical}, determines if values are theoretical.

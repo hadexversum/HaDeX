@@ -54,5 +54,5 @@ create_kinetic_dataset(dat, peptide_list2)
 \seealso{
 \code{\link{calculate_kinetics}}
 \code{\link{calculate_state_uptake}}
-\code{\link{plot_kinetics}}
+\code{\link{plot_uptake_curve}}
 }

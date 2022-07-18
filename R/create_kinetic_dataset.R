@@ -19,7 +19,7 @@
 #' @seealso
 #' \code{\link{calculate_kinetics}}
 #' \code{\link{calculate_state_uptake}}
-#' \code{\link{plot_kinetics}}
+#' \code{\link{plot_uptake_curve}}
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))

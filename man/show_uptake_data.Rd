@@ -2,7 +2,7 @@
 % Please edit documentation in R/show_data.R
 \name{show_uptake_data}
 \alias{show_uptake_data}
-\title{Show uptake data}
+\title{Deuterium uptake data}
 \usage{
 show_uptake_data(
   uptake_dat,
@@ -13,26 +13,29 @@ show_uptake_data(
 }
 \arguments{
 \item{uptake_dat}{data produced by \code{\link{create_uptake_dataset}} 
-function or \code{\link{create_state_uptake_dataset}}.}
+function or \code{\link{create_state_uptake_dataset}}}
 
-\item{theoretical}{\code{logical}, determines if values are theoretical.}
+\item{theoretical}{\code{logical}, indicator if values are 
+calculated using theoretical controls}
 
-\item{fractional}{\code{logical}, determines if values are fractional.}
+\item{fractional}{\code{logical}, indicator if values are shown 
+in fractional form}
 
-\item{renamed}{\code{logical}, determines if the names of the columns
+\item{renamed}{\code{logical}, indicator if the names of the columns
 are renamed to user-friendly ones. Currently FALSE not implemented.}
 }
 \value{
-a \code{\link{data.frame}} object.
+a \code{\link{data.frame}} object
 }
 \description{
-Show uptake data
+Present deuterium uptake values 
+in selected form
 }
 \details{
-This function subsets the dataset based on provided criteria,
-rounds the numerical values (4 places) and changes the column names 
-to user-friendly ones. 
-This data is available in the GUI.
+The function \code{\link{show_uptake_data}} generates a subsets
+of the uptake_dat based on selected parameters.
+The numerical values are rounded to 4 places. The names of columns
+are changed to user-friendly ones.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))

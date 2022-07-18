@@ -46,7 +46,6 @@
 #'
 #' @seealso
 #' \code{\link{create_p_diff_uptake_dataset}}
-#' \code{\link{show_volcano_data}}
 #'
 #' @examples
 #' dat <-  read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))

@@ -1,49 +1,52 @@
-#' Plot peptide coverage
+#' Peptide coverage
 #' 
-#' @description Plots the peptide coverage of the protein sequence.
+#' @description Plot the peptide coverage of the protein sequence
 #' 
 #' @importFrom ggplot2 ggplot geom_line labs theme element_blank geom_rect
 #' @importFrom data.table as.data.table setorderv
 #' @importFrom plyr . 
 #' 
-#' @param dat data as imported by the \code{\link{read_hdx}} function
-#' @param protein protein to be included in plot
-#' @param states sequence states to be included in plot
+#' @param dat data imported by the \code{\link{read_hdx}} function
+#' @param protein selected protein
+#' @param states selected biological states for given protein
+#' @param show_blanks \code{logical}, indicator if the non-covered
+#' regions of the sequence are indicated in red.
 #' 
-#' @details The function \code{plot_coverage} plots sequence coverage based on 
-#' experimental data for chosen protein in chosen state. Only non-duplicated 
+#' @details The function \code{\link{plot_coverage}} generates
+#' sequence coverage plot based on experimental data for 
+#' selected protein in selected biological states. Only non-duplicated 
 #' peptides are shown on the plot, next to each other. 
 #' 
-#' The aim of this plot is to see the dependence between positions of the 
-#' peptides on the protein sequence. Their position in y-axis does not contain 
-#' any information. 
+#' The aim of this plot is to see the dependence between 
+#' position of the peptide on the protein sequence. Their position
+#' on y-axis does not contain any information. 
 #' 
-#' @return a \code{\link{ggplot}} object.
+#' @return a \code{\link{ggplot}} object
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}} 
 #' \code{\link{plot_position_frequency}}
 #' 
 #' @examples 
-#' # load example data
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' 
-#' # plot coverage with default parameters
 #' plot_coverage(dat)
-#' 
-#' # plot coverage with explicit parameters
+#' plot_coverage(dat, show_blanks = F)
 #' plot_coverage(dat, protein = "db_CD160", states = "CD160_HVEM")
 #' 
+#' diff_uptake_dat <- create_diff_uptake_dataset(dat)
+#' plot_coverage(diff_uptake_dat)
 #' @export plot_coverage
 
 plot_coverage <- function(dat, 
                           protein = dat[["Protein"]][1],
-                          states = dat[["State"]][1],
+                          states = NULL,
                           show_blanks = TRUE){
   
   dat <- as.data.table(dat)
   
-  dat <- dat[Protein == protein & State %in% states, .(Start, End)]
+  if(!is.null(states)) { dat <- dat[State %in% states]}
+  dat <- dat[Protein == protein, .(Start, End)]
+  
   dat <- dat[!duplicated(dat)]
   dat[, Len := - End + Start]
   setorderv(dat, cols = c("Start", "Len"))

@@ -19,7 +19,7 @@
 #' kinetic data for chosen peptide in chosen biological states.
 #' It is a wrapper for \code{\link{calculate_kinetics}} but for mutltiple
 #' states.
-#' The output of this function can be visualized using \code{\link{plot_kinetics}}.
+#' The output of this function can be visualized using \code{\link{plot_uptake_curve}}.
 #' IMPORTANT! The kinetic data is often described as deuterium uptake curve data. 
 #' We use this terms interchangeable. 
 #' 
@@ -28,7 +28,7 @@
 #' @seealso 
 #' \code{\link{calculate_kinetics}}
 #' \code{\link{calculate_state_uptake}}
-#' \code{\link{plot_kinetics}}
+#' \code{\link{plot_uptake_curve}}
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))

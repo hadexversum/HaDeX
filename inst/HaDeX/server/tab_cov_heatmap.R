@@ -1,0 +1,28 @@
+
+cov_heat_dataset <- reactive({
+  
+  if(grepl("diff", input[["cov_heat_value"]])){
+    
+    calculate_diff_uptake(dat = dat(),
+                          time_t = as.numeric(input[["cov_heat_time_t"]]))
+    
+  } else if (input[["cov_heat_value"]] == "auc") {
+    
+  } else {
+    
+      calculate_state_uptake(dat = dat(),
+                             time_t = as.numeric(input[["cov_heat_time_t"]]))
+  }
+  
+})
+
+
+
+output[["coverageHeatmapPlot"]] <- renderPlot({
+  
+  # browser()
+  
+  plot_coverage_heatmap(x_dat = cov_heat_dataset(),
+                        value = input[["cov_heat_value"]])
+  
+}) 

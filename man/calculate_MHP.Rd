@@ -35,6 +35,5 @@ calculate_MHP("CHERICHERILADY", mono = T)
 }
 \seealso{
 \code{\link{read_hdx}} 
-\code{\link{calculate_state_uptake}} 
-\code{\link{plot_kinetics}}
+\code{\link{calculate_state_uptake}}
 }

@@ -1,5 +1,7 @@
 tab_chiclet <- function() HaDeX_plotTab(
+  
   title = "Chiclet plot",
+  
   settingsPanel = HaDeX_plotSettingsPanel(
     chiclet_general_settings(),
     chiclet_state(),

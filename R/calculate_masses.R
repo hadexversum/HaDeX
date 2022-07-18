@@ -117,7 +117,6 @@ calculate_exp_masses <- function(dat){
 #' @seealso 
 #' \code{\link{read_hdx}} 
 #' \code{\link{calculate_state_uptake}} 
-#' \code{\link{plot_kinetics}}
 #' 
 #' @examples 
 #' calculate_MHP("CHERICHERILADY")

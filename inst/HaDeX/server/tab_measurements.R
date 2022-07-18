@@ -180,7 +180,7 @@ mass_uptake_plot_out <- reactive({
                              state = input[["measures_state"]],
                              sequence = measures_peptide_list()[input[["measures_sequence_rows_selected"]], 1][[1]],
                              log_x = input[["mass_uptake_log_x"]],
-                             show_aggregated = input[["measures_show_charge"]]) +
+                             aggregated = input[["measures_show_charge"]]) +
     coord_cartesian(ylim = c(input[["mass_uptake_plot_y_range"]][1], input[["mass_uptake_plot_y_range"]][2])) +
     labs(x = input[["mass_uptake_plot_x_label"]],
          y = input[["mass_uptake_plot_y_label"]],

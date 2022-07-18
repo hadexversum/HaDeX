@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_uncertainty.R
 \name{plot_uncertainty}
 \alias{plot_uncertainty}
-\title{Plot the uncertainty of the measurement for peptides}
+\title{Uncertainty of the peptide measurements}
 \usage{
 plot_uncertainty(
   dat,
@@ -14,32 +14,45 @@ plot_uncertainty(
 )
 }
 \arguments{
-\item{dat}{...}
+\item{dat}{data imported by the \code{\link{read_hdx}} function}
 
-\item{protein}{...}
+\item{protein}{selected protein}
 
-\item{state}{...}
+\item{state}{selected biological state for given protein}
 
-\item{aggregated}{...}
+\item{aggregated}{\code{logical}, indicator if presented
+data is aggregated on replicate level}
 
-\item{separate_times}{....}
+\item{separate_times}{\code{logical}, indicator if the 
+values for different time points are presented separately}
 
-\item{show_threshold}{...}
+\item{show_threshold}{\code{logical}, indicator if the 
+threshold of significance is shown}
 }
 \value{
-a \code{\link{ggplot}} object.
+a \code{\link{ggplot}} object
 }
 \description{
-Plot the uncertainty of the mass measurements - for aggregated
-data or before aggregation - to see if there is a region with uncertainty 
-higher than acceptable.
+Plot the uncertainty of the mass measurements - 
+for aggregated data or before aggregation - to see if there is 
+a region with uncertainty higher than acceptable
 }
 \details{
-...
+The function \code{\link{plot_uncertainty}} generates 
+a plot of uncertainty of mass measurement of each peptide from
+selected protein in selected biological state. The values can be presented 
+in two ways: as aggregated values for each replicate, or before
+aggregation - measured values for charge values within a replicate.
+On X-axis there is a position in a sequence, with length of a segment 
+of each peptide representing its length. On Y-axis there 
+is uncertainty of the measurement in Daltons.
+The threshold is set to 1 Da, as this value is associated with exchange.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 plot_uncertainty(dat)
+plot_uncertainty(dat, aggregated = F)
+plot_uncertainty(dat, aggregated = F, separate_times = F)
 
 }
 \seealso{

@@ -451,7 +451,8 @@ server <- function(input, output, session) {
   
   source("server/tab_measurements.R", local = TRUE)
 
-  
+  ## TAB: HEATMAP COVERAGE
 
+  source("server/tab_cov_heatmap.R", local = TRUE)
 
 }

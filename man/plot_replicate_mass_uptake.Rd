@@ -9,7 +9,7 @@ plot_replicate_mass_uptake(
   protein = dat[["Protein"]][1],
   state = dat[["State"]][1],
   sequence = dat[["Sequence"]][1],
-  show_aggregated = FALSE,
+  aggregated = FALSE,
   log_x = TRUE
 )
 }
@@ -23,8 +23,8 @@ plot_replicate_mass_uptake(
 \item{sequence}{selected peptide sequence for given protein 
 in given biological state}
 
-\item{show_aggregated}{\code{logical}, indicator if presented
-data is aggregate on replicate level}
+\item{aggregated}{\code{logical}, indicator if presented
+data is aggregated on replicate level}
 
 \item{log_x}{\code{logical}, indicator if the X axis values 
 are transformed to log10}
@@ -48,7 +48,7 @@ from measured mass and the mass uptake is presented in Daltons.
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 plot_replicate_mass_uptake(dat)
-plot_replicate_mass_uptake(dat, show_aggregated = TRUE)
+plot_replicate_mass_uptake(dat, aggregated = TRUE)
 
 }
 \seealso{
