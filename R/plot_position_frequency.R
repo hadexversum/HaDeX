@@ -3,7 +3,7 @@
 #' @description Plots the frequency of coverage of protein sequence.
 #' 
 #' @importFrom ggplot2 ggplot geom_line geom_col geom_density
-#' @importFrom data.table setnames
+#' @importFrom data.table setnames merge.data.table tstrsplit
 #' 
 #' @param dat data as imported by the \code{\link{read_hdx}} function
 #' @param protein protein to be included in plot

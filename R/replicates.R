@@ -56,6 +56,7 @@ plot_peptide_mass_measurement <- function(dat,
   if(show_charge_values){
     
     rep_mass_z_dat <- dat[Protein == protein & State == state & Sequence == sequence & Exposure == time_t]
+    
     rep_mass_z_dat[, `:=`(exp_mass = Center*z - z*1.00727647, 
                           weighted_Inten = scale(Inten))]
     pep_mass_plot <- ggplot() +
@@ -273,19 +274,21 @@ create_replicate_dataset <- function(dat,
   res <- data.table(res)
   ##
   
-  res <- res[, ID := .GRP, list(Start, End)]
-  setorderv(res, cols = c("Start", "End"))
-  
+  res <- res[Modification!="", Sequence := paste0(Sequence, "+", Modification)]
+
   res <- if (is.null(time_t)) {
     res[Exposure < 99999 & Protein == protein & State == state,
-        .(ID, Sequence, Exposure, Start, End)]
+        .(Sequence, Exposure, Start, End)]
     
   } else {
     res[Exposure == time_t & Protein == protein & State == state,
-        .(ID, Sequence, Exposure, Start, End)]
+        .(Sequence, Exposure, Start, End)]
   }
   
+  res <- res[, ID := .GRP, list(Sequence, Start, End)]
+  setorderv(res, cols = c("Start", "End"))
   res <- res[, .(n = .N), by = c("Sequence", "Exposure", "Start", "End", "ID")]
+  
   setorderv(res, cols = c("Start", "End", "Exposure"))
   
   ## temporarly, for compability

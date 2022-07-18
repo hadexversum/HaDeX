@@ -26,6 +26,7 @@ measures_peptide_list <- reactive({
   dat() %>% 
     filter(Protein == input[["chosen_protein"]],
            State == input[["measures_state"]])  %>% 
+    mutate(Sequence = if_else(!is.na(Modification) & Modification!="", paste0(Sequence, "+", Modification), Sequence)) %>%
     select(Sequence, Start, End) %>%
     unique(.) %>%
     arrange(Start, End)
