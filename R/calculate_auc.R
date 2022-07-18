@@ -41,6 +41,6 @@ calculate_auc <- function(uptake_dat,
   
   uptake_dat[, auc := ifelse(is.na(auc), 0, auc)]
   
-  uptake_dat
+  data.table(uptake_dat)
   
 }
