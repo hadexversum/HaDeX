@@ -41,6 +41,16 @@ observe({
 
 observe({
   
+  updateCheckboxGroupInput(session, 
+                           inputId = "kin_states",
+                           choices = states_from_file(),
+                           selected = states_from_file())
+})
+
+##
+
+observe({
+  
   updateTextInput(session,
                   inputId = "kin_plot_title",
                   value = case_when(
@@ -134,7 +144,7 @@ peptide_list <- reactive({
   
   dat() %>%
     filter(Protein == input[["chosen_protein"]]) %>%
-    select(Sequence, State, Start, End) %>%
+    select(Sequence, Start, End) %>%
     unique(.) %>%
     arrange(Start, End)
   
@@ -147,6 +157,7 @@ output[["peptide_list_data"]] <- DT::renderDataTable({
   datatable(data = peptide_list(),
             class = "table-bordered table-condensed",
             extensions = "Buttons",
+            selection = "single",
             options = list(pageLength = 10, dom = "tip", autoWidth = TRUE, target = 'cell'),
             filter = "bottom",
             rownames = FALSE)
@@ -172,6 +183,7 @@ observeEvent(input[["reset_peptide_list"]], {
 kin_dat <- reactive({
   
   validate(need(input[["peptide_list_data_rows_selected"]], "Please select at least one peptide from the table on the left."))
+  validate(need(!is.null(input[["kin_states"]]), "Please select at least one state from the table on the left."))
   
   times_from_file <- unique(round(dat()[["Exposure"]], 3))
   
@@ -191,14 +203,36 @@ kin_dat <- reactive({
     
   }
   
-  create_kinetic_dataset(dat = dat(),
-                         peptide_list = peptide_list()[input[["peptide_list_data_rows_selected"]], ],
-                         protein = input[["chosen_protein"]],
-                         deut_part = as.numeric(input[["deut_part"]])/100,
-                         time_0 = v_time_0,
-                         time_100 = v_time_100)
+  # browser()
+  
+  calculate_peptide_kinetics(dat = dat(),
+                             protein = input[["chosen_protein"]],
+                             sequence = peptide_list()[[input[["peptide_list_data_rows_selected"]], "Sequence"]],
+                             states = input[["kin_states"]],
+                             start = peptide_list()[[input[["peptide_list_data_rows_selected"]], "Start"]],
+                             end = peptide_list()[[input[["peptide_list_data_rows_selected"]], "End"]],
+                             deut_part = as.numeric(input[["deut_part"]])/100,
+                             time_0 = v_time_0,
+                             time_100 = v_time_100)
+                     
 })
 
+############
+#### AUC ###
+############
+
+auc_dat <- reactive({
+  
+  calculate_auc(kin_dat(), state = input[["kin_states"]])
+  
+})
+
+output[["kin_auc_info"]] <- renderText({
+  
+  # browser()
+  paste0(auc_dat()[["Sequence"]], "-", auc_dat()[["State"]], ", AUC: ", round(auc_dat()[["auc"]], 4), collapse = "\n")
+  
+})
 
 #################################
 ######### PLOT ##################

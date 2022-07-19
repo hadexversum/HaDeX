@@ -11,7 +11,7 @@ calculate_exp_masses_per_replicate(dat)
 \item{dat}{data as imported by the \code{\link{read_hdx}} function}
 }
 \value{
-
+a \code{\link{data.frame}} object.
 }
 \description{
 Calculate the measured mass from partial results, per each 

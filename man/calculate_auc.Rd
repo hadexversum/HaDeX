@@ -8,8 +8,7 @@ calculate_auc(
   uptake_dat,
   protein = uptake_dat[["Protein"]][1],
   state = uptake_dat[["State"]][1],
-  preserve_values = F,
-  time_100 = NULL
+  preserve_values = F
 )
 }
 \arguments{
@@ -21,8 +20,6 @@ calculated e.q. by \code{\link{create_uptake_dataset}}}
 \item{state}{...}
 
 \item{preserve_values}{...}
-
-\item{time_100}{...}
 }
 \value{
 a \code{\link{data.frame}} object

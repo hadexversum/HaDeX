@@ -5,6 +5,7 @@ tab_uptake <- function() HaDeX_plotTab(
   settingsPanel = HaDeX_plotSettingsPanel(
     uptake_general_settings(),
     uptake_timepoints(),
+    uptake_state(),
     uptake_peptide(),
     uptake_visualization(),
     uptake_zoom(),
@@ -31,7 +32,7 @@ uptake_timepoints <- function() HaDeX_plotSettingsSection(
   
   title = "Timepoints",
   div(id = "kin_time_part",
-      h5("Choose time parameters:"),
+      p("Choose time parameters:"),
       splitLayout(
         div(id = "kin_time_0_part",
             selectInput_h(inputId = "kin_time_0",
@@ -46,6 +47,16 @@ uptake_timepoints <- function() HaDeX_plotSettingsSection(
   )
 )
  
+uptake_state <- function() HaDeX_plotSettingsSection(
+  
+  title = "State",
+  
+  checkboxGroupInput_h(inputId = "kin_states",
+                       label = "Select states:",
+                       choices = c("CD160", "CD160_HVEM"),
+                       selected = c("CD160", "CD160_HVEM"))
+)
+
 uptake_peptide <- function() HaDeX_plotSettingsSection(
   
   title = "Peptide",
@@ -128,6 +139,7 @@ uptake_plot_panel <- function() tabsetPanel(
     "Uptake curve",
     plotOutput_h("kinetic_plot_chosen_peptides", hover = hoverOpts("kinetic_plot_chosen_peptides_hover", delay = 10, delayType = "debounce"), height = 600),
     uiOutput("kinetic_plot_chosen_peptides_debug"),
+    verbatimTextOutput("kin_auc_info"),
     downloadButton("kineticPlot_download_button",
                    "Save chart (.svg)")),
   

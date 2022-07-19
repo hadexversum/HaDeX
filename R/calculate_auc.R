@@ -7,7 +7,6 @@
 #' @param protein ...
 #' @param state ...
 #' @param preserve_values ...
-#' @param time_100 ...
 #' 
 #' @details The AUC is calculated on the data normalized to unit square by 
 #' division by maximum values of exposure time and deuterium uptake, 
@@ -29,14 +28,15 @@
 calculate_auc <- function(uptake_dat,
                           protein = uptake_dat[["Protein"]][1],
                           state = uptake_dat[["State"]][1],
-                          preserve_values = F, 
-                          time_100 = NULL) {
+                          preserve_values = F) {
   
-  if(is.null(time_100)) { time_100 <- attr(uptake_dat, "time_100") }
+  
   
   uptake_dat <- as.data.table(uptake_dat)
   
-  uptake_dat <- uptake_dat[Protein == protein & State == state]
+  time_100 <- max(uptake_dat[Exposure < 99999, Exposure]) 
+  
+  uptake_dat <- uptake_dat[Protein == protein & State %in% state]
   
   uptake_dat[, `:=`(deut_uptake_sig = round(deut_uptake, 0),
                     exposure_norm = Exposure/max(Exposure)),
