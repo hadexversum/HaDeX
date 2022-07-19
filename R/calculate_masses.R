@@ -14,7 +14,7 @@
 #' The separate measurement (for each replicate in given state in given time point)
 #' can be distinguished by the `File` value.
 #' 
-#' @return a \code{\link{data.frame} object. 
+#' @return a \code{\link{data.frame}} object. 
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}} 
@@ -61,7 +61,7 @@ calculate_exp_masses_per_replicate <- function(dat){
 #' on how the data is aggregated or how the uncertainty is calculated, see the 
 #' documentation. 
 #' 
-#' @return a \code{\link{data.frame} object. 
+#' @return a \code{\link{data.frame}} object. 
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}} 

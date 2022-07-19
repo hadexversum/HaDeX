@@ -8,6 +8,9 @@ cov_heat_dataset <- reactive({
     
   } else if (input[["cov_heat_value"]] == "auc") {
     
+    tmp_dat <- dat()[dat()[["Exposure"]] < 99999, ]
+    calculate_auc(create_uptake_dataset(tmp_dat), preserve_values = F)
+    
   } else {
     
       calculate_state_uptake(dat = dat(),

@@ -2,23 +2,36 @@
 % Please edit documentation in R/calculate_auc.R
 \name{calculate_auc}
 \alias{calculate_auc}
-\title{Calculate Area Under the Curve for deuterium uptake curves}
+\title{Calculate Area Under the Curve}
 \usage{
 calculate_auc(
   uptake_dat,
   protein = uptake_dat[["Protein"]][1],
   state = uptake_dat[["State"]][1],
-  sequence = uptake_dat[["Sequence"]][1]
+  preserve_values = F,
+  time_100 = NULL
 )
 }
 \arguments{
-\item{uptake_dat}{}
+\item{uptake_dat}{data with deuterium uptake values, 
+calculated e.q. by \code{\link{create_uptake_dataset}}}
+
+\item{protein}{...}
+
+\item{state}{...}
+
+\item{preserve_values}{...}
+
+\item{time_100}{...}
+}
+\value{
+a \code{\link{data.frame}} object
 }
 \description{
-This function calculates area under the deuterium uptake curve.
+Calculates area under the deuterium uptake curve
 }
 \details{
-The AUC is calculated on the data standarized to unit square by 
+The AUC is calculated on the data normalized to unit square by 
 division by maximum values of exposure time and deuterium uptake, 
 respectively.
 }
@@ -27,4 +40,8 @@ dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.
 uptake_dat <- create_uptake_dataset(dat)
 calculate_auc(uptake_dat)
 
+}
+\seealso{
+\code{\link{read_hdx}}
+\code{\link{create_uptake_dataset}}
 }

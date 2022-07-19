@@ -45,6 +45,9 @@ plot_coverage_heatmap(x_dat, value = "diff_frac_deut_uptake")
 plot_coverage_heatmap(x_dat, value = "diff_frac_deut_uptake", time_t = 0.167)
 plot_coverage_heatmap(x_dat, value = "err_diff_frac_deut_uptake", time_t = 0.167)
 
+x_dat <- calculate_auc(create_uptake_dataset(dat))
+plot_coverage_heatmap(auc_dat, value = "auc")
+
 }
 \seealso{
 \code{\link{read_hdx}}

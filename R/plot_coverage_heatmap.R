@@ -31,6 +31,9 @@
 #' plot_coverage_heatmap(x_dat, value = "diff_frac_deut_uptake", time_t = 0.167)
 #' plot_coverage_heatmap(x_dat, value = "err_diff_frac_deut_uptake", time_t = 0.167)
 #' 
+#' x_dat <- calculate_auc(create_uptake_dataset(dat))
+#' plot_coverage_heatmap(auc_dat, value = "auc")
+#' 
 #' @export plot_coverage_heatmap
 
 plot_coverage_heatmap <- function(x_dat,
@@ -140,6 +143,14 @@ plot_coverage_heatmap <- function(x_dat,
     
     cov_heat_plot <- cov_heat_plot +
       scale_fill_gradient2(low = "white", high = "red", guide = guide_legend(keywidth = 3))
+    
+  }
+  
+  if(value == "auc"){
+    
+    cov_heat_plot <- cov_heat_plot +
+      scale_fill_gradient2(low = "white", high = "blue", guide = guide_legend(keywidth = 3), limits = c(NA, 1))
+    
     
   }
   
