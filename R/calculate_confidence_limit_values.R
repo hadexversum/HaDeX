@@ -39,7 +39,7 @@ calculate_confidence_limit_values <- function(diff_uptake_dat,
                                               confidence_level = 0.98,
                                               theoretical = FALSE,
                                               fractional = TRUE,
-                                              n_rep = NA) {
+                                              n_rep = NULL) {
   
 
   n_rep <- fcoalesce(c(attr(diff_uptake_dat, "n_rep"), n_rep, 3))[1]

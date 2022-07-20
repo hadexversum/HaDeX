@@ -171,11 +171,23 @@ woods_p_dat <- reactive({
 })
 
 #################################
+######### HDX Viewer ############
+#################################
+
+woods_test_results <- reactive({
+  
+  create_p_diff_uptake_dataset_with_confidence(p_diff_uptake_dat = woods_p_dat(),
+                                               theoretical = input[["theory"]],
+                                               fractional = input[["comp_fractional"]])
+  
+})
+
+#################################
 ######### PLOT ##################
 #################################
 
 differential_plot <- reactive({
-  
+   browser()
   plot_differential(diff_uptake_dat = woods_plot_dat(),
                     diff_p_uptake_dat = woods_p_dat(),
                     theoretical = input[["theory"]],

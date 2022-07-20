@@ -38,7 +38,7 @@ create_p_diff_uptake_dataset_with_confidence <- function(p_diff_uptake_dat,
     if(is.null(houde_interval_times)){ houde_interval_times <- unique(p_diff_uptake_dat[["Exposure"]]) }
     
     
-    houde_interval <- calculate_confidence_limit_values(p_diff_uptake_dat[Exposure %in% houde_interval_times], 
+    houde_interval <- calculate_confidence_limit_values(diff_uptake_dat = p_diff_uptake_dat[Exposure %in% houde_interval_times, ], 
                                                         confidence_level = confidence_level,
                                                         theoretical = theoretical, 
                                                         fractional = fractional)
