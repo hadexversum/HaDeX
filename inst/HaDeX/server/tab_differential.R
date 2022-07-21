@@ -59,8 +59,19 @@ observe({
   
 })
 
+##
 
+observe({
+  
+  if(input[["diff_viewer_settings"]][1]%%2 == 0) { shinyjs::hide("diff_viewer_part") }
+  
+})
 
+observe({
+
+  if(input[["diff_viewer_settings"]][1]%%2 != 0) { shinyjs::show("diff_viewer_part") }
+  
+})
 
 ##
 
@@ -176,18 +187,28 @@ woods_p_dat <- reactive({
 
 woods_test_results <- reactive({
   
-  create_p_diff_uptake_dataset_with_confidence(p_diff_uptake_dat = woods_p_dat(),
+  create_aggregated_test_results(create_p_diff_uptake_dataset_with_confidence(p_diff_uptake_dat = woods_p_dat(),
                                                theoretical = input[["theory"]],
-                                               fractional = input[["comp_fractional"]])
+                                               fractional = input[["comp_fractional"]]),
+                                 time_t = as.numeric(input[["time_t"]]))
   
 })
+
+output[["diff_viewer_download_button"]] <- downloadHandler(paste0(input[["chosen_protein"]], "-", input[["diff_viewer_chain"]], ".csv"),
+                                                           content = function(file){ 
+                                                             write.csv(woods_test_results(), 
+                                                                       file = file,
+                                                                       quote = F,
+                                                                       row.names = F)
+                                                             } )
+
 
 #################################
 ######### PLOT ##################
 #################################
 
 differential_plot <- reactive({
-   browser()
+
   plot_differential(diff_uptake_dat = woods_plot_dat(),
                     diff_p_uptake_dat = woods_p_dat(),
                     theoretical = input[["theory"]],
@@ -227,7 +248,7 @@ differential_plot_out <- reactive({
 
 output[["differentialPlot"]] <- renderPlot({
   
-  differential_plot_out()
+  differential_plot_out() 
   
 })
 

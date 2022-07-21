@@ -213,7 +213,8 @@ plot_differential <- function(diff_uptake_dat = NULL,
       scale_colour_identity() +
       labs(title = title,
            x = "Position in the sequence",
-           y = y_label) +
+           y = y_label,
+           linetype = "") +
       theme(legend.title = element_blank(),
             legend.position = "bottom",
             legend.direction = "vertical")
@@ -251,8 +252,8 @@ plot_differential <- function(diff_uptake_dat = NULL,
     }
     
     differential_plot <- differential_plot +
-      geom_segment(data = subset(plot_dat, !valid), aes(x = Start, y = value, xend = End, yend = value), color = "grey77", size = line_size) +
-      geom_errorbar(data = subset(plot_dat, !valid), aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value), color = "grey77") 
+      geom_segment(data = subset(diff_uptake_dat, !valid), aes(x = Start, y = value, xend = End, yend = value), color = "grey77", size = line_size) +
+      geom_errorbar(data = subset(diff_uptake_dat, !valid), aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value), color = "grey77") 
     
   }
   

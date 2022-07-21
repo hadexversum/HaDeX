@@ -1,6 +1,8 @@
-#' Agregates test result
+#' Agregate test result
 #' 
 #' @description ...
+#'
+#' @importFrom data.table fifelse
 #' 
 #' @param p_diff_uptake_conf_dat ...
 #' 
@@ -27,7 +29,8 @@ create_aggregated_test_results <- function(p_diff_uptake_conf_dat,
   
   p_diff_uptake_conf_dat <- p_diff_uptake_conf_dat[, sign := (diff_deut_uptake>=0) ]
   
-  p_diff_uptake_conf_dat <- p_diff_uptake_conf_dat[Exposure == time_t & is.na(Modification), .( Start, End, ID, Exposure, valid, sign)]
+  p_diff_uptake_conf_dat <- p_diff_uptake_conf_dat[Exposure == time_t & is.na(Modification), 
+                                                   .( Start, End, ID, Exposure, valid, sign)]
  
   res <- data.table(pos = 1:max(p_diff_uptake_conf_dat[["End"]]),
                     count_valid = 0,
@@ -48,5 +51,7 @@ create_aggregated_test_results <- function(p_diff_uptake_conf_dat,
   res[valid == F, result := 0]
   
   res <- res[, .(pos, result)]
+  setnames(res, c("pos",  "result"), c("Residues", paste0(time_t*60, "s")))
+  res
 }
 
