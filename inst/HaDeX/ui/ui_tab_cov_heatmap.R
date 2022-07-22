@@ -19,7 +19,7 @@ cov_heatmap_value <- function() HaDeX_plotSettingsSection(
   
   selectInput_h(inputId = "cov_heat_value",
                 label = "Select value:",
-                choices = c("theo_frac_deut_uptake", "deut_uptake", "frac_deut_uptake", "theo_deut_uptake", "diff_frac_deut_uptake", "diff_deut_uptake", "diff_theo_frac_deut_uptake", "diff_theo_deut_uptake", "err_frac_deut_uptake", "err_deut_uptake", "err_theo_frac_deut_uptake", "err_theo_deut_uptake", "err_diff_frac_deut_uptake", "err_diff_deut_uptake", "err_diff_theo_frac_deut_uptake", "err_diff_theo_deut_uptake", "auc"),
+                choices = c("back_exchange", "theo_frac_deut_uptake", "deut_uptake", "frac_deut_uptake", "theo_deut_uptake", "diff_frac_deut_uptake", "diff_deut_uptake", "diff_theo_frac_deut_uptake", "diff_theo_deut_uptake", "err_frac_deut_uptake", "err_deut_uptake", "err_theo_frac_deut_uptake", "err_theo_deut_uptake", "err_diff_frac_deut_uptake", "err_diff_deut_uptake", "err_diff_theo_frac_deut_uptake", "err_diff_theo_deut_uptake", "auc"),
                 selected = "frac_deut_uptake")
   
 )
