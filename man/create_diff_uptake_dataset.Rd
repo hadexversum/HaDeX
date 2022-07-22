@@ -36,7 +36,8 @@ value from range [0, 1].}
 a \code{\link{data.frame}} object.
 }
 \description{
-Generate differential dataset
+Calculates differential deuterium uptake values 
+between two states.
 }
 \details{
 The function \code{\link{create_diff_uptake_dataset}} 

@@ -9,7 +9,7 @@ chosen_state <- "CD160"
 
 pos_frq_plot <- plot_position_frequency(dat, 
                                         protein = chosen_protein, 
-                                        chosen_state = chosen_state)
+                                        state = chosen_state)
 
 expect_doppelganger("Position Frequency Plot", pos_frq_plot)
 

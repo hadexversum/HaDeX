@@ -31,7 +31,8 @@ value from range [0, 1].}
 a \code{\link{data.frame}} object.
 }
 \description{
-Create uptake dataset for multiple states
+Calculates deuterium uptake values for selected 
+biological states in multiple time points of measurements.
 }
 \details{
 Function \code{\link{create_uptake_dataset}} generates 

@@ -14,10 +14,9 @@ tab_woods <- function() HaDeX_plotTab(
   
   displayPanel = HaDeX_plotDisplayPanel(
     comp_plot_panel(),
-    comp_debug_panel(),
-    diff_plot_panel(),
-    diff_debug_panel()
-  )
+    # comp_debug_panel(),
+    diff_plot_panel()
+    )
 )
 
 ##
@@ -265,8 +264,40 @@ diff_plot_panel <- function() tabsetPanel(
            br(),
            div(style = "position:relative",
                plotOutput_h("differentialPlot", hover = hoverOpts("differentialPlot_hover", delay = 10, delayType = "debounce"))),
-           downloadButton("differentialPlot_download_button",
-                          "Save chart (.svg)")),
+           fluidRow(
+             column(
+               width = 6,
+               downloadButton("differentialPlot_download_button",
+                              "Save chart (.svg)")
+             ),
+             column(
+               width = 6,
+               actionButton(inputId = "diff_viewer_settings",
+                            label = "HDXViewer"),
+               br(), 
+               br(),
+               div(id = "diff_viewer_part",
+                   wellPanel(
+                     selectInput(inputId = "diff_viewer_chain",
+                                 label = "Select chain:",
+                                 choices = c("A", "B"),
+                                 selected = "A"),
+                     selectInput(inputId = "diff_viewer_datatype",
+                                 label = "Select data to import", 
+                                 choices = c("Hybrid significance"),
+                                 selected = c("Hybrid significance")),
+                     downloadButton(outputId = "diff_viewer_download_button",
+                                    label = "Create file"),
+                     actionButton(inputId = "diff_open_viewer", 
+                                  label = "Open Page", 
+                                  icon = icon("th"), 
+                                  onclick ="window.open('http://proteomique.ipbs.fr:8080/', '_blank')")
+                   )
+                  )
+             )
+           )
+           
+           ),
   
   tabPanel("Data",
            DT::dataTableOutput("differentialPlot_data"),

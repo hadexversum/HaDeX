@@ -20,48 +20,52 @@ plot_volcano(
 }
 \arguments{
 \item{p_dat}{data produced by the \code{\link{create_p_diff_uptake_dataset}}
-function.}
+function}
 
-\item{state_1}{biological state for chosen protein. It is used in the title.}
+\item{state_1}{selected biological state for given protein}
 
-\item{state_2}{biological state for chosen protein. It is used in the title.}
+\item{state_2}{selected biological state for given protein}
 
-\item{adjust_axes}{logical, indicating if the X-axis is symmetrical in
-relation to 0.}
+\item{adjust_axes}{\code{\link{logical}}, indicator if the X-axis 
+is symmetrical in relation to 0}
 
-\item{show_confidence_limits}{logical, indicates if the hybrid testing
-confidence intervals are shown.}
+\item{show_confidence_limits}{\code{\link{logical}}, indicates if the hybrid 
+test confidence levels are shown}
 
 \item{confidence_level}{confidence level for the test, from range [0, 1]. It
-should be the same as used in \code{\link{create_volcano_dataset}} function.}
+should be the same as used to prepare p_dat}
 
-\item{color_times}{logical, indicating if different time points on the plot
-are distinguishable by color.}
+\item{color_times}{\code{\link{logical}}, indicator if different time points 
+are distinguishable by color}
 
-\item{show_insignificant_grey}{...}
+\item{show_insignificant_grey}{\code{\link{logical}}, indicator if the 
+values not passing the test are shown in grey}
 
-\item{hide_insignificant}{...}
+\item{hide_insignificant}{\code{\link{logical}}, indicator if the 
+values not passing the test are hidden}
 
-\item{theoretical}{...}
+\item{fractional}{\code{logical}, indicator if values are shown 
+in fractional form}
 
-\item{relative}{...}
+\item{theoretical}{\code{logical}, indicator if values are 
+calculated using theoretical controls}
 }
 \value{
-a \code{\link{ggplot}} object.
+a \code{\link{ggplot}} object
 }
 \description{
-Volcano plot
+Volcano plot for differential deuterim uptake
+between two biological states
 }
 \details{
-The data produced by \code{\link{create_volcano_dataset}} are plotted
-in the form of a volcano plot. The generation of the data is described in the documentation
-of \code{\link{create_volcano_dataset}} function. The confidence limit on
-P-value is calculated based on the confidence level. The confidence limit on deuterium
-uptake difference is calculated using the Houde test for the time point of measurement
-from the provided data. The confidence limits are indicated by the red dotted
-lines. The points above confidence limits (upper right and left corner) are
-statistically significant in hybrid testing.
-This plot is visible in GUI.
+The function \code{\link{plot_volcano}} generates the 
+volcano plot based on supplied p_dat. 
+On X-axis there is differential deuterium uptake in selected form.
+On Y-axis there is the P-value from t-Student test between two
+biological states. Based on selected confidence level, the confidence
+limits are calculated to indicate statistically significant values -
+shown as red dotted lines. The values that are in upper left and right
+corners pass the hybrid test.
 }
 \examples{
 dat <-  read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
@@ -84,5 +88,4 @@ Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
 }
 \seealso{
 \code{\link{create_p_diff_uptake_dataset}}
-\code{\link{show_volcano_data}}
 }

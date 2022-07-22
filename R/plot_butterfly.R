@@ -1,4 +1,7 @@
-#' Butterfly plot
+#' Butterfly deuterium uptake plot
+#' 
+#' @description Butterfly plot of deuterium uptake values in time
+#' for one biological state.
 #' 
 #' @param uptake_dat data produced by \code{\link{create_state_uptake_dataset}} 
 #' function.
@@ -11,7 +14,6 @@
 #' based on provided data and parameters. On X-axis there is peptide ID. On the Y-axis
 #' there is deuterium uptake in chosen form. Data from multiple time points of 
 #' measurement is presented.
-#' This plot is visible in GUI. 
 #' 
 #' @return a \code{\link{ggplot}} object.
 #' 
@@ -20,18 +22,18 @@
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' butterfly_dat <- create_state_uptake_dataset(dat)
-#' plot_butterfly(butterfly_dat)
+#' state_uptake_dat <- create_state_uptake_dataset(dat)
+#' plot_butterfly(state_uptake_dat)
 #' 
 #' @export plot_butterfly
 
-plot_butterfly <- function(butterfly_dat, 
+plot_butterfly <- function(uptake_dat, 
                            theoretical = FALSE, 
                            fractional = FALSE,
                            uncertainty_type = "ribbon"){
   
   uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars", "bars + line"))
-  state <- unique(butterfly_dat[["State"]])
+  state <- unique(uptake_dat[["State"]])
   
   if (theoretical) {
     
@@ -75,13 +77,13 @@ plot_butterfly <- function(butterfly_dat,
     
   }
   
-  plot_dat <- data.frame(ID = butterfly_dat[["ID"]],
-                         Exposure = as.factor(butterfly_dat[["Exposure"]]),
-                         value = butterfly_dat[[value]],
-                         err_value = butterfly_dat[[err_value]],
-                         Sequence = butterfly_dat[["Sequence"]],
-                         Start = butterfly_dat[["Start"]],
-                         End = butterfly_dat[["End"]])
+  plot_dat <- data.table(ID = uptake_dat[["ID"]],
+                         Exposure = as.factor(uptake_dat[["Exposure"]]),
+                         value = uptake_dat[[value]],
+                         err_value = uptake_dat[[err_value]],
+                         Sequence = uptake_dat[["Sequence"]],
+                         Start = uptake_dat[["Start"]],
+                         End = uptake_dat[["End"]])
   
   butterfly_plot <- ggplot(plot_dat, aes(x = ID, y = value, color = Exposure)) +
     geom_point(aes(group = Exposure, color = Exposure)) +

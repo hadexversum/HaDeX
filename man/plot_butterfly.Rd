@@ -2,43 +2,43 @@
 % Please edit documentation in R/plot_butterfly.R
 \name{plot_butterfly}
 \alias{plot_butterfly}
-\title{Butterfly plot}
+\title{Butterfly deuterium uptake plot}
 \usage{
 plot_butterfly(
-  butterfly_dat,
+  uptake_dat,
   theoretical = FALSE,
   fractional = FALSE,
   uncertainty_type = "ribbon"
 )
 }
 \arguments{
+\item{uptake_dat}{data produced by \code{\link{create_state_uptake_dataset}} 
+function.}
+
 \item{theoretical}{\code{logical}, determines if values are theoretical.}
 
 \item{fractional}{\code{logical}, determines if values are fractional.}
 
 \item{uncertainty_type}{type of presenting uncertainty, possible values:
 "ribbon", "bars" or "bars + line".}
-
-\item{uptake_dat}{data produced by \code{\link{create_state_uptake_dataset}} 
-function.}
 }
 \value{
 a \code{\link{ggplot}} object.
 }
 \description{
-Butterfly plot
+Butterfly plot of deuterium uptake values in time
+for one biological state.
 }
 \details{
 Function \code{\link{plot_butterfly}} generates butterfly plot
 based on provided data and parameters. On X-axis there is peptide ID. On the Y-axis
 there is deuterium uptake in chosen form. Data from multiple time points of 
 measurement is presented.
-This plot is visible in GUI.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-butterfly_dat <- create_state_uptake_dataset(dat)
-plot_butterfly(butterfly_dat)
+state_uptake_dat <- create_state_uptake_dataset(dat)
+plot_butterfly(state_uptake_dat)
 
 }
 \seealso{

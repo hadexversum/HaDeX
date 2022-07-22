@@ -88,8 +88,8 @@ ref_dat <- structure(list(Sequence = c("INITSSASQEGTRLN", "INITSSASQEGTRLN",
 
 test_that("create_replicate_dataset values",
           expect_equal(
-            ref_dat,
-            rep_dat[rep_dat[["Sequence"]] == "INITSSASQEGTRLN", ]
+            data.frame(ref_dat),
+            data.frame(rep_dat[rep_dat[["Sequence"]] == "INITSSASQEGTRLN", ])
           )
 )
 
@@ -107,7 +107,7 @@ test_that("class is right",
 test_that("show_replicate_histogram_data colnames",
           expect_equal(
             colnames(show_replicate_histogram_data(rep_dat)),
-            c("ID", "Sequence", "Start", "End", "Exposure",  "n")
+            c("Sequence", "Exposure", "Start", "End", "ID",  "n")
           )
 )
 
@@ -117,14 +117,14 @@ test_that("show_replicate_histogram_data colnames",
 
 test_that("plot_peptide_mass_measurement class is right",
           expect_is(
-            plot_peptide_mass_measurement(rep_mass_dat),
+            plot_peptide_mass_measurement(dat),
             "ggplot"
           )
 )
 
 expect_doppelganger(
   "Peptide Mass Measurement Plot",
-  plot_peptide_mass_measurement(rep_mass_dat)
+  plot_peptide_mass_measurement(dat)
 )
 
 #####################################
@@ -163,3 +163,4 @@ expect_doppelganger(
   "Repliates histogram - one time",
   plot_replicate_histogram(rep_dat[rep_dat[["Exposure"]] == 5, ])
 )
+

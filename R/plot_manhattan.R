@@ -1,5 +1,8 @@
 #' Manhattan plot
 #' 
+#' @description Manhattan plot with p-values from the t-Student test
+#' and peptide position.
+#' 
 #' @param p_dat data produced by the \code{\link{create_p_diff_uptake_dataset}}
 #' function.
 #' @param plot_title title for the plot. If not provided, it is constructed in a form:
@@ -13,26 +16,28 @@
 #' @param show_peptide_position \code{logical}, indicates if the peptide length
 #' and position in  the  sequence is shown. Otherwise, the peptides are represented by their ID.
 #' 
-#' @details ...
+#' @details The manhattan plot presents the P-values from t-student test, to see 
+#' the regions of the protein with statistically significant changes between two 
+#' biological states. 
+#' On X-axis there is a position in a sequence, with length of a segment of each
+#' peptide representing its length. On Y-axis there is P-value from t-Student test.
 #'  
+#' @return a \code{\link{ggplot}} object.
+#' 
 #' @references Hageman, T. S. & Weis, D. D. Reliable Identification of Significant
 #' Differences in Differential Hydrogen Exchange-Mass Spectrometry Measurements
 #' Using a Hybrid Significance Testing Approach. Anal Chem 91, 8008–8016 (2019).
 #' 
-#' @return a \code{\link{ggplot}} object.
-#' 
 #' @seealso 
+#' \code{\link{read_hdx}}
 #' \code{\link{create_p_diff_uptake_dataset}}
 #' 
 #' @examples
-#' dat <-  read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' p_dat <- create_p_diff_uptake_dataset(dat)
 #' plot_manhattan(p_dat)
-#' 
 #' plot_manhattan(p_dat, separate_times = F)
-#' 
 #' plot_manhattan(p_dat, show_peptide_position = T, separate_times = F)
-#' 
 #' plot_manhattan(p_dat, separate_times = F, show_confidence_limit = F)
 #'  
 #' @export plot_manhattan
@@ -45,11 +50,13 @@ plot_manhattan <- function(p_dat,
                            show_confidence_limit = T,
                            show_peptide_position = F){
   
+  p_dat <- as.data.table(p_dat)
+  
   if(is.null(confidence_level)) {confidence_level <- attr(p_dat, "confidence_level") }
 
   if(is.null(times)) { times <- unique(p_dat[["Exposure"]])}
   
-  plot_dat <- filter(p_dat, Exposure %in% times)
+  plot_dat <- p_dat[Exposure %in% times]
    
   confidence_limit <- -log(1 - confidence_level)
   

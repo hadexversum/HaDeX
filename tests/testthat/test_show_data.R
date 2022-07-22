@@ -18,7 +18,7 @@ test_that("Theo Frac show_uptake_data colnames",
           expect_equal(colnames(show_uptake_data(uptake_dat,
                                                  theoretical = T,
                                                  fractional = T)),
-                       c("Protein", "Sequence", "ID", "State", "Start", "End", "Exposure", "Theo Frac DU [%]", "U(Theo Frac DU) [%]")
+                       c("Protein", "Sequence", "ID", "Modification", "State", "Start", "End", "Exposure", "Theo Frac DU [%]", "U(Theo Frac DU) [%]")
           )
 )
 
@@ -26,7 +26,7 @@ test_that("Frac show_uptake_data colnames",
           expect_equal(colnames(show_uptake_data(uptake_dat,
                                                  theoretical = F,
                                                  fractional = T)),
-                       c("Protein", "Sequence", "ID", "State", "Start", "End", "Exposure", "Frac DU [%]", "U(Frac DU) [%]")
+                       c("Protein", "Sequence", "ID", "Modification", "State", "Start", "End", "Exposure", "Frac DU [%]", "U(Frac DU) [%]")
           )
 )
 
@@ -34,7 +34,7 @@ test_that("Theo show_uptake_data colnames",
           expect_equal(colnames(show_uptake_data(uptake_dat,
                                                  theoretical = T,
                                                  fractional = F)),
-                       c("Protein", "Sequence", "ID", "State", "Start", "End", "Exposure", "Theo DU [Da]", "U(Theo DU) [Da]")
+                       c("Protein", "Sequence", "ID", "Modification", "State", "Start", "End", "Exposure", "Theo DU [Da]", "U(Theo DU) [Da]")
           )
 )
 
@@ -42,7 +42,7 @@ test_that("show_uptake_data colnames",
           expect_equal(colnames(show_uptake_data(uptake_dat,
                                                  theoretical = F,
                                                  fractional = F)),
-                       c("Protein", "Sequence", "ID", "State", "Start", "End", "Exposure", "DU [Da]", "U(DU) [Da]")
+                       c("Protein", "Sequence", "ID", "Modification", "State", "Start", "End", "Exposure", "DU [Da]", "U(DU) [Da]")
           )
 )
 
@@ -62,7 +62,7 @@ test_that("Theo Frac show_diff_uptake_data colnames",
           expect_equal(colnames(show_diff_uptake_data(diff_uptake_dat,
                                                       theoretical = T,
                                                       fractional = T)),
-                       c("Protein", "ID", "Sequence", "Start", "End", "Exposure", "Theo Frac Diff DU [%]", "U(Theo Frac Diff DU) [%]")
+                       c("Protein", "ID", "Sequence", "Modification", "Start", "End", "Exposure", "Theo Frac Diff DU [%]", "U(Theo Frac Diff DU) [%]")
           )
 )
 
@@ -70,7 +70,7 @@ test_that("Frac show_diff_uptake_data colnames",
           expect_equal(colnames(show_diff_uptake_data(diff_uptake_dat,
                                                       theoretical = F,
                                                       fractional = T)),
-                       c("Protein", "ID", "Sequence",  "Start", "End", "Exposure", "Frac Diff DU [%]", "U(Frac Diff DU) [%]")
+                       c("Protein", "ID", "Sequence", "Modification", "Start", "End", "Exposure", "Frac Diff DU [%]", "U(Frac Diff DU) [%]")
           )
 )
 
@@ -78,7 +78,7 @@ test_that("Theo show_diff_uptake_data colnames",
           expect_equal(colnames(show_diff_uptake_data(diff_uptake_dat,
                                                       theoretical = T,
                                                       fractional = F)),
-                       c("Protein", "ID", "Sequence", "Start", "End", "Exposure", "Theo Diff DU [Da]", "U(Theo Diff DU) [Da]")
+                       c("Protein", "ID", "Sequence", "Modification", "Start", "End", "Exposure", "Theo Diff DU [Da]", "U(Theo Diff DU) [Da]")
           )
 )
 
@@ -86,7 +86,7 @@ test_that("show_diff_uptake_data colnames",
           expect_equal(colnames(show_diff_uptake_data(diff_uptake_dat,
                                                       theoretical = F,
                                                       fractional = F)),
-                       c("Protein", "ID", "Sequence", "Start", "End", "Exposure", "Diff DU [Da]", "U(Diff DU) [Da]")
+                       c("Protein", "ID", "Sequence", "Modification", "Start", "End", "Exposure", "Diff DU [Da]", "U(Diff DU) [Da]")
           )
 )
 
@@ -98,7 +98,7 @@ test_that("Theo Frac show_diff_uptake_data_confidence colnames",
           expect_equal(colnames(show_diff_uptake_data_confidence(diff_uptake_dat,
                                                                  theoretical = T,
                                                                  fractional = T)),
-                       c("Protein", "Sequence", "ID", "Start", "End", "Exposure", "Theo Frac Diff DU [%]", "U(Theo Frac Diff DU) [%]", "Valid At 0.98", "Valid At 0.99")
+                       c("Protein", "Sequence", "ID", "Modification","Start", "End", "Exposure", "Theo Frac Diff DU [%]", "U(Theo Frac Diff DU) [%]", "Valid At 0.98")
           )
 )
 
@@ -106,7 +106,7 @@ test_that("Theo show_diff_uptake_data_confidence colnames",
           expect_equal(colnames(show_diff_uptake_data_confidence(diff_uptake_dat,
                                                                  theoretical = T,
                                                                  fractional = F)),
-                       c("Protein", "Sequence", "ID", "Start", "End", "Exposure", "Theo Diff DU [Da]", "U(Theo Diff DU) [Da]", "Valid At 0.98", "Valid At 0.99")
+                       c("Protein", "Sequence", "ID", "Modification","Start", "End", "Exposure", "Theo Diff DU [Da]", "U(Theo Diff DU) [Da]", "Valid At 0.98")
           )
 )
 
@@ -114,7 +114,7 @@ test_that("Frac show_diff_uptake_data_confidence colnames",
           expect_equal(colnames(show_diff_uptake_data_confidence(diff_uptake_dat,
                                                                  theoretical = F,
                                                                  fractional = T)),
-                       c("Protein", "Sequence", "ID", "Start", "End", "Exposure", "Frac Diff DU [%]", "U(Frac Diff DU) [%]", "Valid At 0.98", "Valid At 0.99")
+                       c("Protein", "Sequence", "ID", "Modification","Start", "End", "Exposure", "Frac Diff DU [%]", "U(Frac Diff DU) [%]", "Valid At 0.98")
           )
 )
 
@@ -122,7 +122,7 @@ test_that("show_diff_uptake_data_confidence colnames",
           expect_equal(colnames(show_diff_uptake_data_confidence(diff_uptake_dat,
                                                                  theoretical = F,
                                                                  fractional = F)),
-                       c("Protein", "Sequence", "ID", "Start", "End", "Exposure", "Diff DU [Da]", "U(Diff DU) [Da]" , "Valid At 0.98", "Valid At 0.99")
+                       c("Protein", "Sequence", "ID", "Modification","Start", "End", "Exposure", "Diff DU [Da]", "U(Diff DU) [Da]" , "Valid At 0.98")
           )
 )
 

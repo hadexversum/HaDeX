@@ -21,11 +21,12 @@ the protein. If not provided, the maximal end value from the file is used.}
 a \code{\link{numeric}} percentage value (rounded to two decimal places).
 }
 \description{
-Get protein coverage
+Calculate protein coverage by the peptides in 
+selected biological state or states.
 }
 \details{
-Function \code{\link{get_protein_coverage}} calculates the percentage coverage of the 
-protein sequence, rounded to two decimal places
+Function \code{\link{get_protein_coverage}} calculates the 
+percentage coverage of the protein sequence, rounded to two decimal places.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))

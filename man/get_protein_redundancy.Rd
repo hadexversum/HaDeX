@@ -16,7 +16,8 @@ the protein. If not provided, the maximal end value from the file is used.}
 a \code{\link{numeric}} value.
 }
 \description{
-Get protein redundancy
+Calculates the protein redundancy in the whole 
+experiment (all biological states).
 }
 \details{
 Function \code{\link{get_protein_redundancy}} calculates the redundancy

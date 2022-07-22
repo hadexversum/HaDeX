@@ -2,36 +2,44 @@
 % Please edit documentation in R/show_data.R
 \name{show_diff_uptake_data_confidence}
 \alias{show_diff_uptake_data_confidence}
-\title{Show differential uptake data with confidence levels}
+\title{Differential uptake data with confidence}
 \usage{
 show_diff_uptake_data_confidence(
   diff_uptake_dat,
   theoretical = FALSE,
   fractional = FALSE,
-  confidence_level = 0.98
+  confidence_level = 0.98,
+  hybrid = FALSE
 )
 }
 \arguments{
 \item{diff_uptake_dat}{data produced by \code{\link{create_diff_uptake_dataset}}
-function.}
+function}
 
-\item{theoretical}{\code{logical}, determines if values are theoretical.}
+\item{theoretical}{\code{logical}, indicator if values are 
+calculated using theoretical controls}
 
-\item{fractional}{\code{logical}, determines if values are fractional.}
+\item{fractional}{\code{logical}, indicator if values are shown 
+in fractional form}
 
 \item{confidence_level}{confidence level for the test, from range [0, 1].}
+
+\item{hybrid}{\code{logical}, indicator if the hybrid testing was
+applied in diff_uptake_dat.}
 }
 \value{
-a \code{\link{data.frame}} object.
+a \code{\link{data.frame}} object
 }
 \description{
-Show differential uptake data with confidence levels
+Present differential deuterium uptake values 
+in selected form, accompanied by the significance
 }
 \details{
-This function subsets the dataset based on provided criteria,
-rounds the numerical values (4 places) and changes the column names 
-to user-friendly ones. 
-This data is available in the GUI.
+The function \code{\link{show_uptake_data}} generates a subsets
+of the uptake dat based on selected parameters. It contains the information
+if the value is statistically significant at selected confidence level.
+The numerical values are rounded to 4 places. The names of columns
+are changed to user-friendly ones.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))

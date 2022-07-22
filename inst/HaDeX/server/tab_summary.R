@@ -1,10 +1,9 @@
 summary_data <- reactive({
   
-  # browser()
+  validate(need(!is.null(input[["confidence_level"]]), "Wait for the parameters to be loaded."))
   
   show_summary_data(dat = dat(),
-                    confidence_limit_1 = input[["confidence_limit"]],
-                    confidence_limit_2 = input[["confidence_limit_2"]],
+                    confidence_level = as.double(input[["confidence_level"]]),
                     protein_length = max_range())
 
   })

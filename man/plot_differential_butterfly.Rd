@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_differential_butterfly.R
 \name{plot_differential_butterfly}
 \alias{plot_differential_butterfly}
-\title{Differential butterfly plot}
+\title{Butterfly differential deuterium uptake plot}
 \usage{
 plot_differential_butterfly(
   diff_uptake_dat = NULL,
@@ -37,7 +37,8 @@ Important if selected show_confidence_limit.}
 a \code{\link{ggplot}} object.
 }
 \description{
-Differential butterfly plot
+Butterfly plot of differential deuterium uptake values 
+between two biological states in time.
 }
 \details{
 Function \code{\link{plot_differential_butterfly}} generates
@@ -46,7 +47,6 @@ there is peptide ID. On the Y-axis there is deuterium uptake difference in
 chosen form. Data from multiple time points of measurement is presented.
 If chosen, there are confidence limits based on Houde test on provided
 confidence level.
-This plot is visible in GUI.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))

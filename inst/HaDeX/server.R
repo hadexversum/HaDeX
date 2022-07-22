@@ -1,6 +1,7 @@
 source("ui.R")
 
 #########################################
+options(shiny.maxRequestSize=30*1024^2)
 
 server <- function(input, output, session) {
 
@@ -90,12 +91,16 @@ server <- function(input, output, session) {
     }
 
     if(data_source() == "HDeXaminer"){
-      paste0(status, "\nDetected data source: ", data_source(), ". User action needed below!")
+      status <- paste0(status, "\nDetected data source: ", data_source(), ". User action needed below!")
     } else {
-      paste0(status, "\nDetected data source: ", data_source(), ".")
+      status <- paste0(status, "\nDetected data source: ", data_source(), ".")
     }
 
-
+    if(has_modifications()){
+      status <- paste0(status, "\nFile contains modified peptides.")
+    }
+    
+    status
   })
 
   ##
@@ -446,7 +451,8 @@ server <- function(input, output, session) {
   
   source("server/tab_measurements.R", local = TRUE)
 
-  
+  ## TAB: HEATMAP COVERAGE
 
+  source("server/tab_cov_heatmap.R", local = TRUE)
 
 }

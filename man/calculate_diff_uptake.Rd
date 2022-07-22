@@ -8,7 +8,7 @@ calculate_diff_uptake(
   dat,
   protein = unique(dat[["Protein"]][1]),
   states = unique(dat[["State"]])[1:2],
-  time_0 = min(dat[dat[["Exposure"]] > 0, ][["Exposure"]]),
+  time_0 = min(dat[["Exposure"]]),
   time_t = unique(dat[["Exposure"]])[3],
   time_100 = max(dat[["Exposure"]]),
   deut_part = 0.9
@@ -36,7 +36,8 @@ value from range [0, 1].}
 a \code{\link{data.frame}} object.
 }
 \description{
-Calculate differential uptake
+Calculates differential deuterim uptake between 
+two selected biological states.
 }
 \details{
 Function \code{\link{calculate_diff_uptake}} calculates

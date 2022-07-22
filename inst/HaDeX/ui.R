@@ -35,7 +35,8 @@ ui <- tagList(
         # navbarMenu(
         # title = "Uptake curves",
           tab_uptake(),
-          tab_uptake_diff()
+          tab_uptake_diff(),
+          tab_cov_heatmap()
         # )
       ),
       navbarMenu(

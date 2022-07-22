@@ -9,12 +9,25 @@ HaDeXify(plt)
 \arguments{
 \item{plt}{ggplot object. Plot to HaDeXify.}
 }
+\value{
+a \code{\link{ggplot2}} object.
+}
 \description{
-This function HaDeXifies plot. It adds HaDeX logo and ggplot theme.
+This function HaDeXifies plot. It adds HaDeX logo 
+and ggplot theme.
+}
+\details{
+Function adds the logo of HaDeX package in the left down
+corner of the plot and the HaDeX theme.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-diff_uptake_dat <- generate_differential_data_set(dat)
+diff_uptake_dat <- create_diff_uptake_dataset(dat)
 HaDeXify(plot_differential(diff_uptake_dat))
 
+}
+\seealso{
+\code{\link{read_hdx}}
+\code{\link{plot_differential}}
+\code{\link{plot_butterfly}}
 }

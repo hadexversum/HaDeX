@@ -1,5 +1,8 @@
-#' Differential butterfly plot
+#' Butterfly differential deuterium uptake plot
 #'
+#' @description Butterfly plot of differential deuterium uptake values 
+#' between two biological states in time.
+#' 
 #' @importFrom ggplot2 scale_linetype_manual scale_colour_identity
 #'
 #' @param diff_uptake_dat data produced by
@@ -19,17 +22,16 @@
 #' chosen form. Data from multiple time points of measurement is presented.
 #' If chosen, there are confidence limits based on Houde test on provided
 #' confidence level.
-#' This plot is visible in GUI.
-#'
+#' 
 #' @return a \code{\link{ggplot}} object.
-#'
-#' @seealso
-#' \code{\link{read_hdx}}
-#' \code{\link{create_diff_uptake_dataset}}
 #'
 #' @references Houde, D., Berkowitz, S.A., and Engen, J.R. (2011).
 #' The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in
 #' Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
+#' 
+#' @seealso
+#' \code{\link{read_hdx}}
+#' \code{\link{create_diff_uptake_dataset}}
 #'
 #' @examples
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
@@ -109,6 +111,8 @@ plot_differential_butterfly <- function(diff_uptake_dat = NULL,
     
   }
   
+  diff_uptake_dat <- as.data.table(diff_uptake_dat)
+  
   plot_dat <- data.frame(ID = diff_uptake_dat[["ID"]],
                          Exposure = as.factor(diff_uptake_dat[["Exposure"]]),
                          value = diff_uptake_dat[[value]],
@@ -116,6 +120,8 @@ plot_differential_butterfly <- function(diff_uptake_dat = NULL,
                          Sequence = diff_uptake_dat[["Sequence"]],
                          Start = diff_uptake_dat[["Start"]],
                          End = diff_uptake_dat[["End"]])
+  
+  attr(plot_dat, "n_rep") <- attr(diff_uptake_dat, "n_rep")
   
   butterfly_differential_plot <- ggplot() +
     geom_point(data = plot_dat, aes(x = ID, y = value, group = Exposure, color = Exposure)) +
@@ -161,9 +167,11 @@ plot_differential_butterfly <- function(diff_uptake_dat = NULL,
     
     alpha <- -log(1 - attr(diff_uptake_dat, "confidence_level"))
     
-    diff_uptake_dat <- mutate(diff_uptake_dat, valid = log_p_value >= alpha) %>%
-      merge(plot_dat, by = c("Sequence", "Start", "End", "Exposure", "ID"))
+    diff_uptake_dat[, `:=`(valid = log_p_value >= alpha,
+                      Exposure = as.factor(Exposure))]
     
+    diff_uptake_dat <- merge(diff_uptake_dat, plot_dat, by = c("Sequence", "Start", "End", "Exposure", "ID"))
+      
     butterfly_differential_plot <- butterfly_differential_plot +
       geom_point(data = subset(diff_uptake_dat, !valid), aes(x = ID, y = value, group = Exposure), color = "grey77", size = 2)
     

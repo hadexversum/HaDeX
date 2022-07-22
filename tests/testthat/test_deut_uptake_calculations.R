@@ -2,6 +2,7 @@ context("deut_uptake calculations in test")
 
 library(tidyr)
 library(dplyr)
+library(data.table)
 
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 
@@ -50,21 +51,23 @@ result_tmp <- calculate_kinetics(dat = dat,
                                  time_100 = chosen_time_100,
                                  deut_part = deut_part)
 
+result_tmp <- data.table(result_tmp) ## temporary for compatibility 
+
 lapply(times, function(time){
-
+  
   lapply(deut_values, function(deut_value){
-
+    
     test_name <- paste0("calculate_kinetics-", time, "min-", deut_value)
-
+    
     test_that(test_name,
               expect_equal(
                 ref_dat[ref_dat[["Exposure"]] == time, deut_value],
-                result_tmp[result_tmp[["Exposure"]] == time, deut_value][[1]]
+                result_tmp[result_tmp[["Exposure"]] == time, get(deut_value)]
               )
     )
-
+    
   })
-
+  
 })
 
 ################################
@@ -81,22 +84,24 @@ result_tmp <- calculate_peptide_kinetics(dat = dat,
                                          time_100 = chosen_time_100,
                                          deut_part = deut_part)
 
+result_tmp <- data.table(result_tmp) ## temporary for compatibility 
+
 lapply(times, function(time){
-
+  
   lapply(deut_values, function(deut_value){
-
+    
     test_name <- paste0("calculate_peptide_kinetics-", time, "min-", deut_value)
-
+    
     test_that(test_name,
               expect_equal(
                 ref_dat[ref_dat[["Exposure"]] == time, deut_value],
                 result_tmp[result_tmp[["Exposure"]] == time &
-                             result_tmp[["State"]] == chosen_state, deut_value][[1]]
+                             result_tmp[["State"]] == chosen_state, get(deut_value)]
               )
     )
-
+    
   })
-
+  
 })
 
 ############################
@@ -121,23 +126,25 @@ test_that("states in create_kinetic_dataset",
           )
 )
 
+result_tmp <- data.table(result_tmp) ## temporary for compatibility 
+
 lapply(times, function(time){
-
+  
   lapply(deut_values, function(deut_value){
-
+    
     test_name <- paste0("create_kinetic_dataset-", time, "min-", deut_value)
-
+    
     test_that(test_name,
               expect_equal(
                 ref_dat[ref_dat[["Exposure"]] == time, deut_value],
                 result_tmp[result_tmp[["Exposure"]] == time &
                              result_tmp[["State"]] == chosen_state &
-                             result_tmp[["Sequence"]] == chosen_peptide, deut_value][[1]]
+                             result_tmp[["Sequence"]] == chosen_peptide, get(deut_value)]
               )
     )
-
+    
   })
-
+  
 })
 
 ############################
@@ -154,7 +161,7 @@ test_that("class is right",
                     "data.frame"))
 
 lapply(times, function(time){
-
+  
   result_tmp <- calculate_state_uptake(dat,
                                        protein = chosen_protein,
                                        state = chosen_state,
@@ -162,21 +169,23 @@ lapply(times, function(time){
                                        time_t = time,
                                        time_100 = chosen_time_100,
                                        deut_part = deut_part)
-
+  
+  result_tmp <- data.table(result_tmp) ## temporary for compatibility 
+  
   lapply(deut_values, function(deut_value){
-
+    
     test_name <- paste0("calculate_state_uptake-", time, "min-", deut_value)
-
+    
     test_that(test_name,
               expect_equal(
                 ref_dat[ref_dat[["Exposure"]] == time, deut_value],
                 result_tmp[result_tmp[["Sequence"]] == chosen_peptide &
-                             result_tmp[["Exposure"]] == time, deut_value][[1]]
+                             result_tmp[["Exposure"]] == time, get(deut_value)]
               )
     )
-
+    
   })
-
+  
 })
 
 
@@ -193,22 +202,24 @@ result_tmp <- create_state_uptake_dataset(dat = dat,
                                           time_100 = chosen_time_100,
                                           deut_part = deut_part)
 
+result_tmp <- data.table(result_tmp) ##!!
+
 lapply(times, function(time){
-
+  
   lapply(deut_values, function(deut_value){
-
+    
     test_name <- paste0("create_state_uptake_dataset-", time, "min-", deut_value)
-
+    
     test_that(test_name,
               expect_equal(
                 ref_dat[ref_dat[["Exposure"]] == time, deut_value],
                 result_tmp[result_tmp[["Sequence"]] == chosen_peptide &
-                             result_tmp[["Exposure"]] == time, deut_value][[1]]
+                             result_tmp[["Exposure"]] == time, get(deut_value)]
               )
     )
-
+    
   })
-
+  
 })
 
 ###########################
@@ -222,24 +233,25 @@ result_tmp <- create_uptake_dataset(dat = dat,
                                     time_100 = chosen_time_100,
                                     deut_part = deut_part)
 
+result_tmp <- data.table(result_tmp)
 
 lapply(times, function(time){
-
+  
   lapply(deut_values, function(deut_value){
-
+    
     test_name <- paste0("create_uptake_dataset-", time, "min-", deut_value)
-
+    
     test_that(test_name,
               expect_equal(
                 ref_dat[ref_dat[["Exposure"]] == time, deut_value],
                 result_tmp[result_tmp[["State"]] == chosen_state &
                              result_tmp[["Sequence"]] == chosen_peptide &
-                             result_tmp[["Exposure"]] == time, deut_value][[1]]
+                             result_tmp[["Exposure"]] == time, get(deut_value)]
               )
     )
-
+    
   })
-
+  
 })
 
 
@@ -248,9 +260,9 @@ lapply(times, function(time){
 #####################################
 
 lapply(times, function(time){
-
+  
   lapply(deut_values, function(deut_value){
-
+    
     result_tmp <- create_state_comparison_dataset(dat = dat,
                                                   protein = chosen_protein,
                                                   states = states,
@@ -258,19 +270,21 @@ lapply(times, function(time){
                                                   time_t = time,
                                                   time_100 = chosen_time_100,
                                                   deut_part = deut_part)
-
+    
+    result_tmp <- data.table(result_tmp) ##!!
+    
     test_name <- paste0("create_state_comparison_dataset-", time, "min-", deut_value)
-
+    
     test_that(test_name,
               expect_equal(
                 ref_dat[ref_dat[["Exposure"]] == time, deut_value],
                 result_tmp[result_tmp[["State"]] == chosen_state &
-                             result_tmp[["Sequence"]] == chosen_peptide, deut_value][[1]]
+                             result_tmp[["Sequence"]] == chosen_peptide, get(deut_value)]
               )
     )
-
+    
   })
-
+  
 })
 
 ############################
@@ -278,16 +292,16 @@ lapply(times, function(time){
 ############################
 
 dat_tmp <- create_control_dataset(dat = dat,
-                                     control_protein = chosen_protein,
-                                     control_state = chosen_state,
-                                     control_exposure = chosen_time_100)
+                                  control_protein = chosen_protein,
+                                  control_state = chosen_state,
+                                  control_exposure = chosen_time_100)
 
 test_that("maximal exchange control added",
           expect_true(99999 %in% unique(dat_tmp[["Exposure"]])))
 
 
 lapply(times, function(time){
-
+  
   result_tmp <- calculate_state_uptake(dat_tmp,
                                        protein = chosen_protein,
                                        state = chosen_state,
@@ -295,20 +309,21 @@ lapply(times, function(time){
                                        time_t = time,
                                        time_100 = 99999,
                                        deut_part = deut_part)
-
+  result_tmp <- data.table(result_tmp)
+  
   lapply(deut_values, function(deut_value){
-
+    
     test_name <- paste0("calculate_state_uptake with control -", time, "min-", deut_value)
-
+    
     test_that(test_name,
               expect_equal(
                 ref_dat[ref_dat[["Exposure"]] == time, deut_value],
                 result_tmp[result_tmp[["Sequence"]] == chosen_peptide &
-                             result_tmp[["Exposure"]] == time, deut_value][[1]]
+                             result_tmp[["Exposure"]] == time, get(deut_value)]
               )
     )
-
+    
   })
-
+  
 })
 

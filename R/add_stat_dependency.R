@@ -2,7 +2,7 @@
 #' 
 #' @description Returns relation with confidence limits for each peptide.
 #' 
-#' @param calc_dat data produced by \code{\link{generate_differential_data_set}}
+#' @param calc_dat data produced by \code{\link{calculate_diff_uptake}}
 #' funcion.
 #' @param confidence_level confidence limit - from range [0, 1]. 
 #' @param theoretical \code{logical}, determines if values are theoretical.
@@ -19,7 +19,10 @@
 #' The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in 
 #' Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
 #' 
-#' @seealso \code{\link{read_hdx}} \code{\link{calculate_diff_uptake}}
+#' @seealso 
+#' \code{\link{read_hdx}} 
+#' \code{\link{calculate_diff_uptake}}
+#' \code{\link{calculate_confidence_limit_values}}
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", 
@@ -28,7 +31,6 @@
 #' result <- add_stat_dependency(calc_dat)
 #' head(result)                            
 #' 
-#' 
 #' @export add_stat_dependency
 
 add_stat_dependency <- function(calc_dat,
@@ -36,16 +38,19 @@ add_stat_dependency <- function(calc_dat,
                                 theoretical = FALSE, 
                                 fractional = TRUE){
   
-  value_column <- case_when(
-    theoretical & fractional ~ "diff_theo_frac_deut_uptake",
-    theoretical & !(fractional) ~ "diff_theo_deut_uptake",
-    !(theoretical) & fractional ~ "diff_frac_deut_uptake",
-    !(theoretical) & !(fractional) ~ "diff_deut_uptake"
-  )
+  options <- c("diff_theo_frac_deut_uptake",
+               "diff_theo_deut_uptake",
+               "diff_frac_deut_uptake",
+               "diff_deut_uptake")
   
-  confidence_values <- calculate_confidence_limit_values(calc_dat, 
-                                                         confidence_level = confidence_level, 
-                                                         fractional = fractional, 
+  value_column <- options[c(theoretical & fractional,
+                            theoretical & !(fractional),
+                            !(theoretical) & fractional,
+                            !(theoretical) & !(fractional))]
+  
+  confidence_values <- calculate_confidence_limit_values(calc_dat,
+                                                         confidence_level = confidence_level,
+                                                         fractional = fractional,
                                                          theoretical = theoretical)
   
   calc_dat[[paste0("valid_at_", confidence_level)]] <- calc_dat[[value_column]] > confidence_values[2] | calc_dat[[value_column]] < confidence_values[1]

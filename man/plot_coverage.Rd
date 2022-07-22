@@ -2,42 +2,51 @@
 % Please edit documentation in R/plot_coverage.R
 \name{plot_coverage}
 \alias{plot_coverage}
-\title{Plot peptide coverage}
+\title{Peptide coverage}
 \usage{
-plot_coverage(dat, protein = dat[["Protein"]][1], states = dat[["State"]][1])
+plot_coverage(
+  dat,
+  protein = dat[["Protein"]][1],
+  states = NULL,
+  show_blanks = TRUE
+)
 }
 \arguments{
-\item{dat}{data as imported by the \code{\link{read_hdx}} function}
+\item{dat}{data imported by the \code{\link{read_hdx}} function}
 
-\item{protein}{protein to be included in plot}
+\item{protein}{selected protein}
 
-\item{states}{sequence states to be included in plot}
+\item{states}{selected biological states for given protein}
+
+\item{show_blanks}{\code{logical}, indicator if the non-covered
+regions of the sequence are indicated in red.}
 }
 \value{
-a \code{\link[ggplot2]{ggplot}} object.
+a \code{\link{ggplot}} object
 }
 \description{
-Plots the peptide coverage of the protein sequence.
+Plot the peptide coverage of the protein sequence
 }
 \details{
-The function \code{plot_coverage} plots sequence coverage based on experimental data for chosen protein in chosen state. 
-Only non-duplicated peptides are shown on the plot, next to each other. 
+The function \code{\link{plot_coverage}} generates
+sequence coverage plot based on experimental data for 
+selected protein in selected biological states. Only non-duplicated 
+peptides are shown on the plot, next to each other. 
 
-The aim of this plot is to see the dependence between positions of the peptides on the protein sequence. Their position in y-axis 
-does not contain any information.
+The aim of this plot is to see the dependence between 
+position of the peptide on the protein sequence. Their position
+on y-axis does not contain any information.
 }
 \examples{
-# load example data
-dat <- read_hdx(system.file(package = "HaDeX", 
-                            "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-                            
-# plot coverage with default parameters
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 plot_coverage(dat)
-
-# plot coverage with explicit parameters
+plot_coverage(dat, show_blanks = F)
 plot_coverage(dat, protein = "db_CD160", states = "CD160_HVEM")
 
+diff_uptake_dat <- create_diff_uptake_dataset(dat)
+plot_coverage(diff_uptake_dat)
 }
 \seealso{
-\code{\link{read_hdx}} \code{\link{plot_position_frequency}}
+\code{\link{read_hdx}} 
+\code{\link{plot_position_frequency}}
 }

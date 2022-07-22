@@ -12,7 +12,7 @@ add_stat_dependency(
 )
 }
 \arguments{
-\item{calc_dat}{data produced by \code{\link{generate_differential_data_set}}
+\item{calc_dat}{data produced by \code{\link{calculate_diff_uptake}}
 funcion.}
 
 \item{confidence_level}{confidence limit - from range [0, 1].}
@@ -40,7 +40,6 @@ calc_dat <- calculate_diff_uptake(dat)
 result <- add_stat_dependency(calc_dat)
 head(result)                            
 
-
 }
 \references{
 Houde, D., Berkowitz, S.A., and Engen, J.R. (2011). 
@@ -48,5 +47,7 @@ The Utility of Hydrogen/Deuterium Exchange Mass Spectrometry in
 Biopharmaceutical Comparability Studies. J Pharm Sci 100, 2071–2086.
 }
 \seealso{
-\code{\link{read_hdx}} \code{\link{calculate_diff_uptake}}
+\code{\link{read_hdx}} 
+\code{\link{calculate_diff_uptake}}
+\code{\link{calculate_confidence_limit_values}}
 }

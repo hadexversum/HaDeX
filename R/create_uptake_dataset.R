@@ -1,5 +1,10 @@
 #' Create uptake dataset for multiple states
 #'
+#' @description Calculates deuterium uptake values for selected 
+#' biological states in multiple time points of measurements.
+#' 
+#' @importFrom dplyr arrange filter summarise 
+#' 
 #' @param dat data imported by the \code{\link{read_hdx}} function.
 #' @param protein chosen protein. 
 #' @param states list of biological states for chosen protein.
@@ -41,13 +46,15 @@ create_uptake_dataset <- function(dat,
                                   time_100 = max(dat[["Exposure"]]),
                                   deut_part = 0.9){
   
+  dat <- data.table(dat)
+  
   times <- unique(dat[["Exposure"]])
-  times <- times[times > time_0 & times < time_100]
+  times <- times[times > time_0]
   
   
-  uptake_dat <- lapply(states, function(state){
+  uptake_dat <- rbindlist(lapply(states, function(state){
     
-    lapply(times, function(time){
+    rbindlist(lapply(times, function(time){
       
       calculate_state_uptake(dat, protein = protein, 
                              state = state,
@@ -55,15 +62,20 @@ create_uptake_dataset <- function(dat,
                              time_0 = time_0, time_100 = time_100,
                              deut_part = deut_part)
       
-    }) %>% bind_rows
+    }))
     
-  }) %>% bind_rows()
+  }))
+  
+  uptake_dat <- data.frame(uptake_dat)
   
   attr(uptake_dat, "protein") <- protein
+  attr(uptake_dat, "state") <- NULL
+  attr(uptake_dat, "time_t") <- NULL
   attr(uptake_dat, "states") <- states
   attr(uptake_dat, "time_0") <- time_0
   attr(uptake_dat, "time_100") <- time_100
   attr(uptake_dat, "deut_part") <- deut_part
+  attr(uptake_dat, "has_modification") <- attr(dat, "has_modification")
   
   return(uptake_dat)
   

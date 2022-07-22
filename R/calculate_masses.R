@@ -14,7 +14,7 @@
 #' The separate measurement (for each replicate in given state in given time point)
 #' can be distinguished by the `File` value.
 #' 
-#' @return Data frame with aggregated results for each replicate of the experiment.
+#' @return a \code{\link{data.frame}} object. 
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}} 
@@ -31,13 +31,20 @@ calculate_exp_masses_per_replicate <- function(dat){
   
   proton_mass <- 1.00727647
   
-  dat %>%
-    mutate(exp_mass = Center*z - z*proton_mass) %>%
-    select(-Center, -z) %>%
-    group_by(Protein, State, Sequence, Start, End, MHP, MaxUptake, Exposure, File) %>%
-    summarize(avg_exp_mass = weighted.mean(exp_mass, Inten, na.rm = TRUE)) %>%
-    ungroup(.) %>%
-    arrange(Start, End)
+  dat <- data.table(dat)
+  
+  exp_dat <- dat[ , `:=`(exp_mass = Center*z - z*proton_mass)]
+  exp_dat <- exp_dat[, .(Protein, Start, End, Sequence, MaxUptake, MHP,
+                         State, Exposure, File, Modification, Inten, exp_mass)]
+  exp_dat <- exp_dat[, .(avg_exp_mass = weighted.mean(exp_mass, Inten, na.rm = TRUE)),
+                     by = c("Protein", "State", "Sequence", "Start", "End", 
+                            "MHP", "MaxUptake", "Exposure", "File", 
+                            "Modification")]
+  setorderv(exp_dat, cols = c("Start", "End"))
+  
+  exp_dat <- data.frame(exp_dat)
+  
+  return(exp_dat)
   
 }
 
@@ -54,12 +61,16 @@ calculate_exp_masses_per_replicate <- function(dat){
 #' on how the data is aggregated or how the uncertainty is calculated, see the 
 #' documentation. 
 #' 
-#' @return Data frame with aggregated mass results from replicates of the experiment.
+#' @return a \code{\link{data.frame}} object. 
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}} 
 #' \code{\link{calculate_exp_masses_per_replicate}}
 #' \code{\link{calculate_state_uptake}} 
+#' 
+#' @examples 
+#' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+#' calculate_exp_masses(dat)
 #' 
 #' @export calculate_exp_masses
 
@@ -67,13 +78,19 @@ calculate_exp_masses <- function(dat){
   
   proton_mass <- 1.00727647
   
-  dat %>%
-    calculate_exp_masses_per_replicate(.) %>%
-    group_by(Protein, State, Sequence, Start, End, MHP, Exposure) %>%
-    summarize(avg_mass = mean(avg_exp_mass),
-              err_avg_mass = sd(avg_exp_mass)/sqrt(length(Exposure))) %>%
-    ungroup(.) %>%
-    arrange(Start, End)
+  exp_dat <- calculate_exp_masses_per_replicate(dat)
+  
+  exp_dat <- data.table(exp_dat)
+  
+  exp_dat <- exp_dat[, .(avg_mass = mean(avg_exp_mass),
+                         err_avg_mass = sd(avg_exp_mass)/sqrt(.N)),
+                     by = c("Protein", "State", "Sequence", "Start", "End", "MHP", "Exposure", "Modification")]
+  
+  setorderv(exp_dat, cols = c("Start", "End"))
+  
+  exp_dat <- data.frame(exp_dat)
+  
+  return(exp_dat)
   
 }
 
@@ -92,14 +109,18 @@ calculate_exp_masses <- function(dat){
 #' @details This function calculates the mass of the singly charged monoisotopic (or not)
 #' molecular ion for given peptide. It is the sum of the residue masses plus the masses
 #' of the terminationg group (H and OH). The source of the masses can be found here:
-#' \url{http://www.matrixscience.com/help/aa_help.html}.
+#' \url{http://www.matrixscience.com/help/aa_help.html}. Keep in mind that this function
+#' returns the value of an unmodified peptide.
 #' 
 #' @return vector of numeric MHP values of provided Sequences
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}} 
 #' \code{\link{calculate_state_uptake}} 
-#' \code{\link{plot_kinetics}}
+#' 
+#' @examples 
+#' calculate_MHP("CHERICHERILADY")
+#' calculate_MHP("CHERICHERILADY", mono = T)
 #' 
 #' @export calculate_MHP
 

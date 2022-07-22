@@ -1,5 +1,10 @@
 #' Create uptake dataset for chosen state
 #' 
+#' @description Calculates deuterium uptake values for one 
+#' biological state.
+#' 
+#' @importFrom data.table setcolorder
+#' 
 #' @param dat data imported by the \code{\link{read_hdx}} function.
 #' @param protein chosen protein. 
 #' @param state biological state for chosen protein.
@@ -38,20 +43,24 @@ create_state_uptake_dataset <- function(dat,
                                         time_100 = max(dat[["Exposure"]]),
                                         deut_part = 0.9){
   
+  dat <- data.table(dat)
+  
   all_times <- unique(dat[["Exposure"]])
   times <- all_times[all_times > time_0 & all_times <= time_100]
   
-  state_uptake_dat <- lapply(times, function(time){
+  state_uptake_dat <- rbindlist(lapply(times, function(time){
     
-    calculate_state_uptake(dat, protein = protein, state = state,
-                           time_0 = time_0, time_t = time, time_100 = time_100, 
-                           deut_part = deut_part) %>%
-      arrange(Start, End) %>%
-      mutate(ID = 1L:nrow(.),
-             Exposure = time) %>%
-      select(ID, Exposure, everything()) 
+    uptake_dat <- setorderv(calculate_state_uptake(dat, protein = protein, state = state,
+                                                   time_0 = time_0, time_t = time, time_100 = time_100,
+                                                   deut_part = deut_part), cols = c("Start", "End"))
+    uptake_dat[["ID"]] <- 1:nrow(uptake_dat)
+    uptake_dat[["Exposure"]] <- time
+    col_order <- c("ID", "Exposure", setdiff(colnames(uptake_dat), c("ID", "Exposure")))
+    setcolorder(uptake_dat, col_order)
     
-  }) %>% bind_rows()
+  }))
+  
+  state_uptake_dat <- data.frame(state_uptake_dat)
   
   attr(state_uptake_dat, "protein") <- protein
   attr(state_uptake_dat, "state") <- state

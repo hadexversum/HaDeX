@@ -1,19 +1,30 @@
-#' Plot the uncertainty of the measurement for peptides
+#' Uncertainty of the peptide measurements 
 #'
-#' @description Plot the uncertainty of the mass measurements - for aggregated
-#' data or before aggregation - to see if there is a region with uncertainty 
-#' higher than acceptable. 
+#' @description Plot the uncertainty of the mass measurements - 
+#' for aggregated data or before aggregation - to see if there is 
+#' a region with uncertainty higher than acceptable
 #' 
-#' @param dat ...
-#' @param protein ...
-#' @param state ...
-#' @param aggregated ...
-#' @param separate_times ....
-#' @param show_threshold ...
+#' @param dat data imported by the \code{\link{read_hdx}} function
+#' @param protein selected protein
+#' @param state selected biological state for given protein
+#' @param aggregated \code{logical}, indicator if presented
+#' data is aggregated on replicate level
+#' @param separate_times \code{logical}, indicator if the 
+#' values for different time points are presented separately
+#' @param show_threshold \code{logical}, indicator if the 
+#' threshold of significance is shown
 #' 
-#' @details ...
+#' @details The function \code{\link{plot_uncertainty}} generates 
+#' a plot of uncertainty of mass measurement of each peptide from
+#' selected protein in selected biological state. The values can be presented 
+#' in two ways: as aggregated values for each replicate, or before
+#' aggregation - measured values for charge values within a replicate.
+#' On X-axis there is a position in a sequence, with length of a segment 
+#' of each peptide representing its length. On Y-axis there 
+#' is uncertainty of the measurement in Daltons.
+#' The threshold is set to 1 Da, as this value is associated with exchange.
 #' 
-#' @return a \code{\link{ggplot}} object.
+#' @return a \code{\link{ggplot}} object
 #' 
 #' @seealso
 #' \code{\link{read_hdx}}
@@ -22,7 +33,8 @@
 #' @examples
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' plot_uncertainty(dat)
-#'
+#' plot_uncertainty(dat, aggregated = F)
+#' plot_uncertainty(dat, aggregated = F, separate_times = F)
 #'
 #' @export plot_uncertainty 
 

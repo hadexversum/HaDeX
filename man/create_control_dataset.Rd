@@ -25,7 +25,8 @@ point of measurement), from dat.}
 a \code{\link{data.frame}} object.
 }
 \description{
-Create dataset with control
+This function adds selected experimental maximal 
+exchange control as a measurement for all biological states.
 }
 \details{
 Function \code{\link{create_control_dataset}}

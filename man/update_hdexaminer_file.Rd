@@ -2,7 +2,7 @@
 % Please edit documentation in R/update_hdexaminer_file.R
 \name{update_hdexaminer_file}
 \alias{update_hdexaminer_file}
-\title{Update data from HDeXaminer}
+\title{Update HDeXaminer datafile}
 \usage{
 update_hdexaminer_file(
   dat,
@@ -15,45 +15,45 @@ update_hdexaminer_file(
 )
 }
 \arguments{
-\item{dat}{a data frame with data read from file by \code{\link{read_hdx}}}
+\item{dat}{data imported by the \code{\link{read_hdx}} function}
 
-\item{fd_time}{time point (in minutes) for fully deuterated sample. Numeric value, bigger than other
-time points in the file. Obligatory}
+\item{fd_time}{time point [min] for fully deuterated sample}
 
-\item{old_protein_name}{protein name to be changed. String or string vector (if the file contains
-data from multiple proteins). Not obligatory}
+\item{old_protein_name}{protein name to be changed}
 
-\item{new_protein_name}{new names for old_protein_name. String or string vector (if the file contains
-data from multiple proteins). Not obligatory}
+\item{new_protein_name}{new name for old_protein_name}
 
-\item{old_state_name}{state names to be changed. String or string vector (if the file contains
-data from multiple states). Not obligatory}
+\item{old_state_name}{state names to be changed}
 
-\item{new_state_name}{new names for old_state_name. String or string vector (if the file contains
-data from multiple states). Not obligatory}
+\item{new_state_name}{new names for old_state_name}
 
-\item{confidence}{vector of accepted confidence values (internal flag from HDeXaminer). By default only
-accepted values are `Medium` and `High`, with `Low` excluded. The user can control that by specifying 
-this parameter}
+\item{confidence}{vector of accepted confidence values 
+(internal flag from HDeXaminer). By default only
+accepted values are `Medium` and `High`, with `Low` excluded}
 }
 \value{
-\code{dat} - a \code{\link{data.frame}} with validated and updated content.
+a \code{\link{data.frame}} object
 }
 \description{
-Updates data read from file with detected data source HDeXaminer
+Update data from HDeXaminer file
 }
 \details{
-Data from HDeXaminer is condensed and automated data retrieving may be corrected by the user. 
-The original file has a mark "FD" for fully deuterated data instead of numerical value for time point 
-(provided in minutes) that is not consistent for workflow and not enough for precise data description.
-Moreover, the data about both protein and state is included in one column and for detailed information
+The function \code{\link{update_hdexaminer_file}}
+changes the data read from HDeXaminer file.
+Data from HDeXaminer is condensed and automated 
+data retrieving may be corrected by the user. 
+The original file has a mark "FD" for fully deuterated 
+data instead of numerical value for time point  
+(provided in minutes) that is not consistent for workflow
+and not enough for precise data description.
+Moreover, the data about both protein and state is included
+in one column and for detailed information
 function \code{\link{update_hdexaminer_file}} allows to change them.
 }
 \examples{
-# read example data 
 dat_hdexaminer <- read_hdx(system.file(package = "HaDeX", 
                      "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-                     
+upadate_hdexaminer_file(dat_hdexaminer)                      
 
 }
 \seealso{

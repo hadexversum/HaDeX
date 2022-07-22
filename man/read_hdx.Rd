@@ -7,29 +7,34 @@
 read_hdx(filename)
 }
 \arguments{
-\item{filename}{a file supplied by the user. Formats allowed: .csv, .xlsx and .xls.}
+\item{filename}{a file supplied by the user. 
+Formats allowed: .csv, .xlsx and .xls.}
 }
 \value{
-a \code{\link{data.frame}} object with validated content.
+a \code{\link{data.frame}} object
 }
 \description{
-Imports data from a HDX-MS file and validates its content.
+Import HDX-MS datafile and validate its content
 }
 \details{
-Function \code{\link{read_hdx}} accepts files produced by DynamX 3.0 or 2.0
-in `cluster data` format and `tables` file from HDeXaminer. 
+The function \code{\link{read_hdx}} generates a 
+dataset read from the supplied datafile. The files produced 
+by DynamX 3.0 or 2.0 in `cluster data` format and `tables` 
+file from HDeXaminer are handled.
+Moreover, the data should include at least two replicates 
+of the experiment to calculate the uncertainty of the measurement.
+For the files of HDeXaminer origin, the rows with no complete 
+information (e.q. missing `Exp Cent` value) are removed. The `Confidence` 
+column is preserved as the user should have impact on accepting rows based 
+on their Confidence flag. Moreover, those files need action from the user 
+- to confirm data processing (e.q. FD time point), choose accepted 
+confidence values and make some change of the labels using 
+\code{\link{update_hdexaminer_file}} function. 
 For further information check the documentation.
-The function checks if all necessary columns are provided in correct format. The file must 
-include at least two repetitions of the measurement for the uncertainty to be calculated.
-For the files of HDeXaminer origin, the rows with no complete information (e.q. missing
-`Exp Cent` value) are removed. The `Confidence` column is preserved as the user should 
-have impact on accepting rows based on their Confidence flag. Moreover, those files need 
-action from the user - to confirm data processing (e.q. FD time point), choose accepted 
-confidence values and make some change of the labels use \code{\link{update_hdexaminer_file}}
-function. 
-IMPORTANT! The files of HDeXaminer origin MUST be processed by hand or by 
-\code{\link{update_hdexaminer_file}} function to fit the input of processing functions 
-e.q. \code{\link{calculate_state_uptake}} or \code{\link{calculate_kinetics}}.
+IMPORTANT! The files of HDeXaminer origin MUST be processed by 
+hand or by \code{\link{update_hdexaminer_file}} function to fit 
+the input of processing functions e.q. \code{\link{calculate_state_uptake}} 
+or \code{\link{calculate_diff_uptake}}.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", 

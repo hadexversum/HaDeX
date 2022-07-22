@@ -26,6 +26,7 @@ measures_peptide_list <- reactive({
   dat() %>% 
     filter(Protein == input[["chosen_protein"]],
            State == input[["measures_state"]])  %>% 
+    mutate(Sequence = if_else(!is.na(Modification) & Modification!="", paste0(Sequence, "+", Modification), Sequence)) %>%
     select(Sequence, Start, End) %>%
     unique(.) %>%
     arrange(Start, End)
@@ -70,7 +71,9 @@ observe({
 
 observe({
   
-  max_mu <- round_any(max(mass_uptake_plot_data()["mass_uptake"], na.rm = TRUE), 1, ceiling)
+  # browser()
+
+  max_mu <- round_any(max(mass_uptake_plot_data()[["mass_uptake"]], na.rm = TRUE), 1, ceiling)
     
   updateSliderInput(session,
                     inputId = "mass_uptake_plot_y_range",
@@ -81,7 +84,9 @@ observe({
 
 measures_plot_dat <- reactive({
   
-  filter(dat(), Exposure < 99999)
+  ## temporarly, for compability
+  
+  filter(data.frame(dat()), Exposure < 99999)
   
 })
 
@@ -99,7 +104,7 @@ measures_plot_out <- reactive({
                                 protein = input[["chosen_protein"]],
                                 show_charge_values = !input[["measures_show_charge"]],
                                 state =  input[["measures_state"]],
-                                sequence = measures_peptide_list()[input[["measures_sequence_rows_selected"]], 1],
+                                sequence = measures_peptide_list()[input[["measures_sequence_rows_selected"]], 1][[1]],
                                 time_t = as.numeric(input[["measures_time"]]))  + 
     labs(x = input[["measures_plot_x_label"]],
          y = input[["measures_plot_y_label"]],
@@ -173,9 +178,9 @@ mass_uptake_plot_out <- reactive({
   plot_replicate_mass_uptake(dat = measures_plot_dat(),
                              protein = input[["chosen_protein"]],
                              state = input[["measures_state"]],
-                             sequence = measures_peptide_list()[input[["measures_sequence_rows_selected"]], 1],
+                             sequence = measures_peptide_list()[input[["measures_sequence_rows_selected"]], 1][[1]],
                              log_x = input[["mass_uptake_log_x"]],
-                             show_aggregated = input[["measures_show_charge"]]) +
+                             aggregated = input[["measures_show_charge"]]) +
     coord_cartesian(ylim = c(input[["mass_uptake_plot_y_range"]][1], input[["mass_uptake_plot_y_range"]][2])) +
     labs(x = input[["mass_uptake_plot_x_label"]],
          y = input[["mass_uptake_plot_y_label"]],
@@ -215,7 +220,7 @@ mass_uptake_plot_data <- reactive({
   filtered_dat <- measures_plot_dat() %>%
     filter(Protein == input[["chosen_protein"]], 
            State == input[["measures_state"]],
-           Sequence == measures_peptide_list()[input[["measures_sequence_rows_selected"]], 1],
+           Sequence == measures_peptide_list()[input[["measures_sequence_rows_selected"]], 1][[1]],
            Exposure > as.numeric(input[["no_deut_control"]]))
     
   if(input[["measures_show_charge"]]) {

@@ -1,5 +1,8 @@
-#' Differential chiclet plot
-#'
+#' Chiclet differential deuterium uptake plot
+#' 
+#' @description Chiclet plot of differential deuterium uptake values 
+#' between two biological states in time.
+#' 
 #' @param diff_uptake_dat data produced by
 #' \code{\link{create_diff_uptake_dataset}} function.
 #' @param diff_p_uptake_dat ...
@@ -21,7 +24,6 @@
 #' in a form based on provided criteria (e.q. fractional). Each tile has
 #' a plus sign, which size represent the uncertainty of measurement for
 #' chosen value.
-#' This plot is visible in GUI.
 #'
 #' @return a \code{\link{ggplot}} object.
 #'
@@ -103,6 +105,8 @@ plot_differential_chiclet <- function(diff_uptake_dat = NULL,
     
   }
   
+  diff_uptake_dat <- as.data.table(diff_uptake_dat)
+  
   plot_dat <- data.frame(ID = diff_uptake_dat[["ID"]],
                          Exposure = as.factor(diff_uptake_dat[["Exposure"]]),
                          value = diff_uptake_dat[[value]],
@@ -110,6 +114,8 @@ plot_differential_chiclet <- function(diff_uptake_dat = NULL,
                          Sequence = diff_uptake_dat[["Sequence"]],
                          Start = diff_uptake_dat[["Start"]],
                          End = diff_uptake_dat[["End"]])
+  
+  attr(plot_dat, "n_rep") <- attr(diff_uptake_dat, "n_rep")
   
   min_du <- min(plot_dat[["value"]])
   max_du <- max(plot_dat[["value"]])
@@ -152,8 +158,13 @@ plot_differential_chiclet <- function(diff_uptake_dat = NULL,
     
     alpha <- -log(1 - confidence_level)
     
-    diff_uptake_dat <- mutate(diff_uptake_dat, valid = log_p_value >= alpha, Exposure = as.factor(Exposure)) %>%
-      merge(plot_dat, by = c("Sequence", "Start", "End", "Exposure", "ID"))
+    #### datatable extra
+    diff_uptake_dat <- data.table(diff_uptake_dat)
+    
+    diff_uptake_dat[, `:=`(valid = log_p_value >= alpha, 
+                           Exposure = as.factor(Exposure))]
+      
+    diff_uptake_dat <- merge(diff_uptake_dat, plot_dat, by = c("Sequence", "Start", "End", "Exposure", "ID"))
     
     chiclet_differential_plot <- chiclet_differential_plot +
       geom_tile(data = subset(diff_uptake_dat, !valid), aes(x = ID, y = Exposure), fill = "grey89") +

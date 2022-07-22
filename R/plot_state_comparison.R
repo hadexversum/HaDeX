@@ -1,22 +1,30 @@
-#' Plot state comparison
+#' State deuterium uptake comparison
+#' 
+#' @description Comparison plot of deuterium uptake values in time
+#' point for biological states.
 #' 
 #' @importFrom ggplot2 ggplot geom_segment geom_errorbar theme scale_y_continuous
 #' 
-#' @param uptake_dat data produced by \code{\link{calculate_state_uptake}} function.
-#' @param theoretical \code{logical}, determines if values are theoretical. 
-#' @param fractional \code{logical}, determines if values are fractional.
+#' @param uptake_dat data produced by \code{\link{calculate_state_uptake}} 
+#' function
+#' @param theoretical \code{logical}, indicator if values are 
+#' calculated using theoretical controls
+#' @param fractional \code{logical}, indicator if values are shown 
+#' in fractional form 
 #' 
-#' @details Function \code{\link{plot_state_comparison}} presents provided 
-#' data in a form of comparison plot, for peptides for chosen protein in chosen states,
-#' at one time point of measurement at once. On X-axis there is a position in a sequence, 
-#' with length of a segment of each peptide representing its length. On Y-axis there 
-#' is deuterium uptake in chosen form. Error bars represents the combined and propagated
-#' uncertainty. 
-#' This plot is visible in GUI. 
+#' @details The function \code{\link{plot_state_comparison}} generates
+#' a comparison plot, presenting deuterium uptake values of peptides 
+#' from selected protein in selected biological states at one time point 
+#' of measurement at once. 
+#' On X-axis there is a position in a sequence, with length of a segment 
+#' of each peptide representing its length. On Y-axis there 
+#' is deuterium uptake in selected form. Error bars represents the combined
+#' and propagated uncertainty. 
 #' 
-#' @return a \code{ggplot} object.
+#' @return a \code{ggplot} object
 #' 
 #' @seealso 
+#' \code{\link{read_hdx}}
 #' \code{\link{calculate_state_uptake}}  
 #' 
 #' @examples 
@@ -26,6 +34,7 @@
 #' 
 #' uptake_dat <- create_uptake_dataset(dat, states = c("CD160", "CD160_HVEM"))
 #' plot_state_comparison(uptake_dat, all_times = T)
+#' plot_state_comparison(uptake_dat, fractional = T, all_times = T)
 #' 
 #' @export plot_state_comparison
 
@@ -36,9 +45,11 @@ plot_state_comparison <- function(uptake_dat,
                                   all_times = FALSE,
                                   time_t = NULL){
   
-  if(is.null(time_t) & !all_times) {time_t <- coalesce(c(attr(uptake_dat, "time_t"), unique(uptake_dat[["Exposure"]])[3] ))}
+  uptake_dat <- data.table(uptake_dat)
   
-  if(!all_times) { uptake_dat <- filter(uptake_dat, Exposure == time_t) }
+  if(is.null(time_t) & !all_times) {time_t <- fcoalesce(attr(uptake_dat, "time_t"), unique(uptake_dat[["Exposure"]])[3] )}
+  
+  if(!all_times) { uptake_dat <- uptake_dat[Exposure == time_t] }
   
   
   if (theoretical) {
@@ -83,7 +94,7 @@ plot_state_comparison <- function(uptake_dat,
     
   }
   
-  plot_dat <- data.frame(Sequence = uptake_dat[["Sequence"]],
+  plot_dat <- data.table(Sequence = uptake_dat[["Sequence"]],
                          Start = uptake_dat[["Start"]],
                          End = uptake_dat[["End"]],
                          Med_Sequence = uptake_dat[["Med_Sequence"]],

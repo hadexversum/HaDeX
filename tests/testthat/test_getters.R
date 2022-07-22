@@ -49,3 +49,4 @@ test_that("Redundancy protein legth is ok",
             get_protein_redundancy(dat, 100)
           )
 )
+

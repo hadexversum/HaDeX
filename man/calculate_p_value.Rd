@@ -37,7 +37,14 @@ a \code{\link{data.frame}} object.
 Create p-value dataset
 }
 \details{
-...
+This function calculates P-value based on the supplied data.
+Unpaired t-Student test (with supplied parameters) is used to establish if the 
+null hypothesis (there is no difference between measured mass values 
+between two selected biological states) can be rejected, based on the 
+experimental mass values from replicates of the experiment - for peptide
+in given time point of measurement.
+For the peptides that have only one replicate of the measurement (in any 
+state) the P-value cannot be calculated.
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))

@@ -3,7 +3,7 @@ context("diff_deut_uptake calculations in test")
 library(tidyr)
 library(dplyr)
 
-dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv")) %>%  data.table()
 
 
 ################
@@ -45,6 +45,8 @@ lapply(times, function(time){
                                       time_t = time,
                                       time_100 = chosen_time_100,
                                       deut_part = deut_part)
+  
+  result_tmp <- data.table(result_tmp) ## temporarily, for compatibility
 
   lapply(deut_values, function(deut_value){
 
@@ -53,13 +55,16 @@ lapply(times, function(time){
     test_that(test_name,
               expect_equal(ref_dat[ref_dat[["Exposure"]] == time, deut_value],
                            result_tmp[result_tmp[["Sequence"]] == chosen_peptide &
-                                        result_tmp[["Exposure"]] == time, deut_value][[1]]
+                                        result_tmp[["Exposure"]] == time, get(deut_value)]
               )
     )
 
   })
 
 })
+
+
+
 
 ################################
 ## CREATE_DIFF_UPTAKE_DATASET ##
@@ -74,6 +79,8 @@ lapply(times, function(time){
                                            time_0 = chosen_time_0,
                                            time_100 = chosen_time_100,
                                            deut_part = deut_part)
+  
+  result_tmp <- data.table(result_tmp) ## temporarily, for compatibility
 
   lapply(deut_values, function(deut_value){
 
@@ -82,7 +89,7 @@ lapply(times, function(time){
     test_that(test_name,
               expect_equal(ref_dat[ref_dat[["Exposure"]] == time, deut_value],
                            result_tmp[result_tmp[["Sequence"]] == chosen_peptide &
-                                        result_tmp[["Exposure"]] == time, deut_value][[1]]
+                                        result_tmp[["Exposure"]] == time, get(deut_value)]
               )
     )
 

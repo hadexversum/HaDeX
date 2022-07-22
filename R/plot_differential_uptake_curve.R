@@ -1,9 +1,10 @@
 #' Plot differential uptake curve
 #' 
-#' @description 
+#' @description Differential uptake curve for one peptide
+#' between two biological states.  
 #' 
 #' @param diff_uptake_dat produced by \code{\link{create_diff_uptake_dataset}} function
-#' @param sequence 
+#' @param sequence sequence of chosen peptide.
 #' @param theoretical \code{logical}, determines if plot shows theoretical values.
 #' @param fractional \code{logical}, determines if plot shows fractional values.
 #' @param uncertainty_type type of presenting uncertainty, possible values:
@@ -13,9 +14,12 @@
 #' @param show_tstud_confidence \code{logical}, determines if t-Student test validity 
 #' is shown.
 #' 
-#' @details Currently there is no possibility to plot multiple peptides on the plot.
+#' @details This plot shows the differential deuterium uptake between two biological 
+#' states for selected peptides in different time points.
+#' The possibility to plot multiple differences (between state and mutant) for the peptide
+#' will be added soon.
 #' 
-#' @return a \code{\link{ggplot2}} object.
+#' @return a \code{\link{ggplot}} object.
 #' 
 #' @seealso 
 #' \code{\link{read_hdx}}
@@ -43,33 +47,40 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
                                            show_houde_interval = FALSE,
                                            show_tstud_confidence = FALSE){
   
+  
   uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars", "bars + line"))
   
   ##
   
   if (show_tstud_confidence) {
     
-    if(is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } else { diff_uptake_dat <-  filter(diff_p_uptake_dat, Sequence == sequence) }
+    if(is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } else { diff_uptake_dat <-  diff_p_uptake_dat }
     
   } else {
     
     if(is.null(diff_uptake_dat) & is.null(diff_p_uptake_dat)) { stop("Please, provide the neccessary data.") } else  { 
       
-      if(is.null(diff_uptake_dat)) {diff_uptake_dat <- filter(diff_p_uptake_dat, Sequence == sequence) } else {
+      if(is.null(diff_uptake_dat)) {diff_uptake_dat <- diff_p_uptake_dat } else {
         
-        diff_uptake_dat <- filter(diff_uptake_dat, Sequence == sequence)
+        diff_uptake_dat <- diff_uptake_dat
         
       }
       
     }
     
   }
+  ### as.data.table
+  diff_uptake_dat <- as.data.table(diff_uptake_dat)
+  
+  diff_uptake_dat <- diff_uptake_dat[Sequence == sequence]
+  
+  
   
   if(is.null(sequence)){ sequence <- diff_uptake_dat[["Sequence"]][1] }
   
   states <- paste0(attr(diff_uptake_dat, "state_1"), "-", attr(diff_uptake_dat, "state_2"))
   
-  diff_uptake_dat <- filter(diff_uptake_dat, Exposure < 99999) 
+  diff_uptake_dat <- diff_uptake_dat[Exposure < 99999]
   
   
   ##
@@ -112,15 +123,14 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
     
   }
   
-  plot_dat <- data.frame(Sequence = diff_uptake_dat[["Sequence"]],
+  plot_dat <- data.table(Sequence = diff_uptake_dat[["Sequence"]],
                          Start = diff_uptake_dat[["Start"]],
                          End = diff_uptake_dat[["End"]],
                          Exposure = diff_uptake_dat[["Exposure"]],
                          value = diff_uptake_dat[[value]],
                          err_value = diff_uptake_dat[[err_value]])
   
-  diff_kin_plot <- plot_dat %>% 
-    ggplot(aes(x = Exposure, y = value, group = Sequence)) +
+  diff_kin_plot <- ggplot(plot_dat, aes(x = Exposure, y = value, group = Sequence)) +
     geom_point(aes(shape = Sequence, color = states), size = 2) + 
     theme(legend.position = "bottom",
           legend.title = element_blank()) +
@@ -167,8 +177,10 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
     
     alpha <- -log(1 - attr(diff_uptake_dat, "confidence_level"))
     
-    diff_uptake_dat <- mutate(diff_uptake_dat, valid = log_p_value >= alpha) %>%
-      merge(plot_dat, by = c("Sequence", "Start", "End", "Exposure"))
+    diff_uptake_dat[, valid := log_p_value >= alpha]
+
+    
+    diff_uptake_dat <- merge(diff_uptake_dat, plot_dat, by = c("Sequence", "Start", "End", "Exposure"))
     
     diff_kin_plot <- diff_kin_plot +
       geom_point(data = subset(diff_uptake_dat, !valid), aes(x = Exposure, y = value), shape = 13, size = 2)

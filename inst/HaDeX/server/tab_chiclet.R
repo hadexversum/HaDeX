@@ -224,7 +224,8 @@ output[["chicletPlot_debug"]] <- renderUI({
                       "px; top:", hv[["coords_css"]][["y"]], "px; padding: 0px;")
       
       tmp1 <- paste0(unique(tt_df[["Sequence"]]),
-                     "<br/> Position: ", unique(tt_df[["Start"]]), "-", unique(tt_df[["End"]]))
+                     "<br/> Position: ", unique(tt_df[["Start"]]), "-", unique(tt_df[["End"]]),
+                     "<br/> ID: ", unique(tt_df[["ID"]]))
       
       tmp2 <- paste0("<br/> Exposure: ", tt_df[["y_plot"]], " min, ",
                      "Value: ", round(tt_df[["value"]], 2))

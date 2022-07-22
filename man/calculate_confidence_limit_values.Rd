@@ -9,7 +9,7 @@ calculate_confidence_limit_values(
   confidence_level = 0.98,
   theoretical = FALSE,
   fractional = TRUE,
-  n_rep = NA
+  n_rep = NULL
 )
 }
 \arguments{
