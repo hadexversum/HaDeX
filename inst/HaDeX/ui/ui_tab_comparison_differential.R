@@ -287,7 +287,11 @@ diff_plot_panel <- function() tabsetPanel(
                                  choices = c("Hybrid significance"),
                                  selected = c("Hybrid significance")),
                      downloadButton(outputId = "diff_viewer_download_button",
-                                    label = "Create file")
+                                    label = "Create file"),
+                     actionButton(inputId = "diff_open_viewer", 
+                                  label = "Open Page", 
+                                  icon = icon("th"), 
+                                  onclick ="window.open('http://proteomique.ipbs.fr:8080/', '_blank')")
                    )
                   )
              )

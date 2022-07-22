@@ -187,6 +187,8 @@ woods_p_dat <- reactive({
 
 woods_test_results <- reactive({
   
+  # browser()
+  
   create_aggregated_test_results(create_p_diff_uptake_dataset_with_confidence(p_diff_uptake_dat = woods_p_dat(),
                                                theoretical = input[["theory"]],
                                                fractional = input[["comp_fractional"]]),

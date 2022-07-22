@@ -29,10 +29,12 @@ create_aggregated_test_results <- function(p_diff_uptake_conf_dat,
   
   p_diff_uptake_conf_dat <- p_diff_uptake_conf_dat[, sign := (diff_deut_uptake>=0) ]
   
-  p_diff_uptake_conf_dat <- p_diff_uptake_conf_dat[Exposure == time_t & is.na(Modification), 
+  p_diff_uptake_conf_dat <- p_diff_uptake_conf_dat[Exposure == time_t, 
                                                    .( Start, End, ID, Exposure, valid, sign)]
+  
+  sequence_length <- max(unique(p_diff_uptake_conf_dat[["End"]]))
  
-  res <- data.table(pos = 1:max(p_diff_uptake_conf_dat[["End"]]),
+  res <- data.table(pos = 1:sequence_length,
                     count_valid = 0,
                     count_invalid = 0,
                     sign = 0)
