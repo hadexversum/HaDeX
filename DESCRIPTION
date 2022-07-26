@@ -44,6 +44,7 @@ Imports:
   	stringi,
   	tidyr
 Suggests:
+    HaDeXGUI,
     spelling, 
     covr,
     digest,
