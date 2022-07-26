@@ -4,9 +4,13 @@
 \alias{HaDeX_GUI}
 \title{HaDeX Graphical User Interface}
 \usage{
-HaDeX_GUI(...)
+HaDeX_GUI(port = httpuv::randomPort(), prod = TRUE, ...)
 }
 \arguments{
+\item{port}{number of port for the app to run on.}
+
+\item{prod}{should the app run in production mode (TRUE) or development (FALSE)?}
+
 \item{...}{arguments to pass to \code{HaDeXGUI::run_app()}. 
 See \code{\link[HaDeXGUI]{run_app}}.}
 }

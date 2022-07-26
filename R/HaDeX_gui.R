@@ -8,10 +8,10 @@ is_GUI_installed <- function()
 
 #' Installs GUI package from GitHub
 #' 
-#' @importFrom devtools install_github
+#' @importFrom remotes install_github
 #' @export
 install_GUI <- function()
-  devtools::install_github("hadexversum/HaDeXGUI")
+  remotes::install_github("hadexversum/HaDeXGUI")
 
 handle_missing_GUI <- function() {
   if (interactive()) {
@@ -21,11 +21,14 @@ handle_missing_GUI <- function() {
     switch (
       response, 
       yes = tryCatch(
-        install_AmpGramModel(),
-        finally = if (!is_GUI_installed()) 
+        install_GUI(),
+        finally = if (!is_GUI_installed()) {
           warning("There was an error during an attempt to install 'HaDeXGUI' package.", call. = FALSE)
+        } else {
+          message("Package installed successfully. You can run the app now calling 'HaDeX_GUI()' once again.")
+        }
       ),
-      no = message("You cannot run the GUI without having installed 'HaDeXGUI'. You can do it by calling 'HaDeX::install_GUI()'.", call. = FALSE),
+      no = message("You cannot run the GUI without having installed 'HaDeXGUI'. You can do it by calling 'HaDeX::install_GUI()'."),
     )
   } else {
     message("To be able to run HaDeX Graphical User Interface, you have to have the 'HaDeXGUI' package installed. You can do it by calling 'HaDeX::install_GUI()'.")
