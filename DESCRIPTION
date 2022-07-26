@@ -1,62 +1,57 @@
 Package: HaDeX
-Title: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass Spectrometry Data 
+Title: Analysis and Visualisation of Hydrogen/Deuterium Exchange Mass
+    Spectrometry Data
 Version: 1.2.1
-Authors@R: c(person("Weronika", "Puchala", 
-           email = "puchala.weronika@gmail.com", 
-           comment = c(ORCID = "0000-0003-2163-1429"),
-           role = c("cre", "aut")),
-           person("Michal", "Burdukiewicz", 
-           email = "michalburdukiewicz@gmail.com", 
-           comment = c(ORCID = "0000-0001-8926-582X"),
-           role = c("aut")),
-           person("Dominik", "Rafacz", 
-           email = "d.rafacz@student.mini.pw.edu.pl",
-           role = c("ctb")),
-           person("Krystyna", "Grzesiak", 
-           email = "krygrz11@gmail.com",
-           role = c("ctb")))
-Description: Functions for processing, analysis and visualization of Hydrogen Deuterium eXchange monitored by 
-             Mass Spectrometry experiments (HDX-MS). 'HaDeX' <10.1093/bioinformatics/btaa587> introduces a new 
-             standardized and reproducible workflow for the analysis of the HDX-MS data, including novel uncertainty 
-             intervals. Additionally, it covers data exploration, quality control and generation of publication-quality 
-             figures. All functionalities are also available in the in-built 'Shiny' app.
-Depends: R (>= 3.0)
+Authors@R: c(
+    person("Weronika", "Puchala", , "puchala.weronika@gmail.com", role = c("cre", "aut"),
+           comment = c(ORCID = "0000-0003-2163-1429")),
+    person("Michal", "Burdukiewicz", , "michalburdukiewicz@gmail.com", role = "aut",
+           comment = c(ORCID = "0000-0001-8926-582X")),
+    person("Dominik", "Rafacz", , "d.rafacz@student.mini.pw.edu.pl", role = "ctb"),
+    person("Krystyna", "Grzesiak", , "krygrz11@gmail.com", role = "ctb")
+  )
+Description: Functions for processing, analysis and visualization of
+    Hydrogen Deuterium eXchange monitored by Mass Spectrometry experiments
+    (HDX-MS). 'HaDeX' <10.1093/bioinformatics/btaa587> introduces a new
+    standardized and reproducible workflow for the analysis of the HDX-MS
+    data, including novel uncertainty intervals. Additionally, it covers
+    data exploration, quality control and generation of
+    publication-quality figures. All functionalities are also available in
+    the in-built 'Shiny' app.
 License: GPL-3
-Encoding: UTF-8
-LazyData: true
-RoxygenNote: 7.2.0
+Depends: 
+    R (>= 3.0)
 Imports: 
     checkmate,
-    cowplot,
     data.table,
-  	dplyr,
-  	DT,
-  	ggplot2,
-  	gsubfn,
-  	latex2exp,
-  	magick,
-  	plyr,
-  	reshape2,
-  	readr,
-  	readxl,
-  	shiny,
-  	stringr,
-  	stringi,
-  	tidyr
-Suggests:
+    dplyr,
+    ggplot2,
+    grid,
     HaDeXGUI,
-    spelling, 
-    covr,
-    digest,
-    gridExtra,
+    httpuv,
+    magick,
+    plyr,
+    readr,
+    readxl,
+    remotes,
+    shiny,
+    stats,
+    stringi,
+    stringr,
+    tidyr,
+    tools,
+    utils
+Suggests:
+    DT,
     knitr,
-    pander,
-    renv,
+    magrittr,
     rmarkdown,
-    shinycustomloader,
-    shinyhelper,
-    shinyjs,
+    spelling,
     testthat,
     vdiffr
-VignetteBuilder: knitr
+VignetteBuilder: 
+    knitr
+Encoding: UTF-8
 Language: en-US
+LazyData: true
+RoxygenNote: 7.2.0
