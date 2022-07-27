@@ -7,7 +7,8 @@ tab_cov_heatmap <- function() HaDeX_plotTab(
     cov_heatmap_time_t()
   ),
   displayPanel = HaDeX_plotDisplayPanel(
-    h3("Page under construction, works only for example data."),
+    h4("Page under construction!"),
+    h6("Currently plot works on default parameters as an example."),
     cov_heatmap_plot_panel()
   )
   

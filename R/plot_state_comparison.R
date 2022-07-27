@@ -7,6 +7,8 @@
 #' 
 #' @param uptake_dat data produced by \code{\link{calculate_state_uptake}} 
 #' function
+#' @param skip_amino \code{integer}, indicator how many aminos from the N-terminus 
+#' should be omitted
 #' @param theoretical \code{logical}, indicator if values are 
 #' calculated using theoretical controls
 #' @param fractional \code{logical}, indicator if values are shown 
@@ -39,6 +41,7 @@
 #' @export plot_state_comparison
 
 plot_state_comparison <- function(uptake_dat, 
+                                  skip_amino = 0,
                                   theoretical = FALSE, 
                                   fractional = FALSE,
                                   line_size = 1.5,
@@ -51,6 +54,7 @@ plot_state_comparison <- function(uptake_dat,
   
   if(!all_times) { uptake_dat <- uptake_dat[Exposure == time_t] }
   
+  if(skip_amino > 0) { uptake_dat[, Start := Start + skip_amino] } 
   
   if (theoretical) {
     

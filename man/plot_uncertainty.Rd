@@ -8,6 +8,7 @@ plot_uncertainty(
   dat,
   protein = dat[["Protein"]][1],
   state = dat[["State"]][1],
+  skip_amino = 0,
   aggregated = TRUE,
   separate_times = TRUE,
   show_threshold = TRUE
@@ -19,6 +20,9 @@ plot_uncertainty(
 \item{protein}{selected protein}
 
 \item{state}{selected biological state for given protein}
+
+\item{skip_amino}{\code{integer}, indicator how many aminos from the N-terminus 
+should be omitted}
 
 \item{aggregated}{\code{logical}, indicator if presented
 data is aggregated on replicate level}

@@ -6,6 +6,7 @@
 \usage{
 plot_state_comparison(
   uptake_dat,
+  skip_amino = 0,
   theoretical = FALSE,
   fractional = FALSE,
   line_size = 1.5,
@@ -16,6 +17,9 @@ plot_state_comparison(
 \arguments{
 \item{uptake_dat}{data produced by \code{\link{calculate_state_uptake}} 
 function}
+
+\item{skip_amino}{\code{integer}, indicator how many aminos from the N-terminus 
+should be omitted}
 
 \item{theoretical}{\code{logical}, indicator if values are 
 calculated using theoretical controls}

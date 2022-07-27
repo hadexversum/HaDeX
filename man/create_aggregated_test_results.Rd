@@ -4,10 +4,20 @@
 \alias{create_aggregated_test_results}
 \title{Agregate test result}
 \usage{
-create_aggregated_test_results(p_diff_uptake_conf_dat, time_t = 1)
+create_aggregated_test_results(
+  p_diff_uptake_conf_dat,
+  time_t = 1,
+  skip_amino = 1
+)
 }
 \arguments{
 \item{p_diff_uptake_conf_dat}{...}
+
+\item{time_t}{...}
+
+\item{skip_amino}{\code{integer}, indicator
+how many aminos from the N-termins should be 
+omitted in visualization}
 }
 \value{
 a \code{\link{data.frame}} object

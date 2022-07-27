@@ -278,6 +278,8 @@ diff_plot_panel <- function() tabsetPanel(
                br(),
                div(id = "diff_viewer_part",
                    wellPanel(
+                     h3("Import data for HDX Viewer"),
+                     h5("Feature under construction"),
                      selectInput(inputId = "diff_viewer_chain",
                                  label = "Select chain:",
                                  choices = c("A", "B"),
@@ -286,6 +288,7 @@ diff_plot_panel <- function() tabsetPanel(
                                  label = "Select data to import", 
                                  choices = c("Hybrid significance"),
                                  selected = c("Hybrid significance")),
+                     h5("The first amino acid of the peptide is omitted."),
                      downloadButton(outputId = "diff_viewer_download_button",
                                     label = "Create file"),
                      actionButton(inputId = "diff_open_viewer", 
