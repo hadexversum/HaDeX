@@ -135,7 +135,9 @@ The convenient way to present results calculated as described is the comparison 
 
 ### Additional information 
 
-If the file contains modified peptides - the value from column `Modification` is added to the value from column `State` and is treated as a new biological state. The further aspects of the analysis are the same as for non-modified peptides.
+If the file contains modified peptides - the modified peptide is treated as an another peptide and has its unique ID. The values are calculated using measurements for the peptide with modification.
+If there is both unmodified and modified version of the peptide, they are treated as different peptides.
+
 
 <!-- ## Processing data from HDeXaminer -->
 <!-- TO BE WRITTEN -->

@@ -52,9 +52,9 @@ dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.
 
 
 ```{r}
-dat %>%
-  calculate_state_uptake(state = "CD160_HVEM") %>%
-  plot_state_comparison()
+# dat %>%
+#   calculate_state_uptake() %>%
+#   plot_state_comparison()
 ```
 
 ```{r}
@@ -65,7 +65,7 @@ dat %>%
                              end = 15,
                              states = c("CD160", "CD160_HVEM"),
                              time_0 = 0.001, time_100 = 1440) %>%
-  plot_kinetics(fractional = TRUE)
+  plot_uptake_curve(fractional = TRUE)
 ```
 
 ```{r}
@@ -76,7 +76,7 @@ dat %>%
                              end = 15,
                              states = c("CD160", "CD160_HVEM"),
                              time_0 = 0.001, time_100 = 1440) %>%
-  show_kinetic_data(fractional = TRUE)
+  show_uptake_data(fractional = TRUE)
 ```
 
 ### Different forms of visualization
@@ -84,21 +84,18 @@ dat %>%
 Create data frame with uptake values for state in all time points:
 
 ```{r}
-uptake_dat <- dat %>%
-  create_state_uptake_dataset()
+uptake_dat <- create_state_uptake_dataset(dat)
 ```
 
 Butterfly:
 
 ```{r}
-uptake_dat %>%
-  plot_butterfly()
+plot_butterfly(uptake_dat)
 ```
 
 Chiclet:
 
 ```{r}
-uptake_dat %>%
-  plot_chiclet()
+plot_chiclet(uptake_dat)
 ```
 

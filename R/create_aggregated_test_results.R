@@ -15,7 +15,7 @@
 #' 
 #' @return a \code{\link{data.frame}} object
 #' 
-#' @referneces ...
+#' @references ...
 #'
 #' @seealso 
 #' \code{\link{read_hdx}}
@@ -24,11 +24,11 @@
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' p_diff_uptake_dat <- create_p_diff_uptake_dataset(dat)
 #' p_diff_uptake_conf_dat <- create_p_diff_uptake_dataset_with_confidence(p_diff_uptake_dat)
-#' create_aggregated_test_results(p_diff_uptake_conf_dat)
+#' calculate_aggregated_test_results(p_diff_uptake_conf_dat)
 #' 
-#' @export create_aggregated_test_results
+#' @export calculate_aggregated_test_results
 
-create_aggregated_test_results <- function(p_diff_uptake_conf_dat, 
+calculate_aggregated_test_results <- function(p_diff_uptake_conf_dat, 
                                            time_t = 1,
                                            skip_amino = 1){
   

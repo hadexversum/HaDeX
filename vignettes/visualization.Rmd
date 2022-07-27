@@ -163,7 +163,7 @@ Chiclet differential plot shows the deuterium uptake difference between two biol
 
 ```{r}
 diff_uptake_dat %>%
-  filter(Exposure < 1440) %>%
+  filter(Exposure < 1440 & Exposure > 0.001) %>%
   plot_differential_chiclet(show_uncertainty = TRUE, fractional = TRUE)
 ```
 
@@ -223,7 +223,7 @@ kin_dat <- bind_rows(calculate_kinetics(dat,
                               time_0 = 0.001,
                               time_100 = 1440))
 
-plot_kinetics(kin_dat, fractional = TRUE, log_x = TRUE) 
+plot_uptake_curve(kin_dat, fractional = TRUE, log_x = TRUE) 
 ```
 
 *Pros* The plot shows the differences in deuterium uptake between two states in the time course. The back-exchange phenomenon is visible in this plot. 
