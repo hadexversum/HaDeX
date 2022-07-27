@@ -7,6 +7,7 @@
 plot_differential(
   diff_uptake_dat = NULL,
   diff_p_uptake_dat = NULL,
+  skip_amino = 0,
   time_t = NULL,
   theoretical = FALSE,
   fractional = FALSE,
@@ -25,6 +26,9 @@ function.}
 
 \item{diff_p_uptake_dat}{produced by \code{\link{create_p_diff_uptake_dataset}} 
 function.}
+
+\item{skip_amino}{\code{integer}, indicator how many aminos from the N-terminus 
+should be omitted}
 
 \item{time_t}{time point of measurement, if only one should be displayed
 on the plot.}
@@ -78,6 +82,7 @@ grey.
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 diff_uptake_dat <- create_diff_uptake_dataset(dat)
 plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167) 
+plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167, skip_amino = 0) 
 plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167, line_size = 1) 
 plot_differential(diff_uptake_dat = diff_uptake_dat, all_times = T)
 plot_differential(diff_uptake_dat = diff_uptake_dat, all_times = T, show_houde_interval = T)

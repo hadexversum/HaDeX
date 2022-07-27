@@ -7,7 +7,8 @@ tab_cov_heatmap <- function() HaDeX_plotTab(
     cov_heatmap_time_t()
   ),
   displayPanel = HaDeX_plotDisplayPanel(
-    h3("Page under construction, works only for example data."),
+    h4("Page under construction!"),
+    h6("Currently plot works on default parameters as an example."),
     cov_heatmap_plot_panel()
   )
   
@@ -19,7 +20,7 @@ cov_heatmap_value <- function() HaDeX_plotSettingsSection(
   
   selectInput_h(inputId = "cov_heat_value",
                 label = "Select value:",
-                choices = c("theo_frac_deut_uptake", "deut_uptake", "frac_deut_uptake", "theo_deut_uptake", "diff_frac_deut_uptake", "diff_deut_uptake", "diff_theo_frac_deut_uptake", "diff_theo_deut_uptake", "err_frac_deut_uptake", "err_deut_uptake", "err_theo_frac_deut_uptake", "err_theo_deut_uptake", "err_diff_frac_deut_uptake", "err_diff_deut_uptake", "err_diff_theo_frac_deut_uptake", "err_diff_theo_deut_uptake", "auc"),
+                choices = c("back_exchange", "theo_frac_deut_uptake", "deut_uptake", "frac_deut_uptake", "theo_deut_uptake", "diff_frac_deut_uptake", "diff_deut_uptake", "diff_theo_frac_deut_uptake", "diff_theo_deut_uptake", "err_frac_deut_uptake", "err_deut_uptake", "err_theo_frac_deut_uptake", "err_theo_deut_uptake", "err_diff_frac_deut_uptake", "err_diff_deut_uptake", "err_diff_theo_frac_deut_uptake", "err_diff_theo_deut_uptake", "auc"),
                 selected = "frac_deut_uptake")
   
 )

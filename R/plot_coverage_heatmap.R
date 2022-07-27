@@ -20,19 +20,22 @@
 #' 
 #' @examples 
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
-#' x_dat <- create_uptake_dataset(dat, states = "CD160")
-#' plot_coverage_heatmap(x_dat)
-#' plot_coverage_heatmap(x_dat, value = "frac_deut_uptake", time_t = 0.167)
-#' plot_coverage_heatmap(x_dat, value = "err_frac_deut_uptake", time_t = 0.167)
+#' uptake_dat <- create_uptake_dataset(dat, states = "CD160")
+#' plot_coverage_heatmap(uptake_dat)
+#' plot_coverage_heatmap(uptake_dat, value = "frac_deut_uptake", time_t = 0.167)
+#' plot_coverage_heatmap(uptake_dat, value = "err_frac_deut_uptake", time_t = 0.167)
 #'
-#' x_dat <- create_diff_uptake_dataset(dat)
-#' plot_coverage_heatmap(x_dat)
-#' plot_coverage_heatmap(x_dat, value = "diff_frac_deut_uptake")
-#' plot_coverage_heatmap(x_dat, value = "diff_frac_deut_uptake", time_t = 0.167)
-#' plot_coverage_heatmap(x_dat, value = "err_diff_frac_deut_uptake", time_t = 0.167)
+#' diff_uptake_dat <- create_diff_uptake_dataset(dat)
+#' plot_coverage_heatmap(diff_uptake_dat)
+#' plot_coverage_heatmap(diff_uptake_dat, value = "diff_frac_deut_uptake")
+#' plot_coverage_heatmap(diff_uptake_dat, value = "diff_frac_deut_uptake", time_t = 0.167)
+#' plot_coverage_heatmap(diff_uptake_dat, value = "err_diff_frac_deut_uptake", time_t = 0.167)
 #' 
-#' x_dat <- calculate_auc(create_uptake_dataset(dat))
+#' auc_dat <- calculate_auc(create_uptake_dataset(dat))
 #' plot_coverage_heatmap(auc_dat, value = "auc")
+#' 
+#' bex_dat <- calculate_back_exchange(dat, state = "CD160")
+#' plot_coverage_heatmap(bex_dat, value = "back_exchange")
 #' 
 #' @export plot_coverage_heatmap
 
@@ -49,7 +52,7 @@ plot_coverage_heatmap <- function(x_dat,
   x_dat <- as.data.table(x_dat)
   x_dat <- x_dat[Protein == protein, ]
   
-  if(value!="auc"){
+  if(value!="auc" & value!='back_exchange'){
     time_t <- fcoalesce(c(time_t, attr(x_dat, "time_t")))[1]
     if(is.null(time_t)) {
       message("No time point selected!")
@@ -96,6 +99,7 @@ plot_coverage_heatmap <- function(x_dat,
                        value == "err_diff_theo_frac_deut_uptake", "Err(Diff Theo Frac DU) [%]",
                        value == "err_diff_theo_deut_uptake", "Err(Diff Theo DU) [Da]",
                        value == "auc", "AUC",
+                       value == "back_exchange", "Back Exchange",
                        TRUE, "")
   
   if(is.null(time_t)) { 
@@ -151,6 +155,12 @@ plot_coverage_heatmap <- function(x_dat,
     cov_heat_plot <- cov_heat_plot +
       scale_fill_gradient2(low = "white", high = "blue", guide = guide_legend(keywidth = 3), limits = c(NA, 1))
     
+  }
+  
+  if(value == "back_exchange"){
+    
+    cov_heat_plot <- cov_heat_plot +
+      scale_fill_gradient2(low = "white", high = "darkorange4", limits = c(0, 100)) 
     
   }
   

@@ -5,12 +5,18 @@
 #' @importFrom data.table fifelse
 #' 
 #' @param p_diff_uptake_conf_dat ...
+#' @param time_t ...
+#' @param skip_amino \code{integer}, indicator
+#' how many aminos from the N-termins should be 
+#' omitted in visualization
 #' 
 #' @details Only peptides without modification are 
 #' aggregated.
 #' 
 #' @return a \code{\link{data.frame}} object
 #' 
+#' @referneces ...
+#'
 #' @seealso 
 #' \code{\link{read_hdx}}
 #' 
@@ -23,9 +29,12 @@
 #' @export create_aggregated_test_results
 
 create_aggregated_test_results <- function(p_diff_uptake_conf_dat, 
-                                           time_t = 1){
+                                           time_t = 1,
+                                           skip_amino = 1){
   
   p_diff_uptake_conf_dat <- as.data.table(p_diff_uptake_conf_dat)
+  
+  if(skip_amino > 0) { p_diff_uptake_conf_dat[, Start := Start + skip_amino] }
   
   p_diff_uptake_conf_dat <- p_diff_uptake_conf_dat[, sign := (diff_deut_uptake>=0) ]
   

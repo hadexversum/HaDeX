@@ -5,6 +5,8 @@
 #' 
 #' @param p_dat data produced by the \code{\link{create_p_diff_uptake_dataset}}
 #' function.
+#' @param skip_amino \code{integer}, indicator how many aminos from the N-terminus 
+#' should be omitted
 #' @param plot_title title for the plot. If not provided, it is constructed in a form:
 #' "Differences between state_1 and state_2"
 #' @param separate_times \code{logical}, indicates if the data should be seen on the same plot, 
@@ -43,6 +45,7 @@
 #' @export plot_manhattan
    
 plot_manhattan <- function(p_dat,
+                           skip_amino = 0,
                            plot_title = NULL, 
                            separate_times = T,
                            times = NULL,
@@ -51,6 +54,8 @@ plot_manhattan <- function(p_dat,
                            show_peptide_position = F){
   
   p_dat <- as.data.table(p_dat)
+  
+  if(skip_amino > 0) { diff_uptake_dat[, Start := Start + skip_amino] } 
   
   if(is.null(confidence_level)) {confidence_level <- attr(p_dat, "confidence_level") }
 

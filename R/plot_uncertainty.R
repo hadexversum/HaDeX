@@ -7,6 +7,8 @@
 #' @param dat data imported by the \code{\link{read_hdx}} function
 #' @param protein selected protein
 #' @param state selected biological state for given protein
+#' @param skip_amino \code{integer}, indicator how many aminos from the N-terminus 
+#' should be omitted
 #' @param aggregated \code{logical}, indicator if presented
 #' data is aggregated on replicate level
 #' @param separate_times \code{logical}, indicator if the 
@@ -41,13 +43,16 @@
 plot_uncertainty <- function(dat, 
                              protein = dat[["Protein"]][1],
                              state = dat[["State"]][1],
+                             skip_amino = 0,
                              aggregated = TRUE,
                              separate_times = TRUE, 
                              show_threshold = TRUE){
+
+  dat <- as.data.table(dat)
   
-  dat <- dat %>%
-    filter(Protein == protein,
-           State == state)
+  dat <- dat[Protein == protein & State == state]
+  
+  if(skip_amino > 0) { diff_uptake_dat[, Start := Start + skip_amino] } 
   
   if(aggregated){
     
@@ -55,17 +60,17 @@ plot_uncertainty <- function(dat,
     
   } else {
     
-    plot_dat <- dat %>% 
-      mutate(exp_mass = Center*z - z*1.00727647) %>%
-      select(-Inten, -Center,  -MaxUptake, -z) %>%
-      group_by(Protein, Sequence, Start, End, MHP, State, Exposure) %>%
-      mutate(err_avg_mass = sd(exp_mass)) %>%
-      select(-exp_mass) %>%
-      unique(.)
-  }
+    ## check data.table
+    
+    plot_dat <- dat[, exp_mass := Center*z - z*1.00727647 ] 
+    plot_dat <- plot_dat[, .(-Inten, -Center,  -MaxUptake, -z)]
+    plot_dat <- plot_dat[, err_avg_mass := sd(exp_mass), by = c(Protein, Sequence, Start, End, MHP, State, Exposure) ]
+    plot_dat <- plot_dat[, .(-exp_mass)]
+    unique(plot_dat)
+
+    }
   
-  uncertainty_plot <- plot_dat %>%
-    ggplot() +
+  uncertainty_plot <-  sggplot(plot_dat) +
     geom_segment(aes(x = Start, xend = End, y = err_avg_mass, yend = err_avg_mass, color = as.factor(Exposure))) +
     labs(x = "Peptide position",
          y = "Uncertainy(mass)",

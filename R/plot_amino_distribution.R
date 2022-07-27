@@ -17,12 +17,15 @@
 #' 
 #' @examples ...
 #' 
+#' @importFrom dplyr n
+#' @importFrom ggplot2 scale_fill_manual
 #' @export plot_amino_distribution
 
 plot_amino_distribution <- function(position_in_sequence, 
                                     hydro_properties,
                                     protein,
                                     charge_colors){
+  amino_groups <- c("G", "A", "V", "I", "L", "F", "P", "M", "S", "T", "Y", "W", "N", "Q", "C", "D", "E", "K", "R", "H")
   
   position_in_sequence %>%
     mutate(affinity = ifelse(is_hydrophobic, "phobic", "philic")) %>% 

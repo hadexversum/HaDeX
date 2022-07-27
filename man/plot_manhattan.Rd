@@ -6,6 +6,7 @@
 \usage{
 plot_manhattan(
   p_dat,
+  skip_amino = 0,
   plot_title = NULL,
   separate_times = T,
   times = NULL,
@@ -17,6 +18,9 @@ plot_manhattan(
 \arguments{
 \item{p_dat}{data produced by the \code{\link{create_p_diff_uptake_dataset}}
 function.}
+
+\item{skip_amino}{\code{integer}, indicator how many aminos from the N-terminus 
+should be omitted}
 
 \item{plot_title}{title for the plot. If not provided, it is constructed in a form:
 "Differences between state_1 and state_2"}

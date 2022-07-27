@@ -11,6 +11,11 @@ cov_heat_dataset <- reactive({
     tmp_dat <- dat()[dat()[["Exposure"]] < 99999, ]
     calculate_auc(create_uptake_dataset(tmp_dat), preserve_values = F)
     
+  } else if (input[["cov_heat_value"]] == "back_exchange") {
+    
+    tmp_dat <- dat()[dat()[["Exposure"]] < 99999, ]
+    calculate_back_exchange(tmp_dat, 
+                            states = dat()[["State"]][1])
   } else {
     
       calculate_state_uptake(dat = dat(),

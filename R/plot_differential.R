@@ -10,6 +10,8 @@
 #' function.
 #' @param diff_p_uptake_dat produced by \code{\link{create_p_diff_uptake_dataset}} 
 #' function.
+#' @param skip_amino \code{integer}, indicator how many aminos from the N-terminus 
+#' should be omitted
 #' @param theoretical \code{logical}, determines if values are theoretical.
 #' @param fractional \code{logical}, determines if values are fractional.
 #' @param show_houde_interval \code{logical}, determines if houde interval is shown.
@@ -55,6 +57,7 @@
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' diff_uptake_dat <- create_diff_uptake_dataset(dat)
 #' plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167) 
+#' plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167, skip_amino = 0) 
 #' plot_differential(diff_uptake_dat = diff_uptake_dat, time_t = 0.167, line_size = 1) 
 #' plot_differential(diff_uptake_dat = diff_uptake_dat, all_times = T)
 #' plot_differential(diff_uptake_dat = diff_uptake_dat, all_times = T, show_houde_interval = T)
@@ -71,6 +74,7 @@
 
 plot_differential <- function(diff_uptake_dat = NULL,
                               diff_p_uptake_dat =  NULL, 
+                              skip_amino = 0,  
                               time_t = NULL,
                               theoretical = FALSE,
                               fractional = FALSE, 
@@ -116,6 +120,8 @@ plot_differential <- function(diff_uptake_dat = NULL,
   }
   
   ##
+  
+  if(skip_amino > 0) { diff_uptake_dat[, Start := Start + skip_amino] } 
   
   h_interval <- calculate_confidence_limit_values(diff_uptake_dat = diff_uptake_dat,
                                                   confidence_level = confidence_level,
