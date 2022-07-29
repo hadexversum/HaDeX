@@ -1,4 +1,20 @@
 #################################
+######### MESSAGE ###############
+#################################
+
+observeEvent(input[["message_hdxviewer"]],{
+  
+  print("Request to contect HDX Viewer...")
+  
+  hdx_message = "hello hdx"
+  session$sendCustomMessage("hdx_handler", input[["chosen_protein"]])
+  
+  print("Message sent.")
+  
+}) 
+
+
+#################################
 ######### SETTINGS ##############
 #################################
 
@@ -24,7 +40,6 @@ observe({
                       max = max_woods_abs + 2,
                       value = c(min_woods_abs, max_woods_abs),
                       step = 0.5)
-    
   }
   
 })

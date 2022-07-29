@@ -274,6 +274,8 @@ diff_plot_panel <- function() tabsetPanel(
                width = 6,
                actionButton(inputId = "diff_viewer_settings",
                             label = "HDXViewer"),
+               actionButton(inputId = "message_hdxviewer",
+                            label = "Send message"),
                br(), 
                br(),
                div(id = "diff_viewer_part",
