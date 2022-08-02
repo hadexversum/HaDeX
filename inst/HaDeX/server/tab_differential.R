@@ -6,8 +6,10 @@ observeEvent(input[["message_hdxviewer"]],{
   
   print("Request to contect HDX Viewer...")
   
-  hdx_message = "hello hdx"
-  session$sendCustomMessage("hdx_handler", input[["chosen_protein"]])
+  hdx_message <- woods_test_results()
+  attr(hdx_message, "protein") <- input[["chosen_protein"]]
+  
+  session$sendCustomMessage("hdx_handler", hdx_message)
   
   print("Message sent.")
   
