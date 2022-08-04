@@ -10,7 +10,8 @@ ui <- tagList(
   tags$head(
     tags$script(type = "text/javascript", src = "ga.js"),
     # tags$script(src = "navbar-menu.js"),
-    tags$script(type = "text/javascript", src = "detect-element-resize.js")
+    tags$script(type = "text/javascript", src = "detect-element-resize.js"),
+    includeScript("www/message.js"),
   ),
   div(
     id = "fullsize-website",

@@ -278,8 +278,8 @@ diff_plot_panel <- function() tabsetPanel(
                br(),
                div(id = "diff_viewer_part",
                    wellPanel(
-                     h3("Import data for HDX Viewer"),
-                     h5("Feature under construction"),
+                     h3("Export data for HDX Viewer"),
+                     h6("Feature under construction"),
                      selectInput(inputId = "diff_viewer_chain",
                                  label = "Select chain:",
                                  choices = c("A", "B"),
@@ -288,13 +288,13 @@ diff_plot_panel <- function() tabsetPanel(
                                  label = "Select data to import", 
                                  choices = c("Hybrid significance"),
                                  selected = c("Hybrid significance")),
-                     h5("The first amino acid of the peptide is omitted."),
+                     h6("The first amino acid of the peptide is omitted."),
                      downloadButton(outputId = "diff_viewer_download_button",
                                     label = "Create file"),
                      actionButton(inputId = "diff_open_viewer", 
-                                  label = "Open Page", 
-                                  icon = icon("th"), 
-                                  onclick ="window.open('http://proteomique.ipbs.fr:8080/', '_blank')")
+                                  label = "Open HDXviewer", 
+                                  icon = icon("th")),
+                     h6("Automated loading may not be working properly. In that case, download and upload the files manually. ")
                    )
                   )
              )
