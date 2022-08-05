@@ -55,7 +55,7 @@ plot_manhattan <- function(p_dat,
   
   p_dat <- as.data.table(p_dat)
   
-  if(skip_amino > 0) { diff_uptake_dat[, Start := Start + skip_amino] } 
+  if(skip_amino > 0) { p_dat[, Start := Start + skip_amino] } 
   
   if(is.null(confidence_level)) {confidence_level <- attr(p_dat, "confidence_level") }
 

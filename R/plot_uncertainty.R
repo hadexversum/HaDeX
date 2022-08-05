@@ -52,7 +52,7 @@ plot_uncertainty <- function(dat,
   
   dat <- dat[Protein == protein & State == state]
   
-  if(skip_amino > 0) { diff_uptake_dat[, Start := Start + skip_amino] } 
+  if(skip_amino > 0) { dat[, Start := Start + skip_amino] } 
   
   if(aggregated){
     
@@ -70,7 +70,7 @@ plot_uncertainty <- function(dat,
 
     }
   
-  uncertainty_plot <-  sggplot(plot_dat) +
+  uncertainty_plot <-  ggplot(plot_dat) +
     geom_segment(aes(x = Start, xend = End, y = err_avg_mass, yend = err_avg_mass, color = as.factor(Exposure))) +
     labs(x = "Peptide position",
          y = "Uncertainy(mass)",
