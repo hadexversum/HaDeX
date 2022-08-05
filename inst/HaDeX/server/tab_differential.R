@@ -1,4 +1,31 @@
 #################################
+######### MESSAGE ###############
+#################################
+
+hdx_message <- reactive({
+  
+  message <- list(results = woods_test_results(), 
+                  protein = input[["chosen_protein"]],
+                  chain = input[["diff_viewer_chain"]],
+                  type = input[["diff_viewer_datatype"]])
+  
+  jsonlite::toJSON(message)
+  
+})
+
+
+observeEvent(input[["diff_open_viewer"]],{
+  
+  print("Request to contect HDX Viewer...")
+  
+  session$sendCustomMessage("hdx_handler", hdx_message())
+  
+  print("Message sent.")
+  
+}) 
+
+
+#################################
 ######### SETTINGS ##############
 #################################
 
@@ -24,7 +51,6 @@ observe({
                       max = max_woods_abs + 2,
                       value = c(min_woods_abs, max_woods_abs),
                       step = 0.5)
-    
   }
   
 })
@@ -210,7 +236,7 @@ output[["diff_viewer_download_button"]] <- downloadHandler(paste0(input[["chosen
 #################################
 
 differential_plot <- reactive({
-
+  
   plot_differential(diff_uptake_dat = woods_plot_dat(),
                     diff_p_uptake_dat = woods_p_dat(),
                     theoretical = input[["theory"]],
@@ -244,6 +270,8 @@ differential_plot_out <- reactive({
           axis.text.y = element_text(size = input[["woods_plot_y_label_size"]]),
           legend.text = element_text(size = input[["woods_plot_x_label_size"]]))
   
+  # browser()
+
 })
 
 ##
