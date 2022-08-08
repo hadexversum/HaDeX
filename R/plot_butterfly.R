@@ -30,6 +30,7 @@
 #' 
 #' @export plot_butterfly
 #' @importFrom ggiraph geom_point_interactive
+#' @importFrom glue glue
 
 plot_butterfly <- function(uptake_dat, 
                            theoretical = FALSE, 
@@ -90,39 +91,39 @@ plot_butterfly <- function(uptake_dat,
                          Start = uptake_dat[["Start"]],
                          End = uptake_dat[["End"]])
   
-  chosen_geom <- if (interactive) geom_point_interactive( 
-    aes(tooltip = paste0(
-      Sequence,
-      "<br/>Position: ", Start, "-", End,
-      "<br/>Value: ", round(value, 2),
-      "<br/>Exposure: ", Exposure, " min"
+  chosen_geom_point <- if (interactive) geom_point_interactive( 
+    aes(tooltip = glue(
+      "{Sequence}
+       Position: {Start}-{End}
+       Value: {round(value, 2)}
+       Exposure: {Exposure} min"
     ))
   ) else geom_point()
   
-  butterfly_plot <- ggplot(plot_dat, aes(x = ID, y = value, color = Exposure, group = Exposure)) +
-    chosen_geom +
+  chosen_uncertainty_geom <- switch (
+    uncertainty_type,
+    ribbon = geom_ribbon(alpha = 0.5, size = 0, linetype = "blank"),
+    bars = geom_errorbar(width = 0.25, alpha = 0.5),
+    `bars + line` = geom_errorbar(width = 0.25, alpha = 0.5) + geom_line()
+  )
+  
+  butterfly_plot <- ggplot(
+    plot_dat, 
+    aes(
+      x = ID, 
+      y = value, 
+      group = Exposure, 
+      color = Exposure, 
+      fill = Exposure,
+      ymin = value - err_value, 
+      ymax = value + err_value
+    )) +
+    chosen_uncertainty_geom +
+    chosen_geom_point +
     coord_cartesian(ylim = c(0, NA)) +
     labs(x = "Peptide ID",
          y = y_label) +
     theme(legend.position = "bottom")
-  
-  if(uncertainty_type == "ribbon"){
-    
-    butterfly_plot <- butterfly_plot +
-      geom_ribbon(aes(x = ID, ymin = value - err_value, ymax = value + err_value, fill = Exposure), alpha = 0.5, size = 0, linetype = "blank")
-    
-  } else if (uncertainty_type == "bars") {
-    
-    butterfly_plot <- butterfly_plot +
-      geom_errorbar(aes(x = ID, ymin = value - err_value, ymax = value + err_value, color = Exposure), width = 0.25, alpha = 0.5)
-    
-  } else if (uncertainty_type == "bars + line"){
-    
-    butterfly_plot <- butterfly_plot +
-      geom_errorbar(aes(x = ID, ymin = value - err_value, ymax = value + err_value, color = Exposure), width = 0.25, alpha = 0.5) +
-      geom_line()
-    
-  }
   
   return(HaDeXify(butterfly_plot))
   
