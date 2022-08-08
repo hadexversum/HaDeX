@@ -11,6 +11,7 @@
 #' @param fractional \code{logical}, determines if values are fractional.
 #' @param show_uncertainty \code{logical}, determines if the
 #' uncertainty is shown. 
+#' @inheritParams plot_butterfly
 #' 
 #' @details Function \code{\link{plot_chiclet}} produces a chiclet
 #' plot based on the same dataset as butterfly plot, as it is the different
@@ -35,7 +36,8 @@
 plot_chiclet <- function(uptake_dat, 
                          theoretical = FALSE, 
                          fractional = FALSE,
-                         show_uncertainty = FALSE){
+                         show_uncertainty = FALSE,
+                         interactive = getOption("hadex_use_interactive_plots")){
   
   state <- unique(uptake_dat[["State"]])
   
@@ -88,8 +90,18 @@ plot_chiclet <- function(uptake_dat,
                          Start = uptake_dat[["Start"]],
                          End = uptake_dat[["End"]])
   
-  chiclet_plot <- ggplot(plot_dat, aes(y = Exposure, x = ID)) +
-    geom_tile(aes(fill = value)) +
+  chosen_tile_geom <- if (interactive) ggiraph::geom_tile_interactive(
+    aes(tooltip = glue(
+      "{Sequence}
+       Position: {Start}-{End}
+       ID: {ID}
+       Value: {round(value, 2)}
+       Exposure: {Exposure} min"
+    ))
+  ) else geom_tile()
+  
+  chiclet_plot <- ggplot(plot_dat, aes(y = Exposure, x = ID, fill = value)) +
+    chosen_tile_geom +
     scale_fill_gradient2(low = "blue", mid = "white", high = "red", guide = guide_legend(keywidth = 3)) +
     labs(title = title,
          y = "Exposure [min]",
