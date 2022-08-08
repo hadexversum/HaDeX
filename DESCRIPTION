@@ -42,7 +42,8 @@ Imports:
   	shiny,
   	stringr,
   	stringi,
-  	tidyr
+  	tidyr,
+  	ggiraph
 Suggests:
     spelling, 
     covr,

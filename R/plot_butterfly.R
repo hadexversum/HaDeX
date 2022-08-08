@@ -9,6 +9,9 @@
 #' @param fractional \code{logical}, determines if values are fractional.
 #' @param uncertainty_type type of presenting uncertainty, possible values:
 #' "ribbon", "bars" or "bars + line".
+#' @param interactive \code{logical}, whether plot should have an interactive 
+#' layer created with with ggiraph, which would add tooltips to the plot in an
+#' interactive display (HTML/Markdown documents or shiny app).
 #' 
 #' @details Function \code{\link{plot_butterfly}} generates butterfly plot
 #' based on provided data and parameters. On X-axis there is peptide ID. On the Y-axis
@@ -26,11 +29,13 @@
 #' plot_butterfly(state_uptake_dat)
 #' 
 #' @export plot_butterfly
+#' @importFrom ggiraph geom_point_interactive
 
 plot_butterfly <- function(uptake_dat, 
                            theoretical = FALSE, 
                            fractional = FALSE,
-                           uncertainty_type = "ribbon"){
+                           uncertainty_type = "ribbon",
+                           interactive = getOption("hadex_use_interactive_plots")){
   
   uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars", "bars + line"))
   state <- unique(uptake_dat[["State"]])
@@ -85,8 +90,17 @@ plot_butterfly <- function(uptake_dat,
                          Start = uptake_dat[["Start"]],
                          End = uptake_dat[["End"]])
   
-  butterfly_plot <- ggplot(plot_dat, aes(x = ID, y = value, color = Exposure)) +
-    geom_point(aes(group = Exposure, color = Exposure)) +
+  chosen_geom <- if (interactive) geom_point_interactive( 
+    aes(tooltip = paste0(
+      Sequence,
+      "<br/>Position: ", Start, "-", End,
+      "<br/>Value: ", round(value, 2),
+      "<br/>Exposure: ", Exposure, " min"
+    ))
+  ) else geom_point()
+  
+  butterfly_plot <- ggplot(plot_dat, aes(x = ID, y = value, color = Exposure, group = Exposure)) +
+    chosen_geom +
     coord_cartesian(ylim = c(0, NA)) +
     labs(x = "Peptide ID",
          y = y_label) +
