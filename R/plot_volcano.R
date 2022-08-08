@@ -25,6 +25,7 @@
 #' calculated using theoretical controls
 #' @param fractional \code{logical}, indicator if values are shown 
 #' in fractional form 
+#' @inheritParams plot_butterfly
 #'
 #' @details The function \code{\link{plot_volcano}} generates the 
 #' volcano plot based on supplied p_dat. 
@@ -68,7 +69,8 @@ plot_volcano <- function(p_dat,
                          show_insignificant_grey = FALSE,
                          hide_insignificant = FALSE,
                          fractional = F,
-                         theoretical = F) {
+                         theoretical = F,
+                         interactive = getOption("hadex_use_interactive_plots")) {
   
   if(hide_insignificant & show_insignificant_grey){
     
@@ -134,28 +136,39 @@ plot_volcano <- function(p_dat,
     
   }
   
-  if(color_times){
-    
-    volcano_plot <- ggplot(plot_dat, aes(x = value, y = log_p_value)) +
-      geom_errorbar(aes(xmin = value - err_value, 
-                        xmax = value + err_value), 
-                    color = "grey77") +
-      geom_point(aes(color = as.factor(Exposure))) +
-      labs(title = paste0("Volcano Plot ", state_1, " " , state_2),
-           x = x_label,
-           y = "-log(P value)") +
+  chosen_geom_point <- if (interactive) geom_point_interactive( 
+    aes(tooltip = glue(
+      "{Sequence}
+       Position: {Start}-{End}
+       Exposure: {Exposure} min
+       Difference: {round(value, 2)}
+       P value: {round(P_value, 4)}
+       -log(P value): {round(log_p_value, 2)}"
+    )),
+    size = 2
+  ) else geom_point(size = 2)
+
+  volcano_plot <- ggplot(
+    plot_dat, 
+    aes(
+      x = value, 
+      y = log_p_value, 
+      color = if (color_times)
+        as.factor(Exposure)
+      else NULL
+    )) +
+    geom_errorbar(aes(xmin = value - err_value, 
+                      xmax = value + err_value), 
+                  color = "grey77") +
+    chosen_geom_point +
+    labs(title = paste0("Volcano Plot ", state_1, " " , state_2),
+         x = x_label,
+         y = "-log(P value)")
+  
+  
+  if (color_times) {
+    volcano_plot <- volcano_plot +
       labs(color = "Exposure") 
-    
-  } else {
-    
-    volcano_plot <- ggplot(plot_dat, aes(x = value, y = log_p_value)) +
-      geom_point() +
-      geom_errorbar(aes(xmin = value - err_value, 
-                        xmax = value + err_value), 
-                    color = "grey77") +
-      labs(title = paste0("Volcano Plot ", state_1, " " , state_2),
-           x = x_label,
-           y = "-log(P value)")
   }
   
   if(adjust_axes){

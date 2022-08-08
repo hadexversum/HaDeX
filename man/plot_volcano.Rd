@@ -15,7 +15,8 @@ plot_volcano(
   show_insignificant_grey = FALSE,
   hide_insignificant = FALSE,
   fractional = F,
-  theoretical = F
+  theoretical = F,
+  interactive = getOption("hadex_use_interactive_plots")
 )
 }
 \arguments{
@@ -49,6 +50,10 @@ in fractional form}
 
 \item{theoretical}{\code{logical}, indicator if values are 
 calculated using theoretical controls}
+
+\item{interactive}{\code{logical}, whether plot should have an interactive 
+layer created with with ggiraph, which would add tooltips to the plot in an
+interactive display (HTML/Markdown documents or shiny app).}
 }
 \value{
 a \code{\link{ggplot}} object
