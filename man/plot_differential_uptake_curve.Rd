@@ -13,7 +13,8 @@ plot_differential_uptake_curve(
   uncertainty_type = "ribbon",
   log_x = TRUE,
   show_houde_interval = FALSE,
-  show_tstud_confidence = FALSE
+  show_tstud_confidence = FALSE,
+  interactive = getOption("hadex_use_interactive_plots")
 )
 }
 \arguments{
@@ -34,6 +35,10 @@ plot_differential_uptake_curve(
 
 \item{show_tstud_confidence}{\code{logical}, determines if t-Student test validity 
 is shown.}
+
+\item{interactive}{\code{logical}, whether plot should have an interactive 
+layer created with with ggiraph, which would add tooltips to the plot in an
+interactive display (HTML/Markdown documents or shiny app).}
 }
 \value{
 a \code{\link{ggplot}} object.

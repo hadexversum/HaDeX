@@ -13,6 +13,7 @@
 #' @param show_houde_interval \code{logical}, determines if houde interval is shown.
 #' @param show_tstud_confidence \code{logical}, determines if t-Student test validity 
 #' is shown.
+#' @inheritParams plot_butterfly
 #' 
 #' @details This plot shows the differential deuterium uptake between two biological 
 #' states for selected peptides in different time points.
@@ -45,7 +46,8 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
                                            uncertainty_type = "ribbon",
                                            log_x = TRUE,
                                            show_houde_interval = FALSE,
-                                           show_tstud_confidence = FALSE){
+                                           show_tstud_confidence = FALSE,
+                                           interactive = getOption("hadex_use_interactive_plots")){
   
   
   uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars", "bars + line"))
@@ -130,36 +132,48 @@ plot_differential_uptake_curve <- function(diff_uptake_dat = NULL,
                          value = diff_uptake_dat[[value]],
                          err_value = diff_uptake_dat[[err_value]])
   
-  diff_kin_plot <- ggplot(plot_dat, aes(x = Exposure, y = value, group = Sequence)) +
-    geom_point(aes(shape = Sequence, color = states), size = 2) + 
+  chosen_geom_point <- if (interactive) geom_point_interactive( 
+    aes(tooltip = glue(
+      "{Sequence}
+       Position: {Start}-{End}
+       Value: {round(value, 2)}
+       Time point: {Exposure} min"
+    )),
+    size = 2
+  ) else geom_point(size = 2)
+  
+  err_width <- if (log_x) 0.1 else 5
+  
+  chosen_uncertainty_geom <- switch (
+    uncertainty_type,
+    ribbon = geom_ribbon(aes(color = NULL), alpha = 0.15),
+    bars = geom_errorbar(width = err_width),
+    `bars + line` = geom_errorbar(width = err_width)
+  )
+  
+  diff_kin_plot <- ggplot(
+    plot_dat, 
+    aes(
+      x = Exposure, 
+      y = value, 
+      group = Sequence, 
+      shape = Sequence,
+      fill = Sequence,
+      color = states, 
+      ymin = value - err_value, 
+      ymax = value + err_value
+    )) +
+    chosen_geom_point +
+    chosen_uncertainty_geom +
     theme(legend.position = "bottom",
           legend.title = element_blank()) +
     labs(x = "Time points [min]", 
          y = y_label,
          title = title)
   
-  if(log_x){ err_width = 0.1 } else { err_width = 5 }
   
-  if(uncertainty_type == "ribbon"){
-    
-    diff_kin_plot <- diff_kin_plot +
-      geom_ribbon(aes(ymin = value - err_value, ymax = value + err_value, fill = Sequence), alpha = 0.15) +
-      geom_line(aes(color = states)) 
-    
-  } else if (uncertainty_type == "bars") {
-    
-    diff_kin_plot <- diff_kin_plot +
-      geom_errorbar(aes(x = Exposure, ymin = value - err_value, ymax = value + err_value, color = states),
-                    width = err_width)
-    
-  } else if (uncertainty_type == "bars + line"){
-    
-    diff_kin_plot <- diff_kin_plot +
-      geom_errorbar(aes(x = Exposure, ymin = value - err_value, ymax = value + err_value, color = states),
-                    width = err_width) + 
-      geom_line(aes(color = Sequence))
-    
-  }
+  if (uncertainty_type %in% c("ribbon", "bars + line"))
+    diff_kin_plot <- diff_kin_plot + geom_line()
   
   if(show_houde_interval){
     
