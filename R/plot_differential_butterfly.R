@@ -15,6 +15,7 @@
 #' @param confidence_level confidence level for the test, from range [0, 1].
 #' Important if selected show_confidence_limit.
 #' @param uncertainty_type ...
+#' @inheritParams plot_butterfly
 #'
 #' @details Function \code{\link{plot_differential_butterfly}} generates
 #' differential butterfly plot based on provided data and parameters. On X-axis
@@ -51,7 +52,8 @@ plot_differential_butterfly <- function(diff_uptake_dat = NULL,
                                         show_houde_interval = FALSE,
                                         show_tstud_confidence = FALSE,
                                         uncertainty_type = "ribbon",
-                                        confidence_level = 0.98){
+                                        confidence_level = 0.98,
+                                        interactive = getOption("hadex_use_interactive_plots")){
   
   uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars", "bars + line"))
   
@@ -123,30 +125,39 @@ plot_differential_butterfly <- function(diff_uptake_dat = NULL,
   
   attr(plot_dat, "n_rep") <- attr(diff_uptake_dat, "n_rep")
   
-  butterfly_differential_plot <- ggplot() +
-    geom_point(data = plot_dat, aes(x = ID, y = value, group = Exposure, color = Exposure)) +
+  chosen_geom_point <- if (interactive) geom_point_interactive( 
+    aes(tooltip = glue(
+      "{Sequence}
+       Position: {Start}-{End}
+       Value: {round(value, 2)}
+       Exposure: {Exposure} min"
+    ))
+  ) else geom_point()
+  
+  chosen_uncertainty_geom <- switch (
+    uncertainty_type,
+    ribbon = geom_ribbon(alpha = 0.5, size = 0, linetype = "blank"),
+    bars = geom_errorbar(width = 0.25, alpha = 0.5),
+    `bars + line` = geom_errorbar(width = 0.25, alpha = 0.5) + geom_line()
+  )
+  
+  butterfly_differential_plot <- ggplot(
+    data = plot_dat, 
+    aes(
+      x = ID, 
+      y = value, 
+      group = Exposure, 
+      color = Exposure, 
+      fill = Exposure,
+      ymin = value - err_value, 
+      ymax = value + err_value
+    )) +
+    chosen_uncertainty_geom +
+    chosen_geom_point +
     labs(title = title,
          x = "Peptide ID",
          y = y_label) +
     theme(legend.position = "bottom")
-  
-  if(uncertainty_type == "ribbon"){
-    
-    butterfly_differential_plot <- butterfly_differential_plot +
-      geom_ribbon(data = plot_dat, aes(x = ID, ymin = value - err_value, ymax = value + err_value, fill = Exposure), alpha = 0.5, size = 0, linetype = "blank")
-    
-  } else if (uncertainty_type == "bars"){
-    
-    butterfly_differential_plot <- butterfly_differential_plot +
-      geom_errorbar(data = plot_dat, aes(x = ID, ymin = value - err_value, ymax = value + err_value, color = Exposure), width = 0.25, alpha = 0.5)
-    
-  } else if (uncertainty_type == "bars + line"){
-    
-    butterfly_differential_plot <- butterfly_differential_plot +
-      geom_errorbar(data = plot_dat, aes(x = ID, ymin = value - err_value, ymax = value + err_value, color = Exposure), width = 0.25, alpha = 0.5) + 
-      geom_line(data = plot_dat, aes(x = ID, y = value, group = Exposure, color = Exposure))
-      
-  }
   
   if(show_houde_interval){
     
