@@ -8,7 +8,8 @@ plot_amino_distribution(
   position_in_sequence,
   hydro_properties,
   protein,
-  charge_colors
+  charge_colors,
+  interactive = getOption("hadex_use_interactive_plots")
 )
 }
 \arguments{
@@ -19,6 +20,10 @@ plot_amino_distribution(
 \item{protein}{...}
 
 \item{charge_colors}{...}
+
+\item{interactive}{\code{logical}, whether plot should have an interactive 
+layer created with with ggiraph, which would add tooltips to the plot in an
+interactive display (HTML/Markdown documents or shiny app).}
 }
 \value{
 a \code{\link{ggplot2}} object.
