@@ -13,6 +13,7 @@
 #' calculated using theoretical controls
 #' @param fractional \code{logical}, indicator if values are shown 
 #' in fractional form 
+#' @inheritParams plot_butterfly
 #' 
 #' @details The function \code{\link{plot_state_comparison}} generates
 #' a comparison plot, presenting deuterium uptake values of peptides 
@@ -46,7 +47,8 @@ plot_state_comparison <- function(uptake_dat,
                                   fractional = FALSE,
                                   line_size = 1.5,
                                   all_times = FALSE,
-                                  time_t = NULL){
+                                  time_t = NULL,
+                                  interactive = getOption("hadex_use_interactive_plots")) {
   
   uptake_dat <- as.data.table(uptake_dat)
   
@@ -107,9 +109,31 @@ plot_state_comparison <- function(uptake_dat,
                          err_value = uptake_dat[[err_value]],
                          Exposure = uptake_dat[["Exposure"]])
   
-  state_comp_plot <- ggplot(data = plot_dat) +
-    geom_segment(data = plot_dat, aes(x = Start, y = value, xend = End, yend = value, color = State), size = line_size) +
-    geom_errorbar(data = plot_dat, aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value, color = State)) +
+  chosen_geom_segment <- if (interactive) ggiraph::geom_segment_interactive( 
+    aes(tooltip = glue(
+      "{Sequence}
+       Position: {Start}-{End}
+       State: {State}
+       Value: {round(value, 2)}"
+    )),
+    size = line_size
+  ) else geom_segment(size = line_size)
+  
+  state_comp_plot <- ggplot(
+    data = plot_dat,
+    aes(
+      x = Start, 
+      y = value, 
+      xend = End, 
+      yend = value, 
+      color = State
+    )) +
+    chosen_geom_segment +
+    geom_errorbar(aes(
+      x = Med_Sequence, 
+      ymin = value - err_value, 
+      ymax = value + err_value
+    )) +
     labs(title = title,
          x = "Position in the sequence",
          y = y_label) +
