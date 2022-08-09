@@ -7,7 +7,8 @@
 plot_overlap_distribution(
   overlap_dist_dat,
   start = 1,
-  end = max(overlap_dist_dat[["pos"]])
+  end = max(overlap_dist_dat[["pos"]]),
+  interactive = getOption("hadex_use_interactive_plots")
 )
 }
 \arguments{
@@ -17,6 +18,10 @@ function}
 \item{start}{start start position of chosen protein.}
 
 \item{end}{end position of chosen protein.}
+
+\item{interactive}{\code{logical}, whether plot should have an interactive 
+layer created with with ggiraph, which would add tooltips to the plot in an
+interactive display (HTML/Markdown documents or shiny app).}
 }
 \value{
 a \code{\link{ggplot2}} object.
