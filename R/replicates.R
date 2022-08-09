@@ -312,6 +312,7 @@ create_replicate_dataset <- function(dat,
 #' \code{\link{create_replicate_dataset}} function.
 #' @param time_points \code{logical}, indicator if the histogram
 #' should show values aggregated for time points of measurements.
+#' @inheritParams plot_butterfly
 #'
 #' @details The function shows three versions of replicate 
 #' histogram, based on supplied \code{rep_dat} and \code{time_points}. 
@@ -348,7 +349,8 @@ create_replicate_dataset <- function(dat,
 #' @export plot_replicate_histogram 
 
 plot_replicate_histogram <- function(rep_dat,
-                                     time_points = F){
+                                     time_points = F,
+                                     interactive = getOption("hadex_use_interactive_plots")){
   
   state <- attr(rep_dat, "state")
   
@@ -359,6 +361,19 @@ plot_replicate_histogram <- function(rep_dat,
     legend_position <- "None"
     plot_title <- "Number of replicates for time points"
     plot_x <- "Exposure [min]"
+    
+    # TODO: I implemented it here, because those values are calculated internally
+    # by ggplot -- shouldn't it be moved to data calulation section?
+    
+    sums <- setNames(sapply(
+      unique(rep_dat[["Exposure"]]), 
+      function(t) sum(rep_dat[rep_dat[["Exposure"]] == t, "n"])
+    ), unique(rep_dat[["Exposure"]]))
+    rep_dat[["ctn"]] <- sums[as.character(rep_dat[["Exposure"]])]
+    
+    tooltip_template <- "Exposure: {Exposure} min,
+                         Peptides: {n}
+                         Total replicates: {ctn}"
     
   } else {
     
@@ -372,6 +387,11 @@ plot_replicate_histogram <- function(rep_dat,
       plot_title <- paste0("Number of replicates for each peptide in ", state, " state in ", time_t, " min")
       plot_x <- "Peptide ID"
       
+      tooltip_template <- "{Sequence}
+                           ID: {ID}
+                           Position: {Start}-{End}
+                           Replicates: {n}"
+      
     } else {
       
       x <- "ID"
@@ -381,13 +401,25 @@ plot_replicate_histogram <- function(rep_dat,
       plot_title <- paste0("Number of replicates for each peptide in ", state, " state")
       plot_x <- "Peptide ID"
       
+      tooltip_template <- "{Sequence}
+                           ID: {ID}
+                           Position: {Start}-{End}
+                           Exposure: {Exposure} min,
+                           Replicates: {n}"
     } 
     
     
   }
   
-  replicate_histogram_plot <- ggplot(rep_dat) +
-    geom_col(aes_string(x = x, y = "n", fill = fill)) +
+  
+  
+  chosen_geom_col <- if (interactive) ggiraph::geom_col_interactive( 
+    aes(tooltip = glue(tooltip_template))
+  ) else geom_col()
+
+  
+  replicate_histogram_plot <- ggplot(rep_dat, aes_string(x = x, y = "n", fill = fill)) +
+    chosen_geom_col +
     labs(title = plot_title,
          x = plot_x,
          y = "Number of replicates",
