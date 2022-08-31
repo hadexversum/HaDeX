@@ -48,7 +48,6 @@ plot_uncertainty <- function(dat,
                              separate_times = TRUE, 
                              show_threshold = TRUE){
 
-  dat <- as.data.table(dat)
   
   dat <- dat[Protein == protein & State == state]
   

@@ -63,6 +63,8 @@ calculate_aggregated_test_results <- function(p_diff_uptake_conf_dat,
   
   res <- res[, .(pos, result)]
   setnames(res, c("pos",  "result"), c("Residues", paste0(time_t*60, "s")))
-  res
+  
+  return(res)
+  
 }
 

@@ -32,7 +32,6 @@ reconstruct_sequence <- function(dat,
                                  protein = dat[["Protein"]][1],
                                  states = unique(dat[["State"]]),
                                  end = NULL) {
-  dat <- data.table(dat)
   
   if (is.null(end)) end <- max(dat[["End"]])
   

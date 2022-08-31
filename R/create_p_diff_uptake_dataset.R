@@ -64,8 +64,6 @@ create_p_diff_uptake_dataset <- function(dat,
                                          time_100 = max(dat[["Exposure"]]),
                                          deut_part = 0.9){
   
-  dat <- data.table(dat)
-  
   p_dat <- calculate_p_value(dat = dat, 
                              protein = protein,
                              state_1 = state_1,

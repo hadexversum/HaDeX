@@ -39,8 +39,6 @@ create_state_comparison_dataset <- function(dat,
                                             time_100 = max(dat[["Exposure"]]),
                                             deut_part = 0.9){
   
-  dat <- data.table(dat)
-  
   comparison_dat <- rbindlist(lapply(states, function(state){
     
     calculate_state_uptake(dat,
@@ -52,8 +50,6 @@ create_state_comparison_dataset <- function(dat,
                            deut_part = deut_part)
     
   }))
-  
-  comparison_dat <- data.frame(comparison_dat)
   
   attr(comparison_dat, "protein") <- protein
   attr(comparison_dat, "states") <- states

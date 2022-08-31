@@ -68,11 +68,11 @@ calculate_kinetics <- function(dat,
   assert_number(time_100, lower = time_0)
   assert_number(deut_part, lower = 0, upper = 1)
   
-  prep_dat <- data.table(dat)[Protein == protein & 
-                                Sequence == sequence & 
-                                State == state & 
-                                Start == start & 
-                                End == end]
+  prep_dat <- dat[Protein == protein & 
+                  Sequence == sequence & 
+                  State == state & 
+                  Start == start & 
+                  End == end]
   time_points <- unique(prep_dat[["Exposure"]])
   time_points_to_iterate <- time_points[time_points > time_0 & time_points < time_100]
   
@@ -94,8 +94,6 @@ calculate_kinetics <- function(dat,
           deut_uptake, err_deut_uptake, theo_frac_deut_uptake, 
           err_theo_frac_deut_uptake, theo_deut_uptake, err_theo_deut_uptake, 
           Med_Sequence)]
-  
-  kin_dat <- data.frame(kin_dat)
   
   attr(kin_dat, "protein") <- protein
   attr(kin_dat, "sequence") <- sequence

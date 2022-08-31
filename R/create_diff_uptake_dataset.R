@@ -51,7 +51,6 @@ create_diff_uptake_dataset <- function(dat,
   
   ## temporarily, for compatibility
   n_rep <- attr(dat, "n_rep")
-  dat <- data.table(dat)
   ##
   
   all_times <- unique(dat[["Exposure"]])
@@ -60,21 +59,17 @@ create_diff_uptake_dataset <- function(dat,
   
   diff_uptake_dat <- rbindlist(lapply(times, function(time){
     
-    dt <- setorderv(data.table(calculate_diff_uptake(dat = dat,  ## temporarily, for compatibility
-                                                     states = c(state_1, state_2), 
-                                                     protein = protein, 
-                                                     time_0 = time_0, time_t = time, time_100 = time_100,
-                                                     deut_part = deut_part)), cols = c("Start", "End"))
+    dt <- setorderv(calculate_diff_uptake(dat = dat,  
+                                          states = c(state_1, state_2), 
+                                          protein = protein, 
+                                          time_0 = time_0, time_t = time, time_100 = time_100,
+                                          deut_part = deut_part), cols = c("Start", "End"))
     dt[, `:=`(ID = 1L:nrow(dt), Exposure = time)]
     
     col_order <- c("ID", "Exposure", setdiff(colnames(dt), c("ID", "Exposure")))
     setcolorder(dt, col_order)
     
   }))
-  
-  ## temporarily, for compatibility
-  diff_uptake_dat <- data.frame(diff_uptake_dat) 
-  ##
   
   attr(diff_uptake_dat, "protein") <- protein
   attr(diff_uptake_dat, "state_1") <- state_1

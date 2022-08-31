@@ -36,7 +36,6 @@ create_control_dataset <- function(dat,
   
   ## temporarily, for compatibility
   n_rep <- attr(dat, "n_rep")
-  dat <- data.table(dat) 
   ##
   
   tmp <- dat[Protein == control_protein & State == control_state & Exposure == control_exposure][, Exposure := 99999]
@@ -50,8 +49,6 @@ create_control_dataset <- function(dat,
                          
                        }))
   )
-  
-  dat <- data.frame(dat) ## temporarily, for compatibility
   
   attr(control_dat, "control_protein") <- control_protein 
   attr(control_dat, "control_state") <- control_state 

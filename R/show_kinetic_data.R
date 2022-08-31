@@ -37,8 +37,6 @@ show_uc_data <- function(uc_dat,
                          theoretical = FALSE, 
                          fractional = FALSE){
   
-  uc_dat <- data.table(uc_dat)
-  
   if(theoretical){
     
     if(fractional){
@@ -83,4 +81,6 @@ show_uc_data <- function(uc_dat,
                c("Time Point", "DU [Da]", "Err DU [Da]"))
     }
   }
+  
+  return(tmp)
 }

@@ -58,6 +58,6 @@ add_stat_dependency <- function(calc_dat,
   attr(calc_dat, paste0("confidence_limit_at_", confidence_level)) <- confidence_values
   attr(calc_dat, paste0("confidence_limit_at_", confidence_level, "_prop")) <- data.frame("theoretical" = theoretical, "fractional" = fractional)
   
-  calc_dat
+  return(calc_dat)
   
 }
