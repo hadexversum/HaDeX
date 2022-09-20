@@ -40,7 +40,7 @@
 new_hdx_data <- function(dat, source, has_modification, n_rep){
   
   structure(dat,
-            class = c("hdx_data", "data.frame"),
+            class = c("hdx_data", "data.table", "data.frame"),
             source = source,
             has_modification = has_modification,
             n_rep = n_rep)

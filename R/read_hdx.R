@@ -6,7 +6,7 @@
 #' @importFrom readxl read_excel
 #' @importFrom readr read_csv read_tsv parse_logical parse_integer parse_double parse_character 
 #' cols col_character parse_number
-#' @importFrom data.table fread setattr `:=`
+#' @importFrom data.table data.table fread setattr `:=`
 #' @importFrom dplyr %>%
 #' @importFrom stringi stri_count
 #' @importFrom dplyr group_by ungroup summarize

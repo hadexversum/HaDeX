@@ -12,7 +12,7 @@ calculate_kinetics(
   start = dat[["Start"]][1],
   end = dat[["End"]][1],
   time_0 = min(dat[["Exposure"]]),
-  time_100 = max(dat["Exposure"]),
+  time_100 = max(dat[["Exposure"]]),
   deut_part = 0.9
 )
 }

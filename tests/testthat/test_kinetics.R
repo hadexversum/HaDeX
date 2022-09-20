@@ -32,9 +32,9 @@ result_tmp <- calculate_peptide_kinetics(dat,
 test_that("Theo Frac colnames in show_kinetic_data",
           expect_equal(
             colnames(
-              show_kinetic_data(result_tmp, 
-                                fractional = T, 
-                                theoretical = T)
+              show_uc_data(result_tmp, 
+                          fractional = T, 
+                          theoretical = T)
             ),
             c("Protein", "Sequence", "State", "Start", "End", "Time Point", "Theo Frac DU [%]", "Theo Err Frac DU [%]")
           )
@@ -43,7 +43,7 @@ test_that("Theo Frac colnames in show_kinetic_data",
 test_that("Theo colnames in show_kinetic_data",
           expect_equal(
             colnames(
-              show_kinetic_data(result_tmp, 
+              show_uc_data(result_tmp, 
                                 fractional = F, 
                                 theoretical = T)
             ),
@@ -54,7 +54,7 @@ test_that("Theo colnames in show_kinetic_data",
 test_that("Frac colnames in show_kinetic_data",
           expect_equal(
             colnames(
-              show_kinetic_data(result_tmp, 
+              show_uc_data(result_tmp, 
                                 fractional = T, 
                                 theoretical = F)
             ),
@@ -65,7 +65,7 @@ test_that("Frac colnames in show_kinetic_data",
 test_that("colnames in show_kinetic_data",
           expect_equal(
             colnames(
-              show_kinetic_data(result_tmp, 
+              show_uc_data(result_tmp, 
                                 fractional = F, 
                                 theoretical = F)
             ),
@@ -77,35 +77,35 @@ test_that("colnames in show_kinetic_data",
 ## PLOT_KINETICS ##
 ###################
 
-theo_frac_r_kinetic_plot <- plot_kinetics(result_tmp,
-                                          theoretical = T,
-                                          fractional = T,
-                                          uncertainty_type = "ribbon",
-                                          log_x = F)
+theo_frac_r_kinetic_plot <- plot_uptake_curve(result_tmp,
+                                              theoretical = T,
+                                              fractional = T,
+                                              uncertainty_type = "ribbon",
+                                              log_x = F)
 
 expect_doppelganger("Theo Frac kinetic plot (ribbon)", theo_frac_r_kinetic_plot)
 
-theo_r_log_kinetic_plot <- plot_kinetics(result_tmp,
-                                         theoretical = T,
-                                         fractional = F,
-                                         uncertainty_type = "ribbon",
-                                         log_x = T)
+theo_r_log_kinetic_plot <- plot_uptake_curve(result_tmp,
+                                             theoretical = T,
+                                             fractional = F,
+                                             uncertainty_type = "ribbon",
+                                             log_x = T)
 
 expect_doppelganger("Theo log kinetic plot (ribbon)", theo_r_log_kinetic_plot)
 
-frac_b_kinetic_plot <- plot_kinetics(result_tmp,
-                                     theoretical = F,
-                                     fractional = T,
-                                     uncertainty_type = "bars",
-                                     log_x = F)
+frac_b_kinetic_plot <- plot_uptake_curve(result_tmp,
+                                         theoretical = F,
+                                         fractional = T,
+                                         uncertainty_type = "bars",
+                                         log_x = F)
 
 expect_doppelganger("Frac kinetic plot (bars)", frac_b_kinetic_plot)
 
-bl_kinetic_plot <- plot_kinetics(result_tmp,
-                                 theoretical = F,
-                                 fractional = F,
-                                 uncertainty_type = "bars + line",
-                                 log_x = F)
+bl_kinetic_plot <- plot_uptake_curve(result_tmp,
+                                     theoretical = F,
+                                     fractional = F,
+                                     uncertainty_type = "bars + line",
+                                     log_x = F)
 
 expect_doppelganger("kinetic plot (bars+line)", bl_kinetic_plot)
 
