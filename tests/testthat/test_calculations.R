@@ -46,7 +46,7 @@ lapply(times, function(time){
 
 test_that(paste0("MHP for ", chosen_peptide),
           expect_equal(round(calculate_MHP(chosen_peptide, mono = F)),
-                       round(dat[dat[["Sequence"]] == chosen_peptide, "MHP"][1])
+                       round(dat[dat[["Sequence"]] == chosen_peptide, "MHP"][[1]][1])
           )
 )
 

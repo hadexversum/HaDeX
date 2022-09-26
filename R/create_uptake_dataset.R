@@ -46,11 +46,8 @@ create_uptake_dataset <- function(dat,
                                   time_100 = max(dat[["Exposure"]]),
                                   deut_part = 0.9){
   
-  dat <- data.table(dat)
-  
   times <- unique(dat[["Exposure"]])
   times <- times[times > time_0]
-  
   
   uptake_dat <- rbindlist(lapply(states, function(state){
     
@@ -65,8 +62,6 @@ create_uptake_dataset <- function(dat,
     }))
     
   }))
-  
-  uptake_dat <- data.frame(uptake_dat)
   
   attr(uptake_dat, "protein") <- protein
   attr(uptake_dat, "state") <- NULL
