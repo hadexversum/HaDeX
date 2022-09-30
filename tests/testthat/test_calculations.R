@@ -21,7 +21,9 @@ times <-  ref_dat[["Exposure"]]
 values <- colnames(ref_dat)[-1]
 
 result_tmp <- calculate_exp_masses(dat)
-result_tmp <- data.table(result_tmp) ##!!
+
+test_that("data.table-d calculate_exp_masses", expect_s3_class(result_tmp, "data.table"))
+
 lapply(times, function(time){
 
   lapply(values, function(value){

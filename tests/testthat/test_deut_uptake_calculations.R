@@ -51,8 +51,6 @@ result_tmp <- calculate_kinetics(dat = dat,
                                  time_100 = chosen_time_100,
                                  deut_part = deut_part)
 
-result_tmp <- data.table(result_tmp) ## temporary for compatibility 
-
 lapply(times, function(time){
   
   lapply(deut_values, function(deut_value){
@@ -70,6 +68,8 @@ lapply(times, function(time){
   
 })
 
+test_that("data.table-d calculate_kinetics", expect_s3_class(result_tmp, "data.table"))
+
 ################################
 ## CALCULATE_PEPTIDE_KINETICS ##
 ################################
@@ -83,8 +83,6 @@ result_tmp <- calculate_peptide_kinetics(dat = dat,
                                          time_0 = chosen_time_0,
                                          time_100 = chosen_time_100,
                                          deut_part = deut_part)
-
-result_tmp <- data.table(result_tmp) ## temporary for compatibility 
 
 lapply(times, function(time){
   
@@ -103,6 +101,8 @@ lapply(times, function(time){
   })
   
 })
+
+test_that("data.table-d calculate_peptide_kinetics", expect_s3_class(result_tmp, "data.table"))
 
 ############################
 ## CREATE_KINETIC_DATASET ##
@@ -126,7 +126,7 @@ test_that("states in create_kinetic_dataset",
           )
 )
 
-result_tmp <- data.table(result_tmp) ## temporary for compatibility 
+test_that("data.table-d create_kinetic_dataset", expect_s3_class(result_tmp, "data.table"))
 
 lapply(times, function(time){
   
@@ -158,7 +158,7 @@ test_that("class is right",
                                            time_0 = chosen_time_0,
                                            time_t = chosen_time,
                                            time_100 = chosen_time_100),
-                    "data.frame"))
+                    "data.table"))
 
 lapply(times, function(time){
   
@@ -169,8 +169,6 @@ lapply(times, function(time){
                                        time_t = time,
                                        time_100 = chosen_time_100,
                                        deut_part = deut_part)
-  
-  result_tmp <- data.table(result_tmp) ## temporary for compatibility 
   
   lapply(deut_values, function(deut_value){
     
@@ -189,6 +187,8 @@ lapply(times, function(time){
 })
 
 
+test_that("data.table-d calculate_state_uptake", expect_s3_class(result_tmp, "data.table"))
+
 #################################
 ## CREATE_STATE_UPTAKE_DATASET ##
 #################################
@@ -201,8 +201,6 @@ result_tmp <- create_state_uptake_dataset(dat = dat,
                                           time_0 = chosen_time_0,
                                           time_100 = chosen_time_100,
                                           deut_part = deut_part)
-
-result_tmp <- data.table(result_tmp) ##!!
 
 lapply(times, function(time){
   
@@ -222,6 +220,8 @@ lapply(times, function(time){
   
 })
 
+test_that("data.table-d create_state_uptake_dataset", expect_s3_class(result_tmp, "data.table"))
+
 ###########################
 ## CREATE_UPTAKE_DATASET ##
 ###########################
@@ -233,7 +233,7 @@ result_tmp <- create_uptake_dataset(dat = dat,
                                     time_100 = chosen_time_100,
                                     deut_part = deut_part)
 
-result_tmp <- data.table(result_tmp)
+test_that("data.table-d create_uptake_dataset", expect_s3_class(result_tmp, "data.table"))
 
 lapply(times, function(time){
   
@@ -271,8 +271,6 @@ lapply(times, function(time){
                                                   time_100 = chosen_time_100,
                                                   deut_part = deut_part)
     
-    result_tmp <- data.table(result_tmp) ##!!
-    
     test_name <- paste0("create_state_comparison_dataset-", time, "min-", deut_value)
     
     test_that(test_name,
@@ -286,6 +284,8 @@ lapply(times, function(time){
   })
   
 })
+
+test_that("data.table-d create_state_comparison_dataset", expect_s3_class(result_tmp, "data.table"))
 
 ############################
 ## CREATE_CONTROL_DATASET ##
@@ -309,7 +309,6 @@ lapply(times, function(time){
                                        time_t = time,
                                        time_100 = 99999,
                                        deut_part = deut_part)
-  result_tmp <- data.table(result_tmp)
   
   lapply(deut_values, function(deut_value){
     
@@ -327,3 +326,4 @@ lapply(times, function(time){
   
 })
 
+test_that("data.table-d calculate_state_uptake", expect_s3_class(result_tmp, "data.table"))

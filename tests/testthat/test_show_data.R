@@ -14,6 +14,8 @@ uptake_dat <- create_uptake_dataset(dat)
 ## SHOW_UPTAKE_DATA ##
 ######################
 
+test_that("data.table-d uptake_dat", expect_s3_class(uptake_dat, "data.table"))
+
 test_that("Theo Frac show_uptake_data colnames",
           expect_equal(colnames(show_uptake_data(uptake_dat,
                                                  theoretical = T,
@@ -57,6 +59,9 @@ diff_uptake_dat <- create_diff_uptake_dataset(dat)
 ###########################
 ## SHOW_DIFF_UPTAKE_DATA ##
 ###########################
+
+test_that("data.table-d diff_uptake_dat", expect_s3_class(diff_uptake_dat, "data.table"))
+
 
 test_that("Theo Frac show_diff_uptake_data colnames",
           expect_equal(colnames(show_diff_uptake_data(diff_uptake_dat,

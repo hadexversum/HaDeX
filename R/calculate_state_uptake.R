@@ -93,8 +93,6 @@ calculate_state_uptake <- function(dat,
                                theo_deut_uptake, err_theo_deut_uptake,
                                Med_Sequence)]
   
-  uptake_dat <- data.frame(uptake_dat)
-  
   attr(uptake_dat, "protein") <- protein
   attr(uptake_dat, "state") <- state
   attr(uptake_dat, "time_0") <- time_0

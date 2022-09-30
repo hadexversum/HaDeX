@@ -32,6 +32,8 @@ ref_dat <- data.frame(Exposure = c(0.167, 1, 5, 25, 120),
 times <- ref_dat[["Exposure"]]
 deut_values <- colnames(ref_dat)[-1]
 
+result_tmp <- data.frame()
+
 ###########################
 ## CALCULATE_DIFF_UPTAKE ##
 ###########################
@@ -59,9 +61,9 @@ lapply(times, function(time){
 
   })
 
+  test_that(paste0("data.table-d calculate_diff_uptake in ", time, "min"), expect_s3_class(result_tmp, "data.table"))
+  
 })
-
-
 
 
 ################################
@@ -91,7 +93,10 @@ lapply(times, function(time){
 
   })
 
+  test_that(paste0("data.table-d create_diff_uptake_dataset in ", time, " min"), expect_s3_class(result_tmp, "data.table"))
+  
 })
+
 
 ############################
 ## CREATE_VOLCANO_DATASET ##
