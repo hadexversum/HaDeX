@@ -1,10 +1,4 @@
-context("diff_deut_uptake calculations in test")
-
-library(tidyr)
-library(dplyr)
-
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv")) 
-
 
 ################
 ## REFERENCES ##

@@ -315,20 +315,23 @@
 <text x='661.82' y='516.90' text-anchor='middle' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='9.79px' lengthAdjust='spacingAndGlyphs'>40</text>
 <text x='379.77' y='529.04' text-anchor='middle' style='font-size: 11.00px; font-family: sans;' textLength='51.37px' lengthAdjust='spacingAndGlyphs'>Peptide ID</text>
 <text transform='translate(13.05,264.35) rotate(-90)' text-anchor='middle' style='font-size: 11.00px; font-family: sans;' textLength='73.38px' lengthAdjust='spacingAndGlyphs'>Exposure [min]</text>
-<rect x='215.22' y='542.28' width='329.10' height='28.24' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<text x='220.70' y='560.19' style='font-size: 11.00px; font-family: sans;' textLength='67.25px' lengthAdjust='spacingAndGlyphs'>Fractional DU</text>
-<rect x='293.43' y='547.76' width='43.20' height='17.28' style='stroke-width: 2.13; fill: #F2F2F2;' />
-<rect x='293.57' y='547.90' width='42.92' height='17.00' style='stroke-width: 0.21; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #FFFFFF;' />
-<rect x='352.48' y='547.76' width='43.20' height='17.28' style='stroke-width: 2.13; fill: #F2F2F2;' />
-<rect x='352.62' y='547.90' width='42.92' height='17.00' style='stroke-width: 0.21; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #FFCBB9;' />
-<rect x='416.43' y='547.76' width='43.20' height='17.28' style='stroke-width: 2.13; fill: #F2F2F2;' />
-<rect x='416.57' y='547.90' width='42.92' height='17.00' style='stroke-width: 0.21; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #FF9577;' />
-<rect x='480.38' y='547.76' width='43.20' height='17.28' style='stroke-width: 2.13; fill: #F2F2F2;' />
-<rect x='480.52' y='547.90' width='42.92' height='17.00' style='stroke-width: 0.21; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #FF5736;' />
-<text x='342.11' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='4.89px' lengthAdjust='spacingAndGlyphs'>0</text>
-<text x='401.16' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='9.79px' lengthAdjust='spacingAndGlyphs'>20</text>
-<text x='465.11' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='9.79px' lengthAdjust='spacingAndGlyphs'>40</text>
-<text x='529.06' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='9.79px' lengthAdjust='spacingAndGlyphs'>60</text>
+<rect x='183.25' y='542.28' width='393.05' height='28.24' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<text x='188.73' y='560.19' style='font-size: 11.00px; font-family: sans;' textLength='67.25px' lengthAdjust='spacingAndGlyphs'>Fractional DU</text>
+<rect x='261.45' y='547.76' width='43.20' height='17.28' style='stroke-width: 2.13; fill: #F2F2F2;' />
+<rect x='261.60' y='547.90' width='42.92' height='17.00' style='stroke-width: 0.21; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #FFFFFF;' />
+<rect x='320.51' y='547.76' width='43.20' height='17.28' style='stroke-width: 2.13; fill: #F2F2F2;' />
+<rect x='320.65' y='547.90' width='42.92' height='17.00' style='stroke-width: 0.21; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #FFD0C0;' />
+<rect x='384.46' y='547.76' width='43.20' height='17.28' style='stroke-width: 2.13; fill: #F2F2F2;' />
+<rect x='384.60' y='547.90' width='42.92' height='17.00' style='stroke-width: 0.21; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #FFA084;' />
+<rect x='448.40' y='547.76' width='43.20' height='17.28' style='stroke-width: 2.13; fill: #F2F2F2;' />
+<rect x='448.55' y='547.90' width='42.92' height='17.00' style='stroke-width: 0.21; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #FF6B4A;' />
+<rect x='512.35' y='547.76' width='43.20' height='17.28' style='stroke-width: 2.13; fill: #F2F2F2;' />
+<rect x='512.49' y='547.90' width='42.92' height='17.00' style='stroke-width: 0.21; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #FF1708;' />
+<text x='310.13' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='4.89px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='369.19' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='9.79px' lengthAdjust='spacingAndGlyphs'>20</text>
+<text x='433.14' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='9.79px' lengthAdjust='spacingAndGlyphs'>40</text>
+<text x='497.08' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='9.79px' lengthAdjust='spacingAndGlyphs'>60</text>
+<text x='561.03' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='9.79px' lengthAdjust='spacingAndGlyphs'>80</text>
 <text x='45.03' y='14.56' style='font-size: 13.20px; font-family: sans;' textLength='227.46px' lengthAdjust='spacingAndGlyphs'>Theoretical chiclet plot for CD160 state</text>
 </g>
 </svg>

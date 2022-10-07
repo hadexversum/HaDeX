@@ -1,8 +1,3 @@
-library(testthat)
-library(HaDeX)
-
-context("read_hdx in test")
-
 test_that("doesn't work",
           expect_error(read_hdx("protein")))
 
