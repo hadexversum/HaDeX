@@ -1,4 +1,6 @@
 t_dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
+t_dat_2 <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_190304_Nucb2_EDTA_CaCl2_test02_clusterdata.csv"))
+
 
 ############
 ## PARAMS ##
@@ -15,6 +17,13 @@ t_deut_part <- 0.9
 
 t_p_adjustment_method <- "none"
 t_confidence_level  <- 0.98
+
+t_start <- min(t_dat[["Start"]])
+t_end <- max(t_dat[["End"]])
+
+t_peptide <- "INITSSASQEGTRLN"
+t_peptide_start <- 1 
+t_peptide_end <- 15
 
 state_uptake_dat <- create_state_uptake_dataset(t_dat,
                                                 protein = t_protein, 
@@ -68,3 +77,22 @@ bx_dat <- calculate_back_exchange(t_dat,
 p_diff_uptake_conf_dat <- create_p_diff_uptake_dataset_with_confidence(diff_p_uptake_dat)
 
 agg_test_dat <- calculate_aggregated_test_results(p_diff_uptake_conf_dat)
+
+overlap_dist_dat <- create_overlap_distribution_dataset(dat = t_dat, 
+                                                        protein = t_protein,
+                                                        state = t_state_1,
+                                                        protein_sequence = reconstruct_sequence(t_dat))
+
+pep_kinetics_dat <- calculate_peptide_kinetics(t_dat, 
+                                               protein = t_protein,
+                                               sequence = t_peptide, 
+                                               states = t_states, 
+                                               start = t_peptide_start, 
+                                               end = t_peptide_end,
+                                               time_0 = t_time_0,
+                                               time_100 = t_time_100,
+                                               deut_part = t_deut_part)
+
+rep_mass_dat <- calculate_exp_masses_per_replicate(t_dat)
+
+rep_dat <- create_replicate_dataset(t_dat)

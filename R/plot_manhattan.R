@@ -53,7 +53,7 @@ plot_manhattan <- function(p_dat,
                            show_confidence_limit = T,
                            show_peptide_position = F){
   
-  if(skip_amino > 0) { diff_uptake_dat[, Start := Start + skip_amino] } 
+  if(skip_amino > 0) { p_dat[, Start := Start + skip_amino] } 
   
   if(is.null(confidence_level)) {confidence_level <- attr(p_dat, "confidence_level") }
 

@@ -27,3 +27,13 @@ test_that("plot_parameters", {
   vdiffr::expect_doppelganger("Theo Differential Chiclet Plot ", theo_differential_chiclet_plot)
   vdiffr::expect_doppelganger("Differential Chiclet Plot ", differential_chiclet_plot)
 })
+
+hybrid_differential_chiclet_plot <- plot_differential_chiclet(diff_p_uptake_dat = diff_p_uptake_dat, 
+                                                              show_houde_interval = T, 
+                                                              show_tstud_confidence = T,
+                                                              show_uncertainty = T)
+
+test_that("hybrid test", 
+          vdiffr::expect_doppelganger("hybrid test", hybrid_differential_chiclet_plot))
+
+## TODO supplied data

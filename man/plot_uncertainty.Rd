@@ -57,6 +57,7 @@ dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.
 plot_uncertainty(dat)
 plot_uncertainty(dat, aggregated = F)
 plot_uncertainty(dat, aggregated = F, separate_times = F)
+plot_uncertainty(dat, skip_amino = 1)
 
 }
 \seealso{
