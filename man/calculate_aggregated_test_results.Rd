@@ -6,6 +6,7 @@
 \usage{
 calculate_aggregated_test_results(
   p_diff_uptake_conf_dat,
+  method = c("significance", "weiss"),
   time_t = 1,
   skip_amino = 1
 )
@@ -33,7 +34,8 @@ aggregated.
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 p_diff_uptake_dat <- create_p_diff_uptake_dataset(dat)
 p_diff_uptake_conf_dat <- create_p_diff_uptake_dataset_with_confidence(p_diff_uptake_dat)
-calculate_aggregated_test_results(p_diff_uptake_conf_dat)
+calculate_aggregated_test_results(p_diff_uptake_conf_dat, method = "significance")
+calculate_aggregated_test_results(p_diff_uptake_conf_dat, method = "weiss")
 
 }
 \references{
