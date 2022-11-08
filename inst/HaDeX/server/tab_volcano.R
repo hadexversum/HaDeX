@@ -17,7 +17,7 @@ observeEvent(input[["chosen_protein"]], {
   updateSelectInput(session, 
                     inputId = "vol_state_2",
                     choices = states_chosen_protein(),
-                    selected = states_chosen_protein()[2])
+                    selected = states_chosen_protein()[length(states_chosen_protein())])
   
 })
 
