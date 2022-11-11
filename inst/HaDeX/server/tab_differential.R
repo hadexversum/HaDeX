@@ -1,4 +1,31 @@
 #################################
+######### MESSAGE ###############
+#################################
+
+hdx_message <- reactive({
+  
+  message <- list(results = woods_test_results(), 
+                  protein = input[["chosen_protein"]],
+                  chain = input[["diff_viewer_chain"]],
+                  type = input[["diff_viewer_datatype"]])
+  
+  jsonlite::toJSON(message)
+  
+})
+
+
+observeEvent(input[["diff_open_viewer"]],{
+  
+  print("Request to contect HDX Viewer...")
+  
+  session$sendCustomMessage("hdx_handler", hdx_message())
+  
+  print("Message sent.")
+  
+}) 
+
+
+#################################
 ######### SETTINGS ##############
 #################################
 
