@@ -60,10 +60,10 @@ The comparison plot shows deuterium uptake of the peptides in a given time point
 *Example* In the comparison plot below, we see the fractional deuterium uptake for two states CD160 and CD160_HVEM, of protein db_CD160. The values are calculated for the time point 1 min. The length of the segments represents the length of the peptide and the position in the protein sequence. The error bars indicate the uncertainty of the measurement. 
 
 ```{r}
-plot_state_comparison(states_uptake_dat, fractional = TRUE) + 
-  labs(x = "Position in sequence",
-       y = "Fractional deuterium uptake [%]",
-       title = "Measurement - 1 min")
+# plot_state_comparison(states_uptake_dat, fractional = TRUE) + 
+#   labs(x = "Position in sequence",
+#        y = "Fractional deuterium uptake [%]",
+#        title = "Measurement - 1 min")
 ```
 
 
@@ -223,7 +223,7 @@ kin_dat <- bind_rows(calculate_kinetics(dat,
                               time_0 = 0.001,
                               time_100 = 1440))
 
-plot_kinetics(kin_dat, fractional = TRUE, log_x = TRUE) 
+plot_uptake_curve(kin_dat, fractional = TRUE, log_x = TRUE) 
 ```
 
 *Pros* The plot shows the differences in deuterium uptake between two states in the time course. The back-exchange phenomenon is visible in this plot. 
