@@ -70,7 +70,7 @@ plot_uncertainty <- function(dat,
 
     }
   
-  uncertainty_plot <-  sggplot(plot_dat) +
+  uncertainty_plot <-  ggplot(plot_dat) +
     geom_segment(aes(x = Start, xend = End, y = err_avg_mass, yend = err_avg_mass, color = as.factor(Exposure))) +
     labs(x = "Peptide position",
          y = "Uncertainy(mass)",

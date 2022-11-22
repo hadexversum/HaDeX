@@ -171,6 +171,7 @@ volcano_dataset <- reactive({
   
   # browser()
   
+  validate(need(length(states_from_file())>1, "There is only one biological state."))
   validate(need(input[["vol_state_1"]]!=input[["vol_state_2"]], "There is no difference between the same state, choose different second state."))
   validate(need(input[["chosen_protein"]] %in% unique(dat()[["Protein"]]), "Wait for the parameters to be loaded."))
   validate(need(input[["vol_state_1"]] %in% states_chosen_protein(), "Wait for the parameters to be loaded."))
@@ -306,6 +307,8 @@ output[["volcanoPlot"]] <- renderPlot({
 ##
 
 output[["vol_thresholds"]] <- renderText({
+  
+  validate(need(length(states_from_file())>1, "There is only one biological state."))
   
   if(input[["vol_fractional"]]){ ci_unit <-  " [%]" } else { ci_unit <- " [Da]" }
   

@@ -200,6 +200,11 @@ server <- function(input, output, session) {
       
   })
   
+  mono_state <- reactive({
+    
+    (length(states_chosen_protein())==1)
+    
+  })
   
   ##
   

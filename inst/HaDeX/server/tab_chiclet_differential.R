@@ -149,6 +149,7 @@ observe({
 
 chiclet_diff_dataset <- reactive({
   
+  validate(need(length(states_from_file())>1, "There is only one biological state."))
   validate(need(input[["chic_diff_state_1"]]!=input[["chic_diff_state_2"]], "There is no difference between the same state, select different state 2."))
   validate(need(input[["chosen_protein"]] %in% unique(dat()[["Protein"]]), "Wait for the parameters to be loaded."))
   validate(need(input[["chic_diff_state_1"]] %in% states_chosen_protein(), "Wait for the parameters to be loaded."))

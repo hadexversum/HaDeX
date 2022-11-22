@@ -18,7 +18,7 @@ observe({
   updateSelectInput(session,
                     inputId = "man_state_2",
                     choices = states_chosen_protein(),
-                    selected = states_chosen_protein()[2])
+                    selected = states_chosen_protein()[length(states_chosen_protein())])
   
 })
 
@@ -48,6 +48,7 @@ observe({
 
 mannhattan_data <- reactive({
   
+  validate(need(length(states_from_file())>1, "There is only one biological state."))
   validate(need(input[["man_state_1"]]!=input[["man_state_2"]], "Choose two different states for comparison!"))
   
   create_p_diff_uptake_dataset(dat = dat(),

@@ -197,8 +197,8 @@ output[["diff_peptide_list_data"]] <- DT::renderDataTable({
 
 diff_kin_dat <- reactive({
   
+  validate(need(length(states_from_file())>1, "There is only one biological state."))
   validate(need(input[["diff_peptide_list_data_rows_selected"]], "Please select at least one peptide from the table on the left."))
-  
   validate(need(input[["diff_kin_state_1"]]!=input[["diff_kin_state_2"]], "Choose two different states for comparison!"))
   
   # validate(need(!input[["diff_kin_houde"]], "This feature will be available soon!"))

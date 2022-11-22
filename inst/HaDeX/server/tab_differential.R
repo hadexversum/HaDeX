@@ -127,6 +127,7 @@ observe({
 
 woods_plot_dat <- reactive({
   
+  validate(need(length(states_from_file())>1, "There is only one biological state."))
   validate(need(input[["diff_state_1"]]!=input[["diff_state_2"]], "There is no difference between the same state, choose different state 2."))
   validate(need(length(unique(filter(dat(), !is.na("Modification"), Protein == input[["chosen_protein"]])[["State"]])) > 1, "Not sufficient number of states without modifications."))
   validate(need(input[["diff_state_1"]] %in% states_chosen_protein(), "The first state is not compatible with chosen protein."))
