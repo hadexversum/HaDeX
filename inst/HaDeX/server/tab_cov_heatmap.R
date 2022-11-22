@@ -3,6 +3,8 @@ cov_heat_dataset <- reactive({
   
   if(grepl("diff", input[["cov_heat_value"]])){
     
+    validate(need(length(states_from_file())>1, "There is only one biological state."))
+    
     calculate_diff_uptake(dat = dat(),
                           time_t = as.numeric(input[["cov_heat_time_t"]]))
     

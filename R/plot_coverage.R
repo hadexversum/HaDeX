@@ -88,14 +88,6 @@ plot_coverage <- function(dat,
     non_missing <- data.frame(ids = amino_dat[["amino_acids"]])
     
     coverage_plot <- ggplot(data = dat) +
-      geom_rect(missing,
-                mapping = aes(xmin = ids - 0.5, 
-                              xmax = ids + 0.5,
-                              ymin = 0, 
-                              ymax = max(dat[["ID"]])),
-                fill = "#EFB0A1",
-                colour = NA, 
-                alpha = 0.6) +
       geom_rect(non_missing,
                 mapping = aes(xmin = ids - 0.5, 
                               xmax = ids + 0.5,
@@ -104,6 +96,21 @@ plot_coverage <- function(dat,
                 fill = "#C6EBBE",
                 colour = NA, 
                 alpha = 0.6)
+    
+    if(nrow(missing) > 0) {
+      
+      coverage_plot <- coverage_plot +
+      geom_rect(missing,
+                mapping = aes(xmin = ids - 0.5, 
+                              xmax = ids + 0.5,
+                              ymin = 0, 
+                              ymax = max(dat[["ID"]])),
+                fill = "#EFB0A1",
+                colour = NA, 
+                alpha = 0.6) 
+    }
+    
+    
   } else {
     coverage_plot <- ggplot(data = dat)
   }

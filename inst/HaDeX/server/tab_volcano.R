@@ -309,6 +309,7 @@ output[["volcanoPlot"]] <- renderPlot({
 output[["vol_thresholds"]] <- renderText({
   
   validate(need(length(states_from_file())>1, "There is only one biological state."))
+  validate(need(input[["vol_state_1"]]!=input[["vol_state_2"]], "There is no difference between the same state, choose different second state."))
   
   if(input[["vol_fractional"]]){ ci_unit <-  " [%]" } else { ci_unit <- " [Da]" }
   
