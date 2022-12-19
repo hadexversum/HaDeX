@@ -356,19 +356,18 @@ output[["kin_plot_data"]] <- DT::renderDataTable(server = FALSE, {
 
 all_kinetic_plots <- reactive({
   
-  # browser()
-  
   peptide_list_download <- peptide_list() %>%
     select(Sequence, Start, End) %>%
     unique(.)
   
-  states_download <- unique(peptide_list()[["State"]])
+  # states_download <- unique(peptide_list()[["State"]])
+  states_download <- input[["kin_states"]]
   
   plots <- lapply(1:nrow(peptide_list_download), function(i){
     
-    sequence = peptide_list_download[i, 1]
-    start = peptide_list_download[i, 2]
-    end = peptide_list_download[i, 3]
+    sequence = peptide_list_download[i, 1][[1]]
+    start = peptide_list_download[i, 2][[1]]
+    end = peptide_list_download[i, 3][[1]]
     
     calculate_peptide_kinetics(dat(),
                                protein = input[["chosen_protein"]],
@@ -378,10 +377,10 @@ all_kinetic_plots <- reactive({
                                end = end,
                                time_0 = as.numeric(input[["kin_time_0"]]),
                                time_100 = as.numeric(input[["kin_time_100"]])) %>%
-      plot_kinetics(fractional = input[["kin_fractional"]],
-                    theoretical = input[["kin_theory"]],
-                    uncertainty_type = input[["kin_uncertainty"]],
-                    log_x = input[["kin_log_x"]]) +
+      plot_uptake_curve(fractional = input[["kin_fractional"]],
+                        theoretical = input[["kin_theory"]],
+                        uncertainty_type = input[["kin_uncertainty"]],
+                        log_x = input[["kin_log_x"]]) +
       labs(title = paste0(sequence, " (", start, "-", end, ")" ))
     
   })
@@ -402,7 +401,7 @@ all_kinetic_plots_arranged <- reactive({
 
 ##
 
-output[["kin_download_file"]] <- downloadHandler("all_deut_uptake_curves.pdf",
+output[["kin_download_file"]] <- downloadHandler(filename = "all_deut_uptake_curves.pdf",
                                                  content = function(file){
                                                    ggsave(file, all_kinetic_plots_arranged(), device = pdf,
                                                           height = 300, width = 400, units = "mm")
@@ -410,7 +409,7 @@ output[["kin_download_file"]] <- downloadHandler("all_deut_uptake_curves.pdf",
 
 ##
 
-output[["kin_download_folder"]] <- downloadHandler("deut_uptake_curves.zip",
+output[["kin_download_folder"]] <- downloadHandler(filename = "deut_uptake_curves.zip",
                                                    content = function(file){
                                                      owd <- setwd( tempdir())
                                                      on.exit( setwd( owd))
