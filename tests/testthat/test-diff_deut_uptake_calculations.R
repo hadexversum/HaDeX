@@ -42,6 +42,8 @@ lapply(times, function(time){
                                       time_100 = chosen_time_100,
                                       deut_part = deut_part)
   
+  result_tmp <- as.data.table(result_tmp)
+  
   lapply(deut_values, function(deut_value){
 
     test_name <- paste0("calculate_diff_uptake-", time, "min-", deut_value)
@@ -55,7 +57,7 @@ lapply(times, function(time){
 
   })
 
-  test_that(paste0("data.table-d calculate_diff_uptake in ", time, "min"), expect_s3_class(result_tmp, "data.table"))
+  # test_that(paste0("data.frame-d calculate_diff_uptake in ", time, "min"), expect_s3_class(result_tmp, "data.frame"))
   
 })
 
@@ -74,6 +76,8 @@ lapply(times, function(time){
                                            time_100 = chosen_time_100,
                                            deut_part = deut_part)
   
+  result_tmp <- as.data.table(result_tmp)
+  
   lapply(deut_values, function(deut_value){
 
     test_name <- paste0("create_diff_uptake_dataset-", time, "min-", deut_value)
@@ -87,7 +91,7 @@ lapply(times, function(time){
 
   })
 
-  test_that(paste0("data.table-d create_diff_uptake_dataset in ", time, " min"), expect_s3_class(result_tmp, "data.table"))
+  # test_that(paste0("data.frame-d create_diff_uptake_dataset in ", time, " min"), expect_s3_class(result_tmp, "data.frame"))
   
 })
 

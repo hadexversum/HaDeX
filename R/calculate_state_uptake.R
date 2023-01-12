@@ -101,6 +101,8 @@ calculate_state_uptake <- function(dat,
   attr(uptake_dat, "deut_part") <- deut_part
   attr(uptake_dat, "has_modification") <- attr(dat, "has_modification")
   
+  uptake_dat <- as.data.frame(uptake_dat)
+  
   return(uptake_dat)
   
 }

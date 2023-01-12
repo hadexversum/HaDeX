@@ -43,6 +43,8 @@ create_state_uptake_dataset <- function(dat,
                                         time_100 = max(dat[["Exposure"]]),
                                         deut_part = 0.9){
   
+  dat <- as.data.table(dat)
+  
   all_times <- unique(dat[["Exposure"]])
   times <- all_times[all_times > time_0 & all_times <= time_100]
   
@@ -63,6 +65,8 @@ create_state_uptake_dataset <- function(dat,
   attr(state_uptake_dat, "time_0") <- time_0
   attr(state_uptake_dat, "time_100") <- time_100
   attr(state_uptake_dat, "deut_part") <- deut_part
+  
+  state_uptake_dat <- as.data.frame(state_uptake_dat)
   
   return(state_uptake_dat)
   

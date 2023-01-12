@@ -34,6 +34,7 @@ calculate_aggregated_test_results <- function(p_diff_uptake_conf_dat,
                                               time_t = 1,
                                               skip_amino = 1){
   
+  p_diff_uptake_conf_dat <- as.data.table(p_diff_uptake_conf_dat)
   
   if(skip_amino > 0) { p_diff_uptake_conf_dat[, Start := Start + skip_amino] }
   
@@ -88,11 +89,13 @@ calculate_aggregated_test_results <- function(p_diff_uptake_conf_dat,
         tmp_peptide_dat <- tmp_dat[amino_pos >= Start & amino_pos <= End, ]
         tmp_peptide_dat[["n_exchangeable"]] <- calculate_n_exchangeable(tmp_peptide_dat[["Sequence"]])
         tmp_peptide_dat[["weight"]] <- calculate_weiss_weight(tmp_peptide_dat[["n_exchangeable"]])
-
+        
         res[pos == amino_pos, ][["value"]] <<- weighted.mean(tmp_peptide_dat[["diff_deut_uptake"]], tmp_peptide_dat[["weight"]], na.rm = T)
       }
     })
   }
+  
+  res <- as.data.frame(res)
   
   return(res)
   

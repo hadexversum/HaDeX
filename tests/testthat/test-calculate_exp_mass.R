@@ -13,8 +13,7 @@ result_tmp <- calculate_exp_masses(t_dat)
 ## TESTS ##
 ###########
 
-test_that("data.table-d calculate_exp_masses", 
-          expect_s3_class(result_tmp, "data.table"))
+test_that("data.frame-d calculate_exp_masses", expect_s3_class(result_tmp, "data.frame"))
 
 test_that("correct values",{
          

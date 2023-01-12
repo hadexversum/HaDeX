@@ -30,6 +30,8 @@ calculate_auc <- function(uptake_dat,
                           state = uptake_dat[["State"]][1],
                           preserve_values = F) {
   
+  uptake_dat <- as.data.table(uptake_dat)
+  
   time_100 <- max(uptake_dat[Exposure < 99999, Exposure]) 
   
   uptake_dat <- uptake_dat[Protein == protein & State %in% state]
@@ -54,6 +56,8 @@ calculate_auc <- function(uptake_dat,
     
     uptake_dat <- unique(uptake_dat[ , .(Protein, Sequence, Start, End, State, Modification, auc)])
   }
+  
+  uptake_dat <- as.data.frame(uptake_dat)
   
   return(uptake_dat)
   

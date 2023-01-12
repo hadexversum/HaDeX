@@ -42,6 +42,8 @@ create_kinetic_dataset <- function(dat,
                                    time_100 = max(dat[["Exposure"]]),
                                    deut_part = 0.9){
   
+  dat <- as.data.table(dat)
+  
   kin_dat <- rbindlist(apply(peptide_list, 1, function(peptide){
     calculate_kinetics(dat = dat,
                        protein = protein, 
@@ -60,6 +62,8 @@ create_kinetic_dataset <- function(dat,
   attr(kin_dat, "time_100") <- time_100
   attr(kin_dat, "deut_part") <- deut_part
   attr(kin_dat, "has_modification") <- attr(dat, "has_modification")
+  
+  kin_dat <- as.data.frame(kin_dat)
   
   return(kin_dat)
   

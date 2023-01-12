@@ -37,6 +37,8 @@ show_uptake_data <- function(uptake_dat,
                              fractional = FALSE,
                              renamed = TRUE){
   
+  uptake_dat <- as.data.table(uptake_dat)
+  
   if (theoretical){
     
     if (fractional){
@@ -146,6 +148,8 @@ show_diff_uptake_data <- function(diff_uptake_dat,
                                   theoretical = FALSE, 
                                   fractional = FALSE,
                                   renamed = TRUE){
+  
+  diff_uptake_dat <- as.data.table(diff_uptake_dat)
   
   if(theoretical){
     

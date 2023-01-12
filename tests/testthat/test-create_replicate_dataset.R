@@ -1,9 +1,5 @@
-test_that("create_replicate_dataset class is right",
-          expect_is(
-            rep_dat,
-            "data.frame"
-          )
-)
+test_that("data.frame-d create_replicate_dataset", 
+          expect_s3_class(rep_dat, "data.frame"))
 
 test_that("create_replicate_dataset colnames",
           expect_equal(

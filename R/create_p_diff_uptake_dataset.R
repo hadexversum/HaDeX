@@ -64,22 +64,26 @@ create_p_diff_uptake_dataset <- function(dat,
                                          time_100 = max(dat[["Exposure"]]),
                                          deut_part = 0.9){
   
-  p_dat <- calculate_p_value(dat = dat, 
+  dat <- as.data.table(dat)
+
+  p_dat <- as.data.table(calculate_p_value(dat = dat, 
                              protein = protein,
                              state_1 = state_1,
                              state_2 = state_2, 
                              p_adjustment_method = p_adjustment_method,
-                             confidence_level = confidence_level)
+                             confidence_level = confidence_level))
   
   if(is.null(diff_uptake_dat)) {
     
-    diff_uptake_dat <- create_diff_uptake_dataset(dat = dat, 
+    diff_uptake_dat <- as.data.table(create_diff_uptake_dataset(dat = dat, 
                                                   protein = protein,
                                                   state_1 = state_1,
                                                   state_2 = state_2, 
                                                   time_0 = time_0,
                                                   time_100 = time_100, 
-                                                  deut_part = deut_part)
+                                                  deut_part = deut_part))
+  } else {
+    diff_uptake_dat <- as.data.table(diff_uptake_dat)
   }
   
   
@@ -97,6 +101,8 @@ create_p_diff_uptake_dataset <- function(dat,
   attr(p_diff_uptake_dat, "deut_part") <- deut_part
   attr(p_diff_uptake_dat, "has_modification") <- attr(dat, "has_modification")
   attr(p_diff_uptake_dat, "n_rep") <- attr(dat, "n_rep")
+  
+  p_diff_uptake_dat <- as.data.frame(p_diff_uptake_dat)
   
   return(p_diff_uptake_dat)
   

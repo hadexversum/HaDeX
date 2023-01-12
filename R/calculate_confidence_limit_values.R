@@ -41,7 +41,8 @@ calculate_confidence_limit_values <- function(diff_uptake_dat,
                                               fractional = TRUE,
                                               n_rep = NULL) {
   
-
+  diff_uptake_dat <- as.data.table(diff_uptake_dat)
+  
   n_rep <- fcoalesce(c(attr(diff_uptake_dat, "n_rep"), n_rep, 3))[1]
 
   alpha <- 1 - confidence_level

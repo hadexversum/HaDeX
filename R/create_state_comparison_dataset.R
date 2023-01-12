@@ -39,6 +39,8 @@ create_state_comparison_dataset <- function(dat,
                                             time_100 = max(dat[["Exposure"]]),
                                             deut_part = 0.9){
   
+  dat <- as.data.table(dat)
+  
   comparison_dat <- rbindlist(lapply(states, function(state){
     
     calculate_state_uptake(dat,
@@ -57,6 +59,8 @@ create_state_comparison_dataset <- function(dat,
   attr(comparison_dat, "time_100") <- time_100
   attr(comparison_dat, "deut_part") <- deut_part
   attr(comparison_dat, "has_modification") <- attr(dat, "has_modification")
+  
+  comparison_dat <- as.data.frame(comparison_dat)
   
   return(comparison_dat)
   

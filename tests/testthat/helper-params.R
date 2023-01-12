@@ -76,7 +76,8 @@ bx_dat <- calculate_back_exchange(t_dat,
 
 p_diff_uptake_conf_dat <- create_p_diff_uptake_dataset_with_confidence(diff_p_uptake_dat)
 
-agg_test_dat <- calculate_aggregated_test_results(p_diff_uptake_conf_dat)
+agg_test_dat <- calculate_aggregated_test_results(p_diff_uptake_conf_dat,
+                                                  method = "significance")
 
 overlap_dist_dat <- create_overlap_distribution_dataset(dat = t_dat, 
                                                         protein = t_protein,
@@ -96,3 +97,4 @@ pep_kinetics_dat <- calculate_peptide_kinetics(t_dat,
 rep_mass_dat <- calculate_exp_masses_per_replicate(t_dat)
 
 rep_dat <- create_replicate_dataset(t_dat)
+
