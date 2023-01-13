@@ -69,6 +69,8 @@ calculate_peptide_kinetics <- function(dat,
   attr(kin_dat, "deut_part") <- deut_part
   attr(kin_dat, "has_modification") <- attr(dat, "has_modification")
   
+  kin_dat <- as.data.frame(kin_dat)
+  
   return(kin_dat)
   
 }

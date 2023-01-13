@@ -37,6 +37,8 @@ show_uc_data <- function(uc_dat,
                          theoretical = FALSE, 
                          fractional = FALSE){
   
+  uc_dat <- as.data.table(uc_dat)
+  
   if(theoretical){
     
     if(fractional){

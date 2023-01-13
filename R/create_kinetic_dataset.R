@@ -45,7 +45,7 @@ create_kinetic_dataset <- function(dat,
   dat <- as.data.table(dat)
   
   kin_dat <- rbindlist(apply(peptide_list, 1, function(peptide){
-    calculate_kinetics(dat = dat,
+    as.data.table(calculate_kinetics(dat = dat,
                        protein = protein, 
                        sequence = peptide[1],
                        state = peptide[2],
@@ -53,7 +53,7 @@ create_kinetic_dataset <- function(dat,
                        end = as.numeric(peptide[4]),
                        time_0 = time_0,
                        time_100 = time_100,
-                       deut_part = deut_part)
+                       deut_part = deut_part))
   }))
   
   attr(kin_dat, "protein") <- protein

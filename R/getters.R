@@ -105,6 +105,8 @@ get_protein_redundancy <- function(dat,
 get_n_replicates <- function(dat,
                              protein = dat[["Protein"]][1]){
   
+  dat <- as.data.table(dat)
+  
   dat <- dat[Protein == protein]
   dat <- dat[, .(n_rep = uniqueN(File)),
              by = c("Protein", "Start", "End", "Sequence", "State", "Exposure")]
