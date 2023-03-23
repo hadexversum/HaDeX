@@ -136,9 +136,9 @@ create_overlap_distribution_dataset <- function(dat,
                                                 end = max(dat[["End"]]),
                                                 protein_sequence = reconstruct_sequence(dat)){
   
-  tmp_dat <- data.table(dat)
+  dat <- as.data.table(dat)
   
-  tmp_dat <- tmp_dat[Protein == protein & State == state & Start >= start & End <= end,
+  tmp_dat <- dat[Protein == protein & State == state & Start >= start & End <= end,
              .(Protein, Start, End, State, Sequence)]
   tmp_dat <- tmp_dat[!duplicated(tmp_dat)]
   tmp_dat[, `:=`(State = NULL, Protein = NULL)]
@@ -155,7 +155,7 @@ create_overlap_distribution_dataset <- function(dat,
   
   dt <- merge.data.table(dt, tmp, all.y = TRUE)[, .(pos, amino, coverage)]
   
-  dt
+  return(dt)
   
 }
 

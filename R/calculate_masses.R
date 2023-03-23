@@ -42,8 +42,6 @@ calculate_exp_masses_per_replicate <- function(dat){
                             "Modification")]
   setorderv(exp_dat, cols = c("Start", "End"))
   
-  exp_dat <- data.frame(exp_dat)
-  
   return(exp_dat)
   
 }
@@ -87,8 +85,6 @@ calculate_exp_masses <- function(dat){
                      by = c("Protein", "State", "Sequence", "Start", "End", "MHP", "Exposure", "Modification")]
   
   setorderv(exp_dat, cols = c("Start", "End"))
-  
-  exp_dat <- data.frame(exp_dat)
   
   return(exp_dat)
   

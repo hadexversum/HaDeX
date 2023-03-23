@@ -29,9 +29,9 @@ create_p_diff_uptake_dataset_with_confidence <- function(p_diff_uptake_dat,
                                                          theoretical = F, 
                                                          fractional = F){
   
-  p_diff_uptake_dat <- as.data.table(p_diff_uptake_dat)
-  
   confidence_level = attr(p_diff_uptake_dat, "confidence_level")
+  
+  p_diff_uptake_dat <- as.data.table(p_diff_uptake_dat)
   
   if(is.null(houde_interval)){
     
@@ -60,6 +60,8 @@ create_p_diff_uptake_dataset_with_confidence <- function(p_diff_uptake_dat,
   attr(p_diff_uptake_dat, "theoretical") <- theoretical
   attr(p_diff_uptake_dat, "fractional") <- fractional
   attr(p_diff_uptake_dat, "has_modification") <- attr(p_diff_uptake_dat, "has_modification") 
+  
+  p_diff_uptake_dat <- as.data.frame(p_diff_uptake_dat)
   
   return(p_diff_uptake_dat)
   

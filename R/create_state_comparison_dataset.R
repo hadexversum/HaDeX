@@ -39,7 +39,7 @@ create_state_comparison_dataset <- function(dat,
                                             time_100 = max(dat[["Exposure"]]),
                                             deut_part = 0.9){
   
-  dat <- data.table(dat)
+  dat <- as.data.table(dat)
   
   comparison_dat <- rbindlist(lapply(states, function(state){
     
@@ -53,14 +53,14 @@ create_state_comparison_dataset <- function(dat,
     
   }))
   
-  comparison_dat <- data.frame(comparison_dat)
-  
   attr(comparison_dat, "protein") <- protein
   attr(comparison_dat, "states") <- states
   attr(comparison_dat, "time_0") <- time_0
   attr(comparison_dat, "time_100") <- time_100
   attr(comparison_dat, "deut_part") <- deut_part
   attr(comparison_dat, "has_modification") <- attr(dat, "has_modification")
+  
+  comparison_dat <- as.data.frame(comparison_dat)
   
   return(comparison_dat)
   

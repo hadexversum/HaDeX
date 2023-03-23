@@ -38,6 +38,8 @@ add_stat_dependency <- function(calc_dat,
                                 theoretical = FALSE, 
                                 fractional = TRUE){
   
+  calc_dat <- as.data.table(calc_dat)
+  
   options <- c("diff_theo_frac_deut_uptake",
                "diff_theo_deut_uptake",
                "diff_frac_deut_uptake",
@@ -58,6 +60,8 @@ add_stat_dependency <- function(calc_dat,
   attr(calc_dat, paste0("confidence_limit_at_", confidence_level)) <- confidence_values
   attr(calc_dat, paste0("confidence_limit_at_", confidence_level, "_prop")) <- data.frame("theoretical" = theoretical, "fractional" = fractional)
   
-  calc_dat
+  calc_dat <- as.data.frame(calc_dat)
+  
+  return(calc_dat)
   
 }

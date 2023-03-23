@@ -154,7 +154,7 @@ peptide_list <- reactive({
 
 output[["peptide_list_data"]] <- DT::renderDataTable({
   
-  datatable(data = peptide_list(),
+  DT::datatable(data = peptide_list(),
             class = "table-bordered table-condensed",
             extensions = "Buttons",
             selection = "single",
@@ -229,7 +229,6 @@ auc_dat <- reactive({
 
 output[["kin_auc_info"]] <- renderText({
   
-  # browser()
   paste0(auc_dat()[["Sequence"]], "-", auc_dat()[["State"]], ", AUC: ", round(auc_dat()[["auc"]], 4), collapse = "\n")
   
 })

@@ -105,8 +105,8 @@ get_protein_redundancy <- function(dat,
 get_n_replicates <- function(dat,
                              protein = dat[["Protein"]][1]){
   
-  dat <- data.table(dat)
-
+  dat <- as.data.table(dat)
+  
   dat <- dat[Protein == protein]
   dat <- dat[, .(n_rep = uniqueN(File)),
              by = c("Protein", "Start", "End", "Sequence", "State", "Exposure")]
@@ -148,10 +148,8 @@ get_peptide_sequence <- function(dat,
                                  start, 
                                  end,
                                  modification = FALSE){
-  dat <- data.table(dat)
   
   sequences <- unique(dat[Protein == protein & Start == start & End == end, .(Sequence, Modification)])
-  
   sequences[Modification!="", Sequence := paste0(Sequence, "+", Modification)]
   
   if(modification) { sequences[Modification!="" ][["Sequence"]] }  

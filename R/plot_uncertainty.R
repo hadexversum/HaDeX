@@ -37,6 +37,7 @@
 #' plot_uncertainty(dat)
 #' plot_uncertainty(dat, aggregated = F)
 #' plot_uncertainty(dat, aggregated = F, separate_times = F)
+#' plot_uncertainty(dat, skip_amino = 1)
 #'
 #' @export plot_uncertainty 
 
@@ -70,7 +71,8 @@ plot_uncertainty <- function(dat,
 
     }
   
-  uncertainty_plot <-  ggplot(plot_dat) +
+  uncertainty_plot <- ggplot(plot_dat) +
+
     geom_segment(aes(x = Start, xend = End, y = err_avg_mass, yend = err_avg_mass, color = as.factor(Exposure))) +
     labs(x = "Peptide position",
          y = "Uncertainy(mass)",

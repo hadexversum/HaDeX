@@ -46,6 +46,8 @@ calculate_diff_uptake  <- function(dat,
                                    time_100 = max(dat[["Exposure"]]),
                                    deut_part = 0.9){
   
+  dat <- as.data.table(dat)
+  
   diff_dat <- droplevels(rbindlist(lapply(states, function(state) calculate_state_uptake(dat,
                                                                                          protein = protein,
                                                                                          state = state,
@@ -82,8 +84,6 @@ calculate_diff_uptake  <- function(dat,
   diff_dat <- diff_dat[, ..col_names]
   diff_dat[, ID := 1L:nrow(diff_dat)]
   
-  diff_dat <- data.frame(diff_dat)
-  
   attr(diff_dat, "protein") <- protein
   attr(diff_dat, "states") <- states
   attr(diff_dat, "time_0") <- time_0
@@ -91,6 +91,8 @@ calculate_diff_uptake  <- function(dat,
   attr(diff_dat, "time_100") <- time_100
   attr(diff_dat, "deut_part") <- deut_part
   attr(diff_dat, "n_rep") <- attr(dat, "n_rep")
+  
+  diff_dat <- as.data.frame(diff_dat)
   
   return(diff_dat)
 }

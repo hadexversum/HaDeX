@@ -112,10 +112,8 @@ update_hdexaminer_file <- function(dat,
   
   dat <- dat[, !"Confidence"]
   
-  data.frame(dat)
-  
   attr(dat, "source") <- "HDeXaminer"
   
-  dat
+  return(dat)
   
 }

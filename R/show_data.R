@@ -37,7 +37,7 @@ show_uptake_data <- function(uptake_dat,
                              fractional = FALSE,
                              renamed = TRUE){
   
-  uptake_dat <- data.table(uptake_dat)
+  uptake_dat <- as.data.table(uptake_dat)
   
   if (theoretical){
     
@@ -106,7 +106,7 @@ show_uptake_data <- function(uptake_dat,
     }
   }
   
-  uptake_dat
+  return(uptake_dat)
   
 }
 
@@ -149,7 +149,7 @@ show_diff_uptake_data <- function(diff_uptake_dat,
                                   fractional = FALSE,
                                   renamed = TRUE){
   
-  diff_uptake_dat <- data.table(diff_uptake_dat)
+  diff_uptake_dat <- as.data.table(diff_uptake_dat)
   
   if(theoretical){
     
@@ -218,7 +218,7 @@ show_diff_uptake_data <- function(diff_uptake_dat,
     
   }
   
-  diff_uptake_dat
+  return(diff_uptake_dat)
   
 }
 
@@ -347,7 +347,7 @@ show_diff_uptake_data_confidence <- function(diff_uptake_dat,
     }
   }
   
-  diff_uptake_dat
+  return(diff_uptake_dat)
   
 }
 

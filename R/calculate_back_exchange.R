@@ -30,9 +30,7 @@ calculate_back_exchange <- function(dat,
   
   dat <- dat[Protein == protein & State %in% states]
   
-  uptake_dat <- create_uptake_dataset(dat)
-  
-  uptake_dat <- as.data.table(uptake_dat)
+  uptake_dat <- as.data.table(create_uptake_dataset(dat))
   
   uptake_dat <- uptake_dat[Exposure == time_100, .(Protein, Start, End, State, Sequence, Modification, theo_frac_deut_uptake, err_theo_frac_deut_uptake)]
   
@@ -41,6 +39,8 @@ calculate_back_exchange <- function(dat,
   
   bex_dat <- bex_dat[, .(Protein, Start, End, State, Sequence, Modification, back_exchange, err_back_exchange)]
 
-  as.data.frame(bex_dat)
+  bex_dat <- as.data.frame(bex_dat)
+  
+  return(bex_dat)
   
 }

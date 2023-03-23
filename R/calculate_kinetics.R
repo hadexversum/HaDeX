@@ -56,7 +56,7 @@ calculate_kinetics <- function(dat,
                                start = dat[["Start"]][1], 
                                end = dat[["End"]][1],
                                time_0 = min(dat[["Exposure"]]), 
-                               time_100 = max(dat["Exposure"]), 
+                               time_100 = max(dat[["Exposure"]]), 
                                deut_part = 0.9) {
   
   assert_data_frame(dat)
@@ -68,24 +68,26 @@ calculate_kinetics <- function(dat,
   assert_number(time_100, lower = time_0)
   assert_number(deut_part, lower = 0, upper = 1)
   
-  prep_dat <- data.table(dat)[Protein == protein & 
-                                Sequence == sequence & 
-                                State == state & 
-                                Start == start & 
-                                End == end]
+  dat <- as.data.table(dat)
+  
+  prep_dat <- dat[Protein == protein & 
+                  Sequence == sequence & 
+                  State == state & 
+                  Start == start & 
+                  End == end]
   time_points <- unique(prep_dat[["Exposure"]])
   time_points_to_iterate <- time_points[time_points > time_0 & time_points < time_100]
   
   
   kin_dat <- rbindlist(lapply(time_points_to_iterate, function(time_point){
     
-    uptake_dat <- calculate_state_uptake(dat = prep_dat, 
+    uptake_dat <- as.data.table(calculate_state_uptake(dat = prep_dat, 
                                          protein = protein,
                                          state = state, 
                                          time_0 = time_0, 
                                          time_t = time_point, 
                                          time_100 = time_100,
-                                         deut_part = deut_part)
+                                         deut_part = deut_part))
     uptake_dat[["time_chosen"]] <- time_point
     uptake_dat
     
@@ -95,8 +97,6 @@ calculate_kinetics <- function(dat,
           err_theo_frac_deut_uptake, theo_deut_uptake, err_theo_deut_uptake, 
           Med_Sequence)]
   
-  kin_dat <- data.frame(kin_dat)
-  
   attr(kin_dat, "protein") <- protein
   attr(kin_dat, "sequence") <- sequence
   attr(kin_dat, "state") <- state
@@ -105,6 +105,8 @@ calculate_kinetics <- function(dat,
   attr(kin_dat, "time_0") <- time_0
   attr(kin_dat, "time_100") <- time_100
   attr(kin_dat, "deut_part") <- deut_part
+  
+  kin_dat <- as.data.frame(kin_dat)
   
   return(kin_dat)
   
