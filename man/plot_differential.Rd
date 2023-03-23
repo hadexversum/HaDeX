@@ -17,7 +17,8 @@ plot_differential(
   hide_tstud_insignificant = FALSE,
   confidence_level = 0.98,
   all_times = FALSE,
-  line_size = 1.5
+  line_size = 1.5,
+  interactive = getOption("hadex_use_interactive_plots")
 )
 }
 \arguments{
@@ -54,6 +55,10 @@ insignificant values using t-Student test are hidden on the plot.}
 supplied data should be displayed on the plots next to each other.}
 
 \item{line_size}{line size of the lines displayed on the plot.}
+
+\item{interactive}{\code{logical}, whether plot should have an interactive 
+layer created with with ggiraph, which would add tooltips to the plot in an
+interactive display (HTML/Markdown documents or shiny app).}
 }
 \value{
 a \code{\link{ggplot}} object.

@@ -12,7 +12,8 @@ plot_differential_butterfly(
   show_houde_interval = FALSE,
   show_tstud_confidence = FALSE,
   uncertainty_type = "ribbon",
-  confidence_level = 0.98
+  confidence_level = 0.98,
+  interactive = getOption("hadex_use_interactive_plots")
 )
 }
 \arguments{
@@ -32,6 +33,10 @@ is shown.}
 
 \item{confidence_level}{confidence level for the test, from range [0, 1].
 Important if selected show_confidence_limit.}
+
+\item{interactive}{\code{logical}, whether plot should have an interactive 
+layer created with with ggiraph, which would add tooltips to the plot in an
+interactive display (HTML/Markdown documents or shiny app).}
 }
 \value{
 a \code{\link{ggplot}} object.

@@ -171,6 +171,7 @@ create_overlap_distribution_dataset <- function(dat,
 #' function
 #' @param start start start position of chosen protein.
 #' @param end end position of chosen protein.
+#' @inheritParams plot_butterfly
 #' 
 #' @details This plot presents how many times (by how many peptides) 
 #' a amino position in protein sequence is covered. 
@@ -192,13 +193,23 @@ create_overlap_distribution_dataset <- function(dat,
 
 plot_overlap_distribution <- function(overlap_dist_dat,
                                       start = 1,
-                                      end = max(overlap_dist_dat[["pos"]])){
+                                      end = max(overlap_dist_dat[["pos"]]),
+                                      interactive = getOption("hadex_use_interactive_plots")){
   
   mean_coverage <- round(mean(overlap_dist_dat[["coverage"]], na.rm = TRUE), 2)
   display_position <- (start + end)/2
   
+  chosen_geom_col <- if (interactive) ggiraph::geom_col_interactive(
+    aes(tooltip = glue(
+      "Position: {pos}
+       Amino acid: {amino}
+       Coverage: {coverage}"
+    )),
+    width = 1
+  ) else geom_col(width = 1)
+  
   overlap_dist_dat_plot <- ggplot(overlap_dist_dat, aes(x = pos, y = coverage)) +
-    geom_col(width = 1) +
+    chosen_geom_col +
     labs(x = 'Position', y = 'Position frequency in peptides') +
     theme(legend.position = "none") + 
     coord_cartesian(xlim = c(start, end)) +

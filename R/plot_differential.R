@@ -27,6 +27,7 @@
 #' @param all_times \code{logical}, determines if all the time points from the
 #' supplied data should be displayed on the plots next to each other.
 #' @param line_size line size of the lines displayed on the plot.
+#' @inheritParams plot_butterfly
 #'
 #' @details Function \code{\link{plot_differential}} presents
 #' provided data in a form of differential (Woods) plot. The plot shows
@@ -84,7 +85,8 @@ plot_differential <- function(diff_uptake_dat = NULL,
                               hide_tstud_insignificant = FALSE, 
                               confidence_level = 0.98,
                               all_times = FALSE,
-                              line_size = 1.5){
+                              line_size = 1.5,
+                              interactive = getOption("hadex_use_interactive_plots")) {
   
   ## conditions
   
@@ -181,6 +183,15 @@ plot_differential <- function(diff_uptake_dat = NULL,
                          err_value = diff_uptake_dat[[err_value]],
                          Exposure = diff_uptake_dat[["Exposure"]])
   
+  chosen_geom_segment <- if (interactive) ggiraph::geom_segment_interactive( 
+    aes(tooltip = glue(
+      "{Sequence}
+       Position: {Start}-{End}
+       Value: {round(value, 2)}"
+    )),
+    size = line_size
+  ) else geom_segment(size = line_size)
+  
   if(hide_houde_insignificant){
     
     plot_dat <- plot_dat[abs(value) >= h_interval[2]]
@@ -200,6 +211,24 @@ plot_differential <- function(diff_uptake_dat = NULL,
     
   }
   
+  differential_base <- function(plot_dat) ggplot(
+    plot_dat,
+    aes(
+      x = Start, 
+      y = value, 
+      xend = End, 
+      yend = value, 
+      color = colour
+    )) +
+    chosen_geom_segment +
+    geom_errorbar(aes(
+      x = Med_Sequence, 
+      ymin = value - err_value, 
+      ymax = value + err_value, 
+    )) +
+    geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
+    scale_colour_identity() 
+  
   if(show_houde_interval){
     
     plot_dat[, colour := fcase(value > h_interval[2], "firebrick1",
@@ -207,16 +236,12 @@ plot_differential <- function(diff_uptake_dat = NULL,
                                default = "azure3")]
     
     
-    differential_plot <- ggplot(plot_dat) +
-      geom_segment(aes(x = Start, y = value, xend = End, yend = value, color = colour), size = line_size) +
-      geom_errorbar(aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value, color = colour)) +
-      geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
+    differential_plot <- differential_base(plot_dat) +
       ## intervals
       geom_hline(aes(yintercept = h_interval[1], linetype = paste0(" Confidence interval ", confidence_level*100, "% : ", round(h_interval[2], 4))), color = "deepskyblue1", size = .7, show.legend = TRUE) +
       geom_hline(aes(yintercept = h_interval[2], linetype = paste0(" Confidence interval ", confidence_level*100, "% : ", round(h_interval[2], 4))), color = "firebrick1", size = .7, show.legend = FALSE) +
       scale_linetype_manual(values = c("dashed", "dotdash")) +
       ## other
-      scale_colour_identity() +
       labs(title = title,
            x = "Position in the sequence",
            y = y_label,
@@ -231,12 +256,8 @@ plot_differential <- function(diff_uptake_dat = NULL,
                                value < 0, "deepskyblue1",
                                default = "azure3")]
     
-    differential_plot <- ggplot(plot_dat) +
-      geom_segment(aes(x = Start, y = value, xend = End, yend = value, color = colour), size = line_size) +
-      geom_errorbar(aes(x = Med_Sequence, ymin = value - err_value, ymax = value + err_value, color = colour)) +
-      geom_hline(yintercept = 0, linetype = "dotted", color = "green", size = .7) +
+    differential_plot <- differential_base(plot_dat) +
       ## other
-      scale_colour_identity() +
       labs(title = title,
            x = "Position in the sequence",
            y = y_label) +

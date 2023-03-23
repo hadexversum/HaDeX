@@ -15,6 +15,7 @@
 #' is shown.
 #' @param confidence_level confidence level for the test, from range [0, 1].
 #' Important if selected show_confidence_limit.
+#' @inheritParams plot_butterfly
 #'
 #' @details Function \code{\link{plot_differential_chiclet}} generates
 #' chiclet differential plot based on provided data and parameters.
@@ -49,7 +50,8 @@ plot_differential_chiclet <- function(diff_uptake_dat = NULL,
                                       show_houde_interval = FALSE,
                                       show_tstud_confidence = FALSE,
                                       confidence_level = 0.98,
-                                      show_uncertainty = FALSE){
+                                      show_uncertainty = FALSE,
+                                      interactive = getOption("hadex_use_interactive_plots")){
   
   if (show_tstud_confidence) {
     
@@ -115,13 +117,23 @@ plot_differential_chiclet <- function(diff_uptake_dat = NULL,
                          Start = diff_uptake_dat[["Start"]],
                          End = diff_uptake_dat[["End"]])
   
+  chosen_tile_geom <- if (interactive) ggiraph::geom_tile_interactive(
+    aes(tooltip = glue(
+      "{Sequence}
+       Position: {Start}-{End}
+       ID: {ID}
+       Value: {round(value, 2)}
+       Exposure: {Exposure} min"
+    ))
+  ) else geom_tile()
+  
   attr(plot_dat, "n_rep") <- attr(diff_uptake_dat, "n_rep")
   
   min_du <- min(plot_dat[["value"]])
   max_du <- max(plot_dat[["value"]])
   
-  chiclet_differential_plot <- ggplot(plot_dat, aes(y = Exposure, x = ID)) +
-    geom_tile(aes(fill = value)) +
+  chiclet_differential_plot <- ggplot(plot_dat, aes(y = Exposure, x = ID, fill = value)) +
+    chosen_tile_geom +
     geom_tile(data = subset(plot_dat, is.na(value)), fill = "gray95") +
     scale_fill_gradient2(low = "blue", mid = "white", high = "red", guide = guide_legend(keywidth = 3), limits = c(min_du, max_du)) + #       limits = c(min(facetgrid$value), max(facetgrid$value)))
     labs(title = title,

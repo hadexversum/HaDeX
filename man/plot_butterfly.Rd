@@ -8,7 +8,8 @@ plot_butterfly(
   uptake_dat,
   theoretical = FALSE,
   fractional = FALSE,
-  uncertainty_type = "ribbon"
+  uncertainty_type = "ribbon",
+  interactive = getOption("hadex_use_interactive_plots")
 )
 }
 \arguments{
@@ -21,6 +22,10 @@ function.}
 
 \item{uncertainty_type}{type of presenting uncertainty, possible values:
 "ribbon", "bars" or "bars + line".}
+
+\item{interactive}{\code{logical}, whether plot should have an interactive 
+layer created with with ggiraph, which would add tooltips to the plot in an
+interactive display (HTML/Markdown documents or shiny app).}
 }
 \value{
 a \code{\link{ggplot}} object.

@@ -4,7 +4,11 @@
 \alias{plot_replicate_histogram}
 \title{Plot replicates histogram}
 \usage{
-plot_replicate_histogram(rep_dat, time_points = F)
+plot_replicate_histogram(
+  rep_dat,
+  time_points = F,
+  interactive = getOption("hadex_use_interactive_plots")
+)
 }
 \arguments{
 \item{rep_dat}{replicate data, created by 
@@ -12,6 +16,10 @@ plot_replicate_histogram(rep_dat, time_points = F)
 
 \item{time_points}{\code{logical}, indicator if the histogram
 should show values aggregated for time points of measurements.}
+
+\item{interactive}{\code{logical}, whether plot should have an interactive 
+layer created with with ggiraph, which would add tooltips to the plot in an
+interactive display (HTML/Markdown documents or shiny app).}
 }
 \value{
 a \code{\link{ggplot}} object.

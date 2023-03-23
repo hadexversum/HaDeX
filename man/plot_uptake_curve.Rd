@@ -9,7 +9,8 @@ plot_uptake_curve(
   theoretical = FALSE,
   fractional = FALSE,
   uncertainty_type = "ribbon",
-  log_x = TRUE
+  log_x = TRUE,
+  interactive = getOption("hadex_use_interactive_plots")
 )
 }
 \arguments{
@@ -28,6 +29,10 @@ in fractional form}
 
 \item{log_x}{\code{logical}, indicator if the X axis values 
 are transformed to log10}
+
+\item{interactive}{\code{logical}, whether plot should have an interactive 
+layer created with with ggiraph, which would add tooltips to the plot in an
+interactive display (HTML/Markdown documents or shiny app).}
 }
 \value{
 a \code{\link{ggplot}} object

@@ -8,16 +8,24 @@ plot_chiclet(
   uptake_dat,
   theoretical = FALSE,
   fractional = FALSE,
-  show_uncertainty = FALSE
+  show_uncertainty = FALSE,
+  interactive = getOption("hadex_use_interactive_plots")
 )
 }
 \arguments{
+\item{uptake_dat}{data produced by \code{\link{create_state_uptake_dataset}} 
+function.}
+
 \item{theoretical}{\code{logical}, determines if values are theoretical.}
 
 \item{fractional}{\code{logical}, determines if values are fractional.}
 
 \item{show_uncertainty}{\code{logical}, determines if the
 uncertainty is shown.}
+
+\item{interactive}{\code{logical}, whether plot should have an interactive 
+layer created with with ggiraph, which would add tooltips to the plot in an
+interactive display (HTML/Markdown documents or shiny app).}
 
 \item{chiclet_dat}{produced by \code{\link{create_state_uptake_dataset}}
 function.}

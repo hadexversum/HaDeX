@@ -8,6 +8,7 @@
 #' @param hydro_properties ...
 #' @param protein ...
 #' @param charge_colors ...
+#' @inheritParams plot_butterfly
 #' 
 #' @details The data for this function is not packaged yet.
 #' 
@@ -24,8 +25,18 @@
 plot_amino_distribution <- function(position_in_sequence, 
                                     hydro_properties,
                                     protein,
-                                    charge_colors){
+                                    charge_colors,
+                                    interactive = getOption("hadex_use_interactive_plots")){
   amino_groups <- c("G", "A", "V", "I", "L", "F", "P", "M", "S", "T", "Y", "W", "N", "Q", "C", "D", "E", "K", "R", "H")
+  
+  chosen_geom_col <- if (interactive) ggiraph::geom_col_interactive(
+    aes(tooltip = glue(
+      "Amino acid: {amino}
+       Charge: {charge}
+       Is hydrophobic? {is_hydrophobic}
+       Count: {cnt}"
+    ))
+  ) else geom_col()
   
   position_in_sequence %>%
     mutate(affinity = ifelse(is_hydrophobic, "phobic", "philic")) %>% 
@@ -34,7 +45,7 @@ plot_amino_distribution <- function(position_in_sequence,
     group_by(amino, charge, is_hydrophobic) %>%
     summarise(cnt = n()) %>%
     ggplot(aes(x = amino, y = cnt, fill = charge)) + 
-    geom_col() +
+    chosen_geom_col +
     scale_fill_manual("Charge", values = charge_colors) + 
     labs(title = paste0('Amino acid composition for ', protein),
          x = 'Amino acid',

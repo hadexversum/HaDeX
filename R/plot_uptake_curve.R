@@ -16,6 +16,7 @@
 #' "ribbon", "bars" or "bars + line"
 #' @param log_x \code{logical}, indicator if the X axis values 
 #' are transformed to log10
+#' @inheritParams plot_butterfly
 #' 
 #' @details The function \code{\link{plot_uptake_curve}} generates
 #' the deuterium uptake curve for selected peptides 
@@ -59,7 +60,8 @@ plot_uptake_curve <- function(uc_dat,
                               theoretical = FALSE, 
                               fractional = FALSE,
                               uncertainty_type = "ribbon",
-                              log_x = TRUE){
+                              log_x = TRUE,
+                              interactive = getOption("hadex_use_interactive_plots")){
   
   uncertainty_type <- match.arg(uncertainty_type, c("ribbon", "bars", "bars + line"))
   
@@ -110,36 +112,47 @@ plot_uptake_curve <- function(uc_dat,
                          err_value = uc_dat[[err_value]],
                          prop = paste0(uc_dat[["Sequence"]], "-", uc_dat[["State"]]))
   
-  uc_plot <- ggplot(plot_dat, aes(x = time_t, y = value, group = prop)) +
-    geom_point(aes(color = prop), size = 2) + 
+  chosen_geom_point <- if (interactive) geom_point_interactive( 
+    aes(tooltip = glue(
+      "{Sequence}
+       State: {State}
+       Position: {Start}-{End}
+       Value: {round(value, 2)}
+       Time point: {time_t} min"
+    )),
+    size = 2
+  ) else geom_point(size = 2)
+  
+  err_width <- if (log_x) 0.1 else 2
+  
+  chosen_uncertainty_geom <- switch (
+    uncertainty_type,
+    ribbon = geom_ribbon(aes(color = NULL),  alpha = 0.15),
+    bars = geom_errorbar(width = err_width),
+    `bars + line` = geom_errorbar(width = err_width)
+  )
+  
+  uc_plot <- ggplot(
+    plot_dat, 
+    aes(
+      x = time_t, 
+      y = value, 
+      group = prop, 
+      color = prop, 
+      fill = prop,
+      ymin = value - err_value, 
+      ymax = value + err_value
+    )) +
+    chosen_uncertainty_geom +
+    chosen_geom_point + 
     theme(legend.position = "bottom",
           legend.title = element_blank()) +
     labs(x = "Time points [min]", 
          y = y_label,
          title = title)
   
-  if(log_x){ err_width = 0.1 } else { err_width = 2 }
-  
-  if(uncertainty_type == "ribbon"){
-    
-    uc_plot <- uc_plot +
-      geom_ribbon(aes(ymin = value - err_value, ymax = value + err_value, fill = prop), alpha = 0.15) +
-      geom_line(aes(color = prop)) 
-    
-  } else if (uncertainty_type == "bars") {
-    
-    uc_plot <- uc_plot +
-      geom_errorbar(aes(x = time_t, ymin = value - err_value, ymax = value + err_value, color = prop),
-                    width = err_width)
-    
-  } else if (uncertainty_type == "bars + line"){
-    
-    uc_plot <- uc_plot +
-      geom_errorbar(aes(x = time_t, ymin = value - err_value, ymax = value + err_value, color = prop),
-                    width = err_width) + 
-      geom_line(aes(color = prop))
-    
-  }
+  if (uncertainty_type %in% c("ribbon", "bars + line"))
+    uc_plot <- uc_plot + geom_line()
   
   if(log_x){
     
