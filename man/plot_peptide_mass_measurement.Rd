@@ -10,7 +10,8 @@ plot_peptide_mass_measurement(
   state = dat[["State"]][1],
   sequence = dat[["Sequence"]][1],
   show_charge_values = TRUE,
-  time_t = unique(dat[["Exposure"]])[3]
+  time_t = unique(dat[["Exposure"]])[3],
+  interactive = getOption("hadex_use_interactive_plots")
 )
 }
 \arguments{

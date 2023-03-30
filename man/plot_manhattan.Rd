@@ -12,7 +12,8 @@ plot_manhattan(
   times = NULL,
   confidence_level = NULL,
   show_confidence_limit = T,
-  show_peptide_position = F
+  show_peptide_position = F,
+  interactive = getOption("hadex_use_interactive_plots")
 )
 }
 \arguments{
@@ -37,6 +38,10 @@ confidence intervals are shown.}
 
 \item{show_peptide_position}{\code{logical}, indicates if the peptide length
 and position in  the  sequence is shown. Otherwise, the peptides are represented by their ID.}
+
+\item{interactive}{\code{logical}, whether plot should have an interactive 
+layer created with with ggiraph, which would add tooltips to the plot in an
+interactive display (HTML/Markdown documents or shiny app).}
 }
 \value{
 a \code{\link{ggplot}} object.

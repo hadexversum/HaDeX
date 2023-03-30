@@ -11,7 +11,8 @@ plot_uncertainty(
   skip_amino = 0,
   aggregated = TRUE,
   separate_times = TRUE,
-  show_threshold = TRUE
+  show_threshold = TRUE,
+  interactive = getOption("hadex_use_interactive_plots")
 )
 }
 \arguments{

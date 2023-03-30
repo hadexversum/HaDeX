@@ -47,7 +47,8 @@ plot_uncertainty <- function(dat,
                              skip_amino = 0,
                              aggregated = TRUE,
                              separate_times = TRUE, 
-                             show_threshold = TRUE){
+                             show_threshold = TRUE,
+                             interactive = getOption("hadex_use_interactive_plots")){
 
   dat <- as.data.table(dat)
   
@@ -71,9 +72,16 @@ plot_uncertainty <- function(dat,
 
     }
   
-  uncertainty_plot <- ggplot(plot_dat) +
-
-    geom_segment(aes(x = Start, xend = End, y = err_avg_mass, yend = err_avg_mass, color = as.factor(Exposure))) +
+  chosen_geom_segment <- if (interactive) ggiraph::geom_segment_interactive( 
+    aes(tooltip = glue(
+      "{Sequence}
+       Position: {Start}-{End}
+       Value: {round(err_avg_mass, 2)}"
+    ))) 
+  else geom_segment()
+  
+  uncertainty_plot <- ggplot(plot_dat, aes(x = Start, xend = End, y = err_avg_mass, yend = err_avg_mass, color = as.factor(Exposure))) +
+    chosen_geom_segment +
     labs(x = "Peptide position",
          y = "Uncertainy(mass)",
          color = "Exposure") +

@@ -3,6 +3,8 @@
 #' @description Manhattan plot with p-values from the t-Student test
 #' and peptide position.
 #' 
+#' @importFrom ggiraph geom_segment_interactive
+#' 
 #' @param p_dat data produced by the \code{\link{create_p_diff_uptake_dataset}}
 #' function.
 #' @param skip_amino \code{integer}, indicator how many aminos from the N-terminus 
@@ -17,6 +19,7 @@
 #' confidence intervals are shown.
 #' @param show_peptide_position \code{logical}, indicates if the peptide length
 #' and position in  the  sequence is shown. Otherwise, the peptides are represented by their ID.
+#' @inheritParams plot_butterfly
 #' 
 #' @details The manhattan plot presents the P-values from t-student test, to see 
 #' the regions of the protein with statistically significant changes between two 
@@ -51,7 +54,8 @@ plot_manhattan <- function(p_dat,
                            times = NULL,
                            confidence_level = NULL,
                            show_confidence_limit = T,
-                           show_peptide_position = F){
+                           show_peptide_position = F,
+                           interactive = getOption("hadex_use_interactive_plots")){
   
   p_dat <- as.data.table(p_dat)
   
@@ -75,11 +79,40 @@ plot_manhattan <- function(p_dat,
   
   if(show_peptide_position){
     
-    manhattan_plot <- manhattan_plot +
-      geom_segment(aes(x = Start, y = log_p_value, xend = End, yend = log_p_value, color = as.factor(Exposure))) +
-      labs(x = "Peptide position")
+    if (interactive){
+      
+      manhattan_plot <- manhattan_plot +
+        geom_segment_interactive(aes(x = Start, y = log_p_value, xend = End, yend = log_p_value, color = as.factor(Exposure),
+                                 tooltip = glue(
+                                   "{Sequence}
+                                    Position: {Start}-{End}
+                                    Value: {round(log_p_value, 2)}"
+                                 ))) +
+        labs(x = "Peptide position")
+      
+    } else {
+      
+      manhattan_plot <- manhattan_plot +
+        geom_segment(aes(x = Start, y = log_p_value, xend = End, yend = log_p_value, color = as.factor(Exposure))) +
+        labs(x = "Peptide position")
+      
+    }
+    
     
   } else{
+    
+    if (interactive){
+      
+      manhattan_plot <- manhattan_plot +
+        geom_point_interactive(aes(x = ID, y = log_p_value, color = as.factor(Exposure),
+                               tooltip = glue(
+                                 "{Sequence}
+                                    Position: {Start}-{End}
+                                    Value: {round(log_p_value, 2)}"
+                               ))) +
+        labs(x = "Peptide ID")
+      
+    } else {}
     
     manhattan_plot <- manhattan_plot +
       geom_point(aes(x = ID, y = log_p_value, color = as.factor(Exposure))) +

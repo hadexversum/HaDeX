@@ -39,35 +39,71 @@ plot_replicate_mass_uptake <- function(dat,
                                        state = dat[["State"]][1],
                                        sequence = dat[["Sequence"]][1],
                                        aggregated = FALSE,
-                                       log_x = TRUE){
+                                       log_x = TRUE,
+                                       interactive = getOption("hadex_use_interactive_plots")){
   
   
   if(aggregated) {
     
-    mass_uptake_plot <- dat %>%
+    mass_uptake_dat <- dat %>%
       filter(Protein == protein, 
              State == state,
              Sequence == sequence,
              Exposure > 0.001) %>%
       calculate_exp_masses_per_replicate() %>%
-      mutate(mass_uptake = avg_exp_mass - MHP) %>%
-      ggplot() + 
-      geom_point(aes(x = Exposure, y = mass_uptake)) 
+      mutate(mass_uptake = avg_exp_mass - MHP) 
+      
+    if(interactive){
+      
+      mass_uptake_plot <- ggplot(mass_uptake_dat) +
+        geom_point_interactive(aes(x = Exposure, y = mass_uptake,
+                                   tooltip = glue(
+                                     "{Sequence}
+                                       Position: {Start}-{End}
+                                       Value: {round(mass_uptake, 2)}"
+                                   ))) 
+      
+    } else {
+      
+      mass_uptake_plot <- ggplot(mass_uptake_dat) +
+        geom_point(aes(x = Exposure, y = mass_uptake)) 
+    }
+      
       
   } else {
     
-    mass_uptake_plot <- dat %>%
+    mass_uptake_dat <- dat %>%
       filter(Protein == protein, 
              State == state,
              Sequence == sequence,
              Exposure > 0.001) %>%
       mutate(exp_mass = Center*z - z*1.00727647,
              weighted_Inten = scale(Inten),
-             mass_uptake = exp_mass - MHP) %>%
-      ggplot() +
-      geom_point(aes(x = Exposure, y = mass_uptake, colour = as.factor(z))) +
-      labs(colour = "Charge") +
-      theme(legend.position = "bottom")
+             mass_uptake = exp_mass - MHP) 
+    
+    if(interactive){
+      
+      mass_uptake_plot <- ggplot(mass_uptake_dat) +
+        geom_point_interactive(aes(x = Exposure, y = mass_uptake, colour = as.factor(z),
+                                   tooltip = glue(
+                                     "{Sequence}
+                                       Position: {Start}-{End}
+                                       Value: {round(mass_uptake, 2)}
+                                       Charge: {z}"
+                                   ))) +
+        labs(colour = "Charge") +
+        theme(legend.position = "bottom")
+      
+    } else {
+      
+      mass_uptake_plot <- ggplot(mass_uptake_dat) +
+        geom_point(aes(x = Exposure, y = mass_uptake, colour = as.factor(z))) +
+        labs(colour = "Charge") +
+        theme(legend.position = "bottom")
+    }
+    
+    
+    
       
   }
   

@@ -40,7 +40,8 @@ plot_peptide_mass_measurement <- function(dat,
                                           state = dat[["State"]][1],
                                           sequence = dat[["Sequence"]][1],
                                           show_charge_values = TRUE,
-                                          time_t = unique(dat[["Exposure"]])[3]){
+                                          time_t = unique(dat[["Exposure"]])[3],
+                                          interactive = getOption("hadex_use_interactive_plots")){
   
   rep_mass_dat <- calculate_exp_masses_per_replicate(dat)
   
@@ -59,25 +60,74 @@ plot_peptide_mass_measurement <- function(dat,
     
     rep_mass_z_dat[, `:=`(exp_mass = Center*z - z*1.00727647, 
                           weighted_Inten = scale(Inten))]
-    pep_mass_plot <- ggplot() +
-      geom_point(data = rep_mass_z_dat, aes(x = exp_mass, y = File, color = as.factor(z), size = weighted_Inten)) +
-      geom_point(data = rep_mass_dat, aes(x = avg_exp_mass, y = File), size = 3) +
-      geom_vline(xintercept = avg_value, color = "red", linetype = "dashed", size = 1.5) +
-      labs(y = "",
-           x = "Measured mass [Da]",
-           title = paste0("Peptide ", sequence, " in state ", state, " in ", time_t, " min"),
-           color = "Charge",
-           size = "rel Inten") +
-      theme(legend.direction = "vertical")
+    
+    if(interactive){
+      
+      pep_mass_plot <- ggplot() +
+        geom_point_interactive(data = rep_mass_z_dat, aes(x = exp_mass, y = File, color = as.factor(z), size = weighted_Inten,
+                                                          tooltip = glue("{Sequence}
+                                                         Position: {Start}-{End}
+                                                         Value: {round(exp_mass, 2)},
+                                                         Replicate: {File}"
+                                                            
+                                                          ))) +
+        geom_point_interactive(data = rep_mass_dat, aes(x = avg_exp_mass, y = File,
+                                                        tooltip = glue("{Sequence}
+                                                         Position: {Start}-{End}
+                                                         Value: {round(avg_exp_mass, 2)},
+                                                         Replicate: {File}")), size = 3) +
+        geom_vline(xintercept = avg_value, color = "red", linetype = "dashed", size = 1.5) +
+        labs(y = "",
+             x = "Measured mass [Da]",
+             title = paste0("Peptide ", sequence, " in state ", state, " in ", time_t, " min"),
+             color = "Charge",
+             size = "rel Inten") +
+        theme(legend.direction = "vertical")
+      
+    } else {
+      
+      pep_mass_plot <- ggplot() +
+        geom_point(data = rep_mass_z_dat, aes(x = exp_mass, y = File, color = as.factor(z), size = weighted_Inten)) +
+        geom_point(data = rep_mass_dat, aes(x = avg_exp_mass, y = File), size = 3) +
+        geom_vline(xintercept = avg_value, color = "red", linetype = "dashed", size = 1.5) +
+        labs(y = "",
+             x = "Measured mass [Da]",
+             title = paste0("Peptide ", sequence, " in state ", state, " in ", time_t, " min"),
+             color = "Charge",
+             size = "rel Inten") +
+        theme(legend.direction = "vertical")
+      
+    }
+    
     
   } else {
     
-    pep_mass_plot <- ggplot() +
-      geom_point(data = rep_mass_dat, aes(x = avg_exp_mass, y = File), size = 3) +
-      geom_vline(xintercept = avg_value, color = "red", linetype = "dashed", size = 1.5) +
-      labs(y = "",
-           x = "Measured mass [Da]",
-           title = paste0("Peptide ", sequence, " in state ", state, " in ", time_t, " min"))
+    if(interactive){
+      
+      pep_mass_plot <- ggplot() +
+        geom_point_interactive(data = rep_mass_dat, aes(x = avg_exp_mass, y = File,
+                                                        tootlip = glue(
+                                                          "{Sequence}
+                                                         Position: {Start}-{End}
+                                                         Value: {round(avg_exp_mass, 2)},
+                                                         Replicate: {File}"
+                                                        )), size = 3) +
+        geom_vline(xintercept = avg_value, color = "red", linetype = "dashed", size = 1.5) +
+        labs(y = "",
+             x = "Measured mass [Da]",
+             title = paste0("Peptide ", sequence, " in state ", state, " in ", time_t, " min"))
+      
+    } else {
+      
+      pep_mass_plot <- ggplot() +
+        geom_point(data = rep_mass_dat, aes(x = avg_exp_mass, y = File), size = 3) +
+        geom_vline(xintercept = avg_value, color = "red", linetype = "dashed", size = 1.5) +
+        labs(y = "",
+             x = "Measured mass [Da]",
+             title = paste0("Peptide ", sequence, " in state ", state, " in ", time_t, " min"))
+      
+    }
+    
   }
   
   return(HaDeXify(pep_mass_plot))

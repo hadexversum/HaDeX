@@ -10,7 +10,8 @@ plot_replicate_mass_uptake(
   state = dat[["State"]][1],
   sequence = dat[["Sequence"]][1],
   aggregated = FALSE,
-  log_x = TRUE
+  log_x = TRUE,
+  interactive = getOption("hadex_use_interactive_plots")
 )
 }
 \arguments{
