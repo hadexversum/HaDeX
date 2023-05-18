@@ -43,7 +43,8 @@ plot_coverage_heatmap <- function(x_dat,
                                   protein = x_dat[["Protein"]][1],
                                   state = NULL, 
                                   value = NULL,
-                                  time_t = NULL){
+                                  time_t = NULL,
+                                  interactive = getOption("hadex_use_interactive_plots")){
   
   if(is.null(value) || !(value %in% colnames(x_dat))) {
     return(plot_coverage(x_dat, protein = protein, states = state, show_blanks = F))
@@ -118,13 +119,25 @@ plot_coverage_heatmap <- function(x_dat,
     
   }
   
-  cov_heat_plot <- ggplot() + 
-  geom_rect(data = x_dat, 
-            mapping = aes_string(xmin = "Start", xmax = "End + 1", 
-                                 ymin = "ID", ymax = "ID - 1",
-                                 fill = value), 
-            alpha = 0.8,
-            color = "grey") +
+  chosen_geom_rect <- if (interactive) geom_rect_interactive(data = x_dat, mapping = aes_string(xmin = "Start", xmax = "End + 1", 
+                                                                                  ymin = "ID", ymax = "ID - 1",
+                                                                                  fill = value), 
+                                                             alpha = 0.8,
+                                                             color = "grey",
+                                                          
+    aes(tooltip = glue(
+      "{Sequence}
+       Position: {Start}-{End}
+       Value: {round(value, 2)}"
+    ))
+  ) else geom_rect(mapping = aes_string(xmin = "Start", xmax = "End + 1", 
+                                        ymin = "ID", ymax = "ID - 1",
+                                        fill = value), 
+                   alpha = 0.8,
+                   color = "grey")
+  
+  cov_heat_plot <- ggplot(x_dat) + 
+    chosen_geom_rect +
     theme(legend.position = "bottom",
           axis.ticks.y = element_blank(),
           axis.text.y = element_blank()) +

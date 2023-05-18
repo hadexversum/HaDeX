@@ -9,7 +9,8 @@ plot_coverage_heatmap(
   protein = x_dat[["Protein"]][1],
   state = NULL,
   value = NULL,
-  time_t = NULL
+  time_t = NULL,
+  interactive = getOption("hadex_use_interactive_plots")
 )
 }
 \arguments{
