@@ -86,7 +86,7 @@ calculate_state_uptake <- function(dat,
   setorderv(uptake_dat, cols = c("Start", "End"))
   uptake_dat[, `:=`(ID = 1L:nrow(uptake_dat),
                     Exposure = time_t)]
-  uptake_dat <- uptake_dat[, .(Protein, Sequence, Exposure, Start, End, State,
+  uptake_dat <- uptake_dat[, .(Protein, Sequence, Exposure, Start, End, State, MaxUptake,
                                Modification, frac_deut_uptake, err_frac_deut_uptake,
                                deut_uptake, err_deut_uptake,
                                theo_frac_deut_uptake, err_theo_frac_deut_uptake,
