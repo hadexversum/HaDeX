@@ -50,17 +50,25 @@ calculate_peptide_kinetics <- function(dat,
   
   kin_dat <- rbindlist(lapply(states, function(state){
     
-    calculate_kinetics(dat = dat,
-                       protein = protein, 
-                       sequence = sequence, 
-                       state = state,
-                       start = start,
-                       end = end, 
-                       time_0 = time_0,
-                       time_100 = time_100,
-                       deut_part = deut_part)
+    lapply(1:length(sequence), function(i){
+      
+      calculate_kinetics(dat = dat,
+                         protein = protein, 
+                         sequence = sequence[i], 
+                         state = state,
+                         start = start[i],
+                         end = end[i], 
+                         time_0 = time_0,
+                         time_100 = time_100,
+                         deut_part = deut_part)
+    }
     
-  }))
+    
+  ) %>% rbindlist()
+    
+    }))
+  
+  
   
   kin_dat <- data.frame(kin_dat)
   

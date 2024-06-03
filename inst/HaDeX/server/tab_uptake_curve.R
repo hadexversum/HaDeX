@@ -157,7 +157,7 @@ output[["peptide_list_data"]] <- DT::renderDataTable({
   datatable(data = peptide_list(),
             class = "table-bordered table-condensed",
             extensions = "Buttons",
-            selection = "single",
+            selection = "multiple",
             options = list(pageLength = 10, dom = "tip", autoWidth = TRUE, target = 'cell'),
             filter = "bottom",
             rownames = FALSE)
@@ -203,14 +203,12 @@ kin_dat <- reactive({
     
   }
   
-  # browser()
-  
   calculate_peptide_kinetics(dat = dat(),
                              protein = input[["chosen_protein"]],
-                             sequence = peptide_list()[[input[["peptide_list_data_rows_selected"]], "Sequence"]],
+                             sequence = peptide_list()[input[["peptide_list_data_rows_selected"]], ][["Sequence"]],
                              states = input[["kin_states"]],
-                             start = peptide_list()[[input[["peptide_list_data_rows_selected"]], "Start"]],
-                             end = peptide_list()[[input[["peptide_list_data_rows_selected"]], "End"]],
+                             start = peptide_list()[input[["peptide_list_data_rows_selected"]], ][["Start"]],
+                             end = peptide_list()[input[["peptide_list_data_rows_selected"]], ][["End"]],
                              deut_part = as.numeric(input[["deut_part"]])/100,
                              time_0 = v_time_0,
                              time_100 = v_time_100)
@@ -229,7 +227,6 @@ auc_dat <- reactive({
 
 output[["kin_auc_info"]] <- renderText({
   
-  # browser()
   paste0(auc_dat()[["Sequence"]], "-", auc_dat()[["State"]], ", AUC: ", round(auc_dat()[["auc"]], 4), collapse = "\n")
   
 })
@@ -239,6 +236,9 @@ output[["kin_auc_info"]] <- renderText({
 #################################
 
 kin_plot <- reactive({
+  
+  
+  # browser()
   
   plot_uptake_curve(uc_dat = kin_dat(),
                     theoretical = input[["kin_theory"]],
