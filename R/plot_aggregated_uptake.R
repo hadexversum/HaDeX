@@ -1,7 +1,6 @@
 #'
 #'
-#' @export plot_aggregated_uptake
-
+#' @export
 plot_aggregated_uptake <- function(aggregated_dat,
                                    fractional = T,
                                    time_100 = max(unique(aggregated_dat[["Exposure"]])),
@@ -32,10 +31,12 @@ plot_aggregated_uptake <- function(aggregated_dat,
       x <- lapply(1:n_panels, function(i){
 
         plt_tmp <- plt +
-          coord_cartesian(xlim = c((i-1)* 50, i*50))
+          coord_cartesian(xlim = c((i-1)* 50, i*50)) +
+          theme(legend.position = "none") +
+          labs(x = "")
 
         if(i == n_panels){
-          plt <- plt_tmp + labs(x = "Position")
+          plt_tmp <- plt_tmp + labs(x = "Position")
         }
 
         plt_tmp
