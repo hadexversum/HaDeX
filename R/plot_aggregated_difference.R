@@ -1,0 +1,54 @@
+#' @export
+
+plot_aggregated_differential_uptake <- function(aggregated_diff_dat,
+                                                fractional = T, 
+                                                time_100 = max(unique(aggregated_diff_dat[["Exposure"]])),
+                                                panels = T, 
+                                                theoretical = F){
+  
+  aggregated_dat <- as.data.table(aggregated_dat)
+  
+  if(fractional){
+    
+    aggregated_dat <- aggregated_dat[Exposure < time_100,]
+    
+    plt <- ggplot(aggregated_diff_dat) + 
+      geom_tile(aes(x = position, y = as.factor(Exposure), fill = diff_frac_uc)) +
+      scale_fill_gradient2(low = "blue", mid = "white", high = "red") + 
+      theme(legend.position = "bottom") +
+      labs(x = "Position", 
+           y = "Exposure", 
+           fill = "Diff Frac DU")
+    
+    if(panels){
+      
+      limit = 50
+      length = max(aggregated_diff_dat[["position"]])
+      n_panels = ceiling(length/limit)
+      panels <- NULL
+      
+      x <- lapply(1:n_panels, function(i){
+        
+        plt_tmp <- plt +
+          coord_cartesian(xlim = c((i-1)* 50, i*50)) +
+          theme(legend.position = "none") +
+          labs(x = "")
+        
+        if(i == n_panels){
+          plt_tmp <- plt_tmp + labs(x = "Position")
+        }
+        
+        plt_tmp
+        
+      })
+      
+      plt <- do.call(gridExtra::grid.arrange, c(x, ncol = 1))
+    }
+      
+    }
+
+  return(plt)
+  
+  }
+
+

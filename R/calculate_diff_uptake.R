@@ -59,11 +59,11 @@ calculate_diff_uptake  <- function(dat,
   diff_dat <- melt.data.table(diff_dat,
                               variable.name = "variable",
                               value.name = "value",
-                              id.vars = c("Protein", "Sequence", "Exposure", "Start", "End", "State", "Modification", "Med_Sequence"))
+                              id.vars = c("Protein", "Sequence", "Exposure", "Start", "End", "State", "MaxUptake", "Modification", "Med_Sequence"))
   diff_dat[, tmp := do.call(paste, c(.SD, sep = "_")), .SDcols= c("variable", "State")]
-  diff_dat <- diff_dat[, .(Protein, Sequence, Exposure, Start, End, tmp, Modification, Med_Sequence, value)]
+  diff_dat <- diff_dat[, .(Protein, Sequence, Exposure, Start, End, MaxUptake, tmp, Modification, Med_Sequence, value)]
   
-  diff_dat <- dcast(diff_dat, Protein + Sequence + Exposure + Start + End + Modification + Med_Sequence ~ tmp, value.var = "value")
+  diff_dat <- dcast(diff_dat, Protein + Sequence + Exposure + Start + End + MaxUptake + Modification + Med_Sequence ~ tmp, value.var = "value")
   
   diff_dat[,`:=`(diff_frac_deut_uptake = frac_deut_uptake_1 - frac_deut_uptake_2,
                  err_diff_frac_deut_uptake = sqrt(err_frac_deut_uptake_1^2 + err_frac_deut_uptake_2^2),
@@ -75,7 +75,7 @@ calculate_diff_uptake  <- function(dat,
                  err_diff_theo_deut_uptake = sqrt(err_theo_deut_uptake_1^2 + err_theo_deut_uptake_2^2)), ]
   setorderv(diff_dat, cols = c("Start", "End"))
   
-  col_names <- c("Protein", "Start", "End", "Med_Sequence", "Sequence", "Exposure",
+  col_names <- c("Protein", "Start", "End", "MaxUptake", "Med_Sequence", "Sequence", "Exposure",
                  "Modification", "diff_frac_deut_uptake", "err_diff_frac_deut_uptake", 
                  "diff_deut_uptake", "err_diff_deut_uptake", "diff_theo_frac_deut_uptake",
                  "err_diff_theo_frac_deut_uptake", "diff_theo_deut_uptake",

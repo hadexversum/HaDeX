@@ -43,7 +43,7 @@ plot_aggregated_uptake <- function(aggregated_dat,
 
       })
 
-      plt <- do.call(gridExtra::grid.arrange, x)
+      plt <- do.call(gridExtra::grid.arrange, c(x, ncol = 1))
     }
 
   }
