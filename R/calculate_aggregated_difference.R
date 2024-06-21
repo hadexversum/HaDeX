@@ -17,7 +17,7 @@ calculate_aggregated_differential_uptake <- function(diff_uptake_dat,
     x <- diff_uptake_dat[Start <= i & i <= End]
     x[, weight := 1/MaxUptake/sum(1/MaxUptake)]
     x[, err_component := (weight * err_diff_frac_deut_uptake)^2]
-    diff_frac_uc = weighted.mean(x[["diff_frac_deut_uptake"]], w = x[["weight"]])
+    diff_frac_uc = weighted.mean(x[["diff_frac_deut_uptake"]], w = x[["weight"]], na.rm = T)
     err_diff_frac_uc = sqrt(sum(x[["err_component"]]))
     
     residues[i, "diff_frac_uc"] <<- diff_frac_uc

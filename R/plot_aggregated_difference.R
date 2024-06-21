@@ -6,11 +6,11 @@ plot_aggregated_differential_uptake <- function(aggregated_diff_dat,
                                                 panels = T, 
                                                 theoretical = F){
   
-  aggregated_dat <- as.data.table(aggregated_dat)
+  aggregated_diff_dat <- as.data.table(aggregated_diff_dat)
   
   if(fractional){
     
-    aggregated_dat <- aggregated_dat[Exposure < time_100,]
+    aggregated_diff_dat <- aggregated_diff_dat[Exposure < time_100,]
     
     plt <- ggplot(aggregated_diff_dat) + 
       geom_tile(aes(x = position, y = as.factor(Exposure), fill = diff_frac_uc)) +
