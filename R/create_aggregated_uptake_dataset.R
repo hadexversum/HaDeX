@@ -1,3 +1,4 @@
+#' @param kin_dat ...
 #'
 #' @export
 

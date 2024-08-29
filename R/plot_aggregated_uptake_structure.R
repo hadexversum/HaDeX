@@ -9,26 +9,24 @@ plot_aggregated_uptake_structure <- function(aggregated_dat,
                                              pdb_file_path){
   
   
-  aggregated_dat <- as.data.table(aggregated_dat)
-  aggregated_dat <- aggregated_dat[Exposure == time_t]
   
   if(differential){
     
     tmp_plt <- ggplot(aggregated_dat) +
-      geom_tile(aes(x = position, y = as.factor(Exposure), fill = diff_frac_uc)) +
+      geom_tile(aes(x = position, y = Exposure, fill = diff_frac_uc)) +
       scale_fill_gradient2(low ="blue", mid = "white", high = "red") 
     
   } else {
     
     tmp_plt <- ggplot(aggregated_dat) +
-      geom_tile(aes(x = position, y = as.factor(Exposure), fill = frac_uc)) +
+      geom_tile(aes(x = position, y = Exposure, fill = frac_uc)) +
       scale_fill_gradient2(low = "white", high = "red") 
     
   }
   
-  
-  plot_colors <- ggplot_build(tmp_plt)$data[[1]]["fill"]
-  color_vector <- paste0("\"", paste0(plot_colors[[1]], collapse = "\",\""), "\"")
+  plot_x <- ggplot_build(tmp_plt)$data[[1]]
+  plot_colors <- plot_x[plot_x[["y"]] == time_t, ][["fill"]]
+  color_vector <- paste0("\"", paste0(plot_colors, collapse = "\",\""), "\"")
   
   r3dmol::r3dmol(
     viewer_spec = r3dmol::m_viewer_spec(
