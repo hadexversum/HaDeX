@@ -9,6 +9,7 @@
 #' @examples
 #' kin_dat <- create_uptake_dataset(alpha_dat, states = "Alpha_KSCN" )
 #' aggregated_dat <- create_aggregated_uptake_dataset(kin_dat)
+#' diff_uptake_dat <- create_diff_uptake_dataset(alpha_dat)
 #' aggregated_diff_dat <- create_aggregated_diff_uptake_dataset(diff_uptake_dat)
 #' prepare_hdxviewer_export(aggregated_dat, differential = F)
 #' prepare_hdxviewer_export(aggregated_dat, differential = T) # shouldnt work
@@ -104,7 +105,7 @@ prepare_hdxviewer_export <- function(x_dat,
 
 
   if(download) {
-    write.csv(res, "hdx_viewer.csv", row.names = FALSE, quote=FALSE)
+    write.csv(res, paste0(value, ".csv"), row.names = FALSE, quote=FALSE)
 
   }
 
