@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculate_aggregated_uptake.R
 \name{calculate_aggregated_uptake}
 \alias{calculate_aggregated_uptake}
-\title{Calculates aggregated deuterium uptake}
+\title{Calculates aggregated deuterium uptake for one time point}
 \usage{
 calculate_aggregated_uptake(
   kin_dat,
@@ -10,8 +10,15 @@ calculate_aggregated_uptake(
   time_t
 )
 }
+\arguments{
+\item{kin_dat}{...}
+
+\item{state}{...}
+
+\item{time_t}{...}
+}
 \description{
-Calculates aggregated deuterium uptake
+Calculates aggregated deuterium uptake for one time point
 }
 \examples{
 dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))

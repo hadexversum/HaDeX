@@ -1,4 +1,10 @@
+#' Calculates the aggregated uptake for peptide pool
+#'
 #' @param kin_dat ...
+#'
+#' @examples
+#' kin_dat <- create_uptake_dataset(alpha_dat, states = "Alpha_KSCN")
+#' create_aggregated_uptake_dataset(kin_dat)
 #'
 #' @export
 

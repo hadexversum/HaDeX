@@ -1,45 +1,115 @@
-#' @examples 
+#' Prepares data export for HDX-Viewer
+#'
+#' @param x_dat ...
+#' @param differential ...
+#' @param fractional ...
+#' @param theoretical ...
+#' @param download ...
+#'
+#' @examples
 #' kin_dat <- create_uptake_dataset(alpha_dat, states = "Alpha_KSCN" )
 #' aggregated_dat <- create_aggregated_uptake_dataset(kin_dat)
+#' aggregated_diff_dat <- create_aggregated_diff_uptake_dataset(diff_uptake_dat)
 #' prepare_hdxviewer_export(aggregated_dat, differential = F)
+#' prepare_hdxviewer_export(aggregated_dat, differential = T) # shouldnt work
+#' prepare_hdxviewer_export(aggregated_diff_dat, differential = T)
 #' prepare_hdxviewer_export(aggregated_dat, differential = F, download = T)
-#' 
-#' 
-#' 
+#'
 #' @export
 
 
-prepare_hdxviewer_export <- function(x_dat, 
+prepare_hdxviewer_export <- function(x_dat,
                                      differential = FALSE,
                                      fractional = TRUE,
-                                     theoretical = FALSE, 
+                                     theoretical = FALSE,
                                      download = FALSE){
 
-  x_dat <- aggregated_dat
   x_dat <- as.data.table(x_dat)
-  
+
   if(differential){
-    
+
+    if(!any(startsWith(names(x_dat), "diff") )){
+      stop("Parameters are in conflict with supplied data.")
+    }
+
+    if(fractional){
+
+      if(theoretical){
+
+        x_dat <- x_dat[, .(position, diff_theo_frac_deut_uptake, Exposure)]
+        x_dat[, diff_theo_frac_deut_uptake:=diff_theo_frac_deut_uptake/100]
+        value <- "diff_theo_frac_deut_uptake"
+      } else {
+
+        x_dat <- x_dat[, .(position, diff_frac_deut_uptake, Exposure)]
+        x_dat[, diff_frac_deut_uptake:=diff_frac_deut_uptake/100]
+        value <- "diff_frac_deut_uptake"
+      }
+    } else {
+
+      x_dat <- x_dat[, .(position, diff_deut_uptake, Exposure)]
+      value <- "diff_deut_uptake"
+
+      if(theoretical){
+
+        x_dat <- x_dat[, .(position, diff_theo_deut_uptake, Exposure)]
+        value <- "diff_theo_deut_uptake"
+
+      }
+    }
+
   } else {
-    
-    ## fractional
-    x_dat <- x_dat[, .(position, frac_deut_uptake, Exposure)]
-    x_dat[, Exposure:=paste0(Exposure, "min")]  
-    x_dat[, frac_deut_uptake:=frac_deut_uptake/100]
-    x_dat[, .(Residues=position)]
-    setnames(x_dat, "position", "Residues")
-    
-    res <- dcast(x_dat, Residues ~ Exposure, value.var = "frac_deut_uptake")
-    
-  } 
-  
+
+    if(fractional){
+
+      if(theoretical){
+
+        x_dat <- x_dat[, .(position, theo_frac_deut_uptake, Exposure)]
+        x_dat[, theo_frac_deut_uptake:=theo_frac_deut_uptake/100]
+        value <- "theo_frac_deut_uptake"
+
+      } else {
+
+        x_dat <- x_dat[, .(position, frac_deut_uptake, Exposure)]
+        x_dat[, frac_deut_uptake:=frac_deut_uptake/100]
+        value <- "frac_deut_uptake"
+
+      }
+    } else {
+
+      x_dat <- x_dat[, .(position, deut_uptake, Exposure)]
+      value <- "deut_uptake"
+
+      if(theoretical){
+
+        x_dat <- x_dat[, .(position, theo_deut_uptake, Exposure)]
+        value <- "theo_deut_uptake"
+
+      }
+
+    }
+
+
+
+
+
+  }
+
+  x_dat[, Exposure:=paste0(Exposure, "min")]
+  x_dat[, .(Residues=position)]
+  setnames(x_dat, "position", "Residues")
+
+  res <- dcast(x_dat, Residues ~ Exposure, value.var = value)
+
+
+
   if(download) {
     write.csv(res, "hdx_viewer.csv", row.names = FALSE, quote=FALSE)
-    
+
   }
-  
+
   return(res)
-  
+
 }
 
 
