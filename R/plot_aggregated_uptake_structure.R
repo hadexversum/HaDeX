@@ -1,33 +1,41 @@
-#' 
+#'
 #' @importFrom ggplot2 ggplot_build
-#' 
+#'
+#' @examples
+#' diff_uptake_dat <- create_diff_uptake_dataset(alpha_dat)
+#' aggregated_dat <- create_aggregated_diff_uptake_dataset(diff_uptake_dat)
+#'
+#'
+#'
 #' @export
 
-plot_aggregated_uptake_structure <- function(aggregated_dat, 
-                                             differential = F, 
-                                             time_t, 
+plot_aggregated_uptake_structure <- function(aggregated_dat,
+                                             differential = F,
+                                             fractional = TRUE,
+                                             theoretical = FALSE,
+                                             time_t,
                                              pdb_file_path){
-  
-  
-  
+
+  ## TODO: fractional, theoretical
+
   if(differential){
-    
+
     tmp_plt <- ggplot(aggregated_dat) +
-      geom_tile(aes(x = position, y = Exposure, fill = diff_frac_uc)) +
-      scale_fill_gradient2(low ="blue", mid = "white", high = "red") 
-    
+      geom_tile(aes(x = position, y = Exposure, fill = diff_frac_deut_uptake)) +
+      scale_fill_gradient2(low ="blue", mid = "white", high = "red")
+
   } else {
-    
+
     tmp_plt <- ggplot(aggregated_dat) +
-      geom_tile(aes(x = position, y = Exposure, fill = frac_uc)) +
-      scale_fill_gradient2(low = "white", high = "red") 
-    
+      geom_tile(aes(x = position, y = Exposure, fill = frac_deut_uptake)) +
+      scale_fill_gradient2(low = "white", high = "red")
+
   }
-  
+
   plot_x <- ggplot_build(tmp_plt)$data[[1]]
   plot_colors <- plot_x[plot_x[["y"]] == time_t, ][["fill"]]
   color_vector <- paste0("\"", paste0(plot_colors, collapse = "\",\""), "\"")
-  
+
   r3dmol::r3dmol(
     viewer_spec = r3dmol::m_viewer_spec(
       cartoonQuality = 10,

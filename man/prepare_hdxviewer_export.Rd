@@ -29,6 +29,7 @@ Prepares data export for HDX-Viewer
 \examples{
 kin_dat <- create_uptake_dataset(alpha_dat, states = "Alpha_KSCN" )
 aggregated_dat <- create_aggregated_uptake_dataset(kin_dat)
+diff_uptake_dat <- create_diff_uptake_dataset(alpha_dat)
 aggregated_diff_dat <- create_aggregated_diff_uptake_dataset(diff_uptake_dat)
 prepare_hdxviewer_export(aggregated_dat, differential = F)
 prepare_hdxviewer_export(aggregated_dat, differential = T) # shouldnt work
