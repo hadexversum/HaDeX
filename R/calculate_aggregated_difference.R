@@ -23,7 +23,7 @@ calculate_aggregated_diff_uptake <- function(diff_uptake_dat,
   residues["diff_theo_frac_deut_uptake"] <- NA
   residues["diff_theo_deut_uptake"] <- NA
 
-  residues
+  # residues
 
   lapply(residues[["position"]], function(i){
 

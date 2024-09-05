@@ -13,15 +13,15 @@ prepare_hdxviewer_export(
 )
 }
 \arguments{
-\item{x_dat}{...}
+\item{x_dat}{one state detuerium uptake data or differentail uptake data}
 
-\item{differential}{...}
+\item{differential}{indicator of x_dat type}
 
-\item{fractional}{...}
+\item{fractional}{indicator if fractional values are used}
 
-\item{theoretical}{...}
+\item{theoretical}{indicator if theoretical values are used}
 
-\item{download}{...}
+\item{download}{indicator if the result should be downloaded}
 }
 \description{
 Prepares data export for HDX-Viewer
@@ -30,10 +30,10 @@ Prepares data export for HDX-Viewer
 kin_dat <- create_uptake_dataset(alpha_dat, states = "Alpha_KSCN" )
 aggregated_dat <- create_aggregated_uptake_dataset(kin_dat)
 diff_uptake_dat <- create_diff_uptake_dataset(alpha_dat)
-aggregated_diff_dat <- create_aggregated_diff_uptake_dataset(diff_uptake_dat)
+diff_aggregated_dat <- create_aggregated_diff_uptake_dataset(diff_uptake_dat)
 prepare_hdxviewer_export(aggregated_dat, differential = F)
 prepare_hdxviewer_export(aggregated_dat, differential = T) # shouldnt work
-prepare_hdxviewer_export(aggregated_diff_dat, differential = T)
+prepare_hdxviewer_export(diff_aggregated_dat, differential = T)
 prepare_hdxviewer_export(aggregated_dat, differential = F, download = T)
 
 }

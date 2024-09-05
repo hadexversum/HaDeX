@@ -1,19 +1,19 @@
 #' Prepares data export for HDX-Viewer
 #'
-#' @param x_dat ...
-#' @param differential ...
-#' @param fractional ...
-#' @param theoretical ...
-#' @param download ...
+#' @param x_dat one state detuerium uptake data or differentail uptake data
+#' @param differential indicator of x_dat type
+#' @param fractional indicator if fractional values are used
+#' @param theoretical indicator if theoretical values are used
+#' @param download indicator if the result should be downloaded 
 #'
 #' @examples
 #' kin_dat <- create_uptake_dataset(alpha_dat, states = "Alpha_KSCN" )
 #' aggregated_dat <- create_aggregated_uptake_dataset(kin_dat)
 #' diff_uptake_dat <- create_diff_uptake_dataset(alpha_dat)
-#' aggregated_diff_dat <- create_aggregated_diff_uptake_dataset(diff_uptake_dat)
+#' diff_aggregated_dat <- create_aggregated_diff_uptake_dataset(diff_uptake_dat)
 #' prepare_hdxviewer_export(aggregated_dat, differential = F)
 #' prepare_hdxviewer_export(aggregated_dat, differential = T) # shouldnt work
-#' prepare_hdxviewer_export(aggregated_diff_dat, differential = T)
+#' prepare_hdxviewer_export(diff_aggregated_dat, differential = T)
 #' prepare_hdxviewer_export(aggregated_dat, differential = F, download = T)
 #'
 #' @export
@@ -89,10 +89,6 @@ prepare_hdxviewer_export <- function(x_dat,
       }
 
     }
-
-
-
-
 
   }
 
