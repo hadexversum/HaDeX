@@ -58,8 +58,17 @@ plot_aggregated_differential_uptake <- function(aggregated_diff_dat,
 
   aggregated_diff_dat <- aggregated_diff_dat[Exposure < time_100,]
 
+  if(interactive){
+    selected_geom_tile <- geom_tile_interactive(mapping = aes(x = position, y = as.factor(Exposure), fill = get(fill_value),
+                                                              tooltip = glue("Position: {position},
+                                                                   Residue: {aa},
+                                                                   Value: {round(get(fill_value), 2)}")))
+  } else {
+    selected_geom_tile <- geom_tile(aes(x = position, y = as.factor(Exposure), fill = get(fill_value)))
+  }
+  
   plt <- ggplot(aggregated_diff_dat) +
-    geom_tile(aes(x = position, y = as.factor(Exposure), fill = get(fill_value))) +
+    selected_geom_tile + 
     scale_fill_gradient2(low = "blue", mid = "white", high = "red") +
     theme(legend.position = "bottom") +
     labs(x = "Position",
