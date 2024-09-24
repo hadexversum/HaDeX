@@ -19,33 +19,49 @@ calculate_aggregated_uptake <- function(kin_dat,
   kin_dat_t <- kin_dat[Exposure == time_t]
 
   residues <- get_residue_positions(kin_dat)
+  
+  ## TODO: rewrite!!
   residues["frac_deut_uptake"] <- NA
   residues["err_frac_deut_uptake"] <- NA
-
   residues["deut_uptake"] <- NA
+  residues["err_deut_uptake"] <- NA
   residues["theo_frac_deut_uptake"] <- NA
+  residues["err_theo_frac_deut_uptake"] <- NA
   residues["theo_deut_uptake"] <- NA
+  residues["err_theo_deut_uptake"] <- NA
+
 
   lapply(residues[["position"]], function(i){
 
     x <- kin_dat_t[Start <= i & i <= End & State == state]
     x[, weight := 1/MaxUptake/sum(1/MaxUptake)]
+    
     ##
-    x[, err_component := (weight * err_frac_deut_uptake)^2]
     frac_deut_uptake = weighted.mean(x[["frac_deut_uptake"]], w = x[["weight"]])
-    err_frac_deut_uptake = sqrt(sum(x[["err_component"]]))
-
+    x[, tmp_err_frac_deut_uptake := (weight * err_frac_deut_uptake)^2]
+    err_frac_deut_uptake = sqrt(sum(x[["err_frac_deut_uptake"]]))
+    ##
     deut_uptake = weighted.mean(x[["deut_uptake"]], w = x[["weight"]])
+    x[, tmp_err_deut_uptake := (weight * err_deut_uptake)^2]
+    err_deut_uptake = sqrt(sum(x[["tmp_err_deut_uptake"]]))
+    ##
     theo_frac_deut_uptake = weighted.mean(x[["theo_frac_deut_uptake"]], w = x[["weight"]])
+    x[, tmp_err_theo_frac_deut_uptake := (weight * err_theo_frac_deut_uptake)^2]
+    err_theo_frac_deut_uptake = sqrt(sum(x[["tmp_err_theo_frac_deut_uptake"]]))
+    ##
     theo_deut_uptake = weighted.mean(x[["theo_deut_uptake"]], w = x[["weight"]])
-
-
+    x[, tmp_err_theo_deut_uptake := (weight * err_theo_deut_uptake)^2]
+    err_theo_deut_uptake = sqrt(sum(x[["tmp_err_theo_deut_uptake"]]))
+    ##
+    
     residues[i, "frac_deut_uptake"] <<- frac_deut_uptake
-    residues[i, "err_frac_deut_uptake"] <<- frac_deut_uptake
+    residues[i, "err_frac_deut_uptake"] <<- err_frac_deut_uptake
     residues[i, "deut_uptake"] <<- deut_uptake
+    residues[i, "err_deut_uptake"] <<- err_deut_uptake
     residues[i, "theo_frac_deut_uptake"] <<- theo_frac_deut_uptake
+    residues[i, "err_theo_frac_deut_uptake"] <<- err_theo_frac_deut_uptake
     residues[i, "theo_deut_uptake"] <<- theo_deut_uptake
-
+    residues[i, "err_theo_deut_uptake"] <<- err_theo_deut_uptake
 
   })
 
