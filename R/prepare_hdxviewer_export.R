@@ -99,7 +99,6 @@ prepare_hdxviewer_export <- function(x_dat,
   res <- dcast(x_dat, Residues ~ Exposure, value.var = value)
 
 
-
   if(download) {
     write.csv(res, paste0(value, ".csv"), row.names = FALSE, quote=FALSE)
 

@@ -3,6 +3,8 @@
 #' @description Coverage heatmap with color indicating
 #' specific value
 #' 
+#' @importFrom ggiraph geom_rect_interactive
+#' 
 #' @param x_dat data created using calculate_ or create_ 
 #' function
 #' @param protein selected protein
@@ -22,7 +24,7 @@
 #' dat <- read_hdx(system.file(package = "HaDeX", "HaDeX/data/KD_180110_CD160_HVEM.csv"))
 #' uptake_dat <- create_uptake_dataset(dat, states = "CD160")
 #' plot_coverage_heatmap(uptake_dat)
-#' plot_coverage_heatmap(uptake_dat, value = "frac_deut_uptake", time_t = 0.167)
+#' plot_coverage_heatmap(x_dat = uptake_dat, value = "frac_deut_uptake", time_t = 0.167)
 #' plot_coverage_heatmap(uptake_dat, value = "err_frac_deut_uptake", time_t = 0.167)
 #'
 #' diff_uptake_dat <- create_diff_uptake_dataset(dat)
@@ -119,17 +121,18 @@ plot_coverage_heatmap <- function(x_dat,
     
   }
   
-  chosen_geom_rect <- if (interactive) geom_rect_interactive(data = x_dat, mapping = aes_string(xmin = "Start", xmax = "End + 1", 
-                                                                                  ymin = "ID", ymax = "ID - 1",
-                                                                                  fill = value), 
+  chosen_geom_rect <- if (interactive) geom_rect_interactive(data = x_dat, 
+                                                             mapping = aes(xmin = Start, xmax = End + 1, 
+                                                                           ymin = ID, ymax = ID - 1,
+                                                                           fill = get(value),
+                                                                           tooltip = glue(paste0(
+                                                                             "{Sequence}
+                                                          Position: {Start}-{End}"
+                                                          # Value: {round(value, 2)}"
+                                                                           ))
+                                                             ), 
                                                              alpha = 0.8,
-                                                             color = "grey",
-                                                          
-    aes(tooltip = glue(
-      "{Sequence}
-       Position: {Start}-{End}
-       Value: {round(value, 2)}"
-    ))
+                                                             color = "grey"
   ) else geom_rect(mapping = aes_string(xmin = "Start", xmax = "End + 1", 
                                         ymin = "ID", ymax = "ID - 1",
                                         fill = value), 
