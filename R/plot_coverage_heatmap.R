@@ -127,8 +127,8 @@ plot_coverage_heatmap <- function(x_dat,
                                                                            fill = get(value),
                                                                            tooltip = glue(paste0(
                                                                              "{Sequence}
-                                                          Position: {Start}-{End}"
-                                                          # Value: {round(value, 2)}"
+                                                          Position: {Start}-{End}
+                                                          Value: {round(", value, ", 2)}"
                                                                            ))
                                                              ), 
                                                              alpha = 0.8,
