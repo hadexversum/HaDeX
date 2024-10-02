@@ -60,9 +60,6 @@ show_aggregated_uptake_data <- function(aggregated_dat,
   
   err_value <- get_uptake_error_name(value = value)
   
-  print(value)
-  print(err_value)
-  
   tmp_dat <- as.data.table(aggregated_dat)
   
   tmp_dat <- tmp_dat[, .(position, aa, Exposure, 
