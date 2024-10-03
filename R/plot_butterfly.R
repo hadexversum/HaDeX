@@ -100,12 +100,9 @@ plot_butterfly <- function(uptake_dat,
     ))
   ) else geom_point()
   
-  chosen_uncertainty_geom <- switch (
-    uncertainty_type,
-    ribbon = geom_ribbon(alpha = 0.5, size = 0, linetype = "blank"),
-    bars = geom_errorbar(width = 0.25, alpha = 0.5),
-    `bars + line` = geom_errorbar(width = 0.25, alpha = 0.5) + geom_line()
-  )
+  chosen_uncertainty_geom <- if(uncertainty_type == "ribbon") {
+    geom_ribbon(alpha = 0.5, size = 0, linetype = "blank")
+  } else { geom_errorbar(width = 0.25, alpha = 0.5) }
   
   butterfly_plot <- ggplot(
     plot_dat, 
@@ -124,6 +121,8 @@ plot_butterfly <- function(uptake_dat,
     labs(x = "Peptide ID",
          y = y_label) +
     theme(legend.position = "bottom")
+  
+  if(uncertainty_type == "bars + line") butterfly_plot <- butterfly_plot + geom_line()
   
   return(HaDeXify(butterfly_plot))
   
