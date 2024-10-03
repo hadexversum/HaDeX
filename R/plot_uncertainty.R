@@ -62,12 +62,12 @@ plot_uncertainty <- function(dat,
     
   } else {
     
-    ## check data.table
+    ## TODO:: write tests
     
     plot_dat <- dat[, exp_mass := Center*z - z*1.00727647 ] 
-    plot_dat <- plot_dat[, .(-Inten, -Center,  -MaxUptake, -z)]
-    plot_dat <- plot_dat[, err_avg_mass := sd(exp_mass), by = c(Protein, Sequence, Start, End, MHP, State, Exposure) ]
-    plot_dat <- plot_dat[, .(-exp_mass)]
+    plot_dat <- plot_dat[, !c("Inten", "Center",  "MaxUptake", "z"), with = FALSE]
+    plot_dat <- plot_dat[, err_avg_mass := sd(exp_mass), by = c("Protein", "Sequence", "Start", "End", "MHP", "State", "Exposure") ]
+    plot_dat <- plot_dat[, !"exp_mass", with = FALSE]
     unique(plot_dat)
 
     }
