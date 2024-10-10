@@ -26,8 +26,8 @@
 create_p_diff_uptake_dataset_with_confidence <- function(p_diff_uptake_dat,
                                                          houde_interval = NULL,
                                                          houde_interval_times = NULL,
-                                                         theoretical = F, 
-                                                         fractional = F){
+                                                         theoretical = FALSE, 
+                                                         fractional = FALSE){
   
   confidence_level = attr(p_diff_uptake_dat, "confidence_level")
   

@@ -399,7 +399,7 @@ create_replicate_dataset <- function(dat,
 #' @export plot_replicate_histogram 
 
 plot_replicate_histogram <- function(rep_dat,
-                                     time_points = F,
+                                     time_points = FALSE,
                                      interactive = getOption("hadex_use_interactive_plots")){
   
   state <- attr(rep_dat, "state")

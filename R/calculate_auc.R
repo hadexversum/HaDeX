@@ -28,7 +28,7 @@
 calculate_auc <- function(uptake_dat,
                           protein = uptake_dat[["Protein"]][1],
                           state = uptake_dat[["State"]][1],
-                          preserve_values = F) {
+                          preserve_values = FALSE) {
   
   uptake_dat <- as.data.table(uptake_dat)
   

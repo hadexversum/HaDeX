@@ -50,11 +50,11 @@
 plot_manhattan <- function(p_dat,
                            skip_amino = 0,
                            plot_title = NULL, 
-                           separate_times = T,
+                           separate_times = TRUE,
                            times = NULL,
                            confidence_level = NULL,
-                           show_confidence_limit = T,
-                           show_peptide_position = F,
+                           show_confidence_limit = TRUE,
+                           show_peptide_position = FALSE,
                            interactive = getOption("hadex_use_interactive_plots")){
   
   p_dat <- as.data.table(p_dat)
