@@ -8,7 +8,7 @@ calculate_auc(
   uptake_dat,
   protein = uptake_dat[["Protein"]][1],
   state = uptake_dat[["State"]][1],
-  preserve_values = F
+  preserve_values = FALSE
 )
 }
 \arguments{

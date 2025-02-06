@@ -6,7 +6,7 @@
 \usage{
 plot_replicate_histogram(
   rep_dat,
-  time_points = F,
+  time_points = FALSE,
   interactive = getOption("hadex_use_interactive_plots")
 )
 }

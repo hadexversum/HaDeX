@@ -65,6 +65,8 @@ uc_dat2 <- calculate_peptide_kinetics(dat, protein = "db_CD160",
                                       states = c("CD160", "CD160_HVEM"),
                                       start = 1, end = 15,
                                       time_0 = 0.001, time_100 = 1440)
+                                      
+                                      
 plot_uptake_curve(uc_dat = uc_dat2, 
                   theoretical = FALSE, 
                   fractional = TRUE)

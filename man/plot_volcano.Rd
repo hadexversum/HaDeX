@@ -14,8 +14,8 @@ plot_volcano(
   color_times = TRUE,
   show_insignificant_grey = FALSE,
   hide_insignificant = FALSE,
-  fractional = F,
-  theoretical = F,
+  fractional = FALSE,
+  theoretical = FALSE,
   interactive = getOption("hadex_use_interactive_plots")
 )
 }

@@ -8,8 +8,8 @@ create_p_diff_uptake_dataset_with_confidence(
   p_diff_uptake_dat,
   houde_interval = NULL,
   houde_interval_times = NULL,
-  theoretical = F,
-  fractional = F
+  theoretical = FALSE,
+  fractional = FALSE
 )
 }
 \arguments{
