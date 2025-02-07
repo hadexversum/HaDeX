@@ -57,8 +57,16 @@ show_aggregated_uptake_data <- function(aggregated_dat,
   value <- get_uptake_name(fractional = fractional, 
                            theoretical = theoretical, 
                            differential = differential)
-  
+    
   err_value <- get_uptake_error_name(value = value)
+    
+  value_label <- get_uptake_label(fractional = fractional, 
+                                  theoretical = theoretical, 
+                                  differential = differential)
+
+  err_value_label <- get_uptake_error_label(value = value_label)
+
+  ##
   
   tmp_dat <- as.data.table(aggregated_dat)
   
@@ -69,8 +77,8 @@ show_aggregated_uptake_data <- function(aggregated_dat,
                  err_val = round(err_val, 4))]
   
   setnames(tmp_dat,
-           c("val", "err_val"),
-           c(value, err_value))
+           c("position", "aa", "val", "err_val"),
+           c("Position", "Amino", value_label, err_value_label))
   
   tmp_dat <- as.data.frame(tmp_dat)
   
