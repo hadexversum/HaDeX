@@ -3,7 +3,7 @@
 #' @description Plot deuterium uptake curve for selected peptides 
 #' 
 #' @importFrom dplyr %>% mutate
-#' @importFrom ggplot2 ggplot aes geom_point geom_ribbon geom_line scale_y_continuous scale_x_log10
+#' @importFrom ggplot2 ggplot aes geom_point geom_ribbon geom_line scale_y_continuous scale_x_log10 guides
 #' 
 #' @param uc_dat data produced by \code{\link{calculate_kinetics}} 
 #' or \code{\link{calculate_peptide_kinetics}} or \code{\link{create_kinetic_dataset}}
@@ -105,14 +105,17 @@ plot_uptake_curve <- function(uc_dat,
     
   }
   
+  title <- paste0(title, " of ", uc_dat[["Sequence"]])
+  
   plot_dat <- data.frame(Sequence = uc_dat[["Sequence"]],
                          Start = uc_dat[["Start"]],
                          End = uc_dat[["End"]],
                          State = uc_dat[["State"]],
                          time_t = uc_dat[["time_chosen"]],
                          value = uc_dat[[value]],
-                         err_value = uc_dat[[err_value]],
-                         prop = paste0(uc_dat[["Sequence"]], "-", uc_dat[["State"]]))
+                         err_value = uc_dat[[err_value]]) 
+                         # prop = uc_dat[["State"]]) ##paste0(uc_dat[["Sequence"]], "-", 
+                                       
   
   chosen_geom_point <- if (interactive) geom_point_interactive( 
     aes(tooltip = glue(
@@ -139,9 +142,9 @@ plot_uptake_curve <- function(uc_dat,
     aes(
       x = time_t, 
       y = value, 
-      group = prop, 
-      color = prop, 
-      fill = prop,
+      group = State, 
+      color = State, 
+      fill = State,
       ymin = value - err_value, 
       ymax = value + err_value
     )) +
@@ -151,7 +154,10 @@ plot_uptake_curve <- function(uc_dat,
           legend.title = element_blank()) +
     labs(x = "Time points [min]", 
          y = y_label,
-         title = title)
+         title = title) +
+    guides(fill = guide_legend(title=""),
+           color = guide_legend(title=""),
+           group = guide_legend(title=""))
   
   if (uncertainty_type %in% c("ribbon", "bars + line"))
     uc_plot <- uc_plot + geom_line()

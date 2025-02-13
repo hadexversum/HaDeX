@@ -79,7 +79,8 @@ get_uptake_label <- function(differential = FALSE,
   
   value <- "DU"
   
-  if(fractional) value <- paste0("Frac ", value)
+  if(fractional) value <- paste0("Frac ", value,  " [%]")
+  else value <- paste0(value, " [Da]")
   
   if(theoretical) value <- paste0("Theo ", value)
   
