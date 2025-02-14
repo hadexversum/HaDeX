@@ -22,6 +22,8 @@ function}
 \item{value}{value to be presented}
 
 \item{time_t}{...}
+
+\item{interactive}{...}
 }
 \value{
 a \code{\link{ggplot}} object

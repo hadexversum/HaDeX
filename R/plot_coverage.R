@@ -11,6 +11,7 @@
 #' @param states selected biological states for given protein
 #' @param show_blanks \code{logical}, indicator if the non-covered
 #' regions of the sequence are indicated in red.
+#' @param interactive ...
 #' 
 #' @details The function \code{\link{plot_coverage}} generates
 #' sequence coverage plot based on experimental data for 
@@ -40,12 +41,13 @@
 plot_coverage <- function(dat, 
                           protein = dat[["Protein"]][1],
                           states = NULL,
-                          show_blanks = TRUE){
+                          show_blanks = TRUE,
+                          interactive = getOption("hadex_use_interactive_plots")){
   
   dat <- as.data.table(dat)
   
   if(!is.null(states)) { dat <- dat[State %in% states]}
-  dat <- dat[Protein == protein, .(Start, End)]
+  dat <- dat[Protein == protein, .(Start, End, Sequence)]
   
   dat <- dat[!duplicated(dat)]
   dat[, Len := - End + Start]
@@ -108,15 +110,32 @@ plot_coverage <- function(dat,
     coverage_plot <- ggplot(data = dat)
   }
   
+  if(interactive){
+    
+    x_rect <- geom_rect_interactive(data = dat, 
+                                    mapping = aes(xmin = Start, 
+                                                  xmax = End + 1, 
+                                                  ymin = ID, 
+                                                  ymax = ID - 1,
+                                                  tooltip = glue("Sequence: {Sequence}
+                                         Position: {Start}-{End}")), 
+                                    fill = "#5A748C",
+                                    colour = "black", 
+                                    alpha = 0.8) 
+  } else {
+    
+    x_rect <- geom_rect(data = dat, 
+                                    mapping = aes(xmin = Start, 
+                                                  xmax = End + 1, 
+                                                  ymin = ID, 
+                                                  ymax = ID - 1), 
+                                    fill = "#5A748C",
+                                    colour = "black", 
+                                    alpha = 0.8)
+  }
+  
   coverage_plot <- coverage_plot +
-    geom_rect(data = dat, 
-              mapping = aes(xmin = Start, 
-                            xmax = End + 1, 
-                            ymin = ID, 
-                            ymax = ID - 1), 
-              fill = "#5A748C",
-              colour = "black", 
-              alpha = 0.8) +
+    x_rect +
     theme(axis.ticks.y = element_blank(),
           axis.text.y = element_blank()) +
     labs(title = "Peptide coverage",
@@ -126,3 +145,4 @@ plot_coverage <- function(dat,
   return(HaDeXify(coverage_plot))
   
 }
+

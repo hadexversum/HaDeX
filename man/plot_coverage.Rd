@@ -8,7 +8,8 @@ plot_coverage(
   dat,
   protein = dat[["Protein"]][1],
   states = NULL,
-  show_blanks = TRUE
+  show_blanks = TRUE,
+  interactive = getOption("hadex_use_interactive_plots")
 )
 }
 \arguments{
@@ -20,6 +21,8 @@ plot_coverage(
 
 \item{show_blanks}{\code{logical}, indicator if the non-covered
 regions of the sequence are indicated in red.}
+
+\item{interactive}{...}
 }
 \value{
 a \code{\link{ggplot}} object
