@@ -29,7 +29,7 @@ knitr::opts_chunk$set(dev = "png", dev.args = list(type = "cairo-png"))
 
 HaDeX is a novel tool for processing, analysis, and visualization of HDX-MS experiments. HaDeX covers the final parts of the analytic process, including a comparison of experiments, quality control and generation of publication-quality figures. To make the HaDeX **R** package available to the less **R**-fluent users, we enhanced it with a comprehensive Graphical User Interface available as a HaDeX GUI. The reproducibility of the whole procedure is ensured with advanced reporting functions. 
 
-The GUI is available online: http://mslab-ibb.pl/shiny/HaDeX/ or can be installed locally on Windows systems: https://sourceforge.net/projects/hadex/files/HaDeX_setup.exe/download. Alternatively, R-fluent users can access the GUI through the [HaDeX_gui()](https://hadexversum.github.io/HaDeX/reference/HaDeX_gui.html) function.  
+The GUI is available online: https://hadex.mslab-ibb.pl/ or can be installed locally on Windows systems: https://sourceforge.net/projects/hadex/files/HaDeX_setup.exe/download. Alternatively, R-fluent users can access the GUI through the [HaDeX_gui()](https://hadexversum.github.io/HaDeX/reference/HaDeX_gui.html) function.  
 
 This document covers the main functionalities of both the **R** package and the GUI.
 
@@ -81,7 +81,7 @@ We have not considered HDX Workbench [@PascalHDXWorkbenchSoftware2012] as it dea
 
 **Report generation:** generates a report (e.q. in Html format) with results of the analysis with parametrization.
 
-**PyMol export:** exports data to the [PyMol](https://pymol.org/2/) format.
+**PyMol export:** exports data to the [PyMol](https://pymol.org/) format.
 
 **HDX Data Summary:** summary of the experimental data [@MassonRecommendationsperforminginterpreting2019].
 

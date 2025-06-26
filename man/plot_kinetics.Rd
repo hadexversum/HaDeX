@@ -28,7 +28,7 @@ The uncertainty associated with each peptide is shown as a ribbon.
 Axis are labeled according to the supplied parameters but no title is provided.
 
 If you want to plot data for more then one peptide in one state, join 
-calculated data by using \code{\link{bind_rows}} from dplyr package and 
+calculated data by using \code{\link[dplyr]{bind_rows}} from dplyr package and 
 pass the result as kin_dat.
 }
 \examples{

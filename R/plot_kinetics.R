@@ -2,7 +2,7 @@
 #' 
 #' @description Plots kinetics of the hydrogen-deuterium exchange for specific peptides. 
 #' 
-#' @importFrom dplyr %>% mutate
+#' @importFrom dplyr %>% mutate bind_rows
 #' @importFrom ggplot2 ggplot aes geom_point geom_ribbon geom_line scale_y_continuous
 #' 
 #' @param kin_dat calculated kinetic data by \code{\link{calculate_kinetics}} 
@@ -19,7 +19,7 @@
 #' Axis are labeled according to the supplied parameters but no title is provided.
 #' 
 #' If you want to plot data for more then one peptide in one state, join 
-#' calculated data by using \code{\link{bind_rows}} from dplyr package and 
+#' calculated data by using \code{\link[dplyr]{bind_rows}} from dplyr package and 
 #' pass the result as kin_dat.
 #' 
 #' @return a \code{\link[ggplot2]{ggplot}} object.

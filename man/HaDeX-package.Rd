@@ -2,6 +2,7 @@
 % Please edit documentation in R/HaDeX-package.R
 \docType{package}
 \name{HaDeX-package}
+\alias{-package}
 \alias{HaDeX-package}
 \alias{HaDeX}
 \title{HaDeX}
