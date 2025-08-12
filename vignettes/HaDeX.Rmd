@@ -549,7 +549,7 @@ ggplot(example_qc, aes(x = x, y = y, color = Assessment)) +
 
 # HaDeX Graphical User Interface
 
-The HaDeX Shiny app is launched by the [HaDeX_gui()](https://hadexversum.github.io/HaDeX/reference/HaDeX_gui.html) function or available at MS Lab website: http://mslab-ibb.pl/shiny/HaDeX/. In the Input Data tab the user can adjust parameters to be propagated for the whole analysis.
+The HaDeX Shiny app is launched by the [HaDeX_gui()](https://hadexversum.github.io/HaDeX/reference/HaDeX_gui.html) function or available at MS Lab website: https://mslab-ibb.pl/shiny/HaDeX/. In the Input Data tab the user can adjust parameters to be propagated for the whole analysis.
 
 # Examples
 

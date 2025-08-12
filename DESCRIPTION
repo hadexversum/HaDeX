@@ -14,7 +14,7 @@ Authors@R: c(person("Weronika", "Puchala",
            comment = c(ORCID = "0000-0003-0925-1909"),
            role = c("ctb")))
 Description: Functions for processing, analysis and visualization of Hydrogen Deuterium eXchange monitored by 
-             Mass Spectrometry experiments (HDX-MS) (10.1093/bioinformatics/btaa587). 'HaDeX' introduces a new 
+             Mass Spectrometry experiments (HDX-MS) (<doi:10.1093/bioinformatics/btaa587>). 'HaDeX' introduces a new 
              standardized and reproducible workflow for the analysis of the HDX-MS data, including novel 
              uncertainty intervals. Additionally, it covers data exploration, quality control and generation of 
              publication-quality figures. All functionalities are also available in the in-built 'Shiny' app.
@@ -22,7 +22,7 @@ Depends: R (>= 3.0)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Imports: 
     data.table,
 		dplyr,
