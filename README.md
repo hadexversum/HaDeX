@@ -1,4 +1,4 @@
-> [!NOTE]
+> [!IMPORTANT]
 > This is the repository for the first HaDeX version. We recommend using the newest one, [HaDeX2](https://github.com/hadexversum/HaDeX2).
 
 
