@@ -1,7 +1,7 @@
 > [!NOTE]
 > This is the repository for the first HaDeX version. We recommend using the newest one, [HaDeX2](https://github.com/hadexversum/HaDeX2).
 
-$\color{#FF0000}{like~this!}$
+
 
 [![published in: Bioinformatics](https://img.shields.io/badge/published%20in-Bioinformatics-green.svg)](http://dx.doi.org/10.1093/bioinformatics/btaa587)
 [![R build status](https://github.com/hadexversum/HaDeX/workflows/R-CMD-check/badge.svg)](https://github.com/hadexversum/HaDeX/actions)
